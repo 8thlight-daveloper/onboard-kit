@@ -30,6 +30,11 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | Module schema and placeholder syntax | [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3) |
 | Hosting | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
 | Output styles | [#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8) |
-| Config file format | [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23) |
 
-Language and TUI library are settled in [#2](https://github.com/8thlight-daveloper/onboard-kit/issues/2): Go with Bubble Tea and Huh.
+Open questions across all docs are tracked in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25), waits on it.
+
+## Decided
+
+- Go with Bubble Tea and Huh ([#2](https://github.com/8thlight-daveloper/onboard-kit/issues/2)).
+- Config files are YAML, named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
+- Non-interactive render is deferred. The TUI loads, edits, and regenerates.

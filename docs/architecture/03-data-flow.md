@@ -45,8 +45,11 @@ flowchart LR
 | Optional modules | Which are on or off |
 | Versions | Schema version and module set version it was made with |
 
+## File format and name
+
+Config files are YAML, named `<name>.obk.yaml`, for example `acme.obk.yaml`. The double extension lets the tool find its own files while editors still highlight the YAML. Consultants can edit the file by hand, and the TUI loads it for further editing. See [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23).
+
 ## Open questions
 
-- Format: YAML, TOML, or JSON. See [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23).
 - What happens when a config was made with an older module set? Show a diff, or refuse and ask.
 - Secrets. The resolver rejects values that look like tokens, and the same check applies to config files.

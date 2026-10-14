@@ -8,7 +8,6 @@ The tool splits into a thin interface layer and a core that knows nothing about 
 flowchart TB
     subgraph interface["Interface layer"]
         walkthrough["Walkthrough (Bubble Tea and Huh)"]
-        render_cmd["Non-interactive render command"]
     end
 
     subgraph core["Core"]
@@ -24,7 +23,6 @@ flowchart TB
     output[("output/")]
 
     walkthrough --> config_store
-    render_cmd --> config_store
     walkthrough --> selector
     modules --> loader
     loader --> selector
@@ -40,14 +38,17 @@ flowchart TB
 
 | Component | Does |
 | --- | --- |
-| Walkthrough | Asks questions, shows the review screen, ends with the human review reminder |
-| Non-interactive render command | Reads a saved config and renders without asking anything |
-| Config store | Reads and writes the config file, checks schema and module set versions |
+| Walkthrough | Asks questions, loads and edits saved configs, shows the review screen, ends with the human review reminder |
+| Config store | Reads and writes `<name>.obk.yaml` files, checks schema and module set versions |
 | Module loader | Reads embedded modules and parses frontmatter |
 | Selector | Picks and orders modules from tags in the answers |
 | Placeholder resolver | Fills values, marks unknown values with a visible to-do |
 | Renderer | Turns the resolved modules into one document for a chosen output style |
 | Writer | Writes the document and config under `output/` |
+
+## Deferred
+
+A non-interactive render command is out of scope for now. The walkthrough already loads, edits, and regenerates from a saved config, and tests call the core directly. Adding the command later means one thin wrapper over the same core path, which this split keeps cheap.
 
 ## Dependency rules
 
