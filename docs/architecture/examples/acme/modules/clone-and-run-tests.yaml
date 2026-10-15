@@ -1,0 +1,39 @@
+id: clone-and-run-tests
+title: Clone the project and run the tests
+type: setup
+summary: Get a working copy of the project and a passing test run on your machine.
+appliesTo:
+  teamState: [any]
+  discipline: [software]
+order: 20
+owner: newcomer
+timing: week-one
+verification: $test_command passes on a fresh clone.
+placeholders:
+  - name: repo_url
+    description: Clone URL of the main repository
+  - name: repo_dir
+    description: Directory name for the clone
+  - name: setup_command
+    type: command
+    description: Command that installs dependencies
+  - name: test_command
+    type: command
+    description: Command that runs the test suite
+body: |
+  If a test fails on a fresh clone, write down the failure and ask the team before
+  changing anything.
+steps:
+  - id: clone
+    name: Clone the repository
+    run: [git, clone, $repo_url, $repo_dir]
+    check:
+      run: [test, -d, $repo_dir/.git]
+  - id: install
+    name: Install dependencies
+    cwd: $repo_dir
+    run: $setup_command
+  - id: run-tests
+    name: Run the tests
+    cwd: $repo_dir
+    run: $test_command

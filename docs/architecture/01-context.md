@@ -7,13 +7,13 @@ Who and what touches onboard-kit. The tool is internal. The client receives only
 > [!NOTE]
 > **What is a module?**
 >
-> A module is one Markdown file holding a single piece of onboarding content, such as the first week plan or the access checklist. Each module carries frontmatter that says when to include it and which placeholders it needs. The tool selects modules from the walkthrough answers and merges them into one document. Modules are plain Markdown, so people and agents can write them without special tooling. The frontmatter shape is an open decision, see [05-module-schema.md](05-module-schema.md).
+> A module is one YAML file holding a single piece of onboarding content, such as the first week plan or the access checklist. It says when to include it, which placeholders it needs, and what steps it contains. Prose fields hold Markdown text. The tool selects modules from the walkthrough answers and merges them into one plan, which renders as a document. Modules are plain data, so people and agents can write and validate them without special tooling. See [05-module-schema.md](05-module-schema.md) and the [ACME example](examples/acme/README.md).
 
 ```mermaid
 flowchart LR
     consultant["Consultant (8th Light)"]
     kit["onboard-kit TUI"]
-    modules[("Modules, Markdown files embedded in the binary")]
+    modules[("Modules, YAML files embedded in the binary")]
     config["Config file"]
     doc["Generated onboarding doc"]
     reviewer["Human reviewer"]

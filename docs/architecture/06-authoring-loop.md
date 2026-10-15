@@ -10,7 +10,7 @@ flowchart TB
     feedback["Feedback issue, with no client details"]
     draft["Agent drafts a module edit"]
     pr["Pull request"]
-    checks["Checks: module linter, markdown format and lint, Vale voice rules"]
+    checks["Checks: schema validation, module linter, voice checks"]
     review["Human review"]
     merge["Merged module"]
     release["New module set in the next binary"]
@@ -42,8 +42,10 @@ flowchart TB
 | Check | Catches |
 | --- | --- |
 | Module linter | Undeclared placeholders, missing frontmatter, client names, URLs, broken links |
-| Markdown format and lint | Structure and GitHub Flavored Markdown formatting |
-| Vale | Voice rules such as no em dashes and no banned filler words |
+| Schema validation | Module files that do not match the JSON Schema |
+| Voice checks | Rules such as no em dashes and no banned filler words, run on prose fields |
+
+Format and lint tools for Markdown apply to the repo's own docs. They do not reach prose inside module YAML, so voice checks for modules run in `onboard-kit lint`. Whether Vale can lint prose inside YAML is still to check.
 
 ## Open questions
 
