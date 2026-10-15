@@ -2,7 +2,7 @@
 
 Status: proposed
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0010](0010-session-engine.md).
+Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
 
 ## Context
 
@@ -24,13 +24,13 @@ We also need to decide how the tool is packaged. The options were one binary, a 
 - Each component is one package under `internal/`, and a component is the unit of rebuild. A rebuild deletes the folder and regenerates it.
 - `internal/model` holds the domain model: the data types that several components pass to each other, such as Module, Section, and Plan. It changes slowly and is not a component. It is never deleted and rebuilt. Changing it needs an ADR.
 
-Commands, with the two session-related ones defined in [0010](0010-session-engine.md):
+Commands, with `assemble` and `edit` defined in [0010](0010-plan-editor.md):
 
 | Command | Does |
 | --- | --- |
 | `onboard-kit` | Starts the TUI walkthrough |
-| `onboard-kit assemble --config <file>` | Assembles a document from a config. Experimental |
-| `onboard-kit session` | Runs one session over stdio. Experimental |
+| `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
+| `onboard-kit edit` | Runs the plan editor over stdio. Experimental |
 | `onboard-kit lint` | Checks modules against the schema |
 
 The deferral of non-interactive generation is replaced by `assemble`, as decided in 0010.
@@ -53,13 +53,13 @@ internal/
   model/                     # permanent: domain model (Module, Section, Step, Placeholder, Answers, Plan), imports nothing from the project
   plan/
     instantiator/            # component: plan instantiator
+    editor/                  # component: plan editor, see 0010
   module/
     loader/                  # component: module loader
     selector/                # component: module selector
   section/
     resolver/                # component: section resolver
   secrets/                   # component: secrets check
-  session/                   # component: see 0010
   document/
     assembler/               # component: document assembler, plan to document in an output style
   tui/                       # component: terminal driver
@@ -70,7 +70,7 @@ contracts/
     <role>_test.go           # permanent: contract tests, behavior only
     wire_test.go             # binds the tests to the implementation
 acceptance/
-  testdata/                  # permanent: module sets, configs, golden documents
+  testdata/                  # permanent: module sets, plans, golden documents
   *_test.go                  # permanent: drive the built binary
 cmd/onboard-kit/             # thin main
 ```
@@ -96,14 +96,14 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `module/selector` | `model` |
 | 1 | `section/resolver` | `model` |
 | 1 | `secrets` | `model` |
-| 1 | `document/assembler` | `model` |
-| 2 | `plan/instantiator` | `module/selector`, `section/resolver`, `model` |
-| 3 | `session` | `module/selector`, `plan/instantiator`, `secrets`, `model` |
-| 4 | `tui` | `session`, `document/assembler`, `model` |
-| 5 | `cmd/onboard-kit` | Wires the components together |
+| 2 | `plan/instantiator` | `module/selector`, `model` |
+| 2 | `plan/editor` | `secrets`, `model` |
+| 2 | `document/assembler` | `section/resolver`, `model` |
+| 3 | `tui` | `plan/editor`, `document/assembler`, `model` |
+| 4 | `cmd/onboard-kit` | Wires the components together, and binds the editor's `expand` to the plan instantiator |
 | n/a | `contracts/*` | `model`, and its own component in `wire_test.go` only |
 
-The document assembler depends only on the model, so it cannot reach modules or answers. A plan assembles into a document on its own. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only one package, the writer inside the assemble path, touches the filesystem outside embedded modules. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
+The document assembler uses the section resolver and the model, and never touches modules. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only one package, the writer inside the assemble path, touches the filesystem outside embedded modules. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
 
 ### Rate of change
 
@@ -127,14 +127,13 @@ Each component has one job and a failure mode of its own, and its contract is no
 | --- | --- | --- |
 | Module loader | Reads module files and decodes them strictly | Select or fill |
 | Module selector | Filters and orders modules from the answers: `appliesTo` matching, `any`, sort by `order`, tie-break on `id` | Fill values |
-| Section resolver | Fills one module's placeholders and produces a section: `$name`, `$$`, command lists, `unknown-yet` gaps, undeclared or missing names. Drops the selection fields | Choose modules, collect gaps across sections |
-| Plan instantiator | Composes selection and resolution into a plan. Handles partial answers, builds the gap table with owner and timing, and records provenance with an injected clock | Ask questions, validate input |
+| Section resolver | Fills the placeholders in one section from the plan's values: `$name`, `$$`, command lists, `unknown-yet` gaps, undeclared or missing names | Choose modules, collect gaps across sections |
+| Plan instantiator | Turns modules and answers into a plan once: selects the modules that apply, copies each into a section without its selection fields, builds the question list from their placeholders, records provenance with an injected clock | Fill placeholders, ask questions, validate input |
+| Document assembler | Turns a plan into a document in an output style. Uses the section resolver to fill values and builds the gap table with owner and timing | Read modules, ask questions |
 | Secrets check | Decides whether a value looks like a token | Anything else |
-| Session | Conversation state. Uses the selector for the question set, the instantiator for `Plan()`, and the secrets check in `Submit` | Know how a plan is built |
+| Plan editor | Asks and applies answers to a plan: active questions, required and default values, validation, the secrets check. Calls an injected `expand` when the axis answers are complete | Know about modules, or how a plan is built or filled |
 
-The selector runs twice, once for the question set and once inside the instantiator. It is deterministic and cheap, so this is safe, and it keeps the session from owning plan assembly.
-
-This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler. The assembler reads only the plan.
+Placeholders stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler, which calls it.
 
 ### Output styles
 
@@ -145,7 +144,7 @@ An output style is a way of assembling a plan into a document. It is not a varia
 | Kind | Level | Lives in | Judges |
 | --- | --- | --- | --- |
 | Contract test | One component boundary: fixture in, expected out | `contracts/<noun>/<role>/` | A component and any rebuild of it |
-| Acceptance test | Whole binary: config or scripted answers in, document out | `acceptance/` | The assembled system |
+| Acceptance test | Whole binary: plan or scripted answers in, document out | `acceptance/` | The assembled system |
 
 We do not call these evals. In this repo, "eval" is reserved for checks that a model judges, which may appear in the authoring loop. Assembly has no model in it, so its checks are ordinary deterministic tests.
 
