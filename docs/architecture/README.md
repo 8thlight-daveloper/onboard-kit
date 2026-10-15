@@ -9,6 +9,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 - **Deterministic assembly.** The same answers and the same modules always produce the same document. No model runs during assembly.
 - **Agents author, they do not assemble.** Agents help write and tune modules. A human reviews every change.
 - **Config is the pivot.** Walkthrough answers save to a config file. Any output style regenerates from it.
+- **Stands alone.** Installing means getting one file. No runtime, package manager, or second download. See [0005](../decisions/0005-self-contained-install.md).
 - **Internal tool, client-facing output.** The repo and the tool stay inside 8th Light. Only generated files go to clients.
 - **No client specifics in the repo.** Config files and output live in `output/`, which git ignores.
 
@@ -22,6 +23,11 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | [04-walkthrough-sequence.md](04-walkthrough-sequence.md) | The steps of one run, including regeneration |
 | [05-module-schema.md](05-module-schema.md) | The shape of a module |
 | [06-authoring-loop.md](06-authoring-loop.md) | How feedback becomes a better module |
+
+## Related
+
+- [Decisions](../decisions/) record choices the contracts and tests depend on.
+- [Stack](../stack.md) lists the current language and tooling, and what it replaced.
 
 ## Open decisions
 
