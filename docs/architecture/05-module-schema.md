@@ -2,7 +2,7 @@
 
 Status: proposed. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). A worked example lives in [examples/acme](examples/acme/README.md).
 
-A module is one YAML file at `modules/<id>.yaml`. It carries the content of a plan component, plus the fields the selector needs. Instantiation selects modules, orders them, fills placeholders, and drops the selection fields. What remains is a component in the plan.
+A module is one YAML file at `modules/<id>.yaml`. It carries the content of a plan section, plus the fields the selector needs. Instantiation selects modules, orders them, fills placeholders, and drops the selection fields. What remains is a section in the plan.
 
 ```mermaid
 classDiagram
@@ -20,7 +20,7 @@ classDiagram
         placeholders
         steps
     }
-    class Component {
+    class Section {
         id
         title
         type
@@ -48,10 +48,10 @@ classDiagram
         type
     }
 
-    Module ..> Component : instantiated as
+    Module ..> Section : instantiated as
     Module "1" --> "*" Placeholder : declares
     Module "1" --> "*" Step : contains
-    Component "1" --> "*" Step : contains
+    Section "1" --> "*" Step : contains
 ```
 
 ## Fields that exist only in modules

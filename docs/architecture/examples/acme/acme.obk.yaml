@@ -18,7 +18,7 @@ values:
   repo_dir: widget-service
   setup_command: [make, setup]
   test_command: [make, test]
-components:
+sections:
   - id: access
     title: Access
     type: checklist

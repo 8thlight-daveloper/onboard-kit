@@ -13,7 +13,7 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 
 ## What the files show
 
-- **A module is a plan component plus selection fields.** `appliesTo`, `order`, and `placeholders` exist only in modules. Instantiation selects, orders, fills placeholders, and drops them.
+- **A module is a plan section plus selection fields.** `appliesTo`, `order`, and `placeholders` exist only in modules. Instantiation selects, orders, fills placeholders, and drops them.
 - **Placeholders use `$name`.** A placeholder of `type: command` holds an argument list. It expands as a list in `run` and joins with spaces in prose.
 - **Steps are plain YAML.** `run` or `open` is the action. `check` holds `run` or `ask`.
 - **A step with `run` and no `check`** passes when the command exits with code 0.
