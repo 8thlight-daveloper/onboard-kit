@@ -2,3 +2,5 @@
 orgs/
 private/
 *.local.md
+.idea/
+
