@@ -1,6 +1,7 @@
 .DS_Store
-orgs/
-private/
 *.local.md
 .idea/
 
+orgs/
+private/
+prototypes/
