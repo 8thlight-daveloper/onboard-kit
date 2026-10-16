@@ -21,7 +21,7 @@ variables:
     description: Target format of the document
     options: [markdown]
     default: markdown
-values:
+answers:
   plan:
     organization: ACME Corp
     team: Platform team

@@ -15,7 +15,7 @@ The saved file is the plan. There is no separate configuration file. A plan is n
 - `schemaVersion`
 - `provenance`: the template set version and the generated date
 - `variables`: plan variables, such as the axis variables `team_state` and `discipline`
-- `values`: the answers, kept by scope. `plan` holds the answers to plan variables, and each section has its own scope
+- `answers`: the answers, kept by scope. `plan` holds the answers to plan variables, and each section has its own scope
 - `sections`: all the content, with variables left in place
 
 Sketch. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3):
@@ -34,7 +34,7 @@ variables:
     description: Which discipline is this plan for?
     options: [software, design]
     required: true
-values:
+answers:
   plan:
     team_state: established
     discipline: software
@@ -71,21 +71,21 @@ A section has the same shape as a template, with an added `source`. A template f
 
 - **Active sections are computed.** A section is active when its `includeIf` condition holds, or it has none, and its `enabled` answer, or default, is true. A section with no `enabled` variable is always on. See [section template schema](../reference/section-template-schema/optional-sections.md). The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
 - **Questions are computed too.** The questions asked are the plan variables plus every variable of every active section whose `askIf` condition holds, if it has one, including the section's own `enabled` toggle. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
-- **Variables fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original templates.
+- **Variables fill at assembly.** Answers fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original templates.
 - **Inactive sections have no effect.** A hand edit to an inactive section does nothing until team state or discipline makes it active.
 
-### Values are scoped
+### Answers are scoped
 
-A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.team_state` or `access.repo_url`. Each scope holds its own values, all in the plan's `values`.
+A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.team_state` or `access.repo_url`. Each scope holds its own values, all in the plan's `answers`.
 
-- **No coordination between templates.** Two sections that both declare `repo_url` have two questions and two values. A template author never needs to know another template's names.
-- **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the values already given for that name in any section, including inactive ones. See [0010](0010-plan-editor.md).
+- **No coordination between templates.** Two sections that both declare `repo_url` have two questions and two answers. A template author never needs to know another template's names.
+- **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the answers already given for that name in any section, including inactive ones. See [0010](0010-plan-editor.md).
 - **Filling reads one scope.** A variable takes its own section's value, then that section's default.
-- **Newcomer values are outside the plan.** A variable with `phase: onboarding` is answered by each newcomer, so the plan holds no value for it. Planning skips it. Where those values live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+- **Newcomer answers are outside the plan.** A variable with `phase: onboarding` is answered by each newcomer, so the plan holds no answer for it. Planning skips it. Where those answers live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 
 ### The default plan
 
-A new plan starts as the default plan: the axis variables plus every standard template as a section, with no values. The plan instantiator builds it from the loaded templates and the small built-in axis question file. The axis variables are data like every other question.
+A new plan starts as the default plan: the axis variables plus every standard template as a section, with no answers. The plan instantiator builds it from the loaded templates and the small built-in axis question file. The axis variables are data like every other question.
 
 Templates stay the authored source, one file each. The default plan is derived, never committed.
 
@@ -93,7 +93,7 @@ Templates stay the authored source, one file each. The default plan is derived, 
 
 | Needs templates | Does not need templates |
 | -- | -- |
-| Starting a new plan | Editing values |
+| Starting a new plan | Editing answers |
 | Updating from a newer template set, deferred until after the MVP | Changing team state or discipline |
 |  | Changing the output style |
 |  | Editing section text by hand, or adding a section |
@@ -135,7 +135,7 @@ Why YAML: templates are authored and reviewed by people, and literal blocks keep
 | Source hash | `9f2c...` | Computed by the tool when it copies a template into a plan. |
 | Template set version | `7652e0e` | The build's commit sha or tag, embedded at build time. Recorded in provenance. |
 
-The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Variables are unresolved, so values do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a template file, so it cannot go stale.
+The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Variables are unresolved, so answers do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a template file, so it cannot go stale.
 
 A git blob sha would not do. It hashes raw text, it does not match the section's shape, a custom template folder may not be in git, and shas change on rebase or squash.
 
@@ -166,7 +166,7 @@ The document is output and the plan is the source. Hand edits go to the plan, an
 
 The assembled document is transitional, see [0025](0025-contracts-and-tests.md). The intended end state is the plan file and an onboarding helper flow, so these features belong to the document and not to the plan.
 
-- Every assembled document carries a gap table with owner and timing, built when assembling, because values can change after a plan is made.
+- Every assembled document carries a gap table with owner and timing, built when assembling, because answers can change after a plan is made.
 - Output carries the review marker until a person removes it.
 
 ## Secrets

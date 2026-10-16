@@ -2,7 +2,7 @@
 
 Status: accepted
 
-One run of the TUI, first for a new plan and then reopening a saved one. The calls are defined in [0010](../decisions/0010-plan-editor.md), which has the same flows with the detail of problems and held plan values. The question finder reads, the plan validator checks, and the plan editor changes.
+One run of the TUI, first for a new plan and then reopening a saved one. The calls are defined in [0010](../decisions/0010-plan-editor.md), which has the same flows with the detail of problems and held plan answers. The question finder reads, the plan validator checks, and the plan editor changes.
 
 ## New plan
 
@@ -27,10 +27,10 @@ sequenceDiagram
     T->>F: Questions
     F-->>T: Questions of the sections that now apply
     T->>C: Ask each question once
-    C-->>T: Values, or unknown yet
+    C-->>T: Answers, or unknown yet
     T->>E: Submit each value
     E-->>T: Plan, and any problems
-    T->>C: Review screen with sections and values
+    T->>C: Review screen with sections and answers
     alt Consultant goes back
         C->>T: Change an answer
         T->>E: Submit the new answer
@@ -73,7 +73,7 @@ The TUI has no separate edit mode. A new plan and an opened plan go through the 
 | Situation | Where the consultant lands |
 | -- | -- |
 | New plan | The first question. They walk the questions, then reach the review screen |
-| Opened plan with problems, or required questions with no value | The first problem or blocker, since the plan is not ready |
+| Opened plan with problems, or required questions with no answer | The first problem or blocker, since the plan is not ready |
 | Opened plan, ready | The review screen |
 
 The review screen offers three things: change an answer, by walking from the first question or jumping to one; assemble the document; quit without writing.
@@ -88,7 +88,7 @@ The v2 onboarding helper is a separate activity for the person being onboarded. 
 
 - The template set is needed only to start a new plan. Reopening, editing, changing team state or discipline, and assembling all work from the plan alone.
 - The consultant can back out at the review screen without writing anything.
-- A consultant can walk the questions from the first, with existing values as defaults, or jump to one question from the review screen.
+- A consultant can walk the questions from the first, with existing answers as defaults, or jump to one question from the review screen.
 - Assembling a document without the TUI is `onboard-kit assemble`. See [0010](../decisions/0010-plan-editor.md).
 - The reminder about human review appears on every run that writes a document.
 

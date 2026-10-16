@@ -43,17 +43,17 @@ Answer tests:
 | Test | True when |
 | -- | -- |
 | `is` | The answer is this one value |
-| `isNot` | The answer is a real value other than this one |
+| `isNot` | The answer is a real answer other than this one |
 | `isOneOf` | The answer is one of these values, a list of two or more |
-| `isNotOneOf` | The answer is a real value that is none of these, a list of two or more |
-| `isAnswered` | `true`: the question has a real value. `false`: it has none |
+| `isNotOneOf` | The answer is a real answer that is none of these, a list of two or more |
+| `isAnswered` | `true`: the question has a real answer. `false`: it has none |
 
 Rules:
 
 - **More combinators later.** `any` and `none` are not supported yet. Add them together when a real template needs one, with a rule that a condition on an unanswered question is never true, so `none` cannot ask early.
-- **Real value.** The question is active and the plan stores a value for it that is not `unknown-yet` and not empty. A boolean `false` is a real value. A declared `default` is not stored until a person selects it, so it does not count.
-- **Unanswered means false.** Every test except `isAnswered` is false when the question has no real value, before any negation. So `isNot` on an unanswered question is false, and the follow-up is not asked early.
-- **When false.** The question is not active. It keeps its stored value, is not asked, and does not block.
+- **Real answer.** The question is active and the plan stores an answer for it that is not `unknown-yet` and not empty. A boolean `false` is a real answer. A declared `default` is not stored until a person selects it, so it does not count.
+- **Unanswered means false.** Every test except `isAnswered` is false when the question has no real answer, before any negation. So `isNot` on an unanswered question is false, and the follow-up is not asked early.
+- **When false.** The question is not active. It keeps its stored answer, is not asked, and does not block.
 - **Values fit the question.** Tested values must satisfy the type and options of the question they test.
 - **Validator problems.** The section validator reports a reference to an unknown question in the same section. The plan validator reports one across sections, and a cycle of conditions anywhere in the plan. See [ordering](ordering.md#what-the-validators-check).
 - **Lint errors.** A condition that cannot do its job:
@@ -76,6 +76,6 @@ includeIf:
 ```
 
 - **No `includeIf` means always included.** A core template has none. A variant has one that narrows by an axis or any other plan-level answer.
-- **Unanswered means out.** The same rule as `askIf`: every test except `isAnswered` is false until the question has a real value, so a conditional section stays out of the plan until its question is answered.
+- **Unanswered means out.** The same rule as `askIf`: every test except `isAnswered` is false until the question has a real answer, so a conditional section stays out of the plan until its question is answered.
 - **Plan variables only.** An `includeIf` may name only plan variables, written `plan.<name>`. Those are always asked, so whether a section is in never depends on another section's answers, and there are no cycles between sections' inclusion.
 - **Variants.** A variant is another template with its own `includeIf`. It never overrides or extends a core template. Where content differs by axis, write two templates with opposite conditions, such as `discipline` `isNot` `design` and a design twin with `is` `design`, and put shared parts in a template of their own, placed with `after`. See [ordering](ordering.md).

@@ -22,8 +22,8 @@ Surface, as a sketch:
 
 ```go
 // question/finder, reads only
-Questions(plan) []Question                 // active questions in order, each with its current value, groups, and suggestions
-Blockers(plan) []Blocker                   // required questions with no value, which stop assembly
+Questions(plan) []Question                 // active questions in order, each with its current answer, groups, and suggestions
+Blockers(plan) []Blocker                   // required questions with no answer, which stop assembly
 
 // plan/validator, checks only
 Validate(plan) []Problem                   // checks a loaded plan, for example after a hand edit
@@ -33,11 +33,11 @@ CheckValue(plan, id, value) []Problem      // checks one value: type, options, p
 Submit(plan, id, value) (Plan, []Problem)  // id is <scope>.<name>. Returns a new plan and any problems
 ```
 
-Why three. What a plan asks, whether its values are acceptable, and how an answer is applied to it are separate jobs with separate reasons to change. Others need the first two without the third. The TUI reads questions, the document assembler and a later onboarding helper read the plan, and a helper that only runs steps never changes it. A plan type carrying these rules would put fast-changing logic in the domain model, which sits at the slowest rate of change and needs an ADR to change.
+Why three. What a plan asks, whether its answers are acceptable, and how an answer is applied to it are separate jobs with separate reasons to change. Others need the first two without the third. The TUI reads questions, the document assembler and a later onboarding helper read the plan, and a helper that only runs steps never changes it. A plan type carrying these rules would put fast-changing logic in the domain model, which sits at the slowest rate of change and needs an ADR to change.
 
 ### Starting and opening
 
-- **A new plan** is the default plan: the axis variables and every standard template as a section, with no values. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
+- **A new plan** is the default plan: the axis variables and every standard template as a section, with no answers. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
 - **An opened plan** is read from a file by a driver, decoded by the plan decoder, which brings it to the current schema version, and checked with `Validate`.
 
 Either way the components get a plan, and need no templates. Answering the axis variables changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
@@ -58,13 +58,13 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 ### Walking the questions
 
-`Questions(plan)`, from the question finder, returns every active question, each with its current value or default.
+`Questions(plan)`, from the question finder, returns every active question, each with its current answer or default.
 
 - **One question per variable.** The active questions are the plan variables plus every variable of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
 
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 
-- **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
+- **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the answers already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
 
@@ -74,9 +74,9 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Order.** Plan variables come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
 
-- **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
+- **Walking.** A user interface can walk the questions from the first, with existing answers as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A variable can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
+- **Conditions.** A variable can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored answer, is not asked, and does not block. A condition is true only when every question it tests has a real answer, which is a stored answer that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
 
 Four drivers share these functions:
 
@@ -102,7 +102,7 @@ The stdio protocol is line-delimited JSON, one request per line and one response
 
 ```text
 -> {"command":"questions"}
-<- {"ok":true,"questions":[{"question":"plan.team_state","type":"choice","options":["established","first-consultants"],"value":null}]}
+<- {"ok":true,"questions":[{"question":"plan.team_state","type":"choice","options":["established","first-consultants"],"answer":null}]}
 -> {"command":"submit","question":"plan.team_state","value":"established"}
 <- {"ok":true,"problems":[]}
 -> {"command":"blockers"}
@@ -125,10 +125,10 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
-- **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
+- **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no answer, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** The finder evaluates them, and the validators check them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
-- **Unknown values.** The value `unknown-yet` lets a person move past a question they cannot answer yet and return to it later. It is an accepted answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
+- **Unknown answers.** The value `unknown-yet` lets a person move past a question they cannot answer yet and return to it later. It is an accepted answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
 
 ### Errors and shutdown
 
@@ -137,7 +137,7 @@ Errors fall into four classes.
 | Class | Example | Handling |
 | -- | -- | -- |
 | Problem | Secret-like value, unknown question id, a value of the wrong type | Normal result, not a tool failure |
-| Blocker | Required question has no value | Normal result, stops assembly |
+| Blocker | Required question has no answer | Normal result, stops assembly |
 | Protocol or usage error | Bad JSON, unknown command, unreadable file | Tool error |
 | Internal failure | Panic, bug | Tool error, non-zero exit |
 
@@ -335,7 +335,7 @@ sequenceDiagram
     V-->>T: Any problems, for example a hand-added secret
 
     T->>F: Questions(p0)
-    F-->>T: Every active question with its current value
+    F-->>T: Every active question with its current answer
     T->>C: Ask tracker grantor, showing unknown-yet
     C-->>T: Type "IT service desk"
     T->>E: Submit(p0, tracker grantor, "IT service desk")

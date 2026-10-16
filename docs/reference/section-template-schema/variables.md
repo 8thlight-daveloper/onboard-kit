@@ -8,9 +8,9 @@ A variable is a named, typed value that a person fills in once. Where text uses 
 
 A variable belongs to the plan or to one section.
 
-- **Section variables** are declared in the section's `variables`. Each is its own variable with its own value, even when two sections use the same name.
-- **Plan variables** are declared in the plan's `variables`. They are the axis variables `team_state` and `discipline`, document details such as `organization` and `team`, and settings such as `output_style`. The default plan carries the built-in ones. Their values live in `values.plan`.
-- A plan variable is the same type as a section variable, with these limits. It may not use `phase: onboarding`, because the plan holds one value for everyone. It should not use `askIf`, and the validator reports one that does.
+- **Section variables** are declared in the section's `variables`. Each is its own variable with its own answer, even when two sections use the same name.
+- **Plan variables** are declared in the plan's `variables`. They are the axis variables `team_state` and `discipline`, document details such as `organization` and `team`, and settings such as `output_style`. The default plan carries the built-in ones. Their values live in `answers.plan`.
+- A plan variable is the same type as a section variable, with these limits. It may not use `phase: onboarding`, because the plan holds one answer for everyone. It should not use `askIf`, and the validator reports one that does.
 - A question id is `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`.
 
 ## Syntax
@@ -30,7 +30,7 @@ A `$` must be followed by a valid name or by another `$`. Anything else is a lin
 
 Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a variable, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so a variable never expands inside `run`. To require or set one, see [environment variables in steps](steps.md#environment-variables).
 
-## Unknown values
+## Unknown answers
 
 `unknown-yet` lets a person move past a question they cannot answer yet and come back to it later. The plan stays valid and assemblable in the meantime. It renders as a visible gap with an owner and timing, so the missing value is not lost, and a user interface can list these questions on the review screen. It is accepted for every type, as its own entry and not as free text. It satisfies a required question.
 
@@ -44,7 +44,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `options` | The allowed values of a `choice` |
 | `pattern` | A regular expression a `string` must match |
 | `patternHint` | The expected format in words, shown when a value does not match |
-| `required` | Whether the question must have a value. Defaults to false |
+| `required` | Whether the question must have an answer. Defaults to false |
 | `default` | The value used when none is given. It must satisfy the type, options, and pattern |
 | `phase` | `planning` (the default) or `onboarding`. See below |
 | `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
@@ -66,4 +66,4 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 `phase` says which process asks the question.
 
 - **`planning`** is asked while the consultant builds the plan, and the value is stored in the plan.
-- **`onboarding`** is asked of each newcomer while they onboard. The plan does not hold the value, because each person has their own. Planning skips it: it is not asked and does not block. The assembled document shows it as a blank, `<name>`. Storing and asking for these values waits for the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+- **`onboarding`** is asked of each newcomer while they onboard. The plan does not hold the value, because each person has their own. Planning skips it: it is not asked and does not block. The assembled document shows it as a blank, `<name>`. Storing and asking for these answers waits for the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).

@@ -10,7 +10,7 @@ This page is language-neutral. A type here is a record with named fields. A fiel
 
 | Kind | Types | Lives in |
 | -- | -- | -- |
-| Stored | Plan, Provenance, Variable, Values, Value, Section, Source, Variable, Condition, Clause, AnswerTest, Step, Check | The plan file |
+| Stored | Plan, Provenance, Variable, Answers, Value, Section, Source, Variable, Condition, Clause, AnswerTest, Step, Check | The plan file |
 | Computed | Question, Group, Suggestion, Blocker, Problem | Returned by the finder, validator, and editor. Never saved |
 | Output | Document | Returned by the document assembler. Transitional, see [0025](../decisions/0025-contracts-and-tests.md) |
 
@@ -22,7 +22,7 @@ classDiagram
         schemaVersion
         provenance
         variables
-        values
+        answers
         sections
         extra
     }
@@ -30,7 +30,7 @@ classDiagram
         templateSet
         generatedOn
     }
-    class Values {
+    class Answers {
         plan
         sections
     }
@@ -92,7 +92,7 @@ classDiagram
 
     Plan "1" --> "1" Provenance
     Plan "1" --> "*" Variable : plan variables
-    Plan "1" --> "1" Values
+    Plan "1" --> "1" Answers
     Plan "1" --> "*" Section
     Section "0..1" --> "1" Source
     Section "1" --> "*" Variable
@@ -110,7 +110,7 @@ classDiagram
 | `schemaVersion` | Integer | See [0030](../decisions/0030-self-contained-plan-file.md#versioning) |
 | `provenance` | Provenance |  |
 | `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
-| `values` | Values | Every answer, by scope |
+| `answers` | Answers | Every answer, by scope |
 | `sections` | List of Section | Every template, as a section |
 | `extra` | Map of unknown fields | Fields the tool does not know. Kept on load and written back, so a plan from a newer tool survives an older one |
 
@@ -123,9 +123,9 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | `templateSet` | Text | The build's commit sha or tag |
 | `generatedOn` | Date | Passed in by a driver. The core never reads a clock |
 
-## Values and Value
+## Answers and Value
 
-`values` holds the answers, by scope.
+`answers` holds the answers, by scope.
 
 | Field | Type | Notes |
 | -- | -- | -- |
@@ -141,7 +141,7 @@ A Value is one of:
 | Command | List of text | A list |
 | Unknown | Nothing | The literal `unknown-yet`, accepted for every type |
 
-A Value is a real value unless it is Unknown or empty. See [conditions](section-template-schema/conditions.md).
+A Value is a real answer unless it is Unknown or empty. See [conditions](section-template-schema/conditions.md).
 
 ## Section
 
@@ -233,8 +233,8 @@ What the finder returns for one active question.
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |
 | `phase` | Phase |  |
-| `value` | Value, optional | The stored value, if any |
-| `default` | Value, optional | Shown to the person. Not a stored value |
+| `answer` | Value, optional | The stored answer, if any |
+| `default` | Value, optional | Shown to the person. Not a stored answer |
 | `group` | Text | The key shared by questions with the same name, type, and options |
 | `suggestions` | List of Suggestion |  |
 
@@ -251,7 +251,7 @@ A group is the set of questions that share a `group` key, so a user interface ca
 
 | Field | Type | Notes |
 | -- | -- | -- |
-| `question` | Text | The id of an active, required planning question with no value |
+| `question` | Text | The id of an active, required planning question with no answer |
 
 ### Problem
 
