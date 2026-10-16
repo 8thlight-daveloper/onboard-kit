@@ -30,6 +30,10 @@ just hook      # optional: run `just check` before every commit
 
 `just` lists the other recipes. CI runs `just check` on every pull request.
 
+### GoLand
+
+The IDE does not see the dev shell's Go on its own. Run `just ide` once. It links the dev shell's Go at `.direnv/go`, a path that does not change. In GoLand, open Settings, Go, GOROOT, add a local SDK, and choose `.direnv/go/share/go` in this repo. After a flake update, run `just ide` again, and the IDE follows.
+
 ## What never goes in this repo
 
 This repo is generic on purpose. Keep out:

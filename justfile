@@ -49,6 +49,11 @@ build:
 run *args:
     if [ -f go.mod ]; then go run ./binary {{ args }}; else echo "no Go module yet"; fi
 
+# Link the dev shell's Go at .direnv/go, so an IDE can use a path that does not change. Point GoLand's GOROOT at .direnv/go/share/go.
+ide:
+    nix build .#go --out-link .direnv/go
+    @echo "GOROOT for the IDE: $(pwd)/.direnv/go/share/go"
+
 # Install the git hook that runs check before every commit.
 hook:
     git config core.hooksPath .githooks
