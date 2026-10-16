@@ -11,7 +11,7 @@ This page is language-neutral. A type here is a record with named fields. A fiel
 | Kind | Types | Lives in |
 | -- | -- | -- |
 | Stored | Plan, Provenance, Variable, Answers, Value, Section, Source, Variable, Condition, Clause, AnswerTest, Step, Check | The plan file |
-| Computed | Question, Group, Suggestion, Blocker, Problem | Returned by the finder, validator, and editor. Never saved |
+| Computed | Question, Suggestion, Blocker, Problem | Returned by the finder, validator, and editor. Never saved |
 | Output | Document | Returned by the document assembler. Transitional, see [0025](../decisions/0025-contracts-and-tests.md) |
 
 Stored types are what the decoder reads and the encoder writes. Computed types are what drivers show and what acceptance scenarios assert on, so their serialized shape is part of the `stdio` protocol in [0010](../decisions/0010-plan-editor.md).
@@ -121,7 +121,7 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | Field | Type | Notes |
 | -- | -- | -- |
 | `templateSet` | Text | The build's commit sha or tag |
-| `generatedOn` | Date | Passed in by a driver. The core never reads a clock |
+| `generatedOn` | Text | An ISO date, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
 
 ## Answers and Value
 
@@ -238,9 +238,9 @@ What the finder returns for one active question.
 | `group` | Text | The key shared by questions with the same name, type, and options |
 | `suggestions` | List of Suggestion |  |
 
-### Group and Suggestion
+### Suggestion
 
-A group is the set of questions that share a `group` key, so a user interface can ask them once. A Suggestion is a Value offered for a question, with where it came from: a declared default, or a value already given in a section.
+A group is the set of questions that share a `group` key, so a user interface can ask them once. It has no type of its own. A Suggestion is a Value offered for a question, with where it came from: a declared default, or an answer already given in the plan or a section.
 
 | Field | Type | Notes |
 | -- | -- | -- |
