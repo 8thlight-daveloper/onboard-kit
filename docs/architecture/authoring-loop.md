@@ -1,6 +1,6 @@
 # Authoring loop
 
-Status: proposed
+Status: accepted
 
 How feedback becomes a better module. Agents help draft changes. People decide what ships.
 

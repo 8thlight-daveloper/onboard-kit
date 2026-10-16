@@ -1,6 +1,6 @@
 # Context
 
-Status: proposed
+Status: accepted
 
 Who and what touches onboard-kit. The tool is internal. The client receives only the generated file.
 

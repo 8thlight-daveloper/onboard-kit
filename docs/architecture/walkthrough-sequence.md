@@ -1,6 +1,6 @@
 # Walkthrough sequence
 
-Status: proposed
+Status: accepted
 
 One run of the TUI, first for a new plan and then reopening a saved one. The calls are defined in [0010](../decisions/0010-plan-editor.md), which has the same flows with the detail of problems and held plan values. The question finder reads, the plan validator checks, and the plan editor changes.
 

@@ -1,6 +1,6 @@
 # Components
 
-Status: proposed
+Status: accepted
 
 The parts of the tool, and which may depend on which. Each component has one responsibility and can be deleted and rebuilt from its contract. The rules and the full responsibilities are in [0020](../decisions/0020-binary-structure-and-regenerative-components.md). Terms are in the [glossary](../glossary.md).
 

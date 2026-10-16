@@ -1,6 +1,6 @@
 # Data flow
 
-Status: proposed
+Status: accepted
 
 How modules and answers become a document. Every step is deterministic.
 
