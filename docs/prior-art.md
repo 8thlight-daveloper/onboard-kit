@@ -10,7 +10,7 @@ What already exists, what we can learn from it, and how onboard-kit differs. The
 
 Copier asks questions, renders a template, and saves the answers in `.copier-answers.yml`. Running `copier update` re-renders the template with the saved answers, compares it with the version the project came from, and merges the changes while keeping local edits. Conflicts go to `.rej` files by default, with an inline mode available. The docs warn against editing the answers file by hand, because Copier then assumes those answers produced the project.
 
-Why it matters: this is the closest match to our generation side and to the regeneration question in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). It handles template changes over hand-edited output, which we assumed was too complex to try.
+What it means for us: this is the closest match to our generation side and to the regeneration question in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). It handles template changes over hand-edited output, which we assumed was too complex to try.
 
 Caveat: docs differ across versions. Check the current one before borrowing anything.
 
@@ -20,7 +20,7 @@ Source: [Copier, updating a project](https://copier.readthedocs.io/en/v9.7.0/upd
 
 Runme runs the shell commands in fenced code blocks of Markdown files. It has a CLI, a TUI, and a VS Code notebook mode. Blocks can carry names, so `runme run <name>` runs one.
 
-Why it matters: it covers running commands from a document. It has no plan model, owners, timing, or tracking. If our renderer emits named fenced code blocks, documents might run in Runme without our tool.
+What it means for us: it covers running commands from a document. It has no plan model, owners, timing, or tracking. If our renderer emits named fenced code blocks, documents might run in Runme without our tool.
 
 Caveat: several forks and mirrors exist. Confirm which repository is current.
 
@@ -30,7 +30,7 @@ Sources: [Runme repository](https://github.com/elotl/runme), [CLI docs, via mirr
 
 A block-based editor for runbooks that mix documentation with executable steps, such as terminals, scripts, database queries, and HTTP calls. It supports variables and Jinja-style templating, and syncs through Git. It is in early beta.
 
-Why it matters: it shows demand for documents that run. It is a desktop editor and is not onboarding specific.
+What it means for us: it shows demand for documents that run. It is a desktop editor and is not onboarding specific.
 
 Source: [Atuin Desktop docs](https://docs.atuin.sh/desktop/)
 
@@ -46,7 +46,7 @@ Source: [Cortex developer onboarding guide](https://www.cortex.io/post/developer
 
 Three SharePoint site templates for pre-onboarding, corporate onboarding, and departmental onboarding, usable alone or together. They include an "onboarding journey", a configurable list of activities paced over 30, 60, and 90 days. Prepopulated pages are marked for the owner to keep, edit, or delete. The maintenance guidance names site owners, training for them, and a content audit schedule, and its KPI table assigns a business owner to each measure.
 
-Why it matters: the activity list is item-level, like the steps in our [ACME example](reference/examples/acme/README.md). The layered templates resemble our core plus variants.
+What it means for us: the activity list is item-level, like the steps in our [ACME example](reference/examples/acme/README.md). The layered templates resemble our core plus variants.
 
 Source: [Microsoft Learn, New Employee Onboarding sites](https://learn.microsoft.com/en-us/sharepoint/provision-neo-hub)
 

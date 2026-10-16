@@ -47,7 +47,7 @@ Acceptance tests must keep working whatever language the tool is written in, and
 - **Tests never import the implementation.** They see the binary only through its arguments, standard input and output, exit code, and files. This is already true of the `stdio` protocol and the `assemble` command.
 - **The scenario format is protected,** like the scenarios, because the runner and every scenario depend on it. Matching rules, such as comparing JSON by subset and ignoring key order, belong to that format.
 
-Contract tests are different on purpose. They call a component in process and are written in the implementation language. Their fixtures are plain data, so only the harness and the interface binding change if the language does.
+Contract tests are different on purpose. They call a component in process and are written in the implementation language. Their fixtures are plain data, so only the test setup and the interface binding change if the language does.
 
 ### Writing contracts
 
