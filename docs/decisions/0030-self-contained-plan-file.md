@@ -14,9 +14,9 @@ The saved file is the plan. There is no separate configuration file. A plan is n
 
 - `schemaVersion`
 - `provenance`: the template set version and the generated date
-- `questions`: plan-level questions, such as the axis questions team state and discipline
-- `values`: the answers, kept by scope. `plan` holds the plan-level answers, and each section has its own scope
-- `sections`: all the content, with placeholders left in place
+- `variables`: plan variables, such as the axis variables `team_state` and `discipline`
+- `values`: the answers, kept by scope. `plan` holds the answers to plan variables, and each section has its own scope
+- `sections`: all the content, with variables left in place
 
 Sketch. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3):
 
@@ -25,18 +25,18 @@ schemaVersion: 1
 provenance:
   templateSet: 7652e0e
   generatedOn: 2026-10-15
-questions:
-  - id: teamState
+variables:
+  - name: team_state
     description: Is the team established, or are we the first consultants?
     options: [established, first-consultants]
     required: true
-  - id: discipline
+  - name: discipline
     description: Which discipline is this plan for?
     options: [software, design]
     required: true
 values:
   plan:
-    teamState: established
+    team_state: established
     discipline: software
   sections:
     clone-and-run-tests:
@@ -53,7 +53,7 @@ sections:
           answer:
             is: software
     timing: week-one
-    placeholders:
+    variables:
       - name: repo_url
         description: Clone URL of the main repository
         pattern: '^(git@|https://)\S+$'
@@ -67,25 +67,25 @@ sections:
 
 ### Sections are templates living in a plan
 
-A section has the same shape as a template, with an added `source`. A template file is a section before it is in a plan. A plan holds all of them, with their selection and ordering fields (`includeIf`, `timing`, `after`) kept and their placeholders unresolved.
+A section has the same shape as a template, with an added `source`. A template file is a section before it is in a plan. A plan holds all of them, with their selection and ordering fields (`includeIf`, `timing`, `after`) kept and their variables unresolved.
 
-- **Active sections are computed.** A section is active when its `includeIf` condition holds, or it has none, and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on. See [section template schema](../reference/section-template-schema/optional-sections.md). The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
-- **Questions are computed too.** The questions asked are the plan-level questions plus every placeholder of every active section whose `askIf` condition holds, if it has one, including the section's own `enabled` toggle. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
-- **Placeholders fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original templates.
+- **Active sections are computed.** A section is active when its `includeIf` condition holds, or it has none, and its `enabled` answer, or default, is true. A section with no `enabled` variable is always on. See [section template schema](../reference/section-template-schema/optional-sections.md). The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
+- **Questions are computed too.** The questions asked are the plan variables plus every variable of every active section whose `askIf` condition holds, if it has one, including the section's own `enabled` toggle. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
+- **Variables fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original templates.
 - **Inactive sections have no effect.** A hand edit to an inactive section does nothing until team state or discipline makes it active.
 
 ### Values are scoped
 
-A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.teamState` or `access.repo_url`. Each scope holds its own values, all in the plan's `values`.
+A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.team_state` or `access.repo_url`. Each scope holds its own values, all in the plan's `values`.
 
 - **No coordination between templates.** Two sections that both declare `repo_url` have two questions and two values. A template author never needs to know another template's names.
 - **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the values already given for that name in any section, including inactive ones. See [0010](0010-plan-editor.md).
-- **Filling reads one scope.** A placeholder takes its own section's value, then that section's default.
-- **Newcomer values are outside the plan.** A placeholder with `phase: onboarding` is answered by each newcomer, so the plan holds no value for it. Planning skips it. Where those values live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+- **Filling reads one scope.** A variable takes its own section's value, then that section's default.
+- **Newcomer values are outside the plan.** A variable with `phase: onboarding` is answered by each newcomer, so the plan holds no value for it. Planning skips it. Where those values live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 
 ### The default plan
 
-A new plan starts as the default plan: the axis questions plus every standard template as a section, with no values. The plan instantiator builds it from the loaded templates and the small built-in axis question file. The axis questions are data like every other question.
+A new plan starts as the default plan: the axis variables plus every standard template as a section, with no values. The plan instantiator builds it from the loaded templates and the small built-in axis question file. The axis variables are data like every other question.
 
 Templates stay the authored source, one file each. The default plan is derived, never committed.
 
@@ -135,7 +135,7 @@ Why YAML: templates are authored and reviewed by people, and literal blocks keep
 | Source hash | `9f2c...` | Computed by the tool when it copies a template into a plan. |
 | Template set version | `7652e0e` | The build's commit sha or tag, embedded at build time. Recorded in provenance. |
 
-The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Placeholders are unresolved, so values do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a template file, so it cannot go stale.
+The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Variables are unresolved, so values do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a template file, so it cannot go stale.
 
 A git blob sha would not do. It hashes raw text, it does not match the section's shape, a custom template folder may not be in git, and shas change on rebase or squash.
 
@@ -179,8 +179,8 @@ The secrets check runs whenever a value is submitted and whenever a plan is vali
 - A plan is larger. It carries sections that may not apply to the organization.
 - The plan describes its own walkthrough, so any tool version can reopen it.
 - The domain model is now the file format in memory. It sits at the slowest rate of change in 0020, and changes to it need an ADR with a migration story.
-- The document assembler fills placeholders and uses the section selector and the section resolver. The plan instantiator selects nothing and resolves nothing. 0010 and 0020 are updated to match.
-- The ACME example currently stores resolved sections and no `questions`. It needs to hold template sections, an inactive section, and `source` entries.
+- The document assembler fills variables and uses the section selector and the section resolver. The plan instantiator selects nothing and resolves nothing. 0010 and 0020 are updated to match.
+- The ACME example currently stores resolved sections and no plan `variables`. It needs to hold template sections, an inactive section, and `source` entries.
 
 ## Alternatives considered
 

@@ -60,8 +60,8 @@ The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/is
 
 - Language and toolkit are stack notes, see [stack](../stack/README.md).
 - The saved file is the plan, a YAML file named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
-- A plan holds every template as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
-- Conditions are data: `askIf` on a placeholder gates a question, and `includeIf` on a section gates the section. A variant is a template with its own `includeIf` and never overrides a core template. See [conditions](../reference/section-template-schema/conditions.md).
+- A plan holds every template as a section, and the answers decide which are active. An optional section declares an `enabled` variable.
+- Conditions are data: `askIf` on a variable gates a question, and `includeIf` on a section gates the section. A variant is a template with its own `includeIf` and never overrides a core template. See [conditions](../reference/section-template-schema/conditions.md).
 - Sections sort by `timing`, then `after`, then `id`. See [ordering](../reference/section-template-schema/ordering.md).
 - Output styles are an option on a plan, not template variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
 - Non-interactive assembly exists as `onboard-kit assemble`, and `onboard-kit stdio` exposes the plan components over stdio for tests.

@@ -1,7 +1,6 @@
 schemaVersion: 1
 id: review-design-system
 title: Review the design system
-type: checklist
 summary: Find the design system and the main design file, and note what you cannot open.
 includeIf:
   all:
@@ -11,7 +10,7 @@ includeIf:
 owner: newcomer
 timing: week-one
 verification: You can open the design system and the main design file.
-placeholders:
+variables:
   - name: enabled
     description: Include the design review?
     type: boolean

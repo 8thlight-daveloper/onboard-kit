@@ -1,8 +1,17 @@
-# Placeholders
+# Variables
 
 Part of the [section template schema](README.md).
 
-A placeholder is a named blank in a section, written `$name`, filled from an answer when the document is assembled. Each section's placeholder is its own question, with its own description, type, and default. Values are per section. See [0030](../../decisions/0030-self-contained-plan-file.md).
+A variable is a named, typed value that a person fills in once. Where text uses it, it is written `$name` and filled from the answer when the document is assembled, which is why it is also called a placeholder. Each variable is its own question, with its own description, type, and default. See [0030](../../decisions/0030-self-contained-plan-file.md).
+
+## Scope
+
+A variable belongs to the plan or to one section.
+
+- **Section variables** are declared in the section's `variables`. Each is its own variable with its own value, even when two sections use the same name.
+- **Plan variables** are declared in the plan's `variables`. They are the axis variables `team_state` and `discipline`, document details such as `organization` and `team`, and settings such as `output_style`. The default plan carries the built-in ones. Their values live in `values.plan`.
+- A plan variable is the same type as a section variable, with these limits. It may not use `phase: onboarding`, because the plan holds one value for everyone. It should not use `askIf`, and the validator reports one that does.
+- A question id is `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`.
 
 ## Syntax
 
@@ -19,7 +28,7 @@ A `$` must be followed by a valid name or by another `$`. Anything else is a lin
 | `$$5` | `$5` |
 | `$$STAGING_API_TOKEN` | `$STAGING_API_TOKEN` |
 
-Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a placeholder, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so a variable never expands inside `run`. To require or set one, see [environment variables in steps](steps.md#environment-variables).
+Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a variable, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so a variable never expands inside `run`. To require or set one, see [environment variables in steps](steps.md#environment-variables).
 
 ## Unknown values
 

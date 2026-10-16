@@ -41,7 +41,7 @@ Lint rejects a check with none of the keys or with more than one.
 Commands are argument lists and no shell parses them, so a variable such as `$HOME` inside `run` is never expanded. Use these instead.
 
 - **A step needs a variable the person sets themselves**, such as an API token. Add an `env` check with its name, and say in `notes` where to get the value. The template and the plan hold only the name. The value is a secret and stays out of both.
-- **A command needs a variable with a known value.** Give the step an `env` map. Values may use `$name` placeholders. The secrets check runs on them like any other value.
+- **A command needs a variable with a known value.** Give the step an `env` map. Values may use `$name` variables. The secrets check runs on them like any other value.
 
 ```yaml
 steps:
@@ -56,4 +56,4 @@ steps:
 ```
 
 - Variable names are uppercase letters, digits, and underscores, and start with a letter.
-- In prose, such as `notes` or `body`, a variable is written with the escape described under [placeholders](placeholders.md#dollar-signs), for example `$$STAGING_API_TOKEN`.
+- In prose, such as `notes` or `body`, a variable is written with the escape described under [variables](variables.md#dollar-signs), for example `$$STAGING_API_TOKEN`.

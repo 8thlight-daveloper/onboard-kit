@@ -12,7 +12,7 @@ exceptions:
   - Clause
   - Condition
   - Group
-  - Placeholder
+  - Variable
   - Plan
   - Problem
   - Provenance

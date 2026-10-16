@@ -11,7 +11,7 @@ flowchart LR
     plan["Plan file"]
     answers["Answers"]
     active["Find active sections"]
-    fill["Fill placeholders"]
+    fill["Fill variables"]
     assemble["Assemble for output style"]
     mark["Add gap table and review marker"]
     out["Document in output/"]
@@ -43,9 +43,9 @@ The first two steps run once, when a new plan starts. After that the plan is the
 | -- | -- |
 | `schemaVersion` | The version of the plan format |
 | `provenance` | The template set version and the generated date |
-| `questions` | Plan-level questions, such as team state, discipline, and the document details |
+| `variables` | Plan variables, such as team state, discipline, and the document details |
 | `values` | The answer to every question |
-| `sections` | Every template as a section, with placeholders unresolved, and a record of its source |
+| `sections` | Every template as a section, with variables unresolved, and a record of its source |
 
 See [0030](../decisions/0030-self-contained-plan-file.md) for the format, versioning, and how updates will work.
 

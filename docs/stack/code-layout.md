@@ -18,7 +18,7 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 
 ```text
 internal/
-  model/                     # permanent: domain model (Section, Step, Placeholder, Question, Plan), imports nothing from the project
+  model/                     # permanent: domain model (Section, Step, Variable, Question, Plan), imports nothing from the project
   plan/
     instantiator/            # component: plan instantiator
     editor/                  # component: plan editor, see 0010

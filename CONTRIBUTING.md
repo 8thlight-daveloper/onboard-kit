@@ -20,7 +20,7 @@ The client will read these templates, so write for a newcomer who has never hear
 - Plain words. Short sentences. Active voice.
 - Imperative for steps: "Ask your lead who approves access."
 - Sentence case headings.
-- Placeholders go in angle brackets: `<Organization>`.
+- Variables go in angle brackets: `<Organization>`.
 - One idea per checklist item.
 
 ## Where files go

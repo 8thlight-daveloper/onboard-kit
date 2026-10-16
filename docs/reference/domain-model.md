@@ -10,7 +10,7 @@ This page is language-neutral. A type here is a record with named fields. A fiel
 
 | Kind | Types | Lives in |
 | -- | -- | -- |
-| Stored | Plan, Provenance, QuestionDefinition, Values, Value, Section, Source, Placeholder, Condition, Clause, AnswerTest, Step, Check | The plan file |
+| Stored | Plan, Provenance, Variable, Values, Value, Section, Source, Variable, Condition, Clause, AnswerTest, Step, Check | The plan file |
 | Computed | Question, Group, Suggestion, Blocker, Problem | Returned by the finder, validator, and editor. Never saved |
 | Output | Document | Returned by the document assembler. Transitional, see [0025](../decisions/0025-contracts-and-tests.md) |
 
@@ -21,7 +21,7 @@ classDiagram
     class Plan {
         schemaVersion
         provenance
-        questions
+        variables
         values
         sections
         extra
@@ -30,16 +30,6 @@ classDiagram
         templateSet
         generatedOn
     }
-    class QuestionDefinition {
-        id
-        description
-        type
-        options
-        required
-        default
-        pattern
-        patternHint
-    }
     class Values {
         plan
         sections
@@ -47,7 +37,6 @@ classDiagram
     class Section {
         id
         title
-        type
         summary
         owner
         timing
@@ -55,7 +44,7 @@ classDiagram
         body
         includeIf
         after
-        placeholders
+        variables
         steps
         source
         extra
@@ -64,7 +53,7 @@ classDiagram
         template
         hash
     }
-    class Placeholder {
+    class Variable {
         name
         description
         type
@@ -102,14 +91,14 @@ classDiagram
     }
 
     Plan "1" --> "1" Provenance
-    Plan "1" --> "*" QuestionDefinition
+    Plan "1" --> "*" Variable : plan variables
     Plan "1" --> "1" Values
     Plan "1" --> "*" Section
     Section "0..1" --> "1" Source
-    Section "1" --> "*" Placeholder
+    Section "1" --> "*" Variable
     Section "1" --> "*" Step
     Section "0..1" --> "1" Condition : includeIf
-    Placeholder "0..1" --> "1" Condition : askIf
+    Variable "0..1" --> "1" Condition : askIf
     Condition "1" --> "*" Clause
     Step "1" --> "*" Check
 ```
@@ -120,7 +109,7 @@ classDiagram
 | -- | -- | -- |
 | `schemaVersion` | Integer | See [0030](../decisions/0030-self-contained-plan-file.md#versioning) |
 | `provenance` | Provenance |  |
-| `questions` | List of QuestionDefinition | Plan-level questions, such as team state and discipline |
+| `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
 | `values` | Values | Every answer, by scope |
 | `sections` | List of Section | Every template, as a section |
 | `extra` | Map of unknown fields | Fields the tool does not know. Kept on load and written back, so a plan from a newer tool survives an older one |
@@ -134,27 +123,13 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | `templateSet` | Text | The build's commit sha or tag |
 | `generatedOn` | Date | Passed in by a driver. The core never reads a clock |
 
-## QuestionDefinition
-
-A plan-level question. It has the same meaning as a Placeholder, with `id` where a Placeholder has `name`.
-
-| Field | Type | Notes |
-| -- | -- | -- |
-| `id` | Text | A name, such as `teamState`. Its question id is `plan.<id>` |
-| `description` | Text |  |
-| `type` | PlaceholderType | Defaults to `string`, or `choice` when `options` is given |
-| `options` | List of text, optional | For a `choice` |
-| `required` | Boolean, optional |  |
-| `default` | Value, optional |  |
-| `pattern`, `patternHint` | Text, optional | For a `string` |
-
 ## Values and Value
 
 `values` holds the answers, by scope.
 
 | Field | Type | Notes |
 | -- | -- | -- |
-| `plan` | Map of name to Value | Answers to plan-level questions |
+| `plan` | Map of name to Value | Answers to plan variables |
 | `sections` | Map of section id to a map of name to Value | Each section's own answers, including its `enabled` toggle |
 
 A Value is one of:
@@ -173,13 +148,13 @@ A Value is a real value unless it is Unknown or empty. See [conditions](section-
 | Field | Type | Notes |
 | -- | -- | -- |
 | `id` | Text | A lowercase slug. Never `plan` |
-| `title`, `type`, `summary` | Text | The only required fields besides `id` |
+| `title`, `summary` | Text | The only required fields besides `id` |
 | `owner` | Text, optional | May contain `$name` |
 | `timing` | Timing, optional | Defaults to `anytime` |
 | `verification`, `body` | Text, optional | Markdown prose |
-| `includeIf` | Condition, optional | Names plan-level questions only |
+| `includeIf` | Condition, optional | Names plan variables only |
 | `after` | List of section ids, optional |  |
-| `placeholders` | List of Placeholder, optional |  |
+| `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
 | `source` | Source, optional | Absent on a template and on a section added by hand |
 | `extra` | Map of unknown fields | Kept in a plan, rejected in a template |
@@ -191,13 +166,13 @@ A Value is a real value unless it is Unknown or empty. See [conditions](section-
 | `template` | Text | The template id |
 | `hash` | Text | The content hash from the section hasher, computed over everything except `source` |
 
-## Placeholder
+## Variable
 
 | Field | Type | Notes |
 | -- | -- | -- |
 | `name` | Text | `[a-z][a-z0-9_]*`, not reserved |
 | `description` | Text |  |
-| `type` | PlaceholderType | `string` by default |
+| `type` | VariableType | `string` by default |
 | `options` | List of text, optional | For a `choice` |
 | `pattern`, `patternHint` | Text, optional | RE2 syntax, for a `string` |
 | `required` | Boolean, optional |  |
@@ -216,7 +191,7 @@ A Value is a real value unless it is Unknown or empty. See [conditions](section-
 | AnswerTest | `isOneOf`, `isNotOneOf` | A list of two or more Values |
 | AnswerTest | `isAnswered` | Boolean |
 
-Several tests in one AnswerTest must all hold. A section uses a Condition only through `includeIf`, and a placeholder only through `askIf`.
+Several tests in one AnswerTest must all hold. A section uses a Condition only through `includeIf`, and a variable only through `askIf`.
 
 ## Step and Check
 
@@ -238,10 +213,9 @@ A Check has exactly one of `run` (a Command), `ask` (text, a yes or no question)
 
 | Name | Values |
 | -- | -- |
-| PlaceholderType | `string`, `boolean`, `choice`, `command` |
+| VariableType | `string`, `boolean`, `choice`, `command` |
 | Phase | `planning`, `onboarding` |
 | Timing | `before-day-one`, `week-one`, `first-30-days`, `days-30-to-90`, `anytime` |
-| Section `type` | Not yet fixed. The ACME example uses `checklist` and `setup` |
 
 ## Computed types
 
@@ -255,7 +229,7 @@ What the finder returns for one active question.
 | `scope` | Text | `plan` or a section id |
 | `name` | Text |  |
 | `description` | Text |  |
-| `type` | PlaceholderType |  |
+| `type` | VariableType |  |
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |
 | `phase` | Phase |  |
@@ -293,6 +267,4 @@ A report about a plan or one value. It is a normal result, not a failure.
 
 ## Open questions
 
-- Should plan-level questions use Placeholder, with `name`, and drop QuestionDefinition and `id`? They are the same shape. Merging means one type, and a change to the sketch in 0030 and to the ACME plan.
-- Which values does the Section `type` take?
 - Which problem codes exist? The contracts of the validators and the editor define them, and this page lists them once they exist.

@@ -37,10 +37,10 @@ Why three. What a plan asks, whether its values are acceptable, and how an answe
 
 ### Starting and opening
 
-- **A new plan** is the default plan: the axis questions and every standard template as a section, with no values. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
+- **A new plan** is the default plan: the axis variables and every standard template as a section, with no values. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
 - **An opened plan** is read from a file by a driver, decoded by the plan decoder, which brings it to the current schema version, and checked with `Validate`.
 
-Either way the components get a plan, and need no templates. Answering the axis questions changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
+Either way the components get a plan, and need no templates. Answering the axis variables changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
 
 ### Plans are values
 
@@ -60,7 +60,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 `Questions(plan)`, from the question finder, returns every active question, each with its current value or default.
 
-- **One question per placeholder per section.** The active questions are the plan-level questions plus every placeholder of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
+- **One question per variable.** The active questions are the plan variables plus every variable of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
 
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 
@@ -68,15 +68,15 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
 
-- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
+- **Optional sections.** A section that can be switched off declares an `enabled` variable. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
 
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 
-- **Order.** Plan-level questions come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
+- **Order.** Plan variables come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
 
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
+- **Conditions.** A variable can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
 
 Four drivers share these functions:
 
@@ -102,8 +102,8 @@ The stdio protocol is line-delimited JSON, one request per line and one response
 
 ```text
 -> {"command":"questions"}
-<- {"ok":true,"questions":[{"question":"plan.teamState","type":"choice","options":["established","first-consultants"],"value":null}]}
--> {"command":"submit","question":"plan.teamState","value":"established"}
+<- {"ok":true,"questions":[{"question":"plan.team_state","type":"choice","options":["established","first-consultants"],"value":null}]}
+-> {"command":"submit","question":"plan.team_state","value":"established"}
 <- {"ok":true,"problems":[]}
 -> {"command":"blockers"}
 <- {"ok":true,"blockers":[]}
@@ -125,7 +125,7 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
-- **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
+- **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** The finder evaluates them, and the validators check them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
 - **Unknown values.** The value `unknown-yet` lets a person move past a question they cannot answer yet and return to it later. It is an accepted answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
@@ -234,7 +234,7 @@ sequenceDiagram
     P->>F: Questions(p0)
     F-->>P: Team state and discipline
     P-->>A: {"ok":true,"questions":[...]}
-    A->>P: {"command":"submit","question":"plan.teamState","value":"established"}
+    A->>P: {"command":"submit","question":"plan.team_state","value":"established"}
     P->>E: Submit(p0, team state, "established")
     E-->>P: Plan p1, no problems
     P->>P: Hold p1 as current

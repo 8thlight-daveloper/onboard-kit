@@ -1,7 +1,6 @@
 schemaVersion: 1
 id: clone-and-run-tests
 title: Clone the project and run the tests
-type: setup
 summary: Get a working copy of the project and a passing test run on your machine.
 includeIf:
   all:
@@ -11,7 +10,7 @@ includeIf:
 owner: newcomer
 timing: week-one
 verification: $test_command passes on a fresh clone.
-placeholders:
+variables:
   - name: repo_url
     description: Clone URL of the main repository
     pattern: '^(git@|https://)\S+$'

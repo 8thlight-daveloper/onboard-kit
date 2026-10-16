@@ -41,7 +41,7 @@ flowchart TB
 
 | Check | Catches | Runs |
 | -- | -- | -- |
-| Section validator | Undeclared or unused placeholders, defaults that do not fit, reserved names, bad condition references and cycles, missing required fields, format rules from 0030 | `onboard-kit lint` |
+| Section validator | Undeclared or unused variables, defaults that do not fit, reserved names, bad condition references and cycles, missing required fields, format rules from 0030 | `onboard-kit lint` |
 | Template linter | Client names, URLs, email addresses, and broken links | `onboard-kit lint` |
 | Voice rules | No em dashes, no banned filler words, no chatbot openers, no announced importance, sentence case headings. Applies to Markdown and to prose inside template YAML | Vale, in `just check` |
 | Schema validation | Template files that do not match the JSON Schema | CI, and in editors |

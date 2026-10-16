@@ -78,20 +78,20 @@ flowchart TB
 
 | Component | Does |
 | -- | -- |
-| Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
+| Question finder | Finds a plan's active questions, one per section variable plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
-| Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, and check shapes. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
+| Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, and check shapes. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
-| Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
+| Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
 | Plan migrator | Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
 | Plan decoder | Turns plan file bytes into a Plan and problems. Refuses a version older than supported or newer than known, applies the migrator steps, decodes leniently so unknown fields survive, and reports format guard violations such as `yes` for a boolean, anchors, and aliases |
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the real values of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
-| Section resolver | Fills a section's placeholders from the plan's values |
+| Section resolver | Fills a section's variables from the plan's values |
 | Section hasher | Computes the content hash recorded in a section's `source` |
 | Secrets check | Decides whether a value looks like a token |
 
@@ -116,7 +116,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
-| Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `source` |
+| Component | `schemaVersion` | `provenance` | `variables` | `values` | section content | `source` |
 | -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C | C | C | C | C | C |
 | `plan/decoder` | C | C | C | C | C | C |

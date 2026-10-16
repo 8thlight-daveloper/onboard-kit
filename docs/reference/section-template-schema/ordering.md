@@ -46,8 +46,8 @@ These are about the relation between sections, so the plan validator reports the
 | Timing conflict | A is after B, but A's timing comes earlier than B's. The report names both sections and their timings |
 | Question condition cycle | A question's condition depends on an answer that depends back on it, including across sections |
 | Unknown question reference | A condition names a question that no section declares |
-| `includeIf` on a section question | An `includeIf` names a question that is not plan-level |
+| `includeIf` on a section question | An `includeIf` names a question that is not a plan variable |
 
 ## Question order in the walkthrough
 
-The finder asks the plan-level questions first, then each active section's questions in document order. It never asks a question before the questions its `askIf` condition names. If a condition refers to a later section, the finder moves the dependent question to just after the question it needs. A cycle is reported as a problem and not resolved.
+The finder asks the plan variables first, then each active section's questions in document order. It never asks a question before the questions its `askIf` condition names. If a condition refers to a later section, the finder moves the dependent question to just after the question it needs. A cycle is reported as a problem and not resolved.

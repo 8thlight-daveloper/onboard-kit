@@ -56,7 +56,7 @@ Folders by role, not by language:
 | Folder | Holds | Changes |
 | -- | -- | -- |
 | Component folders, grouped `<noun>/<role>` | One component each, for example `section/selector` | Rebuilt freely |
-| Domain model folder | The shared types: Section, Step, Placeholder, Question, Plan | By ADR only |
+| Domain model folder | The shared types: Section, Step, Variable, Question, Plan | By ADR only |
 | `contracts/` | One folder per component, mirroring the component folders. Holds the interface file, fixtures, contract tests, and a wiring test | A person approves |
 | `acceptance/` | Fixtures, language-neutral scenarios, and a replaceable runner | A person approves |
 | `binary/` | The thin entry point | Rebuilt with whatever it wires |
@@ -128,7 +128,7 @@ A dependency points from a faster thing to a slower thing, never the other way. 
 
 Each component has one job and a failure mode of its own, and its contract is not a restatement of its neighbors'. The current list and each component's responsibility are in [components](../architecture/components.md#responsibilities), so changes to a component do not need an ADR.
 
-Placeholders stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler, which calls it.
+Variables stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler, which calls it.
 
 ### Side effects and plan access
 

@@ -25,7 +25,7 @@ Rules for both:
 
 - **Behavior only.** Assert on outputs. Never on internals or code structure.
 - **Independent authorship.** The agent that rebuilds a component does not write or edit that component's contract tests, fixtures, or acceptance tests. A person approves every change to them.
-- **Properties as well as goldens.** Two runs produce identical bytes. Output holds no secrets and no client specifics. Every placeholder is resolved or reported as a gap.
+- **Properties as well as goldens.** Two runs produce identical bytes. Output holds no secrets and no client specifics. Every variable is resolved or reported as a gap.
 - **Seed fixture.** [`docs/reference/examples/acme`](../reference/examples/acme/README.md) becomes the first acceptance fixture. Its plan, `acme.obk.yaml`, is the lasting part. Its assembled document, `acme.md`, is a transitional golden.
 - **Parallel by default.** Tests run in parallel, use a per-test temporary directory for files, and take an injected clock. No shared mutable state. Any unordered iteration that reaches output is sorted. Golden regeneration is a separate explicit command and never runs as a side effect of a test. The settings for the current language are in [testing](../stack/testing.md).
 

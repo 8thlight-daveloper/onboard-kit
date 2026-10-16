@@ -1,12 +1,11 @@
 schemaVersion: 1
 id: access
 title: Access
-type: checklist
 summary: Request the accounts and permissions you need, and record who grants each.
 owner: $onboarding_owner_role
 timing: before-day-one
 verification: You can open the repository, the CI dashboard, and the work tracker.
-placeholders:
+variables:
   - name: onboarding_owner_role
     description: Role of the person who owns onboarding at the organization
     required: true

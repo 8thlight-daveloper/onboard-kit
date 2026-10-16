@@ -6,15 +6,15 @@ Two fields hold a condition, and both use the syntax below.
 
 | Field | On | Gates |
 | -- | -- | -- |
-| `askIf` | A placeholder | Whether that one question is asked |
+| `askIf` | A variable | Whether that one question is asked |
 | `includeIf` | A section or template | Whether the whole section is in the plan's document and walkthrough |
 
-A section has a second gate, an `enabled` placeholder, see [optional sections](optional-sections.md). `includeIf` is for facts about the engagement, such as the discipline. `enabled` is for a choice the consultant makes.
+A section has a second gate, an `enabled` variable, see [optional sections](optional-sections.md). `includeIf` is for facts about the engagement, such as the discipline. `enabled` is for a choice the consultant makes.
 
 ## Syntax
 
 ```yaml
-placeholders:
+variables:
   - name: staging_url
     description: Staging URL
     askIf:
@@ -22,7 +22,7 @@ placeholders:
         - question: plan.discipline
           answer:
             is: software
-        - question: plan.teamState
+        - question: plan.team_state
           answer:
             isNot: first-consultants
         - question: repo_url
@@ -35,7 +35,7 @@ A condition is data, not an expression string. Every implementation language rea
 | Part | Meaning |
 | -- | -- |
 | `all` | A list of clauses that must all be true. It is the only combinator for now. Add `any` when a real template needs it |
-| `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan-level question |
+| `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan variable |
 | `answer` | The tests on that question's answer. Several tests in one `answer` must all hold |
 
 Answer tests:
@@ -77,5 +77,5 @@ includeIf:
 
 - **No `includeIf` means always included.** A core template has none. A variant has one that narrows by an axis or any other plan-level answer.
 - **Unanswered means out.** The same rule as `askIf`: every test except `isAnswered` is false until the question has a real value, so a conditional section stays out of the plan until its question is answered.
-- **Plan-level questions only.** An `includeIf` may name only plan-level questions, written `plan.<name>`. Those are always asked, so whether a section is in never depends on another section's answers, and there are no cycles between sections' inclusion.
+- **Plan variables only.** An `includeIf` may name only plan variables, written `plan.<name>`. Those are always asked, so whether a section is in never depends on another section's answers, and there are no cycles between sections' inclusion.
 - **Variants.** A variant is another template with its own `includeIf`. It never overrides or extends a core template. Where content differs by axis, write two templates with opposite conditions, such as `discipline` `isNot` `design` and a design twin with `is` `design`, and put shared parts in a template of their own, placed with `after`. See [ordering](ordering.md).
