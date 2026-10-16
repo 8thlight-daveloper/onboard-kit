@@ -5,3 +5,5 @@
 orgs/
 private/
 prototypes/
+
+.direnv/
