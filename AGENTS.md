@@ -30,3 +30,10 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 
 - Keep client names, URLs, repo names, people, credentials, and contract details out of the repo. See `CONTRIBUTING.md`.
 - No model runs during assembly. Output is deterministic.
+
+## Issues
+
+- Do not create, edit, or close an issue unless a person asks.
+- Use the template in `.github/ISSUE_TEMPLATE/` for the kind of work: decision, contract, build, or integration. `gh issue create --template` works only interactively. When not interactive, remove the front matter from the template file, fill in the sections, and pass the result with `--body-file -`. Add `--label`, `--parent`, and `--blocked-by` as needed.
+- Link to documents. Do not copy their text into an issue. Done criteria are checks a machine can run.
+
