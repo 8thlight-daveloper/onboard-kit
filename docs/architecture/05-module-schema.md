@@ -45,7 +45,7 @@ classDiagram
         timing
         run
         open
-        cwd
+        directory
         check
     }
     class Placeholder {
@@ -83,7 +83,7 @@ Steps are plain YAML with a vocabulary borrowed from CI files.
 | `owner`, `timing` | Who acts and when. A step inherits `timing` from its module |
 | `run` | Command as an argument list, no shell |
 | `open` | A URL or file to open |
-| `cwd` | Working directory for `run` |
+| `directory` | Directory to run `run` in |
 | `check` | Verification, either `run` (a command) or `ask` (a yes or no question) |
 
 A step with `run` and no `check` passes when the command exits with code 0. Steps are optional. The MVP renders them as a checklist. A later walkthrough runtime acts on them, under the trust rules in [#29](https://github.com/8thlight-daveloper/onboard-kit/issues/29).

@@ -127,11 +127,11 @@ sections:
           run: [test, -d, $repo_dir/.git]
       - id: install
         name: Install dependencies
-        cwd: $repo_dir
+        directory: $repo_dir
         run: $setup_command
       - id: run-tests
         name: Run the tests
-        cwd: $repo_dir
+        directory: $repo_dir
         run: $test_command
     enabled: true
     source:
