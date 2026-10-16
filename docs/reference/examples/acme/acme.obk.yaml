@@ -48,7 +48,6 @@ sections:
     appliesTo:
       teamState: [any]
       discipline: [any]
-    order: 10
     owner: $onboarding_owner_role
     timing: before-day-one
     verification: You can open the repository, the CI dashboard, and the work tracker.
@@ -89,19 +88,19 @@ sections:
         name: Source control
         owner: $source_control_grantor
         open: $access_request_url
-        check:
-          run: [git, ls-remote, $repo_url]
+        checks:
+          - run: [git, ls-remote, $repo_url]
       - id: ci-dashboard
         name: CI dashboard
         owner: $ci_grantor
         notes: Sign in as $account_name.
-        check:
-          ask: Can you open the CI dashboard?
+        checks:
+          - ask: Can you open the CI dashboard?
       - id: work-tracker
         name: Work tracker
         owner: $tracker_grantor
-        check:
-          ask: Can you open the work tracker?
+        checks:
+          - ask: Can you open the work tracker?
     source:
       template: access
       hash: example-not-computed
@@ -112,7 +111,6 @@ sections:
     appliesTo:
       teamState: [any]
       discipline: [software]
-    order: 20
     owner: newcomer
     timing: week-one
     verification: $test_command passes on a fresh clone.
@@ -140,8 +138,8 @@ sections:
       - id: clone
         name: Clone the repository
         run: [git, clone, $repo_url, $repo_dir]
-        check:
-          run: [test, -d, $repo_dir/.git]
+        checks:
+          - run: [test, -d, $repo_dir/.git]
       - id: install
         name: Install dependencies
         directory: $repo_dir
@@ -160,7 +158,6 @@ sections:
     appliesTo:
       teamState: [any]
       discipline: [design]
-    order: 25
     owner: newcomer
     timing: week-one
     verification: You can open the design system and the main design file.
@@ -182,13 +179,13 @@ sections:
       - id: design-system
         name: Open the design system
         open: $design_system_url
-        check:
-          ask: Can you open the design system?
+        checks:
+          - ask: Can you open the design system?
       - id: main-file
         name: Open the main design file
         open: $design_file_url
-        check:
-          ask: Can you open the main design file?
+        checks:
+          - ask: Can you open the main design file?
     source:
       template: review-design-system
       hash: example-not-computed

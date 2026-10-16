@@ -6,7 +6,6 @@ summary: Request the accounts and permissions you need, and record who grants ea
 appliesTo:
   teamState: [any]
   discipline: [any]
-order: 10
 owner: $onboarding_owner_role
 timing: before-day-one
 verification: You can open the repository, the CI dashboard, and the work tracker.
@@ -47,16 +46,16 @@ steps:
     name: Source control
     owner: $source_control_grantor
     open: $access_request_url
-    check:
-      run: [git, ls-remote, $repo_url]
+    checks:
+      - run: [git, ls-remote, $repo_url]
   - id: ci-dashboard
     name: CI dashboard
     owner: $ci_grantor
     notes: Sign in as $account_name.
-    check:
-      ask: Can you open the CI dashboard?
+    checks:
+      - ask: Can you open the CI dashboard?
   - id: work-tracker
     name: Work tracker
     owner: $tracker_grantor
-    check:
-      ask: Can you open the work tracker?
+    checks:
+      - ask: Can you open the work tracker?

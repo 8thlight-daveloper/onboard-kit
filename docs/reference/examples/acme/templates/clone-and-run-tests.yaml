@@ -6,7 +6,6 @@ summary: Get a working copy of the project and a passing test run on your machin
 appliesTo:
   teamState: [any]
   discipline: [software]
-order: 20
 owner: newcomer
 timing: week-one
 verification: $test_command passes on a fresh clone.
@@ -34,8 +33,8 @@ steps:
   - id: clone
     name: Clone the repository
     run: [git, clone, $repo_url, $repo_dir]
-    check:
-      run: [test, -d, $repo_dir/.git]
+    checks:
+      - run: [test, -d, $repo_dir/.git]
   - id: install
     name: Install dependencies
     directory: $repo_dir

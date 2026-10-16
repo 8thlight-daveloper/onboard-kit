@@ -1,0 +1,119 @@
+# Section template schema
+
+Status: proposed. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). A worked example lives in [examples/acme](../examples/acme/README.md).
+
+A section template, often shortened to template, is one YAML file at `templates/<id>.yaml`. A plan holds every standard template as a section, copied unchanged with one added field, `source`. So a template and a section have the same shape, and a template file is a section before it is in a plan. The domain model has one Section type. A template is a Section with no `source`, and the file's `schemaVersion` belongs to the loader and the migrator. Which sections are active is computed from the plan's answers whenever it is needed, and placeholders stay in place until the document is assembled. See [0030](../../decisions/0030-self-contained-plan-file.md).
+
+## Parts
+
+| Doc | Covers |
+| --- | --- |
+| This page | The section fields, selection, and the format rules |
+| [placeholders.md](placeholders.md) | The `$name` syntax, dollar signs, `unknown-yet`, fields, types, and phase |
+| [question-conditions.md](question-conditions.md) | `askIf`: when a question is asked |
+| [optional-sections.md](optional-sections.md) | The `enabled` toggle |
+| [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |
+| [steps.md](steps.md) | Steps, `checks`, and environment variables |
+| [reserved-names.md](reserved-names.md) | Names a template may not use |
+
+```mermaid
+classDiagram
+    class Template {
+        schemaVersion
+        id
+        title
+        type
+        summary
+        owner
+        timing
+        verification
+        body
+        appliesTo
+        after
+        placeholders
+        steps
+    }
+    class Section {
+        id
+        title
+        type
+        summary
+        owner
+        timing
+        verification
+        body
+        appliesTo
+        after
+        placeholders
+        steps
+        source
+    }
+    class Step {
+        id
+        name
+        notes
+        owner
+        timing
+        run
+        open
+        directory
+        env
+        checks
+    }
+    class Check {
+        run
+        ask
+        env
+    }
+    class Placeholder {
+        name
+        description
+        type
+        options
+        pattern
+        patternHint
+        required
+        default
+        phase
+        askIf
+    }
+
+    Template ..> Section : copied into a plan as
+    Section "1" --> "*" Placeholder : declares
+    Section "1" --> "*" Step : contains
+    Step "1" --> "*" Check : verified by
+```
+
+## Section fields
+
+| Field | Purpose |
+| --- | --- |
+| `id`, `title`, `type`, `summary` | The only required fields. Everything else is optional |
+| `appliesTo` | Axis values the section applies to, such as team states and disciplines. `any` matches every value |
+| `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
+| `after` | Ids of sections that must come before this one. See [ordering](ordering.md) |
+| `owner`, `verification`, `body` | Who acts, how to tell it worked, and Markdown prose |
+| `placeholders` | Values the section needs. Each becomes a question. See [placeholders](placeholders.md) |
+| `steps` | Optional steps. See [steps](steps.md) |
+| `source` | Plan only. The template id and a content hash recorded when the template was copied. See 0030 |
+| `schemaVersion` | Template files only. Plans carry one at the top |
+
+## Selection
+
+- A section is active when its `appliesTo` matches the plan's axis values and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on. See [optional sections](optional-sections.md).
+- Active sections sort by `timing`, then `after`, then `id`. See [ordering](ordering.md).
+- Core templates carry `any` for both axes. Variants narrow one axis.
+
+## Format rules
+
+- Prose fields, `body` and `notes`, hold Markdown in literal blocks, hard-wrapped.
+- One JSON Schema covers templates and plans, so editors can validate and complete them.
+- Templates decode strictly and reject unknown fields. Plans decode leniently and keep unknown fields, so a plan written by a newer tool survives an older one.
+- Everything beyond `id`, `title`, `type`, and `summary` is optional, so the schema can grow without breaking older files.
+- Booleans are lowercase `true` and `false` only. Unquoted `yes`, `no`, `on`, `off`, and similar are errors, and so are anchors and aliases. See the Format section of 0030.
+
+## Open questions
+
+- How does a variant override or extend a core template?
+- Does a `reviewedOn` date drive a staleness warning?
+- Do we borrow `if:` from CI files for per-platform commands?

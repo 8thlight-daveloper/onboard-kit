@@ -25,7 +25,8 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 - **`required` and `default`.** Placeholders can be required, or carry a default. `repo_dir` has the default `project`, and this plan overrides it. `outputStyle` has a default and no value.
 - **`phase: onboarding`.** `account_name` is answered by each newcomer, so the plan holds no value for it and planning does not ask it. The document shows it as `<account_name>`.
 - **`unknown-yet`** marks a value the consultant did not have yet. It satisfies a required question. The gap table comes from it.
-- **Steps are plain YAML.** `run` or `open` is the action. `check` holds `run` or `ask`. A step with `run` and no `check` passes when the command exits with code 0. Commands are argument lists, and no shell parses them.
+- **Steps are plain YAML.** `run` or `open` is the action. `checks` is a list, and each entry is a `run`, an `ask`, or an `env`. A step with `run` and no `checks` passes when the command exits with code 0. Commands are argument lists, and no shell parses them.
+- **Order comes from `timing`.** `access` is `before-day-one` and the other two are `week-one`, so they sort in that order, with ties broken by `id`. No numeric position is stored. See [ordering](../../section-template-schema/ordering.md).
 - **A step inherits `timing`** from its section, when assembling.
 - **`source`** records the template a section came from. The hashes here are placeholders, because the section hasher is not specified yet.
 - **Prose fields hold Markdown.** `body` and `notes` are literal blocks, hard-wrapped.

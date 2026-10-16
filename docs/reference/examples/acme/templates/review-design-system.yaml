@@ -6,7 +6,6 @@ summary: Find the design system and the main design file, and note what you cann
 appliesTo:
   teamState: [any]
   discipline: [design]
-order: 25
 owner: newcomer
 timing: week-one
 verification: You can open the design system and the main design file.
@@ -28,10 +27,10 @@ steps:
   - id: design-system
     name: Open the design system
     open: $design_system_url
-    check:
-      ask: Can you open the design system?
+    checks:
+      - ask: Can you open the design system?
   - id: main-file
     name: Open the main design file
     open: $design_file_url
-    check:
-      ask: Can you open the main design file?
+    checks:
+      - ask: Can you open the main design file?

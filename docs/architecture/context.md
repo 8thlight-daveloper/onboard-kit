@@ -7,7 +7,7 @@ Who and what touches onboard-kit. The tool is internal. The client receives only
 > [!NOTE]
 > **What is a template?**
 >
-> A template is one YAML file holding a single piece of onboarding content, such as the first week plan or the access checklist. It says when to include it, which placeholders it needs, and what steps it contains. Prose fields hold Markdown text. A new plan starts with every standard template as a section, and the walkthrough answers decide which sections are active. Templates are plain data, so people and agents can write and validate them without special tooling. See [section template schema](../reference/section-template-schema.md) and the [ACME example](../reference/examples/acme/README.md).
+> A template is one YAML file holding a single piece of onboarding content, such as the first week plan or the access checklist. It says when to include it, which placeholders it needs, and what steps it contains. Prose fields hold Markdown text. A new plan starts with every standard template as a section, and the walkthrough answers decide which sections are active. Templates are plain data, so people and agents can write and validate them without special tooling. See [section template schema](../reference/section-template-schema/README.md) and the [ACME example](../reference/examples/acme/README.md).
 
 ```mermaid
 flowchart LR

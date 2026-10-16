@@ -72,15 +72,15 @@ flowchart TB
 | Component | Does |
 | --- | --- |
 | Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
-| Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator |
-| Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, and condition references and cycles. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
+| Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
+| Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, and check shapes. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, broken links, and voice rules such as em dashes and banned filler words. Takes parsed templates, returns findings |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
 | Plan migrator | Returns a copy of an older plan in the current schema version |
 | Section loader | Reads template files and decodes them strictly |
-| Section selector | Finds the active sections of a plan from its answers, and orders them |
+| Section selector | Finds the active sections of a plan from its answers, and orders them by `timing`, then `after`, then `id` |
 | Section resolver | Fills a section's placeholders from the plan's values |
 | Section hasher | Computes the content hash recorded in a section's `source` |
 | Secrets check | Decides whether a value looks like a token |
@@ -140,7 +140,7 @@ Written out in 0020. In short:
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Reads files, prints findings, and exits non-zero on any finding |
+| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Builds the default plan from the template set and runs the plan validator, to cover checks across templates. Reads files, prints findings, and exits non-zero on any finding |
 
 ## Open questions
 
