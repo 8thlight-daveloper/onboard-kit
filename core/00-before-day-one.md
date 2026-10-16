@@ -22,6 +22,6 @@ Use `access-checklist.md`. Request everything on day minus five if you can. Appr
 
 ## Prepare your own plan
 
-- [ ] Draft the questions you want answered in week one (`templates/questions-to-ask.md`)
+- [ ] Draft the questions you want answered in week one
 - [ ] List the people you want to meet in the first two weeks
 - [ ] Block time on your calendar for reading and listening before you commit to work

@@ -1,6 +1,6 @@
 # How to build your onboarding doc
 
-You are joining an organization and want a doc that gets you, and the people after you, productive quickly. This guide turns the templates here into that doc.
+You are joining an organization and want a doc that gets you, and the people after you, productive quickly. This guide turns the core and variant files here into that doc.
 
 ## Who it is for
 
@@ -14,7 +14,7 @@ The doc has two readers. You use it now. The client keeps using it after the eng
 2. **Choose a discipline variant.**
    - `variants/discipline/software-dev.md`
    - `variants/discipline/design.md`
-3. **Start from `templates/org-onboarding-doc.md`.** Copy it outside this repo.
+3. **Start a blank doc outside this repo.** Put the owner and the last review date at the top. Add a heading for each part: welcome, your first week, who to meet, access, setup for your discipline, how we work, your first 30 and 90 days, terms we use, and where to get help.
 4. **Pull in the matching sections** from `core/` and your two variants. Delete what does not apply. Keep what does.
 5. **Fill every placeholder** in angle brackets. If you cannot fill one yet, write the question you need answered and who can answer it.
 6. **Ask the onboarding owner to review.** They know what is stale.

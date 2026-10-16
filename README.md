@@ -1,12 +1,12 @@
 # Onboarding plans
 
-Generic templates for consultants joining a new engagement. Copy them, fill in the specifics for the organization you are joining, and hand the result to the client so it outlives the engagement.
+Generic onboarding material for consultants joining a new engagement. Copy them, fill in the specifics for the organization you are joining, and hand the result to the client so it outlives the engagement.
 
 ## What is here
 
 | Folder | Purpose |
 | --- | --- |
-| `guides/` | How to turn these templates into an onboarding doc for one organization |
+| `guides/` | How to turn these files into an onboarding doc for one organization |
 | `core/` | Checklists and plans that apply to every engagement |
 | `variants/team-state/` | What changes when joining an established team versus being the first consultants |
 | `variants/discipline/` | What changes for software development versus design work |
