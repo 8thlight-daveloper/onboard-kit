@@ -31,7 +31,7 @@ Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks templates against the schema |
+| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Runs in CI on every change to templates |
 
 The deferral of non-interactive generation is replaced by `assemble`, as decided in 0010.
 
@@ -82,18 +82,20 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `section/selector` | `model` |
 | 1 | `section/resolver` | `model` |
 | 1 | `section/hasher` | `model` |
+| 1 | `section/validator` | `model` |
+| 1 | `template/linter` | `model` |
 | 1 | `secrets` | `model` |
 | 1 | `plan/migrator` | `model`, and its own frozen copies of old versions |
 | 2 | `question/finder` | `section/selector`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
 | 2 | `document/assembler` | `section/selector`, `section/resolver`, `model` |
-| 3 | `plan/validator` | `question/finder`, `secrets`, `model` |
+| 3 | `plan/validator` | `question/finder`, `section/validator`, `secrets`, `model` |
 | 4 | `plan/editor` | `question/finder`, `plan/validator`, `model` |
 | 5 | `tui` | `question/finder`, `plan/editor`, `document/assembler`, `model` |
 | 6 | `binary` | Wires the components together. Loads a plan through the migrator, and builds a new one with the loader and the plan instantiator |
 | n/a | `contracts/*` | `model`, and its own component, in its wiring test only |
 
-The document assembler uses the section selector, the section resolver, and the model, and never touches templates. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `section/loader` is used only by the entry point, to start a new plan or run an update. Only drivers and the entry point read or write files outside embedded templates, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
+The document assembler uses the section selector, the section resolver, and the model, and never touches templates. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `section/loader` is used only by the entry point and the `lint` command, to start a new plan, run an update, or check templates. Only drivers and the entry point read or write files outside embedded templates, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
 
 ### Architecture tests are rules as data
 

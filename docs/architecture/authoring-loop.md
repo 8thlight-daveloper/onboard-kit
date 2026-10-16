@@ -10,7 +10,7 @@ flowchart TB
     feedback["Feedback issue, with no client details"]
     draft["Agent drafts a template edit"]
     pr["Pull request"]
-    checks["Checks: schema validation, template linter, voice checks"]
+    checks["CI: onboard-kit lint, JSON Schema, default plan builds"]
     review["Human review"]
     merge["Merged template"]
     release["New template set in the next binary"]
@@ -39,13 +39,16 @@ flowchart TB
 
 ## What each check covers
 
-| Check | Catches |
-| --- | --- |
-| Template linter | Undeclared placeholders, missing required fields, unquoted `yes` or `no` and other format rules from 0030, client names, URLs, broken links |
-| Schema validation | Template files that do not match the JSON Schema |
-| Voice checks | Rules such as no em dashes and no banned filler words, run on prose fields |
+| Check | Catches | Runs |
+| --- | --- | --- |
+| Section validator | Undeclared or unused placeholders, defaults that do not fit, reserved names, bad condition references and cycles, missing required fields, format rules from 0030 | `onboard-kit lint` |
+| Template linter | Client names, URLs, email addresses, broken links, and voice rules such as no em dashes and no banned filler words, run on prose fields | `onboard-kit lint` |
+| Schema validation | Template files that do not match the JSON Schema | CI, and in editors |
+| Default plan build | A template set from which the plan instantiator cannot build a default plan | The acceptance suite on the real templates |
 
-Format and lint tools for Markdown apply to the repo's own docs. They do not reach prose inside template YAML, so voice checks for templates run in `onboard-kit lint`. Whether Vale can lint prose inside YAML is still to check.
+CI runs `onboard-kit lint` on every pull request that changes anything under `templates/`, and fails on any finding. Templates ship inside the binary, so a template that fails here must not reach a release.
+
+Format and lint tools for Markdown apply to the repo's own docs. They do not reach prose inside template YAML, so voice checks for templates run in the template linter. Whether Vale can lint prose inside YAML is still to check.
 
 ## Existing plans
 

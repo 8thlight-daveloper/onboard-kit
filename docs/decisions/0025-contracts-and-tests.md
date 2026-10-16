@@ -80,6 +80,7 @@ CI enforces:
 - Human approval on changes to contracts, acceptance tests, `architecture.yaml`, and the domain model.
 - Dependency check and architecture tests, run before every commit.
 - The full test suite.
+- `onboard-kit lint` on every change to templates.
 
 The dependency check tool is a stack choice, listed in [dependency check](../stack/dependency-check.md).
 

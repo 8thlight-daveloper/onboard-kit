@@ -12,6 +12,7 @@ flowchart TB
         tui["TUI walkthrough"]
         stdio["stdio command, for tests"]
         assemble_command["assemble command"]
+        lint_command["lint command"]
     end
 
     entry["Entry point, binary/"]
@@ -27,6 +28,8 @@ flowchart TB
         selector["Section selector"]
         resolver["Section resolver"]
         hasher["Section hasher"]
+        sectionvalidator["Section validator"]
+        linter["Template linter"]
         secrets["Secrets check"]
     end
 
@@ -40,9 +43,13 @@ flowchart TB
     stdio --> finder
     stdio --> editor
     assemble_command --> assembler
+    lint_command --> loader
+    lint_command --> sectionvalidator
+    lint_command --> linter
 
     finder --> selector
     validator --> finder
+    validator --> sectionvalidator
     validator --> secrets
     editor --> finder
     editor --> validator
@@ -65,7 +72,9 @@ flowchart TB
 | Component | Does |
 | --- | --- |
 | Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
-| Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check, and conditions (unknown references and cycles) |
+| Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator |
+| Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, and condition references and cycles. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
+| Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, broken links, and voice rules such as em dashes and banned filler words. Takes parsed templates, returns findings |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
@@ -90,9 +99,10 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `section/loader` | Reads template files |
 | `plan/migrator`, `plan/instantiator` | None. They return values |
 | `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
-| `section/selector`, `section/resolver`, `section/hasher`, `secrets` | None |
+| `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and write the document, only after a confirmed action or an explicit command |
+| `lint` command | Reads template files and the lint rules file, prints findings, and exits non-zero on any finding. Writes no files |
 | `binary` | Reads embedded templates, wires the components, writes only through the drivers |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
@@ -107,10 +117,11 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `section/selector` | | | | R | R | |
 | `section/resolver` | | | | R | R | |
 | `section/hasher` | | | | | R | |
+| `section/validator` | | | | | R | |
 | `document/assembler` | R | R | R | R | R | |
 | Update action, deferred | | W | | | W | W |
 
-A person editing a plan by hand can change anything, and the validator checks the result on load.
+A person editing a plan by hand can change anything, and the plan validator checks the result on load. The template linter takes templates and not plans, so it has no row in the plan access table.
 
 ## Dependency rules
 
@@ -129,7 +140,7 @@ Written out in 0020. In short:
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks templates against the schema |
+| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Reads files, prints findings, and exits non-zero on any finding |
 
 ## Open questions
 

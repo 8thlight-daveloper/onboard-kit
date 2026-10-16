@@ -171,7 +171,7 @@ Rules:
 - **Unanswered means false.** Every test except `isAnswered` is false when the question has no real value, before any negation. So `isNot` on an unanswered question is false, and the follow-up is not asked early.
 - **When false.** The question is not active. It keeps its stored value, is not asked, and does not block.
 - **Values fit the question.** Tested values must satisfy the type and options of the question they test.
-- **Validator problems.** A reference to an unknown question, and a cycle of conditions.
+- **Section validator problems.** A reference to an unknown question, and a cycle of conditions.
 - **Lint errors.** A condition that cannot do its job:
   - `isOneOf` or `isNotOneOf` with a single value. Use `is` or `isNot`.
   - A list test on a `boolean`. Use `is`, or `isAnswered` for both values.
@@ -206,7 +206,7 @@ placeholders:
 
 ## Reserved names
 
-Placeholder names match `[a-z][a-z0-9_]*`. Lint rejects the names below. The validator rejects them in a plan too.
+Placeholder names match `[a-z][a-z0-9_]*`. Lint rejects the names below. The section validator rejects them in a plan too.
 
 | Reserved | Why |
 | --- | --- |

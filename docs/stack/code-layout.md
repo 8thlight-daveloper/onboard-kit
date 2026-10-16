@@ -31,6 +31,9 @@ internal/
     resolver/                # component: section resolver
     hasher/                  # component: section hasher
     loader/                  # component: section loader
+    validator/               # component: section validator, checks one section's structure
+  template/
+    linter/                  # component: template linter, checks template text against a rules file
   secrets/                   # component: secrets check
   document/
     assembler/               # component: document assembler, plan to document in an output style
