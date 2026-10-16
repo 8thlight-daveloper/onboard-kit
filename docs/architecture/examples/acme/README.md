@@ -20,6 +20,7 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 - **Questions come from two places.** Plan-level `questions` hold the axis questions and the document details. Each active section's `placeholders` become questions of their own. Nothing is asked for the inactive design section, so its scope holds no values.
 - **Values are scoped.** `values.plan` holds the plan-level answers, and `values.sections.<id>` holds each section's own. `access` and `clone-and-run-tests` both declare `repo_url`, so they have two values. A user interface can ask the two once and apply the answer to both.
 - **Types and checks.** `repo_url` is a `string` with a `pattern` and a `patternHint`. A `boolean` or `choice` would accept only its options. `unknown-yet` is always allowed.
+- **A question condition.** In `access`, `source_control_grantor` has an `askIf` that asks it only once `repo_url` has a value. See the schema doc for the tests a condition can use.
 - **`required` and `default`.** Placeholders can be required, or carry a default. `repo_dir` has the default `project`, and this plan overrides it. `outputStyle` has a default and no value.
 - **`phase: onboarding`.** `account_name` is answered by each newcomer, so the plan holds no value for it and planning does not ask it. The document shows it as `<account_name>`.
 - **`unknown-yet`** marks a value the consultant did not have yet. It satisfies a required question. The gap table comes from it.

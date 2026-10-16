@@ -68,7 +68,7 @@ sections:
 A section has the same shape as a module, with an added `source`. A module file is a section before it is in a plan. A plan holds all of them, with their selection fields (`appliesTo`, `order`) kept and their placeholders unresolved.
 
 - **Active sections are computed.** A section is active when its `appliesTo` matches the axis values and it is enabled. The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
-- **Questions are computed too.** The questions asked are the plan-level questions plus every placeholder of every active section. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
+- **Questions are computed too.** The questions asked are the plan-level questions plus every placeholder of every active section whose `askIf` condition holds, if it has one. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
 - **Placeholders fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original modules.
 - **Inactive sections have no effect.** A hand edit to an inactive section does nothing until team state or discipline makes it active.
 
@@ -190,6 +190,5 @@ The secrets check runs whenever a value is submitted and whenever a plan is vali
 
 ## Open questions
 
-- How is the condition for asking a question written? Same place.
 - How does the update action present a conflict, and what does it do by default?
 - Where does per-person progress live later? I lean toward a separate file per person, so a shared plan does not collect merge conflicts. Deferred beyond the MVP.

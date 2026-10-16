@@ -67,7 +67,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-A question can carry a condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block.
+- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions, and the validator reports unknown references and cycles. The syntax is in [05-module-schema](../architecture/05-module-schema.md#question-conditions).
 
 Four drivers share these functions:
 
@@ -118,7 +118,7 @@ The finder owns what is asked, the validator owns what is acceptable, and the ed
 
 
 - **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each module, including engagement-specific modules. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
-- **Conditions.** How a condition is written belongs to the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
+- **Conditions.** The finder evaluates them, and the validator checks them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
 - **Unknown values.** The value `unknown-yet` is an accepted answer. It satisfies a required question and becomes a gap when assembling.
 

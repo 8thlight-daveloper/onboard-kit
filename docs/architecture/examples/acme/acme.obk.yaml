@@ -67,6 +67,11 @@ sections:
       - name: source_control_grantor
         description: Who grants source control access
         required: true
+        askIf:
+          all:
+            - question: repo_url
+              answer:
+                isAnswered: true
       - name: ci_grantor
         description: Who grants CI dashboard access
         required: true
