@@ -46,6 +46,7 @@ These are about the relation between sections, so the plan validator reports the
 | Timing conflict | A is after B, but A's timing comes earlier than B's. The report names both sections and their timings |
 | Question condition cycle | A question's condition depends on an answer that depends back on it, including across sections |
 | Unknown question reference | A condition names a question that no section declares |
+| `includeIf` on a section question | An `includeIf` names a question that is not plan-level |
 
 ## Question order in the walkthrough
 

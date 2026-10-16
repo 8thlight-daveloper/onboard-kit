@@ -45,9 +45,6 @@ sections:
     title: Access
     type: checklist
     summary: Request the accounts and permissions you need, and record who grants each.
-    appliesTo:
-      teamState: [any]
-      discipline: [any]
     owner: $onboarding_owner_role
     timing: before-day-one
     verification: You can open the repository, the CI dashboard, and the work tracker.
@@ -108,9 +105,11 @@ sections:
     title: Clone the project and run the tests
     type: setup
     summary: Get a working copy of the project and a passing test run on your machine.
-    appliesTo:
-      teamState: [any]
-      discipline: [software]
+    includeIf:
+      all:
+        - question: plan.discipline
+          answer:
+            is: software
     owner: newcomer
     timing: week-one
     verification: $test_command passes on a fresh clone.
@@ -155,9 +154,11 @@ sections:
     title: Review the design system
     type: checklist
     summary: Find the design system and the main design file, and note what you cannot open.
-    appliesTo:
-      teamState: [any]
-      discipline: [design]
+    includeIf:
+      all:
+        - question: plan.discipline
+          answer:
+            is: design
     owner: newcomer
     timing: week-one
     verification: You can open the design system and the main design file.

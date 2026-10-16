@@ -69,7 +69,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 - **Order.** Plan-level questions come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/question-conditions.md).
+- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
 
 Four drivers share these functions:
 
@@ -166,7 +166,7 @@ The acceptance runner reads scenarios, which are data and not code, and drives t
 
 ### Boundaries
 
-- `question/finder` imports the section selector and the domain model. `plan/validator` imports the finder, the section validator, the secrets check, and the domain model. `plan/editor` imports the finder, the validator, and the domain model. None imports templates or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
+- `question/finder` imports the section selector, the condition evaluator, and the domain model. `plan/validator` imports the finder, the section validator, the secrets check, and the domain model. `plan/editor` imports the finder, the validator, and the domain model. None imports templates or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
 - Drivers import these components. The TUI imports nothing else from core except the document assembler. Drivers call the document assembler with the plan the editor produced.
 - All three are regenerable components. The editor's contract fixtures are plan before, answer, and plan after. The finder's are a plan and its expected questions. The validator's are a plan and its expected problems.
 

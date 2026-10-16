@@ -24,6 +24,8 @@ internal/
     editor/                  # component: plan editor, see 0010
     validator/               # component: plan validator, see 0010
     migrator/                # component: plan migrator, see 0030
+  condition/
+    evaluator/               # component: condition evaluator, askIf and includeIf
   question/
     finder/                  # component: question finder, see 0010
   section/

@@ -10,7 +10,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 | --- | --- |
 | This page | The section fields, selection, and the format rules |
 | [placeholders.md](placeholders.md) | The `$name` syntax, dollar signs, `unknown-yet`, fields, types, and phase |
-| [question-conditions.md](question-conditions.md) | `askIf`: when a question is asked |
+| [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
 | [optional-sections.md](optional-sections.md) | The `enabled` toggle |
 | [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |
 | [steps.md](steps.md) | Steps, `checks`, and environment variables |
@@ -28,7 +28,7 @@ classDiagram
         timing
         verification
         body
-        appliesTo
+        includeIf
         after
         placeholders
         steps
@@ -42,7 +42,7 @@ classDiagram
         timing
         verification
         body
-        appliesTo
+        includeIf
         after
         placeholders
         steps
@@ -89,7 +89,7 @@ classDiagram
 | Field | Purpose |
 | --- | --- |
 | `id`, `title`, `type`, `summary` | The only required fields. Everything else is optional |
-| `appliesTo` | Axis values the section applies to, such as team states and disciplines. `any` matches every value |
+| `includeIf` | A [condition](conditions.md) on plan-level answers, such as the discipline. No `includeIf` means always included |
 | `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
 | `after` | Ids of sections that must come before this one. See [ordering](ordering.md) |
 | `owner`, `verification`, `body` | Who acts, how to tell it worked, and Markdown prose |
@@ -100,9 +100,9 @@ classDiagram
 
 ## Selection
 
-- A section is active when its `appliesTo` matches the plan's axis values and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on. See [optional sections](optional-sections.md).
+- A section is active when its `includeIf` condition holds, or it has none, and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on. See [optional sections](optional-sections.md).
 - Active sections sort by `timing`, then `after`, then `id`. See [ordering](ordering.md).
-- Core templates carry `any` for both axes. Variants narrow one axis.
+- Core templates have no `includeIf`. A variant has one that narrows by an axis, and never overrides a core template. See [conditions](conditions.md#section-conditions).
 
 ## Format rules
 
@@ -114,6 +114,5 @@ classDiagram
 
 ## Open questions
 
-- How does a variant override or extend a core template?
 - Does a `reviewedOn` date drive a staleness warning?
 - Do we borrow `if:` from CI files for per-platform commands?

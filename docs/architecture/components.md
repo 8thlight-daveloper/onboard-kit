@@ -26,6 +26,7 @@ flowchart TB
         migrator["Plan migrator"]
         loader["Section loader"]
         selector["Section selector"]
+        evaluator["Condition evaluator"]
         resolver["Section resolver"]
         hasher["Section hasher"]
         sectionvalidator["Section validator"]
@@ -48,6 +49,8 @@ flowchart TB
     lint_command --> linter
 
     finder --> selector
+    finder --> evaluator
+    selector --> evaluator
     validator --> finder
     validator --> sectionvalidator
     validator --> secrets
@@ -80,7 +83,8 @@ flowchart TB
 | Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
 | Plan migrator | Returns a copy of an older plan in the current schema version |
 | Section loader | Reads template files and decodes them strictly |
-| Section selector | Finds the active sections of a plan from its answers, and orders them by `timing`, then `after`, then `id` |
+| Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by `timing`, then `after`, then `id` |
+| Condition evaluator | Decides whether a condition holds, given the real values of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's placeholders from the plan's values |
 | Section hasher | Computes the content hash recorded in a section's `source` |
 | Secrets check | Decides whether a value looks like a token |
@@ -99,7 +103,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `section/loader` | Reads template files |
 | `plan/migrator`, `plan/instantiator` | None. They return values |
 | `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
-| `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
+| `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and write the document, only after a confirmed action or an explicit command |
 | `lint` command | Reads template files and the lint rules file, prints findings, and exits non-zero on any finding. Writes no files |

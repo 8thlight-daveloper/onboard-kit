@@ -3,9 +3,11 @@ id: clone-and-run-tests
 title: Clone the project and run the tests
 type: setup
 summary: Get a working copy of the project and a passing test run on your machine.
-appliesTo:
-  teamState: [any]
-  discipline: [software]
+includeIf:
+  all:
+    - question: plan.discipline
+      answer:
+        is: software
 owner: newcomer
 timing: week-one
 verification: $test_command passes on a fresh clone.

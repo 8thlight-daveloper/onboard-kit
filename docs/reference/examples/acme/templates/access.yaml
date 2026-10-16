@@ -3,9 +3,6 @@ id: access
 title: Access
 type: checklist
 summary: Request the accounts and permissions you need, and record who grants each.
-appliesTo:
-  teamState: [any]
-  discipline: [any]
 owner: $onboarding_owner_role
 timing: before-day-one
 verification: You can open the repository, the CI dashboard, and the work tracker.

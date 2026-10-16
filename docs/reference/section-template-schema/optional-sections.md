@@ -12,7 +12,7 @@ placeholders:
     default: true
 ```
 
-- **A section with no `enabled` placeholder is always on** when its `appliesTo` matches. Nobody is asked.
+- **A section with no `enabled` placeholder is always on** when its `includeIf` condition holds, or it has none. Nobody is asked.
 - **The question** has the id `<section>.enabled`. The finder returns it before that section's other questions, in document order, see [ordering](ordering.md). The answer is stored in `values.sections.<id>.enabled`.
 - **When the answer is false**, the section's other questions are inactive. They keep their stored values, are not asked, and do not block.
 - **No answer.** The `default` applies. With neither an answer nor a default, the section is off. A `required` toggle with no answer is a blocker.

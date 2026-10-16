@@ -38,7 +38,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `required` | Whether the question must have a value. Defaults to false |
 | `default` | The value used when none is given. It must satisfy the type, options, and pattern |
 | `phase` | `planning` (the default) or `onboarding`. See below |
-| `askIf` | A [question condition](question-conditions.md): ask this question only when other answers match |
+| `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
 
 ## Types
 

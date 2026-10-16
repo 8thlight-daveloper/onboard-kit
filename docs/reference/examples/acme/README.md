@@ -14,7 +14,7 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 
 ## What the files show
 
-- **A plan holds every template.** `acme.obk.yaml` has all three templates as sections, including the design one. Only the sections whose `appliesTo` matches the answers appear in `acme.md`.
+- **A plan holds every template.** `acme.obk.yaml` has all three templates as sections, including the design one. Only the sections whose `includeIf` condition holds, or that have none, appear in `acme.md`.
 - **A template and a section have the same shape.** A section is a template copied into the plan with one added field, `source`. See [0030](../../../decisions/0030-self-contained-plan-file.md).
 - **Placeholders stay in the plan.** Sections keep `$name`, and `values` holds the answers. Values fill placeholders when the document is assembled. A placeholder of `type: command` holds an argument list. It expands as a list in `run` and joins with spaces in prose.
 - **Questions come from two places.** Plan-level `questions` hold the axis questions and the document details. Each active section's `placeholders` become questions of their own. Nothing is asked for the inactive design section, so its scope holds no values.
