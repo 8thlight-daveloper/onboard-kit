@@ -7,7 +7,7 @@ Every choice must satisfy [0005](../decisions/0005-self-contained-install.md): o
 ## Topics
 
 | File | Covers |
-| --- | --- |
+| -- | -- |
 | [language.md](language.md) | Language and terminal toolkit |
 | [testing.md](testing.md) | Test runner and its settings, the acceptance runner, the mutation tool |
 | [dependency-check.md](dependency-check.md) | The extractor that checks dependency rules, and the packages core components may not use |

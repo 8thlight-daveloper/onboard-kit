@@ -7,7 +7,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 ## Parts
 
 | Doc | Covers |
-| --- | --- |
+| -- | -- |
 | This page | The section fields, selection, and the format rules |
 | [placeholders.md](placeholders.md) | The `$name` syntax, dollar signs, `unknown-yet`, fields, types, and phase |
 | [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
@@ -87,7 +87,7 @@ classDiagram
 ## Section fields
 
 | Field | Purpose |
-| --- | --- |
+| -- | -- |
 | `id`, `title`, `type`, `summary` | The only required fields. Everything else is optional |
 | `includeIf` | A [condition](conditions.md) on plan-level answers, such as the discipline. No `includeIf` means always included |
 | `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
@@ -115,7 +115,7 @@ classDiagram
 ## Decided against, for now
 
 | Idea | Decision | Why |
-| --- | --- | --- |
+| -- | -- | -- |
 | A variant that overrides or extends a core template | No. A variant is a template with its own `includeIf`. See [conditions](conditions.md#section-conditions) | Plans hold every template with no merging. Twins with opposite conditions cover the need |
 | A `reviewedOn` date that drives a staleness warning | No | The value is unclear, and nothing needs it. Revisit if stale content becomes a real problem |
 | An `if:` on steps for per-platform commands | No | Almost every plan targets one operating system. Where a plan needs two, write twin steps, or twin templates with an `includeIf`. A step condition would reuse the condition syntax |

@@ -15,7 +15,7 @@ The folder layout and file names that carry this out in the current language are
 ### Two kinds of tests, and what they judge
 
 | Kind | Level | Lives in | Judges |
-| --- | --- | --- | --- |
+| -- | -- | -- | -- |
 | Contract test | One component boundary: fixture in, expected out | `contracts/<noun>/<role>/` | A component and any rebuild of it |
 | Acceptance test | Whole binary: a plan or a scripted exchange in, observable results out | `acceptance/` | The assembled system |
 

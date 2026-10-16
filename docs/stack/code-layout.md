@@ -5,7 +5,7 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 ## Mapping
 
 | Neutral term | In Go |
-| --- | --- |
+| -- | -- |
 | Component | One package under `internal/<noun>/<role>`. The directory carries the noun and the package carries the role |
 | Domain model | `internal/model`. Go's `internal/` rule keeps it from being imported outside the Go module |
 | Entry point | `binary/`, holding a thin `main` |
@@ -16,7 +16,7 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 
 ## Folders
 
-```
+```text
 internal/
   model/                     # permanent: domain model (Section, Step, Placeholder, Question, Plan), imports nothing from the project
   plan/

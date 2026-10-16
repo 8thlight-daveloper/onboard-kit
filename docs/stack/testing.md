@@ -5,10 +5,10 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 ## Current
 
 | Choice | Current | Why | Since | Replace when |
-| --- | --- | --- | --- | --- |
-| Test runner | `go test -race`, parallel by default | See [0025](../decisions/0025-contracts-and-tests.md). Tests call `t.Parallel()` and use `t.TempDir()` for files. | 2026-10-15 | |
+| -- | -- | -- | -- | -- |
+| Test runner | `go test -race`, parallel by default | See [0025](../decisions/0025-contracts-and-tests.md). Tests call `t.Parallel()` and use `t.TempDir()` for files. | 2026-10-15 |  |
 | Acceptance runner | A Go program that reads the scenarios and drives the binary | It must stay replaceable. Scenarios are data, and the runner is the only language-specific part. | 2026-10-15 | The implementation language changes, or a neutral runner is worth having. |
-| Mutation tool | To decide | Needed for the contract-strength check in 0025. | | |
+| Mutation tool | To decide | Needed for the contract-strength check in 0025. |  |  |
 
 ## Settings
 
@@ -19,11 +19,9 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 ## Retired
 
 | Choice | Was | Since | Until | Replaced by | Why it changed |
-| --- | --- | --- | --- | --- | --- |
-| | | | | | |
+| -- | -- | -- | -- | -- | -- |
 
 ## Considered and not chosen
 
 | Choice | Option | Status | Why | Revisit when |
-| --- | --- | --- | --- | --- |
-| | | | | |
+| -- | -- | -- | -- | -- |

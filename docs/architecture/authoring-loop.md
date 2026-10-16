@@ -40,7 +40,7 @@ flowchart TB
 ## What each check covers
 
 | Check | Catches | Runs |
-| --- | --- | --- |
+| -- | -- | -- |
 | Section validator | Undeclared or unused placeholders, defaults that do not fit, reserved names, bad condition references and cycles, missing required fields, format rules from 0030 | `onboard-kit lint` |
 | Template linter | Client names, URLs, email addresses, broken links, and voice rules such as no em dashes and no banned filler words, run on prose fields | `onboard-kit lint` |
 | Schema validation | Template files that do not match the JSON Schema | CI, and in editors |

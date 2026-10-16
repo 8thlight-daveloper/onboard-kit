@@ -18,7 +18,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 ## Documents
 
 | Doc | Shows |
-| --- | --- |
+| -- | -- |
 | [context.md](context.md) | Who and what touches the system |
 | [components.md](components.md) | The components and the direction of their dependencies |
 | [data-flow.md](data-flow.md) | How templates and answers become a document |
@@ -35,7 +35,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 ## Decisions
 
 | ADR | Decides | Status |
-| --- | --- | --- |
+| -- | -- | -- |
 | [0005](../decisions/0005-self-contained-install.md) | One self-contained file, no secondary installs | Accepted |
 | [0010](../decisions/0010-plan-editor.md) | Question finder, plan validator, and plan editor as plain functions over a plan, and the `assemble` and `stdio` commands | Accepted |
 | [0015](../decisions/0015-functional-core-and-imperative-shell.md) | Pure functions over immutable values in the core, input and output only in the shell | Accepted |
@@ -48,7 +48,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 Each open decision has its own issue.
 
 | Decision | Issue |
-| --- | --- |
+| -- | -- |
 | Hosting and distribution | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
 | Dependency check extractor, the banned packages, and the mutation tool | [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33) |
 | Update action conflict handling, deferred past the MVP | [#32](https://github.com/8thlight-daveloper/onboard-kit/issues/32) |

@@ -63,7 +63,7 @@ An open source CLI that reads a versioned onboarding plan, generates it from que
 ## How onboard-kit differs
 
 | Aspect | Existing options | onboard-kit |
-| --- | --- | --- |
+| -- | -- | -- |
 | Generation | Copier renders templates from answers, with no onboarding content | Templates and answers produce an onboarding plan |
 | Execution | Runme and Atuin run commands from documents | A walker runs steps only after confirmation, with a trust model |
 | Structure | Hubs hold pages and checklists | Steps carry owner, timing, action, and check |
@@ -73,7 +73,7 @@ An open source CLI that reads a versioned onboarding plan, generates it from que
 ## Borrow, adopt, skip
 
 | Item | Decision |
-| --- | --- |
+| -- | -- |
 | Copier's answers file and update flow | Study before settling the regeneration rule |
 | Runme compatibility through named fenced code blocks | Check whether it comes for free |
 | Microsoft's marker for template content that needs review | Matches our "unknown yet" gap markers |

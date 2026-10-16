@@ -5,7 +5,7 @@ Part of the [section template schema](README.md).
 Steps are plain YAML with a vocabulary borrowed from CI files. They are optional. The MVP renders them as a checklist. A later walkthrough runtime acts on them, under the trust rules in [#29](https://github.com/8thlight-daveloper/onboard-kit/issues/29).
 
 | Field | Meaning |
-| --- | --- |
+| -- | -- |
 | `id`, `name` | Stable identifier and display name |
 | `notes` | Optional Markdown prose |
 | `owner`, `timing` | Who acts and when. A step inherits `timing` from its section, see [ordering](ordering.md) |
@@ -22,7 +22,7 @@ A step with `run` and no `checks` passes when the command exits with code 0.
 A check says how to tell that a step worked. `checks` is a list. The step passes when every check passes. Each check has exactly one of these keys:
 
 | Key | Value | Passes when |
-| --- | --- | --- |
+| -- | -- | -- |
 | `run` | A command as an argument list, no shell | The command exits with code 0 |
 | `ask` | A yes or no question | The person answers yes |
 | `env` | The name of an environment variable | The variable is set and not empty. The value is never read into the plan or shown |

@@ -4,90 +4,90 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 
 ## The content
 
-| Term           | Meaning                                                                                                                                                                                                                                                             |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Term | Meaning |
+| -- | -- |
 | Section template | The authored form of a section: one YAML file, written once. It has the same shape as a section, without `source`. It says when it applies, which questions it needs answered, and what text it produces. A new plan copies every standard section template in as a section. Often shortened to template. |
-| Placeholder    | A named blank in a template, written `$name`, filled from an answer.                                                                                                                                                                                                  |
-| Answers        | What the consultant says in response to the questions: team state, discipline, placeholder values.                                                                                                                                                                  |
-| Section        | The content unit in a plan. It has the same shape as a template, plus a record of which template it came from. Its placeholders stay until the document is assembled. A plan holds every standard template as a section, and only the active ones appear in the document. |
-| Plan           | The finished, standalone description of one organization's onboarding: sections, answers, question definitions, and a record of where it came from. It is saved as `<name>.obk.yaml` and carries everything needed to reopen it without the templates.                |
-| Output style   | The target format of the document, such as Markdown for GitHub.                                                                                                                                                                                                     |
-| Gap            | A value not known yet. It shows in the document as a visible to-do with an owner and timing.                                                                                                                                                                        |
-| Provenance     | A record of where a plan came from: the template set version and when it was made.                                                                                                                                                                                    |
-| Default plan   | The plan a new walkthrough starts from: the axis questions and every standard template as a section, with no values.                                                                                                                                                  |
-| Active section | A section whose `includeIf` condition holds, or that has none, and whose `enabled` answer, or default, is true if it has one. Only active sections appear in the document.                                                                                                                                           |
-| Axis questions | The questions that decide which sections are active: team state and discipline. They are data in the default plan, like every other question.                                                                                                                       |
+| Placeholder | A named blank in a template, written `$name`, filled from an answer. |
+| Answers | What the consultant says in response to the questions: team state, discipline, placeholder values. |
+| Section | The content unit in a plan. It has the same shape as a template, plus a record of which template it came from. Its placeholders stay until the document is assembled. A plan holds every standard template as a section, and only the active ones appear in the document. |
+| Plan | The finished, standalone description of one organization's onboarding: sections, answers, question definitions, and a record of where it came from. It is saved as `<name>.obk.yaml` and carries everything needed to reopen it without the templates. |
+| Output style | The target format of the document, such as Markdown for GitHub. |
+| Gap | A value not known yet. It shows in the document as a visible to-do with an owner and timing. |
+| Provenance | A record of where a plan came from: the template set version and when it was made. |
+| Default plan | The plan a new walkthrough starts from: the axis questions and every standard template as a section, with no values. |
+| Active section | A section whose `includeIf` condition holds, or that has none, and whose `enabled` answer, or default, is true if it has one. Only active sections appear in the document. |
+| Axis questions | The questions that decide which sections are active: team state and discipline. They are data in the default plan, like every other question. |
 
 ## The tool
 
-| Term            | Meaning                                                                                                                                                                                                                                                                     |
-|-----------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Tool            | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it.                                                                                                                                                                  |
-| Scope           | Where a value attaches: the plan, or one section. A question's id is `<scope>.<name>`, such as `access.repo_url`.                                                                                                                                                           |
-| Phase           | Which process asks a question: `planning`, while the consultant builds the plan, or `onboarding`, while a newcomer works through it. Planning skips onboarding questions.                                                                                                   |
-| Question group  | Questions with the same name, type, and options, which a user interface can ask once and apply to every member.                                                                                                                                                             |
+| Term | Meaning |
+| -- | -- |
+| Tool | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it. |
+| Scope | Where a value attaches: the plan, or one section. A question's id is `<scope>.<name>`, such as `access.repo_url`. |
+| Phase | Which process asks a question: `planning`, while the consultant builds the plan, or `onboarding`, while a newcomer works through it. Planning skips onboarding questions. |
+| Question group | Questions with the same name, type, and options, which a user interface can ask once and apply to every member. |
 | Question condition | An optional `askIf` on a placeholder. The question is asked only when other answers match. When it is false the question is skipped, keeps any stored value, and does not block. See [conditions](reference/section-template-schema/conditions.md). |
 | Section condition | An optional `includeIf` on a section or template, with the same syntax as `askIf`. The section is in the plan's document only when it holds, and it may name only plan-level questions. See [conditions](reference/section-template-schema/conditions.md#section-conditions). |
 | Optional section | A section that declares an `enabled` placeholder, so a person can switch it off. A section without one is always on when it applies. |
 | Reserved name | A placeholder name or template id that lint rejects, because it has a special meaning or YAML reads it as another type. See [section template schema](reference/section-template-schema/reserved-names.md). |
-| Suggestion      | A value offered for a question: the distinct declared defaults in its group, and values already given for that name.                                                                                                                                                        |
-| Plan editor     | Component that returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md).                                        |
-| Question finder | Component that finds the questions a plan asks, with their current values, and which required ones still have no value. It only reads.                                                                                                                                      |
-| Plan validator  | Component that checks whether a plan's values are acceptable: type, options, and the secrets check, and the relations between sections such as dependency cycles and timing conflicts.                                                                                                                                                                         |
-| Walkthrough     | The interactive planning run where the tool asks questions and builds a plan. The later onboarding run, for newcomers, is a separate activity.                                                                                                                              |
-| TUI             | Terminal user interface. The screen-based walkthrough in a terminal.                                                                                                                                                                                                        |
-| Driver          | Anything that operates the plan components: the TUI, a headless command, or a test.                                                                                                                                                                                         |
-| Headless        | Running without a person or a screen. A command reads input and writes output.                                                                                                                                                                                              |
-| Assemble        | The step that turns a plan into a document in an output style. It is deterministic. No model runs.                                                               The assembled document is transitional. The intended end state is the plan file and the onboarding helper. |
+| Suggestion | A value offered for a question: the distinct declared defaults in its group, and values already given for that name. |
+| Plan editor | Component that returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md). |
+| Question finder | Component that finds the questions a plan asks, with their current values, and which required ones still have no value. It only reads. |
+| Plan validator | Component that checks whether a plan's values are acceptable: type, options, and the secrets check, and the relations between sections such as dependency cycles and timing conflicts. |
+| Walkthrough | The interactive planning run where the tool asks questions and builds a plan. The later onboarding run, for newcomers, is a separate activity. |
+| TUI | Terminal user interface. The screen-based walkthrough in a terminal. |
+| Driver | Anything that operates the plan components: the TUI, a headless command, or a test. |
+| Headless | Running without a person or a screen. A command reads input and writes output. |
+| Assemble | The step that turns a plan into a document in an output style. It is deterministic. No model runs. The assembled document is transitional. The intended end state is the plan file and the onboarding helper. |
 
 ## The structure
 
-| Term               | Meaning                                                                                                                                                                                                                                                                                             |
-|--------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Component          | One part of the tool with one responsibility: it takes one kind of input and produces one kind of output, such as the section selector. It is a part of the tool, not of a plan. Each component lives in its own folder and can be deleted and rebuilt.                                              |
-| Section selector   | Component that finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by timing and dependencies.                                  |
+| Term | Meaning |
+| -- | -- |
+| Component | One part of the tool with one responsibility: it takes one kind of input and produces one kind of output, such as the section selector. It is a part of the tool, not of a plan. Each component lives in its own folder and can be deleted and rebuilt. |
+| Section selector | Component that finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by timing and dependencies. |
 | Condition evaluator | Component that decides whether a condition holds, given the real values of the questions it names. Used for `askIf` and `includeIf`. |
-| Plan instantiator  | Component that builds the default plan from the templates: every template copied in as a section, with the axis questions.                                                                                                                                                                              |
-| Section validator  | Component that checks one section's own structure: placeholders, defaults, reserved names, the `$` rule, and check shapes. Used by the plan validator and by `onboard-kit lint`. |
-| Template linter    | Component that checks template text against a rules file: client names, URLs, broken links, and voice rules. Run by `onboard-kit lint`, and in CI on every change to templates. |
-| Document assembler | Component that turns a plan into a document in an output style. It reads only the plan.                                                                                                                                                                                                             |
-| Section resolver   | Component that fills the placeholders in a section from the plan's values.                                                                                                                                                                                                                          |
-| Section hasher     | Component that computes the content hash of a section.                                                                                                                                                                                                                                              |
-| Plan migrator      | Component that brings a plan of an older schema version up to the current one.                                                                                                                                                                                                                      |
-| Domain model       | The definitions of the data that several components pass to each other, such as Section and Plan. They live in one folder, `model`, and change slowly.                                                                                                                                     |
-| Boundary           | The edge of a component: what it accepts, what it returns, and what it hides. A component's contract describes its boundary.                                                                                                                                                                        |
-| Functional core    | Every component except the drivers and the entry point. Its functions are pure and never alter an argument. See [0015](decisions/0015-functional-core-and-imperative-shell.md).                                                                                                                     |
-| Imperative shell   | The drivers and the entry point. They do input and output, hold the current plan, and call the core.                                                                                                                                                                                                |
-| Pure function      | A function whose result depends only on its arguments, and that changes nothing outside itself.                                                                                                                                                                                                     |
-| Immutable value    | A value that is never altered after it is made. A change produces a new value.                                                                                                                                                                                                                      |
-| Side effect        | Something a component does outside the plan, such as reading or writing a file. Only drivers and the entry point have them.                                                                                                                                                                         |
-| Plan access        | What a component does with a plan it was given: it reads fields, returns a changed copy that differs only in declared fields, or creates a plan from other inputs. No component alters the plan it was given.                                                                                       |
-| Dependency         | One component using another. The document assembler using the domain model is a dependency.                                                                                                                                                                                                         |
-| Dependency rules   | The rules that limit which dependencies are allowed, so boundaries hold. Components have a place in a dependency order and may depend only on components earlier in it. The plan instantiator may depend on the section selector, and the section selector may never depend on the plan instantiator. |
-| Dependency check   | An automatic check that fails the build when a component has a dependency the rules do not allow. It works by reading the imports in the code.                                                                                                                                                      |
-| Rate of change     | How fast something changes, and what a change takes. Also known as pace layers, a term from Stewart Brand. The domain model changes slowly and needs an ADR. A component's implementation changes freely. A dependency points from the faster thing to the slower thing.                            |
+| Plan instantiator | Component that builds the default plan from the templates: every template copied in as a section, with the axis questions. |
+| Section validator | Component that checks one section's own structure: placeholders, defaults, reserved names, the `$` rule, and check shapes. Used by the plan validator and by `onboard-kit lint`. |
+| Template linter | Component that checks template text against a rules file: client names, URLs, broken links, and voice rules. Run by `onboard-kit lint`, and in CI on every change to templates. |
+| Document assembler | Component that turns a plan into a document in an output style. It reads only the plan. |
+| Section resolver | Component that fills the placeholders in a section from the plan's values. |
+| Section hasher | Component that computes the content hash of a section. |
+| Plan migrator | Component that brings a plan of an older schema version up to the current one. |
+| Domain model | The definitions of the data that several components pass to each other, such as Section and Plan. They live in one folder, `model`, and change slowly. |
+| Boundary | The edge of a component: what it accepts, what it returns, and what it hides. A component's contract describes its boundary. |
+| Functional core | Every component except the drivers and the entry point. Its functions are pure and never alter an argument. See [0015](decisions/0015-functional-core-and-imperative-shell.md). |
+| Imperative shell | The drivers and the entry point. They do input and output, hold the current plan, and call the core. |
+| Pure function | A function whose result depends only on its arguments, and that changes nothing outside itself. |
+| Immutable value | A value that is never altered after it is made. A change produces a new value. |
+| Side effect | Something a component does outside the plan, such as reading or writing a file. Only drivers and the entry point have them. |
+| Plan access | What a component does with a plan it was given: it reads fields, returns a changed copy that differs only in declared fields, or creates a plan from other inputs. No component alters the plan it was given. |
+| Dependency | One component using another. The document assembler using the domain model is a dependency. |
+| Dependency rules | The rules that limit which dependencies are allowed, so boundaries hold. Components have a place in a dependency order and may depend only on components earlier in it. The plan instantiator may depend on the section selector, and the section selector may never depend on the plan instantiator. |
+| Dependency check | An automatic check that fails the build when a component has a dependency the rules do not allow. It works by reading the imports in the code. |
+| Rate of change | How fast something changes, and what a change takes. Also known as pace layers, a term from Stewart Brand. The domain model changes slowly and needs an ADR. A component's implementation changes freely. A dependency points from the faster thing to the slower thing. |
 
 ## Keeping rebuilds safe
 
-| Term                 | Meaning                                                                                                                               |
-|----------------------|---------------------------------------------------------------------------------------------------------------------------------------|
-| Rebuild (regenerate) | Delete a component's folder and have it written again from its contract.                                                              |
-| Contract             | The written description of what one component must do, together with its fixtures and contract tests. It outlives any implementation. |
-| Fixture              | A saved example: a specific input and the output the component must produce for it.                                                   |
-| Golden               | A fixture whose expected output is a whole saved document, compared byte for byte.                                                    |
-| Contract test        | An automatic check that one component, given a fixture's input, produces its expected output.                                         |
-| Acceptance test      | An automatic check that the finished tool, run as a user would run it, gives the right result.                                        |
-| Unit test            | A test a component's own author writes for its internals. It is deleted with the component.                                           |
-| Protected files      | Files a rebuild may not change without a person's approval: contracts, acceptance tests, and the domain model.                        |
-| Walking skeleton     | The thinnest end-to-end version of the whole tool, built first, with each component barely working.                                   |
+| Term | Meaning |
+| -- | -- |
+| Rebuild (regenerate) | Delete a component's folder and have it written again from its contract. |
+| Contract | The written description of what one component must do, together with its fixtures and contract tests. It outlives any implementation. |
+| Fixture | A saved example: a specific input and the output the component must produce for it. |
+| Golden | A fixture whose expected output is a whole saved document, compared byte for byte. |
+| Contract test | An automatic check that one component, given a fixture's input, produces its expected output. |
+| Acceptance test | An automatic check that the finished tool, run as a user would run it, gives the right result. |
+| Unit test | A test a component's own author writes for its internals. It is deleted with the component. |
+| Protected files | Files a rebuild may not change without a person's approval: contracts, acceptance tests, and the domain model. |
+| Walking skeleton | The thinnest end-to-end version of the whole tool, built first, with each component barely working. |
 
 ## Records
 
-| Term               | Meaning                                                                                                                                                       |
-|--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ADR                | Architecture decision record. A short document that states a decision and the reasons, for decisions the contracts and tests depend on.                       |
-| Schema version     | A whole number on a plan or template file. It rises when a change would break older files, and a migration reads the old version.                               |
-| Source hash        | A content hash recorded when a template is copied into a plan. Comparing it later shows whether the section was edited by hand, or the template changed upstream. |
-| Template set version | The build's commit sha or tag, recorded in provenance. It says which build the templates came from.                                                             |
-| Stack note         | A row in [the stack folder](stack/README.md) recording the current language or tool. Cheap to change.                                                                        |
-| Eval               | A check where a model judges the result. Not used for assembly.                                                                                               |
+| Term | Meaning |
+| -- | -- |
+| ADR | Architecture decision record. A short document that states a decision and the reasons, for decisions the contracts and tests depend on. |
+| Schema version | A whole number on a plan or template file. It rises when a change would break older files, and a migration reads the old version. |
+| Source hash | A content hash recorded when a template is copied into a plan. Comparing it later shows whether the section was edited by hand, or the template changed upstream. |
+| Template set version | The build's commit sha or tag, recorded in provenance. It says which build the templates came from. |
+| Stack note | A row in [the stack folder](stack/README.md) recording the current language or tool. Cheap to change. |
+| Eval | A check where a model judges the result. Not used for assembly. |

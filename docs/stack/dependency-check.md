@@ -5,8 +5,8 @@ Part of the [stack](README.md). The rules are data in `architecture.yaml`, as de
 ## Current
 
 | Choice | Current | Why | Since | Replace when |
-| --- | --- | --- | --- | --- |
-| Dependency check | Rules in `architecture.yaml`. Extractor to decide, spiking ArchUnitGo | Needed for the dependency rules in 0020. The rules are data and the extractor is an adapter. | | |
+| -- | -- | -- | -- | -- |
+| Dependency check | Rules in `architecture.yaml`. Extractor to decide, spiking ArchUnitGo | Needed for the dependency rules in 0020. The rules are data and the extractor is an adapter. |  |  |
 
 Decision issue: [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
 
@@ -15,7 +15,7 @@ Decision issue: [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/3
 Core components may not use these categories, see [0015](../decisions/0015-functional-core-and-imperative-shell.md). The packages below are candidates and not final. Deciding the list is part of the spike.
 
 | Category | Candidate Go packages |
-| --- | --- |
+| -- | -- |
 | Filesystem | `os`, `io/fs`, `io/ioutil`, `path/filepath` |
 | Network | `net`, `net/http` |
 | Process | `os/exec`, `os/signal`, `syscall` |
@@ -27,13 +27,12 @@ Core components may not use these categories, see [0015](../decisions/0015-funct
 ## Retired
 
 | Choice | Was | Since | Until | Replaced by | Why it changed |
-| --- | --- | --- | --- | --- | --- |
-| | | | | | |
+| -- | -- | -- | -- | -- | -- |
 
 ## Considered and not chosen
 
 | Choice | Option | Status | Why | Revisit when |
-| --- | --- | --- | --- | --- |
+| -- | -- | -- | -- | -- |
 | Dependency check | `depguard` in golangci-lint | Not chosen | One rule per package duplicates the dependency table, and it does not express the `wire_test.go` exception or the folder checks. Not verified in depth | Rules can be generated from `architecture.yaml` |
 | Dependency check | `go-arch-lint`, `arch-go` | Not chosen | Not evaluated in depth, and not verified for maintenance | A spike of ArchUnitGo fails |
 | Dependency check | ArchUnitGo | Evaluating | Rules are Go tests, folder globs fit our components, and it detects cycles. It is a pre-1.0 preview (v0.0.1, API may move) with one main maintainer, and 3 stars on 2026-10-15. MIT license. Standard library import bans are undocumented, so we spike them | It stays pre-1.0 and the API moves, or it cannot express the dependency rule in 0020 |

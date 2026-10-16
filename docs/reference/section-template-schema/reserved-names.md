@@ -5,7 +5,7 @@ Part of the [section template schema](README.md).
 Placeholder names start with a lowercase letter and continue with lowercase letters, digits, or underscores. Lint rejects the names below. The section validator rejects them in a plan too.
 
 | Reserved | Why |
-| --- | --- |
+| -- | -- |
 | `enabled` | Reserved for the [section toggle](optional-sections.md). It cannot be used as `$enabled` in text |
 | `yes`, `no`, `y`, `n`, `true`, `false`, `on`, `off`, `null` | YAML can read these as booleans or null. As keys in `values` they would load as the wrong data, and [0030](../../decisions/0030-self-contained-plan-file.md) rejects them |
 

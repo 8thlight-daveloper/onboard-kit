@@ -5,7 +5,7 @@ Part of the [section template schema](README.md).
 Two fields hold a condition, and both use the syntax below.
 
 | Field | On | Gates |
-| --- | --- | --- |
+| -- | -- | -- |
 | `askIf` | A placeholder | Whether that one question is asked |
 | `includeIf` | A section or template | Whether the whole section is in the plan's document and walkthrough |
 
@@ -33,7 +33,7 @@ placeholders:
 A condition is data, not an expression string. Every implementation language reads it the same way, the JSON Schema checks it, and it can grow without breaking old plans.
 
 | Part | Meaning |
-| --- | --- |
+| -- | -- |
 | `all` | A list of clauses that must all be true. It is the only combinator for now. Add `any` when a real template needs it |
 | `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan-level question |
 | `answer` | The tests on that question's answer. Several tests in one `answer` must all hold |
@@ -41,7 +41,7 @@ A condition is data, not an expression string. Every implementation language rea
 Answer tests:
 
 | Test | True when |
-| --- | --- |
+| -- | -- |
 | `is` | The answer is this one value |
 | `isNot` | The answer is a real value other than this one |
 | `isOneOf` | The answer is one of these values, a list of two or more |

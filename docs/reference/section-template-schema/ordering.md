@@ -9,7 +9,7 @@ Sections appear in the document, and are asked about in the walkthrough, in a de
 `timing` says when the section's work happens. It is one of a closed, ordered set:
 
 | Value | Meaning |
-| --- | --- |
+| -- | -- |
 | `before-day-one` | Before the consultant starts |
 | `week-one` | The first week |
 | `first-30-days` | Through the first 30 days |
@@ -39,7 +39,7 @@ after: [access]
 These are about the relation between sections, so the plan validator reports them. `onboard-kit lint` builds the default plan from the template set and runs the same validator, so the same checks cover templates.
 
 | Problem | Example |
-| --- | --- |
+| -- | -- |
 | Unknown reference | `after` names an id that is not in the plan |
 | Self reference | A section lists itself in `after` |
 | Dependency cycle | A is after B, and B is after A. The report names the sections in the cycle |

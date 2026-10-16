@@ -5,7 +5,7 @@ A worked example of the template and plan formats. ACME Corp is a made-up organi
 A consultant joins ACME's Platform team, an established team, as a developer. The first goals are access to the tools, a local copy of the project, and a passing test run.
 
 | Path | Contents |
-| --- | --- |
+| -- | -- |
 | `templates/access.yaml` | A template that applies to every engagement |
 | `templates/clone-and-run-tests.yaml` | A template for software work |
 | `templates/review-design-system.yaml` | A template for design work. It is inactive in this plan |

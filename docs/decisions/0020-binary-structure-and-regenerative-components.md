@@ -27,7 +27,7 @@ We also need to decide how the tool is packaged. The options were one binary, a 
 Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 
 | Command | Does |
-| --- | --- |
+| -- | -- |
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
@@ -38,12 +38,12 @@ The deferral of non-interactive generation is replaced by `assemble`, as decided
 ### Permanent and disposable
 
 | Permanent, changed deliberately | Disposable, rebuilt freely |
-| --- | --- |
+| -- | -- |
 | The domain model | Each component's folder |
 | `contracts/` | Unit tests inside a component's folder |
-| `acceptance/` | |
-| `architecture.yaml` | |
-| `docs/decisions/` | |
+| `acceptance/` |  |
+| `architecture.yaml` |  |
+| `docs/decisions/` |  |
 
 Documents under `docs/architecture/` and `docs/reference/` change faster than decisions. They describe the current components and formats, and change with them.
 
@@ -54,7 +54,7 @@ Documents under `docs/architecture/` and `docs/reference/` change faster than de
 Folders by role, not by language:
 
 | Folder | Holds | Changes |
-| --- | --- | --- |
+| -- | -- | -- |
 | Component folders, grouped `<noun>/<role>` | One component each, for example `section/selector` | Rebuilt freely |
 | Domain model folder | The shared types: Section, Step, Placeholder, Question, Plan | By ADR only |
 | `contracts/` | One folder per component, mirroring the component folders. Holds the interface file, fixtures, contract tests, and a wiring test | A person approves |
@@ -76,7 +76,7 @@ A wiring test is the only place a contract touches its implementation, through o
 Each component has a place in a dependency order and may depend only on components earlier in it. Two components at the same position may not depend on each other. If one needs the other, they do not belong at the same position. Architecture tests and a dependency check enforce this.
 
 | Order | Component | May depend on |
-| --- | --- | --- |
+| -- | -- | -- |
 | 0 | `model` | Nothing from the project |
 | 1 | `section/loader` | `model` |
 | 1 | `section/resolver` | `model` |
@@ -113,7 +113,7 @@ The dependency rules are enforced by architecture tests whose rules are data, so
 Things change at different speeds, and the speed says what a change takes. This is the idea Stewart Brand called pace layers, and that Fowler's regenerative software draws on. We use "rate of change" in our own docs so that "layer" keeps one meaning.
 
 | Rate | What lives there | What a change takes |
-| --- | --- | --- |
+| -- | -- | -- |
 | Slowest | ADRs, the plan file format | A new ADR. Saved plans exist in the wild, so changes must stay compatible. |
 | Slow | The domain model (`model`) | An ADR, because it is the file format in memory |
 | Medium | Contracts and acceptance tests | A person approves |

@@ -61,12 +61,19 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 `Questions(plan)`, from the question finder, returns every active question, each with its current value or default.
 
 - **One question per placeholder per section.** The active questions are the plan-level questions plus every placeholder of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
+
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
+
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
+
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
+
 - **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
+
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
+
 - **Order.** Plan-level questions come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
+
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
 - **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
@@ -74,7 +81,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 Four drivers share these functions:
 
 | Driver | Input | Does |
-| --- | --- | --- |
+| -- | -- | -- |
 | TUI | Keystrokes | Shows `Questions()`, forwards input to `Submit`, shows problems |
 | Headless assemble | A plan file | Runs `Validate()` and `Blockers()`, then assembles the document |
 | Stdio | JSON commands on stdin | Exposes the functions over stdio for black-box tests |
@@ -93,7 +100,7 @@ Both are experimental until after the MVP, so scripts that depend on them carry 
 
 The stdio protocol is line-delimited JSON, one request per line and one response per line, in order. Sketch:
 
-```
+```text
 -> {"command":"questions"}
 <- {"ok":true,"questions":[{"question":"plan.teamState","kind":"choice","options":["established","first-consultants"],"value":null}]}
 -> {"command":"submit","question":"plan.teamState","value":"established"}
@@ -118,7 +125,6 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
-
 - **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** The finder evaluates them, and the validators check them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
@@ -129,7 +135,7 @@ The finder owns what is asked, the validator owns what is acceptable, and the ed
 Errors fall into four classes.
 
 | Class | Example | Handling |
-| --- | --- | --- |
+| -- | -- | -- |
 | Problem | Secret-like value, unknown question id, a value of the wrong type | Normal result, not a tool failure |
 | Blocker | Required question has no value | Normal result, stops assembly |
 | Protocol or usage error | Bad JSON, unknown command, unreadable file | Tool error |
@@ -138,7 +144,7 @@ Errors fall into four classes.
 `onboard-kit assemble` exit codes:
 
 | Code | Meaning |
-| --- | --- |
+| -- | -- |
 | 0 | Document assembled |
 | 1 | Problems or blockers. JSON report on stdout, short summary on stderr |
 | 2 | Usage error, or plan unreadable or invalid |

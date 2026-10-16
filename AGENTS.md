@@ -5,7 +5,7 @@ Read first: `README.md`, `docs/architecture/README.md`, `docs/stack/README.md`, 
 ## Where docs go
 
 | Folder | Holds | Pace |
-| --- | --- | --- |
+| -- | -- | -- |
 | `docs/decisions/` | ADRs: what we chose and why | Slowest. A new ADR supersedes an old one |
 | `docs/reference/` | Exact definitions of formats, such as the section template schema, with worked examples | Changes with the format |
 | `docs/architecture/` | Views of the current system: components, data flow, sequences | Changes as components change |
@@ -48,4 +48,3 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 - Do not create, edit, or close an issue unless a person asks.
 - Use the template in `.github/ISSUE_TEMPLATE/` for the kind of work: decision, contract, build, or integration. `gh issue create --template` works only interactively. When not interactive, remove the front matter from the template file, fill in the sections, and pass the result with `--body-file -`. Add `--label`, `--parent`, and `--blocked-by` as needed.
 - Link to documents. Do not copy their text into an issue. Done criteria are checks a machine can run.
-

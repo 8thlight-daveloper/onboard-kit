@@ -14,7 +14,7 @@ A placeholder is a named blank in a section, written `$name`, filled from an ans
 A `$` must be followed by a valid name or by another `$`. Anything else is a lint error, so a typo such as `$Repo_url` cannot pass as plain text.
 
 | Write | Renders |
-| --- | --- |
+| -- | -- |
 | `$repo_url` | The section's `repo_url` value |
 | `$$5` | `$5` |
 | `$$STAGING_API_TOKEN` | `$STAGING_API_TOKEN` |
@@ -28,7 +28,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 ## Fields
 
 | Field | Meaning |
-| --- | --- |
+| -- | -- |
 | `name` | The `$name` the section uses |
 | `description` | What the question asks, in words |
 | `type` | `string` (the default), `boolean`, `choice`, or `command` |
@@ -43,7 +43,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 ## Types
 
 | Type | Allowed entries | Free entry |
-| --- | --- | --- |
+| -- | -- | -- |
 | `string` | Any text, checked against `pattern` if there is one | Yes |
 | `boolean` | `true` or `false`, lowercase | No |
 | `choice` | One of `options` | No |

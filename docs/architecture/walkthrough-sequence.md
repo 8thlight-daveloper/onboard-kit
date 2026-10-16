@@ -71,7 +71,7 @@ sequenceDiagram
 The TUI has no separate edit mode. A new plan and an opened plan go through the same questions. The only difference is where the plan comes from, the default plan or a file. The review screen is the home screen.
 
 | Situation | Where the consultant lands |
-| --- | --- |
+| -- | -- |
 | New plan | The first question. They walk the questions, then reach the review screen |
 | Opened plan with problems, or required questions with no value | The first problem or blocker, since the plan is not ready |
 | Opened plan, ready | The review screen |

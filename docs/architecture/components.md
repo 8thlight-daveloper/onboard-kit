@@ -73,7 +73,7 @@ flowchart TB
 ## Responsibilities
 
 | Component | Does |
-| --- | --- |
+| -- | -- |
 | Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, and check shapes. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
@@ -99,7 +99,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 - **Plan access** is what a component does with a plan it was given. Plans are values, so no component alters one. A component **reads** fields, or **returns a changed copy** that differs only in the fields it declares, or **creates** a plan from inputs that are not a plan.
 
 | Component | Side effects |
-| --- | --- |
+| -- | -- |
 | `section/loader` | Reads template files |
 | `plan/migrator`, `plan/instantiator` | None. They return values |
 | `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
@@ -112,18 +112,18 @@ Two declarations for every component, stated in its contract and checked by a pr
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
 
 | Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `source` |
-| --- | --- | --- | --- | --- | --- | --- |
+| -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C | C | C | C | C | C |
 | `plan/migrator` | W | W | W | W | W | W |
-| `plan/editor` | | | | W | | |
-| `question/finder` | | | R | R | R | |
-| `plan/validator` | | | R | R | R | |
-| `section/selector` | | | | R | R | |
-| `section/resolver` | | | | R | R | |
-| `section/hasher` | | | | | R | |
-| `section/validator` | | | | | R | |
-| `document/assembler` | R | R | R | R | R | |
-| Update action, deferred | | W | | | W | W |
+| `plan/editor` |  |  |  | W |  |  |
+| `question/finder` |  |  | R | R | R |  |
+| `plan/validator` |  |  | R | R | R |  |
+| `section/selector` |  |  |  | R | R |  |
+| `section/resolver` |  |  |  | R | R |  |
+| `section/hasher` |  |  |  |  | R |  |
+| `section/validator` |  |  |  |  | R |  |
+| `document/assembler` | R | R | R | R | R |  |
+| Update action, deferred |  | W |  |  | W | W |
 
 A person editing a plan by hand can change anything, and the plan validator checks the result on load. The template linter takes templates and not plans, so it has no row in the plan access table.
 
@@ -140,7 +140,7 @@ Written out in 0020. In short:
 ## Commands
 
 | Command | Does |
-| --- | --- |
+| -- | -- |
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |

@@ -40,7 +40,7 @@ The first two steps run once, when a new plan starts. After that the plan is the
 ## What the plan holds
 
 | Field | Purpose |
-| --- | --- |
+| -- | -- |
 | `schemaVersion` | The version of the plan format |
 | `provenance` | The template set version and the generated date |
 | `questions` | Plan-level questions, such as team state, discipline, and the document details |

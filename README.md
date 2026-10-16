@@ -5,7 +5,7 @@ Generic onboarding material for consultants joining a new engagement. Copy them,
 ## What is here
 
 | Folder | Purpose |
-| --- | --- |
+| -- | -- |
 | `guides/` | How to turn these files into an onboarding doc for one organization |
 | `core/` | Checklists and plans that apply to every engagement |
 | `variants/team-state/` | What changes when joining an established team versus being the first consultants |
@@ -32,7 +32,7 @@ Filled-in docs belong to the client. See `CONTRIBUTING.md` for the sanitizing ru
 ## Status
 
 | Piece | State |
-| --- | --- |
+| -- | -- |
 | Core | First draft |
 | Established team | First draft |
 | First consultants on site | Outline |

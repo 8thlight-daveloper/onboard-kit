@@ -92,12 +92,12 @@ Templates stay the authored source, one file each. The default plan is derived, 
 ### Templates are used once
 
 | Needs templates | Does not need templates |
-| --- | --- |
+| -- | -- |
 | Starting a new plan | Editing values |
 | Updating from a newer template set, deferred until after the MVP | Changing team state or discipline |
-| | Changing the output style |
-| | Editing section text by hand, or adding a section |
-| | Assembling the document |
+|  | Changing the output style |
+|  | Editing section text by hand, or adding a section |
+|  | Assembling the document |
 
 Saved plans keep every section by default, so changing an axis later needs no templates. A later, explicit `prune` action could remove inactive sections for a consultant who wants a tidier file to hand over. It is not part of the MVP.
 
@@ -129,7 +129,7 @@ Why YAML: templates are authored and reviewed by people, and literal blocks keep
 ## Identifiers
 
 | What | Example | Source |
-| --- | --- | --- |
+| -- | -- | -- |
 | Template id | `access` | Written by the author. Stable, never reused. |
 | Source hash | `9f2c...` | Computed by the tool when it copies a template into a plan. |
 | Template set version | `7652e0e` | The build's commit sha or tag, embedded at build time. Recorded in provenance. |
@@ -145,7 +145,7 @@ The update action is deferred until after the MVP. Its design is reserved now, b
 An update compares three things for each section that has a `source`:
 
 | Section now vs recorded hash | New template vs recorded hash | Meaning |
-| --- | --- | --- |
+| -- | -- | -- |
 | Same | Same | Nothing to do |
 | Same | Different | Untouched by hand, safe to replace |
 | Different | Same | Edited by hand, no upstream change, keep it |
