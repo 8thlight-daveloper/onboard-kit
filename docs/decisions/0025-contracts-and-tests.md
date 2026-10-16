@@ -33,7 +33,7 @@ Rules for both:
 
 The intended end state is the plan file and the onboarding helper flow. The assembled document goes away. So nothing long-term may key on assembled content.
 
-- **Lasting contracts** are plan-level: the finder, validator, editor, selector, resolver, hasher, migrator, and instantiator, and acceptance tests that assert on plans and on `stdio` responses.
+- **Lasting contracts** are plan-level: the finder, validator, section validator, editor, selector, condition evaluator, resolver, hasher, migrator, decoder, encoder, and instantiator, and acceptance tests that assert on plans and on `stdio` responses.
 - **Transitional contracts** are the document assembler and any golden-document acceptance test. Keep them thin, mark them transitional in their contract, and delete them when the assembler goes.
 - **Gap table, review marker, and output styles** exist only in the assembled document. They are not plan features, and nothing else depends on them.
 - The helper that replaces the document reads the plan through the same components, the finder and the selector, so the lasting contracts already cover what it needs.

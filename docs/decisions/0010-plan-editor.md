@@ -38,7 +38,7 @@ Why three. What a plan asks, whether its values are acceptable, and how an answe
 ### Starting and opening
 
 - **A new plan** is the default plan: the axis questions and every standard template as a section, with no values. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
-- **An opened plan** is read from a file, brought to the current schema version by the plan migrator, and checked with `Validate`.
+- **An opened plan** is read from a file by a driver, decoded by the plan decoder, which brings it to the current schema version, and checked with `Validate`.
 
 Either way the components get a plan, and need no templates. Answering the axis questions changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
 
@@ -102,7 +102,7 @@ The stdio protocol is line-delimited JSON, one request per line and one response
 
 ```text
 -> {"command":"questions"}
-<- {"ok":true,"questions":[{"question":"plan.teamState","kind":"choice","options":["established","first-consultants"],"value":null}]}
+<- {"ok":true,"questions":[{"question":"plan.teamState","type":"choice","options":["established","first-consultants"],"value":null}]}
 -> {"command":"submit","question":"plan.teamState","value":"established"}
 <- {"ok":true,"problems":[]}
 -> {"command":"blockers"}
@@ -321,7 +321,7 @@ sequenceDiagram
     actor C as Consultant
     participant T as TUI driver
     participant X as Plan file
-    participant M as Plan migrator
+    participant M as Plan decoder
     participant V as Plan validator
     participant F as Question finder
     participant E as Plan editor
@@ -329,7 +329,7 @@ sequenceDiagram
     C->>T: Open acme.obk.yaml
     T->>X: Read plan
     X-->>T: Plan file
-    T->>M: Bring to the current schema version
+    T->>M: Decode, bringing it to the current schema version
     M-->>T: Plan p0
     T->>V: Validate(p0)
     V-->>T: Any problems, for example a hand-added secret

@@ -6,6 +6,24 @@ match: $sentence
 indicators:
   - ':'
 exceptions:
+  - AnswerTest
+  - Blocker
+  - Check
+  - Clause
+  - Condition
+  - Group
+  - Placeholder
+  - Plan
+  - Problem
+  - Provenance
+  - Question
+  - QuestionDefinition
+  - Section
+  - Source
+  - Step
+  - Suggestion
+  - Value
+  - Values
   - ACME
   - ACME Corp
   - Atuin Desktop

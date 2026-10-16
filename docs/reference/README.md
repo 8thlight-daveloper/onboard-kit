@@ -4,6 +4,7 @@ Exact definitions of formats the tool reads and writes, with a worked example. T
 
 | Doc | Defines |
 | -- | -- |
+| [domain-model.md](domain-model.md) | The types that components share, stored and computed |
 | [section-template-schema/README.md](section-template-schema/README.md) | The shape of a template and a section, placeholders, question conditions, and reserved names |
 | [examples/acme](examples/acme/README.md) | A worked example: three templates, a plan, and the assembled document |
 

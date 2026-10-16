@@ -47,13 +47,13 @@ sequenceDiagram
 sequenceDiagram
     actor C as Consultant
     participant T as TUI
-    participant M as Plan migrator
+    participant M as Plan decoder
     participant V as Plan validator
     participant E as Plan editor
     participant F as output/
 
     C->>T: Load saved plan
-    T->>M: Bring to the current schema version
+    T->>M: Decode, bringing it to the current schema version
     M-->>T: Plan
     T->>V: Validate
     V-->>T: Any problems

@@ -24,6 +24,8 @@ flowchart TB
         assembler["Document assembler"]
         instantiator["Plan instantiator"]
         migrator["Plan migrator"]
+        decoder["Plan decoder"]
+        encoder["Plan encoder"]
         loader["Section loader"]
         selector["Section selector"]
         evaluator["Condition evaluator"]
@@ -62,10 +64,12 @@ flowchart TB
 
     entry --> loader
     entry --> instantiator
-    entry --> migrator
 
     templates --> loader
-    planfile --> migrator
+    planfile --> decoder
+    decoder --> migrator
+    tui --> decoder
+    tui --> encoder
     entry --> document
     entry --> planfile
 ```
@@ -81,8 +85,10 @@ flowchart TB
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
-| Plan migrator | Returns a copy of an older plan in the current schema version |
-| Section loader | Reads template files and decodes them strictly |
+| Plan migrator | Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
+| Plan decoder | Turns plan file bytes into a Plan and problems. Refuses a version older than supported or newer than known, applies the migrator steps, decodes leniently so unknown fields survive, and reports format guard violations such as `yes` for a boolean, anchors, and aliases |
+| Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
+| Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the real values of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's placeholders from the plan's values |
@@ -100,21 +106,21 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 | Component | Side effects |
 | -- | -- |
-| `section/loader` | Reads template files |
-| `plan/migrator`, `plan/instantiator` | None. They return values |
+| `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator` | None. They take and return values, and a driver reads and writes the files |
 | `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
-| `tui`, `stdio`, `assemble` commands | Read and write plan files, and write the document, only after a confirmed action or an explicit command |
-| `lint` command | Reads template files and the lint rules file, prints findings, and exits non-zero on any finding. Writes no files |
+| `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
+| `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
 | `binary` | Reads embedded templates, wires the components, writes only through the drivers |
 
-R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
+R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
 | Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `source` |
 | -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C | C | C | C | C | C |
-| `plan/migrator` | W | W | W | W | W | W |
+| `plan/decoder` | C | C | C | C | C | C |
+| `plan/encoder` | R | R | R | R | R | R |
 | `plan/editor` |  |  |  | W |  |  |
 | `question/finder` |  |  | R | R | R |  |
 | `plan/validator` |  |  | R | R | R |  |

@@ -85,15 +85,17 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `template/linter` | `model` |
 | 1 | `condition/evaluator` | `model` |
 | 1 | `secrets` | `model` |
-| 1 | `plan/migrator` | `model`, and its own frozen copies of old versions |
+| 1 | `plan/migrator` | Nothing from the project, and its own frozen copies of old versions |
+| 1 | `plan/encoder` | `model` |
 | 2 | `section/selector` | `condition/evaluator`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
+| 2 | `plan/decoder` | `plan/migrator`, `model` |
 | 3 | `question/finder` | `section/selector`, `condition/evaluator`, `model` |
 | 3 | `document/assembler` | `section/selector`, `section/resolver`, `model` |
 | 4 | `plan/validator` | `question/finder`, `section/validator`, `secrets`, `model` |
 | 5 | `plan/editor` | `question/finder`, `plan/validator`, `model` |
-| 6 | `tui` | `question/finder`, `plan/editor`, `document/assembler`, `model` |
-| 7 | `binary` | Wires the components together. Loads a plan through the migrator, and builds a new one with the loader and the plan instantiator |
+| 6 | `tui` | `question/finder`, `plan/editor`, `document/assembler`, `plan/decoder`, `plan/encoder`, `model` |
+| 7 | `binary` | Wires the components together. Loads a plan through the decoder, saves one through the encoder, and builds a new one with the section loader and the plan instantiator |
 | n/a | `contracts/*` | `model`, and its own component, in its wiring test only |
 
 The document assembler uses the section selector, the section resolver, and the model, and never touches templates. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `section/loader` is used only by the entry point and the `lint` command, to start a new plan, run an update, or check templates. Only drivers and the entry point read or write files outside embedded templates, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.

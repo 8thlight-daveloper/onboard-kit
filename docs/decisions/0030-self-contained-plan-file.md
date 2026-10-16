@@ -121,10 +121,11 @@ Why YAML: templates are authored and reviewed by people, and literal blocks keep
 
 - **Additive, optional fields:** no bump. Plans decode leniently, and an older tool preserves fields it does not know.
 - **Breaking change:** bump the version and ship a migration from the old version to the new one. Migrations chain.
-- **Plan migrator.** A component with its own contract: an old-version plan in, the current version out. It holds frozen copies of old types, because the current model no longer describes them. An old-version plan and its migrated result are permanent fixtures.
+- **Plan migrator.** A component with its own contract. One step per version: bytes of version N in, bytes of version N+1 out. It works on bytes, so it holds frozen copies of old types and needs no current type. Steps chain. An old-version plan and its migrated result are permanent fixtures.
+- **Plan decoder and encoder.** The decoder turns bytes into a Plan: it reads `schemaVersion`, applies the migrator steps, decodes leniently, keeps unknown fields, and reports format guard violations. The encoder turns a Plan into canonical bytes, so the same plan always gives the same bytes and a round trip is testable. Drivers read and write the files.
 - **Older than supported:** refuse, with a message saying which versions are supported.
 - **Newer than the tool knows:** refuse to open it, with a message to upgrade. Guessing risks misreading fields.
-- Loading a plan runs the migrator first, then validation.
+- Loading a plan runs the decoder, which applies the migrator steps first, then validation.
 
 ## Identifiers
 

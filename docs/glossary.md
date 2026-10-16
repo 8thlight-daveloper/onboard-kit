@@ -53,8 +53,10 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Document assembler | Component that turns a plan into a document in an output style. It reads only the plan. |
 | Section resolver | Component that fills the placeholders in a section from the plan's values. |
 | Section hasher | Component that computes the content hash of a section. |
-| Plan migrator | Component that brings a plan of an older schema version up to the current one. |
-| Domain model | The definitions of the data that several components pass to each other, such as Section and Plan. They live in one folder, `model`, and change slowly. |
+| Plan migrator | Component that brings a plan's bytes from one schema version to the next, one step per version. |
+| Plan decoder | Component that turns plan file bytes into a Plan, applying the migrator steps, keeping unknown fields, and reporting format guard violations. |
+| Plan encoder | Component that turns a Plan into canonical bytes, so the same plan always gives the same bytes. |
+| Domain model | The definitions of the data that several components pass to each other, such as Section and Plan. They live in one folder, `model`, and change slowly. See [the domain model](reference/domain-model.md). |
 | Boundary | The edge of a component: what it accepts, what it returns, and what it hides. A component's contract describes its boundary. |
 | Functional core | Every component except the drivers and the entry point. Its functions are pure and never alter an argument. See [0015](decisions/0015-functional-core-and-imperative-shell.md). |
 | Imperative shell | The drivers and the entry point. They do input and output, hold the current plan, and call the core. |
