@@ -10,7 +10,7 @@ flowchart TB
     feedback["Feedback issue, with no client details"]
     draft["Agent drafts a template edit"]
     pr["Pull request"]
-    checks["CI: onboard-kit lint, JSON Schema, default plan builds"]
+    checks["CI: just check with Vale voice rules, onboard-kit lint, JSON Schema, default plan builds"]
     review["Human review"]
     merge["Merged template"]
     release["New template set in the next binary"]
@@ -42,13 +42,14 @@ flowchart TB
 | Check | Catches | Runs |
 | -- | -- | -- |
 | Section validator | Undeclared or unused placeholders, defaults that do not fit, reserved names, bad condition references and cycles, missing required fields, format rules from 0030 | `onboard-kit lint` |
-| Template linter | Client names, URLs, email addresses, broken links, and voice rules such as no em dashes and no banned filler words, run on prose fields | `onboard-kit lint` |
+| Template linter | Client names, URLs, email addresses, and broken links | `onboard-kit lint` |
+| Voice rules | No em dashes, no banned filler words, no chatbot openers, no announced importance, sentence case headings. Applies to Markdown and to prose inside template YAML | Vale, in `just check` |
 | Schema validation | Template files that do not match the JSON Schema | CI, and in editors |
 | Default plan build | A template set from which the plan instantiator cannot build a default plan | The acceptance suite on the real templates |
 
 CI runs `onboard-kit lint` on every pull request that changes anything under `templates/`, and fails on any finding. Templates ship inside the binary, so a template that fails here must not reach a release.
 
-Format and lint tools for Markdown apply to the repo's own docs. They do not reach prose inside template YAML, so voice checks for templates run in the template linter. Whether Vale can lint prose inside YAML is still to check.
+Voice rules live in one place, the Vale style files under `.vale/`. Vale reads YAML as text, so the same rules cover prose inside templates, and CI runs them through `just check`. The template linter does not repeat them. `mdformat` and `markdownlint` apply to Markdown only. See [dev tooling](../stack/dev-tooling.md).
 
 ## Existing plans
 

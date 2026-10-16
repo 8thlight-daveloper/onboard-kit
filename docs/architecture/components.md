@@ -77,7 +77,7 @@ flowchart TB
 | Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether a plan's values are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: placeholders declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, and check shapes. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
-| Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, broken links, and voice rules such as em dashes and banned filler words. Takes parsed templates, returns findings |
+| Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
@@ -144,7 +144,7 @@ Written out in 0020. In short:
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Builds the default plan from the template set and runs the plan validator, to cover checks across templates. Reads files, prints findings, and exits non-zero on any finding |
+| `onboard-kit lint` | Checks templates: structure and hygiene. Builds the default plan from the template set and runs the plan validator, to cover checks across templates. Reads files, prints findings, and exits non-zero on any finding |
 
 ## Open questions
 

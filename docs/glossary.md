@@ -49,7 +49,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Condition evaluator | Component that decides whether a condition holds, given the real values of the questions it names. Used for `askIf` and `includeIf`. |
 | Plan instantiator | Component that builds the default plan from the templates: every template copied in as a section, with the axis questions. |
 | Section validator | Component that checks one section's own structure: placeholders, defaults, reserved names, the `$` rule, and check shapes. Used by the plan validator and by `onboard-kit lint`. |
-| Template linter | Component that checks template text against a rules file: client names, URLs, broken links, and voice rules. Run by `onboard-kit lint`, and in CI on every change to templates. |
+| Template linter | Component that checks template text against a rules file: client names, URLs, email addresses, and broken links. Voice rules are checked by Vale, not here. Run by `onboard-kit lint`, and in CI on every change to templates. |
 | Document assembler | Component that turns a plan into a document in an output style. It reads only the plan. |
 | Section resolver | Component that fills the placeholders in a section from the plan's values. |
 | Section hasher | Component that computes the content hash of a section. |

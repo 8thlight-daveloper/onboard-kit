@@ -31,7 +31,7 @@ Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks templates: structure, hygiene, and voice. Runs in CI on every change to templates |
+| `onboard-kit lint` | Checks templates: structure and hygiene. Runs in CI on every change to templates |
 
 The deferral of non-interactive generation is replaced by `assemble`, as decided in 0010.
 
