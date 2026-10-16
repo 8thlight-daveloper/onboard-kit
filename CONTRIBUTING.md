@@ -23,6 +23,10 @@ The client will read these templates, so write for a newcomer who has never hear
 - Placeholders go in angle brackets: `<Organization>`.
 - One idea per checklist item.
 
+## Checks
+
+Run `just check` before you push. It formats and lints Markdown, checks that relative links and heading anchors resolve, applies the voice rules (no em dashes, no banned filler words, sentence case headings), and runs the tests. `just fmt` fixes formatting. `just hook` runs the fast checks before every commit.
+
 ## Adding a variant
 
 Variants hold only what differs from `core/`. If a variant repeats core content, move that content to core. A new discipline (data, product management) is one new file in `variants/discipline/`.

@@ -18,6 +18,18 @@ Generic onboarding material for consultants joining a new engagement. Copy them,
 3. Combine them with `core/` into a single doc for the organization.
 4. Store that doc in the client's own system, not in this repo.
 
+## Development
+
+Tools come from a Nix dev shell, so everyone has the same versions.
+
+```sh
+nix develop    # or `direnv allow`, to enter the shell on cd
+just hook      # run the fast checks before every commit
+just check     # tests and every linter
+```
+
+`just` lists the other recipes. CI runs `just check` on every pull request.
+
 ## What never goes in this repo
 
 This repo is generic on purpose. Keep out:

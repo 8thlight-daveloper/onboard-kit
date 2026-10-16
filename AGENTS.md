@@ -38,6 +38,10 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 - Write core components as pure functions over immutable values. Never alter an argument, hold state between calls, or do input or output. Return a new value. Drivers and the entry point do input and output. See `docs/decisions/0015-functional-core-and-imperative-shell.md`.
 - State what each component reads and writes, in the plan and outside it. The rule is in `docs/decisions/0020-binary-structure-and-regenerative-components.md`, and the current tables are in `docs/architecture/components.md`. Stay inside the declared set.
 
+## Checks
+
+Run `just check` before you commit, from the Nix dev shell. Do not write ad hoc scripts to check links or formatting, because `just lint-links`, `just fmt-check`, `just lint-md`, and `just lint-prose` already do. Never skip a failing check or edit a tool config to make one pass without asking a person.
+
 ## Content rules
 
 - Keep client names, URLs, repo names, people, credentials, and contract details out of the repo. See `CONTRIBUTING.md`.
