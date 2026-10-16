@@ -10,7 +10,6 @@ Generic templates for consultants joining a new engagement. Copy them, fill in t
 | `core/` | Checklists and plans that apply to every engagement |
 | `variants/team-state/` | What changes when joining an established team versus being the first consultants |
 | `variants/discipline/` | What changes for software development versus design work |
-| `templates/` | Skeletons to fill in per organization |
 
 ## How to use it
 
