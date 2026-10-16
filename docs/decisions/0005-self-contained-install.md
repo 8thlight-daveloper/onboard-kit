@@ -19,6 +19,28 @@ Installing the tool means getting one file and running it.
 
 This is a hard constraint on every other choice. A language, library, or tool that breaks it is out, however convenient it is otherwise.
 
+### Platforms
+
+- **First platform:** macOS on arm64 (`darwin/arm64`) only. 8th Light provides Macs, and one target keeps the release build and its CI verification simple.
+- **Not supported at first:** Intel Macs. Adding them later means a second build and a second verification run, and a universal binary is one way to do it. Linux and Windows may follow, each with its own verification run.
+
+### Package channels
+
+Package-manager channels are conveniences beside the standalone file, which stays the base. Each installs the same self-contained binary and needs nothing at run time. They cover the same platforms as the standalone file. Priority order:
+
+1. **Homebrew.** A tap, which is a git repo holding a formula with the release URL and a hash per platform. Most Mac users already know it.
+2. **Nix.** A flake that fetches the release binary. Fetching is simpler for us than building from source, because the flake is one small file of URLs and hashes and avoids a stale `vendorHash`. It is faster for the Nix user, with no compile on update. It also installs the exact binary that CI verified.
+
+Release CI computes the hashes and writes both channel files, so a release updates every channel from one source. A release tool such as GoReleaser can do this, which is a stack choice for [stack.md](../stack.md).
+
+### Private now, possibly public later
+
+The repository is private. If the project succeeds it may move to a public 8th Light repository.
+
+- While it is private, release assets need authentication. Homebrew needs a token and a custom download strategy. Nix `fetchurl` cannot authenticate, so Nix needs a private cache or another way to reach the release. This is part of hosting, [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
+- When it goes public, both channels use plain release URLs and the authentication code is deleted. Keep the release URL and the authentication in one place in each channel file, so the change is small.
+- Moving public needs the content rules in `CONTRIBUTING.md` to hold for the whole history. Check that before the move.
+
 ### Verification
 
 CI checks the constraint on every release build:
@@ -37,9 +59,9 @@ CI checks the constraint on every release build:
 
 - **Interpreter-based install** (a Python tool through `uv` or `pipx`). Needs a runtime or tool manager on the machine, which is a secondary install.
 - **Container image.** Needs a container runtime.
-- **Installer or package manager as the only route.** Needs the manager. A package-manager channel can exist later as a convenience, as long as the standalone file stays the base.
+- **Installer or package manager as the only route.** Needs the manager. Package-manager channels are conveniences beside the standalone file, which stays the base. Homebrew and Nix are the first two, see above.
 
 ## Open questions
 
-- Which Mac architectures do we support first? macOS is the first platform, since 8th Light provides Macs. Linux and Windows may follow, and CI verification would then run for each.
-- Does a downloaded binary need code signing or notarization to run without a warning on each platform?
+- How do private releases reach the Homebrew and Nix channels until the repository is public? Tied to [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
+- Does a downloaded binary need code signing or notarization to run without a warning on each platform? Ask whoever holds 8th Light's developer signing account whether signing and notarization already exist. A file installed by Homebrew or Nix may not get the quarantine flag that a browser download gets, so signing may matter mostly for the standalone download. Confirm that, and confirm that the build carries at least the ad-hoc signature arm64 macOS requires.
