@@ -1,6 +1,6 @@
 # ACME Corp onboarding: Platform team
 
-Generated 2026-10-15 from module set `example`. A person must review this before it
+Generated 2026-10-15 from template set `example`. A person must review this before it
 is sent.
 
 ## Gaps to fill

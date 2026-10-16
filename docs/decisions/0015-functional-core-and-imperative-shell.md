@@ -34,7 +34,7 @@ The tool is a functional core inside an imperative shell. This is how every comp
 
 **The shell** is the drivers and the entry point. It does everything the core must not:
 
-- Reads and writes files, and reads the embedded modules.
+- Reads and writes files, and reads the embedded templates.
 - Reads the clock and the environment, and passes what the core needs.
 - Asks the person, shows results, and parses and prints the stdio protocol.
 - Holds the current plan, and replaces it with the plan the core returns.

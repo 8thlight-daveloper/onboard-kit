@@ -22,7 +22,7 @@ We also need to decide how the tool is packaged. The options were one binary, a 
 
 - One binary, `onboard-kit`, built from `binary/`. Logic lives in component packages. The entry point is thin glue.
 - Each component is one package, and a component is the unit of rebuild. A rebuild deletes the folder and regenerates it.
-- The domain model holds the data types that several components pass to each other, such as Module, Section, and Plan. It changes slowly and is not a component. It is never deleted and rebuilt. Changing it needs an ADR.
+- The domain model holds the data types that several components pass to each other, such as Section and Plan. It changes slowly and is not a component. It is never deleted and rebuilt. Changing it needs an ADR.
 
 Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 
@@ -31,7 +31,7 @@ Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks modules against the schema |
+| `onboard-kit lint` | Checks templates against the schema |
 
 The deferral of non-interactive generation is replaced by `assemble`, as decided in 0010.
 
@@ -56,7 +56,7 @@ Folders by role, not by language:
 | Folder | Holds | Changes |
 | --- | --- | --- |
 | Component folders, grouped `<noun>/<role>` | One component each, for example `section/selector` | Rebuilt freely |
-| Domain model folder | The shared types: Module, Section, Step, Placeholder, Question, Plan | By ADR only |
+| Domain model folder | The shared types: Section, Step, Placeholder, Question, Plan | By ADR only |
 | `contracts/` | One folder per component, mirroring the component folders. Holds the interface file, fixtures, contract tests, and a wiring test | A person approves |
 | `acceptance/` | Fixtures, language-neutral scenarios, and a replaceable runner | A person approves |
 | `binary/` | The thin entry point | Rebuilt with whatever it wires |
@@ -78,7 +78,7 @@ Each component has a place in a dependency order and may depend only on componen
 | Order | Component | May depend on |
 | --- | --- | --- |
 | 0 | `model` | Nothing from the project |
-| 1 | `module/loader` | `model` |
+| 1 | `section/loader` | `model` |
 | 1 | `section/selector` | `model` |
 | 1 | `section/resolver` | `model` |
 | 1 | `section/hasher` | `model` |
@@ -93,7 +93,7 @@ Each component has a place in a dependency order and may depend only on componen
 | 6 | `binary` | Wires the components together. Loads a plan through the migrator, and builds a new one with the loader and the plan instantiator |
 | n/a | `contracts/*` | `model`, and its own component, in its wiring test only |
 
-The document assembler uses the section selector, the section resolver, and the model, and never touches modules. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only drivers and the entry point read or write files outside embedded modules, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
+The document assembler uses the section selector, the section resolver, and the model, and never touches templates. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `section/loader` is used only by the entry point, to start a new plan or run an update. Only drivers and the entry point read or write files outside embedded templates, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
 
 ### Architecture tests are rules as data
 
@@ -115,7 +115,7 @@ Things change at different speeds, and the speed says what a change takes. This 
 | Slow | The domain model (`model`) | An ADR, because it is the file format in memory |
 | Medium | Contracts and acceptance tests | A person approves |
 | Fast | Component implementations | Rebuilt freely inside the component's folder |
-| Fastest | Module content (YAML) | Normal authoring, reviewed by a person |
+| Fastest | Template content (YAML) | Normal authoring, reviewed by a person |
 
 A dependency points from a faster thing to a slower thing, never the other way. A slow thing that depends on a fast thing breaks whenever the fast thing changes. The one exception is its wiring test, where a contract imports its own component. It is confined to a test file.
 
@@ -135,7 +135,7 @@ The current declarations are in [components](../architecture/components.md#side-
 
 ### Output styles
 
-An output style is a way of assembling a plan into a document. It is not a variant of a module, because a plan can hold content that no module has. The document assembler takes the plan and a chosen style, and one plan can produce several. The style is an option when assembling, with an optional stored default. The MVP supports one style, Markdown. Each later style is another small component behind the same contract. This answers [#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8).
+An output style is a way of assembling a plan into a document. It is not a variant of a template, because a plan can hold content that no template has. The document assembler takes the plan and a chosen style, and one plan can produce several. The style is an option when assembling, with an optional stored default. The MVP supports one style, Markdown. Each later style is another small component behind the same contract. This answers [#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8).
 
 ## Consequences
 
@@ -146,6 +146,6 @@ An output style is a way of assembling a plan into a document. It is not a varia
 ## Alternatives considered
 
 - **Wrapper binary calling separate component binaries.** Gives hard process isolation. Costs version skew between binaries, IPC for the walkthrough, error and cancellation protocol design, wire versioning, and harder distribution for consultants. Revisit for the `actions` component in v2 or if third-party renderers appear, since isolation there is a security feature.
-- **Separate build modules per component** (a module or crate per component, where the language has them). The compiler would enforce the dependency graph, and a rebuild would be a directory swap. Costs tags per module, workspace plumbing, and dependency bump ripples, for independent releases we do not need. Revisit if the layering check proves leaky.
+- **Separate build modules per component** (a module or crate per component, where the language has them). The compiler would enforce the dependency graph, and a rebuild would be a directory swap. Costs tags per template, workspace plumbing, and dependency bump ripples, for independent releases we do not need. Revisit if the layering check proves leaky.
 - **Components as packages without a permanent contracts folder.** Least structure. A rebuild deletes the interface along with the code, and the tests that judge it live in the folder being rebuilt.
 - **Network services per component.** Rejected for the same reasons as the wrapper binary, plus ports and auth. 0010 covers the server question for the walkthrough.

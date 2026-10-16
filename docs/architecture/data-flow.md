@@ -2,11 +2,11 @@
 
 Status: accepted
 
-How modules and answers become a document. Every step is deterministic.
+How templates and answers become a document. Every step is deterministic.
 
 ```mermaid
 flowchart LR
-    modules[("Modules")]
+    templates[("Templates")]
     instantiate["Build the default plan"]
     plan["Plan file"]
     answers["Answers"]
@@ -16,7 +16,7 @@ flowchart LR
     mark["Add gap table and review marker"]
     out["Document in output/"]
 
-    modules --> instantiate
+    templates --> instantiate
     instantiate --> plan
     answers --> plan
     plan --> active
@@ -32,7 +32,7 @@ The first two steps run once, when a new plan starts. After that the plan is the
 
 - **Repeatable.** The same plan gives byte-identical output. Tests can assert this.
 - **Regenerable.** Edit the plan, run again, and get a new document. No re-asking.
-- **Standalone.** The plan holds every section, so it reopens and assembles without the modules.
+- **Standalone.** The plan holds every section, so it reopens and assembles without the templates.
 - **Several styles from one plan.** The output style is an option when assembling. The MVP has one style, Markdown.
 - **Visible gaps.** A value marked `unknown-yet` renders as a to-do the reviewer cannot miss, and the gap table lists it with an owner and timing.
 - **Review marker.** Output carries a marker until a person removes it.
@@ -42,10 +42,10 @@ The first two steps run once, when a new plan starts. After that the plan is the
 | Field | Purpose |
 | --- | --- |
 | `schemaVersion` | The version of the plan format |
-| `provenance` | The module set version and the generated date |
+| `provenance` | The template set version and the generated date |
 | `questions` | Plan-level questions, such as team state, discipline, and the document details |
 | `values` | The answer to every question |
-| `sections` | Every module as a section, with placeholders unresolved, and a record of its source |
+| `sections` | Every template as a section, with placeholders unresolved, and a record of its source |
 
 See [0030](../decisions/0030-self-contained-plan-file.md) for the format, versioning, and how updates will work.
 

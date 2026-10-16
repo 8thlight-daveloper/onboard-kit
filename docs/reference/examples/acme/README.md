@@ -1,21 +1,21 @@
 # Example: ACME Corp
 
-A worked example of the module and plan formats. ACME Corp is a made-up organization, and every host uses the reserved `.example` domain. Nothing here points at a real system.
+A worked example of the template and plan formats. ACME Corp is a made-up organization, and every host uses the reserved `.example` domain. Nothing here points at a real system.
 
 A consultant joins ACME's Platform team, an established team, as a developer. The first goals are access to the tools, a local copy of the project, and a passing test run.
 
 | Path | Contents |
 | --- | --- |
-| `modules/access.yaml` | A module that applies to every engagement |
-| `modules/clone-and-run-tests.yaml` | A module for software work |
-| `modules/review-design-system.yaml` | A module for design work. It is inactive in this plan |
+| `templates/access.yaml` | A template that applies to every engagement |
+| `templates/clone-and-run-tests.yaml` | A template for software work |
+| `templates/review-design-system.yaml` | A template for design work. It is inactive in this plan |
 | `acme.obk.yaml` | The plan for this engagement |
 | `acme.md` | The plan assembled into a document, written by hand |
 
 ## What the files show
 
-- **A plan holds every module.** `acme.obk.yaml` has all three modules as sections, including the design one. Only the sections whose `appliesTo` matches the answers appear in `acme.md`.
-- **A module and a section have the same shape.** A section is a module copied into the plan with one added field, `source`. See [0030](../../../decisions/0030-self-contained-plan-file.md).
+- **A plan holds every template.** `acme.obk.yaml` has all three templates as sections, including the design one. Only the sections whose `appliesTo` matches the answers appear in `acme.md`.
+- **A template and a section have the same shape.** A section is a template copied into the plan with one added field, `source`. See [0030](../../../decisions/0030-self-contained-plan-file.md).
 - **Placeholders stay in the plan.** Sections keep `$name`, and `values` holds the answers. Values fill placeholders when the document is assembled. A placeholder of `type: command` holds an argument list. It expands as a list in `run` and joins with spaces in prose.
 - **Questions come from two places.** Plan-level `questions` hold the axis questions and the document details. Each active section's `placeholders` become questions of their own. Nothing is asked for the inactive design section, so its scope holds no values.
 - **Values are scoped.** `values.plan` holds the plan-level answers, and `values.sections.<id>` holds each section's own. `access` and `clone-and-run-tests` both declare `repo_url`, so they have two values. A user interface can ask the two once and apply the answer to both.
@@ -27,7 +27,7 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 - **`unknown-yet`** marks a value the consultant did not have yet. It satisfies a required question. The gap table comes from it.
 - **Steps are plain YAML.** `run` or `open` is the action. `check` holds `run` or `ask`. A step with `run` and no `check` passes when the command exits with code 0. Commands are argument lists, and no shell parses them.
 - **A step inherits `timing`** from its section, when assembling.
-- **`source`** records the module a section came from. The hashes here are placeholders, because the section hasher is not specified yet.
+- **`source`** records the template a section came from. The hashes here are placeholders, because the section hasher is not specified yet.
 - **Prose fields hold Markdown.** `body` and `notes` are literal blocks, hard-wrapped.
 - **Booleans are lowercase `true` and `false`.** Quote anything else that would read as a boolean.
 

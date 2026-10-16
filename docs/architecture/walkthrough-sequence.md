@@ -16,7 +16,7 @@ sequenceDiagram
     participant F as output/
 
     C->>T: Start
-    T->>I: Build the default plan from the embedded modules
+    T->>I: Build the default plan from the embedded templates
     I-->>T: Default plan
     T->>F: Questions
     F-->>T: Team state and discipline
@@ -86,7 +86,7 @@ The v2 onboarding helper is a separate activity for the person being onboarded. 
 
 ## Notes
 
-- The module set is needed only to start a new plan. Reopening, editing, changing team state or discipline, and assembling all work from the plan alone.
+- The template set is needed only to start a new plan. Reopening, editing, changing team state or discipline, and assembling all work from the plan alone.
 - The consultant can back out at the review screen without writing anything.
 - A consultant can walk the questions from the first, with existing values as defaults, or jump to one question from the review screen.
 - Assembling a document without the TUI is `onboard-kit assemble`. See [0010](../decisions/0010-plan-editor.md).
@@ -94,4 +94,4 @@ The v2 onboarding helper is a separate activity for the person being onboarded. 
 
 ## Open questions
 
-Which questions are optional is decided by each module with `required` and `default`, see [0010](../decisions/0010-plan-editor.md). An optional section declares an `enabled` placeholder, which is asked like any other question.
+Which questions are optional is decided by each template with `required` and `default`, see [0010](../decisions/0010-plan-editor.md). An optional section declares an `enabled` placeholder, which is asked like any other question.

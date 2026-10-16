@@ -7,7 +7,7 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 | Neutral term | In Go |
 | --- | --- |
 | Component | One package under `internal/<noun>/<role>`. The directory carries the noun and the package carries the role |
-| Domain model | `internal/model`. Go's `internal/` rule keeps it from being imported outside the module |
+| Domain model | `internal/model`. Go's `internal/` rule keeps it from being imported outside the Go module |
 | Entry point | `binary/`, holding a thin `main` |
 | Interface file | `api.go` in the contract package, holding the interface and its data types |
 | Contract tests | `<role>_test.go` in the contract package |
@@ -18,20 +18,19 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 
 ```
 internal/
-  model/                     # permanent: domain model (Module, Section, Step, Placeholder, Question, Plan), imports nothing from the project
+  model/                     # permanent: domain model (Section, Step, Placeholder, Question, Plan), imports nothing from the project
   plan/
     instantiator/            # component: plan instantiator
     editor/                  # component: plan editor, see 0010
     validator/               # component: plan validator, see 0010
     migrator/                # component: plan migrator, see 0030
-  module/
-    loader/                  # component: module loader
   question/
     finder/                  # component: question finder, see 0010
   section/
     selector/                # component: section selector
     resolver/                # component: section resolver
     hasher/                  # component: section hasher
+    loader/                  # component: section loader
   secrets/                   # component: secrets check
   document/
     assembler/               # component: document assembler, plan to document in an output style
@@ -43,7 +42,7 @@ contracts/
     <role>_test.go           # permanent: contract tests, behavior only
     wire_test.go             # binds the tests to the implementation
 acceptance/
-  testdata/                  # permanent: module sets, plans, golden documents
+  testdata/                  # permanent: template sets, plans, golden documents
   scenarios/                 # permanent: scenario files, language-neutral
   runner/                    # replaceable: reads the scenarios and drives the built binary
 binary/                      # thin main, the entry point

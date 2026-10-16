@@ -1,6 +1,6 @@
 schemaVersion: 1
 provenance:
-  moduleSet: example
+  templateSet: example
   generatedOn: 2026-10-15
 questions:
   - id: organization
@@ -103,7 +103,7 @@ sections:
         check:
           ask: Can you open the work tracker?
     source:
-      module: access
+      template: access
       hash: example-not-computed
   - id: clone-and-run-tests
     title: Clone the project and run the tests
@@ -151,7 +151,7 @@ sections:
         directory: $repo_dir
         run: $test_command
     source:
-      module: clone-and-run-tests
+      template: clone-and-run-tests
       hash: example-not-computed
   - id: review-design-system
     title: Review the design system
@@ -190,5 +190,5 @@ sections:
         check:
           ask: Can you open the main design file?
     source:
-      module: review-design-system
+      template: review-design-system
       hash: example-not-computed

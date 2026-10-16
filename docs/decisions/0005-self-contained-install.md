@@ -14,7 +14,7 @@ Installing the tool means getting one file and running it.
 
 - No interpreter, runtime, package manager, or container is required on the consultant's machine.
 - No system library beyond the baseline of each supported operating system.
-- No second download at first run. Modules are embedded in the binary.
+- No second download at first run. Templates are embedded in the binary.
 - It runs offline.
 
 This is a hard constraint on every other choice. A language, library, or tool that breaks it is out, however convenient it is otherwise.

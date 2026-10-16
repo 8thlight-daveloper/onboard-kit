@@ -6,8 +6,8 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 ## Principles
 
-- **Deterministic assembly.** The same answers and the same modules always produce the same document. No model runs during assembly.
-- **Agents author, they do not assemble.** Agents help write and tune modules. A human reviews every change.
+- **Deterministic assembly.** The same answers and the same templates always produce the same document. No model runs during assembly.
+- **Agents author, they do not assemble.** Agents help write and tune templates. A human reviews every change.
 - **The plan is the source.** Answers and content save to one self-contained plan file. The document regenerates from it, in any output style.
 - **The plan is the lasting artifact.** The assembled document is transitional. The end state is the plan file and the onboarding helper flow, so nothing long-term may key on assembled content.
 - **Functional core, imperative shell.** Components are pure functions over immutable values, and never alter an argument. Only drivers and the entry point do input and output. See [0015](../decisions/0015-functional-core-and-imperative-shell.md).
@@ -21,14 +21,14 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | --- | --- |
 | [context.md](context.md) | Who and what touches the system |
 | [components.md](components.md) | The components and the direction of their dependencies |
-| [data-flow.md](data-flow.md) | How modules and answers become a document |
+| [data-flow.md](data-flow.md) | How templates and answers become a document |
 | [walkthrough-sequence.md](walkthrough-sequence.md) | The steps of one run, including reopening a plan |
-| [authoring-loop.md](authoring-loop.md) | How feedback becomes a better module |
+| [authoring-loop.md](authoring-loop.md) | How feedback becomes a better template |
 
 ## Related
 
 - [Decisions](../decisions/) record choices the contracts and tests depend on.
-- [Reference](../reference/module-schema.md) defines the module and section format, with a [worked example](../reference/examples/acme/README.md).
+- [Reference](../reference/section-template-schema.md) defines the template and section format, with a [worked example](../reference/examples/acme/README.md).
 - [Stack](../stack/README.md) lists the current language and tooling, and what it replaced.
 - [Glossary](../glossary.md) defines the terms used here.
 
@@ -47,7 +47,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 | Decision | Issue |
 | --- | --- |
-| Module schema and placeholder syntax | [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3) |
+| Section template schema and placeholder syntax | [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3) |
 | Hosting and distribution | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
 
 Open questions across all docs are tracked in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25), waits on it.
@@ -56,8 +56,8 @@ Open questions across all docs are tracked in [#24](https://github.com/8thlight-
 
 - Language and toolkit are stack notes, see [stack](../stack/README.md).
 - The saved file is the plan, a YAML file named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
-- A plan holds every module as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
-- A placeholder can carry an `askIf` question condition, written as data. See [module schema](../reference/module-schema.md#question-conditions).
-- Output styles are an option on a plan, not module variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
+- A plan holds every template as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
+- A placeholder can carry an `askIf` question condition, written as data. See [section template schema](../reference/section-template-schema.md#question-conditions).
+- Output styles are an option on a plan, not template variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
 - Non-interactive assembly exists as `onboard-kit assemble`, and `onboard-kit stdio` exposes the plan components over stdio for tests.
 - Hosting is deferred until after the MVP.

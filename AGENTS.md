@@ -7,7 +7,7 @@ Read first: `README.md`, `docs/architecture/README.md`, `docs/stack/README.md`, 
 | Folder | Holds | Pace |
 | --- | --- | --- |
 | `docs/decisions/` | ADRs: what we chose and why | Slowest. A new ADR supersedes an old one |
-| `docs/reference/` | Exact definitions of formats, such as the module schema, with worked examples | Changes with the format |
+| `docs/reference/` | Exact definitions of formats, such as the section template schema, with worked examples | Changes with the format |
 | `docs/architecture/` | Views of the current system: components, data flow, sequences | Changes as components change |
 | `docs/stack/` | Language and tooling, one file per topic, including the code layout | Fastest |
 
@@ -21,7 +21,7 @@ Docs in `architecture/`, `reference/`, and `stack/` are named for their topic, w
 
 ## Naming
 
-Name a unit for what it acts on and what it does: noun, then role. A name that needs "and" is two units. In docs, write plain spaced words, for example "module selector". In Go, the parent directory carries the noun and the package carries the role: `internal/module/selector`, package `selector`. No underscores or mixed caps in package names. Follow the linter, with no exceptions. Spell words out or use a common short form such as `config`. Do not coin abbreviations like `cfg`.
+Name a unit for what it acts on and what it does: noun, then role. A name that needs "and" is two units. In docs, write plain spaced words, for example "section selector". In Go, the parent directory carries the noun and the package carries the role: `internal/section/selector`, package `selector`. No underscores or mixed caps in package names. Follow the linter, with no exceptions. Spell words out or use a common short form such as `config`. Do not coin abbreviations like `cfg`.
 
 ## Components
 

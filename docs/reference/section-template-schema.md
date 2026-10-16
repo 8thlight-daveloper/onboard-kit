@@ -1,12 +1,12 @@
-# Module schema
+# Section template schema
 
 Status: proposed. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). A worked example lives in [examples/acme](examples/acme/README.md).
 
-A module is one YAML file at `modules/<id>.yaml`. A plan holds every standard module as a section, copied unchanged with one added field, `source`. So a module and a section have the same shape, and a module file is a section before it is in a plan. The fields the selector needs, `appliesTo` and `order`, stay in the section. Which sections are active is computed from the plan's answers whenever it is needed, and placeholders stay in place until the document is assembled. See [0030](../decisions/0030-self-contained-plan-file.md).
+A section template, often shortened to template, is one YAML file at `templates/<id>.yaml`. A plan holds every standard template as a section, copied unchanged with one added field, `source`. So a template and a section have the same shape, and a template file is a section before it is in a plan. The domain model has one Section type. A template is a Section with no `source`, and the file's `schemaVersion` belongs to the loader and the migrator. The fields the selector needs, `appliesTo` and `order`, stay in the section. Which sections are active is computed from the plan's answers whenever it is needed, and placeholders stay in place until the document is assembled. See [0030](../decisions/0030-self-contained-plan-file.md).
 
 ```mermaid
 classDiagram
-    class Module {
+    class Template {
         schemaVersion
         id
         title
@@ -60,7 +60,7 @@ classDiagram
         askIf
     }
 
-    Module ..> Section : copied into a plan as
+    Template ..> Section : copied into a plan as
     Section "1" --> "*" Placeholder : declares
     Section "1" --> "*" Step : contains
 ```
@@ -72,8 +72,8 @@ classDiagram
 | `appliesTo` | Axis values the section applies to, such as team states and disciplines. `any` matches every value |
 | `order` | Sort position. Ties break on `id`, so output stays deterministic |
 | `placeholders` | Values the section needs, each with a name, a description, an optional type, and optional `required` and `default`. Each becomes a question |
-| `source` | Plan only. The module id and a content hash recorded when the module was copied. See 0030 |
-| `schemaVersion` | Module files only. Plans carry one at the top |
+| `source` | Plan only. The template id and a content hash recorded when the template was copied. See 0030 |
+| `schemaVersion` | Template files only. Plans carry one at the top |
 
 ## Steps
 
@@ -83,7 +83,7 @@ Steps are plain YAML with a vocabulary borrowed from CI files.
 | --- | --- |
 | `id`, `name` | Stable identifier and display name |
 | `notes` | Optional Markdown prose |
-| `owner`, `timing` | Who acts and when. A step inherits `timing` from its module |
+| `owner`, `timing` | Who acts and when. A step inherits `timing` from its template |
 | `run` | Command as an argument list, no shell |
 | `open` | A URL or file to open |
 | `directory` | Directory to run `run` in |
@@ -150,7 +150,7 @@ A condition is data, not an expression string. Every implementation language rea
 
 | Part | Meaning |
 | --- | --- |
-| `all` | A list of clauses that must all be true. It is the only combinator for now. Add `any` when a real module needs it |
+| `all` | A list of clauses that must all be true. It is the only combinator for now. Add `any` when a real template needs it |
 | `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan-level question |
 | `answer` | The tests on that question's answer. Several tests in one `answer` must all hold |
 
@@ -166,7 +166,7 @@ Answer tests:
 
 Rules:
 
-- **More combinators later.** `any` and `none` are not supported yet. Add them together when a real module needs one, with a rule that a condition on an unanswered question is never true, so `none` cannot ask early.
+- **More combinators later.** `any` and `none` are not supported yet. Add them together when a real template needs one, with a rule that a condition on an unanswered question is never true, so `none` cannot ask early.
 - **Real value.** The question is active and the plan stores a value for it that is not `unknown-yet` and not empty. A boolean `false` is a real value. A declared `default` is not stored until a person selects it, so it does not count.
 - **Unanswered means false.** Every test except `isAnswered` is false when the question has no real value, before any negation. So `isNot` on an unanswered question is false, and the follow-up is not asked early.
 - **When false.** The question is not active. It keeps its stored value, is not asked, and does not block.
@@ -213,15 +213,15 @@ Placeholder names match `[a-z][a-z0-9_]*`. Lint rejects the names below. The val
 | `enabled` | Reserved for the toggle above. It cannot be used as `$enabled` in text |
 | `yes`, `no`, `y`, `n`, `true`, `false`, `on`, `off`, `null` | YAML can read these as booleans or null. As keys in `values` they would load as the wrong data, and 0030 rejects them |
 
-Module ids are reserved too. A module id is a lowercase slug, and lint rejects `plan` and the YAML words above as ids. `plan` is the scope of plan-level answers, so a section named `plan` would make ids like `plan.teamState` ambiguous.
+Template ids are reserved too. A template id is a lowercase slug, and lint rejects `plan` and the YAML words above as ids. `plan` is the scope of plan-level answers, so a section named `plan` would make ids like `plan.teamState` ambiguous.
 
-Names are reserved only where a real clash exists. Words such as `default` and `type` are not reserved, because a placeholder name appears as a value of `name:`, never as a field key. Adding a reserved name later can break existing modules, so each new one needs a schema version bump and a lint message that says what to rename.
+Names are reserved only where a real clash exists. Words such as `default` and `type` are not reserved, because a placeholder name appears as a value of `name:`, never as a field key. Adding a reserved name later can break existing templates, so each new one needs a schema version bump and a lint message that says what to rename.
 
 ## Format rules
 
 - Prose fields, `body` and `notes`, hold Markdown in literal blocks, hard-wrapped.
-- One JSON Schema covers modules and plans, so editors can validate and complete them.
-- Modules decode strictly and reject unknown fields. Plans decode leniently and keep unknown fields, so a plan written by a newer tool survives an older one.
+- One JSON Schema covers templates and plans, so editors can validate and complete them.
+- Templates decode strictly and reject unknown fields. Plans decode leniently and keep unknown fields, so a plan written by a newer tool survives an older one.
 - Everything beyond `id`, `title`, `type`, and `summary` is optional, so the schema can grow without breaking older files.
 - Booleans are lowercase `true` and `false` only. Unquoted `yes`, `no`, `on`, `off`, and similar are errors, and so are anchors and aliases. See the Format section of 0030.
 
@@ -229,11 +229,11 @@ Names are reserved only where a real clash exists. Words such as `default` and `
 
 - A section is active when its `appliesTo` matches the plan's axis values and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on.
 - Active sections sort by `order`.
-- Core modules carry `any` for both axes. Variants narrow one axis.
+- Core templates carry `any` for both axes. Variants narrow one axis.
 
 ## Open questions
 
-- How does a variant override or extend a core module?
-- Are module dependencies needed, or does ordering cover it?
+- How does a variant override or extend a core template?
+- Are template dependencies needed, or does ordering cover it?
 - Does a `reviewedOn` date drive a staleness warning?
 - Do we borrow `if:` from CI files for per-platform commands?

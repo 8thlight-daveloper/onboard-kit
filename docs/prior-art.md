@@ -64,7 +64,7 @@ An open source CLI that reads a versioned onboarding plan, generates it from que
 
 | Aspect | Existing options | onboard-kit |
 | --- | --- | --- |
-| Generation | Copier renders templates from answers, with no onboarding content | Modules and answers produce an onboarding plan |
+| Generation | Copier renders templates from answers, with no onboarding content | Templates and answers produce an onboarding plan |
 | Execution | Runme and Atuin run commands from documents | A walker runs steps only after confirmation, with a trust model |
 | Structure | Hubs hold pages and checklists | Steps carry owner, timing, action, and check |
 | Delivery | SaaS portals and SharePoint templates | Open source, with a plan file that lives in the client's version control |

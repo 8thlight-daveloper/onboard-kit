@@ -23,14 +23,14 @@ flowchart TB
         assembler["Document assembler"]
         instantiator["Plan instantiator"]
         migrator["Plan migrator"]
-        loader["Module loader"]
+        loader["Section loader"]
         selector["Section selector"]
         resolver["Section resolver"]
         hasher["Section hasher"]
         secrets["Secrets check"]
     end
 
-    modules[("Embedded modules")]
+    templates[("Embedded templates")]
     planfile[("Plan file")]
     document[("Document in output/")]
 
@@ -54,7 +54,7 @@ flowchart TB
     entry --> instantiator
     entry --> migrator
 
-    modules --> loader
+    templates --> loader
     planfile --> migrator
     entry --> document
     entry --> planfile
@@ -68,9 +68,9 @@ flowchart TB
 | Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check, and conditions (unknown references and cycles) |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
-| Plan instantiator | Builds the default plan from the modules and the axis questions, once, when a new plan starts |
+| Plan instantiator | Builds the default plan from the templates and the axis questions, once, when a new plan starts |
 | Plan migrator | Returns a copy of an older plan in the current schema version |
-| Module loader | Reads module files and decodes them strictly |
+| Section loader | Reads template files and decodes them strictly |
 | Section selector | Finds the active sections of a plan from its answers, and orders them |
 | Section resolver | Fills a section's placeholders from the plan's values |
 | Section hasher | Computes the content hash recorded in a section's `source` |
@@ -87,13 +87,13 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 | Component | Side effects |
 | --- | --- |
-| `module/loader` | Reads module files |
+| `section/loader` | Reads template files |
 | `plan/migrator`, `plan/instantiator` | None. They return values |
 | `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
 | `section/selector`, `section/resolver`, `section/hasher`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and write the document, only after a confirmed action or an explicit command |
-| `binary` | Reads embedded modules, wires the components, writes only through the drivers |
+| `binary` | Reads embedded templates, wires the components, writes only through the drivers |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
 
@@ -118,7 +118,7 @@ Written out in 0020. In short:
 
 - A component may depend only on components earlier in the dependency order. Two components at the same position may not depend on each other.
 - The domain model depends on nothing. Core components never depend on the TUI.
-- The document assembler never touches modules, so a plan assembles on its own.
+- The document assembler never touches templates, so a plan assembles on its own.
 - Only the `actions` package may run commands or open URLs, in v2.
 - Architecture tests and a dependency check enforce these in `just pre-commit`.
 
@@ -129,7 +129,7 @@ Written out in 0020. In short:
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
-| `onboard-kit lint` | Checks modules against the schema |
+| `onboard-kit lint` | Checks templates against the schema |
 
 ## Open questions
 

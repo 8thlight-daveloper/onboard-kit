@@ -37,10 +37,10 @@ Why three. What a plan asks, whether its values are acceptable, and how an answe
 
 ### Starting and opening
 
-- **A new plan** is the default plan: the axis questions and every standard module as a section, with no values. The plan instantiator builds it from the embedded modules. See [0030](0030-self-contained-plan-file.md).
+- **A new plan** is the default plan: the axis questions and every standard template as a section, with no values. The plan instantiator builds it from the embedded templates. See [0030](0030-self-contained-plan-file.md).
 - **An opened plan** is read from a file, brought to the current schema version by the plan migrator, and checked with `Validate`.
 
-Either way the components get a plan, and need no modules. Answering the axis questions changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
+Either way the components get a plan, and need no templates. Answering the axis questions changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
 
 ### Plans are values
 
@@ -64,11 +64,11 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
-- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [module schema](../reference/module-schema.md#optional-sections).
+- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema.md#optional-sections).
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions, and the validator reports unknown references and cycles. The syntax is in [module schema](../reference/module-schema.md#question-conditions).
+- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions, and the validator reports unknown references and cycles. The syntax is in [section template schema](../reference/section-template-schema.md#question-conditions).
 
 Four drivers share these functions:
 
@@ -118,7 +118,7 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
 
-- **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each module, including engagement-specific modules. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
+- **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** The finder evaluates them, and the validator checks them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
 - **Unknown values.** The value `unknown-yet` is an accepted answer. It satisfies a required question and becomes a gap when assembling.
@@ -165,7 +165,7 @@ The acceptance runner reads scenarios, which are data and not code, and drives t
 
 ### Boundaries
 
-- `question/finder` imports the section selector and the domain model. `plan/validator` imports the finder, the secrets check, and the domain model. `plan/editor` imports the finder, the validator, and the domain model. None imports modules or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
+- `question/finder` imports the section selector and the domain model. `plan/validator` imports the finder, the secrets check, and the domain model. `plan/editor` imports the finder, the validator, and the domain model. None imports templates or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
 - Drivers import these components. The TUI imports nothing else from core except the document assembler. Drivers call the document assembler with the plan the editor produced.
 - All three are regenerable components. The editor's contract fixtures are plan before, answer, and plan after. The finder's are a plan and its expected questions. The validator's are a plan and its expected problems.
 
@@ -219,7 +219,7 @@ sequenceDiagram
     participant E as Plan editor
 
     A->>P: Start process
-    P->>I: Build the default plan from the embedded modules
+    P->>I: Build the default plan from the embedded templates
     I-->>P: Default plan p0
     P->>P: Hold p0 as current
 
@@ -273,7 +273,7 @@ sequenceDiagram
     participant E as Plan editor
 
     C->>T: Start
-    T->>I: Build the default plan from the embedded modules
+    T->>I: Build the default plan from the embedded templates
     I-->>T: Default plan p0
 
     T->>F: Questions(p0)
@@ -307,7 +307,7 @@ Assembling and writing happen after the review screen, outside these components.
 
 ### Reopening a plan with a consultant
 
-No modules take part. Everything comes from the plan.
+No templates take part. Everything comes from the plan.
 
 ```mermaid
 sequenceDiagram
@@ -350,7 +350,7 @@ sequenceDiagram
 - The stdio protocol is a second public surface beside `assemble`. It is experimental, but breaking it breaks acceptance tests, so changes to it need human approval like any other test change.
 - Every question and rule lives in the plan or the editor. A UI that adds its own rules breaks the headless path, so reviews must reject UI-side logic.
 - `Submit` must stay free of terminal concerns. This is the main way the design can erode.
-- Opening a plan cannot fail because modules changed. The module set matters only when starting a plan or running a later update.
+- Opening a plan cannot fail because templates changed. The template set matters only when starting a plan or running a later update.
 - Any axis change works on any plan, because the plan holds every section.
 - Reading, checking, and changing a plan are separate components. A later onboarding helper reads a plan with the finder and the selector, and never needs the editor.
 - No state lives outside the plan, so there is nothing to resume, lose, or leak.
@@ -359,10 +359,10 @@ sequenceDiagram
 
 - **Logic inside the TUI, headless assemble only.** Cheapest now. Leaves the walkthrough logic untestable without a terminal.
 - **A stateful session object.** The earlier design. A session held the plan plus methods, and `Open` and `New` created it. Once the plan carried all the state, the object added a name and an identity and no behavior. Replaced by functions over a plan.
-- **Plans that hold only the selected sections.** An earlier design. Changing team state or discipline then needed the module set, which meant an injected `expand` function and refusing the change on an opened plan. Replaced by plans that hold every section, see [0030](0030-self-contained-plan-file.md).
+- **Plans that hold only the selected sections.** An earlier design. Changing team state or discipline then needed the template set, which meant an injected `expand` function and refusing the change on an opened plan. Replaced by plans that hold every section, see [0030](0030-self-contained-plan-file.md).
 - **Question logic inside the editor.** Fewest components. The TUI, a later onboarding helper, and the assembler would each need to reach into the editor to read a plan. Rejected.
 - **Question logic as methods on the plan type.** One object to ask. The domain model is protected and changes only by ADR, and these rules are still moving, see the open questions. The model also sits at dependency order 0 and cannot use the section selector. Rejected.
 - **A mutating editor.** `Submit` changes the plan in place. Simpler to write, but "go back" needs undo logic, tests cannot fork from a shared point, and concurrent reads need locks. Rejected.
-- **Opening a plan against the module set and reporting drift.** An earlier design. It tied every saved plan to modules that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
+- **Opening a plan against the template set and reporting drift.** An earlier design. It tied every saved plan to templates that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
 - **Scanning for orphaned stdio processes at startup.** Rejected. The process holds no ports, locks, or files, and exits on stdin EOF, so orphans need a hung child, which is a bug. A scan cannot tell a stray from a parallel test run or a consultant's live run, so it risks killing the wrong process, and PID files add state to a stateless tool. If a stuck process is ever observed, add an opt-in `--max-lifetime` flag that the test helper sets just above the test timeout, or kill the process group from the helper.
 - **A local server with the TUI as a client.** Gives independent clients and a permanent API contract. Costs process lifecycle, socket auth, and wire versioning for a single short-lived client. The stdio adapter above takes the useful part, a black-box protocol, without the network. Revisit a network server if a second concurrent client appears or hosting ([#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4)) becomes real.
