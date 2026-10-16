@@ -5,7 +5,8 @@ summary: Who to ask when something is blocked and nobody named in a section can 
 timing: anytime
 variables:
   - name: general_contacts
-    type: people
+    type: person
+    multiple: true
     description: Who can help with anything
     required: true
 body: |

@@ -41,11 +41,12 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | -- | -- |
 | `name` | The `$name` the section uses |
 | `description` | What the question asks, in words |
-| `type` | `string` (the default), `boolean`, `choice`, `command`, or `people` |
+| `type` | `string` (the default), `boolean`, `choice`, `command`, or `person` |
 | `options` | The allowed values of a `choice` |
 | `pattern` | A regular expression a `string` must match |
 | `patternHint` | The expected format in words, shown when a value does not match |
 | `required` | Whether the question must have an answer. Defaults to false |
+| `multiple` | Whether the variable takes several answers, held as a list. Defaults to false. Only `person` allows it for now, and lint rejects the rest |
 | `default` | The value used when none is given. It must satisfy the type, options, and pattern |
 | `phase` | `planning` (the default) or `onboarding`. See below |
 | `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
@@ -58,21 +59,29 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `boolean` | `true` or `false`, lowercase | No |
 | `choice` | One of `options` | No |
 | `command` | An argument list. It expands as a list inside `run`, and joins with spaces in prose | Yes, as a list |
-| `people` | A list of text lines, one person each. See [people](#people) | Yes, as lines |
+| `person` | One person, written as a text line. See [person](#person) | Yes, as a line |
 
 - `pattern` uses RE2 syntax, a portable subset with no backreferences or lookaround, so every language can run it.
 - A URL check belongs in `pattern`. A clone address such as `git@host:org/repo.git` is not a standard URL, so a built-in `url` type would reject it. The secrets check also looks inside a URL for an embedded credential.
 
-## People
+## Person
 
-A `people` variable names the people who can help with something. The answer is a list of text lines, one person each, written `Name, email, chat handle`, such as `Jane Doe, jane@acme.example, @jane`.
+A `person` variable names someone who can help with something. One answer is one text line, written `Name, email, chat handle`, such as `Jane Doe, jane@acme.example, @jane`. With `multiple: true` the answer is a list of those lines, one person each.
+
+```yaml
+- name: source_control_grantor
+  type: person
+  multiple: true
+  description: Who grants source control access
+  required: true
+```
 
 - **Two ways to reach each person.** The prompt suggests an email and a chat handle. The tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A warning never stops the answer.
-- **A backup.** A required `people` variable needs at least one person, or `unknown-yet`. A variable with exactly one person gets a warning, because that person may be out of office.
-- **Ask once.** Same-name `people` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
+- **A backup.** A required `multiple` variable needs at least one person, or `unknown-yet`. A `multiple` variable with exactly one person gets a warning, because that person may be out of office.
+- **Ask once.** Same-name `person` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
 - **Rendering.** In the document the lines appear in order, one per line in a list, or joined with a comma and the word then in a sentence.
 - **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
-- **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. Moving there is a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
+- **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. The declaration stays `type: person` with `multiple: true`, and only the stored answer changes, through a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
 
 ## Phase
 

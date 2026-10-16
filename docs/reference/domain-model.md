@@ -62,6 +62,7 @@ classDiagram
         pattern
         patternHint
         required
+        multiple
         default
         phase
         askIf
@@ -140,7 +141,7 @@ A Value is one of:
 | -- | -- | -- |
 | Text | Text | A string |
 | Flag | Boolean | `true` or `false`, lowercase |
-| List | List of text | A list. Used by `command` and `people` variables |
+| List | List of text | A list. Used by `command` variables and `multiple` variables |
 | Unknown | Nothing | The literal `unknown-yet`, accepted for every type |
 
 A Value is a real answer unless it is Unknown or empty. See [conditions](section-template-schema/conditions.md).
@@ -156,7 +157,7 @@ A Value is a real answer unless it is Unknown or empty. See [conditions](section
 | `verification`, `body` | Text, optional | Markdown prose |
 | `includeIf` | Condition, optional | Names plan variables only |
 | `after` | List of section ids, optional |  |
-| `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `people` variables the section declares. See [escalation](section-template-schema/escalation.md) |
+| `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `person` variables the section declares. See [escalation](section-template-schema/escalation.md) |
 | `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
 | `source` | Source, optional | Absent on a template and on a section added by hand |
@@ -179,6 +180,7 @@ A Value is a real answer unless it is Unknown or empty. See [conditions](section
 | `options` | List of text, optional | For a `choice` |
 | `pattern`, `patternHint` | Text, optional | RE2 syntax, for a `string` |
 | `required` | Boolean, optional |  |
+| `multiple` | Boolean, optional | Takes several answers, held as a list. Only `person` allows it for now |
 | `default` | Value, optional | Must satisfy the type, options, and pattern |
 | `phase` | Phase, optional | `planning` by default |
 | `askIf` | Condition, optional |  |
@@ -217,7 +219,7 @@ A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no ques
 
 | Name | Values |
 | -- | -- |
-| VariableType | `string`, `boolean`, `choice`, `command`, `people` |
+| VariableType | `string`, `boolean`, `choice`, `command`, `person` |
 | Phase | `planning`, `onboarding` |
 | Timing | `before-day-one`, `week-one`, `first-30-days`, `days-30-to-90`, `anytime` |
 | Severity | `error`, `warning` |
@@ -237,10 +239,11 @@ What the finder returns for one active question.
 | `type` | VariableType |  |
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |
+| `multiple` | Boolean |  |
 | `phase` | Phase |  |
 | `answer` | Value, optional | The stored answer, if any |
 | `declaredDefault` | Value, optional | The variable's `default`, shown to the person. Not a stored answer |
-| `group` | Text | The key shared by questions with the same name, type, and options |
+| `group` | Text | The key shared by questions with the same name, type, options, and `multiple` |
 | `suggestions` | List of Suggestion |  |
 
 ### Suggestion

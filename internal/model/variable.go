@@ -8,6 +8,7 @@ type Variable struct {
 	Pattern     string
 	PatternHint string
 	Required    bool
+	Multiple    bool
 	Default     Value
 	Phase       Phase
 	AskIf       *Condition

@@ -8,6 +8,7 @@ type Question struct {
 	Type            VariableType
 	Options         []string
 	Required        bool
+	Multiple        bool
 	Phase           Phase
 	Answer          Value
 	DeclaredDefault Value

@@ -62,7 +62,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **One question per variable.** The active questions are the plan variables plus every variable of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
 
-- **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
+- **Groups.** Questions with the same name, type, options, and `multiple` form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the answers already given for that name in any scope, the plan's and every section's, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 

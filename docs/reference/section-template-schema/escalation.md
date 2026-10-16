@@ -2,24 +2,26 @@
 
 Part of the [section template schema](README.md).
 
-Escalation says who to ask when something is blocked. It is built from `people` variables, which are ordinary [variables](variables.md#people), and one field, `escalation`, on a section or a step.
+Escalation says who to ask when something is blocked. It is built from `person` variables, which are ordinary [variables](variables.md#person), and one field, `escalation`, on a section or a step.
 
 ## Roles are variables
 
-A template names a role by declaring a `people` variable, such as `source_control_grantor`. The consultant answers it once while planning, with the people who can fill the role. Two people can fill one role, which is the fix for a grantor who is out of office. Templates never assume a particular person exists.
+A template names a role by declaring a `person` variable with `multiple: true`, such as `source_control_grantor`. The consultant answers it once while planning, with the people who can fill the role. Two people can fill one role, which is the fix for a grantor who is out of office. Templates never assume a particular person exists.
 
 ## The `escalation` field
 
-`escalation` is an ordered list of `$name` references to `people` variables that the same section declares. It goes on a section and on a step. A step inherits its section's list when it has none.
+`escalation` is an ordered list of `$name` references to `person` variables that the same section declares. It goes on a section and on a step. A step inherits its section's list when it has none.
 
 ```yaml
 variables:
   - name: source_control_grantor
-    type: people
+    type: person
+    multiple: true
     description: Who grants source control access
     required: true
   - name: access_backup
-    type: people
+    type: person
+    multiple: true
     description: Who to ask when the grantor is away
 escalation: [$access_backup]
 steps:
@@ -33,7 +35,7 @@ A section uses only the variables it declares, so a step cannot fall back on ano
 
 ## The general path is its own section
 
-"If you are stuck" is a standard core template, always included. It declares `general_contacts`, a required `people` variable for who can help with anything. Where a consultancy sends people to a client, its template set adds a second template that declares a `consultancy_contacts` variable for who at the consultancy can help. A set for full-time employees omits it. No tool code knows about either side.
+"If you are stuck" is a standard core template, always included. It declares `general_contacts`, a required `person` variable with `multiple: true` for who can help with anything. Where a consultancy sends people to a client, its template set adds a second template that declares a `consultancy_contacts` variable for who at the consultancy can help. A set for full-time employees omits it. No tool code knows about either side.
 
 Each blocked step points to its own list. The document points to the "If you are stuck" section for everything else.
 
@@ -53,8 +55,8 @@ A multi-step approval is steps with different owners. One step is the newcomer s
 
 | Problem | Severity | Example |
 | -- | -- | -- |
-| Unknown reference | Error | `escalation` names a variable the section does not declare, or one that is not a `people` variable |
+| Unknown reference | Error | `escalation` names a variable the section does not declare, or one that is not a `person` variable |
 | Single point of failure | Warning | A step's list resolves to fewer than two distinct people |
-| One person | Warning | A `people` variable has exactly one person |
+| One person | Warning | A `multiple` person variable has exactly one person |
 | Thin contact | Warning | A person has fewer than two ways to be reached |
-| None given | Error | A required `people` variable has no person and is not `unknown-yet` |
+| None given | Error | A required `person` variable has no person and is not `unknown-yet` |
