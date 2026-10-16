@@ -46,6 +46,10 @@ Put throwaway notes, drafts, and your own working files in `.scratch/`. Put gene
 
 Run `just check` before you commit, from the Nix dev shell. Do not write ad hoc scripts to check links or formatting, because `just lint-links`, `just fmt-check`, `just lint-md`, and `just lint-prose` already do. Never skip a failing check or edit a tool config to make one pass without asking a person.
 
+## Comments
+
+A comment is a smell. Say it in a name, a type, shared code, or a test, and keep a comment only for an offline fact that none of those can carry. Run the `comments-review` skill on code before you commit it. The Go files in `internal/model/` are the example: they have no comments, because `docs/reference/domain-model.md` and the contracts carry the facts.
+
 ## Content rules
 
 - Keep client names, URLs, repo names, people, credentials, and contract details out of the repo. See `CONTRIBUTING.md`.

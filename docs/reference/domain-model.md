@@ -24,7 +24,7 @@ classDiagram
         variables
         answers
         sections
-        extra
+        unknownFields
     }
     class Provenance {
         templateSet
@@ -47,7 +47,7 @@ classDiagram
         variables
         steps
         source
-        extra
+        unknownFields
     }
     class Source {
         template
@@ -112,7 +112,7 @@ classDiagram
 | `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
 | `answers` | Answers | Every answer, by scope |
 | `sections` | List of Section | Every template, as a section |
-| `extra` | Map of unknown fields | Fields the tool does not know. Kept on load and written back, so a plan from a newer tool survives an older one |
+| `unknownFields` | Map of unknown fields | Fields the tool does not know. Kept on load and written back, so a plan from a newer tool survives an older one |
 
 A Plan is a value. No function changes one, and an edit returns a new Plan. A Section in a plan and a section template are the same type. A template is a Section with no `source`. The file's `schemaVersion` belongs to the decoder and the migrator, not to the Section.
 
@@ -121,7 +121,7 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | Field | Type | Notes |
 | -- | -- | -- |
 | `templateSet` | Text | The build's commit sha or tag |
-| `generatedOn` | Text | An ISO date, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
+| `generatedOn` | Date | Text in ISO form, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
 
 ## Answers and Value
 
@@ -157,7 +157,7 @@ A Value is a real answer unless it is Unknown or empty. See [conditions](section
 | `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
 | `source` | Source, optional | Absent on a template and on a section added by hand |
-| `extra` | Map of unknown fields | Kept in a plan, rejected in a template |
+| `unknownFields` | Map of unknown fields | Kept in a plan, rejected in a template |
 
 ## Source
 
@@ -234,7 +234,7 @@ What the finder returns for one active question.
 | `required` | Boolean |  |
 | `phase` | Phase |  |
 | `answer` | Value, optional | The stored answer, if any |
-| `default` | Value, optional | Shown to the person. Not a stored answer |
+| `declaredDefault` | Value, optional | The variable's `default`, shown to the person. Not a stored answer |
 | `group` | Text | The key shared by questions with the same name, type, and options |
 | `suggestions` | List of Suggestion |  |
 
