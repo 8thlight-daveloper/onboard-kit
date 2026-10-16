@@ -13,6 +13,8 @@ verification: $test_command passes on a fresh clone.
 placeholders:
   - name: repo_url
     description: Clone URL of the main repository
+    pattern: '^(git@|https://)\S+$'
+    patternHint: A clone URL, starting with git@ or https://
     required: true
   - name: repo_dir
     description: Directory name for the clone

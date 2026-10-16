@@ -17,8 +17,8 @@ asked.
 - [ ] **Source control.** Granted by IT service desk. Request it at
   https://access.acme.example/request. You know it worked when
   `git ls-remote git@git.acme.example:platform/widget-service.git` succeeds.
-- [ ] **CI dashboard.** Granted by Platform team lead. You know it worked when you can
-  open the CI dashboard.
+- [ ] **CI dashboard.** Granted by Platform team lead. Sign in as `<account_name>`. You
+  know it worked when you can open the CI dashboard.
 - [ ] **Work tracker.** Granted by _unknown yet_. You know it worked when you can open
   the work tracker.
 

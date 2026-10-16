@@ -23,10 +23,14 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term        | Meaning                                                                                                                                                          |
 |-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Tool        | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it.                                                       |
+| Scope | Where a value attaches: the plan, or one section. A question's id is `<scope>.<name>`, such as `access.repo_url`. |
+| Phase | Which process asks a question: `planning`, while the consultant builds the plan, or `onboarding`, while a newcomer works through it. Planning skips onboarding questions. |
+| Question group | Questions with the same name, type, and options, which a user interface can ask once and apply to every member. |
+| Suggestion | A value offered for a question: the distinct declared defaults in its group, and values already given for that name. |
 | Plan editor | Component that returns a copy of a plan with one answer applied. The copy differs only in `values` and `enabled`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md). |
 | Question finder | Component that finds the questions a plan asks, with their current values, and which required ones still have no value. It only reads. |
 | Plan validator | Component that checks whether a plan's values are acceptable: type, options, and the secrets check. |
-| Walkthrough | The interactive run where the tool asks questions and builds a plan.                                                                                             |
+| Walkthrough | The interactive planning run where the tool asks questions and builds a plan. The later onboarding run, for newcomers, is a separate activity.                                                                                             |
 | TUI         | Terminal user interface. The screen-based walkthrough in a terminal.                                                                                             |
 | Driver      | Anything that operates the plan components: the TUI, a headless command, or a test. |
 | Headless    | Running without a person or a screen. A command reads input and writes output.                                                                                   |

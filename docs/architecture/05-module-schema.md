@@ -52,8 +52,12 @@ classDiagram
         name
         description
         type
+        options
+        pattern
+        patternHint
         required
         default
+        phase
     }
 
     Module ..> Section : copied into a plan as
@@ -92,8 +96,41 @@ A step with `run` and no `check` passes when the command exits with code 0. Step
 
 - Syntax is `$name`. Names match `[a-z][a-z0-9_]*` and end at the first other character. Write `$$` for a literal dollar sign.
 - `$name` parses as a plain string in both YAML flow and block context, and it shows in GitHub's Markdown preview. The other delimiters we tried either fail to parse or load wrong data silently. `{{ name }}` becomes a nested mapping if left unquoted.
-- A placeholder of `type: command` holds an argument list. It expands as a list inside `run`, and joins with spaces in prose.
-- A value of `unknown-yet` renders as a visible gap with an owner and timing.
+- A value of `unknown-yet` renders as a visible gap with an owner and timing. It is accepted for every type, as its own entry and not as free text.
+- Each section's placeholder is its own question, with its own description, type, and default. Values are per section. See [0030](../decisions/0030-self-contained-plan-file.md).
+
+### Fields
+
+| Field | Meaning |
+| --- | --- |
+| `name` | The `$name` the section uses |
+| `description` | What the question asks, in words |
+| `type` | `string` (the default), `boolean`, `choice`, or `command` |
+| `options` | The allowed values of a `choice` |
+| `pattern` | A regular expression a `string` must match |
+| `patternHint` | The expected format in words, shown when a value does not match |
+| `required` | Whether the question must have a value. Defaults to false |
+| `default` | The value used when none is given. It must satisfy the type, options, and pattern |
+| `phase` | `planning` (the default) or `onboarding`. See below |
+
+### Types
+
+| Type | Allowed entries | Free entry |
+| --- | --- | --- |
+| `string` | Any text, checked against `pattern` if there is one | Yes |
+| `boolean` | `true` or `false`, lowercase | No |
+| `choice` | One of `options` | No |
+| `command` | An argument list. It expands as a list inside `run`, and joins with spaces in prose | Yes, as a list |
+
+- `pattern` uses RE2 syntax, a portable subset with no backreferences or lookaround, so every language can run it.
+- A URL check belongs in `pattern`. A clone address such as `git@host:org/repo.git` is not a standard URL, so a built-in `url` type would reject it. The secrets check also looks inside a URL for an embedded credential.
+
+### Phase
+
+`phase` says which process asks the question.
+
+- **`planning`** is asked while the consultant builds the plan, and the value is stored in the plan.
+- **`onboarding`** is asked of each newcomer while they onboard. The plan does not hold the value, because each person has their own. Planning skips it: it is not asked and does not block. The assembled document shows it as a blank, `<name>`. Storing and asking for these values waits for the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 
 ## Format rules
 
@@ -116,5 +153,4 @@ A step with `run` and no `check` passes when the command exits with code 0. Step
 - Are module dependencies needed, or does ordering cover it?
 - Does a `reviewedOn` date drive a staleness warning?
 - Do we borrow `if:` from CI files for per-platform commands?
-- Where several active sections declare the same placeholder, which description, `required`, and default does the question take?
 - How is the condition for asking a question written?

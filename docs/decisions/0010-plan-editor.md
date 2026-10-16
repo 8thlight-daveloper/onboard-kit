@@ -22,15 +22,15 @@ Surface, as a sketch:
 
 ```go
 // question/finder, reads only
-Questions(plan) []Question                 // active questions in order, each with its current value or default
+Questions(plan) []Question                 // active questions in order, each with its current value, groups, and suggestions
 Blockers(plan) []Blocker                   // required questions with no value, which stop assembly
 
 // plan/validator, checks only
 Validate(plan) []Problem                   // checks a loaded plan, for example after a hand edit
-CheckValue(plan, id, value) []Problem      // checks one value: type, options, the secrets check
+CheckValue(plan, id, value) []Problem      // checks one value: type, options, pattern, the secrets check
 
 // plan/editor, the only one of the three that returns a changed copy of a plan
-Submit(plan, id, value) (Plan, []Problem)  // returns a new plan and any problems
+Submit(plan, id, value) (Plan, []Problem)  // id is <scope>.<name>. Returns a new plan and any problems
 ```
 
 Why three. What a plan asks, whether its values are acceptable, and how an answer is applied to it are separate jobs with separate reasons to change. Others need the first two without the third. The TUI reads questions, the document assembler and a later onboarding helper read the plan, and a helper that only runs steps never changes it. A plan type carrying these rules would put fast-changing logic in the domain model, which sits at the slowest rate of change and needs an ADR to change.
@@ -58,7 +58,14 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 ### Walking the questions
 
-`Questions(plan)`, from the question finder, returns every active question, each with its current value or default. The active questions are the plan-level questions, such as the axis questions, plus the placeholders of the active sections, joined by name. A user interface can walk them from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
+`Questions(plan)`, from the question finder, returns every active question, each with its current value or default.
+
+- **One question per placeholder per section.** The active questions are the plan-level questions plus every placeholder of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
+- **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
+- **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
+- **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
+- **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
+- **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
 A question can carry a condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block.
 
@@ -86,8 +93,8 @@ The stdio protocol is line-delimited JSON, one request per line and one response
 
 ```
 -> {"command":"questions"}
-<- {"ok":true,"questions":[{"question":"team-state","kind":"choice","options":["established","first-consultants"],"value":null}]}
--> {"command":"submit","question":"team-state","value":"established"}
+<- {"ok":true,"questions":[{"question":"plan.teamState","kind":"choice","options":["established","first-consultants"],"value":null}]}
+-> {"command":"submit","question":"plan.teamState","value":"established"}
 <- {"ok":true,"problems":[]}
 -> {"command":"blockers"}
 <- {"ok":true,"blockers":[]}
@@ -110,7 +117,7 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
 
-- **Optional, required, and default.** A question carries `required` and `default` in the plan. `Blockers()` lists required questions with no value. Which questions are required is content, set by each module, including engagement-specific modules. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
+- **Optional, required, and default.** A placeholder carries `required` and `default`. `Blockers()` lists active required planning questions with no value, each judged by its own definition. Which questions are required is content, set by each module, including engagement-specific modules. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** How a condition is written belongs to the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
 - **Unknown values.** The value `unknown-yet` is an accepted answer. It satisfies a required question and becomes a gap when assembling.
@@ -219,7 +226,7 @@ sequenceDiagram
     P->>F: Questions(p0)
     F-->>P: Team state and discipline
     P-->>A: {"ok":true,"questions":[...]}
-    A->>P: {"command":"submit","question":"team-state","value":"established"}
+    A->>P: {"command":"submit","question":"plan.teamState","value":"established"}
     P->>E: Submit(p0, team state, "established")
     E-->>P: Plan p1, no problems
     P->>P: Hold p1 as current
@@ -361,5 +368,4 @@ sequenceDiagram
 
 ## Open questions
 
-- Where several active sections declare the same placeholder, which description, `required`, and default does the question take? Belongs in the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
 - How are optional sections toggled in the question flow? A toggle per optional section, shown as a yes or no question, is the likely shape.

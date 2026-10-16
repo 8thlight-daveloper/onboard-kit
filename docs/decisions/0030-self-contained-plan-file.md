@@ -15,7 +15,7 @@ The saved file is the plan. There is no separate configuration file. A plan is n
 - `schemaVersion`
 - `provenance`: the module set version and the generated date
 - `questions`: plan-level questions, such as the axis questions team state and discipline
-- `values`: the answer to every question, including the axis questions
+- `values`: the answers, kept by scope. `plan` holds the plan-level answers, and each section has its own scope
 - `sections`: all the content, with placeholders left in place
 
 Sketch. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3):
@@ -35,10 +35,12 @@ questions:
     options: [software, design]
     required: true
 values:
-  teamState: established
-  discipline: software
-  repo_url: git@git.acme.example:platform/widget-service.git
-  tracker_grantor: unknown-yet
+  plan:
+    teamState: established
+    discipline: software
+  sections:
+    clone-and-run-tests:
+      repo_url: git@git.acme.example:platform/widget-service.git
 sections:
   - id: clone-and-run-tests
     title: Clone the project and run the tests
@@ -52,6 +54,8 @@ sections:
     placeholders:
       - name: repo_url
         description: Clone URL of the main repository
+        pattern: '^(git@|https://)\S+$'
+        patternHint: A clone URL, starting with git@ or https://
         required: true
     steps:
       - id: clone
@@ -64,9 +68,18 @@ sections:
 A section has the same shape as a module, with an added `source`. A module file is a section before it is in a plan. A plan holds all of them, with their selection fields (`appliesTo`, `order`) kept and their placeholders unresolved.
 
 - **Active sections are computed.** A section is active when its `appliesTo` matches the axis values and it is enabled. The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
-- **Questions are computed too.** The questions asked are the plan-level questions plus the placeholders of the active sections, joined by name. A section added by hand brings its questions with it.
+- **Questions are computed too.** The questions asked are the plan-level questions plus every placeholder of every active section. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
 - **Placeholders fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original modules.
 - **Inactive sections have no effect.** A hand edit to an inactive section does nothing until team state or discipline makes it active.
+
+### Values are scoped
+
+A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.teamState` or `access.repo_url`. Each scope holds its own values, all in the plan's `values`.
+
+- **No coordination between modules.** Two sections that both declare `repo_url` have two questions and two values. A module author never needs to know another module's names.
+- **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the values already given for that name in any section, including inactive ones. See [0010](0010-plan-editor.md).
+- **Filling reads one scope.** A placeholder takes its own section's value, then that section's default.
+- **Newcomer values are outside the plan.** A placeholder with `phase: onboarding` is answered by each newcomer, so the plan holds no value for it. Planning skips it. Where those values live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 
 ### The default plan
 
@@ -177,7 +190,6 @@ The secrets check runs whenever a value is submitted and whenever a plan is vali
 
 ## Open questions
 
-- Where several active sections declare the same placeholder, how are their descriptions, `required`, and defaults reconciled? Belongs in the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
 - How is the condition for asking a question written? Same place.
 - How does the update action present a conflict, and what does it do by default?
 - Where does per-person progress live later? I lean toward a separate file per person, so a shared plan does not collect merge conflicts. Deferred beyond the MVP.

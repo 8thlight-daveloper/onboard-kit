@@ -19,6 +19,8 @@ placeholders:
     required: true
   - name: repo_url
     description: Clone URL of the main repository
+    pattern: '^(git@|https://)\S+$'
+    patternHint: A clone URL, starting with git@ or https://
     required: true
   - name: source_control_grantor
     description: Who grants source control access
@@ -29,6 +31,9 @@ placeholders:
   - name: tracker_grantor
     description: Who grants work tracker access
     required: true
+  - name: account_name
+    description: Your account name at the organization
+    phase: onboarding
 body: |
   Request each system on day minus five if you can. Record who grants it and when
   you asked.
@@ -42,6 +47,7 @@ steps:
   - id: ci-dashboard
     name: CI dashboard
     owner: $ci_grantor
+    notes: Sign in as $account_name.
     check:
       ask: Can you open the CI dashboard?
   - id: work-tracker

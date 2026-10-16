@@ -150,8 +150,8 @@ Each component has one job and a failure mode of its own, and its contract is no
 | Section resolver | Fills the placeholders in one section from the plan's values: `$name`, `$$`, command lists, `unknown-yet` gaps, undeclared or missing names | Choose sections, collect gaps across sections |
 | Section hasher | Computes the canonical content hash of a section, for its `source` | Anything else |
 | Plan instantiator | Builds the default plan from the loaded modules and the built-in axis questions: copies every module into a section, records `source` and provenance with an injected clock | Select, fill placeholders, ask questions, validate input |
-| Question finder | Finds a plan's active questions with their current values or defaults, and the required ones with no value: the plan-level questions plus the placeholders of active sections, joined by name | Change a plan, check values |
-| Plan validator | Checks whether values are acceptable: type, options, the secrets check. Checks a whole plan, or one value | Decide what is asked, change a plan |
+| Question finder | Finds a plan's active questions with their current values or defaults, and the required ones with no value: the plan-level questions plus each placeholder of each active section, with groups and suggestions. Skips onboarding-phase questions | Change a plan, check values, merge definitions |
+| Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check. Checks a whole plan, or one value | Decide what is asked, change a plan |
 | Plan editor | Returns a copy of a plan with one answer applied, using the finder and the validator | Decide what is asked, know about modules, or how a plan is built or filled |
 | Plan migrator | Brings a plan of an older schema version to the current one, one version at a time | Anything else |
 | Document assembler | Turns a plan into a document in an output style. Uses the selector for active sections and the resolver to fill values, and builds the gap table with owner and timing | Read modules, ask questions |
