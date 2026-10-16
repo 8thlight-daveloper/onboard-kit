@@ -1,6 +1,6 @@
 # 0030. Self-contained plan file
 
-Status: proposed
+Status: accepted
 
 Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23), [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6), [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). Builds on [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 

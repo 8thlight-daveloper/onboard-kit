@@ -37,11 +37,11 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | ADR | Decides | Status |
 | --- | --- | --- |
 | [0005](../decisions/0005-self-contained-install.md) | One self-contained file, no secondary installs | Accepted |
-| [0010](../decisions/0010-plan-editor.md) | Question finder, plan validator, and plan editor as plain functions over a plan, and the `assemble` and `stdio` commands | Proposed |
-| [0015](../decisions/0015-functional-core-and-imperative-shell.md) | Pure functions over immutable values in the core, input and output only in the shell | Proposed |
-| [0020](../decisions/0020-binary-structure-and-regenerative-components.md) | One binary, rebuildable components, dependency rules, rate of change, output styles | Proposed |
-| [0025](../decisions/0025-contracts-and-tests.md) | Contracts, contract and acceptance tests, who writes them, and how a rebuild is run and reviewed | Proposed |
-| [0030](../decisions/0030-self-contained-plan-file.md) | The plan file holds everything, its format, versioning, and hashes | Proposed |
+| [0010](../decisions/0010-plan-editor.md) | Question finder, plan validator, and plan editor as plain functions over a plan, and the `assemble` and `stdio` commands | Accepted |
+| [0015](../decisions/0015-functional-core-and-imperative-shell.md) | Pure functions over immutable values in the core, input and output only in the shell | Accepted |
+| [0020](../decisions/0020-binary-structure-and-regenerative-components.md) | One binary, rebuildable components, dependency rules, rate of change, output styles | Accepted |
+| [0025](../decisions/0025-contracts-and-tests.md) | Contracts, contract and acceptance tests, who writes them, and how a rebuild is run and reviewed | Accepted |
+| [0030](../decisions/0030-self-contained-plan-file.md) | The plan file holds everything, its format, versioning, and hashes | Accepted |
 
 ## Open decisions
 

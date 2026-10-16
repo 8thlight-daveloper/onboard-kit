@@ -1,6 +1,6 @@
 # 0020. Binary structure and regenerative components
 
-Status: proposed
+Status: accepted
 
 Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0015](0015-functional-core-and-imperative-shell.md), [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md). The contract and test rules are in [0025](0025-contracts-and-tests.md).
 
