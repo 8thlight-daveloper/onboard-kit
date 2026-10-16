@@ -26,6 +26,7 @@ type Blocker struct {
 
 type Problem struct {
 	Code     string
+	Severity Severity
 	Message  string
 	Question string
 	Section  string

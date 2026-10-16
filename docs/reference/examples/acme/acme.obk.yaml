@@ -40,6 +40,10 @@ answers:
       repo_dir: widget-service
       setup_command: [make, setup]
       test_command: [make, test]
+    stuck-general:
+      general_contacts:
+        - Alex Rivera, alex.rivera@acme.example, @alex
+        - Sam Okafor, sam.okafor@acme.example, @sam
 sections:
   - id: access
     title: Access
@@ -186,4 +190,20 @@ sections:
           - ask: Can you open the main design file?
     source:
       template: review-design-system
+      hash: example-not-computed
+  - id: stuck-general
+    title: If you are stuck
+    summary: Who to ask when something is blocked and nobody named in a section can help.
+    timing: anytime
+    variables:
+      - name: general_contacts
+        type: people
+        description: Who can help with anything
+        required: true
+    body: |
+      If a step is blocked and the people named in its section cannot help, ask these people
+      first: $general_contacts.
+      Say what you tried and what you need. They will point you to someone else to try.
+    source:
+      template: stuck-general
       hash: example-not-computed

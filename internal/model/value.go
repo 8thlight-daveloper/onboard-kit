@@ -6,15 +6,15 @@ const (
 	ValueKindNone ValueKind = iota
 	ValueKindText
 	ValueKindFlag
-	ValueKindCommand
+	ValueKindList
 	ValueKindUnknown
 )
 
 type Value struct {
-	Kind    ValueKind
-	Text    string
-	Flag    bool
-	Command []string
+	Kind ValueKind
+	Text string
+	Flag bool
+	List []string
 }
 
 type Answers struct {

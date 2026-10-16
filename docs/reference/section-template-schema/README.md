@@ -13,6 +13,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 | [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
 | [optional-sections.md](optional-sections.md) | The `enabled` toggle |
 | [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |
+| [escalation.md](escalation.md) | Who to ask when something is blocked, and the `people` type in use |
 | [steps.md](steps.md) | Steps, `checks`, and environment variables |
 | [reserved-names.md](reserved-names.md) | Names a template may not use |
 
@@ -29,6 +30,7 @@ classDiagram
         body
         includeIf
         after
+        escalation
         variables
         steps
     }
@@ -42,6 +44,7 @@ classDiagram
         body
         includeIf
         after
+        escalation
         variables
         steps
         source
@@ -56,6 +59,7 @@ classDiagram
         open
         directory
         env
+        escalation
         checks
     }
     class Check {
@@ -90,6 +94,7 @@ classDiagram
 | `includeIf` | A [condition](conditions.md) on answers to plan variables, such as the discipline. No `includeIf` means always included |
 | `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
 | `after` | Ids of sections that must come before this one. See [ordering](ordering.md) |
+| `escalation` | Names of `people` variables to ask, in order, when the section is blocked. See [escalation](escalation.md) |
 | `owner`, `verification`, `body` | Who acts, how to tell it worked, and Markdown prose |
 | `variables` | Values the section needs. Each becomes a question. See [variables](variables.md) |
 | `steps` | Optional steps. See [steps](steps.md) |

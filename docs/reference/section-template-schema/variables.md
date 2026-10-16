@@ -41,7 +41,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | -- | -- |
 | `name` | The `$name` the section uses |
 | `description` | What the question asks, in words |
-| `type` | `string` (the default), `boolean`, `choice`, or `command` |
+| `type` | `string` (the default), `boolean`, `choice`, `command`, or `people` |
 | `options` | The allowed values of a `choice` |
 | `pattern` | A regular expression a `string` must match |
 | `patternHint` | The expected format in words, shown when a value does not match |
@@ -58,9 +58,21 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `boolean` | `true` or `false`, lowercase | No |
 | `choice` | One of `options` | No |
 | `command` | An argument list. It expands as a list inside `run`, and joins with spaces in prose | Yes, as a list |
+| `people` | A list of text lines, one person each. See [people](#people) | Yes, as lines |
 
 - `pattern` uses RE2 syntax, a portable subset with no backreferences or lookaround, so every language can run it.
 - A URL check belongs in `pattern`. A clone address such as `git@host:org/repo.git` is not a standard URL, so a built-in `url` type would reject it. The secrets check also looks inside a URL for an embedded credential.
+
+## People
+
+A `people` variable names the people who can help with something. The answer is a list of text lines, one person each, written `Name, email, chat handle`, such as `Jane Doe, jane@acme.example, @jane`.
+
+- **Two ways to reach each person.** The prompt suggests an email and a chat handle. The tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A warning never stops the answer.
+- **A backup.** A required `people` variable needs at least one person, or `unknown-yet`. A variable with exactly one person gets a warning, because that person may be out of office.
+- **Ask once.** Same-name `people` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
+- **Rendering.** In the document the lines appear in order, one per line in a list, or joined with a comma and the word then in a sentence.
+- **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
+- **Later.** If the onboarding helper needs to link or message a person, the type becomes structured through a schema version bump and a migration.
 
 ## Phase
 

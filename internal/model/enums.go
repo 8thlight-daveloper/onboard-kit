@@ -7,6 +7,7 @@ const (
 	VariableTypeBoolean VariableType = "boolean"
 	VariableTypeChoice  VariableType = "choice"
 	VariableTypeCommand VariableType = "command"
+	VariableTypePeople  VariableType = "people"
 
 	DefaultVariableType = VariableTypeString
 )
@@ -37,4 +38,11 @@ type SuggestionSource string
 const (
 	SuggestionSourceDefault SuggestionSource = "default"
 	SuggestionSourceGiven   SuggestionSource = "given"
+)
+
+type Severity string
+
+const (
+	SeverityError   Severity = "error"
+	SeverityWarning Severity = "warning"
 )

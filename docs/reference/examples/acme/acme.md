@@ -44,3 +44,12 @@ changing anything.
 You know you are done when `make test` passes on a fresh clone.
 
 Owner: newcomer. When: week one.
+
+## If you are stuck
+
+Who to ask when something is blocked and nobody named in a section can help.
+
+If a step is blocked and the people named in its section cannot help, ask these people
+first: Alex Rivera, alex.rivera@acme.example, @alex, then Sam Okafor,
+sam.okafor@acme.example, @sam. Say what you tried and what you need. They will point
+you to someone else to try.

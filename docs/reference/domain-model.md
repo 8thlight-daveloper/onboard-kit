@@ -44,6 +44,7 @@ classDiagram
         body
         includeIf
         after
+        escalation
         variables
         steps
         source
@@ -82,6 +83,7 @@ classDiagram
         open
         directory
         env
+        escalation
         checks
     }
     class Check {
@@ -138,7 +140,7 @@ A Value is one of:
 | -- | -- | -- |
 | Text | Text | A string |
 | Flag | Boolean | `true` or `false`, lowercase |
-| Command | List of text | A list |
+| List | List of text | A list. Used by `command` and `people` variables |
 | Unknown | Nothing | The literal `unknown-yet`, accepted for every type |
 
 A Value is a real answer unless it is Unknown or empty. See [conditions](section-template-schema/conditions.md).
@@ -154,6 +156,7 @@ A Value is a real answer unless it is Unknown or empty. See [conditions](section
 | `verification`, `body` | Text, optional | Markdown prose |
 | `includeIf` | Condition, optional | Names plan variables only |
 | `after` | List of section ids, optional |  |
+| `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `people` variables the section declares. See [escalation](section-template-schema/escalation.md) |
 | `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
 | `source` | Source, optional | Absent on a template and on a section added by hand |
@@ -201,21 +204,23 @@ Several tests in one AnswerTest must all hold. A section uses a Condition only t
 | `notes` | Text, optional | Markdown prose |
 | `owner` | Text, optional |  |
 | `timing` | Timing, optional | Inherited from the section |
-| `run` | Command, optional | A list of text where each item may contain `$name`, or one `$name` that expands to a list |
+| `run` | List of text, optional | Each item may contain `$name`, or one `$name` that expands to a list |
 | `open` | Text, optional | A URL or file |
 | `directory` | Text, optional |  |
 | `env` | Map of name to text, optional | Names are uppercase letters, digits, and underscores |
+| `escalation` | List of variable names, optional | Who to ask when the step is blocked. Inherits the section's when absent |
 | `checks` | List of Check, optional |  |
 
-A Check has exactly one of `run` (a Command), `ask` (text, a yes or no question), or `env` (a variable name). The meaning of each is in [steps](section-template-schema/steps.md).
+A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no question), or `env` (a variable name). The meaning of each is in [steps](section-template-schema/steps.md).
 
 ## Enumerations
 
 | Name | Values |
 | -- | -- |
-| VariableType | `string`, `boolean`, `choice`, `command` |
+| VariableType | `string`, `boolean`, `choice`, `command`, `people` |
 | Phase | `planning`, `onboarding` |
 | Timing | `before-day-one`, `week-one`, `first-30-days`, `days-30-to-90`, `anytime` |
+| Severity | `error`, `warning` |
 
 ## Computed types
 
@@ -255,11 +260,12 @@ A group is the set of questions that share a `group` key, so a user interface ca
 
 ### Problem
 
-A report about a plan or one value. It is a normal result, not a failure.
+A report about a plan or one value. It is a normal result, not a failure. A warning is advice, such as a role with only one person.
 
 | Field | Type | Notes |
 | -- | -- | -- |
 | `code` | Text | A stable machine name, defined by the contract of the component that reports it |
+| `severity` | Severity | An `error` stops an answer from being applied and blocks assembly. A `warning` is shown and never blocks |
 | `message` | Text | For people |
 | `question` | Text, optional | The question id, when one applies |
 | `section` | Text, optional | The section id, when one applies |

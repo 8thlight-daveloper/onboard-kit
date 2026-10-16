@@ -13,6 +13,7 @@ Steps are plain YAML with a vocabulary borrowed from CI files. They are optional
 | `open` | A URL or file to open |
 | `directory` | Directory to run `run` in |
 | `env` | Environment variables the command runs with. See below |
+| `escalation` | Who to ask when the step is blocked. See [escalation](escalation.md). Inherits the section's when absent |
 | `checks` | A list of checks. See below |
 
 A step with `run` and no `checks` passes when the command exits with code 0.

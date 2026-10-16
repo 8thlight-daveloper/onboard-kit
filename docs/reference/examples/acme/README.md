@@ -9,18 +9,20 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 | `templates/access.yaml` | A template that applies to every engagement |
 | `templates/clone-and-run-tests.yaml` | A template for software work |
 | `templates/review-design-system.yaml` | A template for design work. It is inactive in this plan |
+| `templates/stuck-general.yaml` | A template for every engagement, with a required `people` variable |
 | `acme.obk.yaml` | The plan for this engagement |
 | `acme.md` | The plan assembled into a document, written by hand |
 
 ## What the files show
 
-- **A plan holds every template.** `acme.obk.yaml` has all three templates as sections, including the design one. Only the sections whose `includeIf` condition holds, or that have none, appear in `acme.md`.
+- **A plan holds every template.** `acme.obk.yaml` has all four templates as sections, including the design one. Only the sections whose `includeIf` condition holds, or that have none, appear in `acme.md`.
 - **A template and a section have the same shape.** A section is a template copied into the plan with one added field, `source`. See [0030](../../../decisions/0030-self-contained-plan-file.md).
 - **Variables stay in the plan.** Sections keep `$name`, and `answers` holds the answers. Answers fill variables when the document is assembled. A variable of `type: command` holds an argument list. It expands as a list in `run` and joins with spaces in prose.
 - **Variables come from two places.** The plan's `variables` hold the axis variables, the document details, and a setting. Each active section's `variables` hold the rest. Each variable becomes a question. Nothing is asked for the inactive design section, so its scope holds no values.
 - **Answers are scoped.** `answers.plan` holds the answers to plan variables, and `answers.sections.<id>` holds each section's own. `access` and `clone-and-run-tests` both declare `repo_url`, so they have two values. A user interface can ask the two once and apply the answer to both.
 - **Types and checks.** `repo_url` is a `string` with a `pattern` and a `patternHint`. A `boolean` or `choice` would accept only its options. `unknown-yet` is always allowed.
 - **An optional section.** `review-design-system` declares an `enabled` variable, so its on/off state is a question like any other. The two software sections have none and are always on when they apply.
+- **People and escalation.** `stuck-general` declares a required `people` variable, `general_contacts`, and the plan answers it with two lines of `Name, email, chat handle`. The addresses use the reserved `.example` domain. See [escalation](../../section-template-schema/escalation.md).
 - **A question condition.** In `access`, `source_control_grantor` has an `askIf` that asks it only once `repo_url` has an answer. See the schema doc for the tests a condition can use.
 - **`required` and `default`.** Variables can be required, or carry a default. `repo_dir` has the default `project`, and this plan overrides it. `output_style` has a default and no value.
 - **`phase: onboarding`.** `account_name` is answered by each newcomer, so the plan holds no answer for it and planning does not ask it. The document shows it as `<account_name>`.

@@ -1,0 +1,14 @@
+schemaVersion: 1
+id: stuck-general
+title: If you are stuck
+summary: Who to ask when something is blocked and nobody named in a section can help.
+timing: anytime
+variables:
+  - name: general_contacts
+    type: people
+    description: Who can help with anything
+    required: true
+body: |
+  If a step is blocked and the people named in its section cannot help, ask these people
+  first: $general_contacts.
+  Say what you tried and what you need. They will point you to someone else to try.

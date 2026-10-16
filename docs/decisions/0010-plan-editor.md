@@ -46,7 +46,7 @@ Either way the components get a plan, and need no templates. Answering the axis 
 
 This is the functional style set out in [0015](0015-functional-core-and-imperative-shell.md).
 
-No function alters the plan it is given. Each returns a new one. If an answer has problems, it is not applied, and the returned plan equals the original.
+No function alters the plan it is given. Each returns a new one. If an answer has an error, it is not applied, and the returned plan equals the original. A warning is returned with the new plan and never stops an answer or assembly.
 
 - **Undo is free.** The review screen's "go back" keeps earlier plan values and returns to one.
 - **Tests can fork.** One test builds a plan up to a shared point and tries many next answers from it, independently and in parallel.
@@ -136,7 +136,7 @@ Errors fall into four classes.
 
 | Class | Example | Handling |
 | -- | -- | -- |
-| Problem | Secret-like value, unknown question id, a value of the wrong type | Normal result, not a tool failure |
+| Problem | Secret-like value, unknown question id, a value of the wrong type. Severity `error` or `warning` | Normal result, not a tool failure. A warning never blocks |
 | Blocker | Required question has no answer | Normal result, stops assembly |
 | Protocol or usage error | Bad JSON, unknown command, unreadable file | Tool error |
 | Internal failure | Panic, bug | Tool error, non-zero exit |
