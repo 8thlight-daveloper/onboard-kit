@@ -72,7 +72,7 @@ A `people` variable names the people who can help with something. The answer is 
 - **Ask once.** Same-name `people` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
 - **Rendering.** In the document the lines appear in order, one per line in a list, or joined with a comma and the word then in a sentence.
 - **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
-- **Later.** If the onboarding helper needs to link or message a person, the type becomes structured through a schema version bump and a migration.
+- **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. Moving there is a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
 
 ## Phase
 
