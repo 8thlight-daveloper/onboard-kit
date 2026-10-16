@@ -1,0 +1,28 @@
+extends: capitalization
+message: "Use sentence case for headings: '%s'."
+level: error
+scope: heading
+match: $sentence
+indicators:
+  - ':'
+exceptions:
+  - ACME
+  - ACME Corp
+  - Atuin Desktop
+  - Microsoft New Employee Onboarding
+  - ADR
+  - ADRs
+  - ArchUnitGo
+  - Bubble Tea
+  - Copier
+  - Go
+  - Homebrew
+  - Huh
+  - JSON
+  - Markdown
+  - Nix
+  - Python
+  - Ratatui
+  - Rust
+  - TUI
+  - YAML
