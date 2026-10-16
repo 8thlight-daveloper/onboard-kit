@@ -14,7 +14,7 @@ flowchart TB
     review["Human review"]
     merge["Merged module"]
     release["New module set in the next binary"]
-    regen["Consultants regenerate from saved configs"]
+    regen["Consultants start new plans from the new module set"]
 
     use --> feedback
     feedback --> draft
@@ -41,11 +41,15 @@ flowchart TB
 
 | Check | Catches |
 | --- | --- |
-| Module linter | Undeclared placeholders, missing frontmatter, client names, URLs, broken links |
+| Module linter | Undeclared placeholders, missing required fields, unquoted `yes` or `no` and other format rules from 0030, client names, URLs, broken links |
 | Schema validation | Module files that do not match the JSON Schema |
 | Voice checks | Rules such as no em dashes and no banned filler words, run on prose fields |
 
 Format and lint tools for Markdown apply to the repo's own docs. They do not reach prose inside module YAML, so voice checks for modules run in `onboard-kit lint`. Whether Vale can lint prose inside YAML is still to check.
+
+## Existing plans
+
+A plan is self-contained, so a new module set reaches it only through the update action, which is deferred until after the MVP. Each section's recorded source and hash will tell the update what a person edited and what changed upstream. See [0030](../decisions/0030-self-contained-plan-file.md).
 
 ## Open questions
 

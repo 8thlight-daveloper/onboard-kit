@@ -19,6 +19,8 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 - Never edit `contracts/`, `acceptance/`, or the domain model in `internal/model/` as part of a rebuild. Stop and ask a person.
 - Never write or change the tests that judge your own rebuild.
 - Respect the dependency rules. Do not add a dependency they do not allow.
+- Write core components as pure functions over immutable values. Never alter an argument, hold state between calls, or do input or output. Return a new value. Drivers and the entry point do input and output. See `docs/decisions/0015-functional-core-and-imperative-shell.md`.
+- State what each component reads and writes, in the plan and outside it. See the side effects and plan access tables in `docs/decisions/0020-binary-structure-and-regenerative-components.md`. Stay inside the declared set.
 
 ## Content rules
 

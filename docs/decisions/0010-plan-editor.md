@@ -12,31 +12,41 @@ We also want components that can be deleted and rebuilt, judged by independent t
 
 ## Decision
 
-Add a `plan/editor` component. It edits a plan by asking questions and applying answers. It is a set of functions over a plan and holds no state of its own.
+Split reading a plan, checking a plan, and changing a plan into three components. Each is a set of functions over a plan and holds no state of its own.
 
 - All state lives in the plan. Each function takes a plan and returns a plan, or a report about one.
 - Calls take and return plain serializable types. No terminal concerns such as prompts, defaults display, or styling.
-- The editor never reads or writes files. Drivers do.
+- These components never read or write files. Drivers do.
 
 Surface, as a sketch:
 
 ```go
-Questions(plan) []Question               // active questions in order, each with its current value or default
-Submit(plan, id, value) (Plan, []Problem) // returns a new plan and any problems
-Blockers(plan) []Blocker                 // what still stops assembly
-Validate(plan) []Problem                 // checks a loaded plan, for example after a hand edit
+// question/finder, reads only
+Questions(plan) []Question                 // active questions in order, each with its current value or default
+Blockers(plan) []Blocker                   // required questions with no value, which stop assembly
+
+// plan/validator, checks only
+Validate(plan) []Problem                   // checks a loaded plan, for example after a hand edit
+CheckValue(plan, id, value) []Problem      // checks one value: type, options, the secrets check
+
+// plan/editor, the only one of the three that returns a changed copy of a plan
+Submit(plan, id, value) (Plan, []Problem)  // returns a new plan and any problems
 ```
+
+Why three. What a plan asks, whether its values are acceptable, and how an answer is applied to it are separate jobs with separate reasons to change. Others need the first two without the third. The TUI reads questions, the document assembler and a later onboarding helper read the plan, and a helper that only runs steps never changes it. A plan type carrying these rules would put fast-changing logic in the domain model, which sits at the slowest rate of change and needs an ADR to change.
 
 ### Starting and opening
 
 - **A new plan** is the default plan: the axis questions and every standard module as a section, with no values. The plan instantiator builds it from the embedded modules. See [0030](0030-self-contained-plan-file.md).
 - **An opened plan** is read from a file, brought to the current schema version by the plan migrator, and checked with `Validate`.
 
-Either way the editor gets a plan, and needs no modules. Answering the axis questions changes which sections are active, and the editor works that out from the plan with the section selector. Changing team state or discipline works on any plan.
+Either way the components get a plan, and need no modules. Answering the axis questions changes which sections are active, and the finder works that out from the plan with the section selector. Changing team state or discipline works on any plan.
 
 ### Plans are values
 
-No function changes the plan it is given. Each returns a new one. If an answer has problems, it is not applied, and the returned plan equals the original.
+This is the functional style set out in [0015](0015-functional-core-and-imperative-shell.md).
+
+No function alters the plan it is given. Each returns a new one. If an answer has problems, it is not applied, and the returned plan equals the original.
 
 - **Undo is free.** The review screen's "go back" keeps earlier plan values and returns to one.
 - **Tests can fork.** One test builds a plan up to a shared point and tries many next answers from it, independently and in parallel.
@@ -48,7 +58,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 ### Walking the questions
 
-`Questions(plan)` returns every active question, each with its current value or default. The active questions are the plan-level questions, such as the axis questions, plus the placeholders of the active sections, joined by name. A user interface can walk them from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the editor supports either. It stores no resume position, because the plan is the only state.
+`Questions(plan)`, from the question finder, returns every active question, each with its current value or default. The active questions are the plan-level questions, such as the axis questions, plus the placeholders of the active sections, joined by name. A user interface can walk them from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
 A question can carry a condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block.
 
@@ -58,10 +68,10 @@ Four drivers share these functions:
 | --- | --- | --- |
 | TUI | Keystrokes | Shows `Questions()`, forwards input to `Submit`, shows problems |
 | Headless assemble | A plan file | Runs `Validate()` and `Blockers()`, then assembles the document |
-| Stdio edit | JSON commands on stdin | Exposes the functions over stdio for black-box tests |
+| Stdio | JSON commands on stdin | Exposes the functions over stdio for black-box tests |
 | Contract test | Go calls | Calls the functions directly and asserts on the plan |
 
-Headless assemble is not a separate pipeline. It is the editor with no human.
+Headless assemble is not a separate pipeline. It is the same components with no human.
 
 ### Commands
 
@@ -70,20 +80,20 @@ Both are experimental until after the MVP, so scripts that depend on them carry 
 `assemble` is the deterministic step from a plan to a document. It matches the architecture principle "Deterministic assembly" and avoids confusion with drawing a terminal screen.
 
 - `onboard-kit assemble --plan <file>` assembles a document from a plan, with an optional `--style`. It replaces the earlier deferral of non-interactive document assembly. Acceptance tests use it to judge plan in, document out.
-- `onboard-kit edit` runs the editor over stdio. It starts from the default plan, or opens one given `--plan <file>`. The process holds the current plan, so there is no ID of any kind. Acceptance tests use it to judge the whole app, including the question flow.
+- `onboard-kit stdio` exposes the plan components over stdin and stdout, as a transport for tests. It is not an edit mode of the TUI. The process starts from the default plan, or opens one given `--plan <file>`. The process holds the current plan, so there is no ID of any kind. Acceptance tests use it to judge the whole app, including the question flow.
 
 The stdio protocol is line-delimited JSON, one request per line and one response per line, in order. Sketch:
 
 ```
--> {"cmd":"questions"}
+-> {"command":"questions"}
 <- {"ok":true,"questions":[{"question":"team-state","kind":"choice","options":["established","first-consultants"],"value":null}]}
--> {"cmd":"submit","question":"team-state","value":"established"}
+-> {"command":"submit","question":"team-state","value":"established"}
 <- {"ok":true,"problems":[]}
--> {"cmd":"blockers"}
+-> {"command":"blockers"}
 <- {"ok":true,"blockers":[]}
--> {"cmd":"plan"}
+-> {"command":"plan"}
 <- {"ok":true,"plan":{}}
--> {"cmd":"nonsense"}
+-> {"command":"nonsense"}
 <- {"ok":false,"error":{"code":"unknown_command","message":"unknown command: nonsense"}}
 ```
 
@@ -95,7 +105,10 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 - **Where state lives.** In the plan, held by the driver. Nothing is stored between runs.
 - **What persists.** The plan file, which holds everything needed to reopen it. See [0030](0030-self-contained-plan-file.md).
 
-### Behavior the editor owns
+### Where the behavior lives
+
+The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
+
 
 - **Optional, required, and default.** A question carries `required` and `default` in the plan. `Blockers()` lists required questions with no value. Which questions are required is content, set by each module, including engagement-specific modules. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** How a condition is written belongs to the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
@@ -122,9 +135,9 @@ Errors fall into four classes.
 | 2 | Usage error, or plan unreadable or invalid |
 | 70 | Internal failure |
 
-Assemble writes nothing on a non-zero exit. The writer runs only after every check passes, and writes to a temporary file then renames, so a crash cannot leave a half-written document.
+Assemble writes nothing on a non-zero exit. The entry point writes the document only after every check passes, to a temporary file that it then renames, so a crash cannot leave a half-written document. The document assembler itself writes nothing.
 
-`onboard-kit edit`:
+`onboard-kit stdio`:
 
 - Problems and blockers are `"ok":true` results with the lists filled in.
 - A protocol error returns `"ok":false` with an error code, and the process stays alive so a script can recover.
@@ -137,61 +150,64 @@ Assemble writes nothing on a non-zero exit. The writer runs only after every che
 Acceptance tests share one helper under `acceptance/`, so no test handles processes itself.
 
 - **Assemble runs.** The helper runs the process and captures stdout, stderr, and the exit code. An expected failure is an assertion, for example exit 1 with a report listing a blocker. An unexpected non-zero exit fails the test, with stderr and the report in the message.
-- **Edit runs.** The helper wraps the process as a client with `Send(cmd)` returning the parsed response. An `"ok":false` response fails the test unless the test opts in to expect it. If the process dies mid-test, `Send` fails with the exit code and captured stderr. Each `Send` has a read deadline, so a hung binary fails the test instead of stalling the run.
+- **Stdio runs.** The helper wraps the process as a client with `Send(command)` returning the parsed response. An `"ok":false` response fails the test unless the test opts in to expect it. If the process dies mid-test, `Send` fails with the exit code and captured stderr. Each `Send` has a read deadline, so a hung binary fails the test instead of stalling the run.
 - **Shutdown.** The client registers `t.Cleanup` when it starts. Cleanup closes stdin, waits briefly for exit, and kills the process if it does not exit. `t.Fatal`, `t.FailNow`, and a panic in the test goroutine all run cleanup, so a failed assertion and a passing test shut down the same way.
 - **Test crashes.** Cleanup does not run if the test binary is killed, for example by a `go test -timeout` expiry or `os.Exit`. The child then sees stdin close, which is the normal end signal, and exits on its own.
 - **Goroutines.** Helpers that run in other goroutines report with `t.Error`, never `t.Fatal`, because `FailNow` is only valid on the test goroutine.
 
 ### Boundaries
 
-- `plan/editor` imports the section selector, the secrets check, and the domain model. It never imports modules or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
-- Drivers import the editor. The TUI imports nothing else from core except the document assembler. Drivers call the document assembler with the plan the editor produced.
-- `plan/editor` is a regenerable component. Its contract fixtures are plan before, answer, and plan after.
+- `question/finder` imports the section selector and the domain model. `plan/validator` imports the finder, the secrets check, and the domain model. `plan/editor` imports the finder, the validator, and the domain model. None imports modules or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
+- Drivers import these components. The TUI imports nothing else from core except the document assembler. Drivers call the document assembler with the plan the editor produced.
+- All three are regenerable components. The editor's contract fixtures are plan before, answer, and plan after. The finder's are a plan and its expected questions. The validator's are a plan and its expected problems.
 
 ## Sequence
 
 ### Contract test as the driver
 
-The test calls the editor directly, starting from a default plan in a fixture. It judges one component and lives under `contracts/plan/editor/`.
+The test calls the editor, which uses the finder and the validator. It judges one component and lives under `contracts/plan/editor/`, starting from a default plan in a fixture. The finder and the validator have their own contract tests.
 
 ```mermaid
 sequenceDiagram
     participant S as Contract test
     participant E as Plan editor
+    participant F as Question finder
+    participant V as Plan validator
 
-    S->>E: Questions(p0)
-    E-->>S: Team state and discipline
     S->>E: Submit(p0, team state, "established")
-    E->>E: Validate and apply answer
+    E->>F: Is team state an active question?
+    F-->>E: Yes
+    E->>V: CheckValue(p0, team state, "established")
+    V-->>E: No problems
     E-->>S: Plan p1, no problems
 
     S->>E: Submit(p1, discipline, "software")
     E-->>S: Plan p2, no problems
 
-    S->>E: Questions(p2)
-    E->>E: Find the active sections
-    E-->>S: Repo access, and the questions of the other active sections
     S->>E: Submit(p2, repo access, a credential-like value)
-    E->>E: Secrets check fails
-    E-->>S: Plan equal to p2, problem: value looks like a credential
+    E->>F: Is repo access an active question?
+    F->>F: Find the active sections
+    F-->>E: Yes
+    E->>V: CheckValue(p2, repo access, value)
+    V->>V: Secrets check fails
+    V-->>E: Problem: value looks like a credential
+    E-->>S: Plan equal to p2, problem
 
     S->>E: Submit(p2, repo access, "ask the team lead")
     E-->>S: Plan p3, no problems
-
-    S->>E: Blockers(p3)
-    E-->>S: None
     S->>S: Assert on p3
 ```
 
 ### Acceptance test as the driver
 
-The test starts the built binary and talks to it over stdio. It judges the whole app and lives under `acceptance/`. It sees only commands and responses, never the editor package.
+The test starts the built binary and talks to it over stdio. It judges the whole app and lives under `acceptance/`. It sees only commands and responses, never the components.
 
 ```mermaid
 sequenceDiagram
     participant A as Acceptance test
-    participant P as onboard-kit edit
+    participant P as onboard-kit stdio
     participant I as Plan instantiator
+    participant F as Question finder
     participant E as Plan editor
 
     A->>P: Start process
@@ -199,11 +215,11 @@ sequenceDiagram
     I-->>P: Default plan p0
     P->>P: Hold p0 as current
 
-    A->>P: {"cmd":"questions"}
-    P->>E: Questions(p0)
-    E-->>P: Team state and discipline
+    A->>P: {"command":"questions"}
+    P->>F: Questions(p0)
+    F-->>P: Team state and discipline
     P-->>A: {"ok":true,"questions":[...]}
-    A->>P: {"cmd":"submit","question":"team-state","value":"established"}
+    A->>P: {"command":"submit","question":"team-state","value":"established"}
     P->>E: Submit(p0, team state, "established")
     E-->>P: Plan p1, no problems
     P->>P: Hold p1 as current
@@ -217,7 +233,6 @@ sequenceDiagram
 
     A->>P: submit repo access with a credential-like value
     P->>E: Submit(p2, repo access, value)
-    E->>E: Secrets check fails
     E-->>P: Plan equal to p2, problem: value looks like a credential
     P->>P: Keep p2 as current
     P-->>A: {"ok":true,"problems":[...]}
@@ -228,9 +243,11 @@ sequenceDiagram
     P->>P: Hold p3 as current
     P-->>A: {"ok":true,"problems":[]}
 
-    A->>P: {"cmd":"blockers"}
+    A->>P: {"command":"blockers"}
+    P->>F: Blockers(p3)
+    F-->>P: None
     P-->>A: {"ok":true,"blockers":[]}
-    A->>P: {"cmd":"plan"}
+    A->>P: {"command":"plan"}
     P-->>A: {"ok":true,"plan":{...}}
     A->>A: Assert on responses
     A->>P: Close stdin
@@ -244,14 +261,15 @@ sequenceDiagram
     actor C as Consultant
     participant T as TUI driver
     participant I as Plan instantiator
+    participant F as Question finder
     participant E as Plan editor
 
     C->>T: Start
     T->>I: Build the default plan from the embedded modules
     I-->>T: Default plan p0
 
-    T->>E: Questions(p0)
-    E-->>T: Team state and discipline
+    T->>F: Questions(p0)
+    F-->>T: Team state and discipline
     T->>C: Ask team state
     C-->>T: Choose "established"
     T->>E: Submit(p0, team state, "established")
@@ -261,24 +279,23 @@ sequenceDiagram
     T->>E: Submit(p1, discipline, "software")
     E-->>T: Plan p2, no problems
 
-    T->>E: Questions(p2)
-    E-->>T: Repo access, and the rest
+    T->>F: Questions(p2)
+    F-->>T: Repo access, and the rest
     T->>C: Ask repo access
     C-->>T: Type a value that looks like a credential
     T->>E: Submit(p2, repo access, value)
-    E->>E: Secrets check fails
     E-->>T: Plan equal to p2, problem: value looks like a credential
     T->>C: Show problem and ask again
     C-->>T: Type "ask the team lead"
     T->>E: Submit(p2, repo access, "ask the team lead")
     E-->>T: Plan p3, no problems
 
-    T->>E: Blockers(p3)
-    E-->>T: None
+    T->>F: Blockers(p3)
+    F-->>T: None
     T->>C: Review screen
 ```
 
-Assembling and writing happen after the review screen, outside the editor. The TUI hands the plan to the document assembler and writes the plan file.
+Assembling and writing happen after the review screen, outside these components. The TUI hands the plan to the document assembler and writes the plan file.
 
 ### Reopening a plan with a consultant
 
@@ -288,20 +305,22 @@ No modules take part. Everything comes from the plan.
 sequenceDiagram
     actor C as Consultant
     participant T as TUI driver
-    participant F as Plan file
+    participant X as Plan file
     participant M as Plan migrator
+    participant V as Plan validator
+    participant F as Question finder
     participant E as Plan editor
 
     C->>T: Open acme.obk.yaml
-    T->>F: Read plan
-    F-->>T: Plan file
+    T->>X: Read plan
+    X-->>T: Plan file
     T->>M: Bring to the current schema version
     M-->>T: Plan p0
-    T->>E: Validate(p0)
-    E-->>T: Any problems, for example a hand-added secret
+    T->>V: Validate(p0)
+    V-->>T: Any problems, for example a hand-added secret
 
-    T->>E: Questions(p0)
-    E-->>T: Every active question with its current value
+    T->>F: Questions(p0)
+    F-->>T: Every active question with its current value
     T->>C: Ask tracker grantor, showing unknown-yet
     C-->>T: Type "IT service desk"
     T->>E: Submit(p0, tracker grantor, "IT service desk")
@@ -311,7 +330,7 @@ sequenceDiagram
     T->>E: Submit(p1, discipline, "design")
     E-->>T: Plan p2, different sections now active
 
-    T->>F: Write p2
+    T->>X: Write p2
     T->>C: Review screen
 ```
 
@@ -325,6 +344,7 @@ sequenceDiagram
 - `Submit` must stay free of terminal concerns. This is the main way the design can erode.
 - Opening a plan cannot fail because modules changed. The module set matters only when starting a plan or running a later update.
 - Any axis change works on any plan, because the plan holds every section.
+- Reading, checking, and changing a plan are separate components. A later onboarding helper reads a plan with the finder and the selector, and never needs the editor.
 - No state lives outside the plan, so there is nothing to resume, lose, or leak.
 
 ## Alternatives considered
@@ -332,6 +352,8 @@ sequenceDiagram
 - **Logic inside the TUI, headless assemble only.** Cheapest now. Leaves the walkthrough logic untestable without a terminal.
 - **A stateful session object.** The earlier design. A session held the plan plus methods, and `Open` and `New` created it. Once the plan carried all the state, the object added a name and an identity and no behavior. Replaced by functions over a plan.
 - **Plans that hold only the selected sections.** An earlier design. Changing team state or discipline then needed the module set, which meant an injected `expand` function and refusing the change on an opened plan. Replaced by plans that hold every section, see [0030](0030-self-contained-plan-file.md).
+- **Question logic inside the editor.** Fewest components. The TUI, a later onboarding helper, and the assembler would each need to reach into the editor to read a plan. Rejected.
+- **Question logic as methods on the plan type.** One object to ask. The domain model is protected and changes only by ADR, and these rules are still moving, see the open questions. The model also sits at dependency order 0 and cannot use the section selector. Rejected.
 - **A mutating editor.** `Submit` changes the plan in place. Simpler to write, but "go back" needs undo logic, tests cannot fork from a shared point, and concurrent reads need locks. Rejected.
 - **Opening a plan against the module set and reporting drift.** An earlier design. It tied every saved plan to modules that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
 - **Scanning for orphaned stdio processes at startup.** Rejected. The process holds no ports, locks, or files, and exits on stdin EOF, so orphans need a hung child, which is a bug. A scan cannot tell a stray from a parallel test run or a consultant's live run, so it risks killing the wrong process, and PID files add state to a stateless tool. If a stuck process is ever observed, add an opt-in `--max-lifetime` flag that the test helper sets just above the test timeout, or kill the process group from the helper.

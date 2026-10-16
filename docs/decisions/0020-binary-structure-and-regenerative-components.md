@@ -2,7 +2,7 @@
 
 Status: proposed
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
+Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0015](0015-functional-core-and-imperative-shell.md), [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
 
 ## Context
 
@@ -20,17 +20,17 @@ We also need to decide how the tool is packaged. The options were one binary, a 
 
 ### One binary, components as packages
 
-- One binary, `onboard-kit`, built from `cmd/onboard-kit`. Logic lives in `internal/` packages. The `main` is thin glue.
+- One binary, `onboard-kit`, built from `binary/`. Logic lives in `internal/` packages. The `main` is thin glue.
 - Each component is one package under `internal/`, and a component is the unit of rebuild. A rebuild deletes the folder and regenerates it.
 - `internal/model` holds the domain model: the data types that several components pass to each other, such as Module, Section, and Plan. It changes slowly and is not a component. It is never deleted and rebuilt. Changing it needs an ADR.
 
-Commands, with `assemble` and `edit` defined in [0010](0010-plan-editor.md):
+Commands, with `assemble` and `stdio` defined in [0010](0010-plan-editor.md):
 
 | Command | Does |
 | --- | --- |
 | `onboard-kit` | Starts the TUI walkthrough |
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
-| `onboard-kit edit` | Runs the plan editor over stdio. Experimental |
+| `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
 | `onboard-kit lint` | Checks modules against the schema |
 
 The deferral of non-interactive generation is replaced by `assemble`, as decided in 0010.
@@ -44,7 +44,7 @@ The deferral of non-interactive generation is replaced by `assemble`, as decided
 | `acceptance/` | |
 | `docs/architecture/`, `docs/decisions/` | |
 
-`cmd/` mains hold no logic and are rebuilt with whatever they wire.
+`binary/` holds no logic and is rebuilt with whatever it wires.
 
 ### Layout
 
@@ -54,9 +54,12 @@ internal/
   plan/
     instantiator/            # component: plan instantiator
     editor/                  # component: plan editor, see 0010
+    validator/               # component: plan validator, see 0010
     migrator/                # component: plan migrator, see 0030
   module/
     loader/                  # component: module loader
+  question/
+    finder/                  # component: question finder, see 0010
   section/
     selector/                # component: section selector
     resolver/                # component: section resolver
@@ -74,10 +77,10 @@ contracts/
 acceptance/
   testdata/                  # permanent: module sets, plans, golden documents
   *_test.go                  # permanent: drive the built binary
-cmd/onboard-kit/             # thin main
+binary/                      # thin main, the entry point
 ```
 
-Components are named for what they work on or produce, and what they do. The directory carries the noun, the package carries the role. In prose these are the module loader, section selector, section resolver, section hasher, plan instantiator, plan editor, plan migrator, and document assembler. The naming rule is in `AGENTS.md`.
+Components are named for what they work on or produce, and what they do. The directory carries the noun, the package carries the role. In prose these are the module loader, section selector, section resolver, section hasher, question finder, plan instantiator, plan validator, plan editor, plan migrator, and document assembler. The naming rule is in `AGENTS.md`.
 
 Types shared by several components live in `internal/model`, and components hold behavior only. Contract packages may import only the model, so a type that several components use has to live there. The whole `internal/model` folder is protected, and nothing else lives in it.
 
@@ -100,14 +103,16 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `section/hasher` | `model` |
 | 1 | `secrets` | `model` |
 | 1 | `plan/migrator` | `model`, and its own frozen copies of old versions |
+| 2 | `question/finder` | `section/selector`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
-| 2 | `plan/editor` | `section/selector`, `secrets`, `model` |
 | 2 | `document/assembler` | `section/selector`, `section/resolver`, `model` |
-| 3 | `tui` | `plan/editor`, `document/assembler`, `model` |
-| 4 | `cmd/onboard-kit` | Wires the components together. Loads a plan through the migrator, and builds a new one with the loader and the plan instantiator |
+| 3 | `plan/validator` | `question/finder`, `secrets`, `model` |
+| 4 | `plan/editor` | `question/finder`, `plan/validator`, `model` |
+| 5 | `tui` | `question/finder`, `plan/editor`, `document/assembler`, `model` |
+| 6 | `binary` | Wires the components together. Loads a plan through the migrator, and builds a new one with the loader and the plan instantiator |
 | n/a | `contracts/*` | `model`, and its own component in `wire_test.go` only |
 
-The document assembler uses the section selector, the section resolver, and the model, and never touches modules. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only one package, the writer inside the assemble path, touches the filesystem outside embedded modules. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
+The document assembler uses the section selector, the section resolver, and the model, and never touches modules. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only drivers and the entry point read or write files outside embedded modules, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
 
 ### Rate of change
 
@@ -134,12 +139,22 @@ Each component has one job and a failure mode of its own, and its contract is no
 | Section resolver | Fills the placeholders in one section from the plan's values: `$name`, `$$`, command lists, `unknown-yet` gaps, undeclared or missing names | Choose sections, collect gaps across sections |
 | Section hasher | Computes the canonical content hash of a section, for its `source` | Anything else |
 | Plan instantiator | Builds the default plan from the loaded modules and the built-in axis questions: copies every module into a section, records `source` and provenance with an injected clock | Select, fill placeholders, ask questions, validate input |
-| Plan editor | Asks and applies answers to a plan: active questions, required and default values, validation, the secrets check | Know about modules, or how a plan is built or filled |
+| Question finder | Finds a plan's active questions with their current values or defaults, and the required ones with no value: the plan-level questions plus the placeholders of active sections, joined by name | Change a plan, check values |
+| Plan validator | Checks whether values are acceptable: type, options, the secrets check. Checks a whole plan, or one value | Decide what is asked, change a plan |
+| Plan editor | Returns a copy of a plan with one answer applied, using the finder and the validator | Decide what is asked, know about modules, or how a plan is built or filled |
 | Plan migrator | Brings a plan of an older schema version to the current one, one version at a time | Anything else |
 | Document assembler | Turns a plan into a document in an output style. Uses the selector for active sections and the resolver to fill values, and builds the gap table with owner and timing | Read modules, ask questions |
 | Secrets check | Decides whether a value looks like a token | Anything else |
 
 Placeholders stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler, which calls it.
+
+### Side effects and plan access
+
+Two declarations for every component. Side effects are what it does outside the plan. Plan access is what it does with a plan it was given: it reads fields, or it returns a changed copy that differs only in declared fields. No component alters the plan it was given, because plans are values. This follows from the functional style in [0015](0015-functional-core-and-imperative-shell.md).
+
+Each component's contract states both. Each contract also carries a property test: after any call, every plan field outside the declared set is identical to the input.
+
+The current declarations are in [02-components](../architecture/02-components.md#side-effects-and-plan-access). They change as components change, so they live in the architecture doc and not in this ADR.
 
 ### Output styles
 

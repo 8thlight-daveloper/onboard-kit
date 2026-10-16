@@ -2,64 +2,135 @@
 
 Status: proposed
 
-The tool splits into a thin interface layer and a core that knows nothing about terminals. Dependencies point one way, from the interface layer into the core.
+The parts of the tool, and which may depend on which. Each component has one responsibility and can be deleted and rebuilt from its contract. The rules and the full responsibilities are in [0020](../decisions/0020-binary-structure-and-regenerative-components.md). Terms are in the [glossary](../glossary.md).
+
+Arrows point from a component to what it depends on. Every component also depends on the domain model, which is left out of the diagram.
 
 ```mermaid
 flowchart TB
-    subgraph interface["Interface layer"]
-        walkthrough["Walkthrough (Bubble Tea and Huh)"]
+    subgraph drivers["Drivers"]
+        tui["TUI walkthrough"]
+        stdio["stdio command, for tests"]
+        assemble_command["assemble command"]
     end
 
-    subgraph core["Core"]
-        config_store["Config store"]
+    entry["Entry point, binary/"]
+
+    subgraph core["Core components"]
+        finder["Question finder"]
+        validator["Plan validator"]
+        editor["Plan editor"]
+        assembler["Document assembler"]
+        instantiator["Plan instantiator"]
+        migrator["Plan migrator"]
         loader["Module loader"]
-        selector["Selector"]
-        resolver["Placeholder resolver"]
-        renderer["Renderer, one per output style"]
-        writer["Writer"]
+        selector["Section selector"]
+        resolver["Section resolver"]
+        hasher["Section hasher"]
+        secrets["Secrets check"]
     end
 
     modules[("Embedded modules")]
-    output[("output/")]
+    planfile[("Plan file")]
+    document[("Document in output/")]
 
-    walkthrough --> config_store
-    walkthrough --> selector
+    tui --> finder
+    tui --> editor
+    tui --> assembler
+    stdio --> finder
+    stdio --> editor
+    assemble_command --> assembler
+
+    finder --> selector
+    validator --> finder
+    validator --> secrets
+    editor --> finder
+    editor --> validator
+    assembler --> selector
+    assembler --> resolver
+    instantiator --> hasher
+
+    entry --> loader
+    entry --> instantiator
+    entry --> migrator
+
     modules --> loader
-    loader --> selector
-    config_store --> selector
-    selector --> resolver
-    resolver --> renderer
-    renderer --> writer
-    writer --> output
-    config_store --> output
+    planfile --> migrator
+    entry --> document
+    entry --> planfile
 ```
 
 ## Responsibilities
 
 | Component | Does |
 | --- | --- |
-| Walkthrough | Asks questions, loads and edits saved configs, shows the review screen, ends with the human review reminder |
-| Config store | Reads and writes `<name>.obk.yaml` files, checks schema and module set versions |
-| Module loader | Reads embedded modules and parses frontmatter |
-| Selector | Picks and orders modules from tags in the answers |
-| Placeholder resolver | Fills values, marks unknown values with a visible to-do |
-| Renderer | Turns the resolved modules into one document for a chosen output style |
-| Writer | Writes the document and config under `output/` |
+| Question finder | Finds a plan's active questions with their values or defaults, and the required ones with no value. Reads only |
+| Plan validator | Checks whether values are acceptable: type, options, the secrets check |
+| Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values` and `enabled`. The plan it was given is not altered |
+| Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
+| Plan instantiator | Builds the default plan from the modules and the axis questions, once, when a new plan starts |
+| Plan migrator | Returns a copy of an older plan in the current schema version |
+| Module loader | Reads module files and decodes them strictly |
+| Section selector | Finds the active sections of a plan from its answers, and orders them |
+| Section resolver | Fills a section's placeholders from the plan's values |
+| Section hasher | Computes the content hash recorded in a section's `source` |
+| Secrets check | Decides whether a value looks like a token |
 
-## Deferred
+Drivers hold the current plan, read and write plan files, and show results. They contain no rules about questions or content.
 
-A non-interactive render command is out of scope for now. The walkthrough already loads, edits, and regenerates from a saved config, and tests call the core directly. Adding the command later means one thin wrapper over the same core path, which this split keeps cheap.
+## Side effects and plan access
+
+Two declarations for every component, stated in its contract and checked by a property test.
+
+- **Side effects** are what a component does outside the plan. Only drivers and the entry point read or write files. Every other component has no side effects and returns values.
+- **Plan access** is what a component does with a plan it was given. Plans are values, so no component alters one. A component **reads** fields, or **returns a changed copy** that differs only in the fields it declares, or **creates** a plan from inputs that are not a plan.
+
+| Component | Side effects |
+| --- | --- |
+| `module/loader` | Reads module files |
+| `plan/migrator`, `plan/instantiator` | None. They return values |
+| `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
+| `section/selector`, `section/resolver`, `section/hasher`, `secrets` | None |
+| `document/assembler` | None. It returns the document |
+| `tui`, `stdio`, `assemble` commands | Read and write plan files, and write the document, only after a confirmed action or an explicit command |
+| `binary` | Reads embedded modules, wires the components, writes only through the drivers |
+
+R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
+
+| Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `enabled` | `source` |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `plan/instantiator` | C | C | C | C | C | C | C |
+| `plan/migrator` | W | W | W | W | W | W | W |
+| `plan/editor` | | | | W | | W | |
+| `question/finder` | | | R | R | R | R | |
+| `plan/validator` | | | R | R | R | | |
+| `section/selector` | | | | R | R | R | |
+| `section/resolver` | | | | R | R | | |
+| `section/hasher` | | | | | R | | |
+| `document/assembler` | R | R | R | R | R | R | |
+| Update action, deferred | | W | | | W | | W |
+
+A person editing a plan by hand can change anything, and the validator checks the result on load.
 
 ## Dependency rules
 
-These are candidates for architecture tests, see [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20).
+Written out in 0020. In short:
 
-- The interface layer may import core. Core never imports the interface layer.
-- Renderers do not know about each other. Adding a style adds one package.
-- Only the writer touches the filesystem outside embedded modules.
-- Only the config store reads or writes config files.
+- A component may depend only on components earlier in the dependency order. Two components at the same position may not depend on each other.
+- The domain model depends on nothing. Core components never depend on the TUI.
+- The document assembler never touches modules, so a plan assembles on its own.
+- Only the `actions` package may run commands or open URLs, in v2.
+- Architecture tests and a dependency check enforce these in `just pre-commit`.
+
+## Commands
+
+| Command | Does |
+| --- | --- |
+| `onboard-kit` | Starts the TUI walkthrough |
+| `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
+| `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
+| `onboard-kit lint` | Checks modules against the schema |
 
 ## Open questions
 
-- Is the placeholder resolver separate from the renderer, or does the renderer fill values as it goes? Depends on [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3).
-- Are output styles render-time transforms or per-style module variants? See [#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8).
+Open questions for components are listed in [0020](../decisions/0020-binary-structure-and-regenerative-components.md) and [0010](../decisions/0010-plan-editor.md).

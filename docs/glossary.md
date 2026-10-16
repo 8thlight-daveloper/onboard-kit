@@ -23,10 +23,12 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term        | Meaning                                                                                                                                                          |
 |-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Tool        | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it.                                                       |
-| Plan editor | Component that edits a plan by asking questions and applying answers. It holds no state of its own. See [0010](decisions/0010-plan-editor.md). |
+| Plan editor | Component that returns a copy of a plan with one answer applied. The copy differs only in `values` and `enabled`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md). |
+| Question finder | Component that finds the questions a plan asks, with their current values, and which required ones still have no value. It only reads. |
+| Plan validator | Component that checks whether a plan's values are acceptable: type, options, and the secrets check. |
 | Walkthrough | The interactive run where the tool asks questions and builds a plan.                                                                                             |
 | TUI         | Terminal user interface. The screen-based walkthrough in a terminal.                                                                                             |
-| Driver      | Anything that operates the plan editor: the TUI, a headless command, or a test.                                                                                        |
+| Driver      | Anything that operates the plan components: the TUI, a headless command, or a test. |
 | Headless    | Running without a person or a screen. A command reads input and writes output.                                                                                   |
 | Assemble    | The step that turns a plan into a document in an output style. It is deterministic. No model runs.                                                               |
 
@@ -43,6 +45,12 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Plan migrator | Component that brings a plan of an older schema version up to the current one. |
 | Domain model       | The definitions of the data that several components pass to each other, such as Module, Section, and Plan. They live in one folder, `model`, and change slowly.                                                                                                                 |
 | Boundary           | The edge of a component: what it accepts, what it returns, and what it hides. A component's contract describes its boundary.                                                                                                                                                    |
+| Functional core | Every component except the drivers and the entry point. Its functions are pure and never alter an argument. See [0015](decisions/0015-functional-core-and-imperative-shell.md). |
+| Imperative shell | The drivers and the entry point. They do input and output, hold the current plan, and call the core. |
+| Pure function | A function whose result depends only on its arguments, and that changes nothing outside itself. |
+| Immutable value | A value that is never altered after it is made. A change produces a new value. |
+| Side effect | Something a component does outside the plan, such as reading or writing a file. Only drivers and the entry point have them. |
+| Plan access | What a component does with a plan it was given: it reads fields, returns a changed copy that differs only in declared fields, or creates a plan from other inputs. No component alters the plan it was given. |
 | Dependency         | One component using another. The document assembler using the domain model is a dependency.                                                                                                                                                                                     |
 | Dependency rules   | The rules that limit which dependencies are allowed, so boundaries hold. Components have a place in a dependency order and may depend only on components earlier in it. The plan instantiator may depend on the module selector, and the module selector may never depend on the plan instantiator. |
 | Dependency check   | An automatic check that fails the build when a component has a dependency the rules do not allow. It works by reading the imports in the code.                                                                                                                                  |
