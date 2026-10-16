@@ -23,6 +23,11 @@ The client will read these templates, so write for a newcomer who has never hear
 - Placeholders go in angle brackets: `<Organization>`.
 - One idea per checklist item.
 
+## Where files go
+
+- `output/` holds plans and documents the tool generates. They carry client specifics, so git ignores everything in it except `output/.gitkeep`, which keeps the folder after a clone. Never commit what is in there.
+- `.scratch/` is for throwaway notes, drafts, and anything an agent writes for itself. Git ignores it for everyone. Create it when you need it.
+
 ## Checks
 
 Run `just check` before you push. It formats and lints Markdown, checks that relative links and heading anchors resolve, applies the voice rules (no em dashes, no banned filler words, sentence case headings), and runs the tests. `just fmt` fixes formatting. `just hook` runs it before every commit. CI runs the same recipe, so a green local run means a green CI run.
