@@ -135,7 +135,7 @@ Written out in 0020. In short:
 - The domain model depends on nothing. Core components never depend on the TUI.
 - The document assembler never touches templates, so a plan assembles on its own.
 - Only the `actions` package may run commands or open URLs, in v2.
-- Architecture tests and a dependency check enforce these in `just pre-commit`.
+- Architecture tests and a dependency check enforce these in `just check`.
 
 ## Commands
 

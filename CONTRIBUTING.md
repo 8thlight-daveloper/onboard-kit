@@ -25,7 +25,7 @@ The client will read these templates, so write for a newcomer who has never hear
 
 ## Checks
 
-Run `just check` before you push. It formats and lints Markdown, checks that relative links and heading anchors resolve, applies the voice rules (no em dashes, no banned filler words, sentence case headings), and runs the tests. `just fmt` fixes formatting. `just hook` runs the fast checks before every commit.
+Run `just check` before you push. It formats and lints Markdown, checks that relative links and heading anchors resolve, applies the voice rules (no em dashes, no banned filler words, sentence case headings), and runs the tests. `just fmt` fixes formatting. `just hook` runs it before every commit. CI runs the same recipe, so a green local run means a green CI run.
 
 ## Adding a variant
 

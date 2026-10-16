@@ -7,11 +7,8 @@ link_paths := "'docs/**/*.md' AGENTS.md README.md CONTRIBUTING.md"
 default:
     @just --list
 
-# Everything: tests and every linter.
-check: pre-commit lint-prose
-
-# Fast checks, also run by the git hook: format check, lint, and tests.
-pre-commit: fmt-check lint-md lint-links test
+# Everything CI runs: format check, every linter, and the tests.
+check: fmt-check lint-md lint-links lint-prose test
 
 # Format Markdown in place.
 fmt:
@@ -48,7 +45,7 @@ build:
 run *args:
     if [ -f go.mod ]; then go run ./binary {{ args }}; else echo "no Go module yet"; fi
 
-# Install the git hook that runs pre-commit.
+# Install the git hook that runs check before every commit.
 hook:
     git config core.hooksPath .githooks
     @echo "git hook installed: .githooks/pre-commit"

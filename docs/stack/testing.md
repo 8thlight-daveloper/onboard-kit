@@ -14,7 +14,7 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 
 - Golden regeneration is a separate explicit command and never runs as a side effect of a test. The command is not defined yet.
 - Time comes in as a parameter, so no test depends on the clock.
-- `just pre-commit` runs the dependency check, the architecture tests, and the full test suite.
+- `just check` runs the dependency check, the architecture tests, and the full test suite, along with the format and lint checks. CI runs the same recipe.
 
 ## Retired
 
