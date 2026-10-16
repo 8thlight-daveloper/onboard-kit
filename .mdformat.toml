@@ -1,6 +1,7 @@
 wrap = "keep"
 number = true
 end_of_line = "lf"
+exclude = ["docs/reference/examples/acme/acme.md"]
 
 [plugin.tables]
 compact_tables = true
