@@ -31,7 +31,7 @@ Package-manager channels are conveniences beside the standalone file, which stay
 1. **Homebrew.** A tap, which is a git repo holding a formula with the release URL and a hash per platform. Most Mac users already know it.
 2. **Nix.** A flake that fetches the release binary. Fetching is simpler for us than building from source, because the flake is one small file of URLs and hashes and avoids a stale `vendorHash`. It is faster for the Nix user, with no compile on update. It also installs the exact binary that CI verified.
 
-Release CI computes the hashes and writes both channel files, so a release updates every channel from one source. A release tool such as GoReleaser can do this, which is a stack choice for [stack.md](../stack.md).
+Release CI computes the hashes and writes both channel files, so a release updates every channel from one source. A release tool such as GoReleaser can do this, which is a stack choice for [release](../stack/release.md).
 
 ### Private now, possibly public later
 
@@ -51,7 +51,7 @@ CI checks the constraint on every release build:
 
 ## Consequences
 
-- The language and library choice in `docs/stack.md` must satisfy this. A compiled language that produces one static binary does so natively. An interpreted language qualifies only if a bundled build passes the verification above.
+- The language and library choice in [the stack](../stack/README.md) must satisfy this. A compiled language that produces one static binary does so natively. An interpreted language qualifies only if a bundled build passes the verification above.
 - Libraries that need a native dependency must link it statically.
 - Updating the tool means replacing the file. Update delivery stays in [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
 

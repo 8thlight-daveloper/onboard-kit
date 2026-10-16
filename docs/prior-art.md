@@ -46,7 +46,7 @@ Source: [Cortex developer onboarding guide](https://www.cortex.io/post/developer
 
 Three SharePoint site templates for pre-onboarding, corporate onboarding, and departmental onboarding, usable alone or together. They include an "onboarding journey", a configurable list of activities paced over 30, 60, and 90 days. Prepopulated pages are marked for the owner to keep, edit, or delete. The maintenance guidance names site owners, training for them, and a content audit schedule, and its KPI table assigns a business owner to each measure.
 
-Why it matters: the activity list is item-level, like the steps in our [ACME example](architecture/examples/acme/README.md). The layered templates resemble our core plus variants.
+Why it matters: the activity list is item-level, like the steps in our [ACME example](reference/examples/acme/README.md). The layered templates resemble our core plus variants.
 
 Source: [Microsoft Learn, New Employee Onboarding sites](https://learn.microsoft.com/en-us/sharepoint/provision-neo-hub)
 

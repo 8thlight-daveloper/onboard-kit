@@ -50,8 +50,8 @@ A returned value may share unchanged parts with its input. Nothing is ever mutat
 
 - **Inputs unchanged.** Every contract test takes a deep snapshot of its inputs before the call and compares afterward. A function that mutates an argument fails.
 - **Deterministic.** Every contract test runs each call twice and compares the results byte for byte.
-- **Declared plan access.** After any call, every plan field outside the declared set is identical to the input. See [02-components](../architecture/02-components.md#side-effects-and-plan-access).
-- **No input or output in the core.** The dependency check forbids core components from importing the filesystem, network, process, or terminal packages. The exact list belongs in [stack.md](../stack.md).
+- **Declared plan access.** After any call, every plan field outside the declared set is identical to the input. See [components](../architecture/components.md#side-effects-and-plan-access).
+- **No input or output in the core.** The dependency check forbids core components from importing the filesystem, network, process, or terminal packages. The exact list belongs in [dependency check](../stack/dependency-check.md).
 - **No shared mutable state.** A lint forbids package-level variables that can change.
 
 ## Consequences

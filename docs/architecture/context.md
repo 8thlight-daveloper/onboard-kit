@@ -7,7 +7,7 @@ Who and what touches onboard-kit. The tool is internal. The client receives only
 > [!NOTE]
 > **What is a module?**
 >
-> A module is one YAML file holding a single piece of onboarding content, such as the first week plan or the access checklist. It says when to include it, which placeholders it needs, and what steps it contains. Prose fields hold Markdown text. A new plan starts with every standard module as a section, and the walkthrough answers decide which sections are active. Modules are plain data, so people and agents can write and validate them without special tooling. See [05-module-schema.md](05-module-schema.md) and the [ACME example](examples/acme/README.md).
+> A module is one YAML file holding a single piece of onboarding content, such as the first week plan or the access checklist. It says when to include it, which placeholders it needs, and what steps it contains. Prose fields hold Markdown text. A new plan starts with every standard module as a section, and the walkthrough answers decide which sections are active. Modules are plain data, so people and agents can write and validate them without special tooling. See [module schema](../reference/module-schema.md) and the [ACME example](../reference/examples/acme/README.md).
 
 ```mermaid
 flowchart LR

@@ -64,11 +64,11 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
-- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [05-module-schema](../architecture/05-module-schema.md#optional-sections).
+- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [module schema](../reference/module-schema.md#optional-sections).
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions, and the validator reports unknown references and cycles. The syntax is in [05-module-schema](../architecture/05-module-schema.md#question-conditions).
+- **Conditions.** A placeholder can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block. A condition is true only when every question it tests has a real value, which is a stored value that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions, and the validator reports unknown references and cycles. The syntax is in [module schema](../reference/module-schema.md#question-conditions).
 
 Four drivers share these functions:
 
@@ -155,13 +155,13 @@ Assemble writes nothing on a non-zero exit. The entry point writes the document 
 
 ### Acceptance runner
 
-The acceptance runner reads scenarios, which are data and not code, and drives the built binary. See [0020](0020-binary-structure-and-regenerative-components.md). It handles processes so no scenario does.
+The acceptance runner reads scenarios, which are data and not code, and drives the built binary. See [0025](0025-contracts-and-tests.md). It handles processes so no scenario does.
 
 - **Assemble runs.** The runner starts the process and captures standard output, standard error, and the exit code. A scenario can expect a failure, such as exit 1 with a report listing a blocker. An unexpected non-zero exit fails the scenario, with standard error and the report in the message.
 - **Stdio runs.** The runner sends each request line and reads each response. A response with `"ok":false` fails the scenario unless the scenario expects it. If the process dies mid-scenario, the scenario fails with the exit code and captured standard error. Each read has a deadline, so a hung binary fails the scenario and stalls nothing.
 - **Shutdown.** The runner closes standard input, waits briefly for exit, and kills the process if it does not exit. This always runs, after a failed expectation as after a passing one.
 - **Runner crashes.** If the runner itself is killed, the child sees standard input close, which is the normal end signal, and exits on its own.
-- **Language specifics.** How the current runner does this, for example its cleanup hooks and deadlines, belongs to its code and to [stack.md](../stack.md), not to this ADR.
+- **Language specifics.** How the current runner does this, for example its cleanup hooks and deadlines, belongs to its code and to [testing](../stack/testing.md), not to this ADR.
 
 ### Boundaries
 

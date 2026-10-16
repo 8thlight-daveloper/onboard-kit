@@ -19,17 +19,17 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 | Doc | Shows |
 | --- | --- |
-| [01-context.md](01-context.md) | Who and what touches the system |
-| [02-components.md](02-components.md) | The components and the direction of their dependencies |
-| [03-data-flow.md](03-data-flow.md) | How modules and answers become a document |
-| [04-walkthrough-sequence.md](04-walkthrough-sequence.md) | The steps of one run, including reopening a plan |
-| [05-module-schema.md](05-module-schema.md) | The shape of a module and a section |
-| [06-authoring-loop.md](06-authoring-loop.md) | How feedback becomes a better module |
+| [context.md](context.md) | Who and what touches the system |
+| [components.md](components.md) | The components and the direction of their dependencies |
+| [data-flow.md](data-flow.md) | How modules and answers become a document |
+| [walkthrough-sequence.md](walkthrough-sequence.md) | The steps of one run, including reopening a plan |
+| [authoring-loop.md](authoring-loop.md) | How feedback becomes a better module |
 
 ## Related
 
 - [Decisions](../decisions/) record choices the contracts and tests depend on.
-- [Stack](../stack.md) lists the current language and tooling, and what it replaced.
+- [Reference](../reference/module-schema.md) defines the module and section format, with a [worked example](../reference/examples/acme/README.md).
+- [Stack](../stack/README.md) lists the current language and tooling, and what it replaced.
 - [Glossary](../glossary.md) defines the terms used here.
 
 ## Decisions
@@ -39,7 +39,8 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | [0005](../decisions/0005-self-contained-install.md) | One self-contained file, no secondary installs | Accepted |
 | [0010](../decisions/0010-plan-editor.md) | Question finder, plan validator, and plan editor as plain functions over a plan, and the `assemble` and `stdio` commands | Proposed |
 | [0015](../decisions/0015-functional-core-and-imperative-shell.md) | Pure functions over immutable values in the core, input and output only in the shell | Proposed |
-| [0020](../decisions/0020-binary-structure-and-regenerative-components.md) | One binary, rebuildable components, contracts, dependency rules, output styles | Proposed |
+| [0020](../decisions/0020-binary-structure-and-regenerative-components.md) | One binary, rebuildable components, dependency rules, rate of change, output styles | Proposed |
+| [0025](../decisions/0025-contracts-and-tests.md) | Contracts, contract and acceptance tests, who writes them, and how a rebuild is run and reviewed | Proposed |
 | [0030](../decisions/0030-self-contained-plan-file.md) | The plan file holds everything, its format, versioning, and hashes | Proposed |
 
 ## Open decisions
@@ -53,10 +54,10 @@ Open questions across all docs are tracked in [#24](https://github.com/8thlight-
 
 ## Decided
 
-- Language and toolkit are stack notes, see [stack.md](../stack.md).
+- Language and toolkit are stack notes, see [stack](../stack/README.md).
 - The saved file is the plan, a YAML file named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
 - A plan holds every module as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
-- A placeholder can carry an `askIf` question condition, written as data. See [05-module-schema](05-module-schema.md#question-conditions).
+- A placeholder can carry an `askIf` question condition, written as data. See [module schema](../reference/module-schema.md#question-conditions).
 - Output styles are an option on a plan, not module variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
 - Non-interactive assembly exists as `onboard-kit assemble`, and `onboard-kit stdio` exposes the plan components over stdio for tests.
 - Hosting is deferred until after the MVP.
