@@ -102,7 +102,6 @@ sections:
         owner: $tracker_grantor
         check:
           ask: Can you open the work tracker?
-    enabled: true
     source:
       module: access
       hash: example-not-computed
@@ -151,7 +150,6 @@ sections:
         name: Run the tests
         directory: $repo_dir
         run: $test_command
-    enabled: true
     source:
       module: clone-and-run-tests
       hash: example-not-computed
@@ -167,6 +165,10 @@ sections:
     timing: week-one
     verification: You can open the design system and the main design file.
     placeholders:
+      - name: enabled
+        description: Include the design review?
+        type: boolean
+        default: true
       - name: design_system_url
         description: Where the design system lives
         required: true
@@ -187,7 +189,6 @@ sections:
         open: $design_file_url
         check:
           ask: Can you open the main design file?
-    enabled: true
     source:
       module: review-design-system
       hash: example-not-computed

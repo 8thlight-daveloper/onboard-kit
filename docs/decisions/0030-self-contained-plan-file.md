@@ -67,7 +67,7 @@ sections:
 
 A section has the same shape as a module, with an added `source`. A module file is a section before it is in a plan. A plan holds all of them, with their selection fields (`appliesTo`, `order`) kept and their placeholders unresolved.
 
-- **Active sections are computed.** A section is active when its `appliesTo` matches the axis values and it is enabled. The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
+- **Active sections are computed.** A section is active when its `appliesTo` matches the axis values and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on. See [05-module-schema](../architecture/05-module-schema.md#optional-sections). The section selector computes this from the plan whenever it is needed. Nothing is chosen once and thrown away.
 - **Questions are computed too.** The questions asked are the plan-level questions plus every placeholder of every active section whose `askIf` condition holds, if it has one. Each is its own question, with its own description, type, and default. A section added by hand brings its questions with it.
 - **Placeholders fill at assembly.** Values fill `$name` when the document is assembled. Nothing resolved is stored. A person can change a value or a section's text and get a correct document without the original modules.
 - **Inactive sections have no effect.** A hand edit to an inactive section does nothing until team state or discipline makes it active.
@@ -132,7 +132,7 @@ Why YAML: modules are authored and reviewed by people, and literal blocks keep p
 | Source hash | `9f2c...` | Computed by the tool when it copies a module into a plan. |
 | Module set version | `7652e0e` | The build's commit sha or tag, embedded at build time. Recorded in provenance. |
 
-The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source` and the `enabled` state. Placeholders are unresolved, so values do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a module file, so it cannot go stale.
+The source hash is a hash of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Placeholders are unresolved, so values do not change it either. The canonical form is a contract, protected by golden fixtures. Authors never write a hash into a module file, so it cannot go stale.
 
 A git blob sha would not do. It hashes raw text, it does not match the section's shape, a custom module folder may not be in git, and shas change on rebase or squash.
 

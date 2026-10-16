@@ -146,7 +146,7 @@ Each component has one job and a failure mode of its own, and its contract is no
 | Component | Does | Does not |
 | --- | --- | --- |
 | Module loader | Reads module files and decodes them strictly, enforcing the format rules in 0030 | Select or fill |
-| Section selector | Finds the active sections of a plan: `appliesTo` matching against the axis values, `any`, enabled state, sort by `order`, tie-break on `id` | Fill values, read modules |
+| Section selector | Finds the active sections of a plan: `appliesTo` matching against the axis values, `any`, the section's `enabled` value or default, sort by `order`, tie-break on `id` | Fill values, read modules |
 | Section resolver | Fills the placeholders in one section from the plan's values: `$name`, `$$`, command lists, `unknown-yet` gaps, undeclared or missing names | Choose sections, collect gaps across sections |
 | Section hasher | Computes the canonical content hash of a section, for its `source` | Anything else |
 | Plan instantiator | Builds the default plan from the loaded modules and the built-in axis questions: copies every module into a section, records `source` and provenance with an injected clock | Select, fill placeholders, ask questions, validate input |

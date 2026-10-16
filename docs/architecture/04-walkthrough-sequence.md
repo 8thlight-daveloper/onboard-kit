@@ -94,4 +94,4 @@ The v2 onboarding helper is a separate activity for the person being onboarded. 
 
 ## Open questions
 
-Which questions are optional is decided by each module with `required` and `default`, see [0010](../decisions/0010-plan-editor.md). How optional sections are toggled in the question flow is still open there.
+Which questions are optional is decided by each module with `required` and `default`, see [0010](../decisions/0010-plan-editor.md). An optional section declares an `enabled` placeholder, which is asked like any other question.

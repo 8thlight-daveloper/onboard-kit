@@ -66,7 +66,7 @@ flowchart TB
 | --- | --- |
 | Question finder | Finds a plan's active questions, one per section placeholder, with their values, groups, and suggestions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check |
-| Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values` and `enabled`. The plan it was given is not altered |
+| Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the modules and the axis questions, once, when a new plan starts |
 | Plan migrator | Returns a copy of an older plan in the current schema version |
@@ -97,18 +97,18 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan.
 
-| Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `enabled` | `source` |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| `plan/instantiator` | C | C | C | C | C | C | C |
-| `plan/migrator` | W | W | W | W | W | W | W |
-| `plan/editor` | | | | W | | W | |
-| `question/finder` | | | R | R | R | R | |
-| `plan/validator` | | | R | R | R | | |
-| `section/selector` | | | | R | R | R | |
-| `section/resolver` | | | | R | R | | |
-| `section/hasher` | | | | | R | | |
-| `document/assembler` | R | R | R | R | R | R | |
-| Update action, deferred | | W | | | W | | W |
+| Component | `schemaVersion` | `provenance` | `questions` | `values` | section content | `source` |
+| --- | --- | --- | --- | --- | --- | --- |
+| `plan/instantiator` | C | C | C | C | C | C |
+| `plan/migrator` | W | W | W | W | W | W |
+| `plan/editor` | | | | W | | |
+| `question/finder` | | | R | R | R | |
+| `plan/validator` | | | R | R | R | |
+| `section/selector` | | | | R | R | |
+| `section/resolver` | | | | R | R | |
+| `section/hasher` | | | | | R | |
+| `document/assembler` | R | R | R | R | R | |
+| Update action, deferred | | W | | | W | W |
 
 A person editing a plan by hand can change anything, and the validator checks the result on load.
 

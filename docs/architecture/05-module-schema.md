@@ -34,7 +34,6 @@ classDiagram
         order
         placeholders
         steps
-        enabled
         source
     }
     class Step {
@@ -73,7 +72,6 @@ classDiagram
 | `appliesTo` | Axis values the section applies to, such as team states and disciplines. `any` matches every value |
 | `order` | Sort position. Ties break on `id`, so output stays deterministic |
 | `placeholders` | Values the section needs, each with a name, a description, an optional type, and optional `required` and `default`. Each becomes a question |
-| `enabled` | Plan only. Whether an optional section is on. Starts from the module's default |
 | `source` | Plan only. The module id and a content hash recorded when the module was copied. See 0030 |
 | `schemaVersion` | Module files only. Plans carry one at the top |
 
@@ -129,7 +127,7 @@ A step with `run` and no `check` passes when the command exits with code 0. Step
 
 ### Question conditions
 
-A question condition says "ask this question only if other answers match." It gates one question, which is one placeholder. Sections have their own gates, `appliesTo` and `enabled`.
+A question condition says "ask this question only if other answers match." It gates one question, which is one placeholder. Sections have their own gates: `appliesTo`, and an `enabled` placeholder, see [Optional sections](#optional-sections).
 
 ```yaml
 placeholders:
@@ -187,6 +185,38 @@ Rules:
 - **`planning`** is asked while the consultant builds the plan, and the value is stored in the plan.
 - **`onboarding`** is asked of each newcomer while they onboard. The plan does not hold the value, because each person has their own. Planning skips it: it is not asked and does not block. The assembled document shows it as a blank, `<name>`. Storing and asking for these values waits for the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 
+## Optional sections
+
+A section that can be switched off declares a placeholder named `enabled`. It is an ordinary placeholder, so it has a `description`, `required`, `default`, and the rest.
+
+```yaml
+placeholders:
+  - name: enabled
+    description: Include the design review?
+    type: boolean
+    default: true
+```
+
+- **A section with no `enabled` placeholder is always on** when its `appliesTo` matches. Nobody is asked.
+- **The question** has the id `<section>.enabled`. The finder returns it before that section's other questions, in section `order`. The answer is stored in `values.sections.<id>.enabled`.
+- **When the answer is false**, the section's other questions are inactive. They keep their stored values, are not asked, and do not block.
+- **No answer.** The `default` applies. With neither an answer nor a default, the section is off. A `required` toggle with no answer is a blocker.
+- **Restrictions.** `enabled` must be `boolean`. `unknown-yet` is not accepted for it, because a section is either in or out. `askIf` is not supported on it yet.
+- **Conditions can test it.** A clause can name `<section>.enabled` like any other question.
+
+## Reserved names
+
+Placeholder names match `[a-z][a-z0-9_]*`. Lint rejects the names below. The validator rejects them in a plan too.
+
+| Reserved | Why |
+| --- | --- |
+| `enabled` | Reserved for the toggle above. It cannot be used as `$enabled` in text |
+| `yes`, `no`, `y`, `n`, `true`, `false`, `on`, `off`, `null` | YAML can read these as booleans or null. As keys in `values` they would load as the wrong data, and 0030 rejects them |
+
+Module ids are reserved too. A module id is a lowercase slug, and lint rejects `plan` and the YAML words above as ids. `plan` is the scope of plan-level answers, so a section named `plan` would make ids like `plan.teamState` ambiguous.
+
+Names are reserved only where a real clash exists. Words such as `default` and `type` are not reserved, because a placeholder name appears as a value of `name:`, never as a field key. Adding a reserved name later can break existing modules, so each new one needs a schema version bump and a lint message that says what to rename.
+
 ## Format rules
 
 - Prose fields, `body` and `notes`, hold Markdown in literal blocks, hard-wrapped.
@@ -197,7 +227,7 @@ Rules:
 
 ## Selection
 
-- A section is active when its `appliesTo` matches the plan's axis values and it is enabled.
+- A section is active when its `appliesTo` matches the plan's axis values and its `enabled` answer, or default, is true. A section with no `enabled` placeholder is always on.
 - Active sections sort by `order`.
 - Core modules carry `any` for both axes. Variants narrow one axis.
 

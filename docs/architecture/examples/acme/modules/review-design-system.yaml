@@ -11,6 +11,10 @@ owner: newcomer
 timing: week-one
 verification: You can open the design system and the main design file.
 placeholders:
+  - name: enabled
+    description: Include the design review?
+    type: boolean
+    default: true
   - name: design_system_url
     description: Where the design system lives
     required: true

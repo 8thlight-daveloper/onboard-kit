@@ -64,6 +64,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the values already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
+- **Optional sections.** A section that can be switched off declares an `enabled` placeholder. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [05-module-schema](../architecture/05-module-schema.md#optional-sections).
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 - **Walking.** A user interface can walk the questions from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
@@ -365,7 +366,3 @@ sequenceDiagram
 - **Opening a plan against the module set and reporting drift.** An earlier design. It tied every saved plan to modules that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
 - **Scanning for orphaned stdio processes at startup.** Rejected. The process holds no ports, locks, or files, and exits on stdin EOF, so orphans need a hung child, which is a bug. A scan cannot tell a stray from a parallel test run or a consultant's live run, so it risks killing the wrong process, and PID files add state to a stateless tool. If a stuck process is ever observed, add an opt-in `--max-lifetime` flag that the test helper sets just above the test timeout, or kill the process group from the helper.
 - **A local server with the TUI as a client.** Gives independent clients and a permanent API contract. Costs process lifecycle, socket auth, and wire versioning for a single short-lived client. The stdio adapter above takes the useful part, a black-box protocol, without the network. Revisit a network server if a second concurrent client appears or hosting ([#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4)) becomes real.
-
-## Open questions
-
-- How are optional sections toggled in the question flow? A toggle per optional section, shown as a yes or no question, is the likely shape.
