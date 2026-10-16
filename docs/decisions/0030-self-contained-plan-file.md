@@ -79,7 +79,7 @@ A section has the same shape as a template, with an added `source`. A template f
 A question belongs to a scope: the plan, or one section. Its id is `<scope>.<name>`, for example `plan.team_state` or `access.repo_url`. Each scope holds its own values, all in the plan's `answers`.
 
 - **No coordination between templates.** Two sections that both declare `repo_url` have two questions and two answers. A template author never needs to know another template's names.
-- **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the answers already given for that name in any section, including inactive ones. See [0010](0010-plan-editor.md).
+- **Asking once is a convenience.** The finder groups questions with the same name, type, and options. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the answers already given for that name in any scope, the plan's and every section's, including inactive ones. See [0010](0010-plan-editor.md).
 - **Filling reads one scope.** A variable takes its own section's value, then that section's default.
 - **Newcomer answers are outside the plan.** A variable with `phase: onboarding` is answered by each newcomer, so the plan holds no answer for it. Planning skips it. Where those answers live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
 

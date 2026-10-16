@@ -30,7 +30,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Section condition | An optional `includeIf` on a section or template, with the same syntax as `askIf`. The section is in the plan's document only when it holds, and it may name only plan variables. See [conditions](reference/section-template-schema/conditions.md#section-conditions). |
 | Optional section | A section that declares an `enabled` variable, so a person can switch it off. A section without one is always on when it applies. |
 | Reserved name | A variable name or template id that lint rejects, because it has a special meaning or YAML reads it as another type. See [section template schema](reference/section-template-schema/reserved-names.md). |
-| Suggestion | A value offered for a question: the distinct declared defaults in its group, and answers already given for that name. |
+| Suggestion | A value offered for a question: the distinct declared defaults in its group, and answers already given for that name in the plan or any section. |
 | Plan editor | Component that returns a copy of a plan with one answer applied. The copy differs only in `answers`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md). |
 | Question finder | Component that finds the questions a plan asks, with their current answers, and which required ones still have no answer. It only reads. |
 | Plan validator | Component that checks whether a plan's answers are acceptable: type, options, and the secrets check, and the relations between sections such as dependency cycles and timing conflicts. |

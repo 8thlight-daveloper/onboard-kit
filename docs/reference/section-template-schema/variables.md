@@ -11,6 +11,7 @@ A variable belongs to the plan or to one section.
 - **Section variables** are declared in the section's `variables`. Each is its own variable with its own answer, even when two sections use the same name.
 - **Plan variables** are declared in the plan's `variables`. They are the axis variables `team_state` and `discipline`, document details such as `organization` and `team`, and settings such as `output_style`. The default plan carries the built-in ones. Their values live in `answers.plan`.
 - A plan variable is the same type as a section variable, with these limits. It may not use `phase: onboarding`, because the plan holds one answer for everyone. It should not use `askIf`, and the validator reports one that does.
+- **A section uses only the variables it declares.** A `$name` the section does not declare is a lint error, even when a plan variable has that name. So a section stays self-contained if a plan variable is later removed. The finder still groups questions with the same name, type, and options across scopes, and offers a plan variable's answer as a suggestion. The consultant types `organization` once, and a section's own `organization` variable offers it.
 - A question id is `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`.
 
 ## Syntax

@@ -64,7 +64,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Groups.** Questions with the same name, type, and options form a group. A user interface can ask a group once and apply the answer to every member, with one `Submit` each, and a person can split it. Grouping is data the finder returns. It is not a rule that merges anything.
 
-- **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the answers already given for that name in any section, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
+- **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the answers already given for that name in any scope, the plan's and every section's, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
 
