@@ -73,5 +73,5 @@ A returned value may share unchanged parts with its input. Nothing is ever mutat
 
 ## Open questions
 
-- Which standard library packages does the dependency check forbid in core components? A stack decision.
+- Which standard library packages does the dependency check forbid in core components? A stack decision, see [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
 - Does the property test snapshot cover unexported fields, or only the serialized form? The serialized form is the contract, and it is enough to start.

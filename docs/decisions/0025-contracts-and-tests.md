@@ -97,4 +97,4 @@ The dependency check tool is a stack choice, listed in [dependency check](../sta
 ## Open questions
 
 - Which mutation tool do we use? A stack choice, see [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
-- Do we keep both contract-strength checks after the first builds? Decide after seeing what they catch.
+- Do we keep both contract-strength checks after the first builds? Decide after seeing what they catch, see [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37).

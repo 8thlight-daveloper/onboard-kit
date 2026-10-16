@@ -45,19 +45,24 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 ## Open decisions
 
+Each open decision has its own issue.
+
 | Decision | Issue |
 | --- | --- |
-| Section template schema and placeholder syntax | [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3) |
 | Hosting and distribution | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
+| Dependency check extractor, the banned packages, and the mutation tool | [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33) |
+| Update action conflict handling, deferred past the MVP | [#32](https://github.com/8thlight-daveloper/onboard-kit/issues/32) |
+| Keep the contract-strength checks after the first builds | [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37) |
 
-Open questions across all docs are tracked in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25), waits on it.
+The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25), is the next piece of work.
 
 ## Decided
 
 - Language and toolkit are stack notes, see [stack](../stack/README.md).
 - The saved file is the plan, a YAML file named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
 - A plan holds every template as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
-- A placeholder can carry an `askIf` question condition, written as data. See [section template schema](../reference/section-template-schema/conditions.md).
+- Conditions are data: `askIf` on a placeholder gates a question, and `includeIf` on a section gates the section. A variant is a template with its own `includeIf` and never overrides a core template. See [conditions](../reference/section-template-schema/conditions.md).
+- Sections sort by `timing`, then `after`, then `id`. See [ordering](../reference/section-template-schema/ordering.md).
 - Output styles are an option on a plan, not template variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
 - Non-interactive assembly exists as `onboard-kit assemble`, and `onboard-kit stdio` exposes the plan components over stdio for tests.
 - Hosting is deferred until after the MVP.
