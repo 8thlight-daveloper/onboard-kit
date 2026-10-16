@@ -2,11 +2,12 @@
 
 Status: proposed. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). A worked example lives in [examples/acme](examples/acme/README.md).
 
-A module is one YAML file at `modules/<id>.yaml`. It carries the content of a plan section, plus the fields the selector needs. Instantiation selects modules, orders them, and drops the selection fields. What remains is a section in the plan, with its placeholders still in place. Values fill them when the document is assembled.
+A module is one YAML file at `modules/<id>.yaml`. A plan holds every standard module as a section, copied unchanged with one added field, `source`. So a module and a section have the same shape, and a module file is a section before it is in a plan. The fields the selector needs, `appliesTo` and `order`, stay in the section. Which sections are active is computed from the plan's answers whenever it is needed, and placeholders stay in place until the document is assembled. See [0030](../decisions/0030-self-contained-plan-file.md).
 
 ```mermaid
 classDiagram
     class Module {
+        schemaVersion
         id
         title
         type
@@ -29,7 +30,12 @@ classDiagram
         timing
         verification
         body
+        appliesTo
+        order
+        placeholders
         steps
+        enabled
+        source
     }
     class Step {
         id
@@ -46,21 +52,25 @@ classDiagram
         name
         description
         type
+        required
+        default
     }
 
-    Module ..> Section : instantiated as
-    Module "1" --> "*" Placeholder : declares
-    Module "1" --> "*" Step : contains
+    Module ..> Section : copied into a plan as
+    Section "1" --> "*" Placeholder : declares
     Section "1" --> "*" Step : contains
 ```
 
-## Fields that exist only in modules
+## Selection and question fields
 
 | Field | Purpose |
 | --- | --- |
-| `appliesTo` | Team states and disciplines the module applies to. `any` matches every value |
+| `appliesTo` | Axis values the section applies to, such as team states and disciplines. `any` matches every value |
 | `order` | Sort position. Ties break on `id`, so output stays deterministic |
-| `placeholders` | Values the module needs, each with a name, a description, and an optional type |
+| `placeholders` | Values the section needs, each with a name, a description, an optional type, and optional `required` and `default`. Each becomes a question |
+| `enabled` | Plan only. Whether an optional section is on. Starts from the module's default |
+| `source` | Plan only. The module id and a content hash recorded when the module was copied. See 0030 |
+| `schemaVersion` | Module files only. Plans carry one at the top |
 
 ## Steps
 
@@ -91,11 +101,12 @@ A step with `run` and no `check` passes when the command exits with code 0. Step
 - One JSON Schema covers modules and plans, so editors can validate and complete them.
 - Modules decode strictly and reject unknown fields. Plans decode leniently and keep unknown fields, so a plan written by a newer tool survives an older one.
 - Everything beyond `id`, `title`, `type`, and `summary` is optional, so the schema can grow without breaking older files.
+- Booleans are lowercase `true` and `false` only. Unquoted `yes`, `no`, `on`, `off`, and similar are errors, and so are anchors and aliases. See the Format section of 0030.
 
 ## Selection
 
-- A module is included when its `appliesTo` matches the answers.
-- Included modules sort by `order`.
+- A section is active when its `appliesTo` matches the plan's axis values and it is enabled.
+- Active sections sort by `order`.
 - Core modules carry `any` for both axes. Variants narrow one axis.
 
 ## Open questions
@@ -105,3 +116,5 @@ A step with `run` and no `check` passes when the command exits with code 0. Step
 - Are module dependencies needed, or does ordering cover it?
 - Does a `reviewedOn` date drive a staleness warning?
 - Do we borrow `if:` from CI files for per-platform commands?
+- Where several active sections declare the same placeholder, which description, `required`, and default does the question take?
+- How is the condition for asking a question written?

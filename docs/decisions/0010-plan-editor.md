@@ -21,20 +21,18 @@ Add a `plan/editor` component. It edits a plan by asking questions and applying 
 Surface, as a sketch:
 
 ```go
-Questions(plan) []Question                       // active questions in order, each with its current value or default
-Submit(plan, id, value, expand) (Plan, []Problem) // returns a new plan and any problems
-Blockers(plan) []Blocker                         // what still stops assembly
-Validate(plan) []Problem                         // checks a loaded plan, for example after a hand edit
+Questions(plan) []Question               // active questions in order, each with its current value or default
+Submit(plan, id, value) (Plan, []Problem) // returns a new plan and any problems
+Blockers(plan) []Blocker                 // what still stops assembly
+Validate(plan) []Problem                 // checks a loaded plan, for example after a hand edit
 ```
 
-A new plan is the empty plan: the built-in axis questions, team state and discipline, and no sections.
+### Starting and opening
 
-### Expanding a plan
+- **A new plan** is the default plan: the axis questions and every standard module as a section, with no values. The plan instantiator builds it from the embedded modules. See [0030](0030-self-contained-plan-file.md).
+- **An opened plan** is read from a file, brought to the current schema version by the plan migrator, and checked with `Validate`.
 
-Answering the axis questions decides which modules apply. The editor does not know about modules. The driver passes `expand`, a function from plan to plan, defined in the editor's contract. When the axis answers are complete, `Submit` calls `expand`, and the result has sections and their placeholder questions. Values already given are kept by name when the question still exists.
-
-- For a new plan, the driver binds `expand` to the plan instantiator and the module set embedded in the tool.
-- For an opened plan, the driver passes no `expand`. Changing team state or discipline is then refused with a problem, because it changes which sections apply, and the embedded modules may differ from the ones the plan was made from. Updating a plan from a newer module set is a separate action, deferred beyond the MVP. See [0030](0030-self-contained-plan-file.md).
+Either way the editor gets a plan, and needs no modules. Answering the axis questions changes which sections are active, and the editor works that out from the plan with the section selector. Changing team state or discipline works on any plan.
 
 ### Plans are values
 
@@ -50,7 +48,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 ### Walking the questions
 
-`Questions(plan)` returns every active question, each with its current value or default. A user interface can walk them from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the editor supports either. It stores no resume position, because the plan is the only state.
+`Questions(plan)` returns every active question, each with its current value or default. The active questions are the plan-level questions, such as the axis questions, plus the placeholders of the active sections, joined by name. A user interface can walk them from the first, with existing values as defaults, or jump to one from a review screen. Both are interface choices, and the editor supports either. It stores no resume position, because the plan is the only state.
 
 A question can carry a condition on other answers. A question whose condition is false is not active. It keeps its stored value, is not asked, and does not block.
 
@@ -72,7 +70,7 @@ Both are experimental until after the MVP, so scripts that depend on them carry 
 `assemble` is the deterministic step from a plan to a document. It matches the architecture principle "Deterministic assembly" and avoids confusion with drawing a terminal screen.
 
 - `onboard-kit assemble --plan <file>` assembles a document from a plan, with an optional `--style`. It replaces the earlier deferral of non-interactive document assembly. Acceptance tests use it to judge plan in, document out.
-- `onboard-kit edit` runs the editor over stdio. It starts a new plan, or opens one given `--plan <file>`. The process holds the current plan, so there is no ID of any kind. Acceptance tests use it to judge the whole app, including the question flow.
+- `onboard-kit edit` runs the editor over stdio. It starts from the default plan, or opens one given `--plan <file>`. The process holds the current plan, so there is no ID of any kind. Acceptance tests use it to judge the whole app, including the question flow.
 
 The stdio protocol is line-delimited JSON, one request per line and one response per line, in order. Sketch:
 
@@ -93,7 +91,7 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 
 ### State
 
-- **Call and response.** Every call is synchronous and returns a result, like a request to an HTTP API. The editor never waits for a human and never calls back into a driver, except through `expand`. A driver that wants an answer asks the human, then calls `Submit`.
+- **Call and response.** Every call is synchronous and returns a result, like a request to an HTTP API. The editor never waits for a human and never calls back into a driver. A driver that wants an answer asks the human, then calls `Submit`.
 - **Where state lives.** In the plan, held by the driver. Nothing is stored between runs.
 - **What persists.** The plan file, which holds everything needed to reopen it. See [0030](0030-self-contained-plan-file.md).
 
@@ -110,7 +108,7 @@ Errors fall into four classes.
 
 | Class | Example | Handling |
 | --- | --- | --- |
-| Problem | Secret-like value, unknown question id, an axis change on an opened plan | Normal result, not a tool failure |
+| Problem | Secret-like value, unknown question id, a value of the wrong type | Normal result, not a tool failure |
 | Blocker | Required question has no value | Normal result, stops assembly |
 | Protocol or usage error | Bad JSON, unknown command, unreadable file | Tool error |
 | Internal failure | Panic, bug | Tool error, non-zero exit |
@@ -146,7 +144,7 @@ Acceptance tests share one helper under `acceptance/`, so no test handles proces
 
 ### Boundaries
 
-- `plan/editor` imports the secrets check and the domain model. It never imports modules or the plan instantiator. `expand` is an interface in its contract, and the entry point binds it. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
+- `plan/editor` imports the section selector, the secrets check, and the domain model. It never imports modules or the plan instantiator. See [0020](0020-binary-structure-and-regenerative-components.md) for the dependency rules.
 - Drivers import the editor. The TUI imports nothing else from core except the document assembler. Drivers call the document assembler with the plan the editor produced.
 - `plan/editor` is a regenerable component. Its contract fixtures are plan before, answer, and plan after.
 
@@ -154,32 +152,30 @@ Acceptance tests share one helper under `acceptance/`, so no test handles proces
 
 ### Contract test as the driver
 
-The test calls the editor directly. It judges one component and lives under `contracts/plan/editor/`. `expand` is a test double.
+The test calls the editor directly, starting from a default plan in a fixture. It judges one component and lives under `contracts/plan/editor/`.
 
 ```mermaid
 sequenceDiagram
     participant S as Contract test
     participant E as Plan editor
-    participant X as Expand (test double)
 
     S->>E: Questions(p0)
-    E-->>S: Team state, discipline
-    S->>E: Submit(p0, team state, "established", expand)
+    E-->>S: Team state and discipline
+    S->>E: Submit(p0, team state, "established")
+    E->>E: Validate and apply answer
     E-->>S: Plan p1, no problems
 
-    S->>E: Submit(p1, discipline, "software", expand)
-    E->>E: Axis answers complete
-    E->>X: expand(p1)
-    X-->>E: Plan with sections and questions
+    S->>E: Submit(p1, discipline, "software")
     E-->>S: Plan p2, no problems
 
     S->>E: Questions(p2)
-    E-->>S: Repo access, and the rest
-    S->>E: Submit(p2, repo access, a credential-like value, expand)
+    E->>E: Find the active sections
+    E-->>S: Repo access, and the questions of the other active sections
+    S->>E: Submit(p2, repo access, a credential-like value)
     E->>E: Secrets check fails
     E-->>S: Plan equal to p2, problem: value looks like a credential
 
-    S->>E: Submit(p2, repo access, "ask the team lead", expand)
+    S->>E: Submit(p2, repo access, "ask the team lead")
     E-->>S: Plan p3, no problems
 
     S->>E: Blockers(p3)
@@ -195,39 +191,39 @@ The test starts the built binary and talks to it over stdio. It judges the whole
 sequenceDiagram
     participant A as Acceptance test
     participant P as onboard-kit edit
-    participant E as Plan editor
     participant I as Plan instantiator
+    participant E as Plan editor
 
     A->>P: Start process
-    P->>P: Hold an empty plan p0
+    P->>I: Build the default plan from the embedded modules
+    I-->>P: Default plan p0
+    P->>P: Hold p0 as current
 
     A->>P: {"cmd":"questions"}
     P->>E: Questions(p0)
-    E-->>P: Team state, discipline
+    E-->>P: Team state and discipline
     P-->>A: {"ok":true,"questions":[...]}
     A->>P: {"cmd":"submit","question":"team-state","value":"established"}
-    P->>E: Submit(p0, team state, "established", expand)
+    P->>E: Submit(p0, team state, "established")
     E-->>P: Plan p1, no problems
     P->>P: Hold p1 as current
     P-->>A: {"ok":true,"problems":[]}
 
     A->>P: submit discipline "software"
-    P->>E: Submit(p1, discipline, "software", expand)
-    E->>I: expand(p1), using the embedded modules
-    I-->>E: Plan with sections and questions
+    P->>E: Submit(p1, discipline, "software")
     E-->>P: Plan p2, no problems
     P->>P: Hold p2 as current
     P-->>A: {"ok":true,"problems":[]}
 
     A->>P: submit repo access with a credential-like value
-    P->>E: Submit(p2, repo access, value, expand)
+    P->>E: Submit(p2, repo access, value)
     E->>E: Secrets check fails
     E-->>P: Plan equal to p2, problem: value looks like a credential
     P->>P: Keep p2 as current
     P-->>A: {"ok":true,"problems":[...]}
 
     A->>P: submit repo access, "ask the team lead"
-    P->>E: Submit(p2, repo access, "ask the team lead", expand)
+    P->>E: Submit(p2, repo access, "ask the team lead")
     E-->>P: Plan p3, no problems
     P->>P: Hold p3 as current
     P-->>A: {"ok":true,"problems":[]}
@@ -247,35 +243,34 @@ sequenceDiagram
 sequenceDiagram
     actor C as Consultant
     participant T as TUI driver
-    participant E as Plan editor
     participant I as Plan instantiator
+    participant E as Plan editor
 
     C->>T: Start
-    T->>T: Hold an empty plan p0
+    T->>I: Build the default plan from the embedded modules
+    I-->>T: Default plan p0
 
     T->>E: Questions(p0)
-    E-->>T: Team state, discipline
+    E-->>T: Team state and discipline
     T->>C: Ask team state
     C-->>T: Choose "established"
-    T->>E: Submit(p0, team state, "established", expand)
+    T->>E: Submit(p0, team state, "established")
     E-->>T: Plan p1, no problems
     T->>C: Ask discipline
     C-->>T: Choose "software"
-    T->>E: Submit(p1, discipline, "software", expand)
-    E->>I: expand(p1), using the embedded modules
-    I-->>E: Plan with sections and questions
+    T->>E: Submit(p1, discipline, "software")
     E-->>T: Plan p2, no problems
 
     T->>E: Questions(p2)
     E-->>T: Repo access, and the rest
     T->>C: Ask repo access
     C-->>T: Type a value that looks like a credential
-    T->>E: Submit(p2, repo access, value, expand)
+    T->>E: Submit(p2, repo access, value)
     E->>E: Secrets check fails
     E-->>T: Plan equal to p2, problem: value looks like a credential
     T->>C: Show problem and ask again
     C-->>T: Type "ask the team lead"
-    T->>E: Submit(p2, repo access, "ask the team lead", expand)
+    T->>E: Submit(p2, repo access, "ask the team lead")
     E-->>T: Plan p3, no problems
 
     T->>E: Blockers(p3)
@@ -287,18 +282,21 @@ Assembling and writing happen after the review screen, outside the editor. The T
 
 ### Reopening a plan with a consultant
 
-No modules take part, and the driver passes no `expand`. Everything comes from the plan.
+No modules take part. Everything comes from the plan.
 
 ```mermaid
 sequenceDiagram
     actor C as Consultant
     participant T as TUI driver
     participant F as Plan file
+    participant M as Plan migrator
     participant E as Plan editor
 
     C->>T: Open acme.obk.yaml
     T->>F: Read plan
-    F-->>T: Plan p0
+    F-->>T: Plan file
+    T->>M: Bring to the current schema version
+    M-->>T: Plan p0
     T->>E: Validate(p0)
     E-->>T: Any problems, for example a hand-added secret
 
@@ -306,10 +304,14 @@ sequenceDiagram
     E-->>T: Every active question with its current value
     T->>C: Ask tracker grantor, showing unknown-yet
     C-->>T: Type "IT service desk"
-    T->>E: Submit(p0, tracker grantor, "IT service desk", no expand)
+    T->>E: Submit(p0, tracker grantor, "IT service desk")
     E-->>T: Plan p1, no problems
 
-    T->>F: Write p1
+    T->>C: Change discipline to "design"
+    T->>E: Submit(p1, discipline, "design")
+    E-->>T: Plan p2, different sections now active
+
+    T->>F: Write p2
     T->>C: Review screen
 ```
 
@@ -322,12 +324,14 @@ sequenceDiagram
 - Every question and rule lives in the plan or the editor. A UI that adds its own rules breaks the headless path, so reviews must reject UI-side logic.
 - `Submit` must stay free of terminal concerns. This is the main way the design can erode.
 - Opening a plan cannot fail because modules changed. The module set matters only when starting a plan or running a later update.
+- Any axis change works on any plan, because the plan holds every section.
 - No state lives outside the plan, so there is nothing to resume, lose, or leak.
 
 ## Alternatives considered
 
 - **Logic inside the TUI, headless assemble only.** Cheapest now. Leaves the walkthrough logic untestable without a terminal.
 - **A stateful session object.** The earlier design. A session held the plan plus methods, and `Open` and `New` created it. Once the plan carried all the state, the object added a name and an identity and no behavior. Replaced by functions over a plan.
+- **Plans that hold only the selected sections.** An earlier design. Changing team state or discipline then needed the module set, which meant an injected `expand` function and refusing the change on an opened plan. Replaced by plans that hold every section, see [0030](0030-self-contained-plan-file.md).
 - **A mutating editor.** `Submit` changes the plan in place. Simpler to write, but "go back" needs undo logic, tests cannot fork from a shared point, and concurrent reads need locks. Rejected.
 - **Opening a plan against the module set and reporting drift.** An earlier design. It tied every saved plan to modules that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
 - **Scanning for orphaned stdio processes at startup.** Rejected. The process holds no ports, locks, or files, and exits on stdin EOF, so orphans need a hung child, which is a bug. A scan cannot tell a stray from a parallel test run or a consultant's live run, so it risks killing the wrong process, and PID files add state to a stateless tool. If a stuck process is ever observed, add an opt-in `--max-lifetime` flag that the test helper sets just above the test timeout, or kill the process group from the helper.
@@ -335,5 +339,5 @@ sequenceDiagram
 
 ## Open questions
 
-- Which axis changes could an opened plan accept without the module set? Today none, and a person starts a new plan or runs the deferred update.
-- Are the axis questions fixed in the model, or shipped as a built-in minimal plan so they are data like every other question?
+- Where several active sections declare the same placeholder, which description, `required`, and default does the question take? Belongs in the module schema ([#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3)).
+- How are optional sections toggled in the question flow? A toggle per optional section, shown as a yes or no question, is the likely shape.

@@ -9,11 +9,14 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Module       | One reusable piece of onboarding content, written once as a YAML file. It says when it applies, which questions it needs answered, and what text it produces.                                                                                        |
 | Placeholder  | A named blank in a module, written `$name`, filled from an answer.                                                                                                                                                                                   |
 | Answers      | What the consultant says in response to the questions: team state, discipline, placeholder values.                                                                                                                                                   |
-| Section      | A module after it has been selected, copied into a plan without its selection fields. Its placeholders stay until the document is assembled.                                                                                                                                                                      |
+| Section | The content unit in a plan. It has the same shape as a module, plus a record of which module it came from. Its placeholders stay until the document is assembled. A plan holds every standard module as a section, and only the active ones appear in the document. |
 | Plan         | The finished, standalone description of one organization's onboarding: sections, answers, question definitions, and a record of where it came from. It is saved as `<name>.obk.yaml` and carries everything needed to reopen it without the modules. |
 | Output style | The target format of the document, such as Markdown for GitHub.                                                                                                                                                                                      |
 | Gap          | A value not known yet. It shows in the document as a visible to-do with an owner and timing.                                                                                                                                                         |
-| Provenance   | A record of where a plan came from: which module set version and when it was made.                                                                                                                                                                   |
+| Provenance | A record of where a plan came from: the module set version and when it was made. |
+| Default plan | The plan a new walkthrough starts from: the axis questions and every standard module as a section, with no values. |
+| Active section | A section whose conditions match the plan's answers and that is switched on. Only active sections appear in the document. |
+| Axis questions | The questions that decide which sections are active: team state and discipline. They are data in the default plan, like every other question. |
 
 ## The tool
 
@@ -32,10 +35,12 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term               | Meaning                                                                                                                                                                                                                                                                         |
 |--------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Component          | One part of the tool with one responsibility: it takes one kind of input and produces one kind of output, such as the module selector. It is a part of the tool, not of a plan. Each component lives in its own folder and can be deleted and rebuilt.                          |
-| Module selector    | Component that picks and orders the modules that apply to the answers.                                                                                                                                                                                                          |
-| Section resolver   | Component that fills a module's placeholders and produces a section.                                                                                                                                                                                                            |
-| Plan instantiator  | Component that combines selection and filling into a plan.                                                                                                                                                                                                                      |
-| Document assembler | Component that turns a plan into a document in an output style. It reads only the plan.                                                                                                                                                                                         |
+| Section selector | Component that finds the active sections of a plan from its answers, and orders them. |
+| Plan instantiator | Component that builds the default plan from the modules: every module copied in as a section, with the axis questions. |
+| Document assembler | Component that turns a plan into a document in an output style. It reads only the plan. |
+| Section resolver | Component that fills the placeholders in a section from the plan's values. |
+| Section hasher | Component that computes the content hash of a section. |
+| Plan migrator | Component that brings a plan of an older schema version up to the current one. |
 | Domain model       | The definitions of the data that several components pass to each other, such as Module, Section, and Plan. They live in one folder, `model`, and change slowly.                                                                                                                 |
 | Boundary           | The edge of a component: what it accepts, what it returns, and what it hides. A component's contract describes its boundary.                                                                                                                                                    |
 | Dependency         | One component using another. The document assembler using the domain model is a dependency.                                                                                                                                                                                     |
@@ -62,5 +67,8 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term       | Meaning                                                                                                                                 |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | ADR        | Architecture decision record. A short document that states a decision and the reasons, for decisions the contracts and tests depend on. |
+| Schema version | A whole number on a plan or module file. It rises when a change would break older files, and a migration reads the old version. |
+| Source hash | A content hash recorded when a module is copied into a plan. Comparing it later shows whether the section was edited by hand, or the module changed upstream. |
+| Module set version | The build's commit sha or tag, recorded in provenance. It says which build the modules came from. |
 | Stack note | A row in [stack.md](stack.md) recording the current language or tool. Cheap to change.                                                  |
 | Eval       | A check where a model judges the result. Not used for assembly.                                                                         |
