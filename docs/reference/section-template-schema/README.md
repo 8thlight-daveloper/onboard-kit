@@ -1,6 +1,6 @@
 # Section template schema
 
-Status: proposed. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). A worked example lives in [examples/acme](../examples/acme/README.md).
+Status: accepted. A worked example lives in [examples/acme](../examples/acme/README.md).
 
 A section template, often shortened to template, is one YAML file at `templates/<id>.yaml`. A plan holds every standard template as a section, copied unchanged with one added field, `source`. So a template and a section have the same shape, and a template file is a section before it is in a plan. The domain model has one Section type. A template is a Section with no `source`, and the file's `schemaVersion` belongs to the loader and the migrator. Which sections are active is computed from the plan's answers whenever it is needed, and placeholders stay in place until the document is assembled. See [0030](../../decisions/0030-self-contained-plan-file.md).
 
@@ -112,7 +112,10 @@ classDiagram
 - Everything beyond `id`, `title`, `type`, and `summary` is optional, so the schema can grow without breaking older files.
 - Booleans are lowercase `true` and `false` only. Unquoted `yes`, `no`, `on`, `off`, and similar are errors, and so are anchors and aliases. See the Format section of 0030.
 
-## Open questions
+## Decided against, for now
 
-- Does a `reviewedOn` date drive a staleness warning?
-- Do we borrow `if:` from CI files for per-platform commands?
+| Idea | Decision | Why |
+| --- | --- | --- |
+| A variant that overrides or extends a core template | No. A variant is a template with its own `includeIf`. See [conditions](conditions.md#section-conditions) | Plans hold every template with no merging. Twins with opposite conditions cover the need |
+| A `reviewedOn` date that drives a staleness warning | No | The value is unclear, and nothing needs it. Revisit if stale content becomes a real problem |
+| An `if:` on steps for per-platform commands | No | Almost every plan targets one operating system. Where a plan needs two, write twin steps, or twin templates with an `includeIf`. A step condition would reuse the condition syntax |
