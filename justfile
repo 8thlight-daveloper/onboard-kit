@@ -29,9 +29,9 @@ lint-md:
 lint-links:
     lychee --offline --include-fragments --no-progress {{ link_paths }}
 
-# Voice rules: no em dashes, banned filler words, sentence case headings.
+# Voice rules: no em dashes, banned filler words, sentence case headings. Also reads prose inside YAML.
 lint-prose:
-    vale --minAlertLevel=warning {{ md_paths }}
+    vale --minAlertLevel=warning {{ md_paths }} $(test -d templates && echo templates)
 
 # Go tests. A no-op until the Go module exists.
 test:
