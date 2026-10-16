@@ -148,6 +148,8 @@ The document is output and the plan is the source. Hand edits go to the plan, an
 
 ## Output
 
+The assembled document is transitional, see [0020](0020-binary-structure-and-regenerative-components.md). The intended end state is the plan file and an onboarding helper flow, so these features belong to the document and not to the plan.
+
 - Every assembled document carries a gap table with owner and timing, built when assembling, because values can change after a plan is made.
 - Output carries the review marker until a person removes it.
 

@@ -76,7 +76,8 @@ contracts/
     wire_test.go             # binds the tests to the implementation
 acceptance/
   testdata/                  # permanent: module sets, plans, golden documents
-  *_test.go                  # permanent: drive the built binary
+  scenarios/                 # permanent: scenario files, language-neutral
+  runner/                    # replaceable: reads the scenarios and drives the built binary
 binary/                      # thin main, the entry point
 ```
 
@@ -113,6 +114,16 @@ Each component has a place in a dependency order and may depend only on componen
 | n/a | `contracts/*` | `model`, and its own component in `wire_test.go` only |
 
 The document assembler uses the section selector, the section resolver, and the model, and never touches modules. A plan assembles into a document on its own, as [0030](0030-self-contained-plan-file.md) requires. The `module/loader` is used only by the entry point, to start a new plan or run an update. Only drivers and the entry point read or write files outside embedded modules, as the side effects table below shows. The `actions` package rule for v2, where only that package may import `os/exec`, uses the same dependency check.
+
+### Architecture tests are rules as data
+
+The dependency rules are enforced by architecture tests whose rules are data, so a change of language replaces an adapter and not the rules.
+
+- **`architecture.yaml` holds the rules.** It lists the components, the dependency order, the `noun/role` naming, and the categories of package that core components may not use: filesystem, network, process, terminal, and clock. It names no language. It is protected like a contract.
+- **An extractor reads the code.** A thin adapter reads the source and emits a plain graph of each component and what it imports, inside and outside the project. It is the only language-specific part, along with the mapping from each banned category to that language's packages, which is listed in [stack.md](../stack.md).
+- **A checker compares.** It tests the graph against the rules, and reports each violation with the import that proves it.
+- **Checks that need no parser** run on the file system: the folder layout, the naming, that every component has a contract folder, and that the tables in this ADR and in [02-components](../architecture/02-components.md) match `architecture.yaml`.
+- **Start with the language's own tooling** for the extractor, because it resolves imports exactly. A generic extractor, such as one built on tree-sitter, is an option if the language changes. See [stack.md](../stack.md).
 
 ### Rate of change
 
@@ -165,7 +176,7 @@ An output style is a way of assembling a plan into a document. It is not a varia
 | Kind | Level | Lives in | Judges |
 | --- | --- | --- | --- |
 | Contract test | One component boundary: fixture in, expected out | `contracts/<noun>/<role>/` | A component and any rebuild of it |
-| Acceptance test | Whole binary: plan or scripted answers in, document out | `acceptance/` | The assembled system |
+| Acceptance test | Whole binary: a plan or a scripted exchange in, observable results out | `acceptance/` | The assembled system |
 
 We do not call these evals. In this repo, "eval" is reserved for checks that a model judges, which may appear in the authoring loop. Assembly has no model in it, so its checks are ordinary deterministic tests.
 
@@ -174,8 +185,40 @@ Rules for both:
 - **Behavior only.** Assert on outputs. Never on internals or package structure.
 - **Independent authorship.** The agent that rebuilds a component does not write or edit that component's contract tests, fixtures, or acceptance tests. A person approves every change to them.
 - **Properties as well as goldens.** Two runs produce identical bytes. Output holds no secrets and no client specifics. Every placeholder is resolved or reported as a gap.
-- **Seed fixture.** `docs/architecture/examples/acme` becomes the first acceptance golden.
+- **Seed fixture.** `docs/architecture/examples/acme` becomes the first acceptance fixture. Its plan, `acme.obk.yaml`, is the lasting part. Its assembled document, `acme.md`, is a transitional golden.
 - **Parallel by default.** Tests run in parallel with race detection on, use a per-test temporary directory for files, and take an injected clock. No shared mutable state at package or module level. Any unordered iteration that reaches output is sorted. Golden regeneration is a separate explicit command and never runs as a side effect of a test. The commands for the current language are in [stack.md](../stack.md).
+
+### Assembled documents are transitional
+
+The intended end state is the plan file and the onboarding helper flow. The assembled document goes away. So nothing long-term may key on assembled content.
+
+- **Lasting contracts** are plan-level: the finder, validator, editor, selector, resolver, hasher, migrator, and instantiator, and acceptance tests that assert on plans and on `stdio` responses.
+- **Transitional contracts** are the document assembler and any golden-document acceptance test. Keep them thin, mark them transitional in their contract, and delete them when the assembler goes.
+- **Gap table, review marker, and output styles** exist only in the assembled document. They are not plan features, and nothing else depends on them.
+- The helper that replaces the document reads the plan through the same components, the finder and the selector, so the lasting contracts already cover what it needs.
+
+### Acceptance tests are language-neutral
+
+Acceptance tests must keep working whatever language the tool is written in, and must not tie the implementation to the language of the tests.
+
+- **Scenarios are data.** Each scenario is a file under `acceptance/scenarios/`. It names the files it starts with, the arguments and the lines it sends, and what it expects back: responses, exit code, and any files written. Plan fixtures are plain plan files.
+- **The runner is replaceable.** A small program reads the scenarios, starts the built binary, and compares results. It is the only language-specific part, it holds no knowledge of the tool, and the scenario format is its whole contract. We can replace it, or run a second one in another language, without touching a scenario.
+- **Tests never import the implementation.** They see the binary only through its arguments, standard input and output, exit code, and files. This is already true of the `stdio` protocol and the `assemble` command.
+- **The scenario format is protected,** like the scenarios, because the runner and every scenario depend on it. Matching rules, such as comparing JSON by subset and ignoring key order, belong to that format.
+
+Contract tests are different on purpose. They call a component in process and are written in the implementation language. Their fixtures are plain data, so only the harness and the interface binding change if the language does.
+
+### Writing contracts
+
+A contract has four parts: a plain description of the behavior, fixtures, contract tests, and the interface binding.
+
+- **An agent drafts, a person approves.** A separate agent run writes the first version of every part, so nobody starts from a blank page. A person reads all of it and gives feedback before anything is built against it. The run that drafts a contract does not build the component.
+- **Fixtures cite their source.** Each fixture names where it comes from, such as the ACME example, the schema doc, or an ADR, so a reviewer can check it against something trusted.
+- **The implementing agent reads the contract and does not edit it.** If it finds a conflict, a gap, or a mistake, it stops and reports it, in its result and in the pull request. It edits a contract only when a person authorizes that specific change.
+- **A contract must tell right from wrong.** One agent writes the spec and the tests together, so a shared misunderstanding could pass review. Two checks guard against it. Both are steps of the workflow, not optional requests.
+  - **Drafting.** Before a person reviews, the drafting run lists a few plausible wrong implementations per component, such as ignoring `any`, breaking tie order, or mutating an input. It shows that the contract tests fail each one, and adds fixtures where one slips through. These wrong implementations are scratch work and are not committed.
+  - **Building.** The implementing agent works red, then green. Before writing code it runs the contract tests against a stub, and every test must fail. After the tests pass, it runs an automated mutation tool and reports surviving mutants as contract gaps, in its result and in the pull request. The tool generates the mutants, not the agent, so the agent does not grade itself. The agent does not edit the contract.
+- **Transitional contracts stay thin.** See above. The document assembler's contract is written last and kept small.
 
 ### Rebuilding a component
 
@@ -216,4 +259,5 @@ The dependency check tool is a stack choice, listed in [stack.md](../stack.md).
 
 ## Open questions
 
-- Who writes the first contracts for components that do not exist yet? The walking skeleton ([#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25)) is the natural moment. Proposal: a person writes or approves each one, an agent may draft them, and the run that builds a component cannot edit them.
+- Which mutation tool do we use? A stack choice.
+- Do we keep both contract-strength checks after the first builds? Decide after seeing what they catch.

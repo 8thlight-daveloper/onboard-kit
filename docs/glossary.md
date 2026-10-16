@@ -30,7 +30,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | TUI         | Terminal user interface. The screen-based walkthrough in a terminal.                                                                                             |
 | Driver      | Anything that operates the plan components: the TUI, a headless command, or a test. |
 | Headless    | Running without a person or a screen. A command reads input and writes output.                                                                                   |
-| Assemble    | The step that turns a plan into a document in an output style. It is deterministic. No model runs.                                                               |
+| Assemble    | The step that turns a plan into a document in an output style. It is deterministic. No model runs.                                                               The assembled document is transitional. The intended end state is the plan file and the onboarding helper. |
 
 ## The structure
 

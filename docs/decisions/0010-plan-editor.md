@@ -145,15 +145,15 @@ Assemble writes nothing on a non-zero exit. The entry point writes the document 
 - Stdout carries only protocol lines. Logs go to stderr.
 - Closing stdin is the normal end signal. The process discards its plan and exits 0. It writes no files, so nothing is left behind.
 
-### Acceptance test helper
+### Acceptance runner
 
-Acceptance tests share one helper under `acceptance/`, so no test handles processes itself.
+The acceptance runner reads scenarios, which are data and not code, and drives the built binary. See [0020](0020-binary-structure-and-regenerative-components.md). It handles processes so no scenario does.
 
-- **Assemble runs.** The helper runs the process and captures stdout, stderr, and the exit code. An expected failure is an assertion, for example exit 1 with a report listing a blocker. An unexpected non-zero exit fails the test, with stderr and the report in the message.
-- **Stdio runs.** The helper wraps the process as a client with `Send(command)` returning the parsed response. An `"ok":false` response fails the test unless the test opts in to expect it. If the process dies mid-test, `Send` fails with the exit code and captured stderr. Each `Send` has a read deadline, so a hung binary fails the test instead of stalling the run.
-- **Shutdown.** The client registers `t.Cleanup` when it starts. Cleanup closes stdin, waits briefly for exit, and kills the process if it does not exit. `t.Fatal`, `t.FailNow`, and a panic in the test goroutine all run cleanup, so a failed assertion and a passing test shut down the same way.
-- **Test crashes.** Cleanup does not run if the test binary is killed, for example by a `go test -timeout` expiry or `os.Exit`. The child then sees stdin close, which is the normal end signal, and exits on its own.
-- **Goroutines.** Helpers that run in other goroutines report with `t.Error`, never `t.Fatal`, because `FailNow` is only valid on the test goroutine.
+- **Assemble runs.** The runner starts the process and captures standard output, standard error, and the exit code. A scenario can expect a failure, such as exit 1 with a report listing a blocker. An unexpected non-zero exit fails the scenario, with standard error and the report in the message.
+- **Stdio runs.** The runner sends each request line and reads each response. A response with `"ok":false` fails the scenario unless the scenario expects it. If the process dies mid-scenario, the scenario fails with the exit code and captured standard error. Each read has a deadline, so a hung binary fails the scenario and stalls nothing.
+- **Shutdown.** The runner closes standard input, waits briefly for exit, and kills the process if it does not exit. This always runs, after a failed expectation as after a passing one.
+- **Runner crashes.** If the runner itself is killed, the child sees standard input close, which is the normal end signal, and exits on its own.
+- **Language specifics.** How the current runner does this, for example its cleanup hooks and deadlines, belongs to its code and to [stack.md](../stack.md), not to this ADR.
 
 ### Boundaries
 

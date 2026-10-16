@@ -9,6 +9,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 - **Deterministic assembly.** The same answers and the same modules always produce the same document. No model runs during assembly.
 - **Agents author, they do not assemble.** Agents help write and tune modules. A human reviews every change.
 - **The plan is the source.** Answers and content save to one self-contained plan file. The document regenerates from it, in any output style.
+- **The plan is the lasting artifact.** The assembled document is transitional. The end state is the plan file and the onboarding helper flow, so nothing long-term may key on assembled content.
 - **Functional core, imperative shell.** Components are pure functions over immutable values, and never alter an argument. Only drivers and the entry point do input and output. See [0015](../decisions/0015-functional-core-and-imperative-shell.md).
 - **Stands alone.** Installing means getting one file. No runtime, package manager, or second download. See [0005](../decisions/0005-self-contained-install.md).
 - **Internal tool, client-facing output.** The repo and the tool stay inside 8th Light. Only generated files go to clients.

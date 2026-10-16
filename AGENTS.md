@@ -16,8 +16,12 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 
 - A component is one package under `internal/`. Rebuilding a component means deleting its folder and regenerating it from its contract, its architecture doc, and the dependency rules in `docs/decisions/0020-binary-structure-and-regenerative-components.md`.
 - A rebuild touches only `internal/<component>/`.
-- Never edit `contracts/`, `acceptance/`, or the domain model in `internal/model/` as part of a rebuild. Stop and ask a person.
+- Never edit `contracts/`, `acceptance/`, `architecture.yaml`, or the domain model in `internal/model/` as part of a rebuild. Stop and ask a person.
 - Never write or change the tests that judge your own rebuild.
+- When you find that a contract conflicts with another document, is incomplete, or looks wrong, stop and report it. Do not edit the contract unless a person authorizes that specific change.
+- When building a component, first run its contract tests against a stub and confirm every test fails. After they pass, run the mutation tool and report surviving mutants as contract gaps. Do not edit the contract.
+- When asked to draft a contract, write all four parts, cite the source of each fixture, list plausible wrong implementations and show that the tests fail them, and do not build the component in the same run.
+- Write acceptance scenarios as data under `acceptance/scenarios/`. Never write acceptance tests in implementation code or import implementation packages.
 - Respect the dependency rules. Do not add a dependency they do not allow.
 - Write core components as pure functions over immutable values. Never alter an argument, hold state between calls, or do input or output. Return a new value. Drivers and the entry point do input and output. See `docs/decisions/0015-functional-core-and-imperative-shell.md`.
 - State what each component reads and writes, in the plan and outside it. See the side effects and plan access tables in `docs/decisions/0020-binary-structure-and-regenerative-components.md`. Stay inside the declared set.
