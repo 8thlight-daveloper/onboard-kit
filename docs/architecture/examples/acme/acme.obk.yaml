@@ -1,14 +1,31 @@
-schemaVersion: 0
+schemaVersion: 1
 provenance:
   moduleSet: example
   generatedOn: 2026-10-15
-answers:
-  teamState: established
-  discipline: software
-  outputStyle: github
+questions:
+  - id: organization
+    description: Name of the organization
+    required: true
+  - id: team
+    description: Name of the team the consultant joins
+    required: true
+  - id: teamState
+    description: Is the team established, or are we the first consultants?
+    options: [established, first-consultants]
+    required: true
+  - id: discipline
+    description: Which discipline is this plan for?
+    options: [software, design]
+    required: true
+  - id: outputStyle
+    description: Target format of the document
+    options: [markdown]
+    default: markdown
 values:
   organization: ACME Corp
   team: Platform team
+  teamState: established
+  discipline: software
   onboarding_owner_role: Engineering manager
   access_request_url: https://access.acme.example/request
   source_control_grantor: IT service desk
@@ -23,59 +40,136 @@ sections:
     title: Access
     type: checklist
     summary: Request the accounts and permissions you need, and record who grants each.
-    owner: Engineering manager
+    appliesTo:
+      teamState: [any]
+      discipline: [any]
+    order: 10
+    owner: $onboarding_owner_role
     timing: before-day-one
     verification: You can open the repository, the CI dashboard, and the work tracker.
+    placeholders:
+      - name: onboarding_owner_role
+        description: Role of the person who owns onboarding at the organization
+        required: true
+      - name: access_request_url
+        description: Where to request source control access
+        required: true
+      - name: repo_url
+        description: Clone URL of the main repository
+        required: true
+      - name: source_control_grantor
+        description: Who grants source control access
+        required: true
+      - name: ci_grantor
+        description: Who grants CI dashboard access
+        required: true
+      - name: tracker_grantor
+        description: Who grants work tracker access
+        required: true
     body: |
       Request each system on day minus five if you can. Record who grants it and when
       you asked.
     steps:
       - id: source-control
         name: Source control
-        owner: IT service desk
-        timing: before-day-one
-        open: https://access.acme.example/request
+        owner: $source_control_grantor
+        open: $access_request_url
         check:
-          run: [git, ls-remote, "git@git.acme.example:platform/widget-service.git"]
+          run: [git, ls-remote, $repo_url]
       - id: ci-dashboard
         name: CI dashboard
-        owner: Platform team lead
-        timing: before-day-one
+        owner: $ci_grantor
         check:
           ask: Can you open the CI dashboard?
       - id: work-tracker
         name: Work tracker
-        owner: unknown-yet
-        timing: before-day-one
+        owner: $tracker_grantor
         check:
           ask: Can you open the work tracker?
+    enabled: true
+    source:
+      module: access
+      hash: example-not-computed
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     type: setup
     summary: Get a working copy of the project and a passing test run on your machine.
+    appliesTo:
+      teamState: [any]
+      discipline: [software]
+    order: 20
     owner: newcomer
     timing: week-one
-    verification: make test passes on a fresh clone.
+    verification: $test_command passes on a fresh clone.
+    placeholders:
+      - name: repo_url
+        description: Clone URL of the main repository
+        required: true
+      - name: repo_dir
+        description: Directory name for the clone
+        default: project
+      - name: setup_command
+        type: command
+        description: Command that installs dependencies
+        required: true
+      - name: test_command
+        type: command
+        description: Command that runs the test suite
+        required: true
     body: |
       If a test fails on a fresh clone, write down the failure and ask the team before
       changing anything.
     steps:
       - id: clone
         name: Clone the repository
-        owner: newcomer
-        timing: week-one
-        run: [git, clone, "git@git.acme.example:platform/widget-service.git", widget-service]
+        run: [git, clone, $repo_url, $repo_dir]
         check:
-          run: [test, -d, widget-service/.git]
+          run: [test, -d, $repo_dir/.git]
       - id: install
         name: Install dependencies
-        owner: newcomer
-        timing: week-one
-        cwd: widget-service
-        run: [make, setup]
+        cwd: $repo_dir
+        run: $setup_command
       - id: run-tests
         name: Run the tests
-        owner: newcomer
-        timing: week-one
-        cwd: widget-service
-        run: [make, test]
+        cwd: $repo_dir
+        run: $test_command
+    enabled: true
+    source:
+      module: clone-and-run-tests
+      hash: example-not-computed
+  - id: review-design-system
+    title: Review the design system
+    type: checklist
+    summary: Find the design system and the main design file, and note what you cannot open.
+    appliesTo:
+      teamState: [any]
+      discipline: [design]
+    order: 25
+    owner: newcomer
+    timing: week-one
+    verification: You can open the design system and the main design file.
+    placeholders:
+      - name: design_system_url
+        description: Where the design system lives
+        required: true
+      - name: design_file_url
+        description: The main design file for the product
+        required: true
+    body: |
+      Look at the design system before you start work. Write down anything that is
+      missing or out of date, and tell the team.
+    steps:
+      - id: design-system
+        name: Open the design system
+        open: $design_system_url
+        check:
+          ask: Can you open the design system?
+      - id: main-file
+        name: Open the main design file
+        open: $design_file_url
+        check:
+          ask: Can you open the main design file?
+    enabled: true
+    source:
+      module: review-design-system
+      hash: example-not-computed

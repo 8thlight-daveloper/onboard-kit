@@ -1,3 +1,4 @@
+schemaVersion: 1
 id: clone-and-run-tests
 title: Clone the project and run the tests
 type: setup
@@ -12,14 +13,18 @@ verification: $test_command passes on a fresh clone.
 placeholders:
   - name: repo_url
     description: Clone URL of the main repository
+    required: true
   - name: repo_dir
     description: Directory name for the clone
+    default: project
   - name: setup_command
     type: command
     description: Command that installs dependencies
+    required: true
   - name: test_command
     type: command
     description: Command that runs the test suite
+    required: true
 body: |
   If a test fails on a fresh clone, write down the failure and ask the team before
   changing anything.

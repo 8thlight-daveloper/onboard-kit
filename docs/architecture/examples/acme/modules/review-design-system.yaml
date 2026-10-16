@@ -1,0 +1,33 @@
+schemaVersion: 1
+id: review-design-system
+title: Review the design system
+type: checklist
+summary: Find the design system and the main design file, and note what you cannot open.
+appliesTo:
+  teamState: [any]
+  discipline: [design]
+order: 25
+owner: newcomer
+timing: week-one
+verification: You can open the design system and the main design file.
+placeholders:
+  - name: design_system_url
+    description: Where the design system lives
+    required: true
+  - name: design_file_url
+    description: The main design file for the product
+    required: true
+body: |
+  Look at the design system before you start work. Write down anything that is
+  missing or out of date, and tell the team.
+steps:
+  - id: design-system
+    name: Open the design system
+    open: $design_system_url
+    check:
+      ask: Can you open the design system?
+  - id: main-file
+    name: Open the main design file
+    open: $design_file_url
+    check:
+      ask: Can you open the main design file?
