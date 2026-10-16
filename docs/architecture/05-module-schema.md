@@ -202,7 +202,7 @@ placeholders:
 - **When the answer is false**, the section's other questions are inactive. They keep their stored values, are not asked, and do not block.
 - **No answer.** The `default` applies. With neither an answer nor a default, the section is off. A `required` toggle with no answer is a blocker.
 - **Restrictions.** `enabled` must be `boolean`. `unknown-yet` is not accepted for it, because a section is either in or out. `askIf` is not supported on it yet.
-- **Conditions can test it.** A clause can name `<section>.enabled` like any other question.
+- **Conditions can test it.** A clause can name `<section>.enabled` like any other question. Only an explicit answer counts, not the default, so `is: true` is false until someone answers.
 
 ## Reserved names
 

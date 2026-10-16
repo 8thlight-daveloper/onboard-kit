@@ -55,7 +55,8 @@ Open questions across all docs are tracked in [#24](https://github.com/8thlight-
 
 - Language and toolkit are stack notes, see [stack.md](../stack.md).
 - The saved file is the plan, a YAML file named `<name>.obk.yaml` ([#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23)).
-- A plan holds every module as a section, and the answers decide which are active.
+- A plan holds every module as a section, and the answers decide which are active. An optional section declares an `enabled` placeholder.
+- A placeholder can carry an `askIf` question condition, written as data. See [05-module-schema](05-module-schema.md#question-conditions).
 - Output styles are an option on a plan, not module variants. The MVP has Markdown only ([#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8)).
 - Non-interactive assembly exists as `onboard-kit assemble`, and `onboard-kit stdio` exposes the plan components over stdio for tests.
 - Hosting is deferred until after the MVP.

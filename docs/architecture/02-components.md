@@ -64,8 +64,8 @@ flowchart TB
 
 | Component | Does |
 | --- | --- |
-| Question finder | Finds a plan's active questions, one per section placeholder, with their values, groups, and suggestions, and the required ones with no value. Reads only |
-| Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check |
+| Question finder | Finds a plan's active questions, one per section placeholder plus one `enabled` toggle per optional section, with their values, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
+| Plan validator | Checks whether values are acceptable: type, options, pattern, the secrets check, and conditions (unknown references and cycles) |
 | Plan editor | Returns a copy of a plan with one answer applied. The copy differs only in `values`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the modules and the axis questions, once, when a new plan starts |
