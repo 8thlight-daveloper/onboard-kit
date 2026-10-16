@@ -221,7 +221,7 @@ A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no ques
 | -- | -- |
 | VariableType | `string`, `boolean`, `choice`, `command`, `person` |
 | Phase | `planning`, `onboarding` |
-| Timing | `before-day-one`, `week-one`, `first-30-days`, `days-30-to-90`, `anytime` |
+| Timing | `before-day-one`, `week-one`, `days-8-to-30`, `days-31-to-90`, `anytime`. Each has a fixed day window, see [ordering](section-template-schema/ordering.md#timing) |
 | Severity | `error`, `warning` |
 
 ## Computed types

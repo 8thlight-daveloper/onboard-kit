@@ -6,15 +6,20 @@ Sections appear in the document, and are asked about in the walkthrough, in a de
 
 ## Timing
 
-`timing` says when the section's work happens. It is one of a closed, ordered set:
+`timing` says when the section's work happens. It is a name from a closed, ordered set, and each name has a fixed window of days. Days count from the start day, and day 1 is the first day of work.
 
-| Value | Meaning |
-| -- | -- |
-| `before-day-one` | Before the consultant starts |
-| `week-one` | The first week |
-| `first-30-days` | Through the first 30 days |
-| `days-30-to-90` | Day 30 to day 90 |
-| `anytime` | No fixed time. It is the default when `timing` is omitted |
+| Name | Window | Meaning |
+| -- | -- | -- |
+| `before-day-one` | Up to day 0 | Before the consultant starts |
+| `week-one` | Days 1 to 7 | The first week |
+| `days-8-to-30` | Days 8 to 30 | The rest of the first month |
+| `days-31-to-90` | Days 31 to 90 | The second and third months |
+| `anytime` | None | No fixed time. It is the default when `timing` is omitted |
+
+- **The window is part of the name.** It never depends on which other sections are in the plan, so a template means the same thing in every plan.
+- **Authors pick a name.** A name reads well in the document, and the window gives a validator and the later onboarding helper numbers to work with: the helper can add the window to a start date to get due dates.
+- **Windows do not overlap**, apart from `anytime`, which has none.
+- **A finer value** can be added later as an optional explicit window, for example days 12 to 14, without breaking existing templates.
 
 A step inherits its section's `timing`, and may state its own from the same set.
 
@@ -43,7 +48,7 @@ These are about the relation between sections, so the plan validator reports the
 | Unknown reference | `after` names an id that is not in the plan |
 | Self reference | A section lists itself in `after` |
 | Dependency cycle | A is after B, and B is after A. The report names the sections in the cycle |
-| Timing conflict | A is after B, but A's timing comes earlier than B's. The report names both sections and their timings |
+| Timing conflict | A is after B, but A's window starts before B's. The report names both sections and their windows. `anytime` never conflicts |
 | Question condition cycle | A question's condition depends on an answer that depends back on it, including across sections |
 | Unknown question reference | A condition names a question that no section declares |
 | `includeIf` on a section question | An `includeIf` names a question that is not a plan variable |

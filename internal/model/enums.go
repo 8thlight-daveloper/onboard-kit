@@ -26,8 +26,8 @@ type Timing string
 const (
 	TimingBeforeDayOne Timing = "before-day-one"
 	TimingWeekOne      Timing = "week-one"
-	TimingFirst30Days  Timing = "first-30-days"
-	TimingDays30To90   Timing = "days-30-to-90"
+	TimingDays8To30    Timing = "days-8-to-30"
+	TimingDays31To90   Timing = "days-31-to-90"
 	TimingAnytime      Timing = "anytime"
 
 	DefaultTiming = TimingAnytime
