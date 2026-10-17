@@ -109,7 +109,7 @@ YAML, with these guards. The file format outlives any implementation, so it is a
 - Null is `null` or an omitted key.
 - Anchors and aliases are rejected.
 - Numbers that parse surprisingly, such as `1.0` or a leading zero, are errors where a string is meant.
-- Templates decode strictly and reject unknown fields. Plans decode leniently and keep unknown fields.
+- Templates decode strictly and reject unknown fields. Plans keep unknown fields on the plan and on each section, and reject them anywhere else.
 - One JSON Schema covers templates and plans, so editors can validate and complete them.
 - `onboard-kit lint` enforces these rules on templates. Loading a plan enforces the same rules, so a hand-edited `required: yes` is a problem, not a silent `true`.
 
@@ -119,7 +119,8 @@ Why YAML: templates are authored and reviewed by people, and literal blocks keep
 
 `schemaVersion` is an integer, on plans and on template files.
 
-- **Additive, optional fields:** no bump. Plans decode leniently, and an older tool preserves fields it does not know.
+- **Additive, optional fields on a plan or a section:** no bump. These are the extension points, and the decoder keeps fields it does not know there, so an older tool preserves them.
+- **Additive fields anywhere else:** a breaking change, so bump the version. The decoder reports an unknown key outside a plan or a section as a problem, because it is most often a typo.
 - **Breaking change:** bump the version and ship a migration from the old version to the new one. Migrations chain.
 - **Plan migrator.** A component with its own contract. One step per version: bytes of version N in, bytes of version N+1 out. It works on bytes, so it holds frozen copies of old types and needs no current type. Steps chain. An old-version plan and its migrated result are permanent fixtures. The migrator is built when the first breaking change needs it. Until then there is one schema version, and the decoder accepts that version and refuses every other.
 - **Plan decoder and encoder.** The decoder turns bytes into a Plan: it reads `schemaVersion`, applies the migrator steps, decodes leniently, keeps unknown fields, and reports format guard violations. The encoder turns a Plan into canonical bytes, so the same plan always gives the same bytes and a round trip is testable. Drivers read and write the files.
