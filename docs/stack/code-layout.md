@@ -23,7 +23,7 @@ internal/
     instantiator/            # component: plan instantiator
     editor/                  # component: plan editor, see 0010
     validator/               # component: plan validator, see 0010
-    migrator/                # component: plan migrator, bytes of one version to the next, see 0030
+    migrator/                # component: plan migrator, deferred until the first breaking change, see 0030
     decoder/                 # component: plan decoder, bytes to a Plan
     encoder/                 # component: plan encoder, a Plan to canonical bytes
   condition/
