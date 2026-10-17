@@ -17,3 +17,8 @@ sections:
         name: "a\tb\nc\n"
         notes: "Keep\n\n"
         owner: newcomer
+  - id: edges
+    title: Edges
+    summary: "a\x01b\nc\n"
+    owner: "\nabc\n"
+    verification: "cr\r\nline\n"

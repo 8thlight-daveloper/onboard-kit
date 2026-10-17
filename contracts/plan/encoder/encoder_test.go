@@ -3,6 +3,7 @@ package encoder_test
 import (
 	"bytes"
 	"encoding/json"
+	"math"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -165,5 +166,57 @@ func TestOutputIsWellFormed(t *testing.T) {
 				t.Errorf("%s: line %d has a tab", c.Name, i+1)
 			}
 		}
+	}
+}
+
+func TestWritesTheSupportedNumberKinds(t *testing.T) {
+	cases := map[string]struct {
+		value any
+		want  string
+	}{
+		"int":           {int(5), "schemaVersion: 1\nx: 5\n"},
+		"int64":         {int64(-7), "schemaVersion: 1\nx: -7\n"},
+		"float64":       {1.5, "schemaVersion: 1\nx: 1.5\n"},
+		"whole decimal": {float64(2), "schemaVersion: 1\nx: 2.0\n"},
+		"ten":           {int(10), "schemaVersion: 1\nx: 10\n"},
+	}
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, UnknownFields: map[string]any{"x": c.value}}
+			got, problems := newEncoder().Encode(plan)
+			if len(problems) != 0 || string(got) != c.want {
+				t.Errorf("got %q and %+v, want %q", got, problems, c.want)
+			}
+		})
+	}
+}
+
+func TestReportsEveryUnsupportedNumberAndKind(t *testing.T) {
+	cases := map[string]struct {
+		value any
+		path  string
+	}{
+		"int8":    {int8(1), "x"},
+		"uint":    {uint(1), "x"},
+		"float32": {float32(1.5), "x"},
+		"NaN":     {math.NaN(), "x"},
+		"+Inf":    {math.Inf(1), "x"},
+		"-Inf":    {math.Inf(-1), "x"},
+		"strings": {[]string{"a"}, "x"},
+		"struct":  {struct{}{}, "x"},
+		"in list": {[]any{"ok", int8(1)}, "x[1]"},
+		"in map":  {map[string]any{"k": uint(1)}, "x.k"},
+	}
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, UnknownFields: map[string]any{"x": c.value}}
+			got, problems := newEncoder().Encode(plan)
+			if len(got) != 0 {
+				t.Errorf("want no bytes, got %q", got)
+			}
+			if len(problems) != 1 || problems[0].Code != "encode.unsupported-value" || problems[0].Detail["path"] != c.path {
+				t.Errorf("want one encode.unsupported-value at %s, got %+v", c.path, problems)
+			}
+		})
 	}
 }

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "variables": [{}],
+  "sections": [
+    {
+      "id": "s", "title": "S", "summary": "S",
+      "variables": [{"name": "v", "description": "V", "askIf": {"all": [{"question": "q", "answer": {"is": "a"}}, {}]}}],
+      "steps": [{}]
+    },
+    {}
+  ]
+}

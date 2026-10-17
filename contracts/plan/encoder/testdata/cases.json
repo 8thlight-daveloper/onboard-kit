@@ -1,14 +1,136 @@
 [
-  {"name": "minimal", "input": "minimal.plan.json", "output": "minimal.yaml", "source": "Hand-written. Contract rules: Document, Keys."},
-  {"name": "omit-zero", "input": "omit-zero.plan.json", "output": "omit-zero.yaml", "source": "Hand-written. Contract rule: Keys, zero values are omitted."},
-  {"name": "strings", "input": "strings.plan.json", "output": "strings.yaml", "source": "Hand-written. Contract rule: Scalars. Each value is one clause of the plain or quoted rule, and the reserved words come from 0030's format guards."},
-  {"name": "multiline", "input": "multiline.plan.json", "output": "multiline.yaml", "source": "Hand-written. Contract rule: Multi-line strings."},
-  {"name": "answers", "input": "answers.plan.json", "output": "answers.yaml", "source": "Hand-written. Contract rule: Answers. Values follow the domain model's Value kinds, and the names come from the ACME example."},
-  {"name": "unknown-fields", "input": "unknown-fields.plan.json", "output": "unknown-fields.yaml", "source": "Hand-written. Contract rules: Keys, Lists, Unknown field values. 0030: unknown fields are preserved."},
-  {"name": "key-order", "input": "key-order.plan.json", "output": "key-order.yaml", "source": "Hand-written. Contract rule: the key order table. Field names are from the domain model."},
-  {"name": "conditions", "input": "conditions.plan.json", "output": "conditions.yaml", "source": "Hand-written. Contract rule: Keys, isAnswered. Condition syntax is from docs/reference/section-template-schema/conditions.md."},
-  {"name": "acme", "input": "acme.plan.json", "output": "../../../../docs/reference/examples/acme/acme.obk.yaml", "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: unknown-yet answers became unknown markers, and a single run string became a one-item list."},
-  {"name": "empty-answer", "input": "empty-answer.plan.json", "problems": [{"code": "encode.empty-answer", "path": "answers.plan.organization"}, {"code": "encode.empty-answer", "path": "answers.sections.s.name"}], "source": "Hand-written. Contract rule: Problems, empty-answer."},
-  {"name": "ambiguous-check", "input": "ambiguous-check.plan.json", "problems": [{"code": "encode.ambiguous-check", "path": "sections[0].steps[0].checks[0]"}, {"code": "encode.ambiguous-check", "path": "sections[0].steps[0].checks[1]"}], "source": "Hand-written. Contract rule: Problems, ambiguous-check. The domain model says a Check has exactly one of run, ask, or env."},
-  {"name": "unknown-field-collision", "input": "unknown-field-collision.plan.json", "problems": [{"code": "encode.unknown-field-collision", "path": "sections[0].id"}, {"code": "encode.unknown-field-collision", "path": "answers"}], "source": "Hand-written. Contract rule: Problems, unknown-field-collision."}
+  {
+    "name": "minimal",
+    "input": "minimal.plan.json",
+    "output": "minimal.yaml",
+    "source": "Hand-written. Contract rules: Document, Keys."
+  },
+  {
+    "name": "omit-zero",
+    "input": "omit-zero.plan.json",
+    "output": "omit-zero.yaml",
+    "source": "Hand-written. Contract rule: Keys, zero values are omitted."
+  },
+  {
+    "name": "strings",
+    "input": "strings.plan.json",
+    "output": "strings.yaml",
+    "source": "Hand-written. Contract rule: Scalars. Each value is one clause of the plain or quoted rule, and the reserved words come from 0030's format guards."
+  },
+  {
+    "name": "multiline",
+    "input": "multiline.plan.json",
+    "output": "multiline.yaml",
+    "source": "Hand-written. Contract rule: Multi-line strings."
+  },
+  {
+    "name": "answers",
+    "input": "answers.plan.json",
+    "output": "answers.yaml",
+    "source": "Hand-written. Contract rule: Answers. Values follow the domain model's Value kinds, and the names come from the ACME example."
+  },
+  {
+    "name": "unknown-fields",
+    "input": "unknown-fields.plan.json",
+    "output": "unknown-fields.yaml",
+    "source": "Hand-written. Contract rules: Keys, Lists, Unknown field values. 0030: unknown fields are preserved."
+  },
+  {
+    "name": "key-order",
+    "input": "key-order.plan.json",
+    "output": "key-order.yaml",
+    "source": "Hand-written. Contract rule: the key order table. Field names are from the domain model."
+  },
+  {
+    "name": "conditions",
+    "input": "conditions.plan.json",
+    "output": "conditions.yaml",
+    "source": "Hand-written. Contract rule: Keys, isAnswered. Condition syntax is from docs/reference/section-template-schema/conditions.md."
+  },
+  {
+    "name": "acme",
+    "input": "acme.plan.json",
+    "output": "../../../../docs/reference/examples/acme/acme.obk.yaml",
+    "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: unknown-yet answers became unknown markers, and a single run string became a one-item list."
+  },
+  {
+    "name": "empty-answer",
+    "input": "empty-answer.plan.json",
+    "problems": [
+      {
+        "code": "encode.empty-answer",
+        "path": "variables[0].askIf.all[0].answer.isOneOf[1]"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "variables[0].askIf.all[0].answer.isNotOneOf[0]"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.plan.organization"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.sections.s.name"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, empty-answer, for an answer and for an item of isOneOf or isNotOneOf."
+  },
+  {
+    "name": "ambiguous-check",
+    "input": "ambiguous-check.plan.json",
+    "problems": [
+      {
+        "code": "encode.ambiguous-check",
+        "path": "sections[0].steps[0].checks[0]"
+      },
+      {
+        "code": "encode.ambiguous-check",
+        "path": "sections[0].steps[0].checks[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, ambiguous-check. The domain model says a Check has exactly one of run, ask, or env."
+  },
+  {
+    "name": "unknown-field-collision",
+    "input": "unknown-field-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].id"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "answers"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, unknown-field-collision."
+  },
+  {
+    "name": "empty-item",
+    "input": "empty-item.plan.json",
+    "problems": [
+      {
+        "code": "encode.empty-item",
+        "path": "variables[0]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "sections[0].variables[0].askIf.all[1]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "sections[0].steps[0]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "sections[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, empty-item. Dropping an item would shift the list."
+  }
 ]

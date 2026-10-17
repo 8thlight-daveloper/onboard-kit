@@ -30,6 +30,8 @@ answers:
     a27: "tab\there"
     a28: "unknown-yet"
     a29: "ünïcode"
+    a30: "cr\rhere"
+    a31: "bell\x07"
     b01: Platform team
     b02: git@git.acme.example:platform/widget-service.git
     b03: $repo_url
@@ -42,3 +44,4 @@ answers:
     b10: none
     b11: has "quote" inside
     b12: percent 50%
+    b13: Zebra

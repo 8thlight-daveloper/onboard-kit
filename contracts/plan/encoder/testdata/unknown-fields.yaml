@@ -5,6 +5,13 @@ sections:
     summary: S
     aa: a
     zz: z
+x-doc:
+  - |
+    line one
+    line two
+  - plain
+x-empty-list: []
+x-empty-map: {}
 x-list:
   - a
   - b
@@ -22,4 +29,10 @@ x-nested:
   - - p
     - q
   - r: 1
+x-numbers:
+  big: 100
+  neg: -5
+  quarter: 0.25
+  ten: 10
+  whole: 2.0
 x-owner: team

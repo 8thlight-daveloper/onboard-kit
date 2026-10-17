@@ -1,1 +1,5 @@
-{"schemaVersion": 1, "answers": {"plan": {"organization": null, "team": "Platform team"}, "sections": {"s": {"name": null}}}}
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "v", "description": "V", "askIf": {"all": [{"question": "q", "answer": {"isOneOf": ["a", null], "isNotOneOf": [null, "b"]}}]}}],
+  "answers": {"plan": {"organization": null, "team": "Platform team"}, "sections": {"s": {"name": null}}}
+}

@@ -42,7 +42,10 @@
       "b09": "Yes please",
       "b10": "none",
       "b11": "has \"quote\" inside",
-      "b12": "percent 50%"
+      "b12": "percent 50%",
+      "a30": "cr\rhere",
+      "a31": "bell\u0007",
+      "b13": "Zebra"
     }
   }
 }

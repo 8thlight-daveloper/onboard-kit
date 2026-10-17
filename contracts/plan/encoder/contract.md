@@ -24,7 +24,7 @@ The same rules apply everywhere. The goal is that two people, or two versions of
 
 ### Keys
 
-A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. A condition test written `isAnswered` is the exception: it is written whenever it is set, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
+A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. A condition test written `isAnswered` is the exception: it is written whenever it is set, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
 
 | Type | Key order |
 | -- | -- |
@@ -62,7 +62,8 @@ Unknown fields are written after the known keys, as siblings of them, in ascendi
 A string with a newline is written as a literal block when all of these hold, and otherwise in double quotes.
 
 - No line has trailing whitespace or a tab.
-- The first line does not start with a space.
+- No character is a control character, other than the newlines.
+- The first line is not empty and does not start with a space.
 - The text ends with no newline or with exactly one.
 
 The marker is `|-` when the text has no final newline, and `|` when it has exactly one. A block's lines are indented two spaces more than their key, and an empty line inside the text is an empty line in the file.
@@ -77,22 +78,25 @@ A list is written as a block list, one item per line, even for short lists of wo
 | -- | -- |
 | Text | A string, by the string rules |
 | Flag | `true` or `false` |
-| List | A block list of strings, or `[]` when the list is empty. This is the only place flow style appears |
+| List | A block list of strings, or `[]` when the list is empty, wherever a Value is written |
 | Unknown | The plain word `unknown-yet` |
 
 A Value of kind none inside answers is a problem: `encode.empty-answer`.
 
 ### Unknown field values
 
-The unknown fields of a plan or section hold maps, lists, strings, booleans, integers, decimal numbers, and null. They are written by the same rules, with null as `null`. Any other kind of value is a problem: `encode.unsupported-value`.
+The unknown fields of a plan or section hold maps, lists, strings, booleans, integers, decimal numbers, and null. They are written by the same rules, with null as `null`.
+
+In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`. A decimal is written in plain notation, with `.0` added when it has no fractional part, so `2.0` stays a decimal. NaN, infinity, every other number kind, and every other kind of value are problems: `encode.unsupported-value`. The path of a value inside a list ends in the item's position, such as `x[0]`.
 
 ## Problems
 
 | Code | When |
 | -- | -- |
-| `encode.empty-answer` | A Value of kind none is an answer |
+| `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
+| `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. Dropping it would shift the list, so it is a problem |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -110,7 +114,7 @@ These hold for every plan the contract tests use.
 - Reading plan files, which is the decoder.
 - Writing the bytes to a file, which a driver does.
 - Checking that a plan is valid. An encoder writes any plan it can, and the plan validator judges it.
-- Floating point numbers in exponent form.
+- Decimal numbers written in exponent form, and decimals too large or small for plain notation.
 
 ## Wrong implementations tried
 

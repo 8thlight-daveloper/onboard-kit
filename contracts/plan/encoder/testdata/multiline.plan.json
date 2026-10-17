@@ -8,7 +8,21 @@
       "owner": " indented\nnext\n",
       "verification": "no final newline\nsecond line",
       "body": "Line one\nLine two\n\nLine four\n",
-      "steps": [{"id": "s1", "name": "a\tb\nc\n", "notes": "Keep\n\n", "owner": "newcomer"}]
+      "steps": [
+        {
+          "id": "s1",
+          "name": "a\tb\nc\n",
+          "notes": "Keep\n\n",
+          "owner": "newcomer"
+        }
+      ]
+    },
+    {
+      "id": "edges",
+      "title": "Edges",
+      "summary": "a\u0001b\nc\n",
+      "owner": "\nabc\n",
+      "verification": "cr\r\nline\n"
     }
   ]
 }
