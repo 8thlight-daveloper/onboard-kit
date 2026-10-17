@@ -1,6 +1,6 @@
 # Plan decoder contract
 
-Status: draft, for a person to approve. Component: `plan/decoder`. Issue: [#38](https://github.com/8thlight-daveloper/onboard-kit/issues/38).
+Status: approved. Component: `plan/decoder`. Issue: [#38](https://github.com/8thlight-daveloper/onboard-kit/issues/38).
 
 The plan decoder turns the bytes of a plan file into a Plan. It is a pure function. It reads no file, writes no file, and does not change its argument. The same bytes always give the same result. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
