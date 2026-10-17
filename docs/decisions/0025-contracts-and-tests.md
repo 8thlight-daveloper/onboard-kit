@@ -68,7 +68,7 @@ A contract has four parts: a plain description of the behavior, fixtures, contra
 - **The implementing agent reads the contract and does not edit it.** If it finds a conflict, a gap, or a mistake, it stops and reports it, in its result and in the pull request. It edits a contract only when a person authorizes that specific change.
 - **A contract must tell right from wrong.** One agent writes the spec and the tests together, so a shared misunderstanding could pass review. Two checks guard against it. Both are steps of the workflow, not optional requests.
   - **Drafting.** Before a person reviews, the drafting run lists a few plausible wrong implementations per component, such as ignoring a condition, breaking tie order, or mutating an input. It shows that the contract tests fail each one, and adds fixtures where one slips through. These wrong implementations are scratch work and are not committed.
-  - **Building.** The implementing agent works red, then green. Before writing code it runs the contract tests against a stub, and every test must fail. After the tests pass, it runs an automated mutation tool and reports surviving mutants as contract gaps, in its result and in the pull request. The tool generates the mutants, not the agent, so the agent does not grade itself. The agent does not edit the contract.
+  - **Building.** The implementing agent works red, then green. Before writing code it runs the contract tests against a stub, and every test that exercises the output must fail. A test of a property, such as determinism, can pass against a stub that returns nothing. After the tests pass, it runs an automated mutation tool and reports surviving mutants as contract gaps, in its result and in the pull request. The tool generates the mutants, not the agent, so the agent does not grade itself. The agent does not edit the contract.
 - **Transitional contracts stay thin.** The document assembler's contract is written last and kept small.
 
 ### Rebuilding a component
@@ -79,6 +79,16 @@ A contract has four parts: a plain description of the behavior, fixtures, contra
 4. CI checks that the change touches only that component's folder.
 
 Any change to the contracts, the acceptance tests, `architecture.yaml`, or the domain model is a separate change with human approval. A rebuild that needs a contract change stops and asks.
+
+### When to regenerate
+
+Regenerating is cheap, so the question is when it is worth a person's review. Chad Fowler's [regenerative software](https://aicoding.leaflet.pub/3majnyfydzs2y) ties how often a layer is rebuilt to how slow the layer is. It asks, before a rebuild, what invariants the new version must preserve, and warns against regenerating faster than anyone can understand the system. His posts do not say whether a failing test triggers a rebuild. These are our rules.
+
+- **A failing contract test does not trigger regeneration.** Patch a local defect in place. Regenerate when the component's design is inadequate, when the domain model it is built on changes, or when patches have piled up.
+- **A mutation survivor is a gap in the contract.** The fix goes to the contract's tests or fixtures, and a person approves it. The code changes only if the new tests fail against it.
+- **A contract change** is first run against the existing component. Failures are fixed by a patch, written by someone other than the author of the new tests.
+- **After a large contract change, regenerate once** from the contract alone. That is a check that the contract is enough: a second independent build must also pass, and where two builds differ, the contract is ambiguous.
+- **A person reviews every regeneration.** Do not regenerate more often than that review can keep up.
 
 ### Review
 

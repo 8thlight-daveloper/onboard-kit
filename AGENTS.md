@@ -31,7 +31,7 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 - Never write or change the tests that judge your own rebuild.
 - When you find that a contract conflicts with another document, is incomplete, or looks wrong, stop and report it. Do not edit the contract unless a person authorizes that specific change.
 - Contract and test rules are in `docs/decisions/0025-contracts-and-tests.md`.
-- When building a component, first run its contract tests against a stub and confirm every test fails. After they pass, run the mutation tool and report surviving mutants as contract gaps. Do not edit the contract.
+- When building a component, first run its contract tests against a stub and confirm that every test that exercises the output fails. Tests of properties, such as determinism, may pass against a stub that returns nothing. After they pass, run `just mutate <component>` and report surviving mutants as contract gaps. Do not edit the contract.
 - When asked to draft a contract, write all four parts, cite the source of each fixture, list plausible wrong implementations and show that the tests fail them, and do not build the component in the same run.
 - Write acceptance scenarios as data under `acceptance/scenarios/`. Never write acceptance tests in implementation code or import implementation packages.
 - Respect the dependency rules. Do not add a dependency they do not allow.

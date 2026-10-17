@@ -54,6 +54,13 @@ ide:
     nix build .#go --out-link .direnv/go
     @echo "GOROOT for the IDE: $(pwd)/.direnv/go/share/go"
 
+# Mutation-test one component against its contract, for example `just mutate plan/encoder`. Survivors are gaps in the contract.
+mutate component:
+    mkdir -p .direnv/bin
+    GOBIN="$(pwd)/.direnv/bin" go install github.com/avito-tech/go-mutesting/cmd/go-mutesting@v0.0.0-20261002081621-9ce5f731e321
+    COMPONENT={{ component }} .direnv/bin/go-mutesting --exec="$(pwd)/tools/mutation/exec.sh" --exec-timeout=120 ./internal/{{ component }}/
+    rm -f report.json
+
 # Install the git hook that runs check before every commit.
 hook:
     git config core.hooksPath .githooks
