@@ -1,8 +1,8 @@
 [
   {
     "name": "minimal",
-    "input": "minimal.plan.json",
-    "output": "minimal.yaml",
+    "input": "../../testdata/minimal.plan.json",
+    "output": "../../testdata/minimal.yaml",
     "source": "Hand-written. Contract rules: Document, Keys."
   },
   {
@@ -13,43 +13,43 @@
   },
   {
     "name": "strings",
-    "input": "strings.plan.json",
-    "output": "strings.yaml",
+    "input": "../../testdata/strings.plan.json",
+    "output": "../../testdata/strings.yaml",
     "source": "Hand-written. Contract rule: Scalars. Each value is one clause of the plain or quoted rule, and the reserved words come from 0030's format guards."
   },
   {
     "name": "multiline",
-    "input": "multiline.plan.json",
-    "output": "multiline.yaml",
+    "input": "../../testdata/multiline.plan.json",
+    "output": "../../testdata/multiline.yaml",
     "source": "Hand-written. Contract rule: Multi-line strings."
   },
   {
     "name": "answers",
-    "input": "answers.plan.json",
-    "output": "answers.yaml",
+    "input": "../../testdata/answers.plan.json",
+    "output": "../../testdata/answers.yaml",
     "source": "Hand-written. Contract rule: Answers. Values follow the domain model's Value kinds, and the names come from the ACME example."
   },
   {
     "name": "unknown-fields",
-    "input": "unknown-fields.plan.json",
-    "output": "unknown-fields.yaml",
+    "input": "../../testdata/unknown-fields.plan.json",
+    "output": "../../testdata/unknown-fields.yaml",
     "source": "Hand-written. Contract rules: Keys, Lists, Unknown field values. 0030: unknown fields are preserved."
   },
   {
     "name": "key-order",
-    "input": "key-order.plan.json",
-    "output": "key-order.yaml",
+    "input": "../../testdata/key-order.plan.json",
+    "output": "../../testdata/key-order.yaml",
     "source": "Hand-written. Contract rule: the key order table. Field names are from the domain model."
   },
   {
     "name": "conditions",
-    "input": "conditions.plan.json",
-    "output": "conditions.yaml",
+    "input": "../../testdata/conditions.plan.json",
+    "output": "../../testdata/conditions.yaml",
     "source": "Hand-written. Contract rule: Keys, isAnswered. Condition syntax is from docs/reference/section-template-schema/conditions.md."
   },
   {
     "name": "acme",
-    "input": "acme.plan.json",
+    "input": "../../testdata/acme.plan.json",
     "output": "../../../../docs/reference/examples/acme/acme.obk.yaml",
     "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: unknown-yet answers became unknown markers, and a single run string became a one-item list."
   },

@@ -12,7 +12,7 @@ Part of the [stack](README.md). The structure is decided in [0020](../decisions/
 | Interface file | `api.go` in the contract package, holding the interface and its data types |
 | Contract tests | `<role>_test.go` in the contract package |
 | Wiring test | `wire_test.go`, the only file in a contract package that imports its implementation, through one constructor call |
-| Fixtures | `testdata/` folders, which the Go tool ignores when it builds |
+| Fixtures | `testdata/` folders, which the Go tool ignores when it builds. A fixture that serves two contracts, such as a plan file and the plan it decodes to, lives in `contracts/<noun>/testdata/`, and each contract's `cases.json` points at it |
 
 ## Folders
 
@@ -46,6 +46,7 @@ contracts/
   <noun>/<role>/             # mirrors internal/, for example contracts/section/selector
     api.go                   # permanent: interface and data types
     testdata/                # permanent: fixtures and expected results
+  <noun>/testdata/           # permanent: fixtures shared by the contracts of one noun, for example contracts/plan/testdata
     <role>_test.go           # permanent: contract tests, behavior only
     wire_test.go             # binds the tests to the implementation
 acceptance/
