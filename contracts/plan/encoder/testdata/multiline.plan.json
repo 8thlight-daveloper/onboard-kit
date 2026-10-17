@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {
+      "id": "multi",
+      "title": "Multi-line text",
+      "summary": "A \nB\n",
+      "owner": " indented\nnext\n",
+      "verification": "no final newline\nsecond line",
+      "body": "Line one\nLine two\n\nLine four\n",
+      "steps": [{"id": "s1", "name": "a\tb\nc\n", "notes": "Keep\n\n", "owner": "newcomer"}]
+    }
+  ]
+}

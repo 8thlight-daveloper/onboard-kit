@@ -1,0 +1,23 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    askIf:
+      all:
+        - question: plan.discipline
+          answer:
+            is: software
+            isNot: design
+            isOneOf:
+              - a
+              - b
+            isNotOneOf:
+              - c
+              - d
+            isAnswered: true
+        - question: flag
+          answer:
+            is: false
+        - question: x
+          answer:
+            isAnswered: false

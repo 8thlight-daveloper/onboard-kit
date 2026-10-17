@@ -35,11 +35,11 @@ lint-prose:
 
 # Go formatting and vet. A no-op until the Go module exists.
 lint-go:
-    if [ -f go.mod ]; then test -z "$(gofmt -l .)" && go vet ./...; else echo "no Go module yet"; fi
+    if [ -f go.mod ]; then test -z "$(gofmt -l .)" && go vet $(just _go-packages); else echo "no Go module yet"; fi
 
 # Go tests. A no-op until the Go module exists.
 test:
-    if [ -f go.mod ]; then go test -race ./...; else echo "no Go module yet"; fi
+    if [ -f go.mod ]; then go test -race $(just _go-packages); else echo "no Go module yet"; fi
 
 # Build the binary. A no-op until the Go module exists.
 build:
@@ -58,3 +58,7 @@ ide:
 hook:
     git config core.hooksPath .githooks
     @echo "git hook installed: .githooks/pre-commit"
+
+# Go packages to check. A component's contract runs once the component's folder exists.
+_go-packages:
+    @go list ./... | while read -r package; do case "$package" in onboard-kit/contracts/harness/*) echo "$package";; onboard-kit/contracts/*) rel="${package#onboard-kit/contracts/}"; if [ -d "internal/$rel" ]; then echo "$package"; fi;; *) echo "$package";; esac; done

@@ -1,0 +1,22 @@
+schemaVersion: 1
+answers:
+  plan:
+    commands:
+      - make
+      - test
+    discipline: software
+    empty_list: []
+    flag_off: false
+    flag_on: true
+    organization: ACME Corp
+    unknown_one: unknown-yet
+    unknown_text: "unknown-yet"
+  sections:
+    access:
+      repo_url: git@git.acme.example:platform/widget-service.git
+      tracker_grantor: unknown-yet
+    clone-and-run-tests:
+      repo_dir: widget-service
+      setup_command:
+        - make
+        - setup

@@ -1,0 +1,19 @@
+schemaVersion: 1
+sections:
+  - id: multi
+    title: Multi-line text
+    summary: "A \nB\n"
+    owner: " indented\nnext\n"
+    verification: |-
+      no final newline
+      second line
+    body: |
+      Line one
+      Line two
+
+      Line four
+    steps:
+      - id: s1
+        name: "a\tb\nc\n"
+        notes: "Keep\n\n"
+        owner: newcomer

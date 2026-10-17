@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "unknownFields": {
+    "x-owner": "team",
+    "x-list": ["a", "b"],
+    "x-map": {"k": "v", "a": 1, "b": 1.5, "c": null, "d": true},
+    "x-nested": [["p", "q"], {"r": 1}],
+    "x-listmap": [{"id": "one"}, {"id": "two", "n": 2}]
+  },
+  "sections": [{"id": "s", "title": "T", "summary": "S", "unknownFields": {"zz": "z", "aa": "a"}}]
+}

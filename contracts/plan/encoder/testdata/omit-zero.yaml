@@ -1,0 +1,11 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+sections:
+  - id: s
+    title: S
+    summary: S
+    steps:
+      - id: st
+        name: St

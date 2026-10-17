@@ -1,0 +1,25 @@
+schemaVersion: 1
+sections:
+  - id: s
+    title: T
+    summary: S
+    aa: a
+    zz: z
+x-list:
+  - a
+  - b
+x-listmap:
+  - id: one
+  - id: two
+    "n": 2
+x-map:
+  a: 1
+  b: 1.5
+  c: null
+  d: true
+  k: v
+x-nested:
+  - - p
+    - q
+  - r: 1
+x-owner: team

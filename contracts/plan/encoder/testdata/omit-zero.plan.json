@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "provenance": {},
+  "variables": [{"name": "v", "description": "V", "multiple": false, "required": false, "options": [], "pattern": "", "default": null}],
+  "answers": {"plan": {}, "sections": {}},
+  "sections": [{"id": "s", "title": "S", "summary": "S", "after": [], "steps": [{"id": "st", "name": "St", "env": {}, "checks": []}]}]
+}

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "provenance": {"templateSet": "abc1234", "generatedOn": "2026-10-15"},
+  "variables": [
+    {"name": "team_state", "description": "Team state", "type": "choice", "multiple": false, "options": ["established", "first-consultants"], "required": true, "default": "established", "phase": "planning"}
+  ],
+  "answers": {"plan": {"team_state": "established"}, "sections": {"s": {"enabled": true}}},
+  "sections": [
+    {
+      "id": "s",
+      "title": "Everything",
+      "summary": "All fields",
+      "includeIf": {"all": [{"question": "plan.team_state", "answer": {"is": "established"}}]},
+      "timing": "week-one",
+      "after": ["other"],
+      "owner": "newcomer",
+      "escalation": ["$backup"],
+      "verification": "It works.",
+      "body": "Body text.",
+      "variables": [
+        {"name": "backup", "description": "Backup", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "phase": "onboarding",
+         "askIf": {"all": [{"question": "enabled", "answer": {"isAnswered": true}}]}}
+      ],
+      "steps": [
+        {
+          "id": "st",
+          "name": "Step",
+          "notes": "Notes.",
+          "owner": "newcomer",
+          "timing": "anytime",
+          "escalation": ["$backup"],
+          "run": ["git", "status"],
+          "open": "https://x.example",
+          "directory": "work",
+          "env": {"B": "2", "A": "1"},
+          "checks": [{"run": ["true"]}, {"ask": "Did it work?"}, {"env": "TOKEN"}]
+        }
+      ],
+      "source": {"template": "s", "hash": "abc"}
+    }
+  ]
+}

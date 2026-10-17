@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "answers": {
+    "plan": {
+      "organization": "ACME Corp",
+      "discipline": "software",
+      "flag_on": true,
+      "flag_off": false,
+      "commands": [
+        "make",
+        "test"
+      ],
+      "unknown_one": {
+        "unknown": true
+      },
+      "unknown_text": "unknown-yet",
+      "empty_list": []
+    },
+    "sections": {
+      "clone-and-run-tests": {
+        "setup_command": [
+          "make",
+          "setup"
+        ],
+        "repo_dir": "widget-service"
+      },
+      "access": {
+        "tracker_grantor": {
+          "unknown": true
+        },
+        "repo_url": "git@git.acme.example:platform/widget-service.git"
+      }
+    }
+  }
+}

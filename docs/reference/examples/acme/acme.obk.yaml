@@ -1,7 +1,7 @@
 schemaVersion: 1
 provenance:
   templateSet: example
-  generatedOn: 2026-10-15
+  generatedOn: "2026-10-15"
 variables:
   - name: organization
     description: Name of the organization
@@ -11,35 +11,44 @@ variables:
     required: true
   - name: team_state
     description: Is the team established, or are we the first consultants?
-    options: [established, first-consultants]
+    options:
+      - established
+      - first-consultants
     required: true
   - name: discipline
     description: Which discipline is this plan for?
-    options: [software, design]
+    options:
+      - software
+      - design
     required: true
   - name: output_style
     description: Target format of the document
-    options: [markdown]
+    options:
+      - markdown
     default: markdown
 answers:
   plan:
+    discipline: software
     organization: ACME Corp
     team: Platform team
     team_state: established
-    discipline: software
   sections:
     access:
-      onboarding_owner_role: Engineering manager
       access_request_url: https://access.acme.example/request
-      source_control_grantor: IT service desk
       ci_grantor: Platform team lead
+      onboarding_owner_role: Engineering manager
+      repo_url: git@git.acme.example:platform/widget-service.git
+      source_control_grantor: IT service desk
       tracker_grantor: unknown-yet
-      repo_url: git@git.acme.example:platform/widget-service.git
     clone-and-run-tests:
-      repo_url: git@git.acme.example:platform/widget-service.git
       repo_dir: widget-service
-      setup_command: [make, setup]
-      test_command: [make, test]
+      repo_url: git@git.acme.example:platform/widget-service.git
+      setup_command:
+        - make
+        - setup
+      test_command:
+        - make
+        - test
     stuck-general:
       general_contacts:
         - Alex Rivera, alex.rivera@acme.example, @alex
@@ -48,9 +57,12 @@ sections:
   - id: access
     title: Access
     summary: Request the accounts and permissions you need, and record who grants each.
-    owner: $onboarding_owner_role
     timing: before-day-one
+    owner: $onboarding_owner_role
     verification: You can open the repository, the CI dashboard, and the work tracker.
+    body: |
+      Request each system on day minus five if you can. Record who grants it and when
+      you asked.
     variables:
       - name: onboarding_owner_role
         description: Role of the person who owns onboarding at the organization
@@ -60,7 +72,7 @@ sections:
         required: true
       - name: repo_url
         description: Clone URL of the main repository
-        pattern: '^(git@|https://)\S+$'
+        pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: source_control_grantor
@@ -80,20 +92,20 @@ sections:
       - name: account_name
         description: Your account name at the organization
         phase: onboarding
-    body: |
-      Request each system on day minus five if you can. Record who grants it and when
-      you asked.
     steps:
       - id: source-control
         name: Source control
         owner: $source_control_grantor
         open: $access_request_url
         checks:
-          - run: [git, ls-remote, $repo_url]
+          - run:
+              - git
+              - ls-remote
+              - $repo_url
       - id: ci-dashboard
         name: CI dashboard
-        owner: $ci_grantor
         notes: Sign in as $account_name.
+        owner: $ci_grantor
         checks:
           - ask: Can you open the CI dashboard?
       - id: work-tracker
@@ -112,43 +124,52 @@ sections:
         - question: plan.discipline
           answer:
             is: software
-    owner: newcomer
     timing: week-one
+    owner: newcomer
     verification: $test_command passes on a fresh clone.
+    body: |
+      If a test fails on a fresh clone, write down the failure and ask the team before
+      changing anything.
     variables:
       - name: repo_url
         description: Clone URL of the main repository
-        pattern: '^(git@|https://)\S+$'
+        pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: repo_dir
         description: Directory name for the clone
         default: project
       - name: setup_command
-        type: command
         description: Command that installs dependencies
+        type: command
         required: true
       - name: test_command
-        type: command
         description: Command that runs the test suite
+        type: command
         required: true
-    body: |
-      If a test fails on a fresh clone, write down the failure and ask the team before
-      changing anything.
     steps:
       - id: clone
         name: Clone the repository
-        run: [git, clone, $repo_url, $repo_dir]
+        run:
+          - git
+          - clone
+          - $repo_url
+          - $repo_dir
         checks:
-          - run: [test, -d, $repo_dir/.git]
+          - run:
+              - test
+              - "-d"
+              - $repo_dir/.git
       - id: install
         name: Install dependencies
+        run:
+          - $setup_command
         directory: $repo_dir
-        run: $setup_command
       - id: run-tests
         name: Run the tests
+        run:
+          - $test_command
         directory: $repo_dir
-        run: $test_command
     source:
       template: clone-and-run-tests
       hash: example-not-computed
@@ -160,9 +181,12 @@ sections:
         - question: plan.discipline
           answer:
             is: design
-    owner: newcomer
     timing: week-one
+    owner: newcomer
     verification: You can open the design system and the main design file.
+    body: |
+      Look at the design system before you start work. Write down anything that is
+      missing or out of date, and tell the team.
     variables:
       - name: enabled
         description: Include the design review?
@@ -174,9 +198,6 @@ sections:
       - name: design_file_url
         description: The main design file for the product
         required: true
-    body: |
-      Look at the design system before you start work. Write down anything that is
-      missing or out of date, and tell the team.
     steps:
       - id: design-system
         name: Open the design system
@@ -195,16 +216,16 @@ sections:
     title: If you are stuck
     summary: Who to ask when something is blocked and nobody named in a section can help.
     timing: anytime
-    variables:
-      - name: general_contacts
-        type: person
-        multiple: true
-        description: Who can help with anything
-        required: true
     body: |
       If a step is blocked and the people named in its section cannot help, ask these people
       first: $general_contacts.
       Say what you tried and what you need. They will point you to someone else to try.
+    variables:
+      - name: general_contacts
+        description: Who can help with anything
+        type: person
+        multiple: true
+        required: true
     source:
       template: stuck-general
       hash: example-not-computed

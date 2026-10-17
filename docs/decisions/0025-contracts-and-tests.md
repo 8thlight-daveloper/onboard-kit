@@ -49,6 +49,16 @@ Acceptance tests must keep working whatever language the tool is written in, and
 
 Contract tests are different on purpose. They call a component in process and are written in the implementation language. Their fixtures are plain data, so only the test setup and the interface binding change if the language does.
 
+### Where contract tests run
+
+A contract's tests run once the component's folder exists. `just check` lists the packages to test with a rule: a package under `contracts/` is included only when the matching folder under `internal/` exists, or when it is shared test code under `contracts/harness/`. So a contract can be approved and merged ahead of its component without turning the build red. The build issue creates the folder, writes a stub, and watches every test fail on its own branch, and the build is merged only when the tests pass.
+
+### Fixtures and shared test code
+
+Contract fixtures are plain data, written by hand. A tool may produce a first draft, but a person checks every value, and the committed file is the authority. The cases a converter handles badly, such as `yes`, `no`, `on`, `off`, and dates, are written out on purpose. Each case in a `cases.json` manifest names its source.
+
+A Go function turns a fixture's JSON into a model value, because the model has no JSON tags. That shared test code lives in `contracts/harness/`, and it is as protected as a contract. The JSON form is described in `contracts/harness/jsonform/FORMAT.md`.
+
 ### Writing contracts
 
 A contract has four parts: a plain description of the behavior, fixtures, contract tests, and the interface binding.
