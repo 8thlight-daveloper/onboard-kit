@@ -50,7 +50,7 @@ Each open decision has its own issue.
 | Decision | Issue |
 | -- | -- |
 | Hosting and distribution | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
-| Dependency check extractor, the banned packages, and the mutation tool | [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33) |
+| Dependency check extractor and the banned packages | [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33) |
 | Update action conflict handling, deferred past the MVP | [#32](https://github.com/8thlight-daveloper/onboard-kit/issues/32) |
 | Keep the contract-strength checks after the first builds | [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37) |
 
