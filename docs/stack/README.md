@@ -10,6 +10,7 @@ Every choice must satisfy [0005](../decisions/0005-self-contained-install.md): o
 | -- | -- |
 | [language.md](language.md) | Language and terminal toolkit |
 | [testing.md](testing.md) | Test runner and its settings, the acceptance runner, the mutation tool |
+| [yaml.md](yaml.md) | The YAML library the plan decoder reads files with |
 | [dependency-check.md](dependency-check.md) | The extractor that checks dependency rules, and the packages core components may not use |
 | [code-layout.md](code-layout.md) | The folders and file names that map the structure in [0020](../decisions/0020-binary-structure-and-regenerative-components.md) to the current language |
 | [dev-tooling.md](dev-tooling.md) | The task runner, dev shell, Markdown format and lint, link check, voice rules, and CI |
