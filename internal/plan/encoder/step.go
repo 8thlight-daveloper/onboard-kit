@@ -1,14 +1,10 @@
 package encoder
 
-import (
-	"strconv"
-
-	"onboard-kit/internal/model"
-)
+import "onboard-kit/internal/model"
 
 func (c *collector) stepSequence(steps []model.Step, path string) node {
 	return sequenceOf(steps, func(index int, step model.Step) node {
-		return c.stepNode(step, path+"["+strconv.Itoa(index)+"]")
+		return c.stepNode(step, indexed(path, index))
 	})
 }
 
@@ -25,7 +21,7 @@ func (c *collector) stepNode(step model.Step, path string) node {
 	builder.add("directory", stringField(step.Directory))
 	builder.add("env", environmentNode(step.Env))
 	builder.add("checks", c.checkSequence(step.Checks, path+".checks"))
-	return builder.build()
+	return c.requireKeys(builder.build(), path)
 }
 
 func environmentNode(environment map[string]string) node {
@@ -38,7 +34,7 @@ func environmentNode(environment map[string]string) node {
 
 func (c *collector) checkSequence(checks []model.Check, path string) node {
 	return sequenceOf(checks, func(index int, check model.Check) node {
-		return c.checkNode(check, path+"["+strconv.Itoa(index)+"]")
+		return c.checkNode(check, indexed(path, index))
 	})
 }
 

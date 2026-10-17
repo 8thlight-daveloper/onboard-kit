@@ -2,7 +2,7 @@ package encoder
 
 import "onboard-kit/internal/model"
 
-func variableNode(variable model.Variable) node {
+func (c *collector) variableNode(variable model.Variable, path string) node {
 	builder := &mappingBuilder{}
 	builder.add("name", stringField(variable.Name))
 	builder.add("description", stringField(variable.Description))
@@ -14,12 +14,12 @@ func variableNode(variable model.Variable) node {
 	builder.add("required", flagField(variable.Required))
 	builder.add("default", valueNode(variable.Default))
 	builder.add("phase", stringField(string(variable.Phase)))
-	builder.add("askIf", conditionNode(variable.AskIf))
-	return builder.build()
+	builder.add("askIf", c.conditionNode(variable.AskIf, path+".askIf"))
+	return c.requireKeys(builder.build(), path)
 }
 
-func variableSequence(variables []model.Variable) node {
-	return sequenceOf(variables, func(_ int, variable model.Variable) node {
-		return variableNode(variable)
+func (c *collector) variableSequence(variables []model.Variable, path string) node {
+	return sequenceOf(variables, func(index int, variable model.Variable) node {
+		return c.variableNode(variable, indexed(path, index))
 	})
 }

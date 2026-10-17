@@ -37,28 +37,10 @@ func (c *collector) unknownNode(value any, path string) node {
 		return booleanNode(typed)
 	case int:
 		return integerNode(int64(typed))
-	case int8:
-		return integerNode(int64(typed))
-	case int16:
-		return integerNode(int64(typed))
-	case int32:
-		return integerNode(int64(typed))
 	case int64:
 		return integerNode(typed)
-	case uint:
-		return scalarNode(strconv.FormatUint(uint64(typed), 10))
-	case uint8:
-		return scalarNode(strconv.FormatUint(uint64(typed), 10))
-	case uint16:
-		return scalarNode(strconv.FormatUint(uint64(typed), 10))
-	case uint32:
-		return scalarNode(strconv.FormatUint(uint64(typed), 10))
-	case uint64:
-		return scalarNode(strconv.FormatUint(typed, 10))
-	case float32:
-		return c.decimalNode(float64(typed), 32, path)
 	case float64:
-		return c.decimalNode(typed, 64, path)
+		return c.decimalNode(typed, path)
 	case []any:
 		return c.unknownList(typed, path)
 	case map[string]any:
@@ -72,12 +54,12 @@ func integerNode(number int64) node {
 	return scalarNode(strconv.FormatInt(number, 10))
 }
 
-func (c *collector) decimalNode(number float64, bits int, path string) node {
+func (c *collector) decimalNode(number float64, path string) node {
 	if math.IsNaN(number) || math.IsInf(number, 0) {
 		c.report(codeUnsupportedValue, path, "an unknown field holds a number that cannot be written")
 		return nil
 	}
-	text := strconv.FormatFloat(number, 'f', -1, bits)
+	text := strconv.FormatFloat(number, 'f', -1, 64)
 	if !strings.Contains(text, ".") {
 		text += ".0"
 	}
@@ -85,12 +67,18 @@ func (c *collector) decimalNode(number float64, bits int, path string) node {
 }
 
 func (c *collector) unknownList(items []any, path string) node {
+	if len(items) == 0 {
+		return scalarNode("[]")
+	}
 	return sequenceOf(items, func(index int, item any) node {
-		return c.unknownNode(item, path+"["+strconv.Itoa(index)+"]")
+		return c.unknownNode(item, indexed(path, index))
 	})
 }
 
 func (c *collector) unknownMap(values map[string]any, path string) node {
+	if len(values) == 0 {
+		return scalarNode("{}")
+	}
 	builder := &mappingBuilder{}
 	for _, key := range sortedKeys(values) {
 		builder.add(key, c.unknownNode(values[key], path+"."+key))

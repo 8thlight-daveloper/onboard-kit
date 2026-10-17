@@ -10,7 +10,7 @@ func (c *collector) planNode(plan model.Plan) node {
 	builder := &mappingBuilder{}
 	builder.add("schemaVersion", scalarNode(strconv.Itoa(plan.SchemaVersion)))
 	builder.add("provenance", provenanceNode(plan.Provenance))
-	builder.add("variables", variableSequence(plan.Variables))
+	builder.add("variables", c.variableSequence(plan.Variables, "variables"))
 	builder.add("answers", c.answersNode(plan.Answers))
 	builder.add("sections", c.sectionSequence(plan.Sections))
 	c.addUnknownFields(builder, plan.UnknownFields, "", isPlanKey)

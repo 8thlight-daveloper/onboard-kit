@@ -104,7 +104,7 @@ func escaped(character rune) string {
 }
 
 func literalBlock(text string) (string, []string, bool) {
-	if !strings.Contains(text, "\n") || strings.HasSuffix(text, "\n\n") {
+	if !strings.Contains(text, "\n") || strings.HasSuffix(text, "\n\n") || hasControlOtherThanNewline(text) {
 		return "", nil, false
 	}
 	chomp := "-"
@@ -114,13 +114,19 @@ func literalBlock(text string) (string, []string, bool) {
 		body = strings.TrimSuffix(text, "\n")
 	}
 	lines := strings.Split(body, "\n")
-	if strings.HasPrefix(lines[0], " ") {
+	if lines[0] == "" || strings.HasPrefix(lines[0], " ") {
 		return "", nil, false
 	}
 	for _, line := range lines {
-		if strings.Contains(line, "\t") || line != strings.TrimRightFunc(line, unicode.IsSpace) {
+		if line != strings.TrimRightFunc(line, unicode.IsSpace) {
 			return "", nil, false
 		}
 	}
 	return chomp, lines, true
+}
+
+func hasControlOtherThanNewline(text string) bool {
+	return strings.ContainsFunc(text, func(character rune) bool {
+		return character != '\n' && unicode.IsControl(character)
+	})
 }

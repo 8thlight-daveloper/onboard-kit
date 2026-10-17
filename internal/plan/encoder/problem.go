@@ -1,9 +1,14 @@
 package encoder
 
-import "onboard-kit/internal/model"
+import (
+	"strconv"
+
+	"onboard-kit/internal/model"
+)
 
 const (
 	codeEmptyAnswer           = "encode.empty-answer"
+	codeEmptyItem             = "encode.empty-item"
 	codeAmbiguousCheck        = "encode.ambiguous-check"
 	codeUnknownFieldCollision = "encode.unknown-field-collision"
 	codeUnsupportedValue      = "encode.unsupported-value"
@@ -20,4 +25,15 @@ func (c *collector) report(code string, path string, message string) {
 		Message:  message,
 		Detail:   map[string]string{"path": path},
 	})
+}
+
+func (c *collector) requireKeys(item node, path string) node {
+	if item == nil {
+		c.report(codeEmptyItem, path, "an item would write no keys")
+	}
+	return item
+}
+
+func indexed(path string, index int) string {
+	return path + "[" + strconv.Itoa(index) + "]"
 }

@@ -2,38 +2,38 @@ package encoder
 
 import "onboard-kit/internal/model"
 
-func conditionNode(condition *model.Condition) node {
+func (c *collector) conditionNode(condition *model.Condition, path string) node {
 	if condition == nil {
 		return nil
 	}
 	builder := &mappingBuilder{}
-	builder.add("all", sequenceOf(condition.All, func(_ int, clause model.Clause) node {
-		return clauseNode(clause)
+	builder.add("all", sequenceOf(condition.All, func(index int, clause model.Clause) node {
+		return c.clauseNode(clause, indexed(path+".all", index))
 	}))
 	return builder.build()
 }
 
-func clauseNode(clause model.Clause) node {
+func (c *collector) clauseNode(clause model.Clause, path string) node {
 	builder := &mappingBuilder{}
 	builder.add("question", stringField(clause.Question))
-	builder.add("answer", answerTestNode(clause.Answer))
-	return builder.build()
+	builder.add("answer", c.answerTestNode(clause.Answer, path+".answer"))
+	return c.requireKeys(builder.build(), path)
 }
 
-func answerTestNode(test model.AnswerTest) node {
+func (c *collector) answerTestNode(test model.AnswerTest, path string) node {
 	builder := &mappingBuilder{}
 	builder.add("is", valueNode(test.Is))
 	builder.add("isNot", valueNode(test.IsNot))
-	builder.add("isOneOf", valueSequence(test.IsOneOf))
-	builder.add("isNotOneOf", valueSequence(test.IsNotOneOf))
+	builder.add("isOneOf", c.valueSequence(test.IsOneOf, path+".isOneOf"))
+	builder.add("isNotOneOf", c.valueSequence(test.IsNotOneOf, path+".isNotOneOf"))
 	if test.IsAnswered != nil {
 		builder.add("isAnswered", booleanNode(*test.IsAnswered))
 	}
 	return builder.build()
 }
 
-func valueSequence(values []model.Value) node {
-	return sequenceOf(values, func(_ int, value model.Value) node {
-		return valueNode(value)
+func (c *collector) valueSequence(values []model.Value, path string) node {
+	return sequenceOf(values, func(index int, value model.Value) node {
+		return c.answerNode(value, indexed(path, index))
 	})
 }
