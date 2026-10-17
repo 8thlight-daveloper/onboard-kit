@@ -3,6 +3,9 @@ answers:
   plan:
     a: &anchor x
     b: *anchor
+variables:
+  - name: v
+    askIf: *anchor
 sections:
   - &sec
     id: s
@@ -10,6 +13,7 @@ sections:
   - *sec
   - <<: *sec
     id: t
+    title: yes
   - <<: {k: v}
     id: u
 x-a: &z 1
@@ -18,3 +22,5 @@ x-n:
   - &q 1
 x-o:
   k: &r 1
+x-p:
+  &k key: 1

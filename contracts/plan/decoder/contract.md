@@ -49,7 +49,7 @@ A problem names its place in `detail.path`, as the encoder does: dots for fields
 | `format.boolean-spelling` | A plain value is a boolean spelling other than `true` and `false` | The value |
 | `format.number-spelling` | See Numbers | The value |
 | `format.null-spelling` | A plain value is `~`, `Null`, or `NULL` | The value |
-| `format.alias` | An anchor, an alias, or a merge key `<<` is used. A merge key is one problem at the key, whatever its value | The node, or the key for a merge key |
+| `format.alias` | An anchor, an alias, or a merge key `<<` is used. A merge key is one problem at the key, whatever its value. A quoted `"<<"` is an ordinary key. An anchor on a key is reported at the key's path | The node, or the key for a merge key |
 | `format.duplicate-key` | A map has the same key twice. A quoted key and a plain key with the same text are the same key | The second and later keys |
 | `format.wrong-type` | A known field holds a kind the domain model does not allow for it. See Known fields | The field, or the list item |
 | `format.unknown-field` | A map that cannot keep unknown fields has a key it does not know | The key |

@@ -51,7 +51,7 @@
     "name": "hand-edited",
     "input": "hand-edited.yaml",
     "output": "hand-edited.plan.json",
-    "source": "Hand-written. Contract rule: Style is free. A person edits a plan by hand, so comments, a document marker, flow style, single quotes, folded and keep blocks, any key order, any indent, a plain date in a string field and in an unknown field, and the plain keys on, 1, and y are read as they were meant. 0030: plans decode leniently."
+    "source": "Hand-written. Contract rule: Style is free. A person edits a plan by hand, so comments, a document marker, flow style, single quotes, folded and keep blocks, any key order, any indent, a plain date in a string field and in an unknown field, and the plain keys on, 1, and y are read as they were meant. 0030: plans decode leniently. The quoted key \"<<\" is an ordinary key. The largest and smallest 64-bit integers are read as int64 in an unknown field."
   },
   {
     "name": "no-final-newline",
@@ -397,6 +397,51 @@
     "source": "Hand-written. Contract rule: Version. An anchor on a bad version is only the version problem."
   },
   {
+    "name": "version-key-as-value",
+    "input": "version-key-as-value.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. Only a key is read as schemaVersion, and a value of that text is not."
+  },
+  {
+    "name": "version-nine",
+    "input": "version-nine.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "9",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. Every digit is read in decimal."
+  },
+  {
+    "name": "version-largest",
+    "input": "version-largest.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "9223372036854775807",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. The largest 64-bit integer fits, so it is too new and not invalid."
+  },
+  {
     "name": "version-alias",
     "input": "version-alias.yaml",
     "problems": [
@@ -411,6 +456,10 @@
     "name": "boolean-spelling",
     "input": "boolean-spelling.yaml",
     "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "provenance"
+      },
       {
         "code": "format.boolean-spelling",
         "path": "answers.plan.a01"
@@ -525,6 +574,10 @@
       },
       {
         "code": "format.boolean-spelling",
+        "path": "sections[1].after"
+      },
+      {
+        "code": "format.boolean-spelling",
         "path": "x-flag"
       },
       {
@@ -532,7 +585,7 @@
         "path": "x-list[0]"
       }
     ],
-    "source": "Hand-written. 0030 format guards: an unquoted yes, no, on, off, y, n, True, or TRUE is an error. Every spelling is listed on purpose, in each case form, and in a text, a boolean, a list, a map, and an unknown field."
+    "source": "Hand-written. 0030 format guards: an unquoted yes, no, on, off, y, n, True, or TRUE is an error. Every spelling is listed on purpose, in each case form, and in a text, a boolean, a list, a map, and an unknown field. A spelling where a list belongs is the spelling problem alone."
   },
   {
     "name": "number-spelling",
@@ -609,6 +662,18 @@
       {
         "code": "format.number-spelling",
         "path": "answers.plan.a16"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a18"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a19"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a20"
       },
       {
         "code": "format.number-spelling",
@@ -737,6 +802,10 @@
       },
       {
         "code": "format.alias",
+        "path": "variables[0].askIf"
+      },
+      {
+        "code": "format.alias",
         "path": "sections[0]"
       },
       {
@@ -746,6 +815,10 @@
       {
         "code": "format.alias",
         "path": "sections[2].<<"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[2].title"
       },
       {
         "code": "format.alias",
@@ -766,9 +839,13 @@
       {
         "code": "format.alias",
         "path": "x-o.k"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-p.key"
       }
     ],
-    "source": "Hand-written. 0030 format guards: anchors and aliases are rejected. The merge key is reported once, at the key, whatever its value is. An anchor inside an unknown field counts too."
+    "source": "Hand-written. 0030 format guards: anchors and aliases are rejected. The merge key is reported once, at the key, whatever its value is. An anchor inside an unknown field counts too. An alias in place of a map is the alias problem. An anchor on a key is reported at the key's path. The entries after a merge key are still read."
   },
   {
     "name": "duplicate-key",
@@ -1046,6 +1123,10 @@
       {
         "code": "format.empty-item",
         "path": "sections[0].after[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[0].after[2]"
       },
       {
         "code": "format.empty-item",

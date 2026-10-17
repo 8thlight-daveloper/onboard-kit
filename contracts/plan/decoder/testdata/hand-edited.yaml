@@ -27,7 +27,8 @@ sections:
             run: [git, status]
             env: {A: '1', B: "2"}
             checks: [{run: [make]}, {ask: "Done?"}]
-x-flow: {on: 1, 1: one, y: [x, 'yes']}
+x-flow: {on: 1, 1: one, y: [x, 'yes'], "<<": q}
+x-ints: {max: 9223372036854775807, min: -9223372036854775808, nine: 99}
 x-decimal: 1.0
 x-date: 2026-10-15
 x-null:

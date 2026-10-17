@@ -170,8 +170,13 @@ func TestInputIsNotChanged(t *testing.T) {
 func TestResultsShareNothingBetweenCalls(t *testing.T) {
 	data := readFixture(t, "../../testdata/unknown-fields.yaml")
 	first, _ := newDecoder().Decode(data)
-	first.UnknownFields["x-list"].([]any)[0] = "changed"
-	first.UnknownFields["x-map"].(map[string]any)["k"] = "changed"
+	list, isList := first.UnknownFields["x-list"].([]any)
+	nested, isMap := first.UnknownFields["x-map"].(map[string]any)
+	if !isList || !isMap {
+		t.Fatalf("unknown fields hold the wrong kinds\n%s", describe(first))
+	}
+	list[0] = "changed"
+	nested["k"] = "changed"
 	second, _ := newDecoder().Decode(data)
 	if !reflect.DeepEqual(second, loadPlan(t, "../../testdata/unknown-fields.plan.json")) {
 		t.Errorf("a change to one result showed in the next\n%s", describe(second))

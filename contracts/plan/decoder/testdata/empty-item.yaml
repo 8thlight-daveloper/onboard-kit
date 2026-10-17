@@ -9,7 +9,7 @@ variables:
 sections:
   - id: s
     title: S
-    after: [x, null]
+    after: [x, null, null]
     steps:
       - id: st
         name: St
