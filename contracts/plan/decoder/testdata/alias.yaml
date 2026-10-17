@@ -1,0 +1,20 @@
+schemaVersion: 1
+answers:
+  plan:
+    a: &anchor x
+    b: *anchor
+sections:
+  - &sec
+    id: s
+    title: S
+  - *sec
+  - <<: *sec
+    id: t
+  - <<: {k: v}
+    id: u
+x-a: &z 1
+x-b: *z
+x-n:
+  - &q 1
+x-o:
+  k: &r 1

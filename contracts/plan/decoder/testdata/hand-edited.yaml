@@ -1,0 +1,35 @@
+---
+# A plan a person has edited by hand.
+schemaVersion: 1
+provenance:
+    generatedOn: 2026-10-15
+    templateSet: 'abc1234'
+answers:
+    plan: {team_state: established, commands: [make, test], organization: unknown-yet}
+    sections:
+        s:
+            note: "unknown-yet"
+sections:
+    - title: 'It''s hand written'
+      id: s
+      after: [a, b]
+      summary: >
+        folded
+        text
+      body: |+
+        keep
+
+
+      escalation: [$backup]
+      steps:
+          - name: Run
+            id: st
+            run: [git, status]
+            env: {A: '1', B: "2"}
+            checks: [{run: [make]}, {ask: "Done?"}]
+x-flow: {on: 1, 1: one, y: [x, 'yes']}
+x-decimal: 1.0
+x-date: 2026-10-15
+x-null:
+x-list-null: [a, null]
+x-null-word: null

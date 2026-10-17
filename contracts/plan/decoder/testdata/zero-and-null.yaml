@@ -1,0 +1,47 @@
+schemaVersion: 1
+provenance:
+variables:
+  - name: v
+    description: V
+    type:
+    options: []
+    required: null
+    default: null
+    askIf:
+  - name: w
+    askIf:
+      all:
+        - question: q
+          answer:
+            is: null
+            isAnswered: null
+answers:
+  plan:
+    k: unknown-yet
+    l: [unknown-yet]
+sections:
+  - id: s
+    title: S
+    summary: null
+    timing:
+    after: []
+    includeIf: null
+    steps:
+      - id: st
+        name: St
+        env: {}
+        run: []
+        checks: []
+    source:
+      template: s
+      hash:
+  - id: t
+    title: unknown-yet
+    after: [unknown-yet]
+    source:
+  - id: u
+    title: U
+    includeIf: {}
+    source: {template: null}
+x-a: unknown-yet
+title: unknown-yet

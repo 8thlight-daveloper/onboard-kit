@@ -1,0 +1,16 @@
+schemaVersion: 1
+answers:
+  plan:
+    a01: ~
+    a02: Null
+    a03: NULL
+    ok1: "~"
+    ok2: "Null"
+    ok3: nullable
+sections:
+  - id: s
+    title: ~
+    summary: Null
+x-a: ~
+x-b: NULL
+x-ok: null

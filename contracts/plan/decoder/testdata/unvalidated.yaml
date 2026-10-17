@@ -1,0 +1,24 @@
+schemaVersion: 1
+variables:
+  - name: ""
+    description: V
+    type: colour
+    phase: someday
+    pattern: "["
+sections:
+  - id: s
+    title: S
+    timing: whenever
+    after: [s, missing]
+    steps:
+      - id: st
+        name: St
+        checks:
+          - run: [make]
+            ask: Both?
+          - {}
+  - id: s
+    title: Same id
+answers:
+  plan:
+    undeclared: x

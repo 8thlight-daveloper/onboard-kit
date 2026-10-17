@@ -1,0 +1,33 @@
+schemaVersion: 1
+provenance:
+  templateSet: a
+  extra: 1
+variables:
+  - name: v
+    description: V
+    extra: 1
+    askIf:
+      all:
+        - question: q
+          extra: 1
+          answer:
+            is: a
+            extra: 1
+      extra: 1
+answers:
+  extra: {}
+  plan: {}
+sections:
+  - id: s
+    title: S
+    x-allowed: 1
+    source:
+      template: s
+      extra: 1
+    steps:
+      - id: st
+        name: St
+        extra: 1
+        checks:
+          - run: [a]
+            extra: 1

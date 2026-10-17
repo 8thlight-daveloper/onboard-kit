@@ -1,0 +1,23 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    default: null
+    askIf:
+      all:
+        - question: plan.q
+          answer:
+            is: null
+            isOneOf:
+              - a
+              - null
+            isNotOneOf:
+              - null
+answers:
+  plan:
+    organization: null
+    empty:
+  sections:
+    s:
+      name: null
+      ok: ""

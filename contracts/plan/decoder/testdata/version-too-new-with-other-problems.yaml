@@ -1,0 +1,5 @@
+sections:
+  - id: &a s
+    title: yes
+x-future: *a
+schemaVersion: 99

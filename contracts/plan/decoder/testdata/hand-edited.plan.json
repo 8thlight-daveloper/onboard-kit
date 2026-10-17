@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "templateSet": "abc1234",
+    "generatedOn": "2026-10-15"
+  },
+  "answers": {
+    "plan": {
+      "team_state": "established",
+      "commands": ["make", "test"],
+      "organization": {"unknown": true}
+    },
+    "sections": {
+      "s": {
+        "note": "unknown-yet"
+      }
+    }
+  },
+  "sections": [
+    {
+      "id": "s",
+      "title": "It's hand written",
+      "summary": "folded text\n",
+      "body": "keep\n\n\n",
+      "after": ["a", "b"],
+      "escalation": ["$backup"],
+      "steps": [
+        {
+          "id": "st",
+          "name": "Run",
+          "run": ["git", "status"],
+          "env": {"A": "1", "B": "2"},
+          "checks": [{"run": ["make"]}, {"ask": "Done?"}]
+        }
+      ]
+    }
+  ],
+  "unknownFields": {
+    "x-flow": {"on": 1, "1": "one", "y": ["x", "yes"]},
+    "x-decimal": 1.0,
+    "x-date": "2026-10-15",
+    "x-null": null,
+    "x-list-null": ["a", null],
+    "x-null-word": null
+  }
+}

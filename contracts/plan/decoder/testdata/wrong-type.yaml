@@ -1,0 +1,32 @@
+schemaVersion: 1
+provenance: [yes]
+variables:
+  - name: v
+    description: V
+    required: "true"
+    multiple: 1
+    options: x
+    default:
+      key: yes
+    askIf: [a]
+  - plain
+sections:
+  - id: [a]
+    title: true
+    steps:
+      a: yes
+    includeIf:
+      all: x
+    source: text
+  - id: s2
+    title: {k: yes}
+    after: x
+    escalation: 5
+    steps:
+      - id: st
+        name: St
+        env:
+          A: true
+        run: [true]
+        checks: [text]
+  - plain

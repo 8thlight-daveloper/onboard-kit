@@ -1,0 +1,49 @@
+schemaVersion: 1
+answers:
+  plan:
+    a01: yes
+    a02: Yes
+    a03: YES
+    a04: no
+    a05: No
+    a06: NO
+    a07: on
+    a08: On
+    a09: ON
+    a10: off
+    a11: Off
+    a12: OFF
+    a13: y
+    a14: Y
+    a15: n
+    a16: N
+    a17: True
+    a18: TRUE
+    a19: False
+    a20: FALSE
+    a21: yEs
+    a22: oFf
+    a23: tRuE
+    ok1: true
+    ok2: false
+    ok3: "yes"
+    ok4: yes please
+variables:
+  - name: v
+    description: V
+    required: yes
+    multiple: Off
+sections:
+  - id: s
+    title: yes
+    after:
+      - on
+    steps:
+      - id: st
+        name: St
+        env:
+          A: no
+x-flag: Y
+x-list:
+  - n
+  - ok

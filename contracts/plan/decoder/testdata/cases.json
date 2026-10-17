@@ -1,0 +1,1069 @@
+[
+  {
+    "name": "minimal",
+    "input": "../../testdata/minimal.yaml",
+    "output": "../../testdata/minimal.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rules: Document, Version."
+  },
+  {
+    "name": "strings",
+    "input": "../../testdata/strings.yaml",
+    "output": "../../testdata/strings.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Strings. Each quoted value is text, and each plain value is one clause of the plain rule."
+  },
+  {
+    "name": "multiline",
+    "input": "../../testdata/multiline.yaml",
+    "output": "../../testdata/multiline.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Strings, block and quoted forms."
+  },
+  {
+    "name": "answers",
+    "input": "../../testdata/answers.yaml",
+    "output": "../../testdata/answers.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Values. The plain word unknown-yet is the Unknown value, the quoted one is text."
+  },
+  {
+    "name": "unknown-fields",
+    "input": "../../testdata/unknown-fields.yaml",
+    "output": "../../testdata/unknown-fields.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Unknown fields. 0030: unknown fields are preserved."
+  },
+  {
+    "name": "key-order",
+    "input": "../../testdata/key-order.yaml",
+    "output": "../../testdata/key-order.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: every known key is read."
+  },
+  {
+    "name": "conditions",
+    "input": "../../testdata/conditions.yaml",
+    "output": "../../testdata/conditions.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Condition syntax is from docs/reference/section-template-schema/conditions.md."
+  },
+  {
+    "name": "acme",
+    "input": "../../../../docs/reference/examples/acme/acme.obk.yaml",
+    "output": "../../testdata/acme.plan.json",
+    "source": "The ACME example plan. The JSON is shared with the encoder contract, which was converted from this file and then checked and fixed by hand."
+  },
+  {
+    "name": "hand-edited",
+    "input": "hand-edited.yaml",
+    "output": "hand-edited.plan.json",
+    "source": "Hand-written. Contract rule: Style is free. A person edits a plan by hand, so comments, a document marker, flow style, single quotes, folded and keep blocks, any key order, any indent, a plain date in a string field and in an unknown field, and the plain keys on, 1, and y are read as they were meant. 0030: plans decode leniently."
+  },
+  {
+    "name": "no-final-newline",
+    "input": "no-final-newline.yaml",
+    "output": "no-final-newline.plan.json",
+    "source": "Hand-written. Contract rule: Style is free. A file need not end in a newline."
+  },
+  {
+    "name": "zero-and-null",
+    "input": "zero-and-null.yaml",
+    "output": "zero-and-null.plan.json",
+    "source": "Hand-written. Contract rules: Null and empty values, Strings. 0030: null is null or an omitted key. unknown-yet is the Unknown value only where an answer or a default is read."
+  },
+  {
+    "name": "null-maps",
+    "input": "null-maps.yaml",
+    "output": "null-maps.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. A null or absent map is nil. A scope under answers.sections that is null or empty is a kept, empty map."
+  },
+  {
+    "name": "answers-plan-only",
+    "input": "answers-plan-only.yaml",
+    "output": "answers-plan-only.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. A map that is present is not nil, even when empty."
+  },
+  {
+    "name": "answers-null",
+    "input": "answers-null.yaml",
+    "output": "answers-null.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. A null answers is the zero Answers."
+  },
+  {
+    "name": "answers-sections-null",
+    "input": "answers-sections-null.yaml",
+    "output": "answers-sections-null.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. A null answers.sections is nil."
+  },
+  {
+    "name": "quoted-keys",
+    "input": "quoted-keys.yaml",
+    "output": "quoted-keys.plan.json",
+    "source": "Hand-written. Contract rule: Style is free. A quoted key is the same key as a plain one, including schemaVersion."
+  },
+  {
+    "name": "unvalidated",
+    "input": "unvalidated.yaml",
+    "output": "unvalidated.plan.json",
+    "source": "Hand-written. Contract rule: Not covered. Validating is the plan validator's job, per the components doc, so values pass through unchanged."
+  },
+  {
+    "name": "not-yaml",
+    "input": "not-yaml.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-yaml."
+  },
+  {
+    "name": "tab-indent",
+    "input": "tab-indent.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. YAML forbids a tab for indentation."
+  },
+  {
+    "name": "invalid-utf8",
+    "input": "invalid-utf8.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Document. The bytes must be UTF-8."
+  },
+  {
+    "name": "empty-file",
+    "input": "empty-file.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "lone-marker",
+    "input": "lone-marker.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "comments-only",
+    "input": "comments-only.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "root-list",
+    "input": "root-list.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "root-scalar",
+    "input": "root-scalar.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "multiple-documents",
+    "input": "multiple-documents.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.multiple-documents."
+  },
+  {
+    "name": "multiple-documents-empty",
+    "input": "multiple-documents-empty.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.multiple-documents. A second document counts even when it is empty."
+  },
+  {
+    "name": "version-missing",
+    "input": "version-missing.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: schemaVersion is an integer. Contract rule: Version."
+  },
+  {
+    "name": "version-quoted",
+    "input": "version-quoted.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: schemaVersion is an integer, so the text 1 is not one."
+  },
+  {
+    "name": "version-decimal",
+    "input": "version-decimal.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: schemaVersion is an integer."
+  },
+  {
+    "name": "version-boolean",
+    "input": "version-boolean.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. A version problem is the only problem reported, so the spelling yes is not reported as well."
+  },
+  {
+    "name": "version-leading-zero",
+    "input": "version-leading-zero.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards: a leading zero is not read as a number."
+  },
+  {
+    "name": "version-hex",
+    "input": "version-hex.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. Any number spelling that is not a canonical integer is invalid, and a version problem is the only problem."
+  },
+  {
+    "name": "version-out-of-range",
+    "input": "version-out-of-range.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. An integer that does not fit in 64 bits is not a version."
+  },
+  {
+    "name": "version-list",
+    "input": "version-list.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: schemaVersion is an integer."
+  },
+  {
+    "name": "version-zero",
+    "input": "version-zero.yaml",
+    "problems": [
+      {
+        "code": "version.too-old",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "0",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: older than supported is refused, with the versions supported."
+  },
+  {
+    "name": "version-negative",
+    "input": "version-negative.yaml",
+    "problems": [
+      {
+        "code": "version.too-old",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "-1",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: older than supported is refused."
+  },
+  {
+    "name": "version-too-new",
+    "input": "version-too-new.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. 0030, Versioning: newer than the tool knows is refused with a message to upgrade. The file also holds the spelling yes, which is not reported."
+  },
+  {
+    "name": "version-too-new-with-other-problems",
+    "input": "version-too-new-with-other-problems.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "99",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. A file of a newer version may use anything, so only the version problem is reported, even for an anchor and an alias, and when schemaVersion is the last key."
+  },
+  {
+    "name": "duplicate-version",
+    "input": "duplicate-version.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. With two schemaVersion keys the version is not known, so neither wins."
+  },
+  {
+    "name": "alias-on-version",
+    "input": "alias-on-version.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. An anchor on schemaVersion is an alias problem, and the version is still read."
+  },
+  {
+    "name": "version-too-new-with-anchor",
+    "input": "version-too-new-with-anchor.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. An anchor on a bad version is only the version problem."
+  },
+  {
+    "name": "version-alias",
+    "input": "version-alias.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. An alias in place of the value is version.invalid, and the anchor elsewhere is not reported."
+  },
+  {
+    "name": "boolean-spelling",
+    "input": "boolean-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a01"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a02"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a03"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a04"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a05"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a06"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a07"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a08"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a09"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a10"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a11"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a12"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a13"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a14"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a15"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a16"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a17"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a18"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a19"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a20"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a21"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a22"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a23"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].multiple"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].after[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].steps[0].env.A"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "x-flag"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "x-list[0]"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards: an unquoted yes, no, on, off, y, n, True, or TRUE is an error. Every spelling is listed on purpose, in each case form, and in a text, a boolean, a list, a map, and an unknown field."
+  },
+  {
+    "name": "number-spelling",
+    "input": "number-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "provenance.templateSet"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "provenance.generatedOn"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a01"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a02"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a03"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a04"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a05"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a06"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a07"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a08"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a09"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a10"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a11"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a12"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a13"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a14"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a15"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a16"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a17[0]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[0].summary"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[0].steps[0].run[1]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-leading-zero"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-exponent"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-hex"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-plus"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-underscore"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-trailing-dot"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-bad-inf"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-too-big"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Contract rule: Numbers. The ok values are text that only looks like a number, and the x-ok map holds the numbers that are allowed in an unknown field."
+  },
+  {
+    "name": "null-spelling",
+    "input": "null-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "answers.plan.a01"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "answers.plan.a02"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "answers.plan.a03"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "sections[0].summary"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "x-a"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "x-b"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards: null is null or an omitted key. Contract rule: Null and empty values."
+  },
+  {
+    "name": "empty-answer",
+    "input": "empty-answer.yaml",
+    "problems": [
+      {
+        "code": "format.empty-answer",
+        "path": "variables[0].askIf.all[0].answer.isOneOf[1]"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "variables[0].askIf.all[0].answer.isNotOneOf[0]"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.organization"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.empty"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.sections.s.name"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.empty-answer. It mirrors the encoder's encode.empty-answer. A null or an omitted key is allowed for default and is."
+  },
+  {
+    "name": "alias",
+    "input": "alias.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.alias",
+        "path": "answers.plan.b"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[1]"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[2].<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[3].<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-a"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-b"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-n[0]"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-o.k"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards: anchors and aliases are rejected. The merge key is reported once, at the key, whatever its value is. An anchor inside an unknown field counts too."
+  },
+  {
+    "name": "duplicate-key",
+    "input": "duplicate-key.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "sections[0].steps[0].id"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "x-a"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "x-m.k"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "x-c"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-c.k"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.duplicate-key. Each key after the first is reported. The quoted key counts as the same key. The value of the second key is read, and a map in an unknown field is checked."
+  },
+  {
+    "name": "wrong-type",
+    "input": "wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "provenance"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].multiple"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].options"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].default"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].steps"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].includeIf.all"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].source"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].title"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].after"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].escalation"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].steps[0].env.A"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].steps[0].run[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].steps[0].checks[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[2]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.wrong-type. The domain model gives the type of each field. A map or list inside a value of the wrong type is not read, so the yes in them is not reported. A canonical number where a list belongs is a wrong type."
+  },
+  {
+    "name": "wrong-type-answers",
+    "input": "wrong-type-answers.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.s"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.t.n"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.u.m[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Values. The domain model says a Value is text, a flag, a list of text, or unknown."
+  },
+  {
+    "name": "wrong-type-answers-shape",
+    "input": "wrong-type-answers-shape.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "answers.plan"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.wrong-type. The domain model gives Answers two maps."
+  },
+  {
+    "name": "unknown-field",
+    "input": "unknown-field.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].answer.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "answers.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].source.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].steps[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].steps[0].checks[0].extra"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Unknown fields. The domain model keeps unknown fields on a plan and on a section only. The x-allowed key on the section is kept."
+  },
+  {
+    "name": "many-problems",
+    "input": "many-problems.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "provenance.templateSet"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "answers.plan.b"
+      },
+      {
+        "code": "format.alias",
+        "path": "answers.plan.c"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "answers.plan.c"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].extra"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[0].title"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-a"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. All problems are reported, in the order of the file."
+  },
+  {
+    "name": "same-place",
+    "input": "same-place.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.c"
+      },
+      {
+        "code": "format.alias",
+        "path": "answers.plan.c"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. Two problems at one place come in the order of the table: the spelling, then the anchor."
+  },
+  {
+    "name": "empty-item",
+    "input": "empty-item.yaml",
+    "problems": [
+      {
+        "code": "format.empty-item",
+        "path": "variables[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "variables[1].options[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[0].after[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[0].steps[0].run[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[0].steps[0].checks[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "answers.plan.m[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.empty-item. It mirrors the encoder's encode.empty-item, because dropping a null item would shift the list. A List Value is a list, so a null item in one counts."
+  }
+]

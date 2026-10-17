@@ -1,0 +1,22 @@
+schemaVersion: 1
+variables:
+  -
+  - name: v
+    description: V
+    options:
+      - a
+      -
+sections:
+  - id: s
+    title: S
+    after: [x, null]
+    steps:
+      - id: st
+        name: St
+        run: [null]
+        checks:
+          -
+  - null
+answers:
+  plan:
+    m: [a, null]

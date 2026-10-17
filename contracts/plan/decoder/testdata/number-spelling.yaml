@@ -1,0 +1,58 @@
+schemaVersion: 1
+provenance:
+  templateSet: 1234567
+  generatedOn: 20261015
+answers:
+  plan:
+    a01: 123
+    a02: 1.0
+    a03: 0123
+    a04: 1e3
+    a05: 0x1F
+    a06: +1
+    a07: .5
+    a08: 1_000
+    a09: .inf
+    a10: 0o17
+    a11: -.inf
+    a12: .NaN
+    a13: 5.
+    a14: 1.5e-3
+    a15: 0b101
+    a16: 9223372036854775808
+    ok1: "123"
+    ok2: 1.2.3
+    ok3: 12ab
+    ok4: v1.0
+    ok5: 2026-10-15
+    ok6: 0.5.x
+    ok7: "0123"
+    a17:
+      - 1
+      - ok
+sections:
+  - id: s
+    title: 7
+    summary: 0x1F
+    steps:
+      - id: st
+        name: St
+        run:
+          - make
+          - 2
+x-bad-leading-zero: 007
+x-bad-exponent: 1e3
+x-bad-hex: 0x10
+x-bad-plus: +5
+x-bad-underscore: 1_0
+x-bad-trailing-dot: 3.
+x-bad-inf: .inf
+x-too-big: 9223372036854775808
+x-ok:
+  int: 7
+  neg: -7
+  zero: 0
+  decimal: 0.5
+  negative-decimal: -0.5
+  whole-decimal: 2.0
+  word: 12ab

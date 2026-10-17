@@ -1,0 +1,11 @@
+schemaVersion: 1
+answers:
+  plan:
+    a: {x: 1}
+    b: ok
+  sections:
+    s: text
+    t:
+      n: {k: v}
+    u:
+      m: [[a]]

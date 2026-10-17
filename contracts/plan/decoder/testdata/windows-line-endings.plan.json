@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {
+      "id": "s",
+      "title": "T",
+      "steps": [
+        {"id": "st", "name": "St"}
+      ]
+    }
+  ]
+}
