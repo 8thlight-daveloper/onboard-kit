@@ -1,6 +1,14 @@
 {
   "plan": {
     "discipline": "",
-    "stakeholders": []
+    "stakeholders": [],
+    "blanks": [
+      "",
+      ""
+    ],
+    "mixed": [
+      "",
+      "ana"
+    ]
   }
 }

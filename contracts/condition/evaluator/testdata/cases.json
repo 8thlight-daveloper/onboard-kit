@@ -75,7 +75,7 @@
         }
       }
     ],
-    "source": "conditions.md, answer tests: is is true when the answer is this one value, isNot when it is a real answer other than this one. Exact match is a reading, see the contract."
+    "source": "conditions.md, answer tests: is is true when the answer is this one value, isNot when it is a real answer other than this one. Text compares with case: decided by a person."
   },
   {
     "name": "one-of-lists",
@@ -739,23 +739,63 @@
         }
       },
       {
-        "name": "isNot on an empty list",
+        "name": "list of only empty strings is not answered",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.blanks",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "list of only empty strings is not a real answer for isAnswered true",
         "holds": false,
         "condition": {
           "all": [
             {
-              "question": "plan.stakeholders",
+              "question": "plan.blanks",
               "answer": {
-                "isNot": [
-                  "x"
-                ]
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "list with one non-empty item is answered",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.mixed",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "list with one non-empty item is not unanswered",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.mixed",
+              "answer": {
+                "isAnswered": false
               }
             }
           ]
         }
       }
     ],
-    "source": "conditions.md, rules: a real answer is not empty. domain-model.md: a Value is a real answer unless it is Unknown or empty. An empty list is empty: a reading, see the contract."
+    "source": "conditions.md, rules: a real answer is not unknown-yet and not empty. domain-model.md: a Value is a real answer unless it is Unknown or empty. A list is real when it has at least one non-empty text item: decided by a person."
   },
   {
     "name": "list-answer",
@@ -763,8 +803,36 @@
     "answers": "list-answer.answers.json",
     "checks": [
       {
-        "name": "is the same list",
+        "name": "isAnswered true",
         "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the same list",
+        "holds": false,
         "condition": {
           "all": [
             {
@@ -780,74 +848,7 @@
         }
       },
       {
-        "name": "is the same items in another order",
-        "holds": false,
-        "condition": {
-          "all": [
-            {
-              "question": "plan.stakeholders",
-              "answer": {
-                "is": [
-                  "bo",
-                  "ana"
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "is the first item only",
-        "holds": false,
-        "condition": {
-          "all": [
-            {
-              "question": "plan.stakeholders",
-              "answer": {
-                "is": [
-                  "ana"
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "is a list of the same length with other items",
-        "holds": false,
-        "condition": {
-          "all": [
-            {
-              "question": "plan.stakeholders",
-              "answer": {
-                "is": [
-                  "cy",
-                  "di"
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "is a list of the same length with the same first item",
-        "holds": false,
-        "condition": {
-          "all": [
-            {
-              "question": "plan.stakeholders",
-              "answer": {
-                "is": [
-                  "ana",
-                  "cy"
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "is the first item as text",
+        "name": "is an item of the list",
         "holds": false,
         "condition": {
           "all": [
@@ -861,23 +862,21 @@
         }
       },
       {
-        "name": "isNot a shorter list",
-        "holds": true,
+        "name": "isNot another text",
+        "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isNot": [
-                  "ana"
-                ]
+                "isNot": "x"
               }
             }
           ]
         }
       },
       {
-        "name": "isNot the same list",
+        "name": "isNot another list",
         "holds": false,
         "condition": {
           "all": [
@@ -885,8 +884,7 @@
               "question": "plan.stakeholders",
               "answer": {
                 "isNot": [
-                  "ana",
-                  "bo"
+                  "x"
                 ]
               }
             }
@@ -894,8 +892,25 @@
         }
       },
       {
-        "name": "isOneOf with the list second",
-        "holds": true,
+        "name": "isOneOf with an item of the list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isOneOf": [
+                  "ana",
+                  "x"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with the same list",
+        "holds": false,
         "condition": {
           "all": [
             {
@@ -914,16 +929,16 @@
         }
       },
       {
-        "name": "isOneOf with the first item as text",
+        "name": "isNotOneOf with other texts",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isOneOf": [
-                  "ana",
-                  "bo"
+                "isNotOneOf": [
+                  "x",
+                  "y"
                 ]
               }
             }
@@ -931,21 +946,154 @@
         }
       },
       {
-        "name": "isAnswered true",
-        "holds": true,
+        "name": "isAnswered true beside is on an item",
+        "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": true
+                "isAnswered": true,
+                "is": "ana"
               }
             }
           ]
         }
       }
     ],
-    "source": "domain-model.md, Value: a List is a list of text. conditions.md: is is true when the answer is this one value. A list equals a list with the same items in the same order: a reading, see the contract."
+    "source": "domain-model.md, Value: a List is a list of text, held by command and multiple variables. conditions.md lists no test that compares a list: list tests are not supported yet, decided by a person. Only isAnswered applies to a list answer."
+  },
+  {
+    "name": "list-test-values",
+    "scope": "access",
+    "answers": "list-test-values.answers.json",
+    "checks": [
+      {
+        "name": "is a list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": [
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot a list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": [
+                  "design"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with a list second, and the text first matching",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "software",
+                  [
+                    "design"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with a list first",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  [
+                    "design"
+                  ],
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf with a list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "design",
+                  [
+                    "ops"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with a list and isAnswered true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  [
+                    "software"
+                  ],
+                  "software"
+                ],
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered true with a text test that holds",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": true,
+                "is": "software"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md has no list operator, so a test value that is a list, or an item of isOneOf or isNotOneOf that is a list, makes the test false: list tests are not supported yet, decided by a person."
   },
   {
     "name": "value-kinds",
@@ -1009,37 +1157,21 @@
         }
       },
       {
-        "name": "one-item list is not the text",
-        "holds": false,
-        "condition": {
-          "all": [
-            {
-              "question": "plan.count",
-              "answer": {
-                "is": "x"
-              }
-            }
-          ]
-        }
-      },
-      {
-        "name": "text is not a one-item list",
-        "holds": false,
+        "name": "text true is the text true",
+        "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.label",
               "answer": {
-                "is": [
-                  "true"
-                ]
+                "is": "true"
               }
             }
           ]
         }
       }
     ],
-    "source": "domain-model.md, Value: Text, Flag, and List are different variants. FORMAT.md: the Text unknown-yet differs from Unknown."
+    "source": "domain-model.md, Value: Text and Flag are different variants, so different kinds are different values. FORMAT.md: the Text unknown-yet differs from Unknown."
   },
   {
     "name": "question-ids",
@@ -1159,7 +1291,7 @@
         }
       }
     ],
-    "source": "conditions.md, syntax: a bare name is a question in the same section, and plan.<name> is a plan variable. domain-model.md, Question: the id is <scope>.<name>."
+    "source": "conditions.md, syntax: a bare name is a question in the same scope as the condition, and plan.<name> is a plan variable. domain-model.md, Question: the id is <scope>.<name>."
   },
   {
     "name": "plan-scope",
@@ -1195,7 +1327,7 @@
         }
       }
     ],
-    "source": "domain-model.md, Question: scope is plan or a section id. conditions.md: a plan variable's askIf can use a bare name, read as the plan scope. A reading, see the contract."
+    "source": "domain-model.md, Question: scope is plan or a section id. A bare name is read in the scope of the condition, and the scope of a plan variable's condition is plan."
   },
   {
     "name": "all-clauses",
@@ -1348,7 +1480,7 @@
         }
       }
     ],
-    "source": "conditions.md, section conditions: no includeIf means always included, and all is a conjunction. An empty conjunction holds: a reading, see the contract."
+    "source": "conditions.md, section conditions: no includeIf means always included, and all is a list of clauses that must all be true. An empty condition holds, as no includeIf holds: the neutral rule."
   },
   {
     "name": "tests-in-one-answer",

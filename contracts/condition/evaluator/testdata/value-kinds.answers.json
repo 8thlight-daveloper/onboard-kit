@@ -1,9 +1,6 @@
 {
   "plan": {
     "label": "true",
-    "remote": true,
-    "count": [
-      "x"
-    ]
+    "remote": true
   }
 }
