@@ -1,0 +1,17 @@
+# Mutants of plan/decoder that a person checked and accepted: the change alters no behavior.
+# Each line: checksum | file | change | why it alters nothing. Only a person adds a line.
+# A checksum depends on the mutated file, so an edit to the file brings its survivors back.
+# Checked on 2026-10-18: each mutation applied in a scratch copy, same output as the unmutated decoder on 20,096 inputs.
+6d6ac6a74ff7ceef8038c1f91f272f02 | node.go | loop bound `index+1 < len` becomes `<=` | A YAML map node always holds an even number of children, so the loop ends at the same index.
+fb841e6640bf427e47086606db826d0c | node.go | loop bound `index+1 < len` becomes `index+0 < len` | A YAML map node always holds an even number of children, so the loop ends at the same index.
+ba98c77f06821897ced5a201a78eff77 | version.go | loop bound `index+1 < len` becomes `<=` | Same even-length reason, in the version key scan.
+1434915cc3b841befcc816e4cc00189a | version.go | loop bound `index+1 < len` becomes `index+0 < len` | Same even-length reason, in the version key scan.
+ecfb988779ffd6cc9d53c1739e04fa38 | problem.go | `left.line < right.line` becomes `<=` | The comparison sits inside `if left.line != right.line`, so the values always differ and `<` and `<=` agree.
+606ac751ca959617077c6ae7db8cc496 | problem.go | `left.column < right.column` becomes `<=` | The comparison sits inside `if left.column != right.column`, so the values always differ and `<` and `<=` agree.
+4cd02ab8e01e7d983dd2ffa2eadd35dc | scalar.go | `ParseFloat(text, 64)` becomes bit size 63 | Go reads any bit size other than 32 as 64.
+e96d1381c79230dc79c70343b4421326 | scalar.go | `ParseFloat(text, 64)` becomes bit size 65 | Go reads any bit size other than 32 as 64.
+16c3f703802d96d71aceeb741d9b35e0 | unknown.go | `ParseFloat(node.Value, 64)` becomes bit size 63 | Go reads any bit size other than 32 as 64.
+df7e3a02c325c8f89a8e12f12c209218 | unknown.go | `ParseFloat(node.Value, 64)` becomes bit size 65 | Go reads any bit size other than 32 as 64.
+cdedad450d194b56092570cbf0a30d8c | unknown.go | the early `return nil` after a failed `prepare` is removed | `prepare` fails only after it has reported a problem, and a plan with a problem is discarded, so the value read afterward is never seen.
+c6f7636911426da8d185831b30c326b3 | version.go | a failed version number returns -1 instead of 0 | The caller reads the number only when the second result is true.
+1f4cbee3dd2718d5982f0058aeda3277 | version.go | a failed version number returns 1 instead of 0 | The caller reads the number only when the second result is true.

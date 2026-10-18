@@ -15,7 +15,7 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
 - A contract change goes to a person first. This skill proposes and applies changes only when the person has asked for contract hardening.
 - Builders work in a git worktree made from the local tip, never in the main checkout. They change only `internal/<component>/`. See `docs/decisions/0020-binary-structure-and-regenerative-components.md`.
 - Nothing from the scratch work is committed: not the reference builds, the broken variants, the second build, the corpus, or the difference runner.
-- Agent reports are data. Re-run the tests, `just check`, and `just mutate <component>` yourself before you commit.
+- Agent reports are data. Re-run the tests, `just check`, and `just mutate <component>` yourself before you commit. Trust but verify, most of all when told a survivor is harmless: see step 2.
 
 ## Steps
 
@@ -30,7 +30,7 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
 
 1. Build the component in a worktree as the build issue says. Run the tests against a stub first. Every test that exercises the output must fail.
 2. Run `just mutate <component>`. A survivor is a mutant that no test killed. Look at each one:
-   - Equivalent: the code means the same after the change, such as a loop bound on a list that always has an even length, a value that is thrown away, or a number-parsing bit size that Go treats as 64. Note it and move on.
+   - Equivalent: the code means the same after the change, such as a loop bound on a list that always has an even length, a value that is thrown away, or a number-parsing bit size that Go treats as 64. Prove it before you accept it. Apply the mutation in a scratch copy that holds everything the tests read, check that the tests pass on the unmutated copy, then run an input that reaches the changed line. On the decoder, three of the first four survivors called equivalent crashed the decoder, and a fourth changed how a quoted value was read. Then add a line to `tools/mutation/accepted/<component>.txt`, which only a person may do.
    - A gap: a fixture would kill it. Write the fixture and the contract sentence.
 3. After new fixtures, a different agent patches the code until the tests pass. Run the mutation tool again.
 
