@@ -1,0 +1,16 @@
+schemaVersion: 1
+id: a
+steps:
+  - id: s1
+    name: S
+    run: $name
+  - id: s2
+    name: S
+    run: make test
+  - id: s3
+    name: S
+    run: "$name"
+    checks:
+      - run: $name
+      - run: make test
+      - run: "$name"

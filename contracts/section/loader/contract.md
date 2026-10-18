@@ -50,7 +50,6 @@ The `env` of a step is a map whose keys are the variable names it sets, so any s
 | `file.not-a-plan` | `file.not-a-template` |
 | `source`, `provenance`, `answers`, `sections` are known keys | They are unknown keys. A plan file given to the loader gets `format.unknown-field` for each of them |
 | A path starts at the plan, such as `sections[1].steps[0]` | A path starts at the template, such as `steps[0]` |
-| `run` is a list of strings | A step's `run` may also be one scalar that is exactly one placeholder, `$` and a name. See Placeholders |
 
 Everything else is as the decoder: the file problems and their order, the Version table, the order of problems and the place of a problem, the paths, Style is free, Scalars, Numbers, Values, Known fields, and the codes `format.boolean-spelling`, `format.number-spelling`, `format.null-spelling`, `format.alias`, `format.duplicate-key`, `format.wrong-type`, `format.empty-answer`, and `format.empty-item`. The order of the decoder's problems table decides two problems at one place, and `format.unknown-field` comes after `format.wrong-type` in it.
 
@@ -84,7 +83,7 @@ A Value is read in a `default`, in `is` and `isNot`, and in each item of `isOneO
 
 A `$name`, `$$`, or other dollar sign in a string is text, kept as written. The loader does not resolve, check, or unescape it. The section resolver and the section validator do that. `$Repo_url`, `$5`, and `${x}` all load unchanged.
 
-A step's `run` holds a list of strings. When it holds one scalar that is exactly `$` followed by a name that matches `[a-z][a-z0-9_]*`, the loader reads it as a list of that one string. This is the form the docs and the ACME templates use for a `command` variable, `run: $test_command`, and it is the same Step that the plan fixture holds. Any other scalar in `run` is `format.wrong-type`. A check's `run` is not covered by this rule: a scalar there is `format.wrong-type`.
+`run` is always a list of strings, in a step and in a check. A scalar there is `format.wrong-type` at the field, whatever it says: `run: make test`, `run: $name`, and `run: "$name"` alike. The loader does not split it and does not read it as one item. A `command` variable is written `run: [$name]`, which loads as a list of one item, the text `$name` (steps.md).
 
 ## What passes through
 
@@ -126,16 +125,16 @@ These hold for every file the contract tests use.
 
 ## Open questions
 
-Each is settled above so that the tests can run. A person decides whether the choice stands.
+Questions 2 to 4 are settled above so that the tests can run. A person decides whether the choice stands.
 
-1. **Scalar `run`.** The docs write `run: $test_command` in steps.md and in the ACME templates, but the domain model holds `run` as a list. The loader reads one whole placeholder as a one-item list, which matches the plan fixture. Other readings: refuse it as `format.wrong-type`, which makes the ACME `clone-and-run-tests` template fail to load, or fix the docs and templates to write `run: [$test_command]`. The choice binds the instantiator and the lint command.
+1. **Decided: scalar `run`.** A person decided that `run` stays a list and a scalar is refused. The source is the schema reference, [steps](../../../docs/reference/section-template-schema/steps.md), which writes `run: [$test_command]`. The ACME templates follow it.
 2. **A `source` key.** A template with a `source` is `format.unknown-field`. Another reading is a code of its own, such as `template.has-source`. The first needs no new code and keeps one rule for every unknown key.
 3. **The file code.** `file.not-a-template` is new. The decoder's `file.not-a-plan` names a plan.
 4. **`x-` keys.** The decoder keeps them on a plan and a section. A template rejects them. A person may want a place for author notes in a template, which would be an ADR 0030 change and a version bump.
 
 ## Wrong implementations tried
 
-While drafting, a reference loader was written as scratch work outside the repo, from this page and the decoder contract, and then broken on purpose. 116 wrong loaders were tried, each with one defect. Every one failed at least one test. The first run of the reference found one fixture error, a plain `y` in an `isNotOneOf` list that is the boolean spelling. Later fixtures were added for the defects that first got through, and a case that disagreed with the reference's reading of a Value showed the reference was wrong and not the case. This is a draft check only. There was no second independent build, no mutation run, and no differential run. Those belong to the hardening pass, [#65](https://github.com/8thlight-daveloper/onboard-kit/issues/65).
+While drafting, a reference loader was written as scratch work outside the repo, from this page and the decoder contract, and then broken on purpose. 120 wrong loaders were tried, each with one defect. Every one failed at least one test. The first run of the reference found one fixture error, a plain `y` in an `isNotOneOf` list that is the boolean spelling. Later fixtures were added for the defects that first got through. After a person decided that `run` is always a list, the sugar rows were dropped and `run-scalar` was added. A case that disagreed with the reference's reading of a Value showed the reference was wrong and not the case. This is a draft check only. There was no second independent build, no mutation run, and no differential run. Those belong to the hardening pass, [#65](https://github.com/8thlight-daveloper/onboard-kit/issues/65).
 
 | Wrong implementation | Caught by |
 | -- | -- |
@@ -160,7 +159,9 @@ While drafting, a reference loader was written as scratch work outside the repo,
 | `$$` unescaped, a `$name` resolved or refused, or a trailing newline trimmed | `placeholders`, `acme-clone-and-run-tests`, `acme-access`, `strings` |
 | Text trimmed, such as an owner or a directory with spaces | `strings` |
 | Quoted `"unknown-yet"` read as Unknown, a plain one read as text in a Value, or read as Unknown or dropped in a string or a list | `unknown-yet`, `all-fields` |
-| A scalar `run` refused, read as a list of words, accepted for any text, accepted with capitals, or accepted in a check | `acme-clone-and-run-tests`, `placeholders`, `wrong-type` |
+| A scalar `run` accepted, read as one item, or split on spaces | `run-scalar`, `wrong-type` |
+| A scalar `run` refused only in a step, or only in a check | `run-scalar` |
+| A scalar `run` refused where a list of one `$name` must load | `acme-clone-and-run-tests`, `placeholders` |
 | A bad version accepted: quoted, decimal, missing, zero read as valid or as invalid, a newer one read for other problems or accepted, a version detail missing, the last of two keys winning | the `version-` cases and `duplicate-version` |
 | The plan file code for a non-template, an empty file giving the zero Section, a list of sections read as one, only the first document read, a syntax error in a later document hidden | the file cases |
 | A nil list or map made empty or the reverse, a null `includeIf` made empty, a present empty `askIf` made none, a null `isAnswered` made false, a null `default` made empty text, an empty List Value made none | `null-and-empty` |

@@ -9,7 +9,7 @@
     "name": "acme-clone-and-run-tests",
     "input": "../../../../docs/reference/examples/acme/templates/clone-and-run-tests.yaml",
     "output": "acme-clone-and-run-tests.section.json",
-    "source": "The ACME example template docs/reference/examples/acme/templates/clone-and-run-tests.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README). Its run: $setup_command is a whole placeholder in place of a list, read as a one-item list, as in the plan fixture contracts/plan/testdata/acme.plan.json."
+    "source": "The ACME example template docs/reference/examples/acme/templates/clone-and-run-tests.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README). Its run: [$setup_command] is a list of one item, as in the plan fixture contracts/plan/testdata/acme.plan.json."
   },
   {
     "name": "acme-review-design-system",
@@ -51,7 +51,7 @@
     "name": "placeholders",
     "input": "placeholders.yaml",
     "output": "placeholders.section.json",
-    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md and the domain model: run may be one $name that expands to a list, read as a one-item list."
+    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name."
   },
   {
     "name": "unknown-yet",
@@ -542,7 +542,7 @@
         "path": "steps[2].run"
       }
     ],
-    "source": "Hand-written. Decoder contract, Problems: format.wrong-type, from the domain model's type of each field. The one scalar the loader reads in place of a list is a step's run holding a whole placeholder, so run: git status, run: $Upper, and a check's run: $cmd are wrong types. A map or list in a value of the wrong type is not read."
+    "source": "Hand-written. Decoder contract, Problems: format.wrong-type, from the domain model's type of each field. A scalar run is a wrong type in a step and in a check, so run: git status, run: $Upper, and a check's run: $cmd are wrong types. A map or list in a value of the wrong type is not read."
   },
   {
     "name": "null-items",
@@ -852,5 +852,36 @@
       }
     ],
     "source": "Hand-written. Decoder contract, Style is free: a key that is not a scalar is a wrong type, at the path of the map that holds it. The entries after it are still read."
+  },
+  {
+    "name": "run-scalar",
+    "input": "run-scalar.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "steps[0].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[2].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[2].checks[0].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[2].checks[1].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[2].checks[2].run"
+      }
+    ],
+    "source": "Hand-written. Decided by a person: run is always a list. steps.md writes a command variable as run: [$test_command]. A scalar run is a wrong type at the field, in a step and in a check, whether it is plain text, a plain $name, or a quoted $name."
   }
 ]

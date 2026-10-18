@@ -13,7 +13,7 @@ variables:
 steps:
   - id: a
     name: A
-    run: $tests
+    run: [$tests]
     escalation: [$backup, $general_contacts]
   - id: b
     name: B
