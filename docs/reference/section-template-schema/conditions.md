@@ -61,6 +61,8 @@ Rules:
   - A list test on a `boolean`. Use `is`, or `isAnswered` for both values.
   - A list test that names every option of a `choice`. Use `isAnswered`.
   - Tests that can never hold together, such as `is: a` with `isNot: a`.
+- **Lint warnings.** A condition that does nothing but is not wrong. It never blocks.
+  - A condition with no clauses, such as `all: []`. It always holds, the same as no condition, so a section or question it was meant to narrow is not narrowed.
 
 ## Section conditions
 
