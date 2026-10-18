@@ -1,0 +1,10 @@
+[
+  {"id":"s","body":"one two"},
+  {"id":"s","body":"one  two"},
+  {"id":"s","body":"one two "},
+  {"id":"s","body":"  one two"},
+  {"id":"s","body":"one two\n"},
+  {"id":"s","body":"one\ttwo"},
+  {"id":"s","body":"one\ntwo"},
+  {"id":"s","body":"one\r\ntwo"}
+]

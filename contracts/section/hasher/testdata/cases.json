@@ -1,0 +1,138 @@
+[
+  {
+    "name": "basic",
+    "relation": "golden",
+    "inputs": [
+      "basic.section.json"
+    ],
+    "canonical": "basic.canonical.json",
+    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
+    "source": "Hand-written. Contract rules: Canonical form, Fields. 0030: a hash of the section's structured content in a fixed order."
+  },
+  {
+    "name": "full",
+    "relation": "golden",
+    "inputs": [
+      "full.section.json"
+    ],
+    "canonical": "full.canonical.json",
+    "hash": "0aef0b4c66366bfca5958aff3a0325409ed8022e54b41fba23ed7e3f8cd25e06",
+    "source": "Hand-written. Every field of every type is set, with a source that must be left out, and an env entry with an empty value. Contract rules: the key order tables, Fields. 0030: it excludes source."
+  },
+  {
+    "name": "strings",
+    "relation": "golden",
+    "inputs": [
+      "strings.section.json"
+    ],
+    "canonical": "strings.canonical.json",
+    "hash": "fede38934a5a9550051ea4de72706e5dd9544b5975bed2ddd7bc32b9d331c8f3",
+    "source": "Hand-written. Contract rule: Strings. Quote, backslash, tab, carriage return, newline, other control characters, DEL, the three characters a JSON library may escape, and characters outside ASCII."
+  },
+  {
+    "name": "values",
+    "relation": "golden",
+    "inputs": [
+      "values.section.json"
+    ],
+    "canonical": "values.canonical.json",
+    "hash": "d756b093951c798ac57db5b9d988000aab478b00cb8f10e7b728daae7876403d",
+    "source": "Hand-written. Contract rules: Values, Conditions. The Value kinds are from the domain model. The Text unknown-yet is a word from 0030 and the domain model, and differs from the Unknown kind."
+  },
+  {
+    "name": "unknown-fields",
+    "relation": "golden",
+    "inputs": [
+      "unknown-fields.section.json"
+    ],
+    "canonical": "unknown-fields.canonical.json",
+    "hash": "49604bf0fa1dd3bad8635d8ea90a9fd4d56c85d51b199d144c7468d30fbd6d61",
+    "source": "Hand-written. Contract rule: Unknown fields. 0030: unknown fields are kept on a section. Keys are out of order in the input, and include digits, upper case, a non-ASCII letter, and a key that needs escaping. Decimals that a library may write with an exponent."
+  },
+  {
+    "name": "source-ignored",
+    "relation": "same",
+    "inputs": [
+      "basic.section.json",
+      "source-ignored.sections.json"
+    ],
+    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
+    "source": "0030: the hash excludes source. One section with no source, and the same section with three different sources, one of them empty."
+  },
+  {
+    "name": "unknown-key-order",
+    "relation": "same",
+    "inputs": [
+      "unknown-fields.section.json",
+      "unknown-key-order.section.json"
+    ],
+    "hash": "49604bf0fa1dd3bad8635d8ea90a9fd4d56c85d51b199d144c7468d30fbd6d61",
+    "source": "0030: the hash is of structured content, so key order in the file does not change it. Contract rule: Unknown fields, keys in ascending byte order."
+  },
+  {
+    "name": "omitted-zero",
+    "relation": "same",
+    "inputs": [
+      "basic.section.json",
+      "omitted-zero.section.json"
+    ],
+    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
+    "source": "Contract rule: Zero values. Every zero field of a section, a variable, and a step is written out, as an empty string, false, an empty list, an empty map, or null, and the hash is the same as when the fields are absent."
+  },
+  {
+    "name": "list-order",
+    "relation": "different",
+    "inputs": [
+      "list-order.sections.json"
+    ],
+    "source": "0030: a fixed order of content, and the order of a list is content. The first section has every kind of list. Each other section swaps two items of one list, or repeats an item. Contract rule: Lists."
+  },
+  {
+    "name": "absent-and-default",
+    "relation": "different",
+    "inputs": [
+      "absent-and-default.sections.json"
+    ],
+    "source": "Contract rules: Defaults, Conditions. The hasher fills no default, and a present empty condition is not an absent one."
+  },
+  {
+    "name": "body-whitespace",
+    "relation": "different",
+    "inputs": [
+      "body-whitespace.sections.json"
+    ],
+    "source": "Contract rule: Strings. Reformatting means the file's layout, so whitespace inside a string is content. 0030: raw text is not hashed, the structured content is."
+  },
+  {
+    "name": "field-boundaries",
+    "relation": "different",
+    "inputs": [
+      "field-boundaries.sections.json"
+    ],
+    "source": "Contract rule: Canonical form. Two sections with different content never share a canonical form. Text moves between neighbouring fields, items, and keys, and an unknown field takes the name of a known one."
+  },
+  {
+    "name": "value-kinds",
+    "relation": "different",
+    "inputs": [
+      "value-kinds.sections.json"
+    ],
+    "source": "Contract rule: Values. A Value is written by its kind. Absent, Flag, Text, Unknown, and List are all different, whatever the text inside them looks like."
+  },
+  {
+    "name": "unknown-shapes",
+    "relation": "different",
+    "inputs": [
+      "unknown-shapes.sections.json"
+    ],
+    "source": "Contract rule: Unknown fields. An unknown value keeps its kind: an empty list, an empty map, null, an empty string, a boolean, an integer, a decimal, and a string that looks like one."
+  },
+  {
+    "name": "every-field",
+    "relation": "every-field",
+    "inputs": [
+      "full.section.json"
+    ],
+    "source": "0030: the hash is of the section's content, and it excludes only source. A change to any field of any type, except source, changes the hash. Contract rule: Fields."
+  }
+]

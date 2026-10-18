@@ -1,0 +1,18 @@
+[
+  {"id":"s","variables":[{"name":"v"}]},
+  {"id":"s","variables":[{"name":"v","default":false}]},
+  {"id":"s","variables":[{"name":"v","default":true}]},
+  {"id":"s","variables":[{"name":"v","default":""}]},
+  {"id":"s","variables":[{"name":"v","default":"true"}]},
+  {"id":"s","variables":[{"name":"v","default":"false"}]},
+  {"id":"s","variables":[{"name":"v","default":"unknown-yet"}]},
+  {"id":"s","variables":[{"name":"v","default":{"unknown":true}}]},
+  {"id":"s","variables":[{"name":"v","default":[]}]},
+  {"id":"s","variables":[{"name":"v","default":["a"]}]},
+  {"id":"s","variables":[{"name":"v","default":"a"}]},
+  {"id":"s","variables":[{"name":"v","default":["a","b"]}]},
+  {"id":"s","variables":[{"name":"v","default":["a,b"]}]},
+  {"id":"s","variables":[{"name":"v","default":[""]}]},
+  {"id":"s","variables":[{"name":"v","default":"[]"}]},
+  {"id":"s","variables":[{"name":"v","default":"{\"unknown\":true}"}]}
+]

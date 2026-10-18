@@ -1,0 +1,20 @@
+[
+  {"id":"s"},
+  {"id":"s","unknownFields":{"x":[]}},
+  {"id":"s","unknownFields":{"x":{}}},
+  {"id":"s","unknownFields":{"x":null}},
+  {"id":"s","unknownFields":{"x":""}},
+  {"id":"s","unknownFields":{"x":"null"}},
+  {"id":"s","unknownFields":{"x":0}},
+  {"id":"s","unknownFields":{"x":"0"}},
+  {"id":"s","unknownFields":{"x":false}},
+  {"id":"s","unknownFields":{"x":"false"}},
+  {"id":"s","unknownFields":{"x":2}},
+  {"id":"s","unknownFields":{"x":2.0}},
+  {"id":"s","unknownFields":{"x":0.0}},
+  {"id":"s","unknownFields":{"x":"2"}},
+  {"id":"s","unknownFields":{"y":[]}},
+  {"id":"s","unknownFields":{"x":[[]]}},
+  {"id":"s","unknownFields":{"x":[null]}},
+  {"id":"s","unknownFields":{"x":[""]}}
+]

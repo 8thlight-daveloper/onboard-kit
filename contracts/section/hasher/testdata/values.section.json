@@ -1,0 +1,20 @@
+{
+  "id": "values",
+  "title": "T",
+  "summary": "S",
+  "includeIf": {"all": [
+    {"question": "plan.a", "answer": {"is": "unknown-yet"}},
+    {"question": "plan.b", "answer": {"is": {"unknown": true}}},
+    {"question": "plan.c", "answer": {"is": false}},
+    {"question": "plan.d", "answer": {"isOneOf": ["x", null, true, ["l", "m"], []]}},
+    {"question": "plan.e", "answer": {"isAnswered": false}},
+    {"question": "plan.f", "answer": {"isNot": ""}},
+    {"question": "plan.g"}
+  ]},
+  "variables": [
+    {"name": "d1", "default": false},
+    {"name": "d2", "default": ""},
+    {"name": "d3", "default": []},
+    {"name": "d4", "default": {"unknown": true}}
+  ]
+}

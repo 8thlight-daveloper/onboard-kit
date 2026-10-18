@@ -1,0 +1,14 @@
+{
+  "id": "basic",
+  "title": "Basic",
+  "summary": "The required fields, one variable, and one step.",
+  "timing": "",
+  "owner": "",
+  "verification": "",
+  "body": "",
+  "after": [],
+  "escalation": [],
+  "variables": [{"name": "repo", "description": "Clone URL", "type": "", "multiple": false, "options": [], "pattern": "", "patternHint": "", "required": false, "default": null, "phase": ""}],
+  "steps": [{"id": "clone", "name": "Clone", "notes": "", "owner": "", "timing": "", "escalation": [], "run": [], "open": "", "directory": "", "env": {}, "checks": []}],
+  "unknownFields": {}
+}

@@ -1,0 +1,5 @@
+[
+  {"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL"}],"steps":[{"id":"clone","name":"Clone"}],"source":{"template":"basic","hash":"0000"}},
+  {"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL"}],"steps":[{"id":"clone","name":"Clone"}],"source":{"template":"other","hash":"ffff"}},
+  {"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL"}],"steps":[{"id":"clone","name":"Clone"}],"source":{}}
+]

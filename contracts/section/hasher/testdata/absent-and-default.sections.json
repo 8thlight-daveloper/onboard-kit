@@ -1,0 +1,8 @@
+[
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"includeIf":{}},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"timing":"anytime"},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","type":"string"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","phase":"planning"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","askIf":{}}]}
+]
