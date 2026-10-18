@@ -1,0 +1,7 @@
+schemaVersion: 1
+answers:
+  plan:
+    a: !!str yes
+    b: !!int 5
+    c: !custom x
+    d: !!str 7

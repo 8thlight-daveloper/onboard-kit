@@ -1,0 +1,5 @@
+schemaVersion: 1
+x-a: &a {k: v}
+x-b:
+  <<: *a
+  <<: *a

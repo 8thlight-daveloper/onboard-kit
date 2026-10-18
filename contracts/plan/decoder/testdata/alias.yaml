@@ -14,7 +14,7 @@ sections:
   - <<: *sec
     id: t
     title: yes
-  - <<: {k: v}
+  - <<: {k: yes}
     id: u
 x-a: &z 1
 x-b: *z

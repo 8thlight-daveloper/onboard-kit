@@ -1,0 +1,7 @@
+schemaVersion: 1
+answers:
+  plan:
+    a: &x
+sections:
+  - &y
+  - &z null

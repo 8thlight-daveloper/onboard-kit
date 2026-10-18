@@ -1,0 +1,11 @@
+schemaVersion: 1
+variables:
+  - name: v
+    askIf:
+      all:
+        - question: q
+          answer:
+            isOneOf:
+              - [a, b]
+              - []
+              - c

@@ -1,0 +1,7 @@
+schemaVersion: 1
+provenance:
+  extra: yes
+  extra: 2
+  other: [yes, &x 1]
+  third: 0x1
+  &k fourth: 1

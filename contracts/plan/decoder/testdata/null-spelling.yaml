@@ -7,6 +7,8 @@ answers:
     ok1: "~"
     ok2: "Null"
     ok3: nullable
+    ok4: nULL
+    ok5: NuLL
 sections:
   - id: s
     title: ~

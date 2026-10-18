@@ -30,15 +30,15 @@ The decoder reads `schemaVersion` before anything else, and the supported versio
 | Absent, or not a canonical integer: quoted, a decimal, a boolean, a list, `null`, any number spelling listed under Numbers, or an integer that does not fit in 64 bits | `version.invalid` | `schemaVersion` | |
 | An integer below 1 | `version.too-old` | `schemaVersion` | `found`, `supported` |
 | An integer above 1 | `version.too-new` | `schemaVersion` | `found`, `supported` |
-| Two `schemaVersion` keys | `format.duplicate-key` | `schemaVersion` | |
+| Two `schemaVersion` keys, whatever their values | `format.duplicate-key` | `schemaVersion` | |
 
-`found` is the integer's text as written, and `supported` is `1`. When there is a version problem, it is the only problem. A newer file may use anything, so the rest of the file is not read. An anchor on a `schemaVersion` value that is a good version is a `format.alias` problem. An anchor or an alias on a bad version is only the version problem, and an alias in place of the value is `version.invalid`.
+`found` is the integer's text as written, and `supported` is `1`. When there is a version problem, it is the only problem. A newer file may use anything, so the rest of the file is not read. `-0` is a canonical integer below 1. An anchor on a `schemaVersion` value that is a good version is a `format.alias` problem. An anchor or an alias on a bad version is only the version problem, and an alias in place of the value is `version.invalid`.
 
 ## Problems
 
-Problems come in the order of their places in the file, and all are reported. The place of a problem is where the last key or list item of its path starts, so a key and its value are one place. Two problems at one place come in the order of the table below. Two exceptions: a file problem is the only problem, and a version problem is the only problem. The check order is file, then version, then the rest.
+Problems come in the order of their places in the file, and all are reported. The place of a problem is where the last key or list item of its path starts, so a key and its value are one place. Two problems at one place come in the order of the table below. Two exceptions: a file problem is the only problem, and a version problem is the only problem. The check order is file, then version, then the rest. File problems are checked in this order, and the first one found is the only one: the bytes are not UTF-8, a YAML syntax error anywhere in the file, an empty first document, a second document, and a top level that is not a map. A syntax error in any document wins over every other file problem. A document is empty when it has no node, or when its only node is a plain scalar with no text and no anchor, whatever its tag: no bytes, only comments, `---` with nothing after it, or `--- !!null`. A document that holds `null` as text, or an anchor, is not empty. UTF-16 is not UTF-8.
 
-A problem names its place in `detail.path`, as the encoder does: dots for fields, and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `x-map.a`. A file problem has no path. The path of a duplicate key is the second and later keys. The path of an anchor or an alias is the node it is written on.
+An anchor is reported wherever it is written, even on a node that is also null or of the wrong type. The anchor problem comes first, and the node's other problem follows it. A problem names its place in `detail.path`, as the encoder does: dots for fields, and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `x-map.a`. A file problem has no path. The path of a duplicate key is the second and later keys. The path of an anchor or an alias is the node it is written on.
 
 | Code | When | Path |
 | -- | -- | -- |
@@ -49,14 +49,14 @@ A problem names its place in `detail.path`, as the encoder does: dots for fields
 | `format.boolean-spelling` | A plain value is a boolean spelling other than `true` and `false` | The value |
 | `format.number-spelling` | See Numbers | The value |
 | `format.null-spelling` | A plain value is `~`, `Null`, or `NULL` | The value |
-| `format.alias` | An anchor, an alias, or a merge key `<<` is used. A merge key is one problem at the key, whatever its value. A quoted `"<<"` is an ordinary key. An anchor on a key is reported at the key's path | The node, or the key for a merge key |
+| `format.alias` | An anchor, an alias, or a merge key `<<` is used. A merge key is one problem at the key, whatever its value. Each merge key is its own problem, and a repeated one is not also a duplicate key. The value of a merge key is not read. A quoted `"<<"` is an ordinary key. An anchor on a key is reported at the key's path | The node, or the key for a merge key |
 | `format.duplicate-key` | A map has the same key twice. A quoted key and a plain key with the same text are the same key | The second and later keys |
-| `format.wrong-type` | A known field holds a kind the domain model does not allow for it. See Known fields | The field, or the list item |
+| `format.wrong-type` | A known field holds a kind the domain model does not allow for it, or a key in any map is not a scalar. See Known fields | The field, or the list item |
 | `format.unknown-field` | A map that cannot keep unknown fields has a key it does not know | The key |
 | `format.empty-answer` | An answer, or an item of `isOneOf` or `isNotOneOf`, is null | The answer or item |
 | `format.empty-item` | An item of any other list is null, including an item of a List Value. Dropping it would shift the list. An item that is an empty map is not null and is read as a zero value | The item |
 
-A value of the wrong type is not read, so nothing inside it is reported. The value of a duplicate key is read like any other. A value is checked for its spelling before its type, so a plain `yes` where a boolean belongs is `format.boolean-spelling`, not `format.wrong-type`. A canonical number where a boolean or a list belongs, and a plain `true` or `false` where a string belongs, is `format.wrong-type`.
+A value of the wrong type is not read, so nothing inside it is reported. The value of a duplicate key is read like any other. A value is checked for its spelling before its type, so a plain `yes` where a boolean belongs is `format.boolean-spelling`, not `format.wrong-type`. A canonical number where a boolean or a list belongs, and a plain `true` or `false` where a string belongs, is `format.wrong-type`. A string belongs in a list of strings and in the items of a List Value, so a plain `true` there is `format.wrong-type` too.
 
 ## Reading the file
 
@@ -66,7 +66,9 @@ The decoder accepts anything YAML allows, so a hand edit never fails for style.
 
 - Comments, a leading `---`, any indent, any key order, flow style, single and double quotes, folded and literal blocks, and a missing final newline.
 - LF or CRLF line endings, and a UTF-8 byte order mark at the start.
-- A key is its text as written. The plain keys `on`, `y`, and `1` are the text `on`, `y`, and `1`. The format guards apply to values and not to keys.
+- A key is its text as written. The plain keys `on`, `y`, and `1` are the text `on`, `y`, and `1`. The format guards apply to values and not to keys. A key that is not a scalar, which includes an alias used as a key, is `format.wrong-type`. Its path and its place are those of the map that holds it, so it is ordered where that map starts.
+- A tag such as `!!str` is ignored. A scalar is read by its text and its style alone, so `!!str yes` is still the spelling `yes`.
+- The decoder does not judge the characters of a quoted string, so a string may hold an escaped NUL or bell.
 - A plain date such as `2026-10-15` is text, in every place a string is read.
 
 ### Scalars
@@ -78,7 +80,7 @@ A plain scalar is a value written without quotes. A quoted scalar, and a literal
 | `true` or `false` | A boolean |
 | `yes`, `no`, `on`, `off`, `y`, `n`, `True`, `TRUE`, `False`, `FALSE`, or any other case of these | `format.boolean-spelling` |
 | `null`, or nothing at all after the key | Null |
-| `~`, `Null`, or `NULL` | `format.null-spelling` |
+| `~`, `Null`, or `NULL`, and no other case: `nULL` is text | `format.null-spelling` |
 | A number | See Numbers |
 | Anything else, including `unknown-yet` | Text |
 
@@ -91,13 +93,15 @@ Every other plain scalar that a YAML reader could take as a number is a `format.
 - A leading zero before more digits: `007`, `-01`, `0123`.
 - A leading `+`: `+1`.
 - A leading or trailing `.`: `.5`, `5.`.
-- An underscore between digits: `1_000`.
+- An underscore between two digits of the whole part, the fraction, or the digits of a `0x`, `0o`, or `0b` number: `1_000`, `1_0.5`, `1.0_1`, `0x1_F`, `0o1_7`, `1_0e3`. An exponent holds no underscore, so `1e1_0` is text.
 - An exponent: `1e3`, `1.5e-3`.
 - A `0x`, `0o`, or `0b` prefix: `0x1F`, `0o17`, `0b101`.
 - `.inf`, `-.inf`, and `.nan`, in any case.
+- A sign, `+` or `-`, in front of any form above. The letters in a prefix or an exponent may be upper case: `0X1F`, `1E3`.
+- A canonical decimal too large for a 64-bit float. A decimal too small for one is read as 0, and is not covered.
 - An integer that does not fit in 64 bits.
 
-A canonical integer or decimal is also `format.number-spelling` where a string or a Value is read, because the text was meant. `123` in an answer is a problem and `"123"` is text. In an unknown field, a canonical integer is read as `int64` and a canonical decimal as `float64`. A decimal keeps its kind, so `2.0` is a `float64`. A scalar that only starts like a number, such as `12ab`, `1.2.3`, `v1.0`, `0.5.x`, or `2026-10-15`, is text.
+A canonical integer or decimal is also `format.number-spelling` where a string or a Value is read, because the text was meant. `123` in an answer is a problem and `"123"` is text. In an unknown field, a canonical integer is read as `int64` and a canonical decimal as `float64`. A decimal keeps its kind, so `2.0` is a `float64`. A scalar that only starts like a number, such as `12ab`, `1.2.3`, `v1.0`, `0.5.x`, or `2026-10-15`, is text. So are these: `1_`, `1__0`, `_1`, `1_.5`, `0x_1`, `e3`, `1e`, `1e+`, `0x`, `0xZZ`, `0b2`, `0o8`, `.`, `-yes`, `12:30:45`, `1,000`, and digits of other scripts.
 
 ### Values
 
@@ -119,13 +123,13 @@ The word `unknown-yet` is the Unknown value only when it is a whole plain Value.
 
 A string field takes text. A boolean field takes a plain `true` or `false`. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
-A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isAnswered` that is null is unset.
+A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isAnswered` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
 
 ### Unknown fields
 
-A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. Those maps are `provenance`, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
+A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. The value of such a key is not read, so nothing inside it is reported. Every such key is reported, a repeated one each time, together with `format.duplicate-key` for the repeat. Those maps are `provenance`, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
 
 ## Properties
 
@@ -141,7 +145,7 @@ These hold for every file the contract tests use.
 - Checking that a plan is valid, which is the plan validator. Decoding templates is the section loader.
 - Migrating an older version. The migrator is deferred until the first breaking change. See 0030.
 - Line and column numbers in a problem. The path names the place.
-- Tags, `%YAML` directives, complex keys, and other YAML features that no plan uses.
+- `%YAML` directives, and other YAML features that no plan uses.
 - A document end marker `...`.
 - Escaping in a path. A key that holds a `.` or a `[` makes an ambiguous path.
 - A plain scalar that ends in `?` inside a flow list or map, such as `{ask: Done?}`. One YAML library cannot read it. Quote it.
@@ -149,7 +153,7 @@ These hold for every file the contract tests use.
 
 ## Wrong implementations tried
 
-While drafting, a reference decoder was written as scratch work outside the repo, from this page alone, and then broken on purpose. About 100 wrong decoders were tried. Each group below failed at least one test. The first run found two fixture errors, which were fixed, and one library limit, which is listed under Not covered. The gaps it found were closed with new fixtures and sentences, and the table lists each by its case.
+While drafting, a reference decoder was written as scratch work outside the repo, from this page alone, and then broken on purpose. About 130 wrong decoders were tried. A second decoder was then built from the contract alone by a different builder, and the two were run on about 20,000 inputs: the fixtures, mutations of them, and random files from a grammar. Every difference was settled in this page and in a fixture, until the two agreed on every input. Each group below failed at least one test. The first run found two fixture errors, which were fixed, and one library limit, which is listed under Not covered. The gaps it found were closed with new fixtures and sentences, and the table lists each by its case.
 
 | Wrong implementation | Caught by |
 | -- | -- |
@@ -184,10 +188,24 @@ While drafting, a reference decoder was written as scratch work outside the repo
 | `isAnswered: null` read as false | `zero-and-null` |
 | A plain `unknown-yet` read as Unknown in a list or in a string field | `zero-and-null` |
 | A merge key with a map value read as an ordinary key | `alias` |
+| Problems found in a merge key's value | `alias` |
+| A syntax error in a later document hidden by the second-document problem, or the top-level type checked first | `parse-error-in-second-document`, `non-map-with-second-document` |
+| UTF-16 read as YAML | `utf16` |
+| Two `schemaVersion` keys judged by their values | `duplicate-version-bad-values` |
+| A signed, upper-case, or very large non-canonical number read as text or a number | `number-spelling` |
+| `nULL` read as a null spelling | `null-spelling` |
+| A plain `true` in a List Value read as a flag or as text | `wrong-type-answers` |
 | A bad version also reported as an alias, or an alias in place of the version followed to its target | `version-too-new-with-anchor`, `version-alias` |
 | A null item dropped from a list in an unknown field | `hand-edited` |
 | A null `answers.sections` read as an empty map | `answers-sections-null` |
 | Problems at one place in the wrong order | `same-place` |
+| An anchor on a null node dropped, or on the top-level map dropped | `anchored-null`, `anchor-on-root` |
+| A key that is not a scalar skipped, or read as the text of its first node | `complex-key`, `complex-key-in-section`, `alias-key` |
+| A tag changing how a scalar is read | `tags`, `tagged-null-document-then-second` |
+| The value of an unknown key read for problems | `unknown-field-values` |
+| An underscore ignored in part of a number | `number-edges` |
+| A repeated merge key also reported as a duplicate | `merge-keys` |
+| A syntax error after an empty document hidden by another file problem | `syntax-error-after-empty-document`, `empty-documents`, `anchored-empty-document-then-second` |
 | A second document ignored when it is empty | `multiple-documents-empty` |
 | A lone `---` or a file of comments read as a plan | `lone-marker`, `comments-only` |
 | A present but empty `includeIf` read as none | `zero-and-null` |

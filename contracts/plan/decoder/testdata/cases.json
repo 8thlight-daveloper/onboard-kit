@@ -60,10 +60,28 @@
     "source": "Hand-written. Contract rule: Style is free. A file need not end in a newline."
   },
   {
+    "name": "control-characters",
+    "input": "control-characters.yaml",
+    "output": "control-characters.plan.json",
+    "source": "Hand-written. Contract rule: Reading the file. The decoder does not judge the characters of a quoted string, so an escaped NUL and bell are kept."
+  },
+  {
     "name": "zero-and-null",
     "input": "zero-and-null.yaml",
     "output": "zero-and-null.plan.json",
     "source": "Hand-written. Contract rules: Null and empty values, Strings. 0030: null is null or an omitted key. unknown-yet is the Unknown value only where an answer or a default is read."
+  },
+  {
+    "name": "value-lists-in-conditions",
+    "input": "value-lists-in-conditions.yaml",
+    "output": "value-lists-in-conditions.plan.json",
+    "source": "Hand-written. Contract rule: Values. A list in isOneOf is a List Value, and an empty one is a List with no items."
+  },
+  {
+    "name": "null-env-values",
+    "input": "null-env-values.yaml",
+    "output": "null-env-values.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. A null value in a step's env is the empty string."
   },
   {
     "name": "null-maps",
@@ -135,6 +153,17 @@
     "source": "Hand-written. Contract rule: Document. The bytes must be UTF-8."
   },
   {
+    "name": "utf16",
+    "input": "utf16.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-yaml. UTF-16 is not UTF-8, even with a byte order mark."
+  },
+  {
     "name": "empty-file",
     "input": "empty-file.yaml",
     "problems": [
@@ -155,6 +184,17 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, file.not-a-plan."
+  },
+  {
+    "name": "empty-map",
+    "input": "empty-map.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. A top-level map without schemaVersion."
   },
   {
     "name": "comments-only",
@@ -210,6 +250,83 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, file.multiple-documents. A second document counts even when it is empty."
+  },
+  {
+    "name": "empty-documents",
+    "input": "empty-documents.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A document with nothing in it is empty, and an empty first document comes before a second one."
+  },
+  {
+    "name": "null-document-then-second",
+    "input": "null-document-then-second.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A document that holds null is not empty, so the second document is reported."
+  },
+  {
+    "name": "tagged-null-document-then-second",
+    "input": "tagged-null-document-then-second.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-plan",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A tag is ignored, so a first document with only an empty tagged scalar is empty."
+  },
+  {
+    "name": "anchored-empty-document-then-second",
+    "input": "anchored-empty-document-then-second.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. An anchor is a node, so a first document with an anchored empty scalar is not empty."
+  },
+  {
+    "name": "syntax-error-after-empty-document",
+    "input": "syntax-error-after-empty-document.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A syntax error anywhere in the file comes before every other file problem."
+  },
+  {
+    "name": "non-map-with-second-document",
+    "input": "non-map-with-second-document.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. File problems are checked in a fixed order, and a second document comes before the type of the top level."
+  },
+  {
+    "name": "parse-error-in-second-document",
+    "input": "parse-error-in-second-document.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A syntax error anywhere in the file comes before a second document."
   },
   {
     "name": "version-missing",
@@ -330,6 +447,43 @@
     "source": "Hand-written. 0030, Versioning: older than supported is refused."
   },
   {
+    "name": "version-negative-zero",
+    "input": "version-negative-zero.yaml",
+    "problems": [
+      {
+        "code": "version.too-old",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "-0",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. -0 is a canonical integer below 1, and found is the text as written."
+  },
+  {
+    "name": "version-plus-zero",
+    "input": "version-plus-zero.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. A plus sign makes a number spelling."
+  },
+  {
+    "name": "version-underscore",
+    "input": "version-underscore.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. An underscore makes a number spelling."
+  },
+  {
     "name": "version-too-new",
     "input": "version-too-new.yaml",
     "problems": [
@@ -371,6 +525,17 @@
     "source": "Hand-written. Contract rule: Version. With two schemaVersion keys the version is not known, so neither wins."
   },
   {
+    "name": "duplicate-version-bad-values",
+    "input": "duplicate-version-bad-values.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. Two schemaVersion keys are the only problem, whatever their values."
+  },
+  {
     "name": "alias-on-version",
     "input": "alias-on-version.yaml",
     "problems": [
@@ -380,6 +545,54 @@
       }
     ],
     "source": "Hand-written. Contract rule: Version. An anchor on schemaVersion is an alias problem, and the version is still read."
+  },
+  {
+    "name": "anchor-on-root",
+    "input": "anchor-on-root.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.alias. An anchor on the top-level map is an alias problem with no path."
+  },
+  {
+    "name": "complex-key",
+    "input": "complex-key.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Reading the file, Keys. A key that is not a scalar is a wrong type, at the path of the map that holds it."
+  },
+  {
+    "name": "complex-key-in-section",
+    "input": "complex-key-in-section.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Keys, as in complex-key, inside a section."
+  },
+  {
+    "name": "alias-key",
+    "input": "alias-key.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": ""
+      },
+      {
+        "code": "format.alias",
+        "path": "x-a"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Keys. An alias used as a key is a key that is not a scalar, and its place is the map that holds it, so it comes before the anchor on the later line."
   },
   {
     "name": "version-too-new-with-anchor",
@@ -677,6 +890,26 @@
       },
       {
         "code": "format.number-spelling",
+        "path": "answers.plan.a21"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a22"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a23"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a24"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a25"
+      },
+      {
+        "code": "format.number-spelling",
         "path": "answers.plan.a17[0]"
       },
       {
@@ -722,9 +955,68 @@
       {
         "code": "format.number-spelling",
         "path": "x-too-big"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-huge"
       }
     ],
-    "source": "Hand-written. 0030 format guards: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Contract rule: Numbers. The ok values are text that only looks like a number, and the x-ok map holds the numbers that are allowed in an unknown field."
+    "source": "Hand-written. 0030 format guards: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Contract rule: Numbers. The ok values are text that only looks like a number, and the x-ok map holds the numbers that are allowed in an unknown field. A sign may precede any non-canonical form, the prefixes and the exponent letter may be upper case, and a decimal too large for a float64 is a problem."
+  },
+  {
+    "name": "number-edges",
+    "input": "number-edges.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a01"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a02"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a03"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a04"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a05"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a06"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a07"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a08"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a09"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a10"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a11"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.a12"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Numbers. The a values are number spellings, with underscores between digits in any part, and the ok values are text that only looks like a number."
   },
   {
     "name": "null-spelling",
@@ -759,7 +1051,26 @@
         "path": "x-b"
       }
     ],
-    "source": "Hand-written. 0030 format guards: null is null or an omitted key. Contract rule: Null and empty values."
+    "source": "Hand-written. 0030 format guards: null is null or an omitted key. Contract rule: Null and empty values. Only those three spellings are null, so nULL and NuLL are text."
+  },
+  {
+    "name": "tags",
+    "input": "tags.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.b"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "answers.plan.d"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Reading the file, Tags. A tag is ignored, so the scalar is read by its text and style."
   },
   {
     "name": "empty-answer",
@@ -845,7 +1156,57 @@
         "path": "x-p.key"
       }
     ],
-    "source": "Hand-written. 0030 format guards: anchors and aliases are rejected. The merge key is reported once, at the key, whatever its value is. An anchor inside an unknown field counts too. An alias in place of a map is the alias problem. An anchor on a key is reported at the key's path. The entries after a merge key are still read."
+    "source": "Hand-written. 0030 format guards: anchors and aliases are rejected. The merge key is reported once, at the key, whatever its value is. An anchor inside an unknown field counts too. An alias in place of a map is the alias problem. An anchor on a key is reported at the key's path. The entries after a merge key are still read. The value of a merge key is not read, so the yes in it is not reported."
+  },
+  {
+    "name": "merge-keys",
+    "input": "merge-keys.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "x-a"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-b.<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-b.<<"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.alias. Each merge key is one alias problem, and a repeated merge key is not also a duplicate key."
+  },
+  {
+    "name": "anchored-null",
+    "input": "anchored-null.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "sections[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. An anchor is reported wherever it is written, and the other problem of the node follows it."
   },
   {
     "name": "duplicate-key",
@@ -988,9 +1349,13 @@
       {
         "code": "format.wrong-type",
         "path": "answers.sections.u.m[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.u.v[0]"
       }
     ],
-    "source": "Hand-written. Contract rule: Values. The domain model says a Value is text, a flag, a list of text, or unknown."
+    "source": "Hand-written. Contract rule: Values. The domain model says a Value is text, a flag, a list of text, or unknown. A plain true or false is not text, so it is a wrong type as an item of a List Value too."
   },
   {
     "name": "wrong-type-answers-shape",
@@ -1049,6 +1414,41 @@
       }
     ],
     "source": "Hand-written. Contract rule: Unknown fields. The domain model keeps unknown fields on a plan and on a section only. The x-allowed key on the section is kept."
+  },
+  {
+    "name": "unknown-field-values",
+    "input": "unknown-field-values.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.extra"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "provenance.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.other"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.third"
+      },
+      {
+        "code": "format.alias",
+        "path": "provenance.fourth"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.fourth"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Unknown fields. The value of an unknown key is not read, every unknown key is reported, including a repeated one, and an anchor on the key is still an alias problem."
   },
   {
     "name": "many-problems",
