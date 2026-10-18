@@ -201,6 +201,8 @@ While drafting, a reference decoder was written as scratch work outside the repo
 | Problems at one place in the wrong order | `same-place` |
 | An anchor on a null node dropped, or on the top-level map dropped | `anchored-null`, `anchor-on-root` |
 | A key that is not a scalar skipped, or read as the text of its first node | `complex-key`, `complex-key-in-section`, `alias-key` |
+| A quoted empty string taken for an empty document | `quoted-empty-document-then-second` |
+| Entries after a key that is not a scalar skipped | `complex-key-then-problem` |
 | A tag changing how a scalar is read | `tags`, `tagged-null-document-then-second` |
 | The value of an unknown key read for problems | `unknown-field-values` |
 | An underscore ignored in part of a number | `number-edges` |

@@ -1,0 +1,7 @@
+schemaVersion: 1
+sections:
+  - ? [a]
+    : b
+    title: yes
+    ? [c]
+    : d

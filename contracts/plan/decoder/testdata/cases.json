@@ -296,6 +296,17 @@
     "source": "Hand-written. Contract rule: Problems. An anchor is a node, so a first document with an anchored empty scalar is not empty."
   },
   {
+    "name": "quoted-empty-document-then-second",
+    "input": "quoted-empty-document-then-second.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A quoted empty string is text, so a first document holding it is not empty."
+  },
+  {
     "name": "syntax-error-after-empty-document",
     "input": "syntax-error-after-empty-document.yaml",
     "problems": [
@@ -578,6 +589,25 @@
       }
     ],
     "source": "Hand-written. Contract rule: Keys, as in complex-key, inside a section."
+  },
+  {
+    "name": "complex-key-then-problem",
+    "input": "complex-key-then-problem.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].title"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Keys. Every key that is not a scalar is reported, and the entries after it are still read."
   },
   {
     "name": "alias-key",
