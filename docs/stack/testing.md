@@ -16,6 +16,8 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 - Time comes in as a parameter, so no test depends on the clock.
 - `just check` runs the dependency check, the architecture tests, and the full test suite, along with the format and lint checks. CI runs the same recipe.
 
+The `contract-hardening` skill, at [`.claude/skills/contract-hardening`](../../.claude/skills/contract-hardening/SKILL.md), is the procedure for finding the ambiguity in a contract: broken variants, the mutation tool, a second independent build, and a differential run. It carries out the contract checks in [0025](../decisions/0025-contracts-and-tests.md) and is worth its cost for a component with a large input format.
+
 Mutation tools tried:
 
 | Tool | Result |
