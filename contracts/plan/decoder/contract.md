@@ -36,7 +36,7 @@ The decoder reads `schemaVersion` before anything else, and the supported versio
 
 ## Problems
 
-Problems come in the order of their places in the file, and all are reported. The place of a problem is where the last key or list item of its path starts, so a key and its value are one place. Two problems at one place come in the order of the table below. Two exceptions: a file problem is the only problem, and a version problem is the only problem. The check order is file, then version, then the rest. File problems are checked in this order, and the first one found is the only one: the bytes are not UTF-8, a YAML syntax error anywhere in the file, an empty first document, a second document, and a top level that is not a map. A syntax error in any document wins over every other file problem. A document is empty when it has no node, or when its only node is a plain scalar with no text and no anchor, whatever its tag: no bytes, only comments, `---` with nothing after it, or `--- !!null`. A document that holds `null` as text, or an anchor, is not empty. UTF-16 is not UTF-8.
+Problems come in the order of their places in the file, and all are reported. The place of a problem is where the last key or list item of its path starts, so a key and its value are one place. Two problems at one place come in the order of the table below. Two with the same code at one place come parent first: a map starts where its first key starts, so a problem about the map comes before one about that key. Two exceptions: a file problem is the only problem, and a version problem is the only problem. The check order is file, then version, then the rest. File problems are checked in this order, and the first one found is the only one: the bytes are not UTF-8, a YAML syntax error anywhere in the file, an empty first document, a second document, and a top level that is not a map. A syntax error in any document wins over every other file problem. A document is empty when it has no node, or when its only node is a plain scalar with no text and no anchor, whatever its tag: no bytes, only comments, `---` with nothing after it, or `--- !!null`. A document that holds `null` as text, or an anchor, is not empty. UTF-16 is not UTF-8.
 
 An anchor is reported wherever it is written, even on a node that is also null or of the wrong type. The anchor problem comes first, and the node's other problem follows it. A problem names its place in `detail.path`, as the encoder does: dots for fields, and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `x-map.a`. A file problem has no path. The path of a duplicate key is the second and later keys. The path of an anchor or an alias is the node it is written on.
 
@@ -121,7 +121,7 @@ The word `unknown-yet` is the Unknown value only when it is a whole plain Value.
 
 ### Known fields
 
-A string field takes text. A boolean field takes a plain `true` or `false`. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. The List kind of a Value is different: an empty list there is a List with no items, not None.
+A string field takes text. A boolean field takes a plain `true` or `false`. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isAnswered` that is null is unset.
 
@@ -198,10 +198,13 @@ While drafting, a reference decoder was written as scratch work outside the repo
 | A bad version also reported as an alias, or an alias in place of the version followed to its target | `version-too-new-with-anchor`, `version-alias` |
 | A null item dropped from a list in an unknown field | `hand-edited` |
 | A null `answers.sections` read as an empty map | `answers-sections-null` |
-| Problems at one place in the wrong order | `same-place` |
+| Problems at one place in the wrong order | `same-place`, `wrong-type-same-place` |
+| A list sorted, reversed, or stripped of repeats, in any array field | `list-order` |
 | An anchor on a null node dropped, or on the top-level map dropped | `anchored-null`, `anchor-on-root` |
 | A key that is not a scalar skipped, or read as the text of its first node | `complex-key`, `complex-key-in-section`, `alias-key` |
 | A quoted empty string taken for an empty document | `quoted-empty-document-then-second` |
+| A plain text where a condition clause, an answer test, or a step belongs crashes the decoder | `wrong-type-items` |
+| A quoted `true`, number, `null`, or empty string in an unknown field read as a boolean, a number, or null | `hand-edited` |
 | Entries after a key that is not a scalar skipped | `complex-key-then-problem` |
 | A tag changing how a scalar is read | `tags`, `tagged-null-document-then-second` |
 | The value of an unknown key read for problems | `unknown-field-values` |

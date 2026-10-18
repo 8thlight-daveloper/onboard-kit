@@ -1,0 +1,12 @@
+schemaVersion: 1
+variables:
+  - name: v
+    askIf:
+      all:
+        - x
+        - question: q
+          answer: w
+sections:
+  - id: s
+    steps:
+      - z

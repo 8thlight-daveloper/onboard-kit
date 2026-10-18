@@ -30,6 +30,7 @@ sections:
 x-flow: {on: 1, 1: one, y: [x, 'yes'], "<<": q}
 x-ints: {max: 9223372036854775807, min: -9223372036854775808, nine: 99}
 x-decimal: 1.0
+x-quoted: ["true", '123', "1.5", "null", "", "~"]
 x-date: 2026-10-15
 x-null:
 x-list-null: [a, null]

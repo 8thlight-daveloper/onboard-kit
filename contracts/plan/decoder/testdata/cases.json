@@ -42,6 +42,12 @@
     "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Condition syntax is from docs/reference/section-template-schema/conditions.md."
   },
   {
+    "name": "list-order",
+    "input": "../../testdata/list-order.yaml",
+    "output": "../../testdata/list-order.plan.json",
+    "source": "Hand-written. Every array field holds several items out of sorted order, with a repeat in some, so a version that sorts, reverses, or drops repeats fails. Contract rule: Lists, and the order of items in a plan."
+  },
+  {
     "name": "acme",
     "input": "../../../../docs/reference/examples/acme/acme.obk.yaml",
     "output": "../../testdata/acme.plan.json",
@@ -51,7 +57,7 @@
     "name": "hand-edited",
     "input": "hand-edited.yaml",
     "output": "hand-edited.plan.json",
-    "source": "Hand-written. Contract rule: Style is free. A person edits a plan by hand, so comments, a document marker, flow style, single quotes, folded and keep blocks, any key order, any indent, a plain date in a string field and in an unknown field, and the plain keys on, 1, and y are read as they were meant. 0030: plans decode leniently. The quoted key \"<<\" is an ordinary key. The largest and smallest 64-bit integers are read as int64 in an unknown field."
+    "source": "Hand-written. Contract rule: Style is free. A person edits a plan by hand, so comments, a document marker, flow style, single quotes, folded and keep blocks, any key order, any indent, a plain date in a string field and in an unknown field, and the plain keys on, 1, and y are read as they were meant. 0030: plans decode leniently. The quoted key \"<<\" is an ordinary key. The largest and smallest 64-bit integers are read as int64 in an unknown field. A quoted true, number, null, or empty string in an unknown field is text."
   },
   {
     "name": "no-final-newline",
@@ -1401,6 +1407,40 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, format.wrong-type. The domain model gives Answers two maps."
+  },
+  {
+    "name": "wrong-type-items",
+    "input": "wrong-type-items.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[1].answer"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].steps[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.wrong-type. A plain text where a condition clause, an answer test, or a step belongs is a wrong type, and the decoder goes on without it."
+  },
+  {
+    "name": "wrong-type-same-place",
+    "input": "wrong-type-same-place.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].id"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. A map and its first key start at the same place, and two problems with the same code there come parent first."
   },
   {
     "name": "unknown-field",

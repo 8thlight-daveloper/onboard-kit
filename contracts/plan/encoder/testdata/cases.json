@@ -48,6 +48,12 @@
     "source": "Hand-written. Contract rule: Keys, isAnswered. Condition syntax is from docs/reference/section-template-schema/conditions.md."
   },
   {
+    "name": "list-order",
+    "input": "../../testdata/list-order.plan.json",
+    "output": "../../testdata/list-order.yaml",
+    "source": "Hand-written. Every array field holds several items out of sorted order, with a repeat in some, so a version that sorts, reverses, or drops repeats fails. Contract rule: Lists, and the order of items in a plan."
+  },
+  {
     "name": "acme",
     "input": "../../testdata/acme.plan.json",
     "output": "../../../../docs/reference/examples/acme/acme.obk.yaml",

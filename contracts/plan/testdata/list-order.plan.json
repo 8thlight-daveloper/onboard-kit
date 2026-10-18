@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {
+      "name": "zeta",
+      "description": "Z",
+      "options": [
+        "c",
+        "a",
+        "b",
+        "a"
+      ],
+      "default": [
+        "c",
+        "a"
+      ]
+    },
+    {
+      "name": "alpha",
+      "description": "A"
+    },
+    {
+      "name": "mid",
+      "description": "M",
+      "askIf": {
+        "all": [
+          {
+            "question": "q3",
+            "answer": {
+              "isOneOf": [
+                "c",
+                "a",
+                "b",
+                "a"
+              ],
+              "isNotOneOf": [
+                "z",
+                "p",
+                "x"
+              ]
+            }
+          },
+          {
+            "question": "q1",
+            "answer": {
+              "is": [
+                "b",
+                "a"
+              ]
+            }
+          },
+          {
+            "question": "q2",
+            "answer": {
+              "isAnswered": true
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "answers": {
+    "plan": {
+      "alpha": "x",
+      "zeta": [
+        "c",
+        "a",
+        "b",
+        "a"
+      ]
+    },
+    "sections": {
+      "s3": {
+        "list": [
+          "z",
+          "a"
+        ]
+      }
+    }
+  },
+  "sections": [
+    {
+      "id": "s3",
+      "title": "Third",
+      "after": [
+        "z",
+        "a",
+        "m"
+      ],
+      "escalation": [
+        "$c",
+        "$a",
+        "$b"
+      ],
+      "variables": [
+        {
+          "name": "x",
+          "description": "X"
+        },
+        {
+          "name": "p",
+          "description": "P"
+        },
+        {
+          "name": "m",
+          "description": "M"
+        }
+      ],
+      "steps": [
+        {
+          "id": "st3",
+          "name": "Three",
+          "escalation": [
+            "$b",
+            "$a"
+          ],
+          "run": [
+            "git",
+            "status",
+            "git"
+          ],
+          "checks": [
+            {
+              "run": [
+                "b",
+                "a",
+                "c"
+              ]
+            },
+            {
+              "ask": "Q"
+            },
+            {
+              "env": "T"
+            },
+            {
+              "run": [
+                "a"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "st1",
+          "name": "One"
+        },
+        {
+          "id": "st2",
+          "name": "Two"
+        }
+      ]
+    },
+    {
+      "id": "s1",
+      "title": "First"
+    },
+    {
+      "id": "s2",
+      "title": "Second"
+    }
+  ],
+  "unknownFields": {
+    "x-list": [
+      "c",
+      "a",
+      "b"
+    ]
+  }
+}

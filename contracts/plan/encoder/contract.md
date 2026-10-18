@@ -70,7 +70,7 @@ The marker is `|-` when the text has no final newline, and `|` when it has exact
 
 ### Lists
 
-A list is written as a block list, one item per line, even for short lists of words. A list that is directly inside a list is written `- - item`. An empty list is omitted.
+A list is written as a block list, one item per line, even for short lists of words. Items are written in the order the plan holds them, and repeats are kept. The encoder never sorts a list, reverses it, or removes an item. A list that is directly inside a list is written `- - item`. An empty list is omitted.
 
 ### Answers
 
@@ -126,6 +126,7 @@ While drafting, these wrong encoders were written as scratch work outside the re
 | `yes`, `no`, `on`, and other reserved words written plain | `strings`, `key-order`, `unknown-fields` |
 | Lists in flow style, `[a, b]` | `key-order`, `acme` |
 | Zero fields written, such as `required: false` | `omit-zero`, `multiline`, and others |
+| A list sorted, reversed, or stripped of repeats, in any array field | `list-order` |
 | The argument changed during the call | The inputs-unchanged test |
 | No final newline | Every golden case, and the well-formed test |
 | `True` and `False` for booleans | `answers`, `conditions` |
