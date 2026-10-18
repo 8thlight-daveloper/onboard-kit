@@ -1,0 +1,9 @@
+{
+  "id": "prose",
+  "title": "Prose",
+  "summary": "Summary text.",
+  "verification": "Check it.",
+  "body": "First paragraph.\n\n    indented line\n\nSecond  paragraph, two spaces.",
+  "variables": [{"name": "v", "description": "Desc.", "patternHint": "Hint."}],
+  "steps": [{"id": "s", "name": "Step", "notes": "Note one.\nNote two.", "checks": [{"ask": "Did it work?"}]}]
+}

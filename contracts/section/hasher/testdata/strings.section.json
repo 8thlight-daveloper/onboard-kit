@@ -2,7 +2,7 @@
   "id": "strings",
   "title": "Quote \" and backslash \\",
   "summary": "tab\there",
-  "owner": "/",
+  "owner": "/\rx",
   "verification": "<b>&amp; é \u2028 😀",
-  "body": "a\nb\r\nc\u0001d\u0008e\u000cf\u001fg\u007fh"
+  "body": "a\nb\nc\u0001d\u0008e\u000cf\u001fg\u007fh"
 }

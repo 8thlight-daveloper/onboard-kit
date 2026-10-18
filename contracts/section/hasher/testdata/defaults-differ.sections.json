@@ -1,0 +1,10 @@
+[
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"steps":[{"id":"a","name":"A"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"steps":[{"id":"a","name":"A"}],"timing":"week-one"},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","type":"boolean"}],"steps":[{"id":"a","name":"A"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","phase":"onboarding"}],"steps":[{"id":"a","name":"A"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"steps":[{"id":"a","name":"A","timing":"anytime"}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"steps":[{"id":"a","name":"A","escalation":["e"]}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}],"steps":[{"id":"a","name":"A"}],"includeIf":{"all":[{"question":"plan.a","answer":{"is":"x"}}]}},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","askIf":{"all":[{"question":"plan.a","answer":{"is":"x"}}]}}],"steps":[{"id":"a","name":"A"}]}
+]

@@ -195,6 +195,11 @@ func sectionText(t *testing.T, section model.Section) string {
 	return string(data)
 }
 
+var proseFields = map[string]bool{
+	"Title": true, "Summary": true, "Body": true, "Verification": true,
+	"Notes": true, "Description": true, "PatternHint": true, "Ask": true,
+}
+
 type change struct {
 	path  string
 	apply func()
@@ -208,7 +213,9 @@ func changesTo(v reflect.Value, path string) []change {
 	switch v.Kind() {
 	case reflect.String:
 		changes = append(changes, change{path, func() { v.SetString(v.String() + "x") }})
-		changes = append(changes, change{path + " with a trailing space", func() { v.SetString(v.String() + " ") }})
+		if !proseFields[path[strings.LastIndex(path, ".")+1:]] {
+			changes = append(changes, change{path + " with a trailing space", func() { v.SetString(v.String() + " ") }})
+		}
 	case reflect.Bool:
 		changes = append(changes, change{path, func() { v.SetBool(!v.Bool()) }})
 	case reflect.Ptr:
@@ -317,9 +324,9 @@ func TestEverySectionGetsALowercaseSha256HexHash(t *testing.T) {
 	}
 }
 
-func TestAnEmptySectionHashesTheEmptyObject(t *testing.T) {
+func TestAnEmptySectionHashesOnlyItsDefaultTiming(t *testing.T) {
 	t.Parallel()
-	if got, want := newHasher().Hash(model.Section{}), textHash("{}"); got != want {
+	if got, want := newHasher().Hash(model.Section{}), textHash(`{"timing":"anytime"}`); got != want {
 		t.Errorf("got %s, want %s", got, want)
 	}
 }
@@ -339,8 +346,32 @@ func TestEmptyAndAbsentListsAndMapsHashAlike(t *testing.T) {
 		t.Errorf("empty lists and maps hash as %s, absent ones as %s", got, want)
 	}
 	noItems := model.Section{ID: "s", Variables: []model.Variable{}, Steps: []model.Step{}}
-	if got, want := newHasher().Hash(noItems), textHash(`{"id":"s"}`); got != want {
+	if got, want := newHasher().Hash(noItems), textHash(`{"id":"s","timing":"anytime"}`); got != want {
 		t.Errorf("empty lists of items hash as %s, want %s", got, want)
+	}
+}
+
+func TestEmptyConditionsHashAsAbsentOnes(t *testing.T) {
+	t.Parallel()
+	absent := model.Section{ID: "s", Variables: []model.Variable{{Name: "v"}}}
+	empty := model.Section{ID: "s", IncludeIf: &model.Condition{All: []model.Clause{}}, Variables: []model.Variable{{Name: "v", AskIf: &model.Condition{}}}}
+	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning"}]}`)
+	for name, section := range map[string]model.Section{"absent": absent, "empty": empty} {
+		if got := newHasher().Hash(section); got != want {
+			t.Errorf("%s conditions: got %s, want %s", name, got, want)
+		}
+	}
+}
+
+func TestTheModelsDefaultsHashAsAbsentFields(t *testing.T) {
+	t.Parallel()
+	absent := model.Section{ID: "s", Variables: []model.Variable{{Name: "v"}}}
+	explicit := model.Section{ID: "s", Timing: model.DefaultTiming, Variables: []model.Variable{{Name: "v", Type: model.DefaultVariableType, Phase: model.DefaultPhase}}}
+	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning"}]}`)
+	for name, section := range map[string]model.Section{"absent": absent, "explicit": explicit} {
+		if got := newHasher().Hash(section); got != want {
+			t.Errorf("%s defaults: got %s, want %s", name, got, want)
+		}
 	}
 }
 
@@ -352,13 +383,13 @@ func TestIntegersOfEveryWidthHashAlikeAndDifferFromDecimals(t *testing.T) {
 	if hasherOf(int(5)) != hasherOf(int64(5)) {
 		t.Errorf("int and int64 with the same number hash differently")
 	}
-	if hasherOf(int(5)) != textHash(`{"id":"s","unknownFields":{"x":5}}`) {
+	if hasherOf(int(5)) != textHash(`{"id":"s","timing":"anytime","unknownFields":{"x":5}}`) {
 		t.Errorf("an integer is not written in plain decimal")
 	}
-	if hasherOf(float64(5)) != textHash(`{"id":"s","unknownFields":{"x":5.0}}`) {
+	if hasherOf(float64(5)) != textHash(`{"id":"s","timing":"anytime","unknownFields":{"x":5.0}}`) {
 		t.Errorf("a whole decimal is not written with .0")
 	}
-	if hasherOf(float64(1.25)) != textHash(`{"id":"s","unknownFields":{"x":1.25}}`) {
+	if hasherOf(float64(1.25)) != textHash(`{"id":"s","timing":"anytime","unknownFields":{"x":1.25}}`) {
 		t.Errorf("a decimal is not written in plain notation")
 	}
 }
@@ -382,7 +413,7 @@ func TestAValueIsHashedByItsKindAlone(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			section := model.Section{ID: "s", Variables: []model.Variable{{Name: "v", Default: c.value}}}
-			want := textHash(`{"id":"s","variables":[{"name":"v"` + c.want + `}]}`)
+			want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string"` + c.want + `,"phase":"planning"}]}`)
 			if got := newHasher().Hash(section); got != want {
 				t.Errorf("got %s, want %s", got, want)
 			}

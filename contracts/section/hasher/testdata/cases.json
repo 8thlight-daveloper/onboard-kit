@@ -6,8 +6,8 @@
       "basic.section.json"
     ],
     "canonical": "basic.canonical.json",
-    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
-    "source": "Hand-written. Contract rules: Canonical form, Fields. 0030: a hash of the section's structured content in a fixed order."
+    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "source": "Hand-written. Contract rules: Canonical form, Fields, Defaults. A hash covers a section's definition."
   },
   {
     "name": "full",
@@ -16,8 +16,8 @@
       "full.section.json"
     ],
     "canonical": "full.canonical.json",
-    "hash": "0aef0b4c66366bfca5958aff3a0325409ed8022e54b41fba23ed7e3f8cd25e06",
-    "source": "Hand-written. Every field of every type is set, with a source that must be left out, and an env entry with an empty value. Contract rules: the key order tables, Fields. 0030: it excludes source."
+    "hash": "ead639cb185094ad0ef4eb6cd1d37ba1c2f5bb70eb6ff6a22abef0d35ec5678a",
+    "source": "Hand-written. Every field of every type is set, with a source that must be left out, an env entry with an empty value, and repeats in the two sets. Contract rules: the key order tables, Fields, Sets. 0030: it excludes source."
   },
   {
     "name": "strings",
@@ -26,8 +26,8 @@
       "strings.section.json"
     ],
     "canonical": "strings.canonical.json",
-    "hash": "fede38934a5a9550051ea4de72706e5dd9544b5975bed2ddd7bc32b9d331c8f3",
-    "source": "Hand-written. Contract rule: Strings. Quote, backslash, tab, carriage return, newline, other control characters, DEL, the three characters a JSON library may escape, and characters outside ASCII."
+    "hash": "161bf801fbc30ae9b3481eeeffb95e94f8b3070c51cdacd672f53df1f7b8520c",
+    "source": "Hand-written. Contract rule: Strings. Quote, backslash, tab, carriage return, newline, other control characters, DEL, the three characters a JSON library may escape, and characters outside ASCII. The carriage return is in `owner`, which is not a prose field."
   },
   {
     "name": "values",
@@ -36,8 +36,8 @@
       "values.section.json"
     ],
     "canonical": "values.canonical.json",
-    "hash": "d756b093951c798ac57db5b9d988000aab478b00cb8f10e7b728daae7876403d",
-    "source": "Hand-written. Contract rules: Values, Conditions. The Value kinds are from the domain model. The Text unknown-yet is a word from 0030 and the domain model, and differs from the Unknown kind."
+    "hash": "b05beb8cf9780ecaac79a740cdbc29bf6238d76b3362e50be74fa4113b8f03b7",
+    "source": "Hand-written. Contract rules: Values, Conditions, Sets. The Value kinds are from the domain model. The Text unknown-yet is a word from 0030 and the domain model, and differs from the Unknown kind. The isOneOf items are out of order on purpose."
   },
   {
     "name": "unknown-fields",
@@ -46,8 +46,28 @@
       "unknown-fields.section.json"
     ],
     "canonical": "unknown-fields.canonical.json",
-    "hash": "49604bf0fa1dd3bad8635d8ea90a9fd4d56c85d51b199d144c7468d30fbd6d61",
+    "hash": "3725ff2d1173ffae5c78d0b831f8a266ed58f9d2034e85d148906f2d24cf6614",
     "source": "Hand-written. Contract rule: Unknown fields. 0030: unknown fields are kept on a section. Keys are out of order in the input, and include digits, upper case, a non-ASCII letter, and a key that needs escaping. Decimals that a library may write with an exponent."
+  },
+  {
+    "name": "prose",
+    "relation": "golden",
+    "inputs": [
+      "prose.section.json"
+    ],
+    "canonical": "prose.canonical.json",
+    "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18",
+    "source": "Hand-written. Contract rule: Prose. Every prose field is set, and the body holds a blank line, an indented line, and two spaces inside a line, all of which stay."
+  },
+  {
+    "name": "sets",
+    "relation": "golden",
+    "inputs": [
+      "sets.section.json"
+    ],
+    "canonical": "sets.canonical.json",
+    "hash": "635e4cf09156a3376bbe2a7f059a2b9cc159ef77e0adebe12b52a5e81129c8f0",
+    "source": "Hand-written. Contract rule: Sets. docs/reference/section-template-schema/ordering.md: `after` lists the sections that must come before. The input is out of order with repeats, and the isOneOf items are of every kind."
   },
   {
     "name": "source-ignored",
@@ -56,7 +76,7 @@
       "basic.section.json",
       "source-ignored.sections.json"
     ],
-    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
+    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
     "source": "0030: the hash excludes source. One section with no source, and the same section with three different sources, one of them empty."
   },
   {
@@ -66,7 +86,7 @@
       "unknown-fields.section.json",
       "unknown-key-order.section.json"
     ],
-    "hash": "49604bf0fa1dd3bad8635d8ea90a9fd4d56c85d51b199d144c7468d30fbd6d61",
+    "hash": "3725ff2d1173ffae5c78d0b831f8a266ed58f9d2034e85d148906f2d24cf6614",
     "source": "0030: the hash is of structured content, so key order in the file does not change it. Contract rule: Unknown fields, keys in ascending byte order."
   },
   {
@@ -76,8 +96,38 @@
       "basic.section.json",
       "omitted-zero.section.json"
     ],
-    "hash": "f050493bdf02924ec289f09e938158802b51ef341d074e544d6c0b1c7c8057b2",
-    "source": "Contract rule: Zero values. Every zero field of a section, a variable, and a step is written out, as an empty string, false, an empty list, an empty map, or null, and the hash is the same as when the fields are absent."
+    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "source": "Contract rules: Zero values, Conditions. Every zero field of a section, a variable, and a step is written out, and so are an empty includeIf and an empty askIf. The hash is the same as when they are absent."
+  },
+  {
+    "name": "defaults-explicit",
+    "relation": "same",
+    "inputs": [
+      "basic.section.json",
+      "defaults-explicit.sections.json"
+    ],
+    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "source": "Contract rule: Defaults. The domain model gives timing, type, and phase their defaults. Each default written out, alone and together, hashes like the absent field."
+  },
+  {
+    "name": "prose-whitespace",
+    "relation": "same",
+    "inputs": [
+      "prose.section.json",
+      "prose-whitespace.sections.json"
+    ],
+    "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18",
+    "source": "Contract rule: Prose. Each of the eight prose fields gets whitespace noise at its edges or in its line endings: CRLF, a lone CR, trailing spaces and tabs, a trailing newline, and leading blank lines."
+  },
+  {
+    "name": "sets-order",
+    "relation": "same",
+    "inputs": [
+      "sets.section.json",
+      "sets-order.sections.json"
+    ],
+    "hash": "635e4cf09156a3376bbe2a7f059a2b9cc159ef77e0adebe12b52a5e81129c8f0",
+    "source": "Contract rule: Sets. `after`, `isOneOf`, and `isNotOneOf` in any order and with repeats hash alike."
   },
   {
     "name": "list-order",
@@ -85,23 +135,31 @@
     "inputs": [
       "list-order.sections.json"
     ],
-    "source": "0030: a fixed order of content, and the order of a list is content. The first section has every kind of list. Each other section swaps two items of one list, or repeats an item. Contract rule: Lists."
+    "source": "Contract rule: Lists. docs/reference/section-template-schema/escalation.md calls `escalation` an ordered list, and the order of steps, variables, checks, run items, and options is behavior. Each other section swaps two items of one list, or repeats an item."
   },
   {
-    "name": "absent-and-default",
+    "name": "defaults-differ",
     "relation": "different",
     "inputs": [
-      "absent-and-default.sections.json"
+      "defaults-differ.sections.json"
     ],
-    "source": "Contract rules: Defaults, Conditions. The hasher fills no default, and a present empty condition is not an absent one."
+    "source": "Contract rules: Defaults, Conditions. A value that is not the default differs. A step does not take its section's timing or escalation, so a step with `timing: anytime` differs from a step with none. A condition with a clause differs from none."
   },
   {
-    "name": "body-whitespace",
+    "name": "prose-content",
     "relation": "different",
     "inputs": [
-      "body-whitespace.sections.json"
+      "prose-content.sections.json"
     ],
-    "source": "Contract rule: Strings. Reformatting means the file's layout, so whitespace inside a string is content. 0030: raw text is not hashed, the structured content is."
+    "source": "Contract rule: Prose. Only the edges and line endings are normalized. Inner spacing, indentation, the blank lines between paragraphs, a no-break space, and a form feed are content, in each prose field."
+  },
+  {
+    "name": "exact-strings",
+    "relation": "different",
+    "inputs": [
+      "exact-strings.sections.json"
+    ],
+    "source": "Contract rule: Strings. A pattern, a run item, an option, an env value, a directory, an open, an owner, a name, an id, and an unknown field keep every space, tab, and newline."
   },
   {
     "name": "field-boundaries",
@@ -125,7 +183,7 @@
     "inputs": [
       "unknown-shapes.sections.json"
     ],
-    "source": "Contract rule: Unknown fields. An unknown value keeps its kind: an empty list, an empty map, null, an empty string, a boolean, an integer, a decimal, and a string that looks like one."
+    "source": "Contract rule: Unknown fields. An unknown value keeps its kind, and an empty list or map differs from an absent key, because what it means belongs to a newer tool."
   },
   {
     "name": "every-field",
@@ -133,6 +191,6 @@
     "inputs": [
       "full.section.json"
     ],
-    "source": "0030: the hash is of the section's content, and it excludes only source. A change to any field of any type, except source, changes the hash. Contract rule: Fields."
+    "source": "0030: the hash is of the section's content, and it excludes only source. A change to any field of any type, except source, changes the hash, and a trailing space changes it in every field that is not a prose field. Contract rule: Fields."
   }
 ]

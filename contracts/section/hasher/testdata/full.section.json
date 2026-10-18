@@ -3,7 +3,7 @@
   "title": "Get access",
   "summary": "Accounts and tools",
   "includeIf": {"all": [
-    {"question": "plan.discipline", "answer": {"is": "software", "isNot": "design", "isOneOf": ["software", "data"], "isNotOneOf": ["design"], "isAnswered": true}},
+    {"question": "plan.discipline", "answer": {"is": "software", "isNot": "design", "isOneOf": ["software", "data", "software"], "isNotOneOf": ["design", "design"], "isAnswered": true}},
     {"question": "plan.team_state", "answer": {"isNotOneOf": ["first-consultants", "unknown-yet"]}}
   ]},
   "timing": "week-one",
