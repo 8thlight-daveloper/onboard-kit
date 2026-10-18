@@ -1,0 +1,15 @@
+schemaVersion: 1
+id: a
+variables:
+  - name: a
+    default: {k: yes}
+    required: [yes]
+    multiple: {k: 1.0}
+    options: [[yes], {k: yes}]
+    askIf:
+      all:
+        - question: [yes]
+          answer:
+            is: [[yes]]
+            isOneOf: [{k: yes}, [[yes]]]
+            isAnswered: [yes]

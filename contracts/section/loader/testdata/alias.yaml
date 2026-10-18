@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: &id alias
+title: *id
+summary: S
+variables:
+  - &variable
+    name: a
+  - *variable
+  - <<: *variable
+    name: b
+steps:
+  - id: s
+    name: S
+    checks: &checks
+      - ask: Q?
+  - id: t
+    name: T
+    checks: *checks

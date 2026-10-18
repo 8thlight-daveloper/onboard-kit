@@ -1,0 +1,80 @@
+schemaVersion: 1
+steps:
+  - id: run
+    name: Run it
+    notes: Look at $$HOME first.
+    owner: $role
+    timing: week-one
+    escalation: [$backup]
+    run: [make, test, $target]
+    open: https://docs.acme.example/run
+    directory: $repo_dir
+    env:
+      APP_ENV: test
+      TOKEN: $token
+    checks:
+      - run: [make, check]
+      - ask: Did it pass?
+      - env: STAGING_API_TOKEN
+body: |
+  Run the build.
+  Then check it.
+variables:
+  - name: enabled
+    type: boolean
+    description: Include this section?
+    default: true
+  - name: target
+    description: Build target
+    type: choice
+    options: [debug, release]
+    default: debug
+    required: true
+    phase: planning
+  - name: code
+    description: A code
+    pattern: '^[A-Z]{3}$'
+    patternHint: Three capitals
+    phase: onboarding
+  - name: build_command
+    type: command
+    description: Build command
+    default: [make, build]
+  - name: backup
+    type: person
+    multiple: true
+    description: Backup
+    askIf:
+      all:
+        - question: target
+          answer:
+            is: release
+        - question: plan.discipline
+          answer:
+            isNot: design
+        - question: plan.team_state
+          answer:
+            isOneOf: [established, first-consultants]
+        - question: plan.team_state
+          answer:
+            isNotOneOf: [x, z]
+        - question: enabled
+          answer:
+            isAnswered: false
+        - question: code
+          answer:
+            is: true
+            isNot: unknown-yet
+verification: It works.
+owner: $role
+escalation: [$backup]
+after: [access, setup]
+timing: days-8-to-30
+includeIf:
+  all:
+    - question: plan.discipline
+      answer:
+        isOneOf: [software, design]
+summary: Do the thing.
+title: All fields
+id: all-fields

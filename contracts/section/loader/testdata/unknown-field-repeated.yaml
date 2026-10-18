@@ -1,0 +1,8 @@
+schemaVersion: 1
+id: s
+title: S
+summary: T
+note: 1
+note: 2
+x-a: {k: yes}
+source: {template: yes}

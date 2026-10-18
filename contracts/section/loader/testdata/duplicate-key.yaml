@@ -1,0 +1,19 @@
+schemaVersion: 1
+id: a
+id: b
+title: T
+summary: S
+"summary": S2
+variables:
+  - name: a
+    name: b
+    askIf:
+      all: []
+      all: []
+steps:
+  - id: s
+    name: S
+    env:
+      K: 1x
+      K: 2x
+      "K": 3x

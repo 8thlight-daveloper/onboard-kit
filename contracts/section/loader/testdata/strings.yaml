@@ -1,0 +1,35 @@
+schemaVersion: 1
+id: strings
+title: "yes"
+summary: 2026-10-15
+owner: ' no '
+timing: "1.0"
+verification: "~"
+body: |
+  Literal block with "quotes", yes, 1.0, and ~.
+variables:
+  - name: a
+    description: "123"
+    pattern: '^\d+$'
+    default: "true"
+  - name: b
+    description: nULL
+    default: "null"
+  - name: c
+    description: 12ab
+    patternHint: v1.0
+    default: '0x1F'
+  - name: d
+    description: 12:30:45
+    default: 1,000
+steps:
+  - id: s
+    name: >-
+      Folded
+      text
+    notes: "2026-10-15"
+    directory: "  padded  "
+    run: ["yes", '1.0', "~", 'on']
+    env:
+      A: "true"
+      B: "1e3"

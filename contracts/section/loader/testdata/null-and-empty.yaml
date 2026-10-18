@@ -1,0 +1,49 @@
+schemaVersion: 1
+id: nulls
+title: T
+summary:
+owner: null
+timing:
+after: []
+escalation:
+includeIf:
+variables:
+  - name: a
+    default:
+    options: []
+    askIf: {}
+  - name: b
+    askIf:
+      all:
+  - name: c
+    askIf:
+      all:
+        - question: a
+          answer:
+            isAnswered:
+            is:
+            isNot: null
+            isOneOf: []
+            isNotOneOf:
+        - question: b
+          answer: {}
+        - question: c
+  - name: d
+    default: []
+steps:
+  - id: s
+    name: S
+    env:
+      A:
+      B: ""
+      C: null
+    run: []
+    checks:
+      - {}
+  - id: t
+    name: T
+    env: {}
+    checks:
+  - id: u
+    name: U
+    env:

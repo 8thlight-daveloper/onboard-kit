@@ -1,0 +1,14 @@
+{
+  "id": "style",
+  "title": "Flow and quotes",
+  "summary": "Folded paragraph.",
+  "verification": "Tab:\there",
+  "body": "Keep.",
+  "variables": [
+    {"name": "a", "description": "It's here", "required": true},
+    {"name": "b", "type": "choice", "options": ["x", "y"]}
+  ],
+  "steps": [
+    {"id": "s", "name": "S", "run": ["a", "b"], "env": {"K": "v"}}
+  ]
+}

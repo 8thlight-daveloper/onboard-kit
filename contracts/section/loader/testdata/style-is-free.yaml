@@ -1,0 +1,13 @@
+# A comment before the document.
+---
+"schemaVersion": 1   # a trailing comment
+variables: [{name: a, description: 'It''s here', required: true}, {name: b, type: choice, options: [x, "y"]}]
+steps: [{id: s, name: S, run: [a, 'b'], env: {K: v}}]
+title: 'Flow and quotes'
+id: style
+summary: >-
+  Folded
+  paragraph.
+verification: "Tab:\there"
+body: |-
+  Keep.

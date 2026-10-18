@@ -1,0 +1,24 @@
+schemaVersion: 1
+id: unknown-yet
+title: unknown-yet
+summary: The plain word is text in a string field and the Unknown value in a Value.
+variables:
+  - name: a
+    default: unknown-yet
+  - name: b
+    default: "unknown-yet"
+  - name: c
+    type: command
+    default: [unknown-yet, "unknown-yet"]
+  - name: d
+    askIf:
+      all:
+        - question: a
+          answer:
+            is: unknown-yet
+            isNot: "unknown-yet"
+            isOneOf: [unknown-yet, "unknown-yet"]
+steps:
+  - id: s
+    name: unknown-yet
+    run: [unknown-yet]

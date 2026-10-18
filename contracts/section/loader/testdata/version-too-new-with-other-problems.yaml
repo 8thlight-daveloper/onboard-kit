@@ -1,0 +1,5 @@
+schemaVersion: 2
+id: yes
+future: {k: v}
+source: {template: x}
+steps: nonsense

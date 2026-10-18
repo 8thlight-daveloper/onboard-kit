@@ -1,0 +1,16 @@
+schemaVersion: 1
+id: 007
+title: yes
+summary: ~
+owner: &o x
+owner: dup
+extra: 1
+variables:
+  - name: a
+    required: "true"
+    askIf: *o
+steps:
+  - id: s
+    name: S
+    run: git
+x-ext: 0x10

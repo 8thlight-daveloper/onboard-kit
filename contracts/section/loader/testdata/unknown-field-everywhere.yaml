@@ -1,0 +1,30 @@
+schemaVersion: 1
+id: a
+title: T
+summary: S
+includeIf:
+  extra: 1
+  all:
+    - question: plan.q
+      extra: 1
+      answer:
+        is: a
+        extra: 1
+variables:
+  - name: v
+    extra: 1
+    askIf:
+      extra: 1
+      all:
+        - question: q
+          answer:
+            isAnswered: true
+            extra: 1
+steps:
+  - id: s
+    name: S
+    schemaVersion: 1
+    extra: {yes: yes}
+    checks:
+      - run: [a]
+        extra: 1

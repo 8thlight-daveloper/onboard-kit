@@ -1,0 +1,16 @@
+schemaVersion: 1
+provenance:
+  templateSet: 7652e0e
+  generatedOn: 2026-10-15
+variables:
+  - name: team_state
+    description: Is the team established?
+    options: [established, first-consultants]
+    required: true
+answers:
+  plan:
+    team_state: established
+sections:
+  - id: access
+    title: Access
+    summary: S

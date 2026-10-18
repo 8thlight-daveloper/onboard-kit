@@ -1,0 +1,36 @@
+schemaVersion: 1
+id: plan
+title: ""
+summary: S
+timing: someday
+after: [plan, plan]
+owner: $Owner
+body: Costs $5 and $HOME and ${x}.
+includeIf:
+  all:
+    - question: access.repo_url
+      answer:
+        isOneOf: [only-one]
+variables:
+  - name: Bad-Name
+    type: colour
+    multiple: true
+    default: not-an-option
+    options: [a]
+  - name: Bad-Name
+  - name: enabled
+    default: unknown-yet
+    askIf:
+      all: []
+steps:
+  - id: same
+    name: One
+    timing: yesterday
+    checks:
+      - run: [a]
+        ask: Both?
+      - {}
+  - id: same
+    name: Two
+    env:
+      lower: x

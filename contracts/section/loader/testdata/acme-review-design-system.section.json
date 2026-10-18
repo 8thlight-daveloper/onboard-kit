@@ -1,0 +1,21 @@
+{
+  "id": "review-design-system",
+  "title": "Review the design system",
+  "summary": "Find the design system and the main design file, and note what you cannot open.",
+  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+  "owner": "newcomer",
+  "timing": "week-one",
+  "verification": "You can open the design system and the main design file.",
+  "body": "Look at the design system before you start work. Write down anything that is\nmissing or out of date, and tell the team.\n",
+  "variables": [
+    {"name": "enabled", "description": "Include the design review?", "type": "boolean", "default": true},
+    {"name": "design_system_url", "description": "Where the design system lives", "required": true},
+    {"name": "design_file_url", "description": "The main design file for the product", "required": true}
+  ],
+  "steps": [
+    {"id": "design-system", "name": "Open the design system", "open": "$design_system_url",
+      "checks": [{"ask": "Can you open the design system?"}]},
+    {"id": "main-file", "name": "Open the main design file", "open": "$design_file_url",
+      "checks": [{"ask": "Can you open the main design file?"}]}
+  ]
+}

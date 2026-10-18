@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: [a]
+title: {k: v}
+summary: true
+owner: [yes]
+timing: false
+includeIf: [x]
+after: s
+escalation: 7
+variables: v
+steps:
+  - plain
+  - id: s
+    name: S
+    run: git status
+    env: x
+    checks:
+      - run: $cmd
+      - ask: [a]
+      - plain
+  - id: u
+    name: U
+    run: $Upper

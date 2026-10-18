@@ -1,0 +1,29 @@
+schemaVersion: 1
+id: guards
+title: yes
+summary: No
+owner: on
+timing: OFF
+verification: N
+body: y
+variables:
+  - name: a
+    description: False
+    required: yes
+    multiple: True
+    default: TRUE
+    options: [x, off]
+    askIf:
+      all:
+        - question: q
+          answer:
+            is: Yes
+            isAnswered: nO
+steps:
+  - id: s
+    name: S
+    run: [on]
+    env:
+      A: yes
+    checks:
+      - ask: y

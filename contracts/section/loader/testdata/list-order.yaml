@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: list-order
+title: T
+summary: S
+after: [zeta, alpha, zeta, mid]
+escalation: [$z, $a, $z]
+variables:
+  - name: zed
+    options: [c, a, b, a]
+  - name: alpha
+steps:
+  - id: z
+    name: Z
+    run: [c, a, b, a]
+    checks:
+      - ask: Second?
+      - ask: First?
+      - ask: Second?
+  - id: a
+    name: A

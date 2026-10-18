@@ -1,0 +1,9 @@
+schemaVersion: 1
+? [a]
+: b
+id: a
+steps:
+  - id: s
+    ? {k: v}
+    : v
+    name: yes

@@ -1,0 +1,33 @@
+{
+  "id": "all-fields",
+  "title": "All fields",
+  "summary": "Do the thing.",
+  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "design"]}}]},
+  "timing": "days-8-to-30",
+  "after": ["access", "setup"],
+  "owner": "$role",
+  "escalation": ["$backup"],
+  "verification": "It works.",
+  "body": "Run the build.\nThen check it.\n",
+  "variables": [
+    {"name": "enabled", "type": "boolean", "description": "Include this section?", "default": true},
+    {"name": "target", "type": "choice", "description": "Build target", "options": ["debug", "release"], "default": "debug", "required": true, "phase": "planning"},
+    {"name": "code", "description": "A code", "pattern": "^[A-Z]{3}$", "patternHint": "Three capitals", "phase": "onboarding"},
+    {"name": "build_command", "type": "command", "description": "Build command", "default": ["make", "build"]},
+    {"name": "backup", "type": "person", "multiple": true, "description": "Backup",
+      "askIf": {"all": [
+        {"question": "target", "answer": {"is": "release"}},
+        {"question": "plan.discipline", "answer": {"isNot": "design"}},
+        {"question": "plan.team_state", "answer": {"isOneOf": ["established", "first-consultants"]}},
+        {"question": "plan.team_state", "answer": {"isNotOneOf": ["x", "z"]}},
+        {"question": "enabled", "answer": {"isAnswered": false}},
+        {"question": "code", "answer": {"is": true, "isNot": {"unknown": true}}}
+      ]}}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run it", "notes": "Look at $$HOME first.", "owner": "$role", "timing": "week-one",
+      "escalation": ["$backup"], "run": ["make", "test", "$target"], "open": "https://docs.acme.example/run",
+      "directory": "$repo_dir", "env": {"APP_ENV": "test", "TOKEN": "$token"},
+      "checks": [{"run": ["make", "check"]}, {"ask": "Did it pass?"}, {"env": "STAGING_API_TOKEN"}]}
+  ]
+}

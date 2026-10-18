@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: placeholders
+title: Use $name
+summary: $$5 and $HOME and $Repo_url stay as written
+owner: $owner_role
+variables:
+  - name: repo_url
+    description: Where is $repo_dir?
+    default: $repo_dir
+  - name: tests
+    type: command
+    default: [make, $target]
+steps:
+  - id: a
+    name: A
+    run: $tests
+    escalation: [$backup, $general_contacts]
+  - id: b
+    name: B
+    run: ["$tests"]

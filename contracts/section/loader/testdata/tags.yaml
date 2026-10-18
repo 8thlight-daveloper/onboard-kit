@@ -1,0 +1,5 @@
+schemaVersion: 1
+id: !!str yes
+title: !!int 5
+summary: !!str 1.0
+owner: !!null x

@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: 007
+title: 1.0
+summary: 123
+owner: 0x1F
+timing: 1e3
+verification: +1
+body: .inf
+variables:
+  - name: a
+    description: 0o17
+    default: 1_000
+    options: ['1.0', 2.5]
+    required: 0b1
+steps:
+  - id: s
+    name: -7
+    run: [1, 0123]
+    env:
+      A: 1.5

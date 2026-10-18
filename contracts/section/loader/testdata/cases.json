@@ -1,0 +1,856 @@
+[
+  {
+    "name": "acme-access",
+    "input": "../../../../docs/reference/examples/acme/templates/access.yaml",
+    "output": "acme-access.section.json",
+    "source": "The ACME example template docs/reference/examples/acme/templates/access.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README)."
+  },
+  {
+    "name": "acme-clone-and-run-tests",
+    "input": "../../../../docs/reference/examples/acme/templates/clone-and-run-tests.yaml",
+    "output": "acme-clone-and-run-tests.section.json",
+    "source": "The ACME example template docs/reference/examples/acme/templates/clone-and-run-tests.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README). Its run: $setup_command is a whole placeholder in place of a list, read as a one-item list, as in the plan fixture contracts/plan/testdata/acme.plan.json."
+  },
+  {
+    "name": "acme-review-design-system",
+    "input": "../../../../docs/reference/examples/acme/templates/review-design-system.yaml",
+    "output": "acme-review-design-system.section.json",
+    "source": "The ACME example template docs/reference/examples/acme/templates/review-design-system.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README)."
+  },
+  {
+    "name": "acme-stuck-general",
+    "input": "../../../../docs/reference/examples/acme/templates/stuck-general.yaml",
+    "output": "acme-stuck-general.section.json",
+    "source": "The ACME example template docs/reference/examples/acme/templates/stuck-general.yaml. The JSON was drafted by hand and checked against the file. A template is a Section with no source (section template schema, README)."
+  },
+  {
+    "name": "minimal",
+    "input": "minimal.yaml",
+    "output": "minimal.section.json",
+    "source": "Hand-written. Section template schema, Section fields: id, title, and summary are the only required fields. The domain model: a template is a Section with no source."
+  },
+  {
+    "name": "version-only",
+    "input": "version-only.yaml",
+    "output": "version-only.section.json",
+    "source": "Hand-written. Contract rule: the loader does not validate, so a file with only schemaVersion gives the zero Section. The section validator reports the missing id, title, and summary."
+  },
+  {
+    "name": "all-fields",
+    "input": "all-fields.yaml",
+    "output": "all-fields.section.json",
+    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md."
+  },
+  {
+    "name": "unvalidated",
+    "input": "unvalidated.yaml",
+    "output": "unvalidated.section.json",
+    "source": "Hand-written. Contract rule: What passes through. Validating is the section validator's job (components doc). An unknown type, a bad name, a reserved id, a reserved name used as a toggle with a wrong type, two steps with one id, a check with two keys, an includeIf on a section question, and an empty condition pass unchanged."
+  },
+  {
+    "name": "placeholders",
+    "input": "placeholders.yaml",
+    "output": "placeholders.section.json",
+    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md and the domain model: run may be one $name that expands to a list, read as a one-item list."
+  },
+  {
+    "name": "unknown-yet",
+    "input": "unknown-yet.yaml",
+    "output": "unknown-yet.section.json",
+    "source": "Hand-written. variables.md, Unknown answers, and the decoder contract, Values: the plain word is Unknown only as a whole plain Value. In a string field and in a list of strings it is text, and quoted it is text."
+  },
+  {
+    "name": "null-and-empty",
+    "input": "null-and-empty.yaml",
+    "output": "null-and-empty.section.json",
+    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isAnswered stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items."
+  },
+  {
+    "name": "strings",
+    "input": "strings.yaml",
+    "output": "strings.section.json",
+    "source": "Hand-written. 0030 Format: quote what would read as a boolean, a number, or null. Decoder contract, Scalars: quoted and block scalars are always text, and a plain date, nULL, 12ab, v1.0, 12:30:45, and 1,000 are text. A quoted string keeps its leading and trailing spaces."
+  },
+  {
+    "name": "style-is-free",
+    "input": "style-is-free.yaml",
+    "output": "style-is-free.section.json",
+    "source": "Hand-written. Decoder contract, Style is free: comments, a leading document marker, a quoted key, flow style, single and double quotes, folded and literal blocks with chomping, and any key order."
+  },
+  {
+    "name": "list-order",
+    "input": "list-order.yaml",
+    "output": "list-order.section.json",
+    "source": "Hand-written. Decoder contract, Known fields: a list keeps its items in file order and keeps repeats. Section template schema, ordering.md: order is computed later, never by the loader."
+  },
+  {
+    "name": "empty-file",
+    "input": "empty-file.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-template",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, file.not-a-template. An empty file is not a template."
+  },
+  {
+    "name": "comments-only",
+    "input": "comments-only.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-template",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: a file of only comments is empty."
+  },
+  {
+    "name": "root-list",
+    "input": "root-list.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-template",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. A template file is one section, so a list of sections is not a template. Contract rule: Problems, file.not-a-template."
+  },
+  {
+    "name": "not-yaml",
+    "input": "not-yaml.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: file.not-yaml."
+  },
+  {
+    "name": "invalid-utf8",
+    "input": "invalid-utf8.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: the bytes must be UTF-8."
+  },
+  {
+    "name": "multiple-documents",
+    "input": "multiple-documents.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. A template file is one section, so a second document is a problem. Decoder contract, Problems: file.multiple-documents."
+  },
+  {
+    "name": "parse-error-in-second-document",
+    "input": "parse-error-in-second-document.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: a syntax error in any document wins over the second-document problem."
+  },
+  {
+    "name": "version-missing",
+    "input": "version-missing.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. 0030 Versioning: schemaVersion is on template files. Contract rule: Version. A template with no schemaVersion is refused."
+  },
+  {
+    "name": "version-quoted",
+    "input": "version-quoted.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Version: a quoted version is not a canonical integer."
+  },
+  {
+    "name": "version-decimal",
+    "input": "version-decimal.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Version: a decimal is not a canonical integer."
+  },
+  {
+    "name": "version-zero",
+    "input": "version-zero.yaml",
+    "problems": [
+      {
+        "code": "version.too-old",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "0",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. 0030 Versioning: older than supported is refused. Decoder contract, Version."
+  },
+  {
+    "name": "version-too-new-with-other-problems",
+    "input": "version-too-new-with-other-problems.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. 0030 Versioning: a newer file is refused and nothing else is read, so its unknown keys, its source key, its yes, and its wrong types are not reported."
+  },
+  {
+    "name": "duplicate-version",
+    "input": "duplicate-version.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Version: two schemaVersion keys are a duplicate key and the only problem."
+  },
+  {
+    "name": "boolean-spelling",
+    "input": "boolean-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "summary"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "owner"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "timing"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "verification"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "body"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].description"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].multiple"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].default"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].options[1]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].askIf.all[0].answer.is"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].askIf.all[0].answer.isAnswered"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "steps[0].run[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "steps[0].env.A"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "steps[0].checks[0].ask"
+      }
+    ],
+    "source": "Hand-written. 0030 Format: an unquoted yes, no, on, off, y, n, True, or TRUE is an error, so a hand-edited required: yes is a problem and not a silent true. Spelling is checked before type, in a string field, a boolean field, a Value, a list item, and a map value."
+  },
+  {
+    "name": "number-spelling",
+    "input": "number-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "id"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "summary"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "owner"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "timing"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "verification"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "body"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[0].description"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[0].default"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[0].options[1]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "steps[0].name"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "steps[0].run[0]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "steps[0].run[1]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "steps[0].env.A"
+      }
+    ],
+    "source": "Hand-written. 0030 Format: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Decoder contract, Numbers: the list of spellings, and a canonical number where a string or a Value is read."
+  },
+  {
+    "name": "null-spelling",
+    "input": "null-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "summary"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "owner"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "variables[0].default"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "steps[0].run[1]"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "steps[0].env.A"
+      }
+    ],
+    "source": "Hand-written. 0030 Format: null is null or an omitted key. Decoder contract, Scalars: ~, Null, and NULL are problems. null and nULL are not."
+  },
+  {
+    "name": "alias",
+    "input": "alias.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "id"
+      },
+      {
+        "code": "format.alias",
+        "path": "title"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[0]"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[1]"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[2].<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "steps[0].checks"
+      },
+      {
+        "code": "format.alias",
+        "path": "steps[1].checks"
+      }
+    ],
+    "source": "Hand-written. 0030 Format: anchors and aliases are rejected. Decoder contract, Problems: a merge key is one problem at the key, and its value is not read."
+  },
+  {
+    "name": "duplicate-key",
+    "input": "duplicate-key.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "id"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "summary"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "variables[0].name"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "variables[0].askIf.all"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "steps[0].env.K"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "steps[0].env.K"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: format.duplicate-key. Each key after the first is reported, and a quoted key is the same key as a plain one."
+  },
+  {
+    "name": "wrong-type",
+    "input": "wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "title"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "summary"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "owner"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "timing"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "after"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "escalation"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].env"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].checks[0].run"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].checks[1].ask"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[1].checks[2]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[2].run"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: format.wrong-type, from the domain model's type of each field. The one scalar the loader reads in place of a list is a step's run holding a whole placeholder, so run: git status, run: $Upper, and a check's run: $cmd are wrong types. A map or list in a value of the wrong type is not read."
+  },
+  {
+    "name": "null-items",
+    "input": "null-items.yaml",
+    "problems": [
+      {
+        "code": "format.empty-item",
+        "path": "variables[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "variables[1].options[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "variables[1].default[1]"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "variables[1].askIf.all[0].answer.isOneOf[1]"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "variables[1].askIf.all[0].answer.isNotOneOf[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "steps[0].run[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "steps[0].checks[0]"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: format.empty-item for a null in a list, and format.empty-answer for a null in isOneOf or isNotOneOf, because dropping either would shift the list."
+  },
+  {
+    "name": "unknown-field-top",
+    "input": "unknown-field-top.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "summery"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "x-extension"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "author"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "Body"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "<<"
+      }
+    ],
+    "source": "Hand-written. 0030 Format and Versioning: templates reject unknown fields, most often a typo. Unlike a plan, a template keeps no x- key and no key of another case. The value of an unknown key is not read, so the yes in author is not reported. The quoted key \"<<\" is an ordinary key, so here it is unknown."
+  },
+  {
+    "name": "unknown-field-everywhere",
+    "input": "unknown-field-everywhere.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[0].answer.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].answer.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "steps[0].schemaVersion"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "steps[0].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "steps[0].checks[0].extra"
+      }
+    ],
+    "source": "Hand-written. 0030 Format: templates decode strictly. An unknown key is a problem in a condition, a clause, an answer test, a variable, a step, and a check, and schemaVersion is known only at the top."
+  },
+  {
+    "name": "source-key",
+    "input": "source-key.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "source"
+      }
+    ],
+    "source": "Hand-written. Section template schema, Section fields: source is plan only. 0030 Identifiers: authors never write a hash into a template file. A template has no source, so the key is unknown."
+  },
+  {
+    "name": "unknown-field-repeated",
+    "input": "unknown-field-repeated.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "note"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "note"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "note"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "x-a"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "source"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Unknown fields: every unknown key is reported, a repeated one each time together with the duplicate. The value of an unknown key is not read."
+  },
+  {
+    "name": "plan-as-template",
+    "input": "plan-as-template.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "provenance"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "answers"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections"
+      }
+    ],
+    "source": "Hand-written. 0030: a plan holds sections and a template is one section. The plan's variables key is also a section field, so it is read. provenance, answers, and sections are unknown to a template."
+  },
+  {
+    "name": "many-problems",
+    "input": "many-problems.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "id"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "summary"
+      },
+      {
+        "code": "format.alias",
+        "path": "owner"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "owner"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "extra"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[0].askIf"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[0].run"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "x-ext"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: all problems are reported, in the order of the file. The value of the unknown x-ext is not read, so its 0x10 is not reported."
+  },
+  {
+    "name": "same-place",
+    "input": "same-place.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.alias",
+        "path": "title"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Problems: two problems at one place come in the order of its table, the spelling and then the anchor."
+  },
+  {
+    "name": "wrong-type-values",
+    "input": "wrong-type-values.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].default"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].required"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].multiple"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].options[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].options[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].question"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].answer.is"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].answer.isOneOf[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].answer.isOneOf[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].answer.isAnswered"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported."
+  },
+  {
+    "name": "tags",
+    "input": "tags.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "id"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "title"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "summary"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Style is free: a tag is ignored, and a scalar is read by its text and its style alone, so !!str yes is still the spelling yes."
+  },
+  {
+    "name": "complex-key",
+    "input": "complex-key.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": ""
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "steps[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "steps[0].name"
+      }
+    ],
+    "source": "Hand-written. Decoder contract, Style is free: a key that is not a scalar is a wrong type, at the path of the map that holds it. The entries after it are still read."
+  }
+]

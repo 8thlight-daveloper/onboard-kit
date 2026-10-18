@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: guards
+title: ~
+summary: Null
+owner: NULL
+body: null
+timing: nULL
+variables:
+  - name: a
+    default: ~
+    required: Null
+steps:
+  - id: s
+    name: S
+    run: [a, ~]
+    env:
+      A: ~
+      B: null

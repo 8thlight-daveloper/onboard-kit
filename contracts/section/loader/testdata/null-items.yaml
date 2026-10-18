@@ -1,0 +1,31 @@
+schemaVersion: 1
+id: a
+title: T
+summary: S
+variables:
+  -
+  - name: a
+    options:
+      - x
+      -
+    default:
+      - a
+      -
+    askIf:
+      all:
+        - question: q
+          answer:
+            isOneOf:
+              - a
+              -
+            isNotOneOf:
+              -
+              - b
+steps:
+  - id: s
+    name: S
+    run:
+      - a
+      -
+    checks:
+      -

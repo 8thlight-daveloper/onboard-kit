@@ -1,0 +1,19 @@
+{
+  "id": "nulls",
+  "title": "T",
+  "variables": [
+    {"name": "a", "askIf": {}},
+    {"name": "b", "askIf": {}},
+    {"name": "c", "askIf": {"all": [
+      {"question": "a", "answer": {}},
+      {"question": "b", "answer": {}},
+      {"question": "c"}
+    ]}},
+    {"name": "d", "default": []}
+  ],
+  "steps": [
+    {"id": "s", "name": "S", "env": {"A": "", "B": "", "C": ""}, "checks": [{}]},
+    {"id": "t", "name": "T", "env": {}},
+    {"id": "u", "name": "U"}
+  ]
+}
