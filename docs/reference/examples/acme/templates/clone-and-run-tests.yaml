@@ -39,8 +39,8 @@ steps:
   - id: install
     name: Install dependencies
     directory: $repo_dir
-    run: $setup_command
+    run: [$setup_command]
   - id: run-tests
     name: Run the tests
     directory: $repo_dir
-    run: $test_command
+    run: [$test_command]
