@@ -52,6 +52,10 @@ func (c *collector) entries(mapping *yaml.Node, at location) []entry {
 	seen := map[string]bool{}
 	for index := 0; index+1 < len(mapping.Content); index += 2 {
 		key, value := mapping.Content[index], mapping.Content[index+1]
+		if key.Kind != yaml.ScalarNode {
+			c.report(codeWrongType, at)
+			continue
+		}
 		if isPlain(key) && key.Value == mergeKey {
 			c.report(codeAlias, at.field(mergeKey, key))
 			continue
@@ -97,6 +101,7 @@ func (c *collector) eachItem(sequence *yaml.Node, at location, nullCode string, 
 	for index, item := range sequence.Content {
 		place := at.item(index, item)
 		if isNull(item) {
+			c.open(item, place)
 			c.report(nullCode, place)
 			continue
 		}

@@ -8,6 +8,7 @@ import (
 
 func (c *collector) planFrom(root *yaml.Node) model.Plan {
 	plan := model.Plan{SchemaVersion: supportedVersion}
+	c.open(root, rootLocation())
 	for _, found := range c.entries(root, rootLocation()) {
 		switch found.name {
 		case versionKey:

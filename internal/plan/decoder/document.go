@@ -14,27 +14,32 @@ func parseDocument(data []byte) (*yaml.Node, string) {
 		return nil, codeNotYAML
 	}
 	stream := yaml.NewDecoder(bytes.NewReader(data))
-	var first yaml.Node
-	if err := stream.Decode(&first); err != nil {
-		return nil, firstDocumentCode(err)
+	var documents []yaml.Node
+	for {
+		var document yaml.Node
+		err := stream.Decode(&document)
+		if errors.Is(err, io.EOF) {
+			break
+		}
+		if err != nil {
+			return nil, codeNotYAML
+		}
+		documents = append(documents, document)
 	}
-	var second yaml.Node
-	switch err := stream.Decode(&second); {
-	case err == nil:
+	if len(documents) == 0 || isEmptyDocument(documents[0]) {
+		return nil, codeNotAPlan
+	}
+	if len(documents) > 1 {
 		return nil, codeMultipleDocuments
-	case !errors.Is(err, io.EOF):
-		return nil, codeNotYAML
 	}
-	root := first.Content[0]
+	root := documents[0].Content[0]
 	if root.Kind != yaml.MappingNode {
 		return nil, codeNotAPlan
 	}
 	return root, ""
 }
 
-func firstDocumentCode(err error) string {
-	if errors.Is(err, io.EOF) {
-		return codeNotAPlan
-	}
-	return codeNotYAML
+func isEmptyDocument(document yaml.Node) bool {
+	content := document.Content[0]
+	return content.Kind == yaml.ScalarNode && content.Value == "" && content.Style&quotedOrBlockStyle == 0 && content.Anchor == ""
 }

@@ -8,6 +8,7 @@ import (
 
 func (c *collector) answerOf(node *yaml.Node, at location) model.Value {
 	if isNull(node) {
+		c.open(node, at)
 		c.report(codeEmptyAnswer, at)
 		return model.Value{}
 	}

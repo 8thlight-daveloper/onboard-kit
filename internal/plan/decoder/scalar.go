@@ -33,9 +33,9 @@ var (
 		regexp.MustCompile(`^\+[0-9]+(\.[0-9]+)?$`),
 		regexp.MustCompile(`^[+-]?\.[0-9]+$`),
 		regexp.MustCompile(`^[+-]?[0-9]+\.$`),
-		regexp.MustCompile(`^[+-]?[0-9]+(_[0-9]+)+(\.[0-9]+)?$`),
-		regexp.MustCompile(`^[+-]?([0-9]+\.?[0-9]*|\.[0-9]+)[eE][+-]?[0-9]+$`),
-		regexp.MustCompile(`^[+-]?0(x[0-9a-fA-F]+|o[0-7]+|b[01]+)$`),
+		regexp.MustCompile(`^[+-]?[0-9]+(_[0-9]+)*(\.[0-9]+(_[0-9]+)*)?$`),
+		regexp.MustCompile(`^[+-]?([0-9]+(_[0-9]+)*\.?([0-9]+(_[0-9]+)*)?|\.[0-9]+(_[0-9]+)*)[eE][+-]?[0-9]+$`),
+		regexp.MustCompile(`^[+-]?0([xX][0-9a-fA-F]+(_[0-9a-fA-F]+)*|[oO][0-7]+(_[0-7]+)*|[bB][01]+(_[01]+)*)$`),
 		regexp.MustCompile(`^(?i)[+-]?\.(inf|nan)$`),
 	}
 	booleanWords = map[string]bool{
@@ -70,6 +70,9 @@ func classifyNumber(text string) scalarKind {
 		return scalarInteger
 	}
 	if canonicalDecimal.MatchString(text) {
+		if _, err := strconv.ParseFloat(text, 64); err != nil {
+			return scalarNumberSpelling
+		}
 		return scalarDecimal
 	}
 	for _, spelling := range numberSpellings {
