@@ -57,6 +57,15 @@ func JSON(plan model.Plan) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
+func SectionJSON(section model.Section) ([]byte, error) {
+	var out bytes.Buffer
+	if err := write(&out, sectionObject(section), 0); err != nil {
+		return nil, err
+	}
+	out.WriteByte('\n')
+	return out.Bytes(), nil
+}
+
 func planObject(plan model.Plan) object {
 	var o object
 	if plan.SchemaVersion != 0 {

@@ -45,3 +45,30 @@ func TestJSONReadsBackAsTheSamePlan(t *testing.T) {
 		})
 	}
 }
+
+func TestPartsReadAndWriteBack(t *testing.T) {
+	section, err := jsonform.Section([]byte(`{"id": "s", "title": "T", "includeIf": {"all": [{"question": "plan.q", "answer": {"isOneOf": ["a", true, {"unknown": true}]}}]}, "after": ["x", "y"]}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	written, err := jsonform.SectionJSON(section)
+	if err != nil {
+		t.Fatal(err)
+	}
+	again, err := jsonform.Section(written)
+	if err != nil || !reflect.DeepEqual(section, again) {
+		t.Errorf("section changed on the way through JSON: %v\n%s", err, written)
+	}
+	condition, err := jsonform.Condition([]byte(`{"all": [{"question": "plan.q", "answer": {"isAnswered": false}}]}`))
+	if err != nil || len(condition.All) != 1 || condition.All[0].Answer.IsAnswered == nil {
+		t.Errorf("condition not read: %v %+v", err, condition)
+	}
+	value, err := jsonform.Value([]byte(`["a", "b"]`))
+	if err != nil || len(value.List) != 2 {
+		t.Errorf("value not read: %v %+v", err, value)
+	}
+	answers, err := jsonform.Answers([]byte(`{"plan": {"q": true}, "sections": {"s": {"n": "x"}}}`))
+	if err != nil || len(answers.Plan) != 1 || len(answers.Sections["s"]) != 1 {
+		t.Errorf("answers not read: %v %+v", err, answers)
+	}
+}

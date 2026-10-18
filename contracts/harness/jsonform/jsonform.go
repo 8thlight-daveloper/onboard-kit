@@ -22,6 +22,59 @@ func Plan(data []byte) (model.Plan, error) {
 	return plan, r.err
 }
 
+func Section(data []byte) (model.Section, error) {
+	raw, err := decodeJSON(data)
+	if err != nil {
+		return model.Section{}, err
+	}
+	r := &reader{}
+	section := r.section("section", raw)
+	return section, r.err
+}
+
+func Condition(data []byte) (model.Condition, error) {
+	raw, err := decodeJSON(data)
+	if err != nil {
+		return model.Condition{}, err
+	}
+	r := &reader{}
+	condition := r.condition("condition", raw)
+	if condition == nil {
+		return model.Condition{}, r.err
+	}
+	return *condition, r.err
+}
+
+func Value(data []byte) (model.Value, error) {
+	raw, err := decodeJSON(data)
+	if err != nil {
+		return model.Value{}, err
+	}
+	r := &reader{}
+	value := r.value("value", raw)
+	return value, r.err
+}
+
+func Answers(data []byte) (model.Answers, error) {
+	raw, err := decodeJSON(data)
+	if err != nil {
+		return model.Answers{}, err
+	}
+	r := &reader{}
+	answers := r.answers("answers", raw)
+	return answers, r.err
+}
+
+func decodeJSON(data []byte) (any, error) {
+	decoder := json.NewDecoder(bytes.NewReader(data))
+	decoder.UseNumber()
+	var raw any
+	if err := decoder.Decode(&raw); err != nil {
+		return nil, err
+	}
+	return raw, nil
+}
+
 type reader struct {
 	err error
 }
