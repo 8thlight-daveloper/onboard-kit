@@ -1,0 +1,1445 @@
+[
+  {
+    "name": "is-and-is-not",
+    "scope": "access",
+    "answers": "is-and-is-not.answers.json",
+    "checks": [
+      {
+        "name": "is the same text",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is other text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is text that differs only in case",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "Software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot other text",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot the same text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "software"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, answer tests: is is true when the answer is this one value, isNot when it is a real answer other than this one. Exact match is a reading, see the contract."
+  },
+  {
+    "name": "one-of-lists",
+    "scope": "access",
+    "answers": "one-of-lists.answers.json",
+    "checks": [
+      {
+        "name": "isOneOf with the answer second",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "design",
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with the answer absent",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "design",
+                  "ops"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with one item that matches",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with one item that does not match",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "design"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with an item that starts with the answer",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "software-engineering",
+                  "ops"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with an item that is a part of the answer",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "soft",
+                  "ware"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf with the answer absent",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "design",
+                  "ops"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf with the answer second",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "design",
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf with one item that matches",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "software"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf with an item that starts with the answer",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "software-engineering",
+                  "ops"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, answer tests: isOneOf is true when the answer is one of these values, isNotOneOf when it is a real answer that is none of them. Whether a one-item list is allowed is the linter's rule, so the evaluator reads it as written."
+  },
+  {
+    "name": "false-flag",
+    "scope": "access",
+    "answers": "false-flag.answers.json",
+    "checks": [
+      {
+        "name": "is false",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "is": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "is": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isNot": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isNot": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf both flags",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isOneOf": [
+                  true,
+                  false
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf true and a text",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isNotOneOf": [
+                  true,
+                  "x"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, rules: a boolean false is a real answer."
+  },
+  {
+    "name": "missing-answer",
+    "scope": "access",
+    "answers": "missing-answer.answers.json",
+    "checks": [
+      {
+        "name": "is",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "x",
+                  "y"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "x",
+                  "y"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered false",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "section question in a section with no answers",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "billing.plan_name",
+              "answer": {
+                "isNot": "x"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, rules: every test except isAnswered is false when the question has no real answer, before any negation. isNot on an unanswered question is false."
+  },
+  {
+    "name": "unknown-answer",
+    "scope": "access",
+    "answers": "unknown-answer.answers.json",
+    "checks": [
+      {
+        "name": "is",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "x",
+                  "y"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "x",
+                  "y"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered false",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the text unknown-yet",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "unknown-yet"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot the text unknown-yet",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "unknown-yet"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is Unknown",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": {
+                  "unknown": true
+                }
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "domain-model.md: a Value is a real answer unless it is Unknown or empty. conditions.md, rules: a real answer is not unknown-yet."
+  },
+  {
+    "name": "empty-answers",
+    "scope": "access",
+    "answers": "empty-answers.answers.json",
+    "checks": [
+      {
+        "name": "empty text is not answered",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "empty text is not a real answer for isAnswered true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot on empty text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNot": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNotOneOf on empty text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isNotOneOf": [
+                  "x",
+                  "y"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the empty text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": ""
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "empty list is not answered",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "empty list is not a real answer for isAnswered true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot on an empty list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isNot": [
+                  "x"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, rules: a real answer is not empty. domain-model.md: a Value is a real answer unless it is Unknown or empty. An empty list is empty: a reading, see the contract."
+  },
+  {
+    "name": "list-answer",
+    "scope": "access",
+    "answers": "list-answer.answers.json",
+    "checks": [
+      {
+        "name": "is the same list",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": [
+                  "ana",
+                  "bo"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the same items in another order",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": [
+                  "bo",
+                  "ana"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the first item only",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": [
+                  "ana"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is a list of the same length with other items",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": [
+                  "cy",
+                  "di"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is a list of the same length with the same first item",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": [
+                  "ana",
+                  "cy"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "is the first item as text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "is": "ana"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot a shorter list",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isNot": [
+                  "ana"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isNot the same list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isNot": [
+                  "ana",
+                  "bo"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with the list second",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isOneOf": [
+                  "x",
+                  [
+                    "ana",
+                    "bo"
+                  ]
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isOneOf with the first item as text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isOneOf": [
+                  "ana",
+                  "bo"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "isAnswered true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.stakeholders",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "domain-model.md, Value: a List is a list of text. conditions.md: is is true when the answer is this one value. A list equals a list with the same items in the same order: a reading, see the contract."
+  },
+  {
+    "name": "value-kinds",
+    "scope": "access",
+    "answers": "value-kinds.answers.json",
+    "checks": [
+      {
+        "name": "text true is not the flag true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.label",
+              "answer": {
+                "is": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "text true is not the flag true, isNot",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.label",
+              "answer": {
+                "isNot": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "flag true is not the text true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "is": "true"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "flag true is not the text true, isNot",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.remote",
+              "answer": {
+                "isNot": "true"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "one-item list is not the text",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.count",
+              "answer": {
+                "is": "x"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "text is not a one-item list",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.label",
+              "answer": {
+                "is": [
+                  "true"
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "domain-model.md, Value: Text, Flag, and List are different variants. FORMAT.md: the Text unknown-yet differs from Unknown."
+  },
+  {
+    "name": "question-ids",
+    "scope": "access",
+    "answers": "question-ids.answers.json",
+    "checks": [
+      {
+        "name": "bare name reads the same section",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "repo_url",
+              "answer": {
+                "is": "git"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "bare name does not read the plan",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "repo_url",
+              "answer": {
+                "is": "plan-value"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "bare name does not read another section",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "repo_url",
+              "answer": {
+                "is": "svn"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "bare name with no answer in the section, though the plan has one",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "discipline",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "plan prefix reads the plan",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.repo_url",
+              "answer": {
+                "is": "plan-value"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "section prefix reads that section",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "billing.repo_url",
+              "answer": {
+                "is": "svn"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "own section prefix reads the same section",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "access.repo_url",
+              "answer": {
+                "is": "git"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "an unknown section has no answer",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "nowhere.repo_url",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, syntax: a bare name is a question in the same section, and plan.<name> is a plan variable. domain-model.md, Question: the id is <scope>.<name>."
+  },
+  {
+    "name": "plan-scope",
+    "scope": "plan",
+    "answers": "plan-scope.answers.json",
+    "checks": [
+      {
+        "name": "bare name in the plan scope reads the plan",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "bare name in the plan scope does not read a section",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "discipline",
+              "answer": {
+                "is": "design"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "domain-model.md, Question: scope is plan or a section id. conditions.md: a plan variable's askIf can use a bare name, read as the plan scope. A reading, see the contract."
+  },
+  {
+    "name": "all-clauses",
+    "scope": "access",
+    "answers": "all-clauses.answers.json",
+    "checks": [
+      {
+        "name": "the example in conditions.md",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "question": "plan.team_state",
+              "answer": {
+                "isNot": "first-consultants"
+              }
+            },
+            {
+              "question": "repo_url",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "first clause false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "design"
+              }
+            },
+            {
+              "question": "plan.team_state",
+              "answer": {
+                "isNot": "first-consultants"
+              }
+            },
+            {
+              "question": "repo_url",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "middle clause false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "question": "plan.team_state",
+              "answer": {
+                "isNot": "established"
+              }
+            },
+            {
+              "question": "repo_url",
+              "answer": {
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "last clause false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "question": "plan.team_state",
+              "answer": {
+                "isNot": "first-consultants"
+              }
+            },
+            {
+              "question": "repo_url",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "every clause false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "design"
+              }
+            },
+            {
+              "question": "plan.team_state",
+              "answer": {
+                "is": "x"
+              }
+            },
+            {
+              "question": "repo_url",
+              "answer": {
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, syntax: all is a list of clauses that must all be true. The first check is the example in the Syntax section."
+  },
+  {
+    "name": "no-clauses",
+    "scope": "access",
+    "answers": "no-clauses.answers.json",
+    "checks": [
+      {
+        "name": "an empty all",
+        "holds": true,
+        "condition": {
+          "all": []
+        }
+      }
+    ],
+    "source": "conditions.md, section conditions: no includeIf means always included, and all is a conjunction. An empty conjunction holds: a reading, see the contract."
+  },
+  {
+    "name": "tests-in-one-answer",
+    "scope": "access",
+    "answers": "tests-in-one-answer.answers.json",
+    "checks": [
+      {
+        "name": "two tests that both hold",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software",
+                "isNot": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "two tests that contradict each other",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software",
+                "isNot": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "three tests that all hold",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "isOneOf": [
+                  "software",
+                  "design"
+                ],
+                "isNotOneOf": [
+                  "ops",
+                  "hr"
+                ],
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "the last test fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software",
+                "isNot": "design",
+                "isAnswered": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "the first test fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "design",
+                "isNot": "ops",
+                "isAnswered": true
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, answer tests: several tests in one answer must all hold. domain-model.md: the same rule. A contradiction is a lint error, so the evaluator reads it as written."
+  }
+]

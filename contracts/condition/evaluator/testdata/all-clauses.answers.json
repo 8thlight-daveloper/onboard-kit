@@ -1,0 +1,11 @@
+{
+  "plan": {
+    "discipline": "software",
+    "team_state": "established"
+  },
+  "sections": {
+    "access": {
+      "repo_url": "git"
+    }
+  }
+}

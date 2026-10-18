@@ -1,0 +1,14 @@
+{
+  "plan": {
+    "repo_url": "plan-value",
+    "discipline": "software"
+  },
+  "sections": {
+    "access": {
+      "repo_url": "git"
+    },
+    "billing": {
+      "repo_url": "svn"
+    }
+  }
+}

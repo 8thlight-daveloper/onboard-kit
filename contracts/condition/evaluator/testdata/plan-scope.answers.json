@@ -1,0 +1,10 @@
+{
+  "plan": {
+    "discipline": "software"
+  },
+  "sections": {
+    "access": {
+      "discipline": "design"
+    }
+  }
+}
