@@ -64,4 +64,4 @@ A comment is a smell. Say it in a name, a type, shared code, or a test, and keep
 - Do not create, edit, or close an issue unless a person asks.
 - Use the template in `.github/ISSUE_TEMPLATE/` for the kind of work: decision, contract, build, or integration. `gh issue create --template` works only interactively. When not interactive, remove the front matter from the template file, fill in the sections, and pass the result with `--body-file -`. Add `--label`, `--parent`, and `--blocked-by` as needed.
 - Link to documents. Do not copy their text into an issue. Done criteria are checks a machine can run.
-- Write, split, and size issues with the `writing-issues` skill. A leaf issue has one verb and one noun in its title and is size XS, S, or M. Split anything bigger into sub-issues under an epic.
+- Write, split, and size issues with the `writing-issues` skill. A leaf issue has one verb and one noun in its title and is size XS, S, or M, sized by what a person reviews and not by code lines. Split anything bigger into sub-issues under an epic.
