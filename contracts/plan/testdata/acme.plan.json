@@ -286,12 +286,6 @@
       "verification": "You can open the design system and the main design file.",
       "variables": [
         {
-          "name": "enabled",
-          "description": "Include the design review?",
-          "type": "boolean",
-          "default": true
-        },
-        {
           "name": "design_system_url",
           "description": "Where the design system lives",
           "required": true
