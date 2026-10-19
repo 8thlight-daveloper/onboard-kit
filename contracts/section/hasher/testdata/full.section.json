@@ -4,16 +4,18 @@
   "summary": "Accounts and tools",
   "includeIf": {"all": [
     {"question": "plan.discipline", "answer": {"is": "software", "isNot": "design", "isOneOf": ["software", "data", "software"], "isNotOneOf": ["design", "design"], "isSettled": true}},
-    {"question": "plan.team_state", "answer": {"isNotOneOf": ["first-consultants", "deferred"]}}
+    {"question": "plan.team_state", "answer": {"isNotOneOf": ["first-consultants", "deferred"]}},
+    {"section": "design", "enabled": true}
   ]},
   "timing": "week-one",
+  "enabled": false,
   "after": ["welcome"],
   "owner": "$manager",
   "escalation": ["manager"],
   "verification": "You can sign in.",
   "body": "Line one.\nLine two.",
   "variables": [
-    {"name": "manager", "description": "Who manages", "type": "person", "multiple": true, "options": ["ann", "bo"], "pattern": "^[a-z]+$", "patternHint": "A name", "required": true, "default": ["ann"], "phase": "onboarding", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": false}}]}},
+    {"name": "manager", "description": "Who manages", "type": "person", "multiple": true, "options": ["ann", "bo"], "pattern": "^[a-z]+$", "patternHint": "A name", "required": true, "default": ["ann"], "phase": "onboarding", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": false}}, {"section": "legacy", "enabled": false}]}},
     {"name": "repo", "description": "Clone URL", "default": "git@example.test:a.git"}
   ],
   "steps": [

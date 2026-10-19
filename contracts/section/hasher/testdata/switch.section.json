@@ -1,0 +1,15 @@
+{
+  "id": "review",
+  "title": "Review",
+  "summary": "S",
+  "enabled": false,
+  "includeIf": {"all": [
+    {"question": "plan.a", "answer": {"is": "x"}},
+    {"section": "design", "enabled": true},
+    {"section": "legacy", "enabled": false}
+  ]},
+  "variables": [
+    {"name": "v1", "askIf": {"all": [{"section": "design", "enabled": false}, {"question": "plan.a", "answer": {"isSettled": true}}]}},
+    {"name": "v2", "askIf": {"all": [{"section": "design", "enabled": true}]}}
+  ]
+}

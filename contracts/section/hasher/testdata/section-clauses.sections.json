@@ -1,0 +1,14 @@
+[
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"a","enabled":true}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"a","enabled":false}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"b","enabled":true}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"question":"a"}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"a","enabled":true},{"section":"b","enabled":true}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"b","enabled":true},{"section":"a","enabled":true}]}},
+  {"id":"s","title":"T","summary":"S","includeIf":{"all":[{"section":"a","enabled":true},{"section":"a","enabled":true}]}},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","askIf":{"all":[{"section":"a","enabled":true}]}}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","askIf":{"all":[{"section":"a","enabled":false}]}}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v","askIf":{"all":[{"question":"a"}]}}]},
+  {"id":"s","title":"T","summary":"S","variables":[{"name":"v"}]},
+  {"id":"s","title":"T","summary":"S"}
+]

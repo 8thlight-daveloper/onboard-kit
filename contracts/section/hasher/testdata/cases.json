@@ -16,8 +16,8 @@
       "full.section.json"
     ],
     "canonical": "full.canonical.json",
-    "hash": "ba4e0687bfdf77afc6349a7c09e930c8d2669b1c4dc2b5723c410b4a55a19270",
-    "source": "Hand-written. Every field of every type is set, with a source that must be left out, an env entry with an empty value, and repeats in the two sets. Contract rules: the key order tables, Fields, Sets. 0030: it excludes source."
+    "hash": "5eeb55219153854bdd63c2e8ae4da4c90de207a14159af643ec71cc8164e5f58",
+    "source": "Hand-written. Every field of every type is set, with a source and a section switch that must be left out, an env entry with an empty value, repeats in the two sets, and a section clause in an includeIf and in an askIf. Contract rules: the key order tables, Fields, Sets, Conditions. 0030: it excludes source. 0050: it leaves the switch out and hashes a section clause."
   },
   {
     "name": "strings",
@@ -70,6 +70,16 @@
     "source": "Hand-written. Contract rule: Sets. docs/reference/section-template-schema/ordering.md: `after` lists the sections that must come before. The input is out of order with repeats, and the isOneOf items are of every kind."
   },
   {
+    "name": "switch",
+    "relation": "golden",
+    "inputs": [
+      "switch.section.json"
+    ],
+    "canonical": "switch.canonical.json",
+    "hash": "9643ccbf3124eec3e34b587e20915de6d573148c531c2cff2b64b6e819407d24",
+    "source": "Hand-written. Contract rules: Conditions, Switch. 0050: a condition clause is a question clause or a section clause, and the hasher leaves the switch out. A section with enabled false. A section clause with enabled true and with enabled false, beside a question clause, in an includeIf and in an askIf, and alone in an askIf."
+  },
+  {
     "name": "source-ignored",
     "relation": "same",
     "inputs": [
@@ -78,6 +88,26 @@
     ],
     "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
     "source": "0030: the hash excludes source. One section with no source, and the same section with three different sources, one of them empty."
+  },
+  {
+    "name": "enabled-ignored",
+    "relation": "same",
+    "inputs": [
+      "basic.section.json",
+      "enabled-ignored.sections.json"
+    ],
+    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "source": "0050: the hasher leaves the switch out, the same as source. The same section with enabled absent, true, and false."
+  },
+  {
+    "name": "switch-enabled-ignored",
+    "relation": "same",
+    "inputs": [
+      "switch.section.json",
+      "switch-enabled-ignored.sections.json"
+    ],
+    "hash": "9643ccbf3124eec3e34b587e20915de6d573148c531c2cff2b64b6e819407d24",
+    "source": "0050: the hasher leaves the switch out, and a section clause is not the switch. A section with section clauses and enabled false, true, and absent."
   },
   {
     "name": "unknown-key-order",
@@ -144,6 +174,14 @@
       "defaults-differ.sections.json"
     ],
     "source": "Contract rules: Defaults, Conditions. A value that is not the default differs. A step does not take its section's timing or escalation, so a step with `timing: anytime` differs from a step with none. A condition with a clause differs from none."
+  },
+  {
+    "name": "section-clauses",
+    "relation": "different",
+    "inputs": [
+      "section-clauses.sections.json"
+    ],
+    "source": "0050 and the contract rule Conditions. A section clause with enabled true differs from one with enabled false, from one that names another section, from a question clause that names the same id, from the same clause in the other condition, from a list with another order or a repeat, and from no clause."
   },
   {
     "name": "prose-content",
