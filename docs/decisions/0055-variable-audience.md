@@ -1,6 +1,6 @@
 # 0055. Variable audience
 
-Status: proposed
+Status: accepted
 
 Builds on [0035](0035-settled-and-deferred-answers.md) and [0045](0045-defaults-are-suggestions.md). It replaces `phase`, described in [variables](../reference/section-template-schema/variables.md) and in [0010](0010-plan-editor.md), and a line of [0030](0030-self-contained-plan-file.md). It works with [0060](0060-personal-plan.md).
 
