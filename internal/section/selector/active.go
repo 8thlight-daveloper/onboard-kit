@@ -7,18 +7,19 @@ import (
 
 func activeSections(plan model.Plan) []model.Section {
 	conditions := evaluator.New()
+	switches := collectSwitches(plan.Sections)
 	active := make([]model.Section, 0, len(plan.Sections))
 	for _, section := range plan.Sections {
-		if includeIfPasses(conditions, section, plan.Answers) && isEnabled(section, plan.Answers) {
+		if isSwitchedOn(section) && includeIfPasses(conditions, section, plan.Answers, switches) {
 			active = append(active, section)
 		}
 	}
 	return active
 }
 
-func includeIfPasses(conditions evaluator.Evaluator, section model.Section, answers model.Answers) bool {
+func includeIfPasses(conditions evaluator.Evaluator, section model.Section, answers model.Answers, switches model.Switches) bool {
 	if section.IncludeIf == nil {
 		return true
 	}
-	return conditions.Holds(*section.IncludeIf, section.ID, answers)
+	return conditions.Holds(*section.IncludeIf, section.ID, answers, switches)
 }
