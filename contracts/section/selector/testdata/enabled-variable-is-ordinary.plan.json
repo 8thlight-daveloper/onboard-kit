@@ -1,0 +1,14 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"enabled": false}, "sections": {
+   "answer-false": {"enabled": false},
+   "answer-deferred": {"enabled": {"deferred": true}},
+   "answer-true-but-switched-off": {"enabled": true},
+   "answer-for-neighbour": {"enabled": false}}},
+ "sections": [
+  {"id": "answer-false", "variables": [{"name": "enabled", "type": "boolean"}]},
+  {"id": "answer-deferred", "variables": [{"name": "enabled", "type": "boolean", "default": false}]},
+  {"id": "default-false", "variables": [{"name": "enabled", "type": "boolean", "default": false}]},
+  {"id": "no-answer-no-default", "variables": [{"name": "enabled", "type": "boolean"}]},
+  {"id": "answer-true-but-switched-off", "enabled": false, "variables": [{"name": "enabled", "type": "boolean", "default": true}]},
+  {"id": "answer-for-neighbour"},
+  {"id": "text-answer", "variables": [{"name": "enabled", "type": "string"}]}]}

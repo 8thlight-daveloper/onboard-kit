@@ -1,0 +1,9 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}},
+ "sections": [
+  {"id": "base-on"},
+  {"id": "base-off", "enabled": false},
+  {"id": "both-hold", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}, {"section": "base-on", "enabled": true}]}},
+  {"id": "question-fails", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}, {"section": "base-on", "enabled": true}]}},
+  {"id": "switch-fails", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}, {"section": "base-off", "enabled": true}]}},
+  {"id": "second-switch-fails", "includeIf": {"all": [{"section": "base-on", "enabled": true}, {"section": "base-off", "enabled": true}]}}]}

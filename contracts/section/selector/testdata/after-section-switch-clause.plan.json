@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "a", "after": ["b"], "includeIf": {"all": [{"section": "b", "enabled": true}]}},
+  {"id": "b"},
+  {"id": "c", "after": ["d"], "includeIf": {"all": [{"section": "d", "enabled": true}]}},
+  {"id": "d", "enabled": false}]}

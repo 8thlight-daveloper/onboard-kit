@@ -1,0 +1,4 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "needs-unknown-on", "includeIf": {"all": [{"section": "nobody", "enabled": true}]}},
+  {"id": "needs-unknown-off", "includeIf": {"all": [{"section": "nobody", "enabled": false}]}}]}

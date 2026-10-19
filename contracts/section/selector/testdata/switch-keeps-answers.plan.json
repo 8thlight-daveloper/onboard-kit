@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}, "sections": {"off-with-answers": {"repo_url": "x", "tracker": {"deferred": true}}, "on-with-answers": {"repo_url": "y"}}},
+ "sections": [
+  {"id": "off-with-answers", "enabled": false, "variables": [{"name": "repo_url", "type": "string"}, {"name": "tracker", "type": "string"}]},
+  {"id": "on-with-answers", "enabled": true, "variables": [{"name": "repo_url", "type": "string"}]},
+  {"id": "off-no-answers", "enabled": false}]}

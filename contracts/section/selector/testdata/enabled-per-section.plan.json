@@ -1,7 +1,0 @@
-{"schemaVersion": 1,
- "answers": {"plan": {"enabled": true}, "sections": {"other": {"enabled": true}}},
- "sections": [
-  {"id": "asked-nothing", "variables": [{"name": "enabled", "type": "boolean"}]},
-  {"id": "other", "variables": [{"name": "enabled", "type": "boolean"}]},
-  {"id": "default-from-neighbour", "variables": [{"name": "enabled", "type": "boolean"}]},
-  {"id": "neighbour", "variables": [{"name": "enabled", "type": "boolean", "default": true}]}]}
