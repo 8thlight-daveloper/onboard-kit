@@ -79,7 +79,7 @@ A `person` variable names someone who can help with something. One answer is one
 - **Two ways to reach each person.** The prompt suggests an email and a chat handle. The tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A warning never stops the answer.
 - **A backup.** A required `multiple` variable needs at least one person, or `deferred`. A `multiple` variable with exactly one person gets a warning, because that person may be out of office.
 - **Ask once.** Same-name `person` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
-- **Rendering.** In the document the lines appear in order, one per line in a list, or joined with a comma and the word then in a sentence.
+- **Rendering.** In the document the people appear in order, joined with a comma and the word then in a sentence, such as `ann, then bo`.
 - **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
 - **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. The declaration stays `type: person` with `multiple: true`, and only the stored answer changes, through a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
 

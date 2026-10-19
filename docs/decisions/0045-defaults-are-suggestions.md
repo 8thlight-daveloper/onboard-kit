@@ -1,6 +1,6 @@
 # 0045. Defaults are suggestions
 
-Status: proposed
+Status: accepted
 
 Builds on [0035](0035-settled-and-deferred-answers.md). It changes parts of [0030](0030-self-contained-plan-file.md) and [0010](0010-plan-editor.md), which are named under Consequences.
 
