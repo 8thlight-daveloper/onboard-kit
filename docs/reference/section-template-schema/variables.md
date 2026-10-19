@@ -47,7 +47,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `patternHint` | The expected format in words, shown when a value does not match |
 | `required` | Whether the question must have an answer. Defaults to false |
 | `multiple` | Whether the variable takes several answers, held as a list. Defaults to false. Only `person` allows it for now, and lint rejects the rest |
-| `default` | The value used when none is given. It must satisfy the type, options, and pattern |
+| `default` | A suggestion offered when the question is asked. It is never an answer and nothing fills it in, see [0045](../../decisions/0045-defaults-are-suggestions.md). It must satisfy the type, options, and pattern |
 | `phase` | `planning` (the default) or `onboarding`. See below |
 | `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
 

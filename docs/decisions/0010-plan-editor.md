@@ -58,7 +58,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 ### Walking the questions
 
-`Questions(plan)`, from the question finder, returns every active question, each with its current answer or default.
+`Questions(plan)`, from the question finder, returns every active question, each with its current answer, and its default as a suggestion ([0045](0045-defaults-are-suggestions.md)).
 
 - **One question per variable.** The active questions are the plan variables plus every variable of every active section. Each keeps its own description, type, `required`, and default, and its id is `<scope>.<name>`, such as `access.repo_url`.
 
