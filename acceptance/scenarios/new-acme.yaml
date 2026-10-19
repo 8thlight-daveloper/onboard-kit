@@ -1,0 +1,20 @@
+name: new-acme
+description: The ACME template folder builds the same plan file every time, with its plan variables and four sections.
+source: docs/reference/examples/acme/README.md
+steps:
+  - run: [onboard-kit, new, --templates, templates, --template-set, example, --generated-on, "2026-10-15", --out, plan.obk.yaml]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    expect:
+      exit: 0
+      files:
+        plan.obk.yaml: {same-as: acceptance/testdata/acme-new.obk.yaml}
+  - run: [onboard-kit, new, --templates, templates, --template-set, example, --generated-on, "2026-10-15", --out, again.obk.yaml]
+    expect:
+      exit: 0
+      files:
+        again.obk.yaml: {same-as: acceptance/testdata/acme-new.obk.yaml}

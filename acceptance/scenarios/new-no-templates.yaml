@@ -1,0 +1,12 @@
+name: new-no-templates
+description: A template folder with no template files is reported and writes no plan.
+source: internal/command/create, the no template files message.
+steps:
+  - run: [onboard-kit, new, --templates, empty, --out, plan.obk.yaml]
+    files:
+      empty/plan-variables.yaml: "schemaVersion: 1\n"
+    expect:
+      exit: 1
+      stderr: {contains: no template files}
+      files:
+        plan.obk.yaml: {absent: true}

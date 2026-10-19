@@ -82,6 +82,20 @@ The runner writes one request per line, reads one response per line, and closes 
 - A scenario fails when any expectation is not met. The failure names the step and the expectation.
 - Scenarios do not depend on each other, and may run in parallel.
 
+## Choices the first runner made
+
+These came from building the runner, and any of them can change.
+
+- An `exit` left out is not checked, as with `stdout` and `stderr`.
+- Inside a list, items compare by subset, so an object in a list may have extra keys. The list length and order must match.
+- For a stdio step, `stdout` means all response lines joined.
+- Numbers compare as 64-bit floats. A bare YAML date stays text.
+- Each step has a time limit, 30 seconds by default.
+- A scenario's `name` must match its file name. An unknown field in a scenario is an error.
+- A path in `files`, `unchanged`, `from`, or `same-as` stays inside its root: no `..` and no absolute path.
+- `talk` and `stdin` do not mix in one step.
+- Environment variables pass through from the test process.
+
 ## Open
 
 These are not decided, and the first scenarios will show what is needed.
