@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"}],
+  "answers": {"plan": {"discipline": "software"}},
+  "sections": [
+    {"id": "design-review", "enabled": false, "variables": [{"name": "review_url", "description": "Review URL"}]},
+    {"id": "optional", "variables": [{"name": "optional_question", "description": "On, switch absent"}]},
+    {"id": "explicit-on", "enabled": true, "variables": [{"name": "explicit_question", "description": "On, switch true"}]},
+    {"id": "hidden", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+      "variables": [{"name": "hidden_question", "description": "Left out by includeIf, switch on"}]},
+    {"id": "follow", "variables": [
+      {"name": "f_off_true", "description": "Needs design-review on", "askIf": {"all": [{"section": "design-review", "enabled": true}]}},
+      {"name": "f_off_false", "description": "Needs design-review off", "askIf": {"all": [{"section": "design-review", "enabled": false}]}},
+      {"name": "f_on_true", "description": "Needs optional on", "askIf": {"all": [{"section": "optional", "enabled": true}]}},
+      {"name": "f_on_false", "description": "Needs optional off", "askIf": {"all": [{"section": "optional", "enabled": false}]}},
+      {"name": "f_explicit", "description": "Needs explicit-on on", "askIf": {"all": [{"section": "explicit-on", "enabled": true}]}},
+      {"name": "f_hidden_on", "description": "Hidden section, switch on", "askIf": {"all": [{"section": "hidden", "enabled": true}]}},
+      {"name": "f_hidden_off", "description": "Hidden section, asks for off", "askIf": {"all": [{"section": "hidden", "enabled": false}]}},
+      {"name": "f_mixed_holds", "description": "Both kinds hold", "askIf": {"all": [
+        {"section": "optional", "enabled": true},
+        {"question": "plan.discipline", "answer": {"is": "software"}}]}},
+      {"name": "f_mixed_section_fails", "description": "Section clause fails", "askIf": {"all": [
+        {"question": "plan.discipline", "answer": {"is": "software"}},
+        {"section": "design-review", "enabled": true}]}}
+    ]}
+  ]
+}

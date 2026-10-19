@@ -1,0 +1,11 @@
+{"questions": [
+  {"id": "plan.organization", "group": "organization", "declaredDefault": "Acme Corp", "suggestions": [
+    {"value": "Acme Corp", "source": "default"}, {"value": "Acme Inc", "source": "default"}]},
+  {"id": "a.organization", "group": "organization", "declaredDefault": "Acme Corp", "suggestions": [
+    {"value": "Acme Corp", "source": "default"}, {"value": "Acme Inc", "source": "default"}]},
+  {"id": "a.team_name", "declaredDefault": "Platform", "suggestions": [{"value": "Platform", "source": "default"}]},
+  {"id": "b.organization", "group": "organization", "declaredDefault": "Acme Inc", "suggestions": [
+    {"value": "Acme Corp", "source": "default"}, {"value": "Acme Inc", "source": "default"}]},
+  {"id": "c.organization", "group": "organization", "suggestions": [
+    {"value": "Acme Corp", "source": "default"}, {"value": "Acme Inc", "source": "default"}]}
+], "blockers": []}

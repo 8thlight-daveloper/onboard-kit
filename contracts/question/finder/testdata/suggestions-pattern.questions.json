@@ -1,0 +1,13 @@
+{"questions": [
+  {"id": "a.repo_url", "group": "repo_url", "declaredDefault": "ftp://host/repo", "suggestions": [
+    {"value": "git@host:org/repo.git", "source": "default"}, {"value": "https://host/repo.git", "source": "given"}]},
+  {"id": "a.code_name", "declaredDefault": "xaby", "suggestions": [{"value": "xaby", "source": "default"}]},
+  {"id": "b.repo_url", "group": "repo_url", "declaredDefault": "git@host:org/repo.git", "suggestions": [
+    {"value": "ftp://host/repo", "source": "default"}, {"value": "git@host:org/repo.git", "source": "default"},
+    {"value": "https://host/repo.git", "source": "given"}, {"value": "not a url", "source": "given"}]},
+  {"id": "c.repo_url", "group": "repo_url", "answer": "https://host/repo.git", "suggestions": [
+    {"value": "git@host:org/repo.git", "source": "default"}, {"value": "https://host/repo.git", "source": "given"}]},
+  {"id": "d.repo_url", "group": "repo_url", "answer": "not a url", "suggestions": [
+    {"value": "ftp://host/repo", "source": "default"}, {"value": "git@host:org/repo.git", "source": "default"},
+    {"value": "https://host/repo.git", "source": "given"}, {"value": "not a url", "source": "given"}]}
+], "blockers": []}

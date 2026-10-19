@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "style", "type": "choice", "options": ["markdown", "html"], "default": "pdf", "description": "Style, invalid default"},
+    {"name": "uses_ci", "type": "boolean", "default": true, "description": "Uses CI"}
+  ],
+  "answers": {"sections": {
+    "a": {"style": "docx", "uses_ci": "true"},
+    "b": {"style": "html", "uses_ci": false},
+    "c": {"style": true}
+  }},
+  "sections": [
+    {"id": "a", "variables": [
+      {"name": "style", "description": "Style as free text"},
+      {"name": "uses_ci", "description": "Uses CI as text"}
+    ]},
+    {"id": "b", "variables": [
+      {"name": "style", "description": "Style as free text, again"},
+      {"name": "uses_ci", "type": "boolean", "description": "Uses CI"}
+    ]},
+    {"id": "c", "variables": [{"name": "style", "type": "boolean", "description": "Style as a flag"}]},
+    {"id": "d", "variables": [{"name": "style", "type": "choice", "options": ["markdown", "html"], "default": "html", "description": "Style, valid default"}]}
+  ]
+}

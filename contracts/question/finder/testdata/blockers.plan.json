@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_blocks", "description": "Required, no answer", "required": true},
+    {"name": "p_deferred", "description": "Required, deferred", "required": true},
+    {"name": "p_text", "description": "Required, settled", "required": true},
+    {"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"}
+  ],
+  "answers": {
+    "plan": {"p_deferred": {"deferred": true}, "p_text": "x", "discipline": "software"},
+    "sections": {"first": {
+      "flag_false": false, "empty_text": "", "empty_list": [], "blank_list": [""], "good_list": ["a"],
+      "hidden": "stale"
+    }}
+  },
+  "sections": [
+    {"id": "first", "variables": [
+      {"name": "no_answer", "description": "Required, no answer", "required": true},
+      {"name": "flag_false", "type": "boolean", "description": "Required, false", "required": true},
+      {"name": "empty_text", "description": "Required, empty text", "required": true},
+      {"name": "empty_list", "type": "command", "description": "Required, empty list", "required": true},
+      {"name": "blank_list", "type": "command", "description": "Required, list of empty text", "required": true},
+      {"name": "good_list", "type": "command", "description": "Required, a list", "required": true},
+      {"name": "optional", "description": "Not required"},
+      {"name": "hidden", "description": "Required, hidden by askIf", "required": true,
+        "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+      {"name": "hidden_no_answer", "description": "Required, hidden, no answer", "required": true,
+        "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+      {"name": "shown_no_answer", "description": "Required, shown, no answer", "required": true,
+        "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+      {"name": "onboarding_only", "description": "Required, onboarding", "required": true, "phase": "onboarding"}
+    ]},
+    {"id": "switched-off", "enabled": false, "variables": [{"name": "off_required", "description": "Switched off", "required": true}]},
+    {"id": "left-out", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+      "variables": [{"name": "left_required", "description": "Left out", "required": true}]},
+    {"id": "second", "timing": "anytime", "variables": [{"name": "second_required", "description": "Later section", "required": true}]}
+  ]
+}

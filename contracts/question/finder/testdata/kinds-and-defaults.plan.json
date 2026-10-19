@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "kinds", "variables": [
+      {"name": "no_type", "description": "No type and no phase"},
+      {"name": "uses_ci", "type": "boolean", "description": "Uses CI"},
+      {"name": "style", "type": "choice", "options": ["markdown", "html"], "description": "Style", "phase": "planning"},
+      {"name": "setup_command", "type": "command", "description": "Setup command", "required": true},
+      {"name": "grantors", "type": "person", "multiple": true, "description": "Who grants access"},
+      {"name": "typed_string", "type": "string", "pattern": "^[a-z]+$", "patternHint": "lowercase", "description": "Typed string"}
+    ]}
+  ]
+}

@@ -1,0 +1,16 @@
+{"questions": [
+  {"id": "plan.style", "type": "choice", "group": "choice", "declaredDefault": "pdf", "suggestions": [
+    {"value": "html", "source": "default"}, {"value": "html", "source": "given"}]},
+  {"id": "plan.uses_ci", "type": "boolean", "group": "boolean", "declaredDefault": true, "suggestions": [
+    {"value": true, "source": "default"}, {"value": false, "source": "given"}]},
+  {"id": "a.style", "group": "text style", "answer": "docx", "suggestions": [
+    {"value": "docx", "source": "given"}, {"value": "html", "source": "given"}]},
+  {"id": "a.uses_ci", "group": "text uses_ci", "answer": "true", "suggestions": [{"value": "true", "source": "given"}]},
+  {"id": "b.style", "group": "text style", "answer": "html", "suggestions": [
+    {"value": "docx", "source": "given"}, {"value": "html", "source": "given"}]},
+  {"id": "b.uses_ci", "type": "boolean", "group": "boolean", "answer": false, "suggestions": [
+    {"value": true, "source": "default"}, {"value": false, "source": "given"}]},
+  {"id": "c.style", "type": "boolean", "answer": true, "suggestions": [{"value": true, "source": "given"}]},
+  {"id": "d.style", "type": "choice", "group": "choice", "declaredDefault": "html", "suggestions": [
+    {"value": "html", "source": "default"}, {"value": "html", "source": "given"}]}
+], "blockers": []}

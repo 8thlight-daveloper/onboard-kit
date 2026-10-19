@@ -1,0 +1,11 @@
+{"questions": [
+  {"id": "plan.org_name", "answer": "ACME", "suggestions": [{"value": "ACME", "source": "given"}]},
+  {"id": "s.flag_false", "type": "boolean", "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "s.flag_true", "type": "boolean", "answer": true, "suggestions": [{"value": true, "source": "given"}]},
+  {"id": "s.deferred_answer", "answer": {"deferred": true}},
+  {"id": "s.list_answer", "type": "command", "answer": ["make", "test"], "suggestions": [{"value": ["make", "test"], "source": "given"}]},
+  {"id": "s.empty_text", "answer": ""},
+  {"id": "s.empty_list", "type": "command", "answer": []},
+  {"id": "s.text_deferred", "answer": "deferred", "suggestions": [{"value": "deferred", "source": "given"}]},
+  {"id": "s.no_answer"}
+], "blockers": []}

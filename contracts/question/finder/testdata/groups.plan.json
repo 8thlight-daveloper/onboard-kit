@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "contact", "description": "Plan contact"}],
+  "sections": [
+    {"id": "a", "variables": [{"name": "contact", "description": "Same name and type"}]},
+    {"id": "b", "variables": [{"name": "contact", "description": "Another description", "required": true, "pattern": "^[a-z]+$", "patternHint": "lowercase"}]},
+    {"id": "c", "variables": [{"name": "contact", "type": "person", "description": "A person"}]},
+    {"id": "d", "variables": [{"name": "contact", "type": "choice", "options": ["x", "y"], "description": "Choice x, y"}]},
+    {"id": "e", "variables": [{"name": "contact", "type": "choice", "options": ["y", "x"], "description": "Choice y, x"}]},
+    {"id": "f", "variables": [{"name": "contact", "type": "person", "multiple": true, "description": "Several people"}]},
+    {"id": "g", "variables": [{"name": "contact", "type": "person", "description": "Another person"}]},
+    {"id": "h", "variables": [{"name": "contact", "type": "choice", "options": ["x", "z"], "description": "Choice x, z"}]},
+    {"id": "i", "variables": [{"name": "contact", "type": "choice", "options": ["x", "y", "z"], "description": "Choice x, y, z"}]},
+    {"id": "j", "variables": [{"name": "contact", "type": "string", "description": "String spelled out"}]}
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"}
+  ],
+  "answers": {
+    "plan": {"discipline": "software"},
+    "sections": {
+      "design-only": {"design_url": "https://design.example"},
+      "off": {"off_question": "kept"},
+      "off-by-switch-clause": {"clause_question": "kept"}
+    }
+  },
+  "sections": [
+    {"id": "always", "variables": [{"name": "always_question", "description": "Always asked"}]},
+    {"id": "design-only", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+      "variables": [{"name": "design_url", "description": "Design URL", "required": true}]},
+    {"id": "off", "enabled": false, "variables": [{"name": "off_question", "description": "Switched off", "required": true}]},
+    {"id": "off-by-switch-clause", "includeIf": {"all": [{"section": "off", "enabled": true}]},
+      "variables": [{"name": "clause_question", "description": "Left out by a section clause", "required": true}]},
+    {"id": "on-explicit", "enabled": true, "variables": [{"name": "explicit_question", "description": "Switched on"}]}
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {
+    "c": {"repo_url": "https://host/repo.git"},
+    "d": {"repo_url": "not a url"}
+  }},
+  "sections": [
+    {"id": "a", "variables": [
+      {"name": "repo_url", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL", "default": "ftp://host/repo", "description": "With a pattern"},
+      {"name": "code_name", "pattern": "ab", "default": "xaby", "description": "Pattern not anchored"}
+    ]},
+    {"id": "b", "variables": [{"name": "repo_url", "default": "git@host:org/repo.git", "description": "No pattern"}]},
+    {"id": "c", "variables": [{"name": "repo_url", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL", "description": "With a pattern, answered"}]},
+    {"id": "d", "variables": [{"name": "repo_url", "description": "No pattern, answered"}]}
+  ]
+}

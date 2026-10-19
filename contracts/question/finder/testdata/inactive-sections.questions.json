@@ -1,0 +1,5 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "always.always_question"},
+  {"id": "on-explicit.explicit_question"}
+], "blockers": []}

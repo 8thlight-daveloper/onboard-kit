@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "organization", "default": "Acme Corp", "description": "Organization"}],
+  "sections": [
+    {"id": "a", "variables": [
+      {"name": "organization", "default": "Acme Corp", "description": "Same default"},
+      {"name": "team_name", "default": "Platform", "description": "Team"}
+    ]},
+    {"id": "b", "variables": [{"name": "organization", "default": "Acme Inc", "description": "Another default"}]},
+    {"id": "c", "variables": [{"name": "organization", "description": "No default"}]},
+    {"id": "off", "enabled": false, "variables": [{"name": "organization", "default": "Hidden Corp", "description": "Switched off"}]},
+    {"id": "d", "variables": [
+      {"name": "organization", "default": "Hidden By Condition", "description": "Hidden by askIf, default not offered", "askIf": {"all": [{"question": "plan.organization", "answer": {"is": "nothing"}}]}}
+    ]}
+  ]
+}

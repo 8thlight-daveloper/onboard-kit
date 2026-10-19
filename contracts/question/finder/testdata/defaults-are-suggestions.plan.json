@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "output_style", "type": "choice", "options": ["markdown", "html"], "default": "markdown", "description": "Output style"},
+    {"name": "required_default", "default": "ready", "required": true, "description": "Required, with a default"},
+    {"name": "answered_default", "type": "choice", "options": ["markdown", "html"], "default": "markdown", "description": "Answered differently"}
+  ],
+  "answers": {"plan": {"answered_default": "html"}}
+}

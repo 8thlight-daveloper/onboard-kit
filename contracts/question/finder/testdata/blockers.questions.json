@@ -1,0 +1,18 @@
+{"questions": [
+  {"id": "plan.p_blocks", "required": true},
+  {"id": "plan.p_deferred", "required": true, "answer": {"deferred": true}},
+  {"id": "plan.p_text", "required": true, "answer": "x", "suggestions": [{"value": "x", "source": "given"}]},
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "first.no_answer", "required": true},
+  {"id": "first.flag_false", "type": "boolean", "required": true, "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "first.empty_text", "required": true, "answer": ""},
+  {"id": "first.empty_list", "type": "command", "required": true, "answer": []},
+  {"id": "first.blank_list", "type": "command", "required": true, "answer": [""]},
+  {"id": "first.good_list", "type": "command", "required": true, "answer": ["a"], "suggestions": [{"value": ["a"], "source": "given"}]},
+  {"id": "first.optional"},
+  {"id": "first.shown_no_answer", "required": true},
+  {"id": "second.second_required", "required": true}
+], "blockers": [
+  "plan.p_blocks", "first.no_answer", "first.empty_text", "first.empty_list", "first.blank_list",
+  "first.shown_no_answer", "second.second_required"
+]}

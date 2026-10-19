@@ -1,0 +1,20 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "plan.team_state", "type": "choice", "answer": "established", "suggestions": [{"value": "established", "source": "given"}]},
+  {"id": "plan.uses_ci", "type": "boolean", "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "plan.plan_shown"},
+  {"id": "s.repo_url", "answer": "git@host:org/repo.git", "suggestions": [{"value": "git@host:org/repo.git", "source": "given"}]},
+  {"id": "s.grantor"},
+  {"id": "s.later", "answer": {"deferred": true}},
+  {"id": "s.tier", "declaredDefault": "gold", "suggestions": [{"value": "gold", "source": "default"}]},
+  {"id": "s.q_is"},
+  {"id": "s.q_all_both_hold"},
+  {"id": "s.q_one_of"},
+  {"id": "s.q_bare_settled"},
+  {"id": "s.q_flag_settled"},
+  {"id": "s.q_flag_false"},
+  {"id": "s.q_unanswered_not_settled"},
+  {"id": "s.q_deferred_not_settled"},
+  {"id": "s.q_default_not_settled"},
+  {"id": "s.q_no_clauses"}
+], "blockers": []}

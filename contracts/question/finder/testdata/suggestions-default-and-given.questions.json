@@ -1,0 +1,4 @@
+{"questions": [
+  {"id": "plan.output_style", "type": "choice", "answer": "markdown", "declaredDefault": "markdown", "suggestions": [
+    {"value": "markdown", "source": "default"}, {"value": "markdown", "source": "given"}]}
+], "blockers": []}
