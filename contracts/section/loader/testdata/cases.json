@@ -798,7 +798,7 @@
       },
       {
         "code": "format.wrong-type",
-        "path": "variables[0].askIf.all[0].answer.is"
+        "path": "variables[0].askIf.all[0].answer.is[0]"
       },
       {
         "code": "format.wrong-type",
@@ -806,14 +806,14 @@
       },
       {
         "code": "format.wrong-type",
-        "path": "variables[0].askIf.all[0].answer.isOneOf[1]"
+        "path": "variables[0].askIf.all[0].answer.isOneOf[1][0]"
       },
       {
         "code": "format.wrong-type",
         "path": "variables[0].askIf.all[0].answer.isSettled"
       }
     ],
-    "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported."
+    "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and the problem is at the list item that is not text, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported."
   },
   {
     "name": "tags",
