@@ -1,0 +1,10 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},
+  "sections":{
+   "access":{"lead":"Pat","tracker":{"deferred":true},"vendor":"deferred"},
+   "billing":{"billing_owner":{"deferred":true}}}},
+ "sections":[
+  {"id":"access","title":"Access","summary":"Get access.","timing":"before-day-one","owner":"$lead",
+   "body":"Tracker: $tracker. Vendor: $vendor.",
+   "variables":[{"name":"lead","description":"Who leads access"},{"name":"tracker","description":"Who grants tracker access"},{"name":"vendor","description":"Which vendor"}]},
+  {"id":"billing","title":"Billing","summary":"Pay the bills.","timing":"week-one","owner":"$billing_owner",
+   "variables":[{"name":"billing_owner","description":"Who owns billing"}]}]}

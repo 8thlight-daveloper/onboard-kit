@@ -1,0 +1,6 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core","discipline":"software"}},
+ "sections":[
+  {"id":"keep","title":"Keep","summary":"Stays."},
+  {"id":"design-only","title":"Design only","summary":"Hidden $thing.","owner":"Kim","body":"$thing",
+   "includeIf":{"all":[{"question":"plan.discipline","answer":{"is":"design"}}]},
+   "variables":[{"name":"thing","description":"Hidden thing"}]}]}

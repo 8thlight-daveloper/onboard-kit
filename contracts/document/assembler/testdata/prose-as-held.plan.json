@@ -1,0 +1,4 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[{"id":"prose","title":"Prose","summary":"Summary text.",
+  "body":"Line one has *stars*, _underscores_ and <b>tags</b>.\nLine two.\n\nSecond paragraph.\n\n\n",
+  "verification":"   \n"}]}

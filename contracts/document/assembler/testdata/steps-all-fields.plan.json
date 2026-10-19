@@ -1,0 +1,12 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"run-it":{"mode":"fast"}}},
+ "sections":[
+  {"id":"run-it","title":"Run it","summary":"Run the thing.","timing":"week-one","owner":"Dana",
+   "variables":[{"name":"mode","description":"Run mode"}],
+   "steps":[
+    {"id":"s1","name":"Everything","owner":"Dana","timing":"days-8-to-30",
+     "notes":"First line.\nSecond line.\n\nSecond paragraph.","open":"https://run.globex.example/start","directory":"app","run":["make","test"],
+     "env":{"B_VAR":"2","A_VAR":"1","C_VAR":"$mode"},
+     "checks":[{"run":["test","-f","ok"]},{"ask":"Is it green?"},{"env":"API_TOKEN"}]},
+    {"id":"s2","name":"Same timing","timing":"week-one","notes":"Plain."},
+    {"id":"s3","name":"Anytime step","timing":"anytime"},
+    {"id":"s4","name":"Bare"}]}]}

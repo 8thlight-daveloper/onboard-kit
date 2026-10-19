@@ -1,0 +1,217 @@
+[
+  {
+    "name": "acme",
+    "plan": "../../../plan/testdata/acme.plan.json",
+    "document": "acme.md",
+    "problems": [
+      {
+        "code": "gap.deferred",
+        "question": "access.tracker_grantor",
+        "section": "access",
+        "severity": "warning"
+      }
+    ],
+    "source": "The ACME example, docs/reference/examples/acme. The plan is the JSON form of acme.obk.yaml that the plan decoder and encoder contracts check against it. The document is acme.md in this folder, written by hand from the rules in this contract, because the document in the docs folder cannot be produced by one set of rules. Decisions to know, first item, lists the differences."
+  },
+  {
+    "name": "empty-plan",
+    "plan": "empty-plan.plan.json",
+    "document": "empty-plan.md",
+    "problems": [],
+    "source": "Hand-written. Contract rules: Title, Review line, Gap table. A plan with no sections and no answers."
+  },
+  {
+    "name": "title-organization-only",
+    "plan": "title-organization-only.plan.json",
+    "document": "title-organization-only.md",
+    "problems": [],
+    "source": "Hand-written. Contract rules: Title, Review line. Decisions to know, title forms. The date and the template set differ from the other cases."
+  },
+  {
+    "name": "title-team-only",
+    "plan": "title-team-only.plan.json",
+    "document": "title-team-only.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Title. A deferred organization counts as absent."
+  },
+  {
+    "name": "title-empty-text",
+    "plan": "title-empty-text.plan.json",
+    "document": "title-empty-text.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Title. Empty text counts as absent."
+  },
+  {
+    "name": "minimal-section",
+    "plan": "minimal-section.plan.json",
+    "document": "minimal-section.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Sections. A section with only the required fields has no footer and no gaps. Docs: domain model, Section."
+  },
+  {
+    "name": "prose-as-held",
+    "plan": "prose-as-held.plan.json",
+    "document": "prose-as-held.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Prose is written as held. Docs: schema README, prose fields hold Markdown."
+  },
+  {
+    "name": "footers",
+    "plan": "footers.plan.json",
+    "document": "footers.md",
+    "problems": [],
+    "source": "Hand-written. Contract rules: Footer, and the order of sections from the section selector. The footer lines come from the ACME document."
+  },
+  {
+    "name": "reading-order",
+    "plan": "reading-order.plan.json",
+    "document": "reading-order.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Sections come in the selector's order, with no heading for a timing. Docs: ordering. The plan is the one a section after another section needs."
+  },
+  {
+    "name": "gaps-deferred",
+    "plan": "gaps-deferred.plan.json",
+    "document": "gaps-deferred.md",
+    "problems": [
+      {
+        "code": "gap.deferred",
+        "question": "access.tracker",
+        "section": "access",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "billing.billing_owner",
+        "section": "billing",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Gap table. Docs: variables, deferred answers. The Text deferred is a plain string and is no gap."
+  },
+  {
+    "name": "gaps-unanswered",
+    "plan": "gaps-unanswered.plan.json",
+    "document": "gaps-unanswered.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "first.zeta_name",
+        "section": "first",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "first.alpha_name",
+        "section": "first",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "second.alpha_name",
+        "section": "second",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "second.quiet_name",
+        "section": "second",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Gap table. Rows follow the resolver's problems, a section with no owner leaves the cell empty, and a variable with no description shows its name."
+  },
+  {
+    "name": "gap-timings",
+    "plan": "gap-timings.plan.json",
+    "document": "gap-timings.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "t-before.thing",
+        "section": "t-before",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "t-week.thing",
+        "section": "t-week",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "t-days8.thing",
+        "section": "t-days8",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "t-days31.thing",
+        "section": "t-days31",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "t-anytime.thing",
+        "section": "t-anytime",
+        "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "t-none.thing",
+        "section": "t-none",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Footer, Gap table. The five timing names from the schema reference, ordering, plus an omitted timing."
+  },
+  {
+    "name": "onboarding-blank",
+    "plan": "onboarding-blank.plan.json",
+    "document": "onboarding-blank.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Markdown. Docs: variables, phase onboarding shows a blank. The ACME document wraps the blank in backticks."
+  },
+  {
+    "name": "people-list",
+    "plan": "people-list.plan.json",
+    "document": "people-list.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "contacts.pending",
+        "section": "contacts",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Docs: variables, person. The ACME document shows a person list as a sentence. The addresses use the reserved example domain."
+  },
+  {
+    "name": "steps-all-fields",
+    "plan": "steps-all-fields.plan.json",
+    "document": "steps-all-fields.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Steps. Docs: steps, every field of a step and a check."
+  },
+  {
+    "name": "inactive-section",
+    "plan": "inactive-section.plan.json",
+    "document": "inactive-section.md",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Sections. Docs: optional sections, only active sections appear. The ACME plan's design section is the model."
+  },
+  {
+    "name": "table-cell-escaping",
+    "plan": "table-cell-escaping.plan.json",
+    "document": "table-cell-escaping.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "review.reviewer",
+        "section": "review",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Markdown, table cells."
+  }
+]

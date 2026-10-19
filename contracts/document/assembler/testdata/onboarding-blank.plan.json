@@ -1,0 +1,9 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"setup":{"nick":"bobby"}}},
+ "sections":[
+  {"id":"setup","title":"Set up","summary":"Sign in as $account_name.","timing":"week-one","owner":"$account_name",
+   "body":"See <note> and $account_name. Your nick is $nick.",
+   "verification":"$account_name can sign in.",
+   "variables":[{"name":"account_name","description":"Your account","phase":"onboarding"},{"name":"nick","description":"Your nickname","phase":"onboarding"}],
+   "steps":[{"id":"login","name":"Log in as $account_name","owner":"$account_name","notes":"Use $account_name here.",
+     "directory":"~/$account_name","run":["login","--user","$account_name"],"env":{"USER_NAME":"$account_name"},
+     "checks":[{"run":["echo","$account_name"]},{"ask":"Is $account_name ready?"}]}]}]}

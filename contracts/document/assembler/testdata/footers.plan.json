@@ -1,0 +1,8 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"owner-only","title":"Owner only","summary":"Has an owner.","owner":"Dana","timing":"anytime"},
+  {"id":"neither","title":"Neither","summary":"Has no owner and no timing."},
+  {"id":"both-days-31-90","title":"Both late","summary":"Has both.","owner":"Lee","timing":"days-31-to-90"},
+  {"id":"both-days-8-30","title":"Both early","summary":"Has both.","owner":"Dana","timing":"days-8-to-30"},
+  {"id":"when-only","title":"When only","summary":"Has a timing.","timing":"week-one"},
+  {"id":"before-day-one-owner","title":"Before day one","summary":"Starts early.","owner":"Lee","timing":"before-day-one"}]}

@@ -1,0 +1,6 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"b","title":"Section B","summary":"Text.","timing":"week-one"},
+  {"id":"a","title":"Section A","summary":"Text.","timing":"week-one","after":["c"]},
+  {"id":"c","title":"Section C","summary":"Text.","timing":"week-one"},
+  {"id":"d","title":"Section D","summary":"Text.","timing":"before-day-one"}]}

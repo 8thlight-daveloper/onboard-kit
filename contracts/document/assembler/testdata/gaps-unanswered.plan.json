@@ -1,0 +1,8 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"first","title":"First","summary":"One.","timing":"week-one","owner":"Sam",
+   "body":"Names: $alpha_name and $zeta_name.",
+   "variables":[{"name":"zeta_name","description":"Zeta"},{"name":"alpha_name","description":"Alpha"}]},
+  {"id":"second","title":"Second","summary":"Two.","timing":"week-one",
+   "body":"Names: $alpha_name and $quiet_name.",
+   "variables":[{"name":"alpha_name","description":"Alpha again"},{"name":"quiet_name"}]}]}

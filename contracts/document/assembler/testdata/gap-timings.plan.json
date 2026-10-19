@@ -1,0 +1,8 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"t-none","title":"No timing","summary":"S.","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing with no timing"}]},
+  {"id":"t-anytime","title":"Anytime","summary":"S.","timing":"anytime","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing for anytime"}]},
+  {"id":"t-days31","title":"Days 31 to 90","summary":"S.","timing":"days-31-to-90","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing for days 31 to 90"}]},
+  {"id":"t-days8","title":"Days 8 to 30","summary":"S.","timing":"days-8-to-30","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing for days 8 to 30"}]},
+  {"id":"t-week","title":"Week one","summary":"S.","timing":"week-one","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing for week one"}]},
+  {"id":"t-before","title":"Before day one","summary":"S.","timing":"before-day-one","owner":"Lee","body":"Needs $thing.","variables":[{"name":"thing","description":"Thing for before day one"}]}]}

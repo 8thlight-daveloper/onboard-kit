@@ -1,0 +1,5 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"review":{"team_name":"Ops | Night"}}},
+ "sections":[
+  {"id":"review","title":"Review","summary":"Check it.","timing":"week-one","owner":"$team_name",
+   "body":"Reviewer: $reviewer.",
+   "variables":[{"name":"team_name","description":"Team"},{"name":"reviewer","description":"Who reviews a|b\nand c"}]}]}
