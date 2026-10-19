@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_req", "description": "Required, unanswered", "required": true}
+  ],
+  "answers": {
+    "sections": {
+      "main": {"s_deferred": {"deferred": true}, "s_empty_list": [], "s_blank_list": [""]}
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "s_req", "description": "Required, unanswered", "required": true},
+      {"name": "s_pick", "type": "choice", "options": ["alpha", "beta"], "default": "nope", "required": true, "description": "Default outside the options"},
+      {"name": "s_num", "pattern": "^[0-9]+$", "default": "abc", "description": "Default outside the pattern"},
+      {"name": "s_flag", "type": "boolean", "default": true, "required": true, "description": "Default flag"},
+      {"name": "s_deferred", "required": true, "description": "Deferred"},
+      {"name": "s_empty_list", "type": "command", "required": true, "description": "Empty list"},
+      {"name": "s_blank_list", "type": "person", "multiple": true, "required": true, "description": "List of blank items"}
+    ]}
+  ]
+}

@@ -1,0 +1,15 @@
+{"problems": [
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.cmd_flag", "section": "main", "detail": {"expected": "list", "found": "flag"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.cmd_text", "section": "main", "detail": {"expected": "list", "found": "text"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.crew_flag", "section": "main", "detail": {"expected": "list", "found": "flag"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.crew_text", "section": "main", "detail": {"expected": "list", "found": "text"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.flag_list", "section": "main", "detail": {"expected": "flag", "found": "list"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.flag_text", "section": "main", "detail": {"expected": "flag", "found": "text"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.many_text", "section": "main", "detail": {"expected": "list", "found": "text"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.pick_flag", "section": "main", "detail": {"expected": "text", "found": "flag"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.pick_list", "section": "main", "detail": {"expected": "text", "found": "list"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.str_flag", "section": "main", "detail": {"expected": "text", "found": "flag"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.str_list", "section": "main", "detail": {"expected": "text", "found": "list"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.who_flag", "section": "main", "detail": {"expected": "text", "found": "flag"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.who_list", "section": "main", "detail": {"expected": "text", "found": "list"}}
+]}

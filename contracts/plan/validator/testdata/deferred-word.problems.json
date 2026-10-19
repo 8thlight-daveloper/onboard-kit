@@ -1,0 +1,5 @@
+{"problems": [
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.flag_word", "section": "main", "detail": {"expected": "flag", "found": "text"}},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.num_word", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.pick_word", "section": "main"}
+]}

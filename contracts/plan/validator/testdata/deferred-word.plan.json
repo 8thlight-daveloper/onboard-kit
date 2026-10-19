@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "answers": {
+    "sections": {
+      "main": {
+        "flag_word": "deferred",
+        "num_word": "deferred",
+        "pick_word": "deferred",
+        "str_word": "deferred"
+      }
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "flag_word", "type": "boolean", "description": "Boolean"},
+      {"name": "num_word", "pattern": "^[0-9]+$", "description": "Digits"},
+      {"name": "pick_word", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "str_word", "description": "String"}
+    ]}
+  ]
+}

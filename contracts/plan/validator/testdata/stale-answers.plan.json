@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "mode", "type": "choice", "options": ["show", "hide"], "description": "Mode"}
+  ],
+  "answers": {
+    "plan": {"mode": "hide"},
+    "sections": {
+      "off": {"o_flag": "not a flag"},
+      "design": {"d_pick": "zzz"},
+      "main": {
+        "h_pick": "zzz",
+        "v_pick": "zzz",
+        "ob_flag": "not a flag"
+      }
+    }
+  },
+  "sections": [
+    {"id": "off", "enabled": false, "variables": [
+      {"name": "o_flag", "type": "boolean", "description": "Boolean"}
+    ]},
+    {"id": "design", "includeIf": {"all": [{"question": "plan.mode", "answer": {"is": "design"}}]}, "variables": [
+      {"name": "d_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"}
+    ]},
+    {"id": "main", "variables": [
+      {"name": "h_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Hidden by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "show"}}]}},
+      {"name": "v_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Shown by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}},
+      {"name": "ob_flag", "type": "boolean", "phase": "onboarding", "description": "Asked of the newcomer"}
+    ]}
+  ]
+}

@@ -1,0 +1,8 @@
+{"problems": [
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.c_blank", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.c_case", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.c_extra", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.c_other", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "main.c_prefix", "section": "main"},
+  {"code": "answer.not-an-option", "severity": "error", "question": "plan.p_bad"}
+]}

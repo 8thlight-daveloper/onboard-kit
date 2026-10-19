@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_text", "description": "Plan text"},
+    {"name": "p_flag", "type": "boolean", "description": "Plan flag"},
+    {"name": "p_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Plan choice"}
+  ],
+  "answers": {
+    "plan": {"p_text": "ACME Corp", "p_flag": false, "p_pick": "beta"},
+    "sections": {
+      "main": {
+        "s_str": "any text at all",
+        "s_num": "12345",
+        "s_flag": true,
+        "s_pick": "alpha",
+        "s_cmd": ["make", "test"],
+        "s_who": "Jane Doe, jane@acme.example, @jane",
+        "s_crew": ["Ann Lee, ann@acme.example, @ann", "Bo Ray, bo@acme.example, @bo"],
+        "s_many": ["one", "two"]
+      }
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "s_str", "description": "Text"},
+      {"name": "s_num", "pattern": "^[0-9]+$", "description": "Digits"},
+      {"name": "s_flag", "type": "boolean", "description": "Flag"},
+      {"name": "s_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "s_cmd", "type": "command", "description": "Command"},
+      {"name": "s_who", "type": "person", "description": "One person"},
+      {"name": "s_crew", "type": "person", "multiple": true, "description": "Several people"},
+      {"name": "s_many", "multiple": true, "description": "A string that takes several answers"}
+    ]}
+  ]
+}

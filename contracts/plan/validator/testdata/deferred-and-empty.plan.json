@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Plan choice"}
+  ],
+  "answers": {
+    "plan": {"p_pick": {"deferred": true}},
+    "sections": {
+      "main": {
+        "d_str": {"deferred": true},
+        "d_num": {"deferred": true},
+        "d_flag": {"deferred": true},
+        "d_pick": {"deferred": true},
+        "d_cmd": {"deferred": true},
+        "d_who": {"deferred": true},
+        "d_crew": {"deferred": true},
+        "e_str": "",
+        "e_blank": "   ",
+        "e_num": "",
+        "e_flag": "",
+        "e_pick": "",
+        "e_cmd": [],
+        "e_cmd_blank": [""],
+        "e_who": "",
+        "e_crew": [],
+        "e_crew_blank": [""],
+        "e_str_list": [""],
+        "e_str_empty_list": [],
+        "e_flag_list": [],
+        "e_cmd_text": ""
+      }
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "d_str", "description": "String", "required": true},
+      {"name": "d_num", "pattern": "^[0-9]+$", "description": "Digits"},
+      {"name": "d_flag", "type": "boolean", "description": "Boolean"},
+      {"name": "d_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "d_cmd", "type": "command", "description": "Command"},
+      {"name": "d_who", "type": "person", "description": "Person"},
+      {"name": "d_crew", "type": "person", "multiple": true, "description": "People", "required": true},
+      {"name": "e_str", "description": "String"},
+      {"name": "e_blank", "description": "String"},
+      {"name": "e_num", "pattern": "^[0-9]+$", "description": "Digits"},
+      {"name": "e_flag", "type": "boolean", "description": "Boolean"},
+      {"name": "e_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "e_cmd", "type": "command", "description": "Command"},
+      {"name": "e_cmd_blank", "type": "command", "description": "Command"},
+      {"name": "e_who", "type": "person", "description": "Person"},
+      {"name": "e_crew", "type": "person", "multiple": true, "description": "People"},
+      {"name": "e_crew_blank", "type": "person", "multiple": true, "description": "People"},
+      {"name": "e_str_list", "description": "String"},
+      {"name": "e_str_empty_list", "description": "String"},
+      {"name": "e_flag_list", "type": "boolean", "description": "Boolean"},
+      {"name": "e_cmd_text", "type": "command", "description": "Command"}
+    ]}
+  ]
+}

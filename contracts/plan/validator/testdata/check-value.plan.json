@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "mode", "type": "choice", "options": ["show", "hide"], "description": "Mode"},
+    {"name": "p_text", "description": "Plan text"}
+  ],
+  "answers": {
+    "plan": {"mode": "hide"},
+    "sections": {
+      "main": {"s_pick": "zzz", "s_flag": "not a flag"}
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "s_str", "description": "Text"},
+      {"name": "s_pat", "pattern": "^[0-9]+$", "patternHint": "digits only", "description": "Digits"},
+      {"name": "s_flag", "type": "boolean", "description": "Boolean"},
+      {"name": "s_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "s_cmd", "type": "command", "description": "Command"},
+      {"name": "s_who", "type": "person", "description": "One person"},
+      {"name": "s_crew", "type": "person", "multiple": true, "description": "Several people"},
+      {"name": "shown", "description": "Shown by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}},
+      {"name": "hidden", "description": "Hidden by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "show"}}]}},
+      {"name": "onboard", "phase": "onboarding", "description": "Asked of the newcomer"}
+    ]},
+    {"id": "off", "enabled": false, "variables": [
+      {"name": "o_str", "description": "Text in a switched off section"}
+    ]}
+  ]
+}

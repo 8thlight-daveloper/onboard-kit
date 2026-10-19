@@ -1,0 +1,236 @@
+[
+  {
+    "name": "acme",
+    "plan": "acme.plan.json",
+    "expected": "acme.problems.json",
+    "checks": [
+      {"name": "a clone URL that fits the pattern", "question": "access.repo_url", "value": "https://git.acme.example/platform/widget-service.git", "problems": []},
+      {"name": "a clone URL that does not fit, with the hint", "question": "access.repo_url", "value": "ftp://git.acme.example/widget-service.git",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "access.repo_url", "section": "access", "messageContains": "A clone URL, starting with git@ or https://"}]},
+      {"name": "a question shown by its condition", "question": "access.source_control_grantor", "value": "IT service desk", "problems": []},
+      {"name": "an onboarding question", "question": "access.account_name", "value": "jdoe",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "access.account_name", "section": "access"}]},
+      {"name": "a question of a section left out by its includeIf", "question": "review-design-system.design_system_url", "value": "https://design.acme.example",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "review-design-system.design_system_url", "section": "review-design-system"}]},
+      {"name": "a command", "question": "clone-and-run-tests.setup_command", "value": ["make", "setup"], "problems": []},
+      {"name": "one person in a list of people", "question": "stuck-general.general_contacts", "value": ["Alex Rivera, alex.rivera@acme.example, @alex"],
+        "problems": [{"code": "answer.single-person", "severity": "warning", "question": "stuck-general.general_contacts", "section": "stuck-general"}]}
+    ],
+    "source": "contracts/plan/testdata/acme.plan.json, copied from docs/reference/examples/acme. A plan that holds only fitting answers has no problems. 0010, Boundaries: the validator's fixtures are a plan and its expected problems. variables.md, Person: a list with exactly one person gets a warning"
+  },
+  {
+    "name": "empty-plan",
+    "plan": "empty-plan.plan.json",
+    "expected": "empty-plan.problems.json",
+    "source": "0010, Where the behavior lives: the validator checks stored answers, and a plan with none has nothing to report"
+  },
+  {
+    "name": "valid-answers",
+    "plan": "valid-answers.plan.json",
+    "expected": "valid-answers.problems.json",
+    "checks": [
+      {"name": "text for a string", "question": "main.s_str", "value": "hello", "problems": []},
+      {"name": "a flag for a boolean", "question": "main.s_flag", "value": false, "problems": []},
+      {"name": "text for a choice", "question": "main.s_pick", "value": "beta", "problems": []},
+      {"name": "a list for a command", "question": "main.s_cmd", "value": ["make", "test"], "problems": []},
+      {"name": "text for one person", "question": "main.s_who", "value": "Jane Doe, jane@acme.example, @jane", "problems": []},
+      {"name": "a list for several people", "question": "main.s_crew", "value": ["Ann Lee, ann@acme.example, @ann", "Bo Ray, bo@acme.example, @bo"], "problems": []},
+      {"name": "a list for a string that takes several answers", "question": "main.s_many", "value": ["one"], "problems": []},
+      {"name": "a plan variable", "question": "plan.p_pick", "value": "alpha", "problems": []}
+    ],
+    "source": "variables.md, Types: string takes text, boolean true or false, choice one of its options, command an argument list, person a text line, and a list with multiple true. Fields: multiple holds the answers as a list"
+  },
+  {
+    "name": "wrong-kinds",
+    "plan": "wrong-kinds.plan.json",
+    "expected": "wrong-kinds.problems.json",
+    "source": "0010, Errors and shutdown: a value of the wrong type is a problem, not a tool failure. variables.md, Types and Fields: the kind each type takes, and multiple holds the answers as a list. domain-model.md, Problem: an error stops an answer from being applied"
+  },
+  {
+    "name": "deferred-and-empty",
+    "plan": "deferred-and-empty.plan.json",
+    "expected": "deferred-and-empty.problems.json",
+    "checks": [
+      {"name": "deferred for a string", "question": "main.d_str", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for a pattern", "question": "main.d_num", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for a boolean", "question": "main.d_flag", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for a choice", "question": "main.d_pick", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for a command", "question": "main.d_cmd", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for one person", "question": "main.d_who", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for several people", "question": "main.d_crew", "value": {"deferred": true}, "problems": []},
+      {"name": "empty text for a boolean", "question": "main.e_flag", "value": "", "problems": []},
+      {"name": "empty text for a pattern", "question": "main.e_num", "value": "", "problems": []},
+      {"name": "empty text for a choice", "question": "main.e_pick", "value": "", "problems": []},
+      {"name": "an empty list for a command", "question": "main.e_cmd", "value": [], "problems": []},
+      {"name": "a list of empty text for several people", "question": "main.e_crew_blank", "value": [""], "problems": []},
+      {"name": "only spaces for a string", "question": "main.e_blank", "value": "   ", "problems": []},
+      {"name": "a list of empty text for a string", "question": "main.e_str_list", "value": [""], "problems": []},
+      {"name": "an empty list for a boolean", "question": "main.e_flag_list", "value": [], "problems": []},
+      {"name": "empty text for a command", "question": "main.e_cmd_text", "value": "", "problems": []},
+      {"name": "no value at all", "question": "main.e_str", "problems": []}
+    ],
+    "source": "0035, Decision: unanswered is nothing, empty text, or an empty list, and deferred is the stored word. variables.md, Deferred answers: accepted for every type, as its own entry. 0040, Blank text: a single space is a legitimate answer"
+  },
+  {
+    "name": "deferred-word",
+    "plan": "deferred-word.plan.json",
+    "expected": "deferred-word.problems.json",
+    "source": "0035, Decision: the stored form is the plain word, and the quoted word is the Text answer with that word. So Text `deferred` is checked like any other text"
+  },
+  {
+    "name": "choice-options",
+    "plan": "choice-options.plan.json",
+    "expected": "choice-options.problems.json",
+    "checks": [
+      {"name": "an option", "question": "main.c_ok", "value": "beta", "problems": []},
+      {"name": "an option in another case", "question": "main.c_ok", "value": "BETA",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.c_ok", "section": "main"}]},
+      {"name": "the word deferred as text", "question": "main.c_ok", "value": "deferred",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.c_ok", "section": "main"}]},
+      {"name": "a value outside the options on a plan variable", "question": "plan.p_bad", "value": "gamma",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "plan.p_bad"}]},
+      {"name": "only spaces", "question": "main.c_ok", "value": " ",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.c_ok", "section": "main"}]}
+    ],
+    "source": "variables.md, Types: a choice takes one of options. 0010, Entry rules: a boolean or choice accepts only its options. 0035: whitespace is a settled text answer, see 0040"
+  },
+  {
+    "name": "options-limit-only-choice",
+    "plan": "options-limit-only-choice.plan.json",
+    "expected": "options-limit-only-choice.problems.json",
+    "checks": [
+      {"name": "a string outside its options", "question": "main.s_opts", "value": "anything", "problems": []},
+      {"name": "a plan variable with options and no type", "question": "plan.p_opts", "value": "anything", "problems": []}
+    ],
+    "source": "variables.md, Fields: options are the allowed values of a choice. Types: a string takes any text. contracts/plan/testdata/acme.plan.json lists options on team_state with no type"
+  },
+  {
+    "name": "patterns",
+    "plan": "patterns.plan.json",
+    "expected": "patterns.problems.json",
+    "checks": [
+      {"name": "matches anywhere", "question": "main.any_ok", "value": "abc123def", "problems": []},
+      {"name": "does not match", "question": "main.any_ok", "value": "abc",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.any_ok", "section": "main"}]},
+      {"name": "a clone URL in the ACME pattern", "question": "main.repo_ok", "value": "https://git.acme.example/x.git", "problems": []},
+      {"name": "a clone URL outside the pattern, hint in the message", "question": "main.repo_ok", "value": "svn://git.acme.example/x.git",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.repo_ok", "section": "main", "messageContains": "A clone URL, starting with git@ or https://"}]},
+      {"name": "text that ends in a line break", "question": "main.anchored_ok", "value": "abc\n",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.anchored_ok", "section": "main"}]},
+      {"name": "a person ignores a pattern", "question": "main.who_pattern", "value": "Jane Doe, jane@acme.example, @jane", "problems": []}
+    ],
+    "source": "variables.md, Types: pattern uses RE2 syntax, and a string must match it. Fields: patternHint is shown when a value does not match. finder contract, Suggestions: a pattern matches anywhere in the text, and RE2 has no match before a final line break. acme.plan.json: the repo_url pattern"
+  },
+  {
+    "name": "people",
+    "plan": "people.plan.json",
+    "expected": "people.problems.json",
+    "checks": [
+      {"name": "a person with a name only", "question": "main.one_ok", "value": "Jane Doe",
+        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.one_ok", "section": "main"}]},
+      {"name": "a person with two ways to reach them", "question": "main.one_ok", "value": "Jane Doe, jane@acme.example, @jane", "problems": []},
+      {"name": "two people, the second with no contact", "question": "main.many_ok", "value": ["Ann Lee, ann@acme.example, @ann", "Bo Ray"],
+        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.many_ok", "section": "main", "detail": {"item": "1"}}]},
+      {"name": "no people", "question": "main.many_ok", "value": [], "problems": []}
+    ],
+    "source": "variables.md, Person: the tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A multiple variable with exactly one person gets a warning. A warning never stops the answer"
+  },
+  {
+    "name": "secrets",
+    "plan": "secrets.plan.json",
+    "expected": "secrets.problems.json",
+    "checks": [
+      {"name": "a token as text", "question": "main.tok", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [{"code": "secret.token-prefix", "severity": "error", "question": "main.tok", "section": "main"}]},
+      {"name": "a password in a URL as the third item of a command", "question": "main.cmd", "value": ["git", "clone", "https://deploy:FAKEPASSWORD@git.acme.example/repo.git"], "secretFragments": ["FAKEPASSWORD"],
+        "problems": [{"code": "secret.url-credential", "severity": "error", "question": "main.cmd", "section": "main", "detail": {"item": "2"}}]},
+      {"name": "a token as text for a boolean", "question": "main.flag_text", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [
+          {"code": "answer.wrong-kind", "severity": "error", "question": "main.flag_text", "section": "main", "detail": {"expected": "flag", "found": "text"}},
+          {"code": "secret.token-prefix", "severity": "error", "question": "main.flag_text", "section": "main"}]},
+      {"name": "a template variable as a password", "question": "main.ok_template", "value": "https://deploy:$token@git.acme.example/repo.git", "problems": []},
+      {"name": "a token on a question that is not active", "question": "main.hidden", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
+      {"name": "a token on a question no variable declares", "question": "main.nobody", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "main.nobody", "section": "main"}]},
+      {"name": "a flag", "question": "main.ok_flag", "value": true, "problems": []}
+    ],
+    "source": "0010, Where the behavior lives, Secrets: the check runs in Submit and in Validate, so a secret added to a plan by hand is reported as a problem. contracts/secrets/contract.md: the codes, the item detail, and that a problem never repeats the secret. Fake values as in that contract, with the marker character removed by the test"
+  },
+  {
+    "name": "stale-answers",
+    "plan": "stale-answers.plan.json",
+    "expected": "stale-answers.problems.json",
+    "source": "0010, Conditions: a question whose condition is false keeps its stored answer and is not asked. 0050: a switched off section keeps its answers. variables.md, Phase: an onboarding question is not asked in planning. So an answer to a question that is not active is not checked, and main.v_pick, which is active, is"
+  },
+  {
+    "name": "unknown-answers",
+    "plan": "unknown-answers.plan.json",
+    "expected": "unknown-answers.problems.json",
+    "source": "0010, Errors and shutdown: an unknown question id is a problem with severity error or warning. A stored answer that no variable declares is a hand edit, so it is a warning"
+  },
+  {
+    "name": "not-problems",
+    "plan": "not-problems.plan.json",
+    "expected": "not-problems.problems.json",
+    "source": "0010, Errors and shutdown: a required question with no answer is a blocker, which the finder reports. 0045: a default is never an answer. 0035: a required question is satisfied by a settled or a deferred answer"
+  },
+  {
+    "name": "problem-order",
+    "plan": "problem-order.plan.json",
+    "expected": "problem-order.problems.json",
+    "source": "This contract, Order of the problems. 0015: the same plan gives the same result"
+  },
+  {
+    "name": "check-value",
+    "plan": "check-value.plan.json",
+    "checks": [
+      {"name": "text for a string", "question": "main.s_str", "value": "hello", "problems": []},
+      {"name": "a flag for a string", "question": "main.s_str", "value": true,
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_str", "section": "main", "detail": {"expected": "text", "found": "flag"}}]},
+      {"name": "a list for a string", "question": "main.s_str", "value": ["a"],
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_str", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
+      {"name": "deferred", "question": "main.s_str", "value": {"deferred": true}, "problems": []},
+      {"name": "a pattern that fits", "question": "main.s_pat", "value": "123", "problems": []},
+      {"name": "a pattern that does not fit, with the hint", "question": "main.s_pat", "value": "12a",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.s_pat", "section": "main", "messageContains": "digits only"}]},
+      {"name": "text for a boolean", "question": "main.s_flag", "value": "true",
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_flag", "section": "main", "detail": {"expected": "flag", "found": "text"}}]},
+      {"name": "a flag for a boolean whose stored answer is wrong", "question": "main.s_flag", "value": true, "problems": []},
+      {"name": "an option when the stored answer is wrong", "question": "main.s_pick", "value": "alpha", "problems": []},
+      {"name": "a value outside the options", "question": "main.s_pick", "value": "gamma",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.s_pick", "section": "main"}]},
+      {"name": "text for a command", "question": "main.s_cmd", "value": "make test",
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_cmd", "section": "main", "detail": {"expected": "list", "found": "text"}}]},
+      {"name": "a list for a command", "question": "main.s_cmd", "value": ["make", "test"], "problems": []},
+      {"name": "a list for one person", "question": "main.s_who", "value": ["Jane Doe, jane@acme.example, @jane"],
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_who", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
+      {"name": "text for several people", "question": "main.s_crew", "value": "Jane Doe, jane@acme.example, @jane",
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_crew", "section": "main", "detail": {"expected": "list", "found": "text"}}]},
+      {"name": "one person with no contact, in a list of one", "question": "main.s_crew", "value": ["Ann Lee"],
+        "problems": [
+          {"code": "answer.thin-contact", "severity": "warning", "question": "main.s_crew", "section": "main", "detail": {"item": "0"}},
+          {"code": "answer.single-person", "severity": "warning", "question": "main.s_crew", "section": "main"}]},
+      {"name": "a question shown by its condition", "question": "main.shown", "value": "x", "problems": []},
+      {"name": "a question hidden by its condition", "question": "main.hidden", "value": "x",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
+      {"name": "an onboarding question", "question": "main.onboard", "value": "x",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.onboard", "section": "main"}]},
+      {"name": "a question of a switched off section", "question": "off.o_str", "value": "x",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "off.o_str", "section": "off"}]},
+      {"name": "a plan variable", "question": "plan.p_text", "value": "x", "problems": []},
+      {"name": "a plan name no variable declares", "question": "plan.nope", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "plan.nope"}]},
+      {"name": "a section name no variable declares", "question": "main.nope", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "main.nope", "section": "main"}]},
+      {"name": "a section the plan does not hold", "question": "ghost.name", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "ghost.name"}]},
+      {"name": "an id with no dot", "question": "nodot", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "nodot"}]},
+      {"name": "an empty id", "question": "", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": ""}]},
+      {"name": "no value on a question", "question": "main.s_str", "problems": []}
+    ],
+    "source": "0010, Surface and Sequence: CheckValue(plan, id, value) checks one value, with the same checks as Validate, and the editor asks whether the question is active. 0010, Errors and shutdown: an unknown question id is a problem. A bad stored answer is not the value being checked"
+  }
+]

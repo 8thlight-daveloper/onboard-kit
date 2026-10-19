@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_opts", "options": ["alpha", "beta"], "description": "Plan variable with options and no type"}
+  ],
+  "answers": {
+    "plan": {"p_opts": "gamma"},
+    "sections": {"main": {"s_opts": "zzz"}}
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "s_opts", "type": "string", "options": ["x", "y"], "description": "String with options"}
+    ]}
+  ]
+}
