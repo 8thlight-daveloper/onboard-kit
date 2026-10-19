@@ -20,7 +20,7 @@ variables:
       all:
         - question: a
           answer:
-            isAnswered:
+            isSettled:
             is:
             isNot: null
             isOneOf: []

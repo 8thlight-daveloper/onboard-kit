@@ -33,7 +33,7 @@ The known keys at each level. A key not listed is unknown.
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer` |
-| Answer test | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isAnswered` |
+| Answer test | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
 
@@ -73,11 +73,11 @@ Problems come in the order of their places in the file, and all are reported. Th
 
 ### What is read as the decoder reads it
 
-Style is free: comments, a leading `---`, any indent and key order, flow style, quotes, folded and literal blocks, LF or CRLF, a byte order mark, quoted keys. A plain `true` or `false` is a boolean, the other boolean spellings are problems, and so are the number and null spellings. A quoted scalar is always text. A plain date is text. A key is its text, and a key that is not a scalar is `format.wrong-type`. A null or absent field is the zero value, a list with no items is nil, and a map that is present is not nil. A step's `env` map is nil when absent or null, and a null value in it is the empty string. A present `includeIf` or `askIf` is a Condition even when it holds no clauses. An `isAnswered` that is null is unset. A list keeps its items in file order and keeps repeats.
+Style is free: comments, a leading `---`, any indent and key order, flow style, quotes, folded and literal blocks, LF or CRLF, a byte order mark, quoted keys. A plain `true` or `false` is a boolean, the other boolean spellings are problems, and so are the number and null spellings. A quoted scalar is always text. A plain date is text. A key is its text, and a key that is not a scalar is `format.wrong-type`. A null or absent field is the zero value, a list with no items is nil, and a map that is present is not nil. A step's `env` map is nil when absent or null, and a null value in it is the empty string. A present `includeIf` or `askIf` is a Condition even when it holds no clauses. An `isSettled` that is null is unset. A list keeps its items in file order and keeps repeats.
 
 ### Values
 
-A Value is read in a `default`, in `is` and `isNot`, and in each item of `isOneOf` and `isNotOneOf`, as the decoder reads it. The plain word `unknown-yet`, as a whole plain Value, is Unknown. In any other place it is text: a `title`, an item of a list of strings, an item of a List Value, a quoted `"unknown-yet"`.
+A Value is read in a `default`, in `is` and `isNot`, and in each item of `isOneOf` and `isNotOneOf`, as the decoder reads it. The plain word `deferred`, as a whole plain Value, is Deferred. In any other place it is text: a `title`, an item of a list of strings, an item of a List Value, a quoted `"deferred"`.
 
 ### Placeholders
 
@@ -158,13 +158,13 @@ While drafting, a reference loader was written as scratch work outside the repo,
 | The template validated: a missing `id` or `title`, an unknown `type` or `timing`, `id: plan`, an `after` naming the section, a bad variable name, two steps with one id, a check with two keys, an `includeIf` on a section question | `version-only`, `minimal`, `unvalidated` |
 | `$$` unescaped, a `$name` resolved or refused, or a trailing newline trimmed | `placeholders`, `acme-clone-and-run-tests`, `acme-access`, `strings` |
 | Text trimmed, such as an owner or a directory with spaces | `strings` |
-| Quoted `"unknown-yet"` read as Unknown, a plain one read as text in a Value, or read as Unknown or dropped in a string or a list | `unknown-yet`, `all-fields` |
+| Quoted `"deferred"` read as Deferred, a plain one read as text in a Value, or read as Deferred or dropped in a string or a list | `deferred`, `all-fields` |
 | A scalar `run` accepted, read as one item, or split on spaces | `run-scalar`, `wrong-type` |
 | A scalar `run` refused only in a step, or only in a check | `run-scalar` |
 | A scalar `run` refused where a list of one `$name` must load | `acme-clone-and-run-tests`, `placeholders` |
 | A bad version accepted: quoted, decimal, missing, zero read as valid or as invalid, a newer one read for other problems or accepted, a version detail missing, the last of two keys winning | the `version-` cases and `duplicate-version` |
 | The plan file code for a non-template, an empty file giving the zero Section, a list of sections read as one, only the first document read, a syntax error in a later document hidden | the file cases |
-| A nil list or map made empty or the reverse, a null `includeIf` made empty, a present empty `askIf` made none, a null `isAnswered` made false, a null `default` made empty text, an empty List Value made none | `null-and-empty` |
+| A nil list or map made empty or the reverse, a null `includeIf` made empty, a present empty `askIf` made none, a null `isSettled` made false, a null `default` made empty text, an empty List Value made none | `null-and-empty` |
 | A null item dropped from a list, a null `isOneOf` item reported as an empty item | `null-items` |
 | A map, or a list holding a map, scanned for more problems or read item by item | `wrong-type-values`, `wrong-type` |
 | A plain `true` accepted in a string field, a quoted `"true"` accepted as a boolean, a wrong type in a list item skipped | `wrong-type`, `wrong-type-values`, `many-problems` |

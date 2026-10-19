@@ -1,0 +1,14 @@
+{
+  "id": "deferred",
+  "title": "deferred",
+  "summary": "The plain word is text in a string field and the Deferred value in a Value.",
+  "variables": [
+    {"name": "a", "default": {"deferred": true}},
+    {"name": "b", "default": "deferred"},
+    {"name": "c", "type": "command", "default": ["deferred", "deferred"]},
+    {"name": "d", "askIf": {"all": [{"question": "a", "answer": {"is": {"deferred": true}, "isNot": "deferred", "isOneOf": [{"deferred": true}, "deferred"]}}]}}
+  ],
+  "steps": [
+    {"id": "s", "name": "deferred", "run": ["deferred"]}
+  ]
+}

@@ -18,7 +18,7 @@ variables:
       all:
         - question: q
           answer:
-            isAnswered: true
+            isSettled: true
             extra: 1
 steps:
   - id: s

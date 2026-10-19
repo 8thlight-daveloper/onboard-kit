@@ -10,7 +10,7 @@
   "variables": [
     {"name": "Bad-Name", "type": "colour", "multiple": true, "options": ["a"], "default": "not-an-option"},
     {"name": "Bad-Name"},
-    {"name": "enabled", "default": {"unknown": true}, "askIf": {}}
+    {"name": "enabled", "default": {"deferred": true}, "askIf": {}}
   ],
   "steps": [
     {"id": "same", "name": "One", "timing": "yesterday", "checks": [{"run": ["a"], "ask": "Both?"}, {}]},

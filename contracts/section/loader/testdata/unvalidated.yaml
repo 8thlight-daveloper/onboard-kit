@@ -19,7 +19,7 @@ variables:
     options: [a]
   - name: Bad-Name
   - name: enabled
-    default: unknown-yet
+    default: deferred
     askIf:
       all: []
 steps:

@@ -60,11 +60,11 @@ variables:
             isNotOneOf: [x, z]
         - question: enabled
           answer:
-            isAnswered: false
+            isSettled: false
         - question: code
           answer:
             is: true
-            isNot: unknown-yet
+            isNot: deferred
 verification: It works.
 owner: $role
 escalation: [$backup]

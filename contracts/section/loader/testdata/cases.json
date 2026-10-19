@@ -54,16 +54,16 @@
     "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name."
   },
   {
-    "name": "unknown-yet",
-    "input": "unknown-yet.yaml",
-    "output": "unknown-yet.section.json",
-    "source": "Hand-written. variables.md, Unknown answers, and the decoder contract, Values: the plain word is Unknown only as a whole plain Value. In a string field and in a list of strings it is text, and quoted it is text."
+    "name": "deferred",
+    "input": "deferred.yaml",
+    "output": "deferred.section.json",
+    "source": "Hand-written. variables.md, Deferred answers, and the decoder contract, Values: the plain word is Deferred only as a whole plain Value. In a string field and in a list of strings it is text, and quoted it is text."
   },
   {
     "name": "null-and-empty",
     "input": "null-and-empty.yaml",
     "output": "null-and-empty.section.json",
-    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isAnswered stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items."
+    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isSettled stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items."
   },
   {
     "name": "strings",
@@ -288,7 +288,7 @@
       },
       {
         "code": "format.boolean-spelling",
-        "path": "variables[0].askIf.all[0].answer.isAnswered"
+        "path": "variables[0].askIf.all[0].answer.isSettled"
       },
       {
         "code": "format.boolean-spelling",
@@ -810,7 +810,7 @@
       },
       {
         "code": "format.wrong-type",
-        "path": "variables[0].askIf.all[0].answer.isAnswered"
+        "path": "variables[0].askIf.all[0].answer.isSettled"
       }
     ],
     "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported."

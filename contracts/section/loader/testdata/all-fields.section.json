@@ -20,8 +20,8 @@
         {"question": "plan.discipline", "answer": {"isNot": "design"}},
         {"question": "plan.team_state", "answer": {"isOneOf": ["established", "first-consultants"]}},
         {"question": "plan.team_state", "answer": {"isNotOneOf": ["x", "z"]}},
-        {"question": "enabled", "answer": {"isAnswered": false}},
-        {"question": "code", "answer": {"is": true, "isNot": {"unknown": true}}}
+        {"question": "enabled", "answer": {"isSettled": false}},
+        {"question": "code", "answer": {"is": true, "isNot": {"deferred": true}}}
       ]}}
   ],
   "steps": [

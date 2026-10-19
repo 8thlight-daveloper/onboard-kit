@@ -12,4 +12,4 @@ variables:
           answer:
             is: [[yes]]
             isOneOf: [{k: yes}, [[yes]]]
-            isAnswered: [yes]
+            isSettled: [yes]
