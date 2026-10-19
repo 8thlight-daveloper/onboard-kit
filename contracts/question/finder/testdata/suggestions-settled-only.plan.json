@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "owner_name", "default": {"deferred": true}, "description": "Default is deferred"}],
+  "answers": {
+    "plan": {"owner_name": {"deferred": true}},
+    "sections": {"a": {"owner_name": ""}, "b": {"owner_name": "Real Name"}, "c": {"owner_name": []}}
+  },
+  "sections": [
+    {"id": "a", "variables": [{"name": "owner_name", "description": "Empty answer"}]},
+    {"id": "b", "variables": [{"name": "owner_name", "description": "Real answer"}]},
+    {"id": "c", "variables": [{"name": "owner_name", "type": "command", "description": "Empty list answer"}]}
+  ]
+}

@@ -1,0 +1,10 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "explicit-on.explicit_question"},
+  {"id": "follow.f_off_false"},
+  {"id": "follow.f_on_true"},
+  {"id": "follow.f_explicit"},
+  {"id": "follow.f_hidden_on"},
+  {"id": "follow.f_mixed_holds"},
+  {"id": "optional.optional_question"}
+], "blockers": []}

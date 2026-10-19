@@ -1,0 +1,152 @@
+[
+  {
+    "name": "empty-plan",
+    "plan": "empty-plan.plan.json",
+    "expected": "empty-plan.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Walking the questions: the active questions are the plan variables plus every variable of every active section. A plan with neither has none"
+  },
+  {
+    "name": "reading-order",
+    "plan": "reading-order.plan.json",
+    "expected": "reading-order.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Order: plan variables first, then each active section's questions in document order. ordering.md: timing, then after, then id. Declaration order inside a section is the order of the variables list"
+  },
+  {
+    "name": "inactive-sections",
+    "plan": "inactive-sections.plan.json",
+    "expected": "inactive-sections.questions.json",
+    "source": "docs/decisions/0050-section-switch.md: a switched-off section is not active and its questions are not asked. conditions.md: includeIf false puts the section out. A section clause tests the switch only. No question is listed for the switch"
+  },
+  {
+    "name": "onboarding-phase",
+    "plan": "onboarding-phase.plan.json",
+    "expected": "onboarding-phase.questions.json",
+    "source": "docs/reference/section-template-schema/variables.md, Phase: planning skips an onboarding question, it is not asked and does not block. docs/decisions/0010-plan-editor.md, Phase"
+  },
+  {
+    "name": "kinds-and-defaults",
+    "plan": "kinds-and-defaults.plan.json",
+    "expected": "kinds-and-defaults.questions.json",
+    "source": "docs/reference/section-template-schema/variables.md, Fields: type is string by default, phase is planning by default. docs/reference/domain-model.md, Question: type and phase are not optional"
+  },
+  {
+    "name": "answers-as-stored",
+    "plan": "answers-as-stored.plan.json",
+    "expected": "answers-as-stored.questions.json",
+    "source": "docs/reference/domain-model.md, Question: answer is the stored answer, if any. docs/decisions/0035-settled-and-deferred-answers.md: the Text deferred differs from the Deferred kind"
+  },
+  {
+    "name": "defaults-are-suggestions",
+    "plan": "defaults-are-suggestions.plan.json",
+    "expected": "defaults-are-suggestions.questions.json",
+    "source": "docs/decisions/0045-defaults-are-suggestions.md: a default is a suggestion, never an answer. A question with a default and no answer is unanswered, and a required one blocks"
+  },
+  {
+    "name": "blockers",
+    "plan": "blockers.plan.json",
+    "expected": "blockers.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Where the behavior lives: Blockers lists active required planning questions with no answer. docs/decisions/0035-settled-and-deferred-answers.md: a required question is satisfied by a settled or a deferred answer, unanswered blocks. A false flag is settled"
+  },
+  {
+    "name": "ask-if-tests",
+    "plan": "ask-if-tests.plan.json",
+    "expected": "ask-if-tests.questions.json",
+    "source": "docs/reference/section-template-schema/conditions.md, Answer tests and Rules: every test except isSettled is false for a deferred or unanswered question, a default is not an answer, a false flag is settled, an empty all always holds. The finder evaluates askIf through the condition evaluator"
+  },
+  {
+    "name": "ask-if-scope",
+    "plan": "ask-if-scope.plan.json",
+    "expected": "ask-if-scope.questions.json",
+    "source": "docs/reference/section-template-schema/conditions.md, Syntax: a bare name is a question in the same section, plan.<name> is a plan variable. contracts/condition/evaluator/contract.md, Finding the answer: a bare name never falls back"
+  },
+  {
+    "name": "ask-if-section-clause",
+    "plan": "ask-if-section-clause.plan.json",
+    "expected": "ask-if-section-clause.questions.json",
+    "source": "docs/decisions/0050-section-switch.md: a question's askIf may test whether a section is on. The clause tests the switch only. A section with no enabled field is on. The switches are those of every section of the plan"
+  },
+  {
+    "name": "ask-if-inactive-answers",
+    "plan": "ask-if-inactive-answers.plan.json",
+    "expected": "ask-if-inactive-answers.questions.json",
+    "source": "docs/reference/section-template-schema/conditions.md, Rules: a settled answer is one for a question that is active and has a stored answer. docs/decisions/0010-plan-editor.md, Conditions: a question whose condition is false keeps its answer, is not asked"
+  },
+  {
+    "name": "order-condition-names-later-section",
+    "plan": "order-condition-names-later-section.plan.json",
+    "expected": "order-condition-names-later-section.questions.json",
+    "source": "docs/reference/section-template-schema/ordering.md, Question order in the walkthrough: if a condition refers to a later section, the finder moves the dependent question to just after the question it needs"
+  },
+  {
+    "name": "order-condition-names-later-question",
+    "plan": "order-condition-names-later-question.plan.json",
+    "expected": "order-condition-names-later-question.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Order: a question is never asked before the questions its condition names. ordering.md, Question order in the walkthrough"
+  },
+  {
+    "name": "order-ignores-questions-not-asked",
+    "plan": "order-ignores-questions-not-asked.plan.json",
+    "expected": "order-ignores-questions-not-asked.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Order: a question is never asked before the questions its condition names. A question that is not asked is not a constraint. Decision to know in contract.md"
+  },
+  {
+    "name": "ask-if-cycle",
+    "plan": "ask-if-cycle.plan.json",
+    "expected": "ask-if-cycle.questions.json",
+    "source": "docs/reference/section-template-schema/ordering.md, Question order in the walkthrough: a cycle is reported as a problem and not resolved. The plan validator reports it. Decision to know in contract.md"
+  },
+  {
+    "name": "groups",
+    "plan": "groups.plan.json",
+    "expected": "groups.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Groups: questions with the same name, type, options, and multiple form a group. docs/reference/domain-model.md, Question: group is the key shared by those questions"
+  },
+  {
+    "name": "suggestions-defaults",
+    "plan": "suggestions-defaults.plan.json",
+    "expected": "suggestions-defaults.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Suggestions: the distinct declared defaults in its group. Decision to know in contract.md for questions that are not active"
+  },
+  {
+    "name": "suggestions-given",
+    "plan": "suggestions-given.plan.json",
+    "expected": "suggestions-given.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Suggestions: the answers already given for that name in any scope, the plan's and every section's, inactive ones included"
+  },
+  {
+    "name": "suggestions-default-and-given",
+    "plan": "suggestions-default-and-given.plan.json",
+    "expected": "suggestions-default-and-given.questions.json",
+    "source": "docs/reference/domain-model.md, Suggestion: source is default or given. Decision to know in contract.md for a value that is both"
+  },
+  {
+    "name": "suggestions-valid-values",
+    "plan": "suggestions-valid-values.plan.json",
+    "expected": "suggestions-valid-values.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Suggestions: for a boolean or choice only valid values are offered. contract.md, Rules, for the kind each type holds"
+  },
+  {
+    "name": "suggestions-pattern",
+    "plan": "suggestions-pattern.plan.json",
+    "expected": "suggestions-pattern.questions.json",
+    "source": "docs/decisions/0010-plan-editor.md, Suggestions: for a string with a pattern, a candidate that does not match is dropped. variables.md: pattern is RE2 syntax"
+  },
+  {
+    "name": "suggestions-settled-only",
+    "plan": "suggestions-settled-only.plan.json",
+    "expected": "suggestions-settled-only.questions.json",
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: unanswered and deferred are not settled. docs/decisions/0010-plan-editor.md, Entry rules: deferred is offered as its own entry, not as a suggestion"
+  },
+  {
+    "name": "suggestions-lists",
+    "plan": "suggestions-lists.plan.json",
+    "expected": "suggestions-lists.questions.json",
+    "source": "docs/reference/section-template-schema/variables.md, Types and Person: a command and a person with multiple hold a list, a person holds one text line, and same-name person variables group and offer an earlier entry"
+  },
+  {
+    "name": "acme",
+    "plan": "acme.plan.json",
+    "expected": "acme.questions.json",
+    "source": "docs/reference/examples/acme, as contracts/plan/testdata/acme.plan.json. Expected questions written by hand from the plan: the software discipline leaves out review-design-system, account_name is onboarding, tracker_grantor is deferred"
+  }
+]

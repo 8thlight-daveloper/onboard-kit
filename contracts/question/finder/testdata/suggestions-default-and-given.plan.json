@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "output_style", "type": "choice", "options": ["markdown", "html"], "default": "markdown", "description": "Output style"}],
+  "answers": {"plan": {"output_style": "markdown"}}
+}

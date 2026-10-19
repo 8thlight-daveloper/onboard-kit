@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"b": {"n_ready": "ok"}}},
+  "sections": [
+    {"id": "a", "timing": "week-one", "variables": [
+      {"name": "d_one", "description": "Before the dependent"},
+      {"name": "d_dependent", "description": "Needs b.n_ready", "askIf": {"all": [{"question": "b.n_ready", "answer": {"is": "ok"}}]}},
+      {"name": "d_two", "description": "After the dependent"}
+    ]},
+    {"id": "b", "variables": [
+      {"name": "n_one", "description": "Before the needed question"},
+      {"name": "n_ready", "description": "Needed by a.d_dependent"},
+      {"name": "n_two", "description": "After the needed question"}
+    ]}
+  ]
+}

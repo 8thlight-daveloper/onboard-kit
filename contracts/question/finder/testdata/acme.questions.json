@@ -1,0 +1,18 @@
+{"questions": [
+  {"id": "plan.organization", "required": true, "answer": "ACME Corp", "suggestions": [{"value": "ACME Corp", "source": "given"}]},
+  {"id": "plan.team", "required": true, "answer": "Platform team", "suggestions": [{"value": "Platform team", "source": "given"}]},
+  {"id": "plan.team_state", "required": true, "answer": "established", "suggestions": [{"value": "established", "source": "given"}]},
+  {"id": "plan.discipline", "required": true, "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "plan.output_style", "declaredDefault": "markdown", "suggestions": [{"value": "markdown", "source": "default"}]},
+  {"id": "access.onboarding_owner_role", "required": true, "answer": "Engineering manager", "suggestions": [{"value": "Engineering manager", "source": "given"}]},
+  {"id": "access.access_request_url", "required": true, "answer": "https://access.acme.example/request", "suggestions": [{"value": "https://access.acme.example/request", "source": "given"}]},
+  {"id": "access.repo_url", "required": true, "group": "repo_url", "answer": "git@git.acme.example:platform/widget-service.git", "suggestions": [{"value": "git@git.acme.example:platform/widget-service.git", "source": "given"}]},
+  {"id": "access.source_control_grantor", "required": true, "answer": "IT service desk", "suggestions": [{"value": "IT service desk", "source": "given"}]},
+  {"id": "access.ci_grantor", "required": true, "answer": "Platform team lead", "suggestions": [{"value": "Platform team lead", "source": "given"}]},
+  {"id": "access.tracker_grantor", "required": true, "answer": {"deferred": true}},
+  {"id": "clone-and-run-tests.repo_url", "required": true, "group": "repo_url", "answer": "git@git.acme.example:platform/widget-service.git", "suggestions": [{"value": "git@git.acme.example:platform/widget-service.git", "source": "given"}]},
+  {"id": "clone-and-run-tests.repo_dir", "declaredDefault": "project", "answer": "widget-service", "suggestions": [{"value": "project", "source": "default"}, {"value": "widget-service", "source": "given"}]},
+  {"id": "clone-and-run-tests.setup_command", "type": "command", "required": true, "answer": ["make", "setup"], "suggestions": [{"value": ["make", "setup"], "source": "given"}]},
+  {"id": "clone-and-run-tests.test_command", "type": "command", "required": true, "answer": ["make", "test"], "suggestions": [{"value": ["make", "test"], "source": "given"}]},
+  {"id": "stuck-general.general_contacts", "type": "person", "required": true, "answer": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"], "suggestions": [{"value": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"], "source": "given"}]}
+], "blockers": []}

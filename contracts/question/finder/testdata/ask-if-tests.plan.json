@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"},
+    {"name": "team_state", "type": "choice", "options": ["established", "first-consultants"], "description": "Team state"},
+    {"name": "uses_ci", "type": "boolean", "description": "Uses CI"},
+    {"name": "plan_hidden", "description": "A plan variable whose condition fails", "askIf": {"all": [{"question": "discipline", "answer": {"is": "design"}}]}},
+    {"name": "plan_shown", "description": "A plan variable whose condition holds", "askIf": {"all": [{"question": "discipline", "answer": {"is": "software"}}]}}
+  ],
+  "answers": {
+    "plan": {"discipline": "software", "team_state": "established", "uses_ci": false},
+    "sections": {"s": {"repo_url": "git@host:org/repo.git", "later": {"deferred": true}}}
+  },
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "repo_url", "description": "Repository"},
+      {"name": "grantor", "description": "Grantor, never answered"},
+      {"name": "later", "description": "Deferred"},
+      {"name": "tier", "default": "gold", "description": "Has a default and no answer"},
+      {"name": "q_is", "description": "Holds", "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+      {"name": "q_is_not_held", "description": "Does not hold", "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+      {"name": "q_all_second_fails", "description": "Second clause fails", "askIf": {"all": [
+        {"question": "plan.discipline", "answer": {"is": "software"}},
+        {"question": "plan.team_state", "answer": {"isNot": "established"}}]}},
+      {"name": "q_all_both_hold", "description": "Both hold", "askIf": {"all": [
+        {"question": "plan.discipline", "answer": {"is": "software"}},
+        {"question": "plan.team_state", "answer": {"isNot": "first-consultants"}}]}},
+      {"name": "q_one_of", "description": "One of", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isOneOf": ["first-consultants", "established"]}}]}},
+      {"name": "q_not_one_of", "description": "Not one of", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isNotOneOf": ["first-consultants", "established"]}}]}},
+      {"name": "q_bare_settled", "description": "Bare name", "askIf": {"all": [{"question": "repo_url", "answer": {"isSettled": true}}]}},
+      {"name": "q_flag_settled", "description": "A false flag is settled", "askIf": {"all": [{"question": "plan.uses_ci", "answer": {"isSettled": true}}]}},
+      {"name": "q_flag_true", "description": "Flag is true", "askIf": {"all": [{"question": "plan.uses_ci", "answer": {"is": true}}]}},
+      {"name": "q_flag_false", "description": "Flag is false", "askIf": {"all": [{"question": "plan.uses_ci", "answer": {"is": false}}]}},
+      {"name": "q_unanswered_is", "description": "Unanswered, is", "askIf": {"all": [{"question": "grantor", "answer": {"is": "x"}}]}},
+      {"name": "q_unanswered_is_not", "description": "Unanswered, isNot", "askIf": {"all": [{"question": "grantor", "answer": {"isNot": "x"}}]}},
+      {"name": "q_unanswered_not_one_of", "description": "Unanswered, isNotOneOf", "askIf": {"all": [{"question": "grantor", "answer": {"isNotOneOf": ["x", "y"]}}]}},
+      {"name": "q_unanswered_not_settled", "description": "Unanswered, isSettled false", "askIf": {"all": [{"question": "grantor", "answer": {"isSettled": false}}]}},
+      {"name": "q_deferred_settled", "description": "Deferred, isSettled true", "askIf": {"all": [{"question": "later", "answer": {"isSettled": true}}]}},
+      {"name": "q_deferred_not_settled", "description": "Deferred, isSettled false", "askIf": {"all": [{"question": "later", "answer": {"isSettled": false}}]}},
+      {"name": "q_deferred_is_not", "description": "Deferred, isNot", "askIf": {"all": [{"question": "later", "answer": {"isNot": "x"}}]}},
+      {"name": "q_default_only", "description": "Default is not an answer", "askIf": {"all": [{"question": "tier", "answer": {"is": "gold"}}]}},
+      {"name": "q_default_not_settled", "description": "A default does not settle", "askIf": {"all": [{"question": "tier", "answer": {"isSettled": false}}]}},
+      {"name": "q_no_clauses", "description": "Empty condition", "askIf": {"all": []}}
+    ]}
+  ]
+}

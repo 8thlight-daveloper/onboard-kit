@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "org_name", "description": "Name of the organization"},
+    {"name": "team_name", "description": "Name of the team"}
+  ],
+  "sections": [
+    {"id": "late", "variables": [
+      {"name": "late_one", "description": "First late question"},
+      {"name": "late_two", "description": "Second late question"}
+    ]},
+    {"id": "alpha", "timing": "week-one", "after": ["zulu"], "variables": [
+      {"name": "alpha_one", "description": "Alpha question"}
+    ]},
+    {"id": "early", "timing": "before-day-one", "variables": [
+      {"name": "var_b", "description": "Declared first, sorts last"},
+      {"name": "var_a", "description": "Declared second, sorts first"}
+    ]},
+    {"id": "zulu", "timing": "week-one", "variables": [
+      {"name": "zulu_one", "description": "Zulu question"}
+    ]}
+  ]
+}

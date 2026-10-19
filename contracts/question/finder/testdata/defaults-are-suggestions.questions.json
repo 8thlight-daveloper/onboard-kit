@@ -1,0 +1,8 @@
+{"questions": [
+  {"id": "plan.output_style", "type": "choice", "declaredDefault": "markdown",
+    "suggestions": [{"value": "markdown", "source": "default"}]},
+  {"id": "plan.required_default", "required": true, "declaredDefault": "ready",
+    "suggestions": [{"value": "ready", "source": "default"}]},
+  {"id": "plan.answered_default", "type": "choice", "answer": "html", "declaredDefault": "markdown",
+    "suggestions": [{"value": "markdown", "source": "default"}, {"value": "html", "source": "given"}]}
+], "blockers": ["plan.required_default"]}

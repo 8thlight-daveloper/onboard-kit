@@ -1,0 +1,7 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "s.a", "answer": "x", "suggestions": [{"value": "x", "source": "given"}]},
+  {"id": "s.e_unsettled"},
+  {"id": "s.h_asks_onboarding"},
+  {"id": "s.j_off_unsettled"}
+], "blockers": []}

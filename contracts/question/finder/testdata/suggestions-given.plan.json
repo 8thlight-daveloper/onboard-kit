@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "organization", "description": "Organization"}],
+  "answers": {
+    "plan": {"organization": "ACME"},
+    "sections": {
+      "a": {"organization": "Acme Corp"},
+      "b": {"organization": "ACME"},
+      "design-only": {"organization": "Design Corp"},
+      "off": {"organization": "Hidden Corp"},
+      "e": {"organization": "Hidden By Condition"}
+    }
+  },
+  "sections": [
+    {"id": "off", "enabled": false, "variables": [{"name": "organization", "description": "Switched off"}]},
+    {"id": "design-only", "includeIf": {"all": [{"question": "plan.organization", "answer": {"is": "nothing"}}]},
+      "variables": [{"name": "organization", "description": "Left out"}]},
+    {"id": "b", "variables": [{"name": "organization", "description": "Repeats the plan answer"}]},
+    {"id": "a", "variables": [{"name": "organization", "description": "Own answer"}]},
+    {"id": "c", "variables": [{"name": "organization", "description": "No answer"}]},
+    {"id": "e", "variables": [
+      {"name": "organization", "description": "Hidden by askIf", "askIf": {"all": [{"question": "plan.organization", "answer": {"is": "nothing"}}]}}
+    ]}
+  ]
+}

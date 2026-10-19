@@ -1,0 +1,16 @@
+{"questions": [
+  {"id": "a.setup_command", "type": "command", "group": "command", "answer": ["make", "setup"], "declaredDefault": ["make", "setup"], "suggestions": [
+    {"value": ["make", "setup"], "source": "default"}, {"value": ["make", "build"], "source": "default"},
+    {"value": ["make", "setup"], "source": "given"}]},
+  {"id": "a.ci_grantor", "type": "person", "group": "one person", "answer": "Ann, ann@example.test, @ann", "suggestions": [
+    {"value": "Ann, ann@example.test, @ann", "source": "given"}]},
+  {"id": "b.setup_command", "type": "command", "group": "command", "declaredDefault": ["make", "setup"], "suggestions": [
+    {"value": ["make", "setup"], "source": "default"}, {"value": ["make", "build"], "source": "default"},
+    {"value": ["make", "setup"], "source": "given"}]},
+  {"id": "b.ci_grantor", "type": "person", "group": "several people", "answer": ["Bo, bo@example.test, @bo", "Cy, cy@example.test, @cy"], "suggestions": [
+    {"value": ["Bo, bo@example.test, @bo", "Cy, cy@example.test, @cy"], "source": "given"}]},
+  {"id": "c.setup_command", "type": "command", "group": "command", "declaredDefault": ["make", "build"], "suggestions": [
+    {"value": ["make", "setup"], "source": "default"}, {"value": ["make", "build"], "source": "default"},
+    {"value": ["make", "setup"], "source": "given"}]},
+  {"id": "d.setup_command", "group": "text", "answer": "make setup", "suggestions": [{"value": "make setup", "source": "given"}]}
+], "blockers": []}

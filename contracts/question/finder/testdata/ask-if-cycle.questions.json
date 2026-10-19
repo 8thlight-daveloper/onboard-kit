@@ -1,0 +1,7 @@
+{"questions": [
+  {"id": "s.v_self"},
+  {"id": "s.w_plain"},
+  {"id": "s.x_pair", "answer": "x", "suggestions": [{"value": "x", "source": "given"}]},
+  {"id": "s.r_open"},
+  {"id": "s.s_open"}
+], "blockers": []}

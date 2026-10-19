@@ -1,0 +1,8 @@
+{"questions": [
+  {"id": "kinds.no_type"},
+  {"id": "kinds.uses_ci", "type": "boolean"},
+  {"id": "kinds.style", "type": "choice"},
+  {"id": "kinds.setup_command", "type": "command", "required": true},
+  {"id": "kinds.grantors", "type": "person"},
+  {"id": "kinds.typed_string", "type": "string"}
+], "blockers": ["kinds.setup_command"]}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "answers": {
+    "plan": {"org_name": "ACME", "unlisted_name": "no question"},
+    "sections": {"s": {
+      "flag_false": false, "flag_true": true, "deferred_answer": {"deferred": true},
+      "list_answer": ["make", "test"], "empty_text": "", "empty_list": [], "text_deferred": "deferred"
+    }}
+  },
+  "variables": [{"name": "org_name", "description": "Organization"}],
+  "sections": [{"id": "s", "variables": [
+    {"name": "flag_false", "type": "boolean", "description": "A"},
+    {"name": "flag_true", "type": "boolean", "description": "B"},
+    {"name": "deferred_answer", "description": "C"},
+    {"name": "list_answer", "type": "command", "description": "D"},
+    {"name": "empty_text", "description": "E"},
+    {"name": "empty_list", "type": "command", "description": "F"},
+    {"name": "text_deferred", "description": "G"},
+    {"name": "no_answer", "description": "H"}
+  ]}]
+}

@@ -1,0 +1,18 @@
+{"questions": [
+  {"id": "plan.organization", "group": "organization", "answer": "ACME", "suggestions": [
+    {"value": "ACME", "source": "given"}, {"value": "Acme Corp", "source": "given"},
+    {"value": "Design Corp", "source": "given"}, {"value": "Hidden By Condition", "source": "given"},
+    {"value": "Hidden Corp", "source": "given"}]},
+  {"id": "a.organization", "group": "organization", "answer": "Acme Corp", "suggestions": [
+    {"value": "ACME", "source": "given"}, {"value": "Acme Corp", "source": "given"},
+    {"value": "Design Corp", "source": "given"}, {"value": "Hidden By Condition", "source": "given"},
+    {"value": "Hidden Corp", "source": "given"}]},
+  {"id": "b.organization", "group": "organization", "answer": "ACME", "suggestions": [
+    {"value": "ACME", "source": "given"}, {"value": "Acme Corp", "source": "given"},
+    {"value": "Design Corp", "source": "given"}, {"value": "Hidden By Condition", "source": "given"},
+    {"value": "Hidden Corp", "source": "given"}]},
+  {"id": "c.organization", "group": "organization", "suggestions": [
+    {"value": "ACME", "source": "given"}, {"value": "Acme Corp", "source": "given"},
+    {"value": "Design Corp", "source": "given"}, {"value": "Hidden By Condition", "source": "given"},
+    {"value": "Hidden Corp", "source": "given"}]}
+], "blockers": []}

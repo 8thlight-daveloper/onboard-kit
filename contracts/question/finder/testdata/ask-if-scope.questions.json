@@ -1,0 +1,11 @@
+{"questions": [
+  {"id": "plan.region", "answer": "eu", "group": "region", "suggestions": [
+    {"value": "eu", "source": "given"}, {"value": "us", "source": "given"}]},
+  {"id": "a.region", "answer": "us", "group": "region", "suggestions": [
+    {"value": "eu", "source": "given"}, {"value": "us", "source": "given"}]},
+  {"id": "a.a_check"},
+  {"id": "b.region", "answer": "eu", "group": "region", "suggestions": [
+    {"value": "eu", "source": "given"}, {"value": "us", "source": "given"}]},
+  {"id": "b.b_reads_a"},
+  {"id": "b.b_reads_plan"}
+], "blockers": []}

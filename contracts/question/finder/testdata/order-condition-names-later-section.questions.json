@@ -1,0 +1,8 @@
+{"questions": [
+  {"id": "a.d_one"},
+  {"id": "a.d_two"},
+  {"id": "b.n_one"},
+  {"id": "b.n_ready", "answer": "ok", "suggestions": [{"value": "ok", "source": "given"}]},
+  {"id": "a.d_dependent"},
+  {"id": "b.n_two"}
+], "blockers": []}

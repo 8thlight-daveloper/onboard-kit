@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "region", "description": "Plan region"}],
+  "answers": {
+    "plan": {"region": "eu"},
+    "sections": {"a": {"region": "us"}, "b": {"region": "eu"}}
+  },
+  "sections": [
+    {"id": "a", "variables": [
+      {"name": "region", "description": "A region"},
+      {"name": "a_check", "description": "Bare name reads this section", "askIf": {"all": [{"question": "region", "answer": {"is": "us"}}]}}
+    ]},
+    {"id": "b", "variables": [
+      {"name": "region", "description": "B region"},
+      {"name": "b_check", "description": "Bare name reads this section, not a", "askIf": {"all": [{"question": "region", "answer": {"is": "us"}}]}},
+      {"name": "b_reads_a", "description": "Dotted name reads a", "askIf": {"all": [{"question": "a.region", "answer": {"is": "us"}}]}},
+      {"name": "b_reads_plan", "description": "Dotted name reads the plan", "askIf": {"all": [{"question": "plan.region", "answer": {"is": "eu"}}]}}
+    ]},
+    {"id": "c", "variables": [
+      {"name": "c_check", "description": "Bare name never falls back to the plan", "askIf": {"all": [{"question": "region", "answer": {"is": "eu"}}]}}
+    ]}
+  ]
+}

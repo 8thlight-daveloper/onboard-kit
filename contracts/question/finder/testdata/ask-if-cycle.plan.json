@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"s": {"p_pair": "x", "q_pair": "x", "u_self": "x", "x_pair": "x"}}},
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "p_pair", "description": "Needs q_pair", "askIf": {"all": [{"question": "q_pair", "answer": {"is": "x"}}]}},
+      {"name": "q_pair", "description": "Needs p_pair", "askIf": {"all": [{"question": "p_pair", "answer": {"is": "x"}}]}},
+      {"name": "r_open", "description": "Needs s_open to be unsettled", "askIf": {"all": [{"question": "s_open", "answer": {"isSettled": false}}]}},
+      {"name": "s_open", "description": "Needs r_open to be unsettled", "askIf": {"all": [{"question": "r_open", "answer": {"isSettled": false}}]}},
+      {"name": "u_self", "description": "Needs itself", "askIf": {"all": [{"question": "u_self", "answer": {"isSettled": true}}]}},
+      {"name": "v_self", "description": "Needs itself unsettled", "askIf": {"all": [{"question": "v_self", "answer": {"isSettled": false}}]}},
+      {"name": "w_plain", "description": "Plain"},
+      {"name": "x_pair", "description": "Needs y_pair to be unsettled", "askIf": {"all": [{"question": "y_pair", "answer": {"isSettled": false}}]}},
+      {"name": "y_pair", "description": "Needs x_pair to be unsettled", "askIf": {"all": [{"question": "x_pair", "answer": {"isSettled": false}}]}}
+    ]}
+  ]
+}

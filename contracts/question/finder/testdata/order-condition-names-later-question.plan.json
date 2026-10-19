@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"s": {"q_a": "x", "q_b": "x", "q_c": "x", "r_val": "x"}}},
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "q_c", "description": "Needs q_b", "askIf": {"all": [{"question": "q_b", "answer": {"isSettled": true}}]}},
+      {"name": "q_b", "description": "Needs q_a", "askIf": {"all": [{"question": "q_a", "answer": {"isSettled": true}}]}},
+      {"name": "q_a", "description": "Needs nothing"},
+      {"name": "q_z", "description": "Needs nothing, declared last"},
+      {"name": "p_one", "description": "Before the dependent"},
+      {"name": "p_dep", "description": "Needs r_val", "askIf": {"all": [{"question": "r_val", "answer": {"is": "x"}}]}},
+      {"name": "r_val", "description": "Needed"},
+      {"name": "t_last", "description": "Last"}
+    ]}
+  ]
+}
