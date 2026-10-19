@@ -174,6 +174,17 @@
     "source": "ordering.md: anytime is the default when timing is omitted, and it comes last"
   },
   {
+    "name": "timing-default-interleaved",
+    "plan": "timing-default-interleaved.plan.json",
+    "active": [
+      "s-a",
+      "s-b",
+      "s-c",
+      "s-d"
+    ],
+    "source": "ordering.md: anytime is the default when timing is omitted. A section with no timing and a section with timing anytime are one group, ordered by id"
+  },
+  {
     "name": "id-order",
     "plan": "id-order.plan.json",
     "active": [
