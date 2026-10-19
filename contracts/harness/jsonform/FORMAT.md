@@ -6,6 +6,6 @@ Contract tests keep their fixtures as plain data. This page says how a Plan is w
 - A Value is a JSON string for Text, a boolean for Flag, an array of strings for List, and `{"deferred": true}` for Deferred. The Text `"deferred"` is a plain string and differs from Deferred.
 - `unknownFields` on a plan or a section is an object of any JSON data. Integers stay integers and decimals stay decimals.
 - A section's `source` is an object with `template` and `hash`.
-- A condition is `{"all": [{"question": "...", "answer": {"is": ...}}]}`.
+- A condition is `{"all": [{"question": "...", "answer": {"is": ...}}]}` or, for a section clause, `{"all": [{"section": "access", "enabled": true}]}`. A section has an optional boolean `enabled`.
 
 The harness reads a whole plan with `Plan`, and one part of a plan with `Section`, `Condition`, `Value`, and `Answers`. The forms of the parts are the ones above. `JSON` and `SectionJSON` write a plan and a section back, so a failing test can show the values side by side.
