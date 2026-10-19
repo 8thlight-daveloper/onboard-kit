@@ -9,6 +9,7 @@ import (
 
 func copySection(section model.Section) model.Section {
 	copied := section
+	copied.Enabled = copyPointer(section.Enabled)
 	copied.IncludeIf = copyCondition(section.IncludeIf)
 	copied.After = slices.Clone(section.After)
 	copied.Escalation = slices.Clone(section.Escalation)
@@ -81,7 +82,8 @@ func copyClause(clause model.Clause) model.Clause {
 	test.IsOneOf = copyEach(test.IsOneOf, copyValue)
 	test.IsNotOneOf = copyEach(test.IsNotOneOf, copyValue)
 	test.IsSettled = copyPointer(test.IsSettled)
-	return model.Clause{Question: clause.Question, Answer: test}
+	clause.Answer = test
+	return clause
 }
 
 func copyUnknown(fields map[string]any) map[string]any {
