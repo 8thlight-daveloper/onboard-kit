@@ -296,7 +296,9 @@ func (r *reader) condition(path string, v any) *model.Condition {
 
 func (r *reader) clause(path string, v any) model.Clause {
 	m := r.object(path, v, "question", "answer", "section", "enabled")
-	if _, ok := m["section"]; ok {
+	_, hasSection := m["section"]
+	_, hasEnabled := m["enabled"]
+	if hasSection || hasEnabled {
 		return model.Clause{Section: r.str(path, m, "section"), Enabled: r.boolean(path, m, "enabled")}
 	}
 	test := r.object(path+".answer", m["answer"], "is", "isNot", "isOneOf", "isNotOneOf", "isSettled")
