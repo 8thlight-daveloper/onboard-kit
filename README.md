@@ -34,6 +34,20 @@ just hook      # optional: run `just check` before every commit
 
 The IDE does not see the dev shell's Go on its own. Run `just ide` once. It links the dev shell's Go at `.direnv/go`, a path that does not change. In GoLand, open Settings, Go, GOROOT, add a local SDK, and choose `.direnv/go/share/go` in this repo. After a flake update, run `just ide` again, and the IDE follows.
 
+## The tool
+
+`onboard-kit` is a command-line tool, built from `binary/`. It is an early release candidate: it turns section templates into a plan file and a plan file into a document. It has no interactive walkthrough yet.
+
+```sh
+just build                                    # writes output/onboard-kit
+output/onboard-kit new --templates docs/reference/examples/acme/templates --out plan.obk.yaml
+output/onboard-kit assemble --plan docs/reference/examples/acme/acme.obk.yaml
+```
+
+- `new` reads a folder of section template files, and an optional `plan-variables.yaml`, and writes a plan file.
+- `assemble` reads a plan file and writes a Markdown document. Gaps in the plan go on standard error and in the document's gap table.
+- `just acceptance` runs the scenarios under `acceptance/scenarios/` against the built binary.
+
 ## What never goes in this repo
 
 This repo is generic on purpose. Keep out:

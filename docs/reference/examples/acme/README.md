@@ -11,7 +11,8 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 | `templates/review-design-system.yaml` | A template for design work. It is inactive in this plan |
 | `templates/stuck-general.yaml` | A template for every engagement, with a required `person` variable |
 | `acme.obk.yaml` | The plan for this engagement |
-| `acme.md` | The plan assembled into a document, written by hand |
+| `templates/plan-variables.yaml` | The plan variables that `new` adds to every plan |
+| `acme.md` | The plan assembled into a document. `onboard-kit assemble --plan acme.obk.yaml` writes it, and an acceptance scenario checks it |
 
 ## What the files show
 
