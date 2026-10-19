@@ -23,7 +23,7 @@ var tokenFamilies = [...]tokenFamily{
 	{[]string{"sk-"}, isURLSafe, 40},
 }
 
-var webToken = regexp.MustCompile(`eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}`)
+var webToken = regexp.MustCompile(`(?:^|[^A-Za-z0-9])eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}`)
 
 func hasTokenPrefix(text string) bool {
 	if webToken.MatchString(text) {
