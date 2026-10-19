@@ -4,17 +4,24 @@ title: T
 summary: S
 includeIf:
   all:
-    - question: plan.q
-      section: a
-      enabled: yes
     - section: a
+      enabled: true
+      question: [x]
       answer:
+        is: yes
+    - question: plan.q
+      enabled: [true]
+      answer:
+        is: x
+    - answer:
         isSettled: yes
-    - enabled: false
-      question: q
-      extra: 1
+      section: a
+      enabled: true
     - question:
       section: b
+      enabled: false
+    - question: plan.q
+      section: a
     - question: plan.q
       answer:
         is: x
@@ -25,6 +32,9 @@ variables:
     askIf:
       all:
         - section: a
+          enabled: true
+          answer:
+            is: x
         - answer:
             is: x
           enabled: true

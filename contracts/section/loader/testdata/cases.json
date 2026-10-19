@@ -39,7 +39,7 @@
     "name": "all-fields",
     "input": "all-fields.yaml",
     "output": "all-fields.section.json",
-    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md."
+    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md. The section clauses follow the decoder contract, Section clauses: both keys, either order, and an empty section read as the empty string."
   },
   {
     "name": "unvalidated",
@@ -888,34 +888,50 @@
     "name": "section-clauses",
     "input": "section-clauses.yaml",
     "output": "section-clauses.section.json",
-    "source": "Hand-written. 0050 Decision, a condition can test whether a section is on, and the section clause syntax in conditions.md. A section clause is read in includeIf and in askIf, in flow and block style, in either key order. A missing enabled is false by the rule for an absent field, and a missing section is the empty text. The loader does not check the id."
+    "source": "Hand-written. Decoder contract, Section clauses: a clause with a section key is a section clause, in either key order and in flow or block style, and an empty or null section is read as the empty string. 0050 Decision, and conditions.md. A section clause is read in includeIf and in askIf. The loader does not check the id."
   },
   {
     "name": "section-clause-mixed",
     "input": "section-clause-mixed.yaml",
     "problems": [
       {
-        "code": "format.wrong-type",
-        "path": "includeIf.all[0]"
+        "code": "format.unknown-field",
+        "path": "includeIf.all[0].question"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[0].answer"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[1].enabled"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[2].answer"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[3].question"
       },
       {
         "code": "format.wrong-type",
-        "path": "includeIf.all[1]"
+        "path": "includeIf.all[4]"
       },
       {
-        "code": "format.wrong-type",
-        "path": "includeIf.all[2]"
+        "code": "format.unknown-field",
+        "path": "includeIf.all[4].question"
       },
       {
-        "code": "format.wrong-type",
-        "path": "includeIf.all[3]"
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].answer"
       },
       {
-        "code": "format.wrong-type",
-        "path": "variables[0].askIf.all[1]"
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[1].enabled"
       }
     ],
-    "source": "Hand-written. 0050: a clause with section has no question or answer, and a clause with both kinds of key is a format problem. The loader reports format.wrong-type at the clause (open question 5) and reads nothing else in it: the yes, the extra key, and the answer test are not reported. A null question still counts as a key. Valid clauses in between are read."
+    "source": "Hand-written from the decoder contract, Section clauses, and its cases clause-forms and clause-missing-enabled. A clause with a section key is a section clause, so its question and answer are format.unknown-field at the key and are not read: the list, the plain yes, and the null are not reported. Without a section key, enabled is an unknown key of a question clause and its value is not read. A key counts as the other form even when its value is null. At the one place of the clause and its first key, format.wrong-type comes before format.unknown-field. Valid clauses in between are read."
   },
   {
     "name": "section-clause-wrong-type",
@@ -943,14 +959,54 @@
       },
       {
         "code": "format.wrong-type",
+        "path": "includeIf.all[4]"
+      },
+      {
+        "code": "format.wrong-type",
         "path": "includeIf.all[4].section"
       },
       {
         "code": "format.unknown-field",
         "path": "includeIf.all[5].extra"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[6]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[7]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[8]"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "includeIf.all[9].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[10].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[11]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "includeIf.all[12].section"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].askIf.all[1].enabled"
       }
     ],
-    "source": "Hand-written. 0050 and the decoder contract, Known fields and Problems: enabled is a boolean with the spelling guard, section is text, and the clause keeps no unknown key. A quoted \"true\", a canonical number, and a list are wrong-type where a boolean belongs, and a plain true where text belongs."
+    "source": "Hand-written from the decoder contract, Section clauses, Known fields, and Problems, and its cases enabled-wrong-type, enabled-spelling, and clause-missing-enabled. enabled is a boolean with the spelling guard and section is text. A quoted true, a canonical number, a list, and a map are format.wrong-type where a boolean belongs, and a plain true is wrong where text belongs. A section clause whose enabled is absent, empty, or null is format.wrong-type at the clause, and a ~ is the null spelling alone. A clause problem comes before a problem at the clause's first key with the same code. Any other key is format.unknown-field."
   },
   {
     "name": "template-enabled-key",

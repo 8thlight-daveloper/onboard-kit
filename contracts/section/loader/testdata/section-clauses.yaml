@@ -15,6 +15,12 @@ variables:
     askIf:
       all:
         - section: access
-        - enabled: true
-        - section: setup
           enabled: false
+        - enabled: true
+          section: setup
+        - section: ""
+          enabled: true
+        - section:
+          enabled: false
+        - section: ''
+          enabled: true

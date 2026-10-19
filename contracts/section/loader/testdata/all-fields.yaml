@@ -69,6 +69,8 @@ variables:
           enabled: true
         - section: access
           enabled: false
+        - enabled: false
+          section:
 verification: It works.
 owner: $role
 escalation: [$backup]

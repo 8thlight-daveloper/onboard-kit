@@ -23,7 +23,8 @@
         {"question": "review", "answer": {"isSettled": false}},
         {"question": "code", "answer": {"is": true, "isNot": {"deferred": true}}},
         {"section": "setup", "enabled": true},
-        {"section": "access", "enabled": false}
+        {"section": "access", "enabled": false},
+        {"section": "", "enabled": false}
       ]}}
   ],
   "steps": [
