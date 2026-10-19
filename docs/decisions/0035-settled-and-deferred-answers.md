@@ -32,6 +32,7 @@ A settled answer is not final. A person can change it. It means the question is 
 - **`isSettled` replaces `isAnswered`.** `isSettled: true` holds when the answer is settled. `isSettled: false` holds when it is deferred or unanswered.
 - **A required question is satisfied by a settled or a deferred answer.** Unanswered blocks. There is no separate term for "settled or deferred".
 - **A deferred answer becomes a gap** when the document is assembled, as `unknown-yet` does today.
+- **The TUI offers the entry as `Deferred`.** The stored word is a data token and not interface text, so a later translation of the interface would change only the label. No translation is planned: the audiences are 8th Light consultants and, for the output file, their clients.
 - **The stored form is the plain word `deferred`.** The quoted `"deferred"` is the Text answer with that word, as the encoder already does for the current marker.
 
 ### Names
@@ -69,4 +70,4 @@ This is a rename of a file token and an operator, which 0030 would call a breaki
 
 ## Open questions
 
-- Does the TUI show the deferred entry as "Deferred" or in other words? The label belongs to the walkthrough issue, #6.
+None.
