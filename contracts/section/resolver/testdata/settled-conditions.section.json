@@ -1,0 +1,14 @@
+{
+  "id": "settled-conditions",
+  "title": "Settled conditions",
+  "summary": "Conditions that test isSettled",
+  "includeIf": {"all": [
+    {"question": "plan.team", "answer": {"isSettled": true}},
+    {"question": "plan.region", "answer": {"isSettled": false}}
+  ]},
+  "body": "Name: $name",
+  "variables": [
+    {"name": "name", "description": "A name", "askIf": {"all": [{"question": "other", "answer": {"isSettled": true}}]}},
+    {"name": "other", "description": "Another", "askIf": {"all": [{"question": "name", "answer": {"isSettled": false}}]}}
+  ]
+}

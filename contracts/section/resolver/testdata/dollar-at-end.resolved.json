@@ -1,0 +1,21 @@
+{
+  "id": "dollar-at-end",
+  "title": "cost $",
+  "summary": "price $",
+  "owner": "$$",
+  "verification": "a$",
+  "body": "Total $$ and val $",
+  "variables": [
+    {"name": "item", "description": "Item"}
+  ],
+  "steps": [
+    {
+      "id": "ends",
+      "name": "$",
+      "notes": "$",
+      "run": ["echo", "$", "$", "cost $"],
+      "env": {"A": "$", "B": "$", "C": "val$"},
+      "checks": [{"run": ["$"], "ask": "ok $"}]
+    }
+  ]
+}

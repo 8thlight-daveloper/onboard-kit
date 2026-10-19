@@ -1,0 +1,30 @@
+{
+  "id": "command-values",
+  "title": "Command values",
+  "summary": "Exact command items in a step and in a check",
+  "variables": [
+    {"name": "build", "type": "command", "description": "Builds"},
+    {"name": "lint", "type": "command", "description": "Lints"},
+    {"name": "as_text", "type": "command", "description": "A command held as text"},
+    {"name": "e2e_test", "type": "command", "description": "A name whose second character is a digit"},
+    {"name": "v_1", "type": "command", "description": "A name whose second character is an underscore"},
+    {"name": "people", "type": "person", "multiple": true, "description": "Who can help"}
+  ],
+  "steps": [
+    {"id": "text", "name": "Text", "run": ["$as_text"]},
+    {"id": "second-character", "name": "Second character", "run": ["$e2e_test", "$v_1"], "checks": [{"run": ["$e2e_test", "$v_1"]}]},
+    {"id": "step-run", "name": "Step run", "run": ["$build", "$lint"]},
+    {
+      "id": "check-run",
+      "name": "Check run",
+      "checks": [
+        {"run": ["$build", "$lint"]},
+        {"run": ["time", "$build", "-v"]},
+        {"run": ["$as_text"]},
+        {"run": ["notify", "$people"]},
+        {"run": ["sh", "-c", "$build && $lint"]},
+        {"run": ["$lint"], "ask": "Did $build pass?"}
+      ]
+    }
+  ]
+}

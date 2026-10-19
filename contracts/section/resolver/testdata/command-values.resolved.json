@@ -1,0 +1,30 @@
+{
+  "id": "command-values",
+  "title": "Command values",
+  "summary": "Exact command items in a step and in a check",
+  "variables": [
+    {"name": "build", "type": "command", "description": "Builds"},
+    {"name": "lint", "type": "command", "description": "Lints"},
+    {"name": "as_text", "type": "command", "description": "A command held as text"},
+    {"name": "e2e_test", "type": "command", "description": "A name whose second character is a digit"},
+    {"name": "v_1", "type": "command", "description": "A name whose second character is an underscore"},
+    {"name": "people", "type": "person", "multiple": true, "description": "Who can help"}
+  ],
+  "steps": [
+    {"id": "text", "name": "Text", "run": ["make test"]},
+    {"id": "second-character", "name": "Second character", "run": ["make", "e2e", "make", "vet"], "checks": [{"run": ["make", "e2e", "make", "vet"]}]},
+    {"id": "step-run", "name": "Step run", "run": ["make", "build", "make", "lint"]},
+    {
+      "id": "check-run",
+      "name": "Check run",
+      "checks": [
+        {"run": ["make", "build", "make", "lint"]},
+        {"run": ["time", "make", "build", "-v"]},
+        {"run": ["make test"]},
+        {"run": ["notify", "Alex Rivera, then Sam Okafor"]},
+        {"run": ["sh", "-c", "make build && make lint"]},
+        {"run": ["make", "lint"], "ask": "Did make build pass?"}
+      ]
+    }
+  ]
+}

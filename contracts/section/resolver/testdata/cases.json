@@ -192,5 +192,37 @@
     "resolved": "nothing-to-fill.resolved.json",
     "problems": [],
     "source": "Hand-written. 0030: nothing resolved is stored, and a section with no variable in its text comes back as it was. components.md: the resolver reads the section and the answers and returns a changed copy of the section content only."
+  },
+  {
+    "name": "dollar-at-end",
+    "section": "dollar-at-end.section.json",
+    "answers": "dollar-at-end.answers.json",
+    "resolved": "dollar-at-end.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md, Dollar signs: $$ renders $. Contract rule: Reading the text, a $ at the end is left as written and $$ is read first. Kills a filler that looks one character past a $ without checking the end of the text."
+  },
+  {
+    "name": "name-edges",
+    "section": "name-edges.section.json",
+    "answers": "name-edges.answers.json",
+    "resolved": "name-edges.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md: a name is [a-z][a-z0-9_]* and ends at the first other character. Kills a name that stops before 0, 9, a, or z, one that takes characters just outside those ranges or upper case, one that is not read from the $ it follows, and one that fails at the end of the text."
+  },
+  {
+    "name": "command-values",
+    "section": "command-values.section.json",
+    "answers": "command-values.answers.json",
+    "resolved": "command-values.resolved.json",
+    "problems": [],
+    "source": "Hand-written. steps.md: a command variable is written [$name] in run and expands to its arguments. Contract rule: A command in run, in a step and in a check. Kills a command not spliced in a check, a command held as text that is split on spaces, a person list that is spliced, and an exact name test that stops at the second character when it is a digit or an underscore."
+  },
+  {
+    "name": "settled-conditions",
+    "section": "settled-conditions.section.json",
+    "answers": "settled-conditions.answers.json",
+    "resolved": "settled-conditions.resolved.json",
+    "problems": [],
+    "source": "Hand-written. conditions.md: an answer test can be isSettled true or false. Contract rule: includeIf and every part of a declaration are left as held, and the result shares no pointer with the input. Kills an isSettled pointer shared with the input, or dropped."
   }
 ]

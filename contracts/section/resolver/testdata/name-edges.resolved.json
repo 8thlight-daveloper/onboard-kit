@@ -1,0 +1,18 @@
+{
+  "id": "name-edges",
+  "title": "End N",
+  "summary": "Z",
+  "owner": "Z2",
+  "body": "Digits: Z, N, $item1.\nLetters: A, Z2, B.\nOutside the range: I/ I: I` I{ I@ I[ IA IZ.\nStarts: $Item, $_item, $0item, $-item, $ item, $.\nEnds: N",
+  "variables": [
+    {"name": "item", "description": "Item"},
+    {"name": "item0", "description": "Item zero"},
+    {"name": "item9", "description": "Item nine"},
+    {"name": "apple", "description": "Starts with the first letter"},
+    {"name": "zebra", "description": "Starts with the last letter"},
+    {"name": "bza", "description": "Holds the last and the first letter"}
+  ],
+  "steps": [
+    {"id": "exact", "name": "Exact", "run": ["Z", "N", "$item1", "I", "$Item", "$"]}
+  ]
+}

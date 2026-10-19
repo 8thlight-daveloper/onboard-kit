@@ -188,6 +188,44 @@ func TestResultSharesNothingWithTheInput(t *testing.T) {
 	}
 }
 
+func TestConditionTestsAreNotSharedWithTheInput(t *testing.T) {
+	t.Parallel()
+	section := loadSection(t, "settled-conditions.section.json")
+	snapshot := loadSection(t, "settled-conditions.section.json")
+	got, _ := newResolver().Resolve(section, loadAnswers(t, "settled-conditions.answers.json"))
+
+	var inputTests, resultTests []*bool
+	collect := func(tests *[]*bool, condition *model.Condition) {
+		if condition == nil {
+			t.Fatal("a condition is missing")
+		}
+		for _, clause := range condition.All {
+			if clause.Answer.IsSettled == nil {
+				t.Fatal("an isSettled test is missing")
+			}
+			*tests = append(*tests, clause.Answer.IsSettled)
+		}
+	}
+	collect(&inputTests, section.IncludeIf)
+	collect(&resultTests, got.IncludeIf)
+	for i := range section.Variables {
+		collect(&inputTests, section.Variables[i].AskIf)
+		collect(&resultTests, got.Variables[i].AskIf)
+	}
+	if len(inputTests) != 4 || len(resultTests) != 4 {
+		t.Fatalf("got %d input tests and %d result tests, want 4 each", len(inputTests), len(resultTests))
+	}
+	for i := range resultTests {
+		if *resultTests[i] != *inputTests[i] {
+			t.Errorf("isSettled test %d: got %v, want %v", i, *resultTests[i], *inputTests[i])
+		}
+		*resultTests[i] = !*resultTests[i]
+	}
+	if !reflect.DeepEqual(section, snapshot) {
+		t.Fatal("changing an isSettled test in the result changed the input section")
+	}
+}
+
 func overwrite(v reflect.Value) {
 	switch v.Kind() {
 	case reflect.String:

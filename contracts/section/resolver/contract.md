@@ -48,11 +48,13 @@ A string is read from left to right, once.
 | `$` and a name that the section does not declare | Left as written, with no problem |
 | Any other `$`, such as `$5`, `$Repo_url`, `${name}`, `$ `, and a `$` at the end | Left as written, with no problem |
 
-A name is a lowercase letter followed by any number of lowercase letters, digits, and underscores, as the schema defines it. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared.
+A name is a lowercase letter followed by any number of lowercase letters, digits, and underscores, as the schema defines it. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A name can hold `0` and `9`, so `$item0` and `$item9` are names, and a declared `item` does not fill them. An upper case letter ends a name, so `$itemA` is the variable `item` and then `A`. So do `/`, `:`, `` ` ``, `{`, `@`, and `[`. A name that ends at the end of the text is a name. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared.
 
 `$$` is read first at each place, so `$$name` is `$name` as text and is not filled, `$$$name` is `$` and then the variable, and `$$$` is `$` and then a lone `$`, which reads as `$$`.
 
 Filling is one pass. What a variable becomes is written as it is and is not read again. An answer or a default that holds `$other` or `$$` comes out as held.
+
+A `$` or `$$` at the very end of a field is read by the same rules, so `cost $` stays `cost $` and `price $$` becomes `price $`. A field that is only `$` or `$$` is read the same way.
 
 The resolver does not report a `$` that is not a variable. The section validator does.
 
@@ -93,7 +95,7 @@ A variable with no `type` is a `string`.
 
 A `run` item that is exactly `$name`, for a declared variable of type `command` that has a list as its value, is replaced by the items of the list, in order, each as its own item of `run`. This holds in a step's `run` and in a check's `run`. The items are written as held and are not read again.
 
-In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string` or a `person`, gives one item and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker.
+In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string` or a `person`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker.
 
 ## Problems
 
@@ -126,7 +128,7 @@ None, and it reads section content and the section's own answers only. It writes
 - The format of the document, such as Markdown escaping of `<name>` and `_deferred_`, one person to a line, and the gap table. Those are the assembler's.
 - Whether the answers fit the types, options, or patterns, whether a required question is answered, and whether a `$` is valid. Those are for the validators.
 - Two variables with the same name in one section.
-- A list that holds Text for a `command`, a Flag for a `string`, or another mismatch of type and value. The value is written by its kind, as the table says.
+- A Flag for a `string`, a Flag for a `command`, or another mismatch of type and value, except Text for a `command`, which A command in `run` covers. The value is written by its kind, as the table says.
 - Text of only whitespace.
 - A name that does not follow the schema's name rule, in a declaration.
 - Which sections are active. The caller passes the section it wants filled.
@@ -150,7 +152,7 @@ These are choices the docs did not settle. Each says what the resolver does, wha
 
 ## Wrong implementations tried
 
-While drafting, a reference resolver was written from the rules above as scratch work outside the repo, and it passed every test. Then 100 wrong resolvers were written, one defect each. The contract tests failed 98. The other two give the same result as the reference for every valid input: one returns an empty list for an absent list, which this contract does not tell apart, and one accepts a digit at the start of a name, which no declared name has. A stub that returns the zero Section failed every test that checks a result. No second independent build or differential run was made, because the issue is a draft.
+While drafting, a reference resolver was written from the rules above as scratch work outside the repo, and it passed every test. Then 100 wrong resolvers were written, one defect each. The contract tests failed 98. The other two give the same result as the reference for every valid input: one returns an empty list for an absent list, which this contract does not tell apart, and one accepts a digit at the start of a name, which no declared name has. A stub that returns the zero Section failed every test that checks a result. No second independent build or differential run was made, because the issue is a draft. After the first build, the mutation tool left survivors, and the rows marked "after the first build" below close them. Each mutant that these rows address was applied by hand in a scratch copy, and a named test failed.
 
 | Wrong implementation | Caught by |
 | -- | -- |
@@ -179,3 +181,8 @@ While drafting, a reference resolver was written from the rules above as scratch
 | The result sharing a list, map, or pointer with the input | The shares-nothing test |
 | A cache by section id | `command-in-run`, `defaults`, `deferred` |
 | The variables dropped from the result | `command-in-run`, `defaults`, `deferred` |
+| After the first build: a read one character past a `$` that panics at the end of a field, for `$`, `$$`, and `$$$` | `dollar-at-end` |
+| After the first build: a name that stops before `0`, `9`, `a`, or `z`, takes a character just outside those ranges or an upper case letter, starts at a fixed place, or fails at the end of the text | `name-edges` |
+| After the first build: an exact `$name` test that stops at the second character when it is a digit or an underscore, so a command such as `$e2e_test` is not spliced | `command-values` |
+| After the first build: a command held as Text split on spaces, or a person list spliced, in a step or in a check | `command-values`, `command-in-run` |
+| After the first build: a condition's `isSettled` pointer shared with the input or dropped, in `includeIf` or `askIf` | `settled-conditions`, and the tests that change the result's `isSettled` targets and check the input |
