@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "mode", "description": "Mode"}
+  ],
+  "answers": {
+    "plan": {"mode": "x", "colour": "blue"},
+    "sections": {
+      "main": {"known": "x", "nickname": "x"},
+      "off": {"stray": "x"},
+      "ghost": {"name": "x"}
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [{"name": "known", "description": "Known"}]},
+    {"id": "off", "enabled": false, "variables": [{"name": "kept", "description": "Kept"}]}
+  ]
+}

@@ -1,0 +1,7 @@
+{"problems": [
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.anchored_case", "section": "main"},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.anchored_newline", "section": "main"},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.any_bad", "section": "main"},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.dot_newline", "section": "main"},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.repo_bad", "section": "main", "messageContains": "A clone URL, starting with git@ or https://"}
+]}

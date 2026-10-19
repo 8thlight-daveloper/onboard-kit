@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_good", "type": "choice", "options": ["alpha", "beta"], "description": "Plan choice"},
+    {"name": "p_bad", "type": "choice", "options": ["alpha", "beta"], "description": "Plan choice"}
+  ],
+  "answers": {
+    "plan": {"p_good": "beta", "p_bad": "zeta"},
+    "sections": {
+      "main": {
+        "c_ok": "alpha",
+        "c_case": "Alpha",
+        "c_prefix": "alp",
+        "c_extra": "alpha ",
+        "c_blank": " ",
+        "c_other": "gamma"
+      }
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "c_ok", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_case", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_prefix", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_extra", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_blank", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_other", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"}
+    ]}
+  ]
+}

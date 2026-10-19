@@ -1,0 +1,6 @@
+{"problems": [
+  {"code": "answer.unknown-question", "severity": "warning", "question": "ghost.name"},
+  {"code": "answer.unknown-question", "severity": "warning", "question": "main.nickname", "section": "main"},
+  {"code": "answer.unknown-question", "severity": "warning", "question": "off.stray", "section": "off"},
+  {"code": "answer.unknown-question", "severity": "warning", "question": "plan.colour"}
+]}

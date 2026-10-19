@@ -1,0 +1,11 @@
+{"problems": [
+  {"code": "answer.single-person", "severity": "warning", "question": "main.many_blank_item", "section": "main"},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.many_gap", "section": "main", "detail": {"item": "2"}},
+  {"code": "answer.single-person", "severity": "warning", "question": "main.many_one", "section": "main"},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.many_one_thin", "section": "main", "detail": {"item": "0"}},
+  {"code": "answer.single-person", "severity": "warning", "question": "main.many_one_thin", "section": "main"},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.many_thin", "section": "main", "detail": {"item": "1"}},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.one_empty_part", "section": "main"},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.one_thin0", "section": "main"},
+  {"code": "answer.thin-contact", "severity": "warning", "question": "main.one_thin1", "section": "main"}
+]}
