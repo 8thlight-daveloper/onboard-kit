@@ -68,7 +68,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `deferred` is always offered, as its own entry.
 
-- **Optional sections.** A section that can be switched off declares an `enabled` variable. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
+- **Optional sections.** Superseded by [0050](0050-section-switch.md). A section is switched off with its `enabled` setting, which is not a question. When it is off, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
 
 - **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
 

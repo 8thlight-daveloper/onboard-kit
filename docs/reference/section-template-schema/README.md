@@ -11,7 +11,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 | This page | The section fields, selection, and the format rules |
 | [variables.md](variables.md) | The `$name` syntax, dollar signs, `deferred`, fields, types, and phase |
 | [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
-| [optional-sections.md](optional-sections.md) | The `enabled` toggle |
+| [optional-sections.md](optional-sections.md) | The `enabled` switch |
 | [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |
 | [escalation.md](escalation.md) | Who to ask when something is blocked, and the `person` type in use |
 | [steps.md](steps.md) | Steps, `checks`, and environment variables |
@@ -103,7 +103,7 @@ classDiagram
 
 ## Selection
 
-- A section is active when its `includeIf` condition holds, or it has none, and its `enabled` answer, or default, is true. A section with no `enabled` variable is always on. See [optional sections](optional-sections.md).
+- A section is active when its `includeIf` condition holds, or it has none, and its `enabled` setting is true. See [optional sections](optional-sections.md).
 - Active sections sort by `timing`, then `after`, then `id`. See [ordering](ordering.md).
 - Core templates have no `includeIf`. A variant has one that narrows by an axis, and never overrides a core template. See [conditions](conditions.md#section-conditions).
 

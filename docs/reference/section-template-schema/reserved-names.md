@@ -6,7 +6,7 @@ Variable names start with a lowercase letter and continue with at least two more
 
 | Reserved | Why |
 | -- | -- |
-| `enabled` | Reserved for the [section toggle](optional-sections.md). It cannot be used as `$enabled` in text |
+| `enabled` | Reserved for the [section switch](optional-sections.md). A template cannot declare a variable with this name, and `$enabled` is not filled |
 | `yes`, `no`, `y`, `n`, `true`, `false`, `on`, `off`, `null` | YAML can read these as booleans or null. As keys in `answers` they would load as the wrong data, and [0030](../../decisions/0030-self-contained-plan-file.md) rejects them |
 
 Template ids are reserved too. A template id is a lowercase slug, and lint rejects `plan` and the YAML words above as ids. `plan` is the scope of answers to plan variables, so a section named `plan` would make ids like `plan.team_state` ambiguous.

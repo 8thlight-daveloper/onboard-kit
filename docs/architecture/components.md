@@ -78,7 +78,7 @@ flowchart TB
 
 | Component | Does |
 | -- | -- |
-| Question finder | Finds a plan's active questions, one per section variable plus one `enabled` toggle per optional section, with their answers, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
+| Question finder | Finds a plan's active questions, one per section variable plus with their answers, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether a plan's answers are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, check shapes, and `escalation` references, with warnings for thin contacts and single points of failure. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
@@ -89,7 +89,7 @@ flowchart TB
 | Plan decoder | Turns plan file bytes into a Plan and problems. Refuses a version older than supported or newer than known, applies the migrator steps once any exist, decodes leniently so unknown fields survive, and reports format guard violations such as `yes` for a boolean, anchors, and aliases |
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
-| Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by `timing`, then `after`, then `id` |
+| Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers |
 | Section hasher | Computes the content hash recorded in a section's `source` |

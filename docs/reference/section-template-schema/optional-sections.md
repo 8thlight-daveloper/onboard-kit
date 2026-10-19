@@ -1,20 +1,18 @@
 # Optional sections
 
-Part of the [section template schema](README.md).
+Part of the [section template schema](README.md). The decision is [0050](../../decisions/0050-section-switch.md).
 
-A section that can be switched off declares a variable named `enabled`. It is an ordinary [variable](variables.md), so it has a `description`, `required`, `default`, and the rest.
+Any section in a plan can be switched off. The switch is a setting on the plan section, not a variable and not a question.
 
 ```yaml
-variables:
-  - name: enabled
-    description: Include the design review?
-    type: boolean
-    default: true
+sections:
+  - id: review-design-system
+    enabled: false
 ```
 
-- **A section with no `enabled` variable is always on** when its `includeIf` condition holds, or it has none. Nobody is asked.
-- **The question** has the id `<section>.enabled`. The finder returns it before that section's other questions, in document order, see [ordering](ordering.md). The answer is stored in `answers.sections.<id>.enabled`.
-- **When the answer is false**, the section's other questions are inactive. They keep their stored answers, are not asked, and do not block.
-- **No answer.** The `default` applies. With neither an answer nor a default, the section is off. A `required` toggle with no answer is a blocker.
-- **Restrictions.** `enabled` must be `boolean`. `deferred` is not accepted for it, because a section is either in or out. `askIf` is not supported on it yet.
-- **Conditions can test it.** A clause can name `<section>.enabled` like any other question. Only an explicit answer counts, not the default, so `is: true` is false until someone answers.
+- **On by default.** `enabled` is optional and true by default. A template never declares it, and a section added to a plan is on.
+- **Only a person turns a section off.** The editor offers the switch as an action on a section. It is never asked, never blocks, and cannot be deferred.
+- **A template cannot declare a variable named `enabled`.** The name is reserved, see [reserved names](reserved-names.md).
+- **When the section is off**, it is not active, so it is left out of the document and its questions are not asked. Its answers stay stored, so turning it on again loses nothing.
+- **The content hash leaves it out.** The switch is the plan's own setting. Flipping it does not change what a template says.
+- **Conditions can test it.** A section clause tests another section's switch, see [conditions](conditions.md#section-clause).

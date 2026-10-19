@@ -9,7 +9,7 @@ Two fields hold a condition, and both use the syntax below.
 | `askIf` | A variable | Whether that one question is asked |
 | `includeIf` | A section or template | Whether the whole section is in the plan's document and walkthrough |
 
-A section has a second gate, an `enabled` variable, see [optional sections](optional-sections.md). `includeIf` is for facts about the engagement, such as the discipline. `enabled` is for a choice the consultant makes.
+A section has a second gate, its `enabled` switch, see [optional sections](optional-sections.md). `includeIf` is for facts about the engagement, such as the discipline. The switch is for a choice the consultant makes, and a condition can test it with a section clause.
 
 ## Syntax
 
@@ -37,6 +37,23 @@ A condition is data, not an expression string. Every implementation language rea
 | `all` | A list of clauses that must all be true. It is the only combinator for now. Add `any` when a real template needs it |
 | `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan variable |
 | `answer` | The tests on that question's answer. Several tests in one `answer` must all hold |
+
+### Section clause
+
+A clause can test another section's [switch](optional-sections.md) instead of an answer.
+
+```yaml
+askIf:
+  all:
+    - section: design-review
+      enabled: true
+```
+
+- `section` is the id of another section in the plan. `enabled` is `true` or `false`.
+- The clause holds when that section's switch equals `enabled`. A section whose `enabled` is absent is on.
+- It tests the switch only. It does not ask whether that section's `includeIf` holds, so a chain of sections cannot make a cycle through the switches.
+- A clause has `section` or `question`, never both.
+- The plan validator reports a `section` that names no section in the plan.
 
 Answer tests:
 

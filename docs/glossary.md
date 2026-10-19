@@ -7,7 +7,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term | Meaning |
 | -- | -- |
 | Section template | The authored form of a section: one YAML file, written once. It has the same shape as a section, without `source`. It says when it applies, which questions it needs answered, and what text it produces. A new plan copies every standard section template in as a section. Often shortened to template. |
-| Variable | A named, typed value with a scope, the plan or one section. A person fills it in once. It is written `$name` where text uses it, so it is also called a placeholder. It does not have to appear in any text: axis variables and `enabled` toggles never do. The tool asks one question for each variable. |
+| Variable | A named, typed value with a scope, the plan or one section. A person fills it in once. It is written `$name` where text uses it, so it is also called a placeholder. It does not have to appear in any text: axis variables never do. The tool asks one question for each variable. |
 | Answers | What the consultant says in response to the questions: team state, discipline, plan and section variables. |
 | Section | The content unit in a plan. It has the same shape as a template, plus a record of which template it came from. Its variables stay until the document is assembled. A plan holds every standard template as a section, and only the active ones appear in the document. |
 | Plan | The finished, standalone description of one organization's onboarding: sections, answers, question definitions, and a record of where it came from. It is saved as `<name>.obk.yaml` and carries everything needed to reopen it without the templates. |
@@ -15,7 +15,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Gap | A value not known yet. It shows in the document as a visible to-do with an owner and timing. |
 | Provenance | A record of where a plan came from: the template set version and when it was made. |
 | Default plan | The plan a new walkthrough starts from: the axis variables and every standard template as a section, with no answers. |
-| Active section | A section whose `includeIf` condition holds, or that has none, and whose `enabled` answer, or default, is true if it has one. Only active sections appear in the document. |
+| Active section | A section whose `includeIf` condition holds, or that has none, and whose `enabled` setting is true. Only active sections appear in the document. |
 | Axis variables | The plan variables that decide which sections are included: `team_state` and `discipline`. They are data in the default plan, like every other variable. |
 
 ## The tool
@@ -31,7 +31,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Person variable | A variable of type `person`: one person written `Name, email, chat handle`. With `multiple: true` it holds a list of people. It names who can help with something. See [person](reference/section-template-schema/variables.md#person). |
 | Escalation | An ordered list of person variables on a section or step, naming who to ask when it is blocked. The general path is its own section, "If you are stuck". See [escalation](reference/section-template-schema/escalation.md). |
 | Severity | Whether a problem is an `error`, which stops an answer and blocks assembly, or a `warning`, which is advice and never blocks. |
-| Optional section | A section that declares an `enabled` variable, so a person can switch it off. A section without one is always on when it applies. |
+| Section switch | The `enabled` setting on a plan section, true by default. A person turns a section off. It is not a variable or a question. |
 | Reserved name | A variable name or template id that lint rejects, because it has a special meaning or YAML reads it as another type. See [section template schema](reference/section-template-schema/reserved-names.md). |
 | Suggestion | A value offered for a question: the distinct declared defaults in its group, and answers already given for that name in the plan or any section. |
 | Plan editor | Component that returns a copy of a plan with one answer applied. The copy differs only in `answers`. The plan it was given is not altered, and the component holds no state. See [0010](decisions/0010-plan-editor.md). |
@@ -48,7 +48,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Term | Meaning |
 | -- | -- |
 | Component | One part of the tool with one responsibility: it takes one kind of input and produces one kind of output, such as the section selector. It is a part of the tool, not of a plan. Each component lives in its own folder and can be deleted and rebuilt. |
-| Section selector | Component that finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by timing and dependencies. |
+| Section selector | Component that finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by timing and dependencies. |
 | Condition evaluator | Component that decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. |
 | Settled answer | An answer the person decided for now: any stored value that is not empty and not `deferred`, such as `team_state: established` or a flag set to `false`. A person can still change it. Conditions test settled answers only. |
 | Deferred answer | An answer the person chose to give later, stored as the word `deferred`, such as `tracker_grantor: deferred`. It satisfies a required question and becomes a visible gap in the assembled document. A question with nothing stored is unanswered, and that blocks. |

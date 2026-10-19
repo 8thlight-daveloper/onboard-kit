@@ -188,10 +188,6 @@ sections:
       Look at the design system before you start work. Write down anything that is
       missing or out of date, and tell the team.
     variables:
-      - name: enabled
-        description: Include the design review?
-        type: boolean
-        default: true
       - name: design_system_url
         description: Where the design system lives
         required: true
