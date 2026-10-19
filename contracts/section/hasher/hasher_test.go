@@ -394,6 +394,34 @@ func TestIntegersOfEveryWidthHashAlikeAndDifferFromDecimals(t *testing.T) {
 	}
 }
 
+func TestIntegersOfSeveralDigitsAreWrittenInPlainDecimal(t *testing.T) {
+	t.Parallel()
+	cases := []struct {
+		number int64
+		text   string
+	}{
+		{0, "0"},
+		{9, "9"},
+		{10, "10"},
+		{11, "11"},
+		{99, "99"},
+		{255, "255"},
+		{-17, "-17"},
+		{1000, "1000"},
+		{9223372036854775807, "9223372036854775807"},
+		{-9223372036854775808, "-9223372036854775808"},
+	}
+	for _, c := range cases {
+		want := textHash(`{"id":"s","timing":"anytime","unknownFields":{"x":` + c.text + `}}`)
+		for name, value := range map[string]any{"int64": c.number, "int": int(c.number)} {
+			section := model.Section{ID: "s", UnknownFields: map[string]any{"x": value}}
+			if got := newHasher().Hash(section); got != want {
+				t.Errorf("%s %s: not written as plain decimal %s", name, c.text, c.text)
+			}
+		}
+	}
+}
+
 func TestAValueIsHashedByItsKindAlone(t *testing.T) {
 	t.Parallel()
 	cases := map[string]struct {
