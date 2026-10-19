@@ -31,6 +31,8 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
 1. Build the component in a worktree as the build issue says. Run the tests against a stub first. Every test that exercises the output must fail.
 2. Run `just mutate <component>`. A survivor is a mutant that no test killed. Look at each one:
    - Equivalent: the code means the same after the change, such as a loop bound on a list that always has an even length, a value that is thrown away, or a number-parsing bit size that Go treats as 64. Prove it before you accept it. Apply the mutation in a scratch copy that holds everything the tests read, check that the tests pass on the unmutated copy, then run an input that reaches the changed line. On the decoder, three of the first four survivors called equivalent crashed the decoder, and a fourth changed how a quoted value was read. Then add a line to `tools/mutation/accepted/<component>.txt`, which only a person may do.
+   - Write the reason for an accepted survivor in terms of the contract, not the code: which inputs the contract allows and why none of them can tell the two apart. A person should be able to judge it without reading the implementation. If the reason is only "the code means the same", look again for an input in another language or a rebuilt component that would differ, such as an absent list that crashes a rebuild or a number written another way. If one exists, it is a gap and needs a fixture.
+   - A removed guard for an absent value (nil, null, empty) is a gap unless a fixture already passes the absent value in. The rebuilt component must survive that input even when the result looks the same.
    - A gap: a fixture would kill it. Write the fixture and the contract sentence.
 3. After new fixtures, a different agent patches the code until the tests pass. Run the mutation tool again.
 
@@ -62,3 +64,7 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
 - A background loop that waits with `pgrep -f <pattern>` matches its own command line and never ends. Wait on a pid, or read the output file.
 - Plan files hold values a loose reader accepts and a strict one rejects, such as `yes`, `0123`, dates, `~`, aliases, and duplicate keys. Write those out on purpose. See the fixtures rule in 0025.
 - Keep the problem order and the place of each problem in the contract. Two builds that sort differently look the same until a file has two problems.
+
+## Keep contracts free of history
+
+A contract holds rules, fixtures, and the table of wrong implementations. It holds no counts, scores, dates, or account of how it was checked. Those go stale with every edit and nobody keeps them in sync. Put them in the issue comment.
