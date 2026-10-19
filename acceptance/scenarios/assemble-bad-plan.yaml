@@ -1,0 +1,12 @@
+name: assemble-bad-plan
+description: A plan file with format problems is reported with its problem codes, and no document is written.
+source: contracts/plan/decoder, the format guards
+steps:
+  - run: [onboard-kit, assemble, --plan, bad.obk.yaml, --out, out.md]
+    files:
+      bad.obk.yaml: "schemaVersion: 1\nsections:\n  - id: a\n    title: Title\n    summary: Summary\n    timing: sometimes\nanswers:\n  plan:\n    flag: yes\n"
+    expect:
+      exit: 1
+      stderr: {contains: format.}
+      files:
+        out.md: {absent: true}

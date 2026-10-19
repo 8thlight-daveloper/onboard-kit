@@ -1,0 +1,9 @@
+name: assemble-missing-plan
+description: A plan file that does not exist is reported, and no document is written.
+source: internal/command/assemble
+steps:
+  - run: [onboard-kit, assemble, --plan, nothing.obk.yaml, --out, out.md]
+    expect:
+      exit: 1
+      files:
+        out.md: {absent: true}

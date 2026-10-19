@@ -27,3 +27,9 @@ func line(source string, problem model.Problem) string {
 	}
 	return fmt.Sprintf("%s: %s: %s: %s", source, place, problem.Code, problem.Message)
 }
+
+func Gaps(writer io.Writer, source string, gaps []model.Problem) {
+	for _, gap := range gaps {
+		fmt.Fprintf(writer, "%s: %s: %s: %s\n", source, gap.Severity, gap.Question, gap.Message)
+	}
+}

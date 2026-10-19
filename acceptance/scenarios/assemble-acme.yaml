@@ -1,0 +1,18 @@
+name: assemble-acme
+description: The ACME plan assembles into the same document each time, and the gap is reported on standard error.
+source: docs/reference/examples/acme/README.md
+steps:
+  - run: [onboard-kit, assemble, --plan, acme.obk.yaml, --out, first.md]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    expect:
+      exit: 0
+      stderr: {contains: access.tracker_grantor}
+      files:
+        first.md: {same-as: docs/reference/examples/acme/acme.md}
+  - run: [onboard-kit, assemble, --plan, acme.obk.yaml, --out, second.md]
+    expect:
+      exit: 0
+      files:
+        second.md: {same-as: docs/reference/examples/acme/acme.md}
+      unchanged: [acme.obk.yaml]
