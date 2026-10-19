@@ -213,5 +213,33 @@
       }
     ],
     "source": "Hand-written. Contract rule: Markdown, table cells."
+  },
+  {
+    "name": "switched-off-section",
+    "plan": "switched-off-section.plan.json",
+    "document": "switched-off-section.md",
+    "problems": [],
+    "source": "Hand-written. 0050: the section selector is active when its switch is on, and a section with enabled false is off. Contract rule: Sections, a section that is not active is not in the document and its gaps are not in the table. A section with enabled true is on. The switched-off section declares an unanswered variable that its text uses, so a gap would show if it were resolved."
+  },
+  {
+    "name": "switch-clause-condition",
+    "plan": "switch-clause-condition.plan.json",
+    "document": "switch-clause-condition.md",
+    "problems": [],
+    "source": "Hand-written. 0050: a section clause in includeIf holds when the named section's switch equals enabled, and tests the switch only. Contract rule: Sections. A section whose includeIf needs a switched-off section to be on is left out, with its gaps, and one that needs it to be off is written. A section that needs an inactive section whose switch is on is written, because the clause does not read the other section's includeIf."
+  },
+  {
+    "name": "enabled-variable",
+    "plan": "enabled-variable.plan.json",
+    "document": "enabled-variable.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "unset.enabled",
+        "section": "unset",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. 0050: a variable named enabled is no longer the toggle, it is an ordinary variable. Contract rule: Sections and the resolver contract. A section whose variable enabled is answered false stays in the document and the answer is written as text. The same name unanswered is a gap like any other."
   }
 ]

@@ -1,0 +1,6 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"keep","title":"Keep","summary":"Stays."},
+  {"id":"off","title":"Switched off","summary":"Hidden $thing.","owner":"Kim","body":"$thing","enabled":false,
+   "variables":[{"name":"thing","description":"Hidden thing"}]},
+  {"id":"on","title":"Switched on","summary":"Explicitly on.","enabled":true}]}

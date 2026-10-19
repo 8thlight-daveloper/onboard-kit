@@ -1,0 +1,14 @@
+{
+  "id": "follow-up",
+  "title": "Follow up",
+  "summary": "Depends on other sections.",
+  "includeIf": {"all": [
+    {"section": "access", "enabled": true},
+    {"question": "plan.discipline", "answer": {"is": "design"}},
+    {"section": "stuck-general", "enabled": false}
+  ]},
+  "variables": [
+    {"name": "note", "description": "A note", "askIf": {"all": [{"section": "access", "enabled": false}]}}
+  ],
+  "steps": [{"id": "check", "name": "Check"}]
+}

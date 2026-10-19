@@ -224,5 +224,13 @@
     "resolved": "settled-conditions.resolved.json",
     "problems": [],
     "source": "Hand-written. conditions.md: an answer test can be isSettled true or false. Contract rule: includeIf and every part of a declaration are left as held, and the result shares no pointer with the input. Kills an isSettled pointer shared with the input, or dropped."
+  },
+  {
+    "name": "switch-clauses",
+    "section": "switch-clauses.section.json",
+    "answers": "switch-clauses.answers.json",
+    "resolved": "switch-clauses.resolved.json",
+    "problems": [],
+    "source": "Hand-written. 0050: a section carries an optional enabled, and a condition clause can be a section clause with enabled true or false. Contract rule: the returned Section is a copy with only its text filled, so a section that is off stays off, and a section clause in includeIf and in askIf comes back as held, true and false both. A variable named enabled is an ordinary variable and is filled like any other. Kills a switch dropped, set to on, or shared by pointer with the input, a section clause dropped, with its section or its enabled lost, or a clause with enabled false read as true, and a variable named enabled treated as the switch."
   }
 ]

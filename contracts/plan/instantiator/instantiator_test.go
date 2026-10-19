@@ -277,6 +277,23 @@ func TestBuildsTheDefaultPlan(t *testing.T) {
 	}
 }
 
+func TestNewSectionsCarryNoSwitch(t *testing.T) {
+	for _, c := range loadCases(t) {
+		if !c.expectsPlan() {
+			continue
+		}
+		t.Run(c.Name, func(t *testing.T) {
+			t.Parallel()
+			got := run(newInstantiator(), c, loadInputs(t, c))
+			for _, section := range got.Plan.Sections {
+				if section.Enabled != nil {
+					t.Errorf("section %s carries a switch, want none", section.ID)
+				}
+			}
+		})
+	}
+}
+
 func TestReportsEveryProblemAndReturnsNoPlan(t *testing.T) {
 	for _, c := range loadCases(t) {
 		if c.expectsPlan() {

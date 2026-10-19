@@ -8,7 +8,7 @@
     "sections": [
       {"id": "access", "hash": "41b8d95b8e27d852b693e2f77f6db8d7ebd6cd146ac3260f41fd661ef0beb90e", "canonical": "acme-access.canonical.json"},
       {"id": "clone-and-run-tests", "hash": "baba68e931cfe9e8bcfc9386e5b61631852e935b087e98bb511174f14c39b6c3", "canonical": "acme-clone-and-run-tests.canonical.json"},
-      {"id": "review-design-system", "hash": "cfa9eba2e7c90af481bc527c2f0a366e8089b945db877c49d060bbce4568ddce", "canonical": "acme-review-design-system.canonical.json"},
+      {"id": "review-design-system", "hash": "8d3b83952994b823e23d2606beb4db8bc701b6579e96b7c1f9afe36ba790e094", "canonical": "acme-review-design-system.canonical.json"},
       {"id": "stuck-general", "hash": "fe1746d0ab6623c7b0d54d72c9b336efd20df7588d8a170802bc55944695ef23", "canonical": "acme-stuck-general.canonical.json"}
     ],
     "source": "The four ACME templates, docs/reference/examples/acme/templates/, as the section loader contract's fixtures hold them (contracts/section/loader/testdata/acme-*.section.json), given out of order. The five plan variables are the plan variables of docs/reference/examples/acme/acme.obk.yaml, one with a default and one with options. 0030, The default plan: the axis variables and every template as a section, with no answers. Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract (Canonical form, Fields, Defaults, Prose, Strings), the four acme-*.canonical.json files. The ACME plan file records no real hash for them."
@@ -54,6 +54,17 @@
       {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"}
     ],
     "source": "Domain model, Provenance: templateSet is the build's sha or tag and generatedOn is a date a driver passes in, because the core never reads a clock. Values that differ from the other cases show that the plan holds what it was given. Hash from the hasher golden case basic."
+  },
+  {
+    "name": "section-clauses",
+    "templates": ["section-clauses.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "follow-up", "hash": "eac39091f4d341b6452089fdfbde466cb20646e4a336c03559cc352cbaae5d8c", "canonical": "section-clauses.canonical.json"}
+    ],
+    "source": "0050, A condition can test whether a section is on: the instantiator copies a section clause as loaded, in includeIf and in a variable's askIf, with both enabled true and enabled false. The canonical text is written by hand from the hasher rules and 0050, which hashes the clause as {\"section\":\"id\",\"enabled\":true}, and its hash is shasum -a 256 over that text. A section clause that is dropped or changed in the copy, or an enabled false that is lost, changes the plan."
   },
   {
     "name": "no-templates",
