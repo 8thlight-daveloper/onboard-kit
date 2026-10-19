@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "switched-off", "enabled": false},
+  {"id": "switched-on", "enabled": true},
+  {"id": "no-switch"},
+  {"id": "also-off", "enabled": false}]}

@@ -1,6 +1,0 @@
-{"schemaVersion": 1,
- "answers": {"sections": {"q": {"enabled": false}}},
- "sections": [
-  {"id": "p", "after": ["q"]},
-  {"id": "q", "after": ["r"], "variables": [{"name": "enabled", "type": "boolean"}]},
-  {"id": "r"}]}

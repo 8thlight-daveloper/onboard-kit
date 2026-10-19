@@ -1,0 +1,11 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "base-off", "enabled": false},
+  {"id": "base-on", "enabled": true},
+  {"id": "base-absent"},
+  {"id": "needs-off-base", "includeIf": {"all": [{"section": "base-off", "enabled": true}]}},
+  {"id": "needs-on-base", "includeIf": {"all": [{"section": "base-on", "enabled": true}]}},
+  {"id": "needs-absent-base", "includeIf": {"all": [{"section": "base-absent", "enabled": true}]}},
+  {"id": "needs-base-off-to-be-off", "includeIf": {"all": [{"section": "base-off", "enabled": false}]}},
+  {"id": "needs-base-on-to-be-off", "includeIf": {"all": [{"section": "base-on", "enabled": false}]}},
+  {"id": "needs-absent-base-to-be-off", "includeIf": {"all": [{"section": "base-absent", "enabled": false}]}}]}

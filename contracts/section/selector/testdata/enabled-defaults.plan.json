@@ -1,5 +1,0 @@
-{"schemaVersion": 1,
- "sections": [
-  {"id": "default-true", "variables": [{"name": "enabled", "type": "boolean", "default": true}]},
-  {"id": "default-false", "variables": [{"name": "enabled", "type": "boolean", "default": false}]},
-  {"id": "no-default", "variables": [{"name": "enabled", "type": "boolean"}]}]}

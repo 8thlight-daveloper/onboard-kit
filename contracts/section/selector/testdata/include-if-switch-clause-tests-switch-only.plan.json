@@ -1,0 +1,9 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}},
+ "sections": [
+  {"id": "left-out", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+  {"id": "needs-left-out", "includeIf": {"all": [{"section": "left-out", "enabled": true}]}},
+  {"id": "off", "enabled": false},
+  {"id": "needs-off", "includeIf": {"all": [{"section": "off", "enabled": true}]}},
+  {"id": "needs-needs-off", "includeIf": {"all": [{"section": "needs-off", "enabled": true}]}},
+  {"id": "needs-needs-off-to-be-off", "includeIf": {"all": [{"section": "needs-off", "enabled": false}]}}]}

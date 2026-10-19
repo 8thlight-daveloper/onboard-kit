@@ -1,0 +1,8 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}},
+ "sections": [
+  {"id": "plan", "enabled": false},
+  {"id": "discipline", "enabled": false},
+  {"id": "reads-plan-id", "includeIf": {"all": [{"section": "plan", "enabled": false}]}},
+  {"id": "reads-dotted-id", "includeIf": {"all": [{"section": "plan.discipline", "enabled": true}]}},
+  {"id": "own-id-is-no-prefix", "includeIf": {"all": [{"section": "discipline", "enabled": false}]}}]}
