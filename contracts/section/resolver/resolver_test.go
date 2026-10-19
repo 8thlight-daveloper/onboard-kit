@@ -226,6 +226,52 @@ func TestConditionTestsAreNotSharedWithTheInput(t *testing.T) {
 	}
 }
 
+func TestSwitchAndSectionClausesAreNotSharedWithTheInput(t *testing.T) {
+	t.Parallel()
+	section := loadSection(t, "switch-clauses.section.json")
+	snapshot := loadSection(t, "switch-clauses.section.json")
+	got, _ := newResolver().Resolve(section, loadAnswers(t, "switch-clauses.answers.json"))
+
+	if section.Enabled == nil || *section.Enabled {
+		t.Fatal("the fixture section must hold enabled false")
+	}
+	if got.Enabled == nil {
+		t.Fatal("the switch was dropped")
+	}
+	if *got.Enabled {
+		t.Error("the switch was turned on")
+	}
+	if got.Enabled == section.Enabled {
+		t.Error("the switch is the same pointer as the input's")
+	}
+	*got.Enabled = true
+
+	var inputClauses, resultClauses []model.Clause
+	inputClauses = append(inputClauses, section.IncludeIf.All...)
+	resultClauses = append(resultClauses, got.IncludeIf.All...)
+	for i := range section.Variables {
+		if section.Variables[i].AskIf != nil {
+			inputClauses = append(inputClauses, section.Variables[i].AskIf.All...)
+			resultClauses = append(resultClauses, got.Variables[i].AskIf.All...)
+		}
+	}
+	if len(inputClauses) != 5 || len(resultClauses) != 5 {
+		t.Fatalf("got %d input clauses and %d result clauses, want 5 each", len(inputClauses), len(resultClauses))
+	}
+	for i := range resultClauses {
+		if !reflect.DeepEqual(resultClauses[i], inputClauses[i]) {
+			t.Errorf("clause %d: got %+v, want %+v", i, resultClauses[i], inputClauses[i])
+		}
+	}
+	for i := range resultClauses {
+		resultClauses[i].Enabled = !resultClauses[i].Enabled
+		resultClauses[i].Section = "overwritten"
+	}
+	if !reflect.DeepEqual(section, snapshot) {
+		t.Fatal("changing the switch or a section clause in the result changed the input section")
+	}
+}
+
 func overwrite(v reflect.Value) {
 	switch v.Kind() {
 	case reflect.String:

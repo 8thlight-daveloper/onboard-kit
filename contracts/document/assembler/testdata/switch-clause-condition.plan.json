@@ -1,0 +1,13 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core","discipline":"software"}},
+ "sections":[
+  {"id":"access","title":"Access","summary":"Switched off.","enabled":false},
+  {"id":"after-access","title":"After access","summary":"Needs $thing.","body":"$thing",
+   "includeIf":{"all":[{"section":"access","enabled":true}]},
+   "variables":[{"name":"thing","description":"Hidden thing"}]},
+  {"id":"design-only","title":"Design only","summary":"Not for software.",
+   "includeIf":{"all":[{"question":"plan.discipline","answer":{"is":"design"}}]}},
+  {"id":"after-design","title":"After design","summary":"Its section is inactive but not switched off.",
+   "includeIf":{"all":[{"section":"design-only","enabled":true}]}},
+  {"id":"fallback","title":"Fallback","summary":"Access is switched off.",
+   "includeIf":{"all":[{"section":"access","enabled":false}]}},
+  {"id":"keep","title":"Keep","summary":"Stays."}]}

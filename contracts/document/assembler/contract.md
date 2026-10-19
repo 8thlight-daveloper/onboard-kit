@@ -75,6 +75,8 @@ Each active section is these blocks, in this order, from the section as the reso
 
 A section that is not active is not in the document, and its gaps are not in the table. The assembler does not group sections or put a heading for a timing. The order is the selector's.
 
+A section with `enabled` false is not active, so it is left out of the document and its gaps are left out of the table, whatever else it holds. A section with `enabled` true, or with no `enabled`, is on. A section whose `includeIf` holds a section clause that does not hold, for example `enabled: true` for a section that has been switched off, is left out in the same way, and so are its gaps. A section clause reads the switch of the section it names and nothing else, so a section that is left out by its own `includeIf` is still on for a clause that asks for it to be on. The selector decides all of this, see [0050](../../../docs/decisions/0050-section-switch.md) and the [section selector contract](../../section/selector/contract.md). The assembler does not read `enabled` or a section clause itself. A variable named `enabled` is an ordinary variable: its answer is written as text and its gap is a gap, and it does not switch the section.
+
 **Footer.** The footer is up to two parts joined by one space: `Owner: <owner>.` when the section has an owner, and `When: <timing in words>.` when the section has a `timing` that is not `anytime`. With neither part, there is no footer.
 
 ### Steps
@@ -167,6 +169,13 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | Wrong implementation | Caught by |
 | -- | -- |
 | An inactive section is written, or its gaps are listed | `inactive-section`, `acme` |
+| A section with `enabled` false is written, or its gaps are listed | `switched-off-section` |
+| A section with `enabled` true is left out, or the switch read as present and so off | `switched-off-section` |
+| A section clause ignored, so that a section that needs a switched-off section to be on is written | `switch-clause-condition` |
+| A section clause read without its `enabled`, so that a section that needs another to be off is left out | `switch-clause-condition` |
+| A section clause that reads whether the named section is active and not whether it is on | `switch-clause-condition` |
+| A variable named `enabled` still switches its section, or has no default and so is off | `enabled-variable` |
+| A variable named `enabled` that is not filled or not reported as a gap | `enabled-variable` |
 | Sections in the plan's order, or grouped under a timing heading | `reading-order`, `footers`, `acme` |
 | A `$name` is left unfilled, or the resolver is not used | `acme`, `gaps-deferred` |
 | The gap table is left out when there are no gaps | `empty-plan`, `minimal-section` |

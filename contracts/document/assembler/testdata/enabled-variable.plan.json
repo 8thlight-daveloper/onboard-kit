@@ -1,0 +1,6 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"setup":{"enabled":false}}},
+ "sections":[
+  {"id":"setup","title":"Setup","summary":"A variable named enabled.","body":"Enabled: $enabled.",
+   "variables":[{"name":"enabled","description":"An ordinary question","type":"boolean"}]},
+  {"id":"unset","title":"Unset","summary":"Same name, no answer.","body":"Enabled: $enabled.",
+   "variables":[{"name":"enabled","description":"Asked like any other","type":"boolean"}]}]}

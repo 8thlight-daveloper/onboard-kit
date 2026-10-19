@@ -1,0 +1,16 @@
+{
+  "id": "switch-clauses",
+  "title": "Switch and section clauses",
+  "summary": "A section that is off, with conditions on other sections",
+  "enabled": false,
+  "includeIf": {"all": [
+    {"section": "access", "enabled": true},
+    {"question": "plan.team", "answer": {"is": "alpha"}},
+    {"section": "review", "enabled": false}
+  ]},
+  "body": "Clone $repo. Switch variable: $enabled",
+  "variables": [
+    {"name": "repo", "description": "Where", "askIf": {"all": [{"section": "access", "enabled": false}, {"section": "review", "enabled": true}]}},
+    {"name": "enabled", "description": "An ordinary question", "type": "boolean"}
+  ]
+}

@@ -40,7 +40,8 @@ Each section is its template, copied, with `source` set. The copy changes nothin
 - `source.hash` is the section hasher's hash of the template as given.
 - A `source` that the template already has is replaced. The hash does not cover it.
 - Nothing is filled in. A template with no `timing` has no `timing` in the plan, although its hash is of the default `anytime`. The same holds for a variable's `type` and `phase`.
-- Nothing is resolved, selected, or ordered by `timing` or `after`. `$name` stays in place, and `includeIf`, `askIf`, `after`, and `enabled` are kept as loaded.
+- Nothing is resolved, selected, or ordered by `timing` or `after`. `$name` stays in place, and `includeIf`, `askIf`, and `after` are kept as loaded. A section clause in a condition is kept as loaded, like a question clause.
+- A new section is on, and its switch is left absent. The instantiator writes no `enabled` on a section, because a template has none and a section is its template copied. See [0050](../../../docs/decisions/0050-section-switch.md). A template with a variable named `enabled` is a template with a variable, copied like any other.
 - The unknown fields of a section are kept. The loader gives none, and a section from another source may have some.
 - Text is not trimmed or normalized. Only the hasher normalizes, and only for its hash.
 
@@ -92,7 +93,7 @@ No side effects. It was not given a plan, so it creates one: every field of the 
 The hashes in `testdata/cases.json` come from the section hasher contract, in one of two ways, and each case cites which.
 
 - Five sections and their hashes are copied from the golden cases of [the hasher contract](../../section/hasher/testdata/cases.json), with their canonical texts.
-- Ten more sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates and six small sections for the order case.
+- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, six small sections for the order case, and one section with section clauses. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
 
 A test checks that each hash in the manifest is the SHA-256 of its canonical text. No hash was computed by a component.
 
@@ -137,6 +138,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A default filled on a section, or on a variable | `byte-order`, `hasher-goldens`, `values-as-given` |
 | Text of a section trimmed | `acme-default-plan` |
 | An existing `source` kept | `hasher-goldens` |
+| A section clause dropped or rewritten in a copied condition, or its `enabled: false` lost | `section-clauses`, the nothing-shared test |
+| A switch written on every section, on or off | `acme-default-plan`, `hasher-goldens`, `byte-order`, the no-switch test |
+| A variable named `enabled` added to a section, or a stale hash that still covers the old variable | `acme-default-plan`, the hash test |
 | `source.template` set to the title | every plan case |
 | The hash of the title only, shortened, or in upper case | every plan case |
 | The hash of the template changed first, for example a title with a full stop added | every plan case |

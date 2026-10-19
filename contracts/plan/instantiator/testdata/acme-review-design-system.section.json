@@ -8,7 +8,6 @@
   "verification": "You can open the design system and the main design file.",
   "body": "Look at the design system before you start work. Write down anything that is\nmissing or out of date, and tell the team.\n",
   "variables": [
-    {"name": "enabled", "description": "Include the design review?", "type": "boolean", "default": true},
     {"name": "design_system_url", "description": "Where the design system lives", "required": true},
     {"name": "design_file_url", "description": "The main design file for the product", "required": true}
   ],

@@ -33,6 +33,7 @@ These are left as held, even when they hold `$`.
 - `escalation` on a section and on a step. Its items name variables and are not text.
 - The keys of a step's `env`, and a check's `env`, which is a variable name.
 - `includeIf`, and every part of every variable the section declares: its description, default, options, pattern, hint, and `askIf`. A declaration is not resolved.
+- `enabled`, and the section clauses in a condition. They are not text.
 - `source` and `unknownFields`.
 
 The returned Section keeps every declared variable, so it still describes its own questions.
@@ -48,7 +49,7 @@ A string is read from left to right, once.
 | `$` and a name that the section does not declare | Left as written, with no problem |
 | Any other `$`, such as `$5`, `$Repo_url`, `${name}`, `$ `, and a `$` at the end | Left as written, with no problem |
 
-A name is a lowercase letter followed by any number of lowercase letters, digits, and underscores, as the schema defines it. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A name can hold `0` and `9`, so `$item0` and `$item9` are names, and a declared `item` does not fill them. An upper case letter ends a name, so `$itemA` is the variable `item` and then `A`. So do `/`, `:`, `` ` ``, `{`, `@`, and `[`. A name that ends at the end of the text is a name. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared.
+A name is a lowercase letter followed by any number of lowercase letters, digits, and underscores, as the schema defines it. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A name can hold `0` and `9`, so `$item0` and `$item9` are names, and a declared `item` does not fill them. An upper case letter ends a name, so `$itemA` is the variable `item` and then `A`. So do `/`, `:`, `` ` ``, `{`, `@`, and `[`. A name that ends at the end of the text is a name. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared. A variable named `enabled` is an ordinary variable, because the switch of a section is the field `enabled` of the section and not a variable.
 
 `$$` is read first at each place, so `$$name` is `$name` as text and is not filled, `$$$name` is `$` and then the variable, and `$$$` is `$` and then a lone `$`, which reads as `$$`.
 
@@ -114,6 +115,7 @@ These hold for every input the contract tests use.
 
 - **Pure.** The section and the answers are the same after the call as before, including every list and map inside them.
 - **Nothing shared.** The returned Section shares no list, map, or pointer with the input. Changing it changes nothing in the input.
+- **A copy of the switch and the clauses.** The returned Section holds the same `enabled` as the input, absent when absent, `false` when `false`, and `true` when `true`, and it is a new pointer. The resolver never turns a section on or off, and never reads the switch. A condition in `includeIf` or in a variable's `askIf` comes back as held: a question clause and a section clause, with the section id and the `enabled` of the section clause kept, `false` as well as `true`. Neither shares anything with the input. See [0050](../../../docs/decisions/0050-section-switch.md).
 - **No memory.** The same call gives the same result whatever calls came before, forward or in reverse order.
 - **Text only.** Every field that is not listed under What is filled is equal to the input.
 - **Nothing to fill.** A section that holds no `$name` for a declared variable comes back equal to the input, with no problem. A list with no items is not told apart from an absent one. A step's `env` is, so an absent `env` stays absent and an empty one stays empty.
@@ -186,3 +188,8 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | After the first build: an exact `$name` test that stops at the second character when it is a digit or an underscore, so a command such as `$e2e_test` is not spliced | `command-values` |
 | After the first build: a command held as Text split on spaces, or a person list spliced, in a step or in a check | `command-values`, `command-in-run` |
 | After the first build: a condition's `isSettled` pointer shared with the input or dropped, in `includeIf` or `askIf` | `settled-conditions`, and the tests that change the result's `isSettled` targets and check the input |
+| A section's switch dropped, turned on, or shared by pointer with the input | `switch-clauses`, and the shares-nothing tests |
+| A section clause dropped from `includeIf` or from `askIf`, or its section id lost | `switch-clauses`, and the switch-and-clauses test |
+| A section clause read as a question clause, or its `enabled` of `false` lost or flipped | `switch-clauses`, and the switch-and-clauses test |
+| A section clause list shared with the input, so that changing the result changes the input | the switch-and-clauses test |
+| A variable named `enabled` left as written, written as a marker, or taken for the switch | `switch-clauses`, `value-kinds` |
