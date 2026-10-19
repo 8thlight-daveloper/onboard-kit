@@ -1,0 +1,21 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    askIf:
+      all:
+        - section: a
+          enabled: yes
+        - section: b
+          enabled: Off
+sections:
+  - id: s1
+    title: S
+    enabled: no
+  - id: s2
+    title: S
+    enabled: TRUE
+    includeIf:
+      all:
+        - section: a
+          enabled: n

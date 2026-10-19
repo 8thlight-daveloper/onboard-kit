@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "enabled", "description": "Not a toggle", "type": "boolean"}
+  ],
+  "answers": {"plan": {"enabled": true}, "sections": {"s1": {"enabled": false}}},
+  "sections": [
+    {"id": "s1", "title": "S", "enabled": true},
+    {"id": "s2", "title": "S", "enabled": false},
+    {"id": "s3", "title": "S"},
+    {"id": "s4", "title": "S"},
+    {"id": "s5", "title": "S"},
+    {"id": "s6", "title": "S", "enabled": false, "includeIf": {"all": [{"section": "s1", "enabled": true}]}},
+    {
+      "id": "s7",
+      "title": "S",
+      "unknownFields": {"x-enabled": false},
+      "variables": [
+        {"name": "enabled", "description": "A plain variable", "askIf": {"all": [{"section": "yes", "enabled": true}, {"section": "s1", "enabled": false}]}}
+      ]
+    }
+  ]
+}

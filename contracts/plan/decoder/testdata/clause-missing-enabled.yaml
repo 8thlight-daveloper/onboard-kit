@@ -1,0 +1,21 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    askIf:
+      all:
+        - section: x
+sections:
+  - id: s
+    title: S
+    includeIf:
+      all:
+        - section: a
+        - section: b
+          enabled:
+        - section: c
+          enabled: null
+        - section: d
+          enabled: ~
+        - question: q
+          section: z

@@ -21,3 +21,7 @@ variables:
         - question: x
           answer:
             isSettled: false
+        - section: design-review
+          enabled: true
+        - section: legacy
+          enabled: false

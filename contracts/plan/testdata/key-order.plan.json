@@ -4,14 +4,15 @@
   "variables": [
     {"name": "team_state", "description": "Team state", "type": "choice", "multiple": false, "options": ["established", "first-consultants"], "required": true, "default": "established", "phase": "planning"}
   ],
-  "answers": {"plan": {"team_state": "established"}, "sections": {"s": {"enabled": true}}},
+  "answers": {"plan": {"team_state": "established"}, "sections": {"s": {"backup": ["Ann"]}}},
   "sections": [
     {
       "id": "s",
       "title": "Everything",
       "summary": "All fields",
-      "includeIf": {"all": [{"question": "plan.team_state", "answer": {"is": "established"}}]},
+      "includeIf": {"all": [{"question": "plan.team_state", "answer": {"is": "established"}}, {"section": "other", "enabled": true}]},
       "timing": "week-one",
+      "enabled": false,
       "after": ["other"],
       "owner": "newcomer",
       "escalation": ["$backup"],
@@ -19,7 +20,7 @@
       "body": "Body text.",
       "variables": [
         {"name": "backup", "description": "Backup", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "phase": "onboarding",
-         "askIf": {"all": [{"question": "enabled", "answer": {"isSettled": true}}]}}
+         "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": true}}, {"section": "other", "enabled": false}]}}
       ],
       "steps": [
         {

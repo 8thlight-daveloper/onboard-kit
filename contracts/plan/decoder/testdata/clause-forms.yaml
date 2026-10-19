@@ -1,0 +1,33 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    askIf:
+      all:
+        - section: a
+          enabled: true
+          question: q
+          answer:
+            is: x
+        - question: q
+          enabled: true
+          answer:
+            is: x
+        - answer:
+            is: x
+          section: a
+          enabled: true
+        - section: a
+          enabled: true
+          extra: 1
+        - question: q
+          section: a
+          enabled: true
+sections:
+  - id: s
+    title: S
+    includeIf:
+      all:
+        - section: a
+          enabled: false
+          answer: yes

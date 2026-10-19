@@ -19,7 +19,7 @@ The decoder is the reverse of the [plan encoder](../encoder/contract.md) for eve
 - It reads every known field into the field of the same name in the domain model.
 - It keeps unknown fields on a plan and on a section. It keeps them as plain data.
 - It reports the format guards of 0030: the spellings of booleans, numbers, and null, anchors and aliases, and duplicate keys.
-- It does not validate. A variable of type `colour`, a check with two of `run` and `ask`, two sections with one `id`, a `timing` that is not a timing, and an answer to a variable that does not exist all pass through unchanged. The plan validator judges them. It does not fill defaults: an absent `type` stays empty.
+- It does not validate. A variable of type `colour`, a check with two of `run` and `ask`, two sections with one `id`, a `timing` that is not a timing, and an answer to a variable that does not exist all pass through unchanged. The plan validator judges them. It does not fill defaults: an absent `type` stays empty, and an absent `enabled` on a section stays none.
 
 ## Version
 
@@ -51,7 +51,7 @@ An anchor is reported wherever it is written, even on a node that is also null o
 | `format.null-spelling` | A plain value is `~`, `Null`, or `NULL` | The value |
 | `format.alias` | An anchor, an alias, or a merge key `<<` is used. A merge key is one problem at the key, whatever its value. Each merge key is its own problem, and a repeated one is not also a duplicate key. The value of a merge key is not read. A quoted `"<<"` is an ordinary key. An anchor on a key is reported at the key's path | The node, or the key for a merge key |
 | `format.duplicate-key` | A map has the same key twice. A quoted key and a plain key with the same text are the same key | The second and later keys |
-| `format.wrong-type` | A known field holds a kind the domain model does not allow for it, or a key in any map is not a scalar. See Known fields | The field, or the list item |
+| `format.wrong-type` | A known field holds a kind the domain model does not allow for it, or a key in any map is not a scalar. See Known fields. A section clause with no `enabled`, see Section clauses | The field, or the list item |
 | `format.unknown-field` | A map that cannot keep unknown fields has a key it does not know | The key |
 | `format.empty-answer` | An answer, or an item of `isOneOf` or `isNotOneOf`, is null | The answer or item |
 | `format.empty-item` | An item of any other list is null, including an item of a List Value. Dropping it would shift the list. An item that is an empty map is not null and is read as a zero value | The item |
@@ -121,11 +121,26 @@ The word `deferred` is the Deferred value only when it is a whole plain Value. Q
 
 ### Known fields
 
-A string field takes text. A boolean field takes a plain `true` or `false`. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
+A string field takes text. A boolean field takes a plain `true` or `false`. A section's `enabled` is a boolean field that is none when it is absent, empty, or null, and a Flag pointer otherwise, so `enabled: true` is kept as on and is not the same as absent. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
+
+### Section clauses
+
+A clause is a map in the `all` list of an `includeIf` or an `askIf`. It has one of two forms, and a key that belongs to the other form is not known to it. See [0050](../../../docs/decisions/0050-section-switch.md).
+
+| Form | Known keys | Read as |
+| -- | -- | -- |
+| Section clause | `section`, `enabled` | `Section` and `Enabled` |
+| Question clause | `question`, `answer` | `Question` and `Answer` |
+
+- A clause is a section clause when it has a `section` key, with any value and in any key order. Otherwise it is a question clause, including a clause with no keys that it knows.
+- A clause of one form that holds a key of the other form is not a second kind of problem. That key is `format.unknown-field` at the key, and its value is not read. So `question` and `answer` in a section clause are reported, and so is `enabled` in a clause with no `section`. The format has no code for a mixed clause, and this one is the nearest.
+- `section` is a string and `enabled` is a boolean, read by the rules of Known fields. A plain `yes` for `enabled` is `format.boolean-spelling`. A quoted `"true"`, a number, a list, or a map is `format.wrong-type` at the key. A `section` that is a list or a plain `true` is `format.wrong-type` at the key.
+- The model cannot tell an absent `enabled` from `false`, and reading it as `false` would switch a section off by accident. A section clause whose `enabled` is absent, empty, or `null` is `format.wrong-type` at the clause. A `~` is the null spelling alone. At one place, `format.wrong-type` comes before `format.unknown-field`, as the table gives.
+- An empty `section`, whether `""`, `''`, or null, is read as the empty string, and `enabled` is read as written. The decoder does not validate, so the plan validator judges an id that names no section.
 
 ### Unknown fields
 
@@ -216,4 +231,15 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A present but empty `includeIf` read as none | `zero-and-null` |
 | A canonical number in a list field reported as a spelling | `wrong-type` |
 | An anchor on `schemaVersion` hiding the version or the alias | `alias-on-version` |
-
+| A section `enabled` ignored, or kept as an unknown field | `switch`, `enabled-values`, `key-order` |
+| An explicit `enabled: true` dropped as the default | `switch`, `enabled-values` |
+| An empty or null `enabled` on a section read as off | `enabled-values` |
+| A quoted, numeric, list, or map `enabled` read as a boolean, in a section or a section clause | `enabled-wrong-type` |
+| A plain `yes`, `no`, `Off`, `TRUE`, or `n` read as the switch | `enabled-spelling` |
+| A mixed clause read without a problem, or its form told by the first key | `clause-forms`, `clause-missing-enabled` |
+| `enabled` accepted in a question clause | `clause-forms` |
+| A section clause with no, empty, or null `enabled` read as `false` | `clause-missing-enabled` |
+| The missing `enabled` reported at the `section` key and not at the clause | `clause-missing-enabled` |
+| A section clause `enabled: false` read as `true`, or not kept | `conditions`, `switch`, `enabled-values`, `key-order` |
+| An empty `section` refused, or a section id that is a plain `true` or a list read as text | `clause-empty-section`, `enabled-wrong-type` |
+| An answer or a variable named `enabled` read as the switch | `enabled-values` |
