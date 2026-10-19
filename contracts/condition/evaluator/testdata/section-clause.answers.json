@@ -1,0 +1,16 @@
+{
+  "plan": {
+    "discipline": "software"
+  },
+  "sections": {
+    "access": {
+      "discipline": "design"
+    },
+    "review": {
+      "enabled": true
+    },
+    "design": {
+      "owner": ""
+    }
+  }
+}

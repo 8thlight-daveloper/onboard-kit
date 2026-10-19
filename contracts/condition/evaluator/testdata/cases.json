@@ -3,6 +3,7 @@
     "name": "is-and-is-not",
     "scope": "access",
     "answers": "is-and-is-not.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "is the same text",
@@ -81,6 +82,7 @@
     "name": "one-of-lists",
     "scope": "access",
     "answers": "one-of-lists.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "isOneOf with the answer second",
@@ -256,6 +258,7 @@
     "name": "false-flag",
     "scope": "access",
     "answers": "false-flag.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "is false",
@@ -382,6 +385,7 @@
     "name": "missing-answer",
     "scope": "access",
     "answers": "missing-answer.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "is",
@@ -494,6 +498,7 @@
     "name": "deferred-answer",
     "scope": "access",
     "answers": "deferred-answer.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "is",
@@ -636,6 +641,7 @@
     "name": "empty-answers",
     "scope": "access",
     "answers": "empty-answers.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "empty text is not settled",
@@ -801,6 +807,7 @@
     "name": "list-answer",
     "scope": "access",
     "answers": "list-answer.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "isSettled true",
@@ -967,6 +974,7 @@
     "name": "list-test-values",
     "scope": "access",
     "answers": "list-test-values.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "is a list",
@@ -1099,6 +1107,7 @@
     "name": "value-kinds",
     "scope": "access",
     "answers": "value-kinds.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "text true is not the flag true",
@@ -1177,6 +1186,7 @@
     "name": "question-ids",
     "scope": "access",
     "answers": "question-ids.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "bare name reads the same section",
@@ -1297,6 +1307,7 @@
     "name": "plan-scope",
     "scope": "plan",
     "answers": "plan-scope.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "bare name in the plan scope reads the plan",
@@ -1333,6 +1344,7 @@
     "name": "all-clauses",
     "scope": "access",
     "answers": "all-clauses.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "the example in conditions.md",
@@ -1471,6 +1483,7 @@
     "name": "no-clauses",
     "scope": "access",
     "answers": "no-clauses.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "an empty all",
@@ -1486,6 +1499,7 @@
     "name": "tests-in-one-answer",
     "scope": "access",
     "answers": "tests-in-one-answer.answers.json",
+    "switches": {},
     "checks": [
       {
         "name": "two tests that both hold",
@@ -1573,5 +1587,616 @@
       }
     ],
     "source": "conditions.md, answer tests: several tests in one answer must all hold. domain-model.md: the same rule. A contradiction is a lint error, so the evaluator reads it as written."
+  },
+  {
+    "name": "section-clause",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "design": true
+    },
+    "checks": [
+      {
+        "name": "a section that is off, enabled false",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section that is off, enabled true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section that is on, enabled true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "design",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section that is on, enabled false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "design",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section missing from the switches, enabled true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "ghost",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section missing from the switches, enabled false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "ghost",
+              "enabled": false
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: a section clause holds when the section's switch equals enabled. The switch is on when absent, so a section missing from the switches, including an unknown id, is on."
+  },
+  {
+    "name": "no-switches",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "checks": [
+      {
+        "name": "nil switches, enabled true",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "nil switches, enabled false",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "nil switches, a question clause",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: the switch is on when absent. Nil switches mean every section is on."
+  },
+  {
+    "name": "section-clause-scope",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "access.review": true,
+      "plan.review": true,
+      "access": false
+    },
+    "checks": [
+      {
+        "name": "the id is not read in the scope, off section",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "the id is not read in the scope, on in the scope key",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "the section of the scope itself",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "access",
+              "enabled": false
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: a section clause names a section id as written, with no scope prefix. Domain-model reading of Switches: section id to on."
+  },
+  {
+    "name": "section-clause-in-plan-scope",
+    "scope": "plan",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "plan.review": true
+    },
+    "checks": [
+      {
+        "name": "plan scope, off section",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "plan scope, enabled true",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: a section clause names a section id as written. A plan scope condition is the same."
+  },
+  {
+    "name": "section-clause-ignores-answers",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "design": true,
+      "quiet-off": false
+    },
+    "checks": [
+      {
+        "name": "an answer review.enabled true does not turn the switch on",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "an answer review.enabled true leaves the off switch off",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "a settled answer in an on section does not matter",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "design",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section with no answers at all is read by its switch",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "quiet",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "a section with no answers at all, off",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "quiet-off",
+              "enabled": false
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: the switch is outside the questions and the answers. A stored answer named enabled is an ordinary answer."
+  },
+  {
+    "name": "answer-test-ignores-switches",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "design": false,
+      "access": false,
+      "plan": false
+    },
+    "checks": [
+      {
+        "name": "an answer in a section that is off still matches",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "review.enabled",
+              "answer": {
+                "is": true
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "an answer in a section that is off still fails a wrong value",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "review.enabled",
+              "answer": {
+                "is": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a bare name in a scope that is off",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "discipline",
+              "answer": {
+                "is": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a plan answer with every switch off",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "an empty answer in a section that is off is unsettled",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "design.owner",
+              "answer": {
+                "isSettled": false
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "an empty answer in a section that is off, isNot",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "design.owner",
+              "answer": {
+                "isNot": "x"
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "source": "0050-section-switch.md: the evaluator tests answers by the answers alone, so a switch never changes an answer test. Settled answers: 0035-settled-and-deferred-answers.md."
+  },
+  {
+    "name": "section-clause-with-questions",
+    "scope": "access",
+    "answers": "section-clause.answers.json",
+    "switches": {
+      "review": false,
+      "design": true
+    },
+    "checks": [
+      {
+        "name": "a question clause and a section clause both hold",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "the question clause holds and the section clause fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "the question clause fails and the section clause holds",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "design"
+              }
+            },
+            {
+              "section": "review",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "the section clause comes first and fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": true
+            },
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "the section clause comes first and holds",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            },
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "the section clause fails between two question clauses",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "section": "design",
+              "enabled": false
+            },
+            {
+              "question": "discipline",
+              "answer": {
+                "is": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "every clause holds, in a mix",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "section": "design",
+              "enabled": true
+            },
+            {
+              "section": "review",
+              "enabled": false
+            },
+            {
+              "question": "discipline",
+              "answer": {
+                "is": "design"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "two section clauses and the second fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            },
+            {
+              "section": "design",
+              "enabled": false
+            }
+          ]
+        }
+      },
+      {
+        "name": "two section clauses hold",
+        "holds": true,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            },
+            {
+              "section": "design",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "one section tested for both values",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "section": "review",
+              "enabled": false
+            },
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      },
+      {
+        "name": "only the last clause fails",
+        "holds": false,
+        "condition": {
+          "all": [
+            {
+              "question": "plan.discipline",
+              "answer": {
+                "is": "software"
+              }
+            },
+            {
+              "section": "design",
+              "enabled": true
+            },
+            {
+              "section": "review",
+              "enabled": true
+            }
+          ]
+        }
+      }
+    ],
+    "source": "conditions.md, condition: a condition holds when every clause holds, whatever the kind. 0050-section-switch.md: a section clause is one clause of the list."
   }
 ]
