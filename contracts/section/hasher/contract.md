@@ -1,6 +1,6 @@
 # Section hasher contract
 
-Status: draft, for a person to approve. Component: `section/hasher`. Issue: [#62](https://github.com/8thlight-daveloper/onboard-kit/issues/62).
+Status: approved. Component: `section/hasher`. Issue: [#62](https://github.com/8thlight-daveloper/onboard-kit/issues/62).
 
 The section hasher turns a Section into a short text, its content hash. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
