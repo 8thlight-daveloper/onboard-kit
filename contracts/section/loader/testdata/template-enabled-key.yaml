@@ -1,0 +1,14 @@
+schemaVersion: 1
+id: a
+title: T
+enabled: yes
+summary: S
+variables:
+  - name: v
+    enabled: true
+steps:
+  - id: s
+    name: S
+    enabled: false
+    checks:
+      - enabled: true

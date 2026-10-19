@@ -140,14 +140,14 @@ func TestReportsProblemsAndReturnsNoSection(t *testing.T) {
 	}
 }
 
-func TestLoadedSectionHasNoSourceAndNoUnknownFields(t *testing.T) {
+func TestLoadedSectionHasNoSourceNoUnknownFieldsAndNoSwitch(t *testing.T) {
 	for _, c := range loadCases(t) {
 		if c.Output == "" {
 			continue
 		}
 		got, _ := newLoader().Load(readFixture(t, c.Input))
-		if got.Source != nil || got.UnknownFields != nil {
-			t.Errorf("%s: want no source and no unknown fields, got\n%s", c.Name, describe(got))
+		if got.Source != nil || got.UnknownFields != nil || got.Enabled != nil {
+			t.Errorf("%s: want no source, no unknown fields, and no switch, got\n%s", c.Name, describe(got))
 		}
 	}
 }

@@ -20,9 +20,9 @@ body: |
   Run the build.
   Then check it.
 variables:
-  - name: enabled
+  - name: review
     type: boolean
-    description: Include this section?
+    description: Run the review?
     default: true
   - name: target
     description: Build target
@@ -58,13 +58,17 @@ variables:
         - question: plan.team_state
           answer:
             isNotOneOf: [x, z]
-        - question: enabled
+        - question: review
           answer:
             isSettled: false
         - question: code
           answer:
             is: true
             isNot: deferred
+        - section: setup
+          enabled: true
+        - section: access
+          enabled: false
 verification: It works.
 owner: $role
 escalation: [$backup]
@@ -75,6 +79,8 @@ includeIf:
     - question: plan.discipline
       answer:
         isOneOf: [software, design]
+    - section: access
+      enabled: true
 summary: Do the thing.
 title: All fields
 id: all-fields

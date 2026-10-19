@@ -2,7 +2,7 @@
   "id": "all-fields",
   "title": "All fields",
   "summary": "Do the thing.",
-  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "design"]}}]},
+  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "design"]}}, {"section": "access", "enabled": true}]},
   "timing": "days-8-to-30",
   "after": ["access", "setup"],
   "owner": "$role",
@@ -10,7 +10,7 @@
   "verification": "It works.",
   "body": "Run the build.\nThen check it.\n",
   "variables": [
-    {"name": "enabled", "type": "boolean", "description": "Include this section?", "default": true},
+    {"name": "review", "type": "boolean", "description": "Run the review?", "default": true},
     {"name": "target", "type": "choice", "description": "Build target", "options": ["debug", "release"], "default": "debug", "required": true, "phase": "planning"},
     {"name": "code", "description": "A code", "pattern": "^[A-Z]{3}$", "patternHint": "Three capitals", "phase": "onboarding"},
     {"name": "build_command", "type": "command", "description": "Build command", "default": ["make", "build"]},
@@ -20,8 +20,10 @@
         {"question": "plan.discipline", "answer": {"isNot": "design"}},
         {"question": "plan.team_state", "answer": {"isOneOf": ["established", "first-consultants"]}},
         {"question": "plan.team_state", "answer": {"isNotOneOf": ["x", "z"]}},
-        {"question": "enabled", "answer": {"isSettled": false}},
-        {"question": "code", "answer": {"is": true, "isNot": {"deferred": true}}}
+        {"question": "review", "answer": {"isSettled": false}},
+        {"question": "code", "answer": {"is": true, "isNot": {"deferred": true}}},
+        {"section": "setup", "enabled": true},
+        {"section": "access", "enabled": false}
       ]}}
   ],
   "steps": [

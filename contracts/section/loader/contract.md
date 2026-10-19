@@ -32,12 +32,14 @@ The known keys at each level. A key not listed is unknown.
 | Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
-| Clause | `question`, `answer` |
+| Clause | `question`, `answer`, `section`, `enabled` |
 | Answer test | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
 
 The `env` of a step is a map whose keys are the variable names it sets, so any scalar key is allowed there. Its values are text.
+
+`enabled` on a template is not a key either. A template never declares the section switch, and a template section is on when it is first added (0050). An `enabled` key on the template, on a variable, on a step, or on a check is unknown, with the problem and the path of any other unknown key, and its value is not read. `enabled` is a key of a clause only, see Clauses.
 
 `source` is not a template key. It belongs to a plan, and authors never write a hash into a template (0030, Identifiers). A `source` in a template is an unknown key, with the problem and the path of any other unknown key.
 
@@ -65,9 +67,20 @@ As the decoder, with the same codes, the same path `schemaVersion`, and `support
 | `file.not-a-template` | The file is empty or holds only comments or a lone `---`, or its top level is not a map. A list of sections is not a template | none |
 | `version.invalid`, `version.too-old`, `version.too-new` | See Version | `schemaVersion` |
 | `format.boolean-spelling`, `format.number-spelling`, `format.null-spelling`, `format.alias`, `format.duplicate-key`, `format.wrong-type`, `format.empty-answer`, `format.empty-item` | As the decoder | As the decoder |
-| `format.unknown-field` | A map has a key that the table above does not list | The key, such as `summery`, `source`, or `steps[0].extra` |
+| `format.wrong-type` | Also a clause with a key of each form. See Clauses | The clause |
+| `format.unknown-field` | A map has a key that the table above does not list | The key, such as `summery`, `source`, `enabled`, or `steps[0].extra` |
 
 Problems come in the order of their places in the file, and all are reported. The detail of a problem names its place in `detail.path`. A file problem is the only problem, and a version problem is the only problem. The value of an unknown key is not read, so nothing inside it is reported. A repeated unknown key is reported each time, with `format.duplicate-key` for each repeat.
+
+## Clauses
+
+A clause has one of two forms (0050).
+
+- A question clause has `question`, `answer`, or both, and none of the keys of a section clause.
+- A section clause has `section`, `enabled`, or both, and none of the keys of a question clause. It loads into `Section` and `Enabled` of the Clause. `section: access` with no `enabled` is `Enabled` false, by the rule for an absent field. `enabled: true` with no `section` is `Section` empty and `Enabled` true. The loader does not check the section id, as it does not check a question id. A clause with no key at all is a question clause with nothing in it, as before.
+- A clause with a key of each form is `format.wrong-type` at the clause, such as `includeIf.all[0]` or `variables[1].askIf.all[2]`. It is the code of the list that fits best: the clause is a kind the model does not allow, and no other code is about a clause as a whole. The clause is not read at all, so no other problem inside it is reported, not an unknown key, a spelling, or a wrong type. A key counts when it is present, even when its value is null. The Section is the zero Section, as for any problem.
+- In a section clause, `section` is text and `enabled` is a boolean, with the format guards of the decoder: `enabled: yes` is `format.boolean-spelling`, and `enabled: 1`, a quoted `"true"`, and a list are `format.wrong-type` at `enabled`. A `section` that is a plain `true` or a list is `format.wrong-type` at `section`. Any other key is `format.unknown-field`, at the key.
+- The two forms are the same in `includeIf` and in `askIf`.
 
 ## Reading the file
 
@@ -93,13 +106,14 @@ The loader judges the file's format and not its meaning. The section validator a
 - An `id` that is not a slug, or is `plan` or a reserved word. A variable `name` that breaks `[a-z][a-z0-9_]*` or is reserved. Two variables with one name, and two steps with one id.
 - A `timing`, `type`, or `phase` that is not in its list. A `type` that is absent stays empty, a `timing` stays empty, and a `phase` stays empty. The loader fills no default.
 - A `multiple` on a type that does not allow it, a `default` that does not fit its type, options, or pattern, and a `pattern` that is not valid RE2.
-- An `enabled` variable of any type. It is an ordinary Variable, with no special reading.
+- A variable named `enabled`, of any type. It is an ordinary Variable, with no special reading. The name is reserved (0050, reserved names), and reserved-name checks are the job of the section validator and the plan validator, not the loader. A clause with `question: enabled` is an ordinary question clause.
+- A section clause that names a section that does not exist, or the section itself. The plan validator reports it.
 - A condition that cannot do its job: a single value in `isOneOf`, tests that cannot hold together, a clause naming a question that does not exist, an `includeIf` that names a section question, and a `askIf` with no clauses.
 - A check with none of `run`, `ask`, `env`, or with more than one. A step `env` name that is not uppercase.
 - An `after` or `escalation` that names a section or variable that does not exist, or the section itself.
 - A secret in any value. The secrets check judges it.
 
-After loading, `includeIf` and `askIf` are `*Condition` values with their clauses in file order. `enabled` is a Variable named `enabled` in `Variables`, in file order, with the `Default` Value that the file gives. Nothing is resolved, ordered, or selected.
+After loading, `includeIf` and `askIf` are `*Condition` values with their clauses in file order. A section clause is a Clause with `Section` and `Enabled` and an empty `Question` and `Answer`. A variable named `enabled` is in `Variables`, in file order, with the `Default` Value that the file gives. Nothing is resolved, ordered, or selected.
 
 ## Properties
 
@@ -109,7 +123,7 @@ These hold for every file the contract tests use.
 - **Inputs unchanged.** The bytes are the same after the call as before, with or without a byte order mark.
 - **Nothing shared.** Changing a returned Section changes no other result.
 - **Whole or nothing.** A problem means the zero Section. A Section means no problems.
-- **No source, no unknown fields.** A loaded Section has a nil `Source` and nil `UnknownFields`.
+- **No source, no unknown fields, no switch.** A loaded Section has a nil `Source`, nil `UnknownFields`, and a nil `Enabled`.
 
 ## Not covered
 
@@ -132,6 +146,9 @@ Questions 2 to 4 are settled above so that the tests can run. A person decides w
 3. **The file code.** `file.not-a-template` is new. The decoder's `file.not-a-plan` names a plan.
 4. **`x-` keys.** The decoder keeps them on a plan and a section. A template rejects them. A person may want a place for author notes in a template, which would be an ADR 0030 change and a version bump.
 
+5. **Mixed clause code.** A clause with keys of both forms is `format.wrong-type` at the clause, because it is the code that fits best and no code is about a clause as a whole. A person may want a code of its own, such as `format.mixed-clause`. It would be a decoder change too.
+6. **Nothing read in a mixed clause.** The loader reports the mix and reads nothing else in the clause. Another reading reports the mix and the other problems of the clause.
+
 ## Wrong implementations tried
 
 Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
@@ -141,6 +158,13 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An unknown key kept or ignored at the top level, or only below it, or only at the top | `unknown-field-top`, `unknown-field-everywhere`, `unknown-field-repeated`, `many-problems` |
 | An unknown key accepted in a variable, condition, answer test, step, or check, or `schemaVersion` known inside a step | `unknown-field-everywhere` |
 | An `x-` key accepted | `unknown-field-top`, `unknown-field-repeated`, `many-problems` |
+| An `enabled` key accepted or read on the template, a variable, a step, or a check, its value read, or `Enabled` set to true or false on a loaded Section | `template-enabled-key`, the no-switch test, `all-fields` |
+| A section clause not read in `includeIf`, or not in `askIf`, or read as an empty question clause | `section-clauses`, `all-fields` |
+| `enabled` absent read as true, or `enabled` read from the wrong clause, or a section clause with `enabled: false` dropped | `section-clauses`, `all-fields` |
+| A clause with `section` and `question`, `section` and `answer`, or `enabled` and `question` loaded without a problem, or the first key winning | `section-clause-mixed` |
+| A mixed clause reported by another code, at the wrong path, reported more than once, or read for more problems, or a null mixing key ignored | `section-clause-mixed` |
+| A section clause with `enabled: yes`, `1`, `"true"`, or a list accepted, or `section` of the wrong kind accepted, or an extra key in it accepted | `section-clause-wrong-type` |
+| A variable named `enabled` refused, or a question clause on `enabled` refused | `unvalidated`, `all-fields` |
 | A `source` accepted silently, or read into the Section | `source-key`, `unknown-field-repeated`, the no-source test |
 | A plan file's `provenance`, `answers`, or `sections` accepted | `plan-as-template` |
 | The value of an unknown key read for problems | `unknown-field-top`, `unknown-field-repeated`, `many-problems` |
