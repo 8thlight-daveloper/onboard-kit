@@ -176,7 +176,7 @@ func conditionObject(condition model.Condition) object {
 
 func clauseObject(clause model.Clause) object {
 	var o object
-	if clause.Section != "" {
+	if clause.Section != "" || (clause.Enabled && clause.Question == "") {
 		o.addText("section", clause.Section)
 		o.add("enabled", clause.Enabled)
 		return o
