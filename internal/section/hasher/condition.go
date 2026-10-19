@@ -18,7 +18,16 @@ func clauseText(clause model.Clause) string {
 	return fields{}.
 		withString("question", clause.Question).
 		withRaw("answer", answerTestText(clause.Answer), !isZeroAnswerTest(clause.Answer)).
+		withString("section", clause.Section).
+		withRaw("enabled", flagText(clause.Enabled), clause.Section != "" || clause.Enabled).
 		text()
+}
+
+func flagText(flag bool) string {
+	if flag {
+		return "true"
+	}
+	return "false"
 }
 
 func isZeroAnswerTest(test model.AnswerTest) bool {
@@ -38,8 +47,5 @@ func answerTestText(test model.AnswerTest) string {
 }
 
 func settledText(settled *bool) string {
-	if settled != nil && *settled {
-		return "true"
-	}
-	return "false"
+	return flagText(settled != nil && *settled)
 }
