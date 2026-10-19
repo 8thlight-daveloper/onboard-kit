@@ -52,6 +52,6 @@ A person answers, or accepts, more questions than before. A walk through the que
 
 ## Not decided
 
-- How a section is switched on or off. It should not be a variable or a question. See the open decision on section switches.
+- How a section is switched on or off. It should not be a variable or a question. See [0050](0050-section-switch.md).
 - Whether the TUI shows a default as a pre-filled entry or as a hint.
 - Whether a plan can record that a person accepted every default at once, or each answer stands alone.
