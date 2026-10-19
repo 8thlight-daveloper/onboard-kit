@@ -16,7 +16,7 @@
       "full.section.json"
     ],
     "canonical": "full.canonical.json",
-    "hash": "ead639cb185094ad0ef4eb6cd1d37ba1c2f5bb70eb6ff6a22abef0d35ec5678a",
+    "hash": "ba4e0687bfdf77afc6349a7c09e930c8d2669b1c4dc2b5723c410b4a55a19270",
     "source": "Hand-written. Every field of every type is set, with a source that must be left out, an env entry with an empty value, and repeats in the two sets. Contract rules: the key order tables, Fields, Sets. 0030: it excludes source."
   },
   {
@@ -36,8 +36,8 @@
       "values.section.json"
     ],
     "canonical": "values.canonical.json",
-    "hash": "b05beb8cf9780ecaac79a740cdbc29bf6238d76b3362e50be74fa4113b8f03b7",
-    "source": "Hand-written. Contract rules: Values, Conditions, Sets. The Value kinds are from the domain model. The Text unknown-yet is a word from 0030 and the domain model, and differs from the Unknown kind. The isOneOf items are out of order on purpose."
+    "hash": "d6b24b9ad42669b2348dbcba4a65a01e98b19e6c106a03853c6087b6349d4f72",
+    "source": "Hand-written. Contract rules: Values, Conditions, Sets. The Value kinds are from the domain model. The Text deferred is the stored word from 0035, and differs from the Deferred kind. The isOneOf items are out of order on purpose."
   },
   {
     "name": "unknown-fields",
@@ -66,7 +66,7 @@
       "sets.section.json"
     ],
     "canonical": "sets.canonical.json",
-    "hash": "635e4cf09156a3376bbe2a7f059a2b9cc159ef77e0adebe12b52a5e81129c8f0",
+    "hash": "df52f01608459f10e7aba68668ea35879e1cfa3fb8bde2c23179faa10f6361d7",
     "source": "Hand-written. Contract rule: Sets. docs/reference/section-template-schema/ordering.md: `after` lists the sections that must come before. The input is out of order with repeats, and the isOneOf items are of every kind."
   },
   {
@@ -126,7 +126,7 @@
       "sets.section.json",
       "sets-order.sections.json"
     ],
-    "hash": "635e4cf09156a3376bbe2a7f059a2b9cc159ef77e0adebe12b52a5e81129c8f0",
+    "hash": "df52f01608459f10e7aba68668ea35879e1cfa3fb8bde2c23179faa10f6361d7",
     "source": "Contract rule: Sets. `after`, `isOneOf`, and `isNotOneOf` in any order and with repeats hash alike."
   },
   {
@@ -175,7 +175,7 @@
     "inputs": [
       "value-kinds.sections.json"
     ],
-    "source": "Contract rule: Values. A Value is written by its kind. Absent, Flag, Text, Unknown, and List are all different, whatever the text inside them looks like."
+    "source": "Contract rule: Values. A Value is written by its kind. Absent, Flag, Text, Deferred, and List are all different, whatever the text inside them looks like."
   },
   {
     "name": "unknown-shapes",

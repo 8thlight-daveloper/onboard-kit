@@ -45,7 +45,7 @@ A Section is written as an object. Its keys come in this order, and `source` is 
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer` |
-| AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isAnswered` |
+| AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
 
@@ -53,7 +53,7 @@ A Section is written as an object. Its keys come in this order, and `source` is 
 
 - A key is written as a string, then `:`, then its value. Keys and items are separated by `,`. An object is `{` and `}`, and a list is `[` and `]`.
 - A key with a zero value is omitted. Zero means an empty string, `false`, a list with no items, a map with no entries, a Value of kind none, a nil pointer, a Condition with no clauses, or an AnswerTest with every field zero. A zero field has no effect, so it is the same as an absent one, whether a list is nil or empty.
-- A `isAnswered` that is set is written, including `false`, because `false` is a test.
+- An `isSettled` that is set is written, including `false`, because `false` is a test.
 - An item of a list is always written. A clause, step, or check with every field zero is `{}`, and a variable with every field zero is `{"type":"string","phase":"planning"}`, because of the defaults. Dropping an item would shorten the list.
 - Nothing is validated. A check with two of `run` and `ask`, a `timing` that is not a timing, and a clause with two tests are all written as held.
 - A map is written as an object with its keys in ascending byte order of their UTF-8 text. This covers a step's `env` and the keys inside `unknownFields`. An entry is written even when its value is empty.
@@ -101,7 +101,7 @@ Every other character is written as it is, including `<`, `>`, `&`, U+007F, U+20
 
 ### Lists and sets
 
-Three lists are sets: a section's `after`, and `isOneOf` and `isNotOneOf`. Their order and repeats have no effect, because `after` is the set of sections that must come before this one (see [ordering](../../../docs/reference/section-template-schema/ordering.md)), and `isOneOf` and `isNotOneOf` test membership. A set is written sorted in ascending byte order, with repeats removed. The items of `after` are sorted by the bytes of the id. The items of the two tests are sorted by the bytes of their canonical text, as the Values section gives it, so the Text `"a"`, the list `["x"]`, `null`, `true`, and `{"unknown":true}` come in that order.
+Three lists are sets: a section's `after`, and `isOneOf` and `isNotOneOf`. Their order and repeats have no effect, because `after` is the set of sections that must come before this one (see [ordering](../../../docs/reference/section-template-schema/ordering.md)), and `isOneOf` and `isNotOneOf` test membership. A set is written sorted in ascending byte order, with repeats removed. The items of `after` are sorted by the bytes of the id. The items of the two tests are sorted by the bytes of their canonical text, as the Values section gives it, so the Text `"a"`, the list `["x"]`, `null`, `true`, and `{"deferred":true}` come in that order.
 
 Every other list is written in the order held, and its repeats are kept, because its order is behavior: `steps`, `variables`, `checks`, `run`, `escalation` (an ordered list of who to ask), `options`, a Variable's list default, a Clause list in `all`, and every list inside `unknownFields`. The hasher never sorts or reverses these, and never removes an item.
 
@@ -111,10 +111,10 @@ A Value is written by its kind, and the other fields of the Value are ignored.
 
 | Kind | Written as |
 | -- | -- |
-| Text | A string. The Text `unknown-yet` is an ordinary string |
+| Text | A string. The Text `deferred` is an ordinary string, and differs from the Deferred kind |
 | Flag | `true` or `false` |
 | List | A list of strings in the order held, `[]` when empty |
-| Unknown | `{"unknown":true}` |
+| Deferred | `{"deferred":true}` |
 | None | The key is omitted. As an item of `isOneOf` or `isNotOneOf`, it is `null` |
 
 A Value of kind Text with no text is `""`, so a `default` of the empty string differs from no `default`. A Flag that is `false` is written, so `default: false` differs from no `default`. These are values, not prose, and they are never normalized.
@@ -208,12 +208,12 @@ While drafting, 109 wrong hashers were written as scratch work outside the repo,
 | A JSON library's escaping of `<`, `>`, `&`, U+2028, `\b`, `\f`, or non-ASCII | `strings`, `unknown-fields` |
 | A control character in upper-case hex, DEL escaped, or a newline written as `\u000a` | `strings`, `full` |
 | `false` or an empty text `default` treated as absent | `value-kinds`, `values` |
-| The Text `unknown-yet` written as the Unknown kind | `value-kinds`, `values`, `full` |
+| The Text `deferred` written as the Deferred kind | `value-kinds`, `values`, `full` |
 | A Value written by its non-zero fields and not by its kind | The by-kind test |
 | A decimal `2.0` written `2`, an integer as a string, or an exponent written | `unknown-shapes`, `unknown-fields`, the number test |
 | `int` not supported, or `int` and `int64` hashed differently | The number test |
 | A zero step, variable, check, clause, or list item dropped, or a none item of `isOneOf` dropped | `every-field`, `field-boundaries`, `sets`, `values` |
-| A zero answer written as `{}`, or `isAnswered: false` dropped | `values`, `full` |
+| A zero answer written as `{}`, or `isSettled: false` dropped | `values`, `full` |
 | Keys in alphabetical order, or two keys of a clause or a variable swapped | `full`, `values`, `basic` |
 | SHA-1, a truncated hash, or upper-case hex | The shape test, every golden case |
 | Whitespace, indentation, or a final newline in the canonical form | Every golden case |

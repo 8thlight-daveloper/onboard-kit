@@ -400,14 +400,14 @@ func TestAValueIsHashedByItsKindAlone(t *testing.T) {
 		value model.Value
 		want  string
 	}{
-		"text with stray fields":    {model.Value{Kind: model.ValueKindText, Text: "a", Flag: true, List: []string{"z"}}, `,"default":"a"`},
-		"flag with stray fields":    {model.Value{Kind: model.ValueKindFlag, Flag: true, Text: "z", List: []string{"z"}}, `,"default":true`},
-		"false flag":                {model.Value{Kind: model.ValueKindFlag, Text: "z"}, `,"default":false`},
-		"list with stray fields":    {model.Value{Kind: model.ValueKindList, List: []string{"a"}, Text: "z", Flag: true}, `,"default":["a"]`},
-		"unknown with stray fields": {model.Value{Kind: model.ValueKindUnknown, Text: "z", Flag: true, List: []string{"z"}}, `,"default":{"unknown":true}`},
-		"none with stray fields":    {model.Value{Text: "z", Flag: true, List: []string{"z"}}, ``},
-		"nil list":                  {model.Value{Kind: model.ValueKindList}, `,"default":[]`},
-		"empty list":                {model.Value{Kind: model.ValueKindList, List: []string{}}, `,"default":[]`},
+		"text with stray fields":     {model.Value{Kind: model.ValueKindText, Text: "a", Flag: true, List: []string{"z"}}, `,"default":"a"`},
+		"flag with stray fields":     {model.Value{Kind: model.ValueKindFlag, Flag: true, Text: "z", List: []string{"z"}}, `,"default":true`},
+		"false flag":                 {model.Value{Kind: model.ValueKindFlag, Text: "z"}, `,"default":false`},
+		"list with stray fields":     {model.Value{Kind: model.ValueKindList, List: []string{"a"}, Text: "z", Flag: true}, `,"default":["a"]`},
+		"deferred with stray fields": {model.Value{Kind: model.ValueKindDeferred, Text: "z", Flag: true, List: []string{"z"}}, `,"default":{"deferred":true}`},
+		"none with stray fields":     {model.Value{Text: "z", Flag: true, List: []string{"z"}}, ``},
+		"nil list":                   {model.Value{Kind: model.ValueKindList}, `,"default":[]`},
+		"empty list":                 {model.Value{Kind: model.ValueKindList, List: []string{}}, `,"default":[]`},
 	}
 	for name, c := range cases {
 		t.Run(name, func(t *testing.T) {
