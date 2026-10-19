@@ -1,0 +1,25 @@
+schemaVersion: 1
+variables:
+  - name: organization
+    description: Name of the organization
+    required: true
+  - name: team
+    description: Name of the team the consultant joins
+    required: true
+  - name: team_state
+    description: Is the team established, or are we the first consultants?
+    options:
+      - established
+      - first-consultants
+    required: true
+  - name: discipline
+    description: Which discipline is this plan for?
+    options:
+      - software
+      - design
+    required: true
+  - name: output_style
+    description: Target format of the document
+    options:
+      - markdown
+    default: markdown
