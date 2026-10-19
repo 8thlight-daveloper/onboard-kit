@@ -19,7 +19,7 @@ asked.
   `git ls-remote git@git.acme.example:platform/widget-service.git` succeeds.
 - [ ] **CI dashboard.** Granted by Platform team lead. Sign in as `<account_name>`. You
   know it worked when you can open the CI dashboard.
-- [ ] **Work tracker.** Granted by _unknown yet_. You know it worked when you can open
+- [ ] **Work tracker.** Granted by _deferred_. You know it worked when you can open
   the work tracker.
 
 You know you are done when you can open the repository, the CI dashboard, and the

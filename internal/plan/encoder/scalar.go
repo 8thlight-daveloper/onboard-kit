@@ -7,7 +7,7 @@ import (
 	"unicode"
 )
 
-const unknownMarker = "unknown-yet"
+const deferredMarker = "deferred"
 
 func textNode(text string) node {
 	if chomp, lines, ok := literalBlock(text); ok {
@@ -68,7 +68,7 @@ func startsPlainly(first byte) bool {
 
 func isReservedWord(text string) bool {
 	switch strings.ToLower(text) {
-	case "y", "n", "yes", "no", "true", "false", "on", "off", "null", "inf", "nan", unknownMarker:
+	case "y", "n", "yes", "no", "true", "false", "on", "off", "null", "inf", "nan", deferredMarker:
 		return true
 	}
 	return false

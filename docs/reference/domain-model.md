@@ -142,9 +142,9 @@ A Value is one of:
 | Text | Text | A string |
 | Flag | Boolean | `true` or `false`, lowercase |
 | List | List of text | A list. Used by `command` variables and `multiple` variables |
-| Unknown | Nothing | The literal `unknown-yet`, accepted for every type |
+| Deferred | Nothing | The literal `deferred`, accepted for every type. The person chose to answer later |
 
-A Value is a real answer unless it is Unknown or empty. See [conditions](section-template-schema/conditions.md).
+A Value is a settled answer unless it is Deferred or empty. See [conditions](section-template-schema/conditions.md).
 
 ## Section
 
@@ -194,7 +194,7 @@ A Value is a real answer unless it is Unknown or empty. See [conditions](section
 | Clause | `answer` | An AnswerTest |
 | AnswerTest | `is`, `isNot` | One Value |
 | AnswerTest | `isOneOf`, `isNotOneOf` | A list of two or more Values |
-| AnswerTest | `isAnswered` | Boolean |
+| AnswerTest | `isSettled` | Boolean |
 
 Several tests in one AnswerTest must all hold. A section uses a Condition only through `includeIf`, and a variable only through `askIf`.
 

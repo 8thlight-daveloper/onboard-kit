@@ -31,9 +31,9 @@ A `$` must be followed by a valid name or by another `$`. Anything else is a lin
 
 Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a variable, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so a variable never expands inside `run`. To require or set one, see [environment variables in steps](steps.md#environment-variables).
 
-## Unknown answers
+## Deferred answers
 
-`unknown-yet` lets a person move past a question they cannot answer yet and come back to it later. The plan stays valid and assemblable in the meantime. It renders as a visible gap with an owner and timing, so the missing value is not lost, and a user interface can list these questions on the review screen. It is accepted for every type, as its own entry and not as free text. It satisfies a required question.
+`deferred` lets a person move past a question they cannot answer yet and come back to it later. The plan stays valid and assemblable in the meantime. It renders as a visible gap with an owner and timing, so the missing value is not lost, and a user interface can list these questions on the review screen. It is accepted for every type, as its own entry and not as free text. It satisfies a required question, as a settled answer does. An unanswered question does not.
 
 ## Fields
 
@@ -77,7 +77,7 @@ A `person` variable names someone who can help with something. One answer is one
 ```
 
 - **Two ways to reach each person.** The prompt suggests an email and a chat handle. The tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A warning never stops the answer.
-- **A backup.** A required `multiple` variable needs at least one person, or `unknown-yet`. A `multiple` variable with exactly one person gets a warning, because that person may be out of office.
+- **A backup.** A required `multiple` variable needs at least one person, or `deferred`. A `multiple` variable with exactly one person gets a warning, because that person may be out of office.
 - **Ask once.** Same-name `person` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
 - **Rendering.** In the document the lines appear in order, one per line in a list, or joined with a comma and the word then in a sentence.
 - **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.

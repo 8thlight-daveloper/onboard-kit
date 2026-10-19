@@ -8,11 +8,11 @@
     "plan": {
       "team_state": "established",
       "commands": ["make", "test"],
-      "organization": {"unknown": true}
+      "organization": {"deferred": true}
     },
     "sections": {
       "s": {
-        "note": "unknown-yet"
+        "note": "deferred"
       }
     }
   },

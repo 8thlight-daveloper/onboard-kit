@@ -56,7 +56,7 @@
         "source_control_grantor": "IT service desk",
         "ci_grantor": "Platform team lead",
         "tracker_grantor": {
-          "unknown": true
+          "deferred": true
         },
         "repo_url": "git@git.acme.example:platform/widget-service.git"
       },
@@ -115,7 +115,7 @@
               {
                 "question": "repo_url",
                 "answer": {
-                  "isAnswered": true
+                  "isSettled": true
                 }
               }
             ]

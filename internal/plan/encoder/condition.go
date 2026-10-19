@@ -26,8 +26,8 @@ func (c *collector) answerTestNode(test model.AnswerTest, path string) node {
 	builder.add("isNot", valueNode(test.IsNot))
 	builder.add("isOneOf", c.valueSequence(test.IsOneOf, path+".isOneOf"))
 	builder.add("isNotOneOf", c.valueSequence(test.IsNotOneOf, path+".isNotOneOf"))
-	if test.IsAnswered != nil {
-		builder.add("isAnswered", booleanNode(*test.IsAnswered))
+	if test.IsSettled != nil {
+		builder.add("isSettled", booleanNode(*test.IsSettled))
 	}
 	return builder.build()
 }

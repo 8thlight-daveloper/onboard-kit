@@ -1,0 +1,5 @@
+# Mutants of plan/encoder that a person checked and accepted: the change alters no behavior.
+# Each line: checksum | file | change | why it alters nothing. Only a person adds a line.
+# A checksum depends on the mutated file, so an edit to the file brings its survivors back.
+# Checked on 2026-10-19: the mutation applied in a scratch copy, same bytes and problems as the unmutated encoder on 2,000,014 plans, and the same text from strconv.FormatFloat on 10,000,017 floats.
+23d8a1d75c30e946ab794a6432a32e27 | unknown.go | FormatFloat precision -1 becomes -2 | Go treats every negative precision as the shortest exact form, so -1 and -2 produce identical text.

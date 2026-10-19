@@ -27,7 +27,7 @@ sequenceDiagram
     T->>F: Questions
     F-->>T: Questions of the sections that now apply
     T->>C: Ask each question once
-    C-->>T: Answers, or unknown yet
+    C-->>T: Answers, or deferred
     T->>E: Submit each value
     E-->>T: Plan, and any problems
     T->>C: Review screen with sections and answers

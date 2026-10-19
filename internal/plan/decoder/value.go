@@ -32,8 +32,8 @@ func (c *collector) optionalValueOf(node *yaml.Node, at location) model.Value {
 func scalarValueOf(node *yaml.Node) model.Value {
 	if isPlain(node) {
 		switch {
-		case node.Value == unknownYetText:
-			return model.Value{Kind: model.ValueKindUnknown}
+		case node.Value == deferredText:
+			return model.Value{Kind: model.ValueKindDeferred}
 		case classify(node) == scalarBoolean:
 			return model.Value{Kind: model.ValueKindFlag, Flag: node.Value == "true"}
 		}

@@ -140,8 +140,8 @@ func valueOf(value model.Value) any {
 		return value.Flag
 	case model.ValueKindList:
 		return stringsOf(value.List)
-	case model.ValueKindUnknown:
-		return object{{"unknown", true}}
+	case model.ValueKindDeferred:
+		return object{{"deferred", true}}
 	}
 	return nil
 }
@@ -190,8 +190,8 @@ func clauseObject(clause model.Clause) object {
 	if len(clause.Answer.IsNotOneOf) > 0 {
 		test.add("isNotOneOf", mapValues(clause.Answer.IsNotOneOf))
 	}
-	if clause.Answer.IsAnswered != nil {
-		test.add("isAnswered", *clause.Answer.IsAnswered)
+	if clause.Answer.IsSettled != nil {
+		test.add("isSettled", *clause.Answer.IsSettled)
 	}
 	o.add("answer", test)
 	return o

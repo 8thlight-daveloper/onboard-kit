@@ -21,7 +21,7 @@
     "name": "answers",
     "input": "../../testdata/answers.yaml",
     "output": "../../testdata/answers.plan.json",
-    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Values. The plain word unknown-yet is the Unknown value, the quoted one is text."
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. Contract rule: Values. The plain word deferred is the Deferred value, the quoted one is text."
   },
   {
     "name": "unknown-fields",
@@ -75,7 +75,7 @@
     "name": "zero-and-null",
     "input": "zero-and-null.yaml",
     "output": "zero-and-null.plan.json",
-    "source": "Hand-written. Contract rules: Null and empty values, Strings. 0030: null is null or an omitted key. unknown-yet is the Unknown value only where an answer or a default is read."
+    "source": "Hand-written. Contract rules: Null and empty values, Strings. 0030: null is null or an omitted key. deferred is the Deferred value only where an answer or a default is read."
   },
   {
     "name": "value-lists-in-conditions",
@@ -1391,7 +1391,7 @@
         "path": "answers.sections.u.v[0]"
       }
     ],
-    "source": "Hand-written. Contract rule: Values. The domain model says a Value is text, a flag, a list of text, or unknown. A plain true or false is not text, so it is a wrong type as an item of a List Value too."
+    "source": "Hand-written. Contract rule: Values. The domain model says a Value is text, a flag, a list of text, or deferred. A plain true or false is not text, so it is a wrong type as an item of a List Value too."
   },
   {
     "name": "wrong-type-answers-shape",

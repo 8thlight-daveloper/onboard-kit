@@ -39,7 +39,7 @@ answers:
       onboarding_owner_role: Engineering manager
       repo_url: git@git.acme.example:platform/widget-service.git
       source_control_grantor: IT service desk
-      tracker_grantor: unknown-yet
+      tracker_grantor: deferred
     clone-and-run-tests:
       repo_dir: widget-service
       repo_url: git@git.acme.example:platform/widget-service.git
@@ -82,7 +82,7 @@ sections:
           all:
             - question: repo_url
               answer:
-                isAnswered: true
+                isSettled: true
       - name: ci_grantor
         description: Who grants CI dashboard access
         required: true

@@ -45,7 +45,7 @@
     "name": "conditions",
     "input": "../../testdata/conditions.plan.json",
     "output": "../../testdata/conditions.yaml",
-    "source": "Hand-written. Contract rule: Keys, isAnswered. Condition syntax is from docs/reference/section-template-schema/conditions.md."
+    "source": "Hand-written. Contract rule: Keys, isSettled. Condition syntax is from docs/reference/section-template-schema/conditions.md."
   },
   {
     "name": "list-order",
@@ -57,7 +57,7 @@
     "name": "acme",
     "input": "../../testdata/acme.plan.json",
     "output": "../../../../docs/reference/examples/acme/acme.obk.yaml",
-    "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: unknown-yet answers became unknown markers, and a single run string became a one-item list."
+    "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: deferred answers became deferred markers, and a single run string became a one-item list."
   },
   {
     "name": "empty-answer",

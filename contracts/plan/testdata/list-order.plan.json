@@ -52,7 +52,7 @@
           {
             "question": "q2",
             "answer": {
-              "isAnswered": true
+              "isSettled": true
             }
           }
         ]

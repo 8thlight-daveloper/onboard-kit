@@ -9,7 +9,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 | Doc | Covers |
 | -- | -- |
 | This page | The section fields, selection, and the format rules |
-| [variables.md](variables.md) | The `$name` syntax, dollar signs, `unknown-yet`, fields, types, and phase |
+| [variables.md](variables.md) | The `$name` syntax, dollar signs, `deferred`, fields, types, and phase |
 | [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
 | [optional-sections.md](optional-sections.md) | The `enabled` toggle |
 | [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |

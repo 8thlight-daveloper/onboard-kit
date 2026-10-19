@@ -14,5 +14,5 @@ type AnswerTest struct {
 	IsNot      Value
 	IsOneOf    []Value
 	IsNotOneOf []Value
-	IsAnswered *bool
+	IsSettled  *bool
 }

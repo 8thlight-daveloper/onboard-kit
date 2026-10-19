@@ -24,7 +24,7 @@ The same rules apply everywhere. The goal is that two people, or two versions of
 
 ### Keys
 
-A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. A condition test written `isAnswered` is the exception: it is written whenever it is set, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
+A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. A condition test written `isSettled` is the exception: it is written whenever it is set, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
 
 | Type | Key order |
 | -- | -- |
@@ -33,7 +33,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer` |
-| AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isAnswered` |
+| AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
 | Source | `template`, `hash` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
@@ -53,7 +53,7 @@ Unknown fields are written after the known keys, as siblings of them, in ascendi
   - It has no control character and no newline.
   - It does not contain `: ` or ` #`, and does not end with `:`.
   - It is not, ignoring case, one of `y`, `n`, `yes`, `no`, `true`, `false`, `on`, `off`, `null`, `inf`, `nan`.
-  - It is not the Text value `unknown-yet`.
+  - It is not the Text value `deferred`.
 - Inside double quotes, `\`, `"`, newline, tab, and return are written `\\`, `\"`, `\n`, `\t`, and `\r`. Other control characters are written `\xNN`. Every other character is written as it is.
 - A date such as `2026-10-15` starts with a digit, so it is always quoted.
 
@@ -79,7 +79,7 @@ A list is written as a block list, one item per line, even for short lists of wo
 | Text | A string, by the string rules |
 | Flag | `true` or `false` |
 | List | A block list of strings, or `[]` when the list is empty, wherever a Value is written |
-| Unknown | The plain word `unknown-yet` |
+| Deferred | The plain word `deferred` |
 
 A Value of kind none inside answers is a problem: `encode.empty-answer`.
 
@@ -136,4 +136,4 @@ While drafting, these wrong encoders were written as scratch work outside the re
 | Every multi-line string as a literal block | `multiline`, the well-formed test |
 | A string with two final newlines as `\|+` | `multiline` |
 | An empty answer written as `null`, no problem | `empty-answer` |
-| The Text `unknown-yet` written plain | `answers`, `strings` |
+| The Text `deferred` written plain | `answers`, `strings` |

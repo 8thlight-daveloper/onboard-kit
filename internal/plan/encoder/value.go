@@ -10,8 +10,8 @@ func valueNode(value model.Value) node {
 		return booleanNode(value.Flag)
 	case model.ValueKindList:
 		return valueList(value.List)
-	case model.ValueKindUnknown:
-		return scalarNode(unknownMarker)
+	case model.ValueKindDeferred:
+		return scalarNode(deferredMarker)
 	}
 	return nil
 }

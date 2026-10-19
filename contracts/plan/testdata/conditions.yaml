@@ -14,10 +14,10 @@ variables:
             isNotOneOf:
               - c
               - d
-            isAnswered: true
+            isSettled: true
         - question: flag
           answer:
             is: false
         - question: x
           answer:
-            isAnswered: false
+            isSettled: false

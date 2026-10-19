@@ -16,5 +16,5 @@ variables:
 - **The question** has the id `<section>.enabled`. The finder returns it before that section's other questions, in document order, see [ordering](ordering.md). The answer is stored in `answers.sections.<id>.enabled`.
 - **When the answer is false**, the section's other questions are inactive. They keep their stored answers, are not asked, and do not block.
 - **No answer.** The `default` applies. With neither an answer nor a default, the section is off. A `required` toggle with no answer is a blocker.
-- **Restrictions.** `enabled` must be `boolean`. `unknown-yet` is not accepted for it, because a section is either in or out. `askIf` is not supported on it yet.
+- **Restrictions.** `enabled` must be `boolean`. `deferred` is not accepted for it, because a section is either in or out. `askIf` is not supported on it yet.
 - **Conditions can test it.** A clause can name `<section>.enabled` like any other question. Only an explicit answer counts, not the default, so `is: true` is false until someone answers.

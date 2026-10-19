@@ -19,7 +19,7 @@
       "body": "Body text.",
       "variables": [
         {"name": "backup", "description": "Backup", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "phase": "onboarding",
-         "askIf": {"all": [{"question": "enabled", "answer": {"isAnswered": true}}]}}
+         "askIf": {"all": [{"question": "enabled", "answer": {"isSettled": true}}]}}
       ],
       "steps": [
         {

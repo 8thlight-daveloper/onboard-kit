@@ -7,7 +7,7 @@ const (
 	ValueKindText
 	ValueKindFlag
 	ValueKindList
-	ValueKindUnknown
+	ValueKindDeferred
 )
 
 type Value struct {

@@ -5,10 +5,10 @@ provenance:
     generatedOn: 2026-10-15
     templateSet: 'abc1234'
 answers:
-    plan: {team_state: established, commands: [make, test], organization: unknown-yet}
+    plan: {team_state: established, commands: [make, test], organization: deferred}
     sections:
         s:
-            note: "unknown-yet"
+            note: "deferred"
 sections:
     - title: 'It''s hand written'
       id: s

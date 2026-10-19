@@ -23,7 +23,7 @@ const (
 
 const (
 	quotedOrBlockStyle = yaml.DoubleQuotedStyle | yaml.SingleQuotedStyle | yaml.LiteralStyle | yaml.FoldedStyle
-	unknownYetText     = "unknown-yet"
+	deferredText       = "deferred"
 )
 
 var (

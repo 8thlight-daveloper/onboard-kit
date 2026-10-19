@@ -10,10 +10,10 @@
         "make",
         "test"
       ],
-      "unknown_one": {
-        "unknown": true
+      "deferred_one": {
+        "deferred": true
       },
-      "unknown_text": "unknown-yet",
+      "deferred_text": "deferred",
       "empty_list": []
     },
     "sections": {
@@ -26,7 +26,7 @@
       },
       "access": {
         "tracker_grantor": {
-          "unknown": true
+          "deferred": true
         },
         "repo_url": "git@git.acme.example:platform/widget-service.git"
       }

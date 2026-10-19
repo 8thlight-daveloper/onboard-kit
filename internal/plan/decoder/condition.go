@@ -66,8 +66,8 @@ func (c *collector) answerTestOf(node *yaml.Node, at location) model.AnswerTest 
 			test.IsOneOf = c.answerListOf(found.value, found.at)
 		case "isNotOneOf":
 			test.IsNotOneOf = c.answerListOf(found.value, found.at)
-		case "isAnswered":
-			test.IsAnswered = c.optionalFlagPointerOf(found.value, found.at)
+		case "isSettled":
+			test.IsSettled = c.optionalFlagPointerOf(found.value, found.at)
 		default:
 			c.rejectUnknown(found)
 		}

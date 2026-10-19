@@ -73,7 +73,7 @@ The decoder accepts anything YAML allows, so a hand edit never fails for style.
 
 ### Scalars
 
-A plain scalar is a value written without quotes. A quoted scalar, and a literal or folded block, is always text, whatever it says: `"yes"`, `"123"`, `"null"`, and `"unknown-yet"` are text. A plain scalar is read by these rules, in this order.
+A plain scalar is a value written without quotes. A quoted scalar, and a literal or folded block, is always text, whatever it says: `"yes"`, `"123"`, `"null"`, and `"deferred"` are text. A plain scalar is read by these rules, in this order.
 
 | Plain scalar | Read as |
 | -- | -- |
@@ -82,7 +82,7 @@ A plain scalar is a value written without quotes. A quoted scalar, and a literal
 | `null`, or nothing at all after the key | Null |
 | `~`, `Null`, or `NULL`, and no other case: `nULL` is text | `format.null-spelling` |
 | A number | See Numbers |
-| Anything else, including `unknown-yet` | Text |
+| Anything else, including `deferred` | Text |
 
 ### Numbers
 
@@ -111,19 +111,19 @@ A Value is read in an answer, in a `default`, in `is` and `isNot`, and in each i
 | -- | -- |
 | A quoted scalar, block, or plain text | Text |
 | `true` or `false`, plain | Flag |
-| A plain `unknown-yet` | Unknown |
+| A plain `deferred` | Deferred |
 | A list of strings | List, and an empty list is a List with no items, not none |
 | Null in an answer or an item | `format.empty-answer` |
 | Null as `default`, `is`, or `isNot`, or an absent key | None |
 | A map, or a list holding a list or a map | `format.wrong-type` |
 
-The word `unknown-yet` is the Unknown value only when it is a whole plain Value. Quoted, it is text. As an item of a list, or anywhere a string is read, such as a `title`, it is text.
+The word `deferred` is the Deferred value only when it is a whole plain Value. Quoted, it is text. As an item of a list, or anywhere a string is read, such as a `title`, it is text.
 
 ### Known fields
 
 A string field takes text. A boolean field takes a plain `true` or `false`. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
-A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isAnswered` that is null is unset.
+A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
 
@@ -166,7 +166,7 @@ While drafting, a reference decoder was written as scratch work outside the repo
 | A newer file reported with its other problems | `version-too-new-with-other-problems` |
 | Two `schemaVersion` keys, the last one winning | `duplicate-version` |
 | A date read as a time value, or reformatted | `hand-edited` |
-| Quoted `unknown-yet` read as Unknown, or plain read as text | `answers`, `strings`, `hand-edited`, `zero-and-null` |
+| Quoted `deferred` read as Deferred, or plain read as text | `answers`, `strings`, `hand-edited`, `zero-and-null` |
 | `1.0`, `123`, `0123`, `0x1F`, `1e3`, `.inf`, or an over-long integer read as text or as a number | `number-spelling` |
 | `~`, `Null`, `NULL` read as null | `null-spelling` |
 | Defaults filled for `type`, `timing`, or `phase` | `conditions`, `zero-and-null`, `acme` |
@@ -185,8 +185,8 @@ While drafting, a reference decoder was written as scratch work outside the repo
 | A wrong-type map scanned for more problems | `wrong-type` |
 | A null item dropped from a list | `empty-item` |
 | `source: null` read as an empty Source, or an empty Source read as nil | `zero-and-null` |
-| `isAnswered: null` read as false | `zero-and-null` |
-| A plain `unknown-yet` read as Unknown in a list or in a string field | `zero-and-null` |
+| `isSettled: null` read as false | `zero-and-null` |
+| A plain `deferred` read as Deferred in a list or in a string field | `zero-and-null` |
 | A merge key with a map value read as an ordinary key | `alias` |
 | Problems found in a merge key's value | `alias` |
 | A syntax error in a later document hidden by the second-document problem, or the top-level type checked first | `parse-error-in-second-document`, `non-map-with-second-document` |

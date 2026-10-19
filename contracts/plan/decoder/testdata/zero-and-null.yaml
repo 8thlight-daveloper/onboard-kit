@@ -14,11 +14,11 @@ variables:
         - question: q
           answer:
             is: null
-            isAnswered: null
+            isSettled: null
 answers:
   plan:
-    k: unknown-yet
-    l: [unknown-yet]
+    k: deferred
+    l: [deferred]
 sections:
   - id: s
     title: S
@@ -37,12 +37,12 @@ sections:
       template: s
       hash:
   - id: t
-    title: unknown-yet
-    after: [unknown-yet]
+    title: deferred
+    after: [deferred]
     source:
   - id: u
     title: U
     includeIf: {}
     source: {template: null}
-x-a: unknown-yet
-title: unknown-yet
+x-a: deferred
+title: deferred

@@ -90,7 +90,7 @@ flowchart TB
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by `timing`, then `after`, then `id` |
-| Condition evaluator | Decides whether a condition holds, given the real answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
+| Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers |
 | Section hasher | Computes the content hash recorded in a section's `source` |
 | Secrets check | Decides whether a value looks like a token |

@@ -49,7 +49,9 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | -- | -- |
 | Component | One part of the tool with one responsibility: it takes one kind of input and produces one kind of output, such as the section selector. It is a part of the tool, not of a plan. Each component lives in its own folder and can be deleted and rebuilt. |
 | Section selector | Component that finds the active sections of a plan: each section's `includeIf` and `enabled` answer, ordered by timing and dependencies. |
-| Condition evaluator | Component that decides whether a condition holds, given the real answers of the questions it names. Used for `askIf` and `includeIf`. |
+| Condition evaluator | Component that decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. |
+| Settled answer | An answer the person decided for now: any stored value that is not empty and not `deferred`, such as `team_state: established` or a flag set to `false`. A person can still change it. Conditions test settled answers only. |
+| Deferred answer | An answer the person chose to give later, stored as the word `deferred`, such as `tracker_grantor: deferred`. It satisfies a required question and becomes a visible gap in the assembled document. A question with nothing stored is unanswered, and that blocks. |
 | Plan instantiator | Component that builds the default plan from the templates: every template copied in as a section, with the axis variables. |
 | Section validator | Component that checks one section's own structure: variables, defaults, reserved names, the `$` rule, and check shapes. Used by the plan validator and by `onboard-kit lint`. |
 | Template linter | Component that checks template text against a rules file: client names, URLs, email addresses, and broken links. Voice rules are checked by Vale, not here. Run by `onboard-kit lint`, and in CI on every change to templates. |

@@ -34,7 +34,7 @@ The first two steps run once, when a new plan starts. After that the plan is the
 - **Regenerable.** Edit the plan, run again, and get a new document. No re-asking.
 - **Standalone.** The plan holds every section, so it reopens and assembles without the templates.
 - **Several styles from one plan.** The output style is an option when assembling. The MVP has one style, Markdown.
-- **Visible gaps.** An answer marked `unknown-yet` renders as a to-do the reviewer cannot miss, and the gap table lists it with an owner and timing.
+- **Visible gaps.** An answer marked `deferred` renders as a to-do the reviewer cannot miss, and the gap table lists it with an owner and timing.
 - **Review marker.** Output carries a marker until a person removes it.
 
 ## What the plan holds

@@ -59,4 +59,4 @@ A multi-step approval is steps with different owners. One step is the newcomer s
 | Single point of failure | Warning | A step's list resolves to fewer than two distinct people |
 | One person | Warning | A `multiple` person variable has exactly one person |
 | Thin contact | Warning | A person has fewer than two ways to be reached |
-| None given | Error | A required `person` variable has no person and is not `unknown-yet` |
+| None given | Error | A required `person` variable has no person and is not `deferred` |

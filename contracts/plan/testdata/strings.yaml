@@ -28,7 +28,7 @@ answers:
     a25: "\"double"
     a26: back\slash
     a27: "tab\there"
-    a28: "unknown-yet"
+    a28: "deferred"
     a29: "ünïcode"
     a30: "cr\rhere"
     a31: "bell\x07"

@@ -5,7 +5,7 @@
     {"name": "w", "askIf": {"all": [{"question": "q", "answer": {}}]}}
   ],
   "answers": {
-    "plan": {"k": {"unknown": true}, "l": ["unknown-yet"]}
+    "plan": {"k": {"deferred": true}, "l": ["deferred"]}
   },
   "sections": [
     {
@@ -16,11 +16,11 @@
       ],
       "source": {"template": "s"}
     },
-    {"id": "t", "title": "unknown-yet", "after": ["unknown-yet"]},
+    {"id": "t", "title": "deferred", "after": ["deferred"]},
     {"id": "u", "title": "U", "includeIf": {}, "source": {}}
   ],
   "unknownFields": {
-    "x-a": "unknown-yet",
-    "title": "unknown-yet"
+    "x-a": "deferred",
+    "title": "deferred"
   }
 }

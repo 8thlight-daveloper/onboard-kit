@@ -190,13 +190,13 @@ func (r *reader) value(path string, v any) model.Value {
 		}
 		return model.Value{Kind: model.ValueKindList, List: list}
 	case map[string]any:
-		m := r.object(path, x, "unknown")
-		if b, ok := m["unknown"].(bool); ok && b {
-			return model.Value{Kind: model.ValueKindUnknown}
+		m := r.object(path, x, "deferred")
+		if b, ok := m["deferred"].(bool); ok && b {
+			return model.Value{Kind: model.ValueKindDeferred}
 		}
-		r.fail(path, `want {"unknown": true}`)
+		r.fail(path, `want {"deferred": true}`)
 	default:
-		r.fail(path, "want a string, boolean, list, or unknown marker, got %T", v)
+		r.fail(path, "want a string, boolean, list, or deferred marker, got %T", v)
 	}
 	return model.Value{}
 }
@@ -296,7 +296,7 @@ func (r *reader) condition(path string, v any) *model.Condition {
 
 func (r *reader) clause(path string, v any) model.Clause {
 	m := r.object(path, v, "question", "answer")
-	test := r.object(path+".answer", m["answer"], "is", "isNot", "isOneOf", "isNotOneOf", "isAnswered")
+	test := r.object(path+".answer", m["answer"], "is", "isNot", "isOneOf", "isNotOneOf", "isSettled")
 	clause := model.Clause{Question: r.str(path, m, "question")}
 	clause.Answer.Is = r.valueAt(path+".answer", test, "is")
 	clause.Answer.IsNot = r.valueAt(path+".answer", test, "isNot")
@@ -306,9 +306,9 @@ func (r *reader) clause(path string, v any) model.Clause {
 	for i, item := range r.list(path+".answer", test, "isNotOneOf") {
 		clause.Answer.IsNotOneOf = append(clause.Answer.IsNotOneOf, r.value(fmt.Sprintf("%s.answer.isNotOneOf[%d]", path, i), item))
 	}
-	if _, ok := test["isAnswered"]; ok {
-		b := r.boolean(path+".answer", test, "isAnswered")
-		clause.Answer.IsAnswered = &b
+	if _, ok := test["isSettled"]; ok {
+		b := r.boolean(path+".answer", test, "isSettled")
+		clause.Answer.IsSettled = &b
 	}
 	return clause
 }

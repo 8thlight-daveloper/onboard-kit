@@ -76,7 +76,7 @@ An open source CLI that reads a versioned onboarding plan, generates it from que
 | -- | -- |
 | Copier's answers file and update flow | Study before settling the regeneration rule |
 | Runme compatibility through named fenced code blocks | Check whether it comes for free |
-| Microsoft's marker for template content that needs review | Matches our "unknown yet" gap markers |
+| Microsoft's marker for template content that needs review | Matches our "deferred" gap markers |
 | Cortex and Microsoft guidance on owners, audits, and feedback | Feed the living doc content |
 | Depending on Runme, Copier, or Atuin directly | Not decided. License and trust model need review first |
 

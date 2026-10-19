@@ -66,7 +66,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Suggestions.** A question's suggestions are the distinct declared defaults in its group, plus the answers already given for that name in any scope, the plan's and every section's, inactive ones included. For a `boolean` or `choice` only valid values are offered. For a `string` with a `pattern`, a candidate that does not match is dropped.
 
-- **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `unknown-yet` is always offered, as its own entry.
+- **Entry rules.** Free entry is allowed for `string` and `command`. A `boolean` or `choice` accepts only its options. `deferred` is always offered, as its own entry.
 
 - **Optional sections.** A section that can be switched off declares an `enabled` variable. It is a boolean question with id `<section>.enabled`, asked before that section's other questions. When the answer is false, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
 
@@ -76,7 +76,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Walking.** A user interface can walk the questions from the first, with existing answers as defaults, or jump to one from a review screen. Both are interface choices, and the finder supports either. It stores no resume position, because the plan is the only state.
 
-- **Conditions.** A variable can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored answer, is not asked, and does not block. A condition is true only when every question it tests has a real answer, which is a stored answer that is not `unknown-yet` and not a default nobody selected. The exception is `isAnswered`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
+- **Conditions.** A variable can carry an `askIf` question condition on other answers. A question whose condition is false is not active. It keeps its stored answer, is not asked, and does not block. A condition is true only when every question it tests has a settled answer, which is a stored answer that is not `deferred` and not a default nobody selected. The exception is `isSettled`. The finder evaluates conditions. The plan validator reports unknown references, condition cycles, and the dependency and timing problems between sections. It calls the section validator for each section's own structure. The syntax is in [section template schema](../reference/section-template-schema/conditions.md).
 
 Four drivers share these functions:
 
@@ -128,7 +128,7 @@ The finder owns what is asked, the validator owns what is acceptable, and the ed
 - **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no answer, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
 - **Conditions.** The finder evaluates them, and the validators check them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
-- **Unknown answers.** The value `unknown-yet` lets a person move past a question they cannot answer yet and return to it later. It is an accepted answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
+- **Deferred answers.** The value `deferred` lets a person move past a question they cannot answer yet and return to it later. It is a deferred answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
 
 ### Errors and shutdown
 
@@ -336,7 +336,7 @@ sequenceDiagram
 
     T->>F: Questions(p0)
     F-->>T: Every active question with its current answer
-    T->>C: Ask tracker grantor, showing unknown-yet
+    T->>C: Ask tracker grantor, showing deferred
     C-->>T: Type "IT service desk"
     T->>E: Submit(p0, tracker grantor, "IT service desk")
     E-->>T: Plan p1, no problems

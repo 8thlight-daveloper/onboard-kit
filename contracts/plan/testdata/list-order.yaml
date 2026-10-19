@@ -34,7 +34,7 @@ variables:
               - a
         - question: q2
           answer:
-            isAnswered: true
+            isSettled: true
 answers:
   plan:
     alpha: x
