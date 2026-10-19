@@ -11,16 +11,18 @@ type tokenFamily struct {
 	minimumLen int
 }
 
-var tokenFamilies = [...]tokenFamily{
-	{[]string{"ghp_", "gho_", "ghu_", "ghs_", "ghr_"}, isAlphanumeric, 36},
-	{[]string{"github_pat_"}, isWordCharacter, 22},
-	{[]string{"AKIA", "ASIA"}, isUpperOrDigit, 16},
-	{[]string{"xoxa-", "xoxb-", "xoxp-", "xoxr-", "xoxs-"}, isAlphanumericOrHyphen, 10},
-	{[]string{"sk_live_", "rk_live_"}, isAlphanumeric, 16},
-	{[]string{"AIza"}, isURLSafe, 35},
-	{[]string{"glpat-"}, isURLSafe, 20},
-	{[]string{"npm_"}, isAlphanumeric, 36},
-	{[]string{"sk-"}, isURLSafe, 40},
+func tokenFamilies() []tokenFamily {
+	return []tokenFamily{
+		{[]string{"ghp_", "gho_", "ghu_", "ghs_", "ghr_"}, isAlphanumeric, 36},
+		{[]string{"github_pat_"}, isWordCharacter, 22},
+		{[]string{"AKIA", "ASIA"}, isUpperOrDigit, 16},
+		{[]string{"xoxa-", "xoxb-", "xoxp-", "xoxr-", "xoxs-"}, isAlphanumericOrHyphen, 10},
+		{[]string{"sk_live_", "rk_live_"}, isAlphanumeric, 16},
+		{[]string{"AIza"}, isURLSafe, 35},
+		{[]string{"glpat-"}, isURLSafe, 20},
+		{[]string{"npm_"}, isAlphanumeric, 36},
+		{[]string{"sk-"}, isURLSafe, 40},
+	}
 }
 
 var webToken = regexp.MustCompile(`(?:^|[^A-Za-z0-9])eyJ[A-Za-z0-9_-]{10,}\.eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}`)
@@ -29,7 +31,7 @@ func hasTokenPrefix(text string) bool {
 	if webToken.MatchString(text) {
 		return true
 	}
-	for _, family := range tokenFamilies {
+	for _, family := range tokenFamilies() {
 		for _, prefix := range family.prefixes {
 			if hasPrefixedBody(text, prefix, family) {
 				return true
