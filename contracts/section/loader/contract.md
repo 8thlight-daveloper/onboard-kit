@@ -1,6 +1,6 @@
 # Section loader contract
 
-Status: draft, for a person to approve. Component: `section/loader`. Issue: [#64](https://github.com/8thlight-daveloper/onboard-kit/issues/64).
+Status: draft accepted by a person. A hardening pass, #65, comes before the first build. Component: `section/loader`. Issue: [#64](https://github.com/8thlight-daveloper/onboard-kit/issues/64).
 
 The section loader turns the bytes of one template file into a Section. It is a pure function. It reads no file, writes no file, and does not change its argument. The same bytes always give the same result. A driver reads the files. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [section template schema](../../../docs/reference/section-template-schema/README.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
