@@ -66,7 +66,7 @@ The text contains a prefix from the table, followed by a run of body characters 
 | npm token | `npm_` | `A-Za-z0-9` | 36 |
 | Secret key | `sk-` | `A-Za-z0-9_-` | 40 |
 
-A JSON web token also counts: `eyJ` and at least 10 characters of `A-Za-z0-9_-`, a dot, `eyJ` and at least 10 more, a dot, and at least 10 characters of `A-Za-z0-9_-`.
+A JSON web token also counts: `eyJ` and at least 10 characters of `A-Za-z0-9_-`, a dot, `eyJ` and at least 10 more, a dot, and at least 10 characters of `A-Za-z0-9_-`. The boundary rule above applies to the first `eyJ` like it does to every prefix: it counts only at the start of the text or after a character that is not an ASCII letter or digit. So `xeyJ` and `7eyJ` do not count, and `x.eyJ` does.
 
 Stripe test keys do not count.
 
@@ -144,6 +144,14 @@ A reference implementation was written from this page alone as scratch work outs
 | Random string: `/` or `.` allowed in a word, `-` not allowed, words split only on spaces, the whole value read as one word, only the first word read | `random-strings`, `paths-and-ids` |
 | Random string: one trimmed character left out, such as a quote, a backtick, a bracket, a semicolon, a colon | `random-strings` |
 | Order wrong: token before URL, random before token, private key last | `kind-order` |
+| A range in a body or in the random-string set stops one short: `Z`, `z`, or `9` left out, or `A`, `a`, or `0` left out | `token-body-boundary-characters`, `random-string-characters` |
+| A range runs one too far: `@`, `[`, a backtick, `{`, `/`, or `:` accepted in a body or in a random string | `token-body-boundary-characters`, `random-string-characters` |
+| The AWS body takes letters only, or digits do not count toward its 16 | `aws-body-digits` |
+| A family takes the wrong extra characters: no `-` in a Slack body, no `_` in a `github_pat_` body, no `_` or `-` in a Google, GitLab, or `sk-` body, or an `_`, `-`, or `+` where the table gives none | `token-body-special-characters` |
+| A minimum body is one too large or one too small: GitHub 36, fine-grained 22, GitLab 20, npm 36, `sk-` 40, Slack 10, Stripe 16 | `token-minimum-lengths` |
+| Random string: the first or last character is not read, so a word with one bad edge character counts, or one good edge character is the only upper case letter, lower case letter, or digit and is missed | `random-string-characters` |
+| Random string: `-`, `_`, `+`, or `=` is not in the set, or does not count as a character of the 32 | `random-string-characters` |
+| Web token ignores the boundary rule, or a part has a minimum of 9 or 11 | `web-token-boundaries` |
 | Message or detail repeats the value | Every case that has a secret |
 | Severity `warning`, an empty message, or `question` filled in | Every case with a problem |
 | A Text also gets an `item`, a List item missing, or counted from one | `list-items` and every case with a problem |
