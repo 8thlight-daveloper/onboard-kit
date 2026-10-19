@@ -15,8 +15,13 @@ func (c *collector) conditionNode(condition *model.Condition, path string) node 
 
 func (c *collector) clauseNode(clause model.Clause, path string) node {
 	builder := &mappingBuilder{}
-	builder.add("question", stringField(clause.Question))
-	builder.add("answer", c.answerTestNode(clause.Answer, path+".answer"))
+	if clause.Section != "" {
+		builder.add("section", stringField(clause.Section))
+		builder.add("enabled", booleanNode(clause.Enabled))
+	} else {
+		builder.add("question", stringField(clause.Question))
+		builder.add("answer", c.answerTestNode(clause.Answer, path+".answer"))
+	}
 	return c.requireKeys(builder.build(), path)
 }
 
