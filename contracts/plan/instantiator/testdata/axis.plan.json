@@ -1,0 +1,6 @@
+{
+  "variables": [
+    {"name": "team_state", "description": "Is the team established, or are we the first consultants?", "options": ["established", "first-consultants"], "required": true},
+    {"name": "discipline", "description": "Which discipline is this plan for?", "options": ["software", "design"], "required": true}
+  ]
+}

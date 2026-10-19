@@ -1,0 +1,17 @@
+{
+  "id": "u",
+  "title": "T",
+  "summary": "S",
+  "unknownFields": {
+    "x-b": {"z": 1, "a": [1, 2.0, -3, 1.5, 0.1, 0.00001, 1e20], "M": null},
+    "x-a": "s",
+    "10": true,
+    "9": false,
+    "B": "upper",
+    "k\"\\\n": "quoted key",
+    "é": "accent",
+    "x-empty-list": [],
+    "x-empty-map": {},
+    "x-nested": [[], {}, [{"k": "v"}]]
+  }
+}

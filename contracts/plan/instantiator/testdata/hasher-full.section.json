@@ -1,0 +1,24 @@
+{
+  "id": "access",
+  "title": "Get access",
+  "summary": "Accounts and tools",
+  "includeIf": {"all": [
+    {"question": "plan.discipline", "answer": {"is": "software", "isNot": "design", "isOneOf": ["software", "data", "software"], "isNotOneOf": ["design", "design"], "isSettled": true}},
+    {"question": "plan.team_state", "answer": {"isNotOneOf": ["first-consultants", "deferred"]}}
+  ]},
+  "timing": "week-one",
+  "after": ["welcome"],
+  "owner": "$manager",
+  "escalation": ["manager"],
+  "verification": "You can sign in.",
+  "body": "Line one.\nLine two.",
+  "variables": [
+    {"name": "manager", "description": "Who manages", "type": "person", "multiple": true, "options": ["ann", "bo"], "pattern": "^[a-z]+$", "patternHint": "A name", "required": true, "default": ["ann"], "phase": "onboarding", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": false}}]}},
+    {"name": "repo", "description": "Clone URL", "default": "git@example.test:a.git"}
+  ],
+  "steps": [
+    {"id": "clone", "name": "Clone", "notes": "Slow on VPN.", "owner": "$manager", "timing": "week-one", "escalation": ["manager"], "run": ["git", "clone", "$repo"], "open": "https://example.test/start", "directory": "/work", "env": {"B": "2", "C": "", "A": "1"}, "checks": [{"run": ["git", "status"]}, {"ask": "Did it work?"}, {"env": "TOKEN"}]}
+  ],
+  "source": {"template": "access", "hash": "0000"},
+  "unknownFields": {"x-note": "kept"}
+}

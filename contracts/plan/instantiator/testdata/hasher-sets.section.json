@@ -1,0 +1,7 @@
+{
+  "id": "sets",
+  "title": "Sets",
+  "summary": "Sets.",
+  "after": ["q", "p", "q", "a"],
+  "includeIf": {"all": [{"question": "plan.a", "answer": {"isOneOf": ["b", "a", "b", true, ["x"], {"deferred": true}, null, "a"], "isNotOneOf": ["z", "y", "z"]}}]}
+}

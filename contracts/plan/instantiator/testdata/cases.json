@@ -1,0 +1,125 @@
+[
+  {
+    "name": "acme-default-plan",
+    "templates": ["acme-stuck-general.section.json", "acme-access.section.json", "acme-review-design-system.section.json", "acme-clone-and-run-tests.section.json"],
+    "axisVariables": "acme.plan-variables.plan.json",
+    "templateSet": "example",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "access", "hash": "41b8d95b8e27d852b693e2f77f6db8d7ebd6cd146ac3260f41fd661ef0beb90e", "canonical": "acme-access.canonical.json"},
+      {"id": "clone-and-run-tests", "hash": "baba68e931cfe9e8bcfc9386e5b61631852e935b087e98bb511174f14c39b6c3", "canonical": "acme-clone-and-run-tests.canonical.json"},
+      {"id": "review-design-system", "hash": "cfa9eba2e7c90af481bc527c2f0a366e8089b945db877c49d060bbce4568ddce", "canonical": "acme-review-design-system.canonical.json"},
+      {"id": "stuck-general", "hash": "fe1746d0ab6623c7b0d54d72c9b336efd20df7588d8a170802bc55944695ef23", "canonical": "acme-stuck-general.canonical.json"}
+    ],
+    "source": "The four ACME templates, docs/reference/examples/acme/templates/, as the section loader contract's fixtures hold them (contracts/section/loader/testdata/acme-*.section.json), given out of order. The five plan variables are the plan variables of docs/reference/examples/acme/acme.obk.yaml, one with a default and one with options. 0030, The default plan: the axis variables and every template as a section, with no answers. Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract (Canonical form, Fields, Defaults, Prose, Strings), the four acme-*.canonical.json files. The ACME plan file records no real hash for them."
+  },
+  {
+    "name": "hasher-goldens",
+    "templates": ["hasher-sets.section.json", "hasher-unknown-fields.section.json", "hasher-basic.section.json", "hasher-prose.section.json", "hasher-full.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "access", "hash": "ba4e0687bfdf77afc6349a7c09e930c8d2669b1c4dc2b5723c410b4a55a19270", "canonical": "hasher-full.canonical.json"},
+      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"},
+      {"id": "prose", "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18", "canonical": "hasher-prose.canonical.json"},
+      {"id": "sets", "hash": "df52f01608459f10e7aba68668ea35879e1cfa3fb8bde2c23179faa10f6361d7", "canonical": "hasher-sets.canonical.json"},
+      {"id": "u", "hash": "3725ff2d1173ffae5c78d0b831f8a266ed58f9d2034e85d148906f2d24cf6614", "canonical": "hasher-unknown-fields.canonical.json"}
+    ],
+    "source": "Five sections and their hashes from the golden cases of contracts/section/hasher/testdata/cases.json (full, basic, prose, sets, unknown-fields), copied with their canonical texts and given out of order. The full section has a source that must be replaced by the new one. The basic section has no timing and no variable type, and its plan section keeps them absent while its hash is of the defaults. The unknown-fields section keeps its unknown fields. 0030, Identifiers: the source hash is computed by the tool when it copies a template into a plan. The axis variables are those of the 0030 sketch."
+  },
+  {
+    "name": "byte-order",
+    "templates": ["byte-order.sections.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "10-x", "hash": "3d000a92638dde42d59615d61ce2da9e41785f24d03f450b9d55fbf1b9234400", "canonical": "byte-order-10-x.canonical.json"},
+      {"id": "9-x", "hash": "dc995f7888cecd61054b44fe8384e45c5b594d331fa96a5d0dfffe7683a34699", "canonical": "byte-order-9-x.canonical.json"},
+      {"id": "a", "hash": "8b5b245afac2dae714d8cc8f02189a4461ef31d21f430dd34396a4ac834a0a10", "canonical": "byte-order-a.canonical.json"},
+      {"id": "a-b", "hash": "0d7b74361a16a96f945bd259577a145f9bab46fc8b845e12bac5a2e0a729d992", "canonical": "byte-order-a-b.canonical.json"},
+      {"id": "a1", "hash": "507a7b068ddcbe53aa225b27afca893dff26278766cd5560e277c817ba892df2", "canonical": "byte-order-a1.canonical.json"},
+      {"id": "b", "hash": "58c4d18333b8a8e10b79d8fe5112f0eee22624b663bef9351d2b24158cb0c08f", "canonical": "byte-order-b.canonical.json"}
+    ],
+    "source": "Contract rule: Order. Six sections, given out of order. Id order differs from title order, from timing order (b is before-day-one, a-b is week-one), from the order after gives (a comes after b), from length, and from number order (10-x before 9-x). Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract, the byte-order-*.canonical.json files."
+  },
+  {
+    "name": "values-as-given",
+    "templates": ["hasher-basic.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "v2.1-beta",
+    "generatedOn": "2027-02-03",
+    "sections": [
+      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"}
+    ],
+    "source": "Domain model, Provenance: templateSet is the build's sha or tag and generatedOn is a date a driver passes in, because the core never reads a clock. Values that differ from the other cases show that the plan holds what it was given. Hash from the hasher golden case basic."
+  },
+  {
+    "name": "no-templates",
+    "templates": [],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [],
+    "source": "Contract rule: Empty inputs. 0030, The default plan: the axis variables plus every template as a section. With no template there is no section, and the axis variables are still there."
+  },
+  {
+    "name": "no-axis-variables",
+    "templates": ["hasher-basic.section.json"],
+    "axisVariables": "",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"}
+    ],
+    "source": "Contract rule: Empty inputs. The variables a plan holds are the ones given, and none given means none. Hash from the hasher golden case basic."
+  },
+  {
+    "name": "nothing-given",
+    "templates": [],
+    "axisVariables": "",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [],
+    "source": "Contract rule: Empty inputs. The plan still has its version and its provenance."
+  },
+  {
+    "name": "duplicate-ids",
+    "templates": ["duplicates.sections.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "template.duplicate-id", "section": "a", "detail": {"count": "3"}},
+      {"code": "template.duplicate-id", "section": "b", "detail": {"count": "2"}}
+    ],
+    "source": "0030, Identifiers: a template id is stable and answers are kept by section id, so two sections with one id cannot both be in a plan. Contract rule: Problems. Three sections share a, two share b, with a pair identical and a third different, and c is alone. The problems come in id order, one for each id."
+  },
+  {
+    "name": "nameless-axis-variables",
+    "templates": ["hasher-basic.section.json"],
+    "axisVariables": "nameless.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "variable.no-name", "detail": {"index": "1"}},
+      {"code": "variable.no-name", "detail": {"index": "3"}}
+    ],
+    "source": "Domain model, Variable: a name is what an answer is kept under. Contract rule: Problems. Two of the four variables have no name, one with a description and one with nothing. The index counts from zero in the list given."
+  },
+  {
+    "name": "both-problems",
+    "templates": ["duplicates.sections.json"],
+    "axisVariables": "nameless.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "template.duplicate-id", "section": "a", "detail": {"count": "3"}},
+      {"code": "template.duplicate-id", "section": "b", "detail": {"count": "2"}},
+      {"code": "variable.no-name", "detail": {"index": "1"}},
+      {"code": "variable.no-name", "detail": {"index": "3"}}
+    ],
+    "source": "Contract rule: Problems. Every problem is reported, the template problems first, and no plan is returned."
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {"id": "a1", "title": "Z2", "summary": "S"},
+  {"id": "b", "title": "Z1", "summary": "S", "timing": "before-day-one"},
+  {"id": "10-x", "title": "Z6", "summary": "S"},
+  {"id": "a", "title": "Z4", "summary": "S", "after": ["b"]},
+  {"id": "9-x", "title": "Z5", "summary": "S"},
+  {"id": "a-b", "title": "Z3", "summary": "S", "timing": "week-one"}
+]
