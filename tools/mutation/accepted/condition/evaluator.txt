@@ -1,0 +1,7 @@
+# Mutants of condition/evaluator that a person checked and accepted: the change alters no behavior.
+# Each line: checksum | file | change | why it alters nothing. Only a person adds a line.
+# A checksum depends on the mutated file, so an edit to the file brings its survivors back.
+# Checked on 2026-10-19: each mutation applied in a scratch copy, same output as the unmutated evaluator on 3,000,000 random cases, run before the rename to settled and deferred, which changed names and no logic. A control mutation that should differ did, on 2,285 cases.
+5526bc0975f610d9265c19fceeb7b3cd | answertest.go | the guard before the isNot comparison is removed | A test that is not set is not evaluated, and the guard says so on purpose. No input shows the difference under the current contract: with isNot unset the comparison is against a value of kind None, and a settled answer is never kind None, so it is never equal. If the answer model changes, a contract test fails a missing guard.
+39a122afcf612b587cc07bd08983710d | answertest.go | the guard before the isNotOneOf comparison is removed | A test that is not set is not evaluated, and the guard says so on purpose. An unset list matches nothing, so no input shows the difference today.
+1feb4c4364fe914d90a41493f08d9614 | answertest.go | the list helper stops checking the is value | The helper checks every test field by design, so a new caller can rely on it. Under the current contract a List is value never equals a non-List answer, so the is test is false either way, and no input shows the difference.

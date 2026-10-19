@@ -75,7 +75,7 @@
         }
       }
     ],
-    "source": "conditions.md, answer tests: is is true when the answer is this one value, isNot when it is a real answer other than this one. Text compares with case: decided by a person."
+    "source": "conditions.md, answer tests: is is true when the answer is this one value, isNot when it is a settled answer other than this one. Text compares with case: decided by a person."
   },
   {
     "name": "one-of-lists",
@@ -250,7 +250,7 @@
         }
       }
     ],
-    "source": "conditions.md, answer tests: isOneOf is true when the answer is one of these values, isNotOneOf when it is a real answer that is none of them. Whether a one-item list is allowed is the linter's rule, so the evaluator reads it as written."
+    "source": "conditions.md, answer tests: isOneOf is true when the answer is one of these values, isNotOneOf when it is a settled answer that is none of them. Whether a one-item list is allowed is the linter's rule, so the evaluator reads it as written."
   },
   {
     "name": "false-flag",
@@ -314,28 +314,28 @@
         }
       },
       {
-        "name": "isAnswered true",
+        "name": "isSettled true",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.remote",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "isAnswered false",
+        "name": "isSettled false",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.remote",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -376,7 +376,7 @@
         }
       }
     ],
-    "source": "conditions.md, rules: a boolean false is a real answer."
+    "source": "conditions.md, rules: a boolean false is a settled answer."
   },
   {
     "name": "missing-answer",
@@ -446,28 +446,28 @@
         }
       },
       {
-        "name": "isAnswered true",
+        "name": "isSettled true",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "isAnswered false",
+        "name": "isSettled false",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -488,12 +488,12 @@
         }
       }
     ],
-    "source": "conditions.md, rules: every test except isAnswered is false when the question has no real answer, before any negation. isNot on an unanswered question is false."
+    "source": "conditions.md, rules: every test except isSettled is false when the question has no settled answer, before any negation. isNot on an unanswered question is false."
   },
   {
-    "name": "unknown-answer",
+    "name": "deferred-answer",
     "scope": "access",
-    "answers": "unknown-answer.answers.json",
+    "answers": "deferred-answer.answers.json",
     "checks": [
       {
         "name": "is",
@@ -558,63 +558,63 @@
         }
       },
       {
-        "name": "isAnswered true",
+        "name": "isSettled true",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "isAnswered false",
+        "name": "isSettled false",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
         }
       },
       {
-        "name": "is the text unknown-yet",
+        "name": "is the text deferred",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "is": "unknown-yet"
+                "is": "deferred"
               }
             }
           ]
         }
       },
       {
-        "name": "isNot the text unknown-yet",
+        "name": "isNot the text deferred",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isNot": "unknown-yet"
+                "isNot": "deferred"
               }
             }
           ]
         }
       },
       {
-        "name": "is Unknown",
+        "name": "is Deferred",
         "holds": false,
         "condition": {
           "all": [
@@ -622,7 +622,7 @@
               "question": "plan.discipline",
               "answer": {
                 "is": {
-                  "unknown": true
+                  "deferred": true
                 }
               }
             }
@@ -630,7 +630,7 @@
         }
       }
     ],
-    "source": "domain-model.md: a Value is a real answer unless it is Unknown or empty. conditions.md, rules: a real answer is not unknown-yet."
+    "source": "domain-model.md: a Value is a settled answer unless it is Deferred or empty. conditions.md, rules: a settled answer is not deferred."
   },
   {
     "name": "empty-answers",
@@ -638,28 +638,28 @@
     "answers": "empty-answers.answers.json",
     "checks": [
       {
-        "name": "empty text is not answered",
+        "name": "empty text is not settled",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
         }
       },
       {
-        "name": "empty text is not a real answer for isAnswered true",
+        "name": "empty text is not a settled answer for isSettled true",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -711,70 +711,70 @@
         }
       },
       {
-        "name": "empty list is not answered",
+        "name": "empty list is not settled",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
         }
       },
       {
-        "name": "empty list is not a real answer for isAnswered true",
+        "name": "empty list is not a settled answer for isSettled true",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "list of only empty strings is not answered",
+        "name": "list of only empty strings is not settled",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.blanks",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
         }
       },
       {
-        "name": "list of only empty strings is not a real answer for isAnswered true",
+        "name": "list of only empty strings is not a settled answer for isSettled true",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.blanks",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "list with one non-empty item is answered",
+        "name": "list with one non-empty item is settled",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.mixed",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -788,14 +788,14 @@
             {
               "question": "plan.mixed",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
         }
       }
     ],
-    "source": "conditions.md, rules: a real answer is not unknown-yet and not empty. domain-model.md: a Value is a real answer unless it is Unknown or empty. A list is real when it has at least one non-empty text item: decided by a person."
+    "source": "conditions.md, rules: a settled answer is not deferred and not empty. domain-model.md: a Value is a settled answer unless it is Deferred or empty. A list is settled when it has at least one non-empty text item: decided by a person."
   },
   {
     "name": "list-answer",
@@ -803,28 +803,28 @@
     "answers": "list-answer.answers.json",
     "checks": [
       {
-        "name": "isAnswered true",
+        "name": "isSettled true",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "isAnswered false",
+        "name": "isSettled false",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -946,14 +946,14 @@
         }
       },
       {
-        "name": "isAnswered true beside is on an item",
+        "name": "isSettled true beside is on an item",
         "holds": false,
         "condition": {
           "all": [
             {
               "question": "plan.stakeholders",
               "answer": {
-                "isAnswered": true,
+                "isSettled": true,
                 "is": "ana"
               }
             }
@@ -961,7 +961,7 @@
         }
       }
     ],
-    "source": "domain-model.md, Value: a List is a list of text, held by command and multiple variables. conditions.md lists no test that compares a list: list tests are not supported yet, decided by a person. Only isAnswered applies to a list answer."
+    "source": "domain-model.md, Value: a List is a list of text, held by command and multiple variables. conditions.md lists no test that compares a list: list tests are not supported yet, decided by a person. Only isSettled applies to a list answer."
   },
   {
     "name": "list-test-values",
@@ -1058,7 +1058,7 @@
         }
       },
       {
-        "name": "isOneOf with a list and isAnswered true",
+        "name": "isOneOf with a list and isSettled true",
         "holds": false,
         "condition": {
           "all": [
@@ -1071,21 +1071,21 @@
                   ],
                   "software"
                 ],
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
         }
       },
       {
-        "name": "isAnswered true with a text test that holds",
+        "name": "isSettled true with a text test that holds",
         "holds": true,
         "condition": {
           "all": [
             {
               "question": "plan.discipline",
               "answer": {
-                "isAnswered": true,
+                "isSettled": true,
                 "is": "software"
               }
             }
@@ -1171,7 +1171,7 @@
         }
       }
     ],
-    "source": "domain-model.md, Value: Text and Flag are different variants, so different kinds are different values. FORMAT.md: the Text unknown-yet differs from Unknown."
+    "source": "domain-model.md, Value: Text and Flag are different variants, so different kinds are different values. FORMAT.md: the Text deferred differs from the Deferred kind."
   },
   {
     "name": "question-ids",
@@ -1228,7 +1228,7 @@
             {
               "question": "discipline",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -1284,7 +1284,7 @@
             {
               "question": "nowhere.repo_url",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -1354,7 +1354,7 @@
             {
               "question": "repo_url",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -1380,7 +1380,7 @@
             {
               "question": "repo_url",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -1406,7 +1406,7 @@
             {
               "question": "repo_url",
               "answer": {
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -1432,7 +1432,7 @@
             {
               "question": "repo_url",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -1458,7 +1458,7 @@
             {
               "question": "repo_url",
               "answer": {
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -1533,7 +1533,7 @@
                   "ops",
                   "hr"
                 ],
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]
@@ -1549,7 +1549,7 @@
               "answer": {
                 "is": "software",
                 "isNot": "design",
-                "isAnswered": false
+                "isSettled": false
               }
             }
           ]
@@ -1565,7 +1565,7 @@
               "answer": {
                 "is": "design",
                 "isNot": "ops",
-                "isAnswered": true
+                "isSettled": true
               }
             }
           ]

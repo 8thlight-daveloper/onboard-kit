@@ -18,20 +18,20 @@ The result is `true` when the condition holds and `false` otherwise. It depends 
 
 **Finding the answer.** A question id is `<scope>.<name>` or a bare `<name>`. An id with a dot is split at the first dot. `plan.<name>` reads `answers.plan[name]`, and `<section>.<name>` reads `answers.sections[section][name]`. A bare name is read in `scope`, so it means `<scope>.<name>`. A bare name never falls back to another scope. A missing section, a missing name, and zero maps all mean the question has no answer. The evaluator never fails on an id.
 
-**Real answer.** A question has a real answer when the answers hold a value for it that is real:
+**Settled answer.** An answer is unanswered, deferred, or settled, as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) defines. The evaluator treats only a settled answer as something a test can match, and `isSettled: false` holds when the answer is deferred or unanswered. A question has a settled answer when the answers hold a value for it that is settled:
 
-- Text is real when it has at least one character. The Text `unknown-yet` is a plain string and differs from Unknown, so it is real.
-- A Flag, `true` or `false`, is always real.
-- A List is real when it has at least one item that is non-empty Text. A list with no items and a list of only empty strings are not real.
-- Unknown and a value of no kind are not real.
+- Text is settled when it has at least one character. The Text `deferred` is a plain string and differs from the Deferred kind, so it is settled.
+- A Flag, `true` or `false`, is always settled.
+- A List is settled when it has at least one item that is non-empty Text. A list with no items and a list of only empty strings are not settled.
+- Deferred and a value of no kind are not settled.
 
 A declared default is not in the answers, so it never counts.
 
 **Equal values.** Two values are equal when they have the same kind and the same content. Text matches exactly, with case. Text `true` and Flag `true` are different values, because different kinds are different values.
 
-**Lists.** The docs define no test that compares lists, and `any` and `none` are deferred. Only `command` variables and `person` variables with `multiple: true` hold lists. An `includeIf` names plan variables only, and those hold one value each. So list tests are not supported yet, and a later operator will define them. Until then, every test except `isAnswered` is false when the answer is a List, or when the test value is a List, or when any item of `isOneOf` or `isNotOneOf` is a List. `isAnswered` still applies to a List answer.
+**Lists.** The docs define no test that compares lists, and `any` and `none` are deferred. Only `command` variables and `person` variables with `multiple: true` hold lists. An `includeIf` names plan variables only, and those hold one value each. So list tests are not supported yet, and a later operator will define them. Until then, every test except `isSettled` is false when the answer is a List, or when the test value is a List, or when any item of `isOneOf` or `isNotOneOf` is a List. `isSettled` still applies to a List answer.
 
-**Tests.** Every test except `isAnswered` is false when the question has no real answer, before any negation. When it has one, and no List is involved:
+**Tests.** Every test except `isSettled` is false when the question has no settled answer, so when it is deferred or unanswered, before any negation. When it has one, and no List is involved:
 
 | Test | True when |
 | -- | -- |
@@ -39,9 +39,9 @@ A declared default is not in the answers, so it never counts.
 | `isNot` | The answer does not equal the value |
 | `isOneOf` | The answer equals at least one value of the list |
 | `isNotOneOf` | The answer equals no value of the list |
-| `isAnswered` | `true`: the answer is real. `false`: it is not, so it is missing, Unknown, or empty |
+| `isSettled` | `true`: the answer is settled. `false`: it is not, so it is missing, Deferred, or empty |
 
-A test is set when its field is present. A one-item `isOneOf` is evaluated as written. Several tests in one answer must all hold.
+A test is set when its field is present. A test that is not set is not evaluated: it neither holds nor fails, and only the tests that are set decide the clause. A one-item `isOneOf` is evaluated as written. Several tests in one answer must all hold.
 
 **Condition.** A condition holds when every clause holds. A condition with no clauses holds, as no `includeIf` holds. A clause holds when all of its tests hold.
 
@@ -65,12 +65,12 @@ These hold for every input the contract tests use.
 
 - **Pure.** The condition and the answers are the same after the call as before.
 - **No memory.** The same call gives the same result on a shared evaluator, whatever calls came before, forward or in reverse order.
-- **Zero answers.** With the zero Answers, every test except `isAnswered: false` is false.
+- **Zero answers.** With the zero Answers, every test except `isSettled: false` is false.
 
 ## Not covered
 
-- Text of only whitespace. Answers are trimmed and blank text is reported before the evaluator sees it, so whether it is real is not tested.
-- An answer with no test set, or a test value of no kind or Unknown. A valid plan never reaches these, because the validators report them, so the evaluator is not asked to give them a meaning.
+- Text of only whitespace. Answers are trimmed and blank text is reported before the evaluator sees it, so whether it is settled is not tested.
+- An answer with no test set, or a test value of no kind or Deferred. A valid plan never reaches these, because the validators report them, so the evaluator is not asked to give them a meaning.
 - A malformed id, such as an empty one, one with a dot at the start or end, or one with two dots. Reading it as no answer is the only safe behavior. Only an unknown section is tested.
 - `any` and `none`, and any test that compares lists.
 - Inactive sections, `enabled`, and ordering.
@@ -81,13 +81,13 @@ While drafting, a reference evaluator was written from this page alone as scratc
 
 | Wrong implementation | Caught by |
 | -- | -- |
-| `isNot` or `isNotOneOf` true when the question is unanswered | `missing-answer`, `unknown-answer`, `empty-answers` |
+| `isNot` or `isNotOneOf` true when the question is unanswered | `missing-answer`, `deferred-answer`, `empty-answers` |
 | `isOneOf` matched as a prefix or a substring | `one-of-lists` |
 | `isOneOf` or `isNotOneOf` reads only the first item | `one-of-lists`, `false-flag` |
 | A one-item `isOneOf` rejected | `one-of-lists` |
-| `isAnswered: false` ignored | `false-flag`, `all-clauses`, `tests-in-one-answer` |
-| `isAnswered` true for any stored value, so Unknown and empty count | `unknown-answer`, `empty-answers` |
-| Unknown treated as an answer | `unknown-answer` |
+| `isSettled: false` ignored | `false-flag`, `all-clauses`, `tests-in-one-answer` |
+| `isSettled` true for any stored value, so Deferred and empty count | `deferred-answer`, `empty-answers` |
+| Deferred treated as a settled answer | `deferred-answer` |
 | Empty text or an empty list treated as an answer | `empty-answers` |
 | A list of only empty strings treated as an answer | `empty-answers` |
 | A Flag `false` treated as no answer | `false-flag` |
@@ -97,7 +97,7 @@ While drafting, a reference evaluator was written from this page alone as scratc
 | A list matched by one of its items | `list-answer`, `list-test-values` |
 | A one-item list equal to its Text | `list-answer`, `list-test-values` |
 | A list test value ignored when another item of `isOneOf` matches | `list-test-values` |
-| `isAnswered` rejects a list answer | `list-answer`, `empty-answers` |
+| `isSettled` rejects a list answer | `list-answer`, `empty-answers` |
 | Text compared without case | `is-and-is-not` |
 | An empty `all` false | `no-clauses` |
 | `all` as any: one true clause is enough | `all-clauses` |

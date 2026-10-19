@@ -135,20 +135,20 @@ func TestInputsAreNotChanged(t *testing.T) {
 	}
 }
 
-func TestZeroAnswersMeanNothingIsAnswered(t *testing.T) {
+func TestZeroAnswersMeanNothingIsSettled(t *testing.T) {
 	t.Parallel()
-	condition, err := jsonform.Condition([]byte(`{"all":[{"question":"plan.discipline","answer":{"isAnswered":false}},{"question":"billing.plan_name","answer":{"isNot":"x"}}]}`))
+	condition, err := jsonform.Condition([]byte(`{"all":[{"question":"plan.discipline","answer":{"isSettled":false}},{"question":"billing.plan_name","answer":{"isNot":"x"}}]}`))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if newEvaluator().Holds(condition, "access", model.Answers{}) {
 		t.Errorf("want false: isNot on an unanswered question is false")
 	}
-	onlyUnanswered, err := jsonform.Condition([]byte(`{"all":[{"question":"plan.discipline","answer":{"isAnswered":false}},{"question":"billing.plan_name","answer":{"isAnswered":false}}]}`))
+	onlyUnanswered, err := jsonform.Condition([]byte(`{"all":[{"question":"plan.discipline","answer":{"isSettled":false}},{"question":"billing.plan_name","answer":{"isSettled":false}}]}`))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !newEvaluator().Holds(onlyUnanswered, "access", model.Answers{}) {
-		t.Errorf("want true: nothing is answered when the answers are the zero value")
+		t.Errorf("want true: nothing is settled when the answers are the zero value")
 	}
 }
