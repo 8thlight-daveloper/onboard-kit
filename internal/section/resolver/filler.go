@@ -56,17 +56,6 @@ func (f *filler) recordUse(name string, result resolution) {
 	}
 }
 
-func (f *filler) fillAll(items []string) []string {
-	if items == nil {
-		return nil
-	}
-	filled := make([]string, len(items))
-	for index, item := range items {
-		filled[index] = f.fill(item)
-	}
-	return filled
-}
-
 func (f *filler) fillCommands(items []string) []string {
 	if items == nil {
 		return nil
