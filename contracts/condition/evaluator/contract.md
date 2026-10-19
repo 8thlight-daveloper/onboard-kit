@@ -77,7 +77,7 @@ These hold for every input the contract tests use.
 
 ## Wrong implementations tried
 
-While drafting, a reference evaluator was written from this page alone as scratch work outside the repo, and it passed every test. Then 33 wrong evaluators were written, one defect each, and the contract tests failed each. A stub that returns false failed every test that checks a result.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

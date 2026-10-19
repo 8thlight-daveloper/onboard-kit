@@ -180,7 +180,7 @@ Decided from the docs, as rules above: the three defaults, the eight prose field
 
 ## Wrong implementations tried
 
-While drafting, 109 wrong hashers were written as scratch work outside the repo, each with one defect, and the contract tests failed every one. A reference hasher written from this page alone passed every test on its first run, which showed that the hand-written canonical texts agree with the rules. The seven golden hashes were also recomputed with `shasum -a 256` from their canonical texts. Run against a stub that returns an empty string, every test that exercises the output fails. Only the tests of manifest shape, golden consistency, and determinism pass. No second independent build or differential run was made, because the issue is a draft.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

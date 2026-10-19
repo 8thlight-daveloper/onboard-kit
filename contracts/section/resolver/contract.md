@@ -152,7 +152,7 @@ These are choices the docs did not settle. Each says what the resolver does, wha
 
 ## Wrong implementations tried
 
-While drafting, a reference resolver was written from the rules above as scratch work outside the repo, and it passed every test. Then 100 wrong resolvers were written, one defect each. The contract tests failed 98. The other two give the same result as the reference for every valid input: one returns an empty list for an absent list, which this contract does not tell apart, and one accepts a digit at the start of a name, which no declared name has. A stub that returns the zero Section failed every test that checks a result. No second independent build or differential run was made, because the issue is a draft. After the first build, the mutation tool left survivors, and the rows marked "after the first build" below close them. Each mutant that these rows address was applied by hand in a scratch copy, and a named test failed.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

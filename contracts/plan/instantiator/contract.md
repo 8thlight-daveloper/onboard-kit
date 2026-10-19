@@ -126,7 +126,7 @@ The docs left these open, and this contract picked. The `hard` ones change what 
 
 ## Wrong implementations tried
 
-While drafting, a reference instantiator and a reference hasher were written from the contract pages alone as scratch work outside the repo. The reference hasher passed every test of the hasher contract. The reference instantiator passed every test here. Then 60 wrong instantiators were written, one defect each. A stub that returns the zero Plan failed every test that checks a result. The tests failed 59 of the 60. One passed: sorting ids without regard to case, which differs only for ids that are not lowercase slugs and is listed under Not covered.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

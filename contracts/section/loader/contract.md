@@ -134,7 +134,7 @@ Questions 2 to 4 are settled above so that the tests can run. A person decides w
 
 ## Wrong implementations tried
 
-While drafting, a reference loader was written as scratch work outside the repo, from this page and the decoder contract, and then broken on purpose. 120 wrong loaders were tried, each with one defect. Every one failed at least one test. The first run of the reference found one fixture error, a plain `y` in an `isNotOneOf` list that is the boolean spelling. Later fixtures were added for the defects that first got through. After a person decided that `run` is always a list, the sugar rows were dropped and `run-scalar` was added. A case that disagreed with the reference's reading of a Value showed the reference was wrong and not the case. This is a draft check only. There was no second independent build, no mutation run, and no differential run. Those belong to the hardening pass, [#65](https://github.com/8thlight-daveloper/onboard-kit/issues/65).
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

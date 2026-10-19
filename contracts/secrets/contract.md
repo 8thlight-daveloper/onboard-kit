@@ -129,7 +129,7 @@ A List gives one problem for each item that looks like a secret, in item order. 
 
 ## Wrong implementations tried
 
-A reference implementation was written from this page alone as scratch work outside the repo, and it passed every test. Then 69 wrong implementations were written, one defect each, and the contract tests failed each one. A stub that returns no problems failed every test that checks a result.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

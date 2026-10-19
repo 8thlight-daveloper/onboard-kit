@@ -118,7 +118,7 @@ These hold for every plan the contract tests use.
 
 ## Wrong implementations tried
 
-While drafting, these wrong encoders were written as scratch work outside the repo, and the contract tests failed each one. A reference encoder written from this page alone passed every test, which showed that the fixtures agree with the rules. One fixture error was found that way: the key `n` must be quoted.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |

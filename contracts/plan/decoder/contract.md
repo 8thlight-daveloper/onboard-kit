@@ -153,7 +153,7 @@ These hold for every file the contract tests use.
 
 ## Wrong implementations tried
 
-While drafting, a reference decoder was written as scratch work outside the repo, from this page alone, and then broken on purpose. About 130 wrong decoders were tried. A second decoder was then built from the contract alone by a different builder, and the two were run on about 20,000 inputs: the fixtures, mutations of them, and random files from a grammar. Every difference was settled in this page and in a fixture, until the two agreed on every input. Each group below failed at least one test. The first run found two fixture errors, which were fixed, and one library limit, which is listed under Not covered. The gaps it found were closed with new fixtures and sentences, and the table lists each by its case.
+Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |
