@@ -121,26 +121,52 @@ func run(instantiator interface {
 }
 
 func normalized(plan model.Plan) model.Plan {
-	if len(plan.Variables) == 0 {
-		plan.Variables = nil
-	}
-	if len(plan.Sections) == 0 {
-		plan.Sections = nil
-	}
-	if len(plan.UnknownFields) == 0 {
-		plan.UnknownFields = nil
-	}
-	sections := make([]model.Section, len(plan.Sections))
-	for i, section := range plan.Sections {
-		if len(section.UnknownFields) == 0 {
-			section.UnknownFields = nil
+	return withoutEmptyCollections(reflect.ValueOf(plan)).Interface().(model.Plan)
+}
+
+func withoutEmptyCollections(v reflect.Value) reflect.Value {
+	switch v.Kind() {
+	case reflect.Slice:
+		if v.Len() == 0 {
+			return reflect.Zero(v.Type())
 		}
-		sections[i] = section
+		copied := reflect.MakeSlice(v.Type(), v.Len(), v.Len())
+		for i := 0; i < v.Len(); i++ {
+			copied.Index(i).Set(withoutEmptyCollections(v.Index(i)))
+		}
+		return copied
+	case reflect.Map:
+		if v.Len() == 0 {
+			return reflect.Zero(v.Type())
+		}
+		copied := reflect.MakeMapWithSize(v.Type(), v.Len())
+		for _, key := range v.MapKeys() {
+			copied.SetMapIndex(key, withoutEmptyCollections(v.MapIndex(key)))
+		}
+		return copied
+	case reflect.Pointer:
+		if v.IsNil() {
+			return v
+		}
+		copied := reflect.New(v.Type().Elem())
+		copied.Elem().Set(withoutEmptyCollections(v.Elem()))
+		return copied
+	case reflect.Interface:
+		if v.IsNil() {
+			return v
+		}
+		copied := reflect.New(v.Type()).Elem()
+		copied.Set(withoutEmptyCollections(v.Elem()))
+		return copied
+	case reflect.Struct:
+		copied := reflect.New(v.Type()).Elem()
+		for i := 0; i < v.NumField(); i++ {
+			copied.Field(i).Set(withoutEmptyCollections(v.Field(i)))
+		}
+		return copied
+	default:
+		return v
 	}
-	if len(sections) > 0 {
-		plan.Sections = sections
-	}
-	return plan
 }
 
 func planText(t *testing.T, plan model.Plan) string {

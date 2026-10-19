@@ -50,7 +50,9 @@ The variables are copied as given, in the order given. Nothing is added, filled,
 
 ### Order
 
-Sections are in ascending byte order of `id`, so `10-x` comes before `9-x`, and `a` before `a-b`, before `a1`. The order in which templates are given has no effect, because the driver lists files in whatever order the file system uses, and the same template set must give the same plan file. The stored order is not the document order. The section selector computes that from `timing`, `after`, and `id` when it is needed.
+Sections are in ascending byte order of `id`, so `10-x` comes before `9-x`, and `a` before `a-b`, before `a1`. After the duplicate check, no two templates have the same id, so no two sections compare equal and a sort that keeps equal ids in place and one that does not give the same result. No test tells them apart, and none could.
+
+The order in which templates are given has no effect, because the driver lists files in whatever order the file system uses, and the same template set must give the same plan file. The stored order is not the document order. The section selector computes that from `timing`, `after`, and `id` when it is needed.
 
 ## Problems
 
@@ -78,7 +80,8 @@ These hold for every input the contract tests use.
 - **Order of templates.** Giving the templates in any order gives the same plan, or the same problems.
 - **Inputs unchanged.** The templates, the axis variables, and everything they hold are the same after the call as before. Sorting happens on a copy.
 - **Nothing shared.** No list, map, or pointer in the result is shared with an argument, at any depth, including inside unknown fields. Changing the result changes no argument, and changing an argument after the call changes no result.
-- **Whole or nothing.** A problem means the zero Plan. A Plan means no problems.
+- **Whole or nothing.** A problem means the zero Plan. A Plan means no problems. One problem is enough: a single duplicate id, or a single nameless variable, gives the zero Plan and that one problem.
+- **Empty and absent are the same.** A list or map that is absent in an argument may be absent or empty in the result, and the same holds for one that is empty. Tests treat a nil list or map and an empty one as equal, at every depth, including inside unknown fields. This matches the [section resolver contract](../../section/resolver/contract.md).
 
 ## Side effects and plan access
 
@@ -158,6 +161,11 @@ While drafting, a reference instantiator and a reference hasher were written fro
 | A plan returned with the problems, in part or with the variables | `duplicate-ids`, `nameless-axis-variables`, `both-problems` |
 | A nameless variable skipped without a problem | `nameless-axis-variables`, `both-problems` |
 | The index counted from one, only the first nameless variable reported, or only one with a description | `nameless-axis-variables`, `both-problems` |
-| The variable problems before the template problems, or only one kind reported | `both-problems` |
+| The variable problems before the template problems, or only one kind reported | `both-problems`, `single-duplicate-and-single-nameless` |
+| The plan returned when there is exactly one problem, for example by testing for more than one | `single-duplicate-id`, `single-nameless-axis-variable` |
+| The index of a single nameless variable counted from one | `single-nameless-axis-variable` |
+| An unknown field's nested list or map shared with the argument, or copied only one level deep | the nothing-shared test on `hasher-goldens`, whose `x-nested` and `a` fields hold nested lists and maps |
+
+Found later by the mutation tool, and judged equivalent because empty and absent are the same: dropping the nil checks that keep an absent list or map absent in the result. The tests compare plans with empty lists and maps treated as absent, at every depth.
 
 No second independent build or differential run was made, because the issue is a draft.

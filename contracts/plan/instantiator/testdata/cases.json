@@ -121,5 +121,39 @@
       {"code": "variable.no-name", "detail": {"index": "3"}}
     ],
     "source": "Contract rule: Problems. Every problem is reported, the template problems first, and no plan is returned."
+  },
+  {
+    "name": "single-duplicate-id",
+    "templates": ["single-duplicate.sections.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "template.duplicate-id", "section": "a", "detail": {"count": "2"}}
+    ],
+    "source": "Contract rule: Problems. One id repeats, so exactly one problem, with a count of 2, and no plan. Kills an implementation that returns the plan when it finds a single problem, such as a test of len(problems) > 1."
+  },
+  {
+    "name": "single-nameless-axis-variable",
+    "templates": ["hasher-basic.section.json"],
+    "axisVariables": "single-nameless.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "variable.no-name", "detail": {"index": "0"}}
+    ],
+    "source": "Contract rule: Problems. One variable has no name, so exactly one problem, at index 0, counted from zero, and no plan. Kills an implementation that returns the plan when it finds a single problem, and an index counted from one."
+  },
+  {
+    "name": "single-duplicate-and-single-nameless",
+    "templates": ["single-duplicate.sections.json"],
+    "axisVariables": "single-nameless.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "problems": [
+      {"code": "template.duplicate-id", "section": "a", "detail": {"count": "2"}},
+      {"code": "variable.no-name", "detail": {"index": "0"}}
+    ],
+    "source": "Contract rule: Problems. One problem of each kind, template problem first. Kills an implementation that reports only one kind, and one that puts the variable problem first."
   }
 ]

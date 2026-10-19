@@ -1,0 +1,6 @@
+{
+  "variables": [
+    {"description": "A variable with no name"},
+    {"name": "discipline", "description": "Which discipline is this plan for?", "options": ["software", "design"], "required": true}
+  ]
+}
