@@ -1,6 +1,6 @@
 # 0050. Section switch
 
-Status: proposed
+Status: accepted
 
 Builds on [0030](0030-self-contained-plan-file.md) and [0045](0045-defaults-are-suggestions.md). It replaces the `enabled` variable described in [optional sections](../reference/section-template-schema/optional-sections.md) and in [0010](0010-plan-editor.md).
 
@@ -14,7 +14,7 @@ Switching a section off is not an answer to a question about the engagement. It 
 
 A section in a plan has a switch. It is a setting on the section, outside the questions and the answers.
 
-- **A section is on unless the plan says otherwise.** The plan section carries an optional boolean `enabled`. When it is absent the section is on. A template never declares the switch, and a template section is always on when it is first added.
+- **A section is on unless the plan says otherwise.** The plan section carries an optional boolean `enabled`, true by default. A new section is on, and when the field is absent the section is on. The switch is optimistic: it is named for the state we expect. A template never declares the switch, and a template section is always on when it is first added.
 
 - **Only a person turns a section off.** The editor offers it as an action on a section, for example a list of sections with a toggle. It is not a question, it never blocks, it cannot be deferred, and it has no default.
 
@@ -60,7 +60,7 @@ A section in a plan has a switch. It is a setting on the section, outside the qu
   - Question finder and plan editor, not yet drafted: the editor offers the toggle, and the finder never lists `enabled`.
 - **Versioning.** As in 0035, nothing exists outside this repository, so the schema version stays 1.
 
-## Open
+## Settled in review
 
-- Whether the model holds the switch as an optional boolean or as a flag that is true only when the section is off.
-- Whether the plan validator reports a `section` clause that names an unknown section, as it does for an unknown question. I expect so.
+- The model holds `enabled`, true by default, and not a flag for "off". How a language keeps an absent field true is a code detail.
+- The plan validator reports a `section` clause that names an unknown section, as it does for an unknown question.

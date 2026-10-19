@@ -40,6 +40,7 @@ classDiagram
         summary
         owner
         timing
+        enabled
         verification
         body
         includeIf
@@ -73,6 +74,8 @@ classDiagram
     class Clause {
         question
         answer
+        section
+        enabled
     }
     class Step {
         id
@@ -133,7 +136,7 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | Field | Type | Notes |
 | -- | -- | -- |
 | `plan` | Map of name to Value | Answers to plan variables |
-| `sections` | Map of section id to a map of name to Value | Each section's own answers, including its `enabled` toggle |
+| `sections` | Map of section id to a map of name to Value | Each section's own answers |
 
 A Value is one of:
 
@@ -154,6 +157,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `title`, `summary` | Text | The only required fields besides `id`. Blank text counts as missing, see [0040](../decisions/0040-blank-text-and-variable-name-length.md) |
 | `owner` | Text, optional | May contain `$name` |
 | `timing` | Timing, optional | Defaults to `anytime` |
+| `enabled` | Boolean, optional | True by default. Only a plan section has it, and a person turns a section off. See [0050](../decisions/0050-section-switch.md) |
 | `verification`, `body` | Text, optional | Markdown prose |
 | `includeIf` | Condition, optional | Names plan variables only |
 | `after` | List of section ids, optional |  |
@@ -191,7 +195,9 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | -- | -- | -- |
 | Condition | `all` | List of Clause. Every clause must hold |
 | Clause | `question` | A question id. A bare name means the same section |
-| Clause | `answer` | An AnswerTest |
+| Clause | `answer` | An AnswerTest. A clause with `question` has `answer` |
+| Clause | `section` | A section id. A clause with `section` tests that section's switch, and has `enabled` and no `question` |
+| Clause | `enabled` | Boolean. The clause holds when the named section's switch equals it |
 | AnswerTest | `is`, `isNot` | One Value |
 | AnswerTest | `isOneOf`, `isNotOneOf` | A list of two or more Values |
 | AnswerTest | `isSettled` | Boolean |
