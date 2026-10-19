@@ -1,0 +1,4 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "b", "timing": "week-one"}, {"id": "ab", "timing": "week-one"}, {"id": "a-b", "timing": "week-one"},
+  {"id": "a1", "timing": "week-one"}, {"id": "a", "timing": "week-one"}, {"id": "a-1", "timing": "week-one"}]}

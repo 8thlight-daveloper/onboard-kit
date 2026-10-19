@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": {"deferred": true}}},
+ "sections": [
+  {"id": "software-only", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+  {"id": "not-design", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isNot": "design"}}]}},
+  {"id": "undecided", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isSettled": false}}]}},
+  {"id": "always"}]}

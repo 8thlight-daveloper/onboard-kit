@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}},
+ "sections": [
+  {"id": "review-design-system", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+  {"id": "clone-and-run-tests", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+  {"id": "access"}]}

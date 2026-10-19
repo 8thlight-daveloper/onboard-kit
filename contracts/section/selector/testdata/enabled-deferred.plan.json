@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"deferred-with-default": {"enabled": {"deferred": true}}, "deferred-without-default": {"enabled": {"deferred": true}}}},
+ "sections": [
+  {"id": "deferred-with-default", "variables": [{"name": "enabled", "type": "boolean", "default": true}]},
+  {"id": "deferred-without-default", "variables": [{"name": "enabled", "type": "boolean"}]}]}

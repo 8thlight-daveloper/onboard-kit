@@ -1,0 +1,12 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software", "team_state": "established"}},
+ "sections": [
+  {"id": "both-hold", "includeIf": {"all": [
+    {"question": "plan.discipline", "answer": {"is": "software"}},
+    {"question": "plan.team_state", "answer": {"is": "established"}}]}},
+  {"id": "first-fails", "includeIf": {"all": [
+    {"question": "plan.discipline", "answer": {"is": "design"}},
+    {"question": "plan.team_state", "answer": {"is": "established"}}]}},
+  {"id": "last-fails", "includeIf": {"all": [
+    {"question": "plan.discipline", "answer": {"is": "software"}},
+    {"question": "plan.team_state", "answer": {"is": "first-consultants"}}]}}]}

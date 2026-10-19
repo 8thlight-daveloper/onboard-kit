@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"no-toggle": {"enabled": false}, "other-variables": {"enabled": false}}},
+ "sections": [
+  {"id": "no-toggle"},
+  {"id": "other-variables", "variables": [{"name": "repo_url", "type": "string", "default": "x"}, {"name": "enabled_later", "type": "boolean", "default": false}]}]}

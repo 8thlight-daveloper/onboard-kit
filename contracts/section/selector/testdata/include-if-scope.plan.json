@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}, "sections": {"has-own-answer": {"discipline": "design"}}},
+ "sections": [
+  {"id": "has-own-answer", "includeIf": {"all": [{"question": "discipline", "answer": {"is": "design"}}]}},
+  {"id": "reads-plan-by-mistake", "includeIf": {"all": [{"question": "discipline", "answer": {"is": "software"}}]}}]}

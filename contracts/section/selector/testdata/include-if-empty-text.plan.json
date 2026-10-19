@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": ""}},
+ "sections": [
+  {"id": "not-design", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isNot": "design"}}]}},
+  {"id": "undecided", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isSettled": false}}]}},
+  {"id": "settled", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isSettled": true}}]}}]}

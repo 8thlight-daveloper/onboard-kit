@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"switched-on": {"enabled": true}, "switched-off": {"enabled": false}}},
+ "sections": [
+  {"id": "switched-off", "variables": [{"name": "enabled", "type": "boolean"}]},
+  {"id": "switched-on", "variables": [{"name": "enabled", "type": "boolean"}]}]}

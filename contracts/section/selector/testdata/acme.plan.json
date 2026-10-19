@@ -1,0 +1,12 @@
+{"schemaVersion": 1,
+ "answers": {
+  "plan": {"organization": "ACME Corp", "team": "Platform team", "team_state": "established", "discipline": "software"},
+  "sections": {"access": {"tracker_grantor": {"deferred": true}}}},
+ "sections": [
+  {"id": "stuck-general", "title": "If you are stuck", "timing": "anytime"},
+  {"id": "review-design-system", "title": "Review the design system", "timing": "week-one",
+   "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+   "variables": [{"name": "enabled", "type": "boolean", "default": true}]},
+  {"id": "clone-and-run-tests", "title": "Clone and run the tests", "timing": "week-one", "after": ["access"],
+   "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+  {"id": "access", "title": "Get access", "timing": "before-day-one"}]}

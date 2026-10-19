@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}, "sections": {"both-pass": {"enabled": true}, "condition-fails": {"enabled": true}, "toggled-off": {"enabled": false}}},
+ "sections": [
+  {"id": "both-pass", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}, "variables": [{"name": "enabled", "type": "boolean"}]},
+  {"id": "condition-fails", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}, "variables": [{"name": "enabled", "type": "boolean"}]},
+  {"id": "toggled-off", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}, "variables": [{"name": "enabled", "type": "boolean"}]}]}

@@ -1,0 +1,18 @@
+{"schemaVersion": 3,
+ "provenance": {"templateSet": "abc1234", "generatedOn": "2026-10-15"},
+ "variables": [{"name": "discipline", "description": "Discipline", "type": "choice", "options": ["software", "design"]}],
+ "answers": {"plan": {"discipline": "software"}},
+ "unknownFields": {"note": "kept"},
+ "sections": [
+  {"id": "later", "title": "Later"},
+  {"id": "everything", "title": "Everything", "summary": "Every field set.", "owner": "$manager",
+   "verification": "Check it.", "body": "Body text.",
+   "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "data"]}}]},
+   "after": ["access", "access"], "escalation": ["manager"],
+   "variables": [
+    {"name": "manager", "description": "Manager", "type": "person", "required": true},
+    {"name": "enabled", "description": "Include?", "type": "boolean", "default": true, "phase": "onboarding"}],
+   "steps": [{"id": "one", "name": "One", "run": ["echo", "$manager"], "env": {"A": "b"}, "checks": [{"ask": "Done?"}]}],
+   "source": {"template": "everything", "hash": "0123abcd"},
+   "unknownFields": {"future": [1, 2.5, {"k": null}]}},
+  {"id": "access", "title": "Access", "timing": "before-day-one"}]}

@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "v-anytime", "timing": "anytime"},
+  {"id": "w-quarter", "timing": "days-31-to-90"},
+  {"id": "x-month", "timing": "days-8-to-30"},
+  {"id": "y-week", "timing": "week-one"},
+  {"id": "z-before", "timing": "before-day-one"}]}

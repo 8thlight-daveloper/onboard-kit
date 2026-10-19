@@ -1,0 +1,352 @@
+[
+  {
+    "name": "empty-plan",
+    "plan": "empty-plan.plan.json",
+    "active": [],
+    "source": "docs/decisions/0030-self-contained-plan-file.md, Active sections are computed. A plan with no sections has no active section"
+  },
+  {
+    "name": "plain-sections",
+    "plan": "plain-sections.plan.json",
+    "active": [
+      "a",
+      "b",
+      "c"
+    ],
+    "source": "docs/reference/section-template-schema/optional-sections.md: a section with no enabled variable is always on when it has no includeIf. ordering.md: the smaller id comes first"
+  },
+  {
+    "name": "include-if-holds",
+    "plan": "include-if-holds.plan.json",
+    "active": [
+      "access",
+      "clone-and-run-tests"
+    ],
+    "source": "docs/reference/section-template-schema/conditions.md, Section conditions. Section ids from docs/reference/examples/acme"
+  },
+  {
+    "name": "include-if-unanswered",
+    "plan": "include-if-unanswered.plan.json",
+    "active": [
+      "always",
+      "undecided"
+    ],
+    "source": "conditions.md: unanswered means out. Every test except isSettled is false, before any negation, so isNot is false too"
+  },
+  {
+    "name": "include-if-deferred",
+    "plan": "include-if-deferred.plan.json",
+    "active": [
+      "always",
+      "undecided"
+    ],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: a condition tests settled answers only. isSettled false holds for a deferred answer"
+  },
+  {
+    "name": "include-if-empty-text",
+    "plan": "include-if-empty-text.plan.json",
+    "active": [
+      "undecided"
+    ],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: empty text is unanswered"
+  },
+  {
+    "name": "include-if-every-clause",
+    "plan": "include-if-every-clause.plan.json",
+    "active": [
+      "both-hold"
+    ],
+    "source": "conditions.md: all is a list of clauses that must all be true"
+  },
+  {
+    "name": "include-if-no-clauses",
+    "plan": "include-if-no-clauses.plan.json",
+    "active": [
+      "narrowed-by-nothing",
+      "plain"
+    ],
+    "source": "conditions.md, Lint warnings: a condition with no clauses always holds, the same as no condition"
+  },
+  {
+    "name": "include-if-scope",
+    "plan": "include-if-scope.plan.json",
+    "active": [
+      "has-own-answer"
+    ],
+    "source": "conditions.md: a bare name is a question in the same section. contracts/condition/evaluator/contract.md: scope is where the condition is written"
+  },
+  {
+    "name": "include-if-ignores-defaults",
+    "plan": "include-if-ignores-defaults.plan.json",
+    "active": [
+      "always"
+    ],
+    "source": "conditions.md: a declared default is not stored until a person selects it, so it does not count"
+  },
+  {
+    "name": "enabled-answers",
+    "plan": "enabled-answers.plan.json",
+    "active": [
+      "switched-on"
+    ],
+    "source": "docs/reference/section-template-schema/optional-sections.md: the answer is stored in answers.sections.<id>.enabled, and false switches the section off"
+  },
+  {
+    "name": "enabled-defaults",
+    "plan": "enabled-defaults.plan.json",
+    "active": [
+      "default-true"
+    ],
+    "source": "optional-sections.md, No answer: the default applies. With neither an answer nor a default, the section is off"
+  },
+  {
+    "name": "enabled-answer-beats-default",
+    "plan": "enabled-answer-beats-default.plan.json",
+    "active": [
+      "turned-on"
+    ],
+    "source": "optional-sections.md, No answer: the default applies only when there is no answer"
+  },
+  {
+    "name": "enabled-deferred",
+    "plan": "enabled-deferred.plan.json",
+    "active": [
+      "deferred-with-default"
+    ],
+    "source": "optional-sections.md: deferred is not accepted for enabled. Chosen: a deferred stored answer counts as no answer, see Decisions to know"
+  },
+  {
+    "name": "enabled-not-a-flag",
+    "plan": "enabled-not-a-flag.plan.json",
+    "active": [
+      "empty-text-default-true",
+      "list-default-true",
+      "text-false-default-true"
+    ],
+    "source": "optional-sections.md: enabled must be boolean. Chosen: only a Flag answer or default counts, see Decisions to know"
+  },
+  {
+    "name": "enabled-without-variable",
+    "plan": "enabled-without-variable.plan.json",
+    "active": [
+      "no-toggle",
+      "other-variables"
+    ],
+    "source": "optional-sections.md: a section with no enabled variable is always on"
+  },
+  {
+    "name": "enabled-per-section",
+    "plan": "enabled-per-section.plan.json",
+    "active": [
+      "neighbour",
+      "other"
+    ],
+    "source": "optional-sections.md: the answer is stored in answers.sections.<id>.enabled, and the default is the section's own variable"
+  },
+  {
+    "name": "include-if-and-enabled",
+    "plan": "include-if-and-enabled.plan.json",
+    "active": [
+      "both-pass"
+    ],
+    "source": "docs/glossary.md, Active section: includeIf holds, and enabled is true. docs/decisions/0030-self-contained-plan-file.md, Active sections are computed"
+  },
+  {
+    "name": "timing-order",
+    "plan": "timing-order.plan.json",
+    "active": [
+      "z-before",
+      "y-week",
+      "x-month",
+      "w-quarter",
+      "v-anytime"
+    ],
+    "source": "docs/reference/section-template-schema/ordering.md, Timing and How the order is computed step 1. Ids run against the timing order on purpose"
+  },
+  {
+    "name": "timing-default",
+    "plan": "timing-default.plan.json",
+    "active": [
+      "s-c",
+      "s-a",
+      "s-b"
+    ],
+    "source": "ordering.md: anytime is the default when timing is omitted, and it comes last"
+  },
+  {
+    "name": "id-order",
+    "plan": "id-order.plan.json",
+    "active": [
+      "a",
+      "a-1",
+      "a-b",
+      "a1",
+      "ab",
+      "b"
+    ],
+    "source": "ordering.md step 2: the smaller id comes first. Chosen: ids compare byte by byte, see Decisions to know"
+  },
+  {
+    "name": "repeated-timings",
+    "plan": "repeated-timings.plan.json",
+    "active": [
+      "p",
+      "q",
+      "m",
+      "a",
+      "b"
+    ],
+    "source": "ordering.md step 1 and 2: sections of one timing are ordered by id inside that timing"
+  },
+  {
+    "name": "after-moves-later",
+    "plan": "after-moves-later.plan.json",
+    "active": [
+      "b",
+      "c",
+      "a",
+      "d"
+    ],
+    "source": "ordering.md step 2: place each section after every section it lists, and where nothing constrains two sections the smaller id comes first"
+  },
+  {
+    "name": "after-chain",
+    "plan": "after-chain.plan.json",
+    "active": [
+      "c",
+      "b",
+      "a",
+      "d"
+    ],
+    "source": "ordering.md, Dependencies"
+  },
+  {
+    "name": "after-several",
+    "plan": "after-several.plan.json",
+    "active": [
+      "c",
+      "d",
+      "b",
+      "a",
+      "e"
+    ],
+    "source": "ordering.md step 2: after lists several sections. A section is placed when every one of them is placed"
+  },
+  {
+    "name": "after-repeated-entries",
+    "plan": "after-repeated-entries.plan.json",
+    "active": [
+      "b",
+      "c",
+      "a"
+    ],
+    "source": "ordering.md: after is a list of template ids. A repeated id means the same as one"
+  },
+  {
+    "name": "after-across-timings",
+    "plan": "after-across-timings.plan.json",
+    "active": [
+      "b",
+      "d",
+      "a",
+      "c"
+    ],
+    "source": "ordering.md: sort by timing first. A timing conflict is reported by the plan validator. Chosen: timing wins, see Decisions to know"
+  },
+  {
+    "name": "after-across-timings-loop",
+    "plan": "after-across-timings-loop.plan.json",
+    "active": [
+      "a",
+      "b"
+    ],
+    "source": "ordering.md: timing first. The two sections are in different timings, so after does not link them"
+  },
+  {
+    "name": "after-section-left-out",
+    "plan": "after-section-left-out.plan.json",
+    "active": [
+      "x",
+      "z"
+    ],
+    "source": "ordering.md, Dependencies: a listed section that is not active is ignored. It does not link the sections around it"
+  },
+  {
+    "name": "after-section-turned-off",
+    "plan": "after-section-turned-off.plan.json",
+    "active": [
+      "p",
+      "r"
+    ],
+    "source": "ordering.md, Dependencies: a listed section that is not active is ignored. A section turned off by enabled is not active"
+  },
+  {
+    "name": "after-unknown-id",
+    "plan": "after-unknown-id.plan.json",
+    "active": [
+      "a",
+      "b"
+    ],
+    "source": "ordering.md, What the validators check: an unknown reference is reported by the validator. Chosen: the selector ignores it, see Decisions to know"
+  },
+  {
+    "name": "after-itself",
+    "plan": "after-itself.plan.json",
+    "active": [
+      "a",
+      "b"
+    ],
+    "source": "ordering.md, What the validators check: a self reference is reported by the validator. Chosen: the selector ignores it, see Decisions to know"
+  },
+  {
+    "name": "after-cycle-pair",
+    "plan": "after-cycle-pair.plan.json",
+    "active": [
+      "c",
+      "a",
+      "b"
+    ],
+    "source": "ordering.md, What the validators check: a dependency cycle is reported by the validator. Chosen order, see Decisions to know"
+  },
+  {
+    "name": "after-cycle-plan-order",
+    "plan": "after-cycle-plan-order.plan.json",
+    "active": [
+      "d",
+      "a",
+      "b",
+      "c"
+    ],
+    "source": "ordering.md, What the validators check: a dependency cycle is reported by the validator. Chosen order, see Decisions to know: the smallest remaining id goes next, whatever order the plan lists the sections in"
+  },
+  {
+    "name": "after-cycle-with-dependent",
+    "plan": "after-cycle-with-dependent.plan.json",
+    "active": [
+      "a",
+      "b",
+      "c"
+    ],
+    "source": "ordering.md, What the validators check: a dependency cycle. Chosen order, see Decisions to know"
+  },
+  {
+    "name": "acme",
+    "plan": "acme.plan.json",
+    "active": [
+      "access",
+      "clone-and-run-tests",
+      "stuck-general"
+    ],
+    "source": "docs/reference/examples/acme: a software team gets access, clone-and-run-tests and stuck-general. review-design-system is out by includeIf"
+  },
+  {
+    "name": "full-section",
+    "plan": "full-section.plan.json",
+    "active": [
+      "access",
+      "everything",
+      "later"
+    ],
+    "source": "docs/reference/domain-model.md, Section: a returned section has every field of the plan's section as held, and no default is filled in"
+  }
+]
