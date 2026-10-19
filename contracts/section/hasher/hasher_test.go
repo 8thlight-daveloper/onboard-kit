@@ -200,6 +200,8 @@ var proseFields = map[string]bool{
 	"Notes": true, "Description": true, "PatternHint": true, "Ask": true,
 }
 
+var unhashedFields = map[string]bool{"Section.Source": true, "Section.Enabled": true}
+
 type change struct {
 	path  string
 	apply func()
@@ -230,11 +232,11 @@ func changesTo(v reflect.Value, path string) []change {
 		changes = append(changes, changesTo(v.Elem(), path)...)
 	case reflect.Struct:
 		for i := 0; i < v.NumField(); i++ {
-			name := v.Type().Field(i).Name
-			if name == "Source" {
+			fieldPath := path + "." + v.Type().Field(i).Name
+			if unhashedFields[fieldPath] {
 				continue
 			}
-			changes = append(changes, changesTo(v.Field(i), path+"."+name)...)
+			changes = append(changes, changesTo(v.Field(i), fieldPath)...)
 		}
 	case reflect.Slice:
 		changes = append(changes, change{path + " appended", func() { v.Set(reflect.Append(v, reflect.Zero(v.Type().Elem()))) }})
@@ -478,6 +480,79 @@ func TestTheSectionIsNotChanged(t *testing.T) {
 			if !reflect.DeepEqual(section, snapshots[i]) {
 				t.Errorf("%s[%d]: the section changed during Hash\n%s\n%s", c.Name, i, sectionText(t, section), sectionText(t, snapshots[i]))
 			}
+		}
+	}
+}
+
+func TestASectionClauseIsWrittenWithItsSectionAndSwitch(t *testing.T) {
+	t.Parallel()
+	for _, enabled := range []bool{true, false} {
+		clause := model.Clause{Section: "design", Enabled: enabled}
+		text := fmt.Sprintf(`{"section":"design","enabled":%t}`, enabled)
+		cases := map[string]struct {
+			section model.Section
+			want    string
+		}{
+			"includeIf": {
+				model.Section{ID: "s", IncludeIf: &model.Condition{All: []model.Clause{clause}}},
+				`{"id":"s","includeIf":{"all":[` + text + `]},"timing":"anytime"}`,
+			},
+			"askIf": {
+				model.Section{ID: "s", Variables: []model.Variable{{Name: "v", AskIf: &model.Condition{All: []model.Clause{clause}}}}},
+				`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning","askIf":{"all":[` + text + `]}}]}`,
+			},
+		}
+		for name, c := range cases {
+			if got, want := newHasher().Hash(c.section), textHash(c.want); got != want {
+				t.Errorf("%s with enabled %t: got %s, want the hash of %s", name, enabled, got, c.want)
+			}
+		}
+	}
+}
+
+func TestAClauseWithBothKindsOfKeyIsWrittenAsHeld(t *testing.T) {
+	t.Parallel()
+	cases := map[string]struct {
+		clause model.Clause
+		want   string
+	}{
+		"question and section": {
+			model.Clause{Question: "q", Answer: model.AnswerTest{Is: model.Value{Kind: model.ValueKindText, Text: "a"}}, Section: "s", Enabled: true},
+			`{"question":"q","answer":{"is":"a"},"section":"s","enabled":true}`,
+		},
+		"question and section, switch off": {
+			model.Clause{Question: "q", Section: "s"},
+			`{"question":"q","section":"s","enabled":false}`,
+		},
+		"question with the switch": {
+			model.Clause{Question: "q", Enabled: true},
+			`{"question":"q","enabled":true}`,
+		},
+		"switch alone": {
+			model.Clause{Enabled: true},
+			`{"enabled":true}`,
+		},
+		"nothing": {
+			model.Clause{},
+			`{}`,
+		},
+	}
+	for name, c := range cases {
+		section := model.Section{ID: "s", IncludeIf: &model.Condition{All: []model.Clause{c.clause}}}
+		want := textHash(`{"id":"s","includeIf":{"all":[` + c.want + `]},"timing":"anytime"}`)
+		if got := newHasher().Hash(section); got != want {
+			t.Errorf("%s: got %s, want the hash of %s", name, got, c.want)
+		}
+	}
+}
+
+func TestTheSwitchOfASectionIsNotWritten(t *testing.T) {
+	t.Parallel()
+	on, off := true, false
+	want := textHash(`{"id":"s","timing":"anytime"}`)
+	for name, enabled := range map[string]*bool{"absent": nil, "on": &on, "off": &off} {
+		if got := newHasher().Hash(model.Section{ID: "s", Enabled: enabled}); got != want {
+			t.Errorf("switch %s: got %s, want %s", name, got, want)
 		}
 	}
 }

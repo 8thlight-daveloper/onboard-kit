@@ -2,7 +2,7 @@
 
 Status: approved. Component: `section/hasher`. Issue: [#62](https://github.com/8thlight-daveloper/onboard-kit/issues/62).
 
-The section hasher turns a Section into a short text, its content hash. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
+The section hasher turns a Section into a short text, its content hash. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
 ## Purpose
 
@@ -15,12 +15,12 @@ The hash covers the section's definition:
 - Its text: title, summary, owner, verification, and body.
 - Its questions: the variables it declares, with their types, options, patterns, and defaults.
 - Its steps and checks.
-- Its conditions, `includeIf` and each `askIf`.
+- Its conditions, `includeIf` and each `askIf`, with their question clauses and their section clauses.
 - Its `timing`, `after`, `escalation`, and unknown fields.
 
-It does not cover answers, because answers live in the plan and not in the section. It does not cover `source`. It detects an edit to a section and a change to its template. It does not detect that someone answered a question.
+It does not cover answers, because answers live in the plan and not in the section. It does not cover `source`, and it does not cover the section's switch `enabled`, which is the plan's own setting. It detects an edit to a section and a change to its template. It does not detect that someone answered a question.
 
-0030 sets the base: the hash is of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`. Variables are unresolved. The canonical form is a contract protected by golden fixtures, and it is not a git blob sha. The domain model says the hash is "computed over everything except `source`". This contract adds the rules below that make "no effect" precise.
+0030 sets the base: the hash is of the section's structured content in a fixed order, not of raw text, so reformatting does not change it. It excludes `source`, and 0050 adds the switch. Variables are unresolved. The canonical form is a contract protected by golden fixtures, and it is not a git blob sha. The domain model says the hash is "computed over everything except `source`". This contract also leaves out `enabled` as 0050 decides, and adds the rules below that make "no effect" precise.
 
 ## Interface
 
@@ -37,14 +37,14 @@ The hash is SHA-256 of the canonical form, written as lowercase hexadecimal, wit
 
 The canonical form is UTF-8 text in JSON syntax, with no whitespace outside strings. Its job is to be one text for one behavior, and never the same text for two behaviors. It is separate from the plan file's YAML on purpose, so a change in how the encoder writes a plan cannot change a hash. It uses the encoder's key order, as an independent choice: a change to the encoder's order never changes a hash.
 
-A Section is written as an object. Its keys come in this order, and `source` is not one of them.
+A Section is written as an object. Its keys come in this order, and `source` and `enabled` are not among them.
 
 | Type | Key order |
 | -- | -- |
 | Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
-| Clause | `question`, `answer` |
+| Clause | `question`, `answer`, `section`, `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
@@ -53,7 +53,7 @@ A Section is written as an object. Its keys come in this order, and `source` is 
 
 - A key is written as a string, then `:`, then its value. Keys and items are separated by `,`. An object is `{` and `}`, and a list is `[` and `]`.
 - A key with a zero value is omitted. Zero means an empty string, `false`, a list with no items, a map with no entries, a Value of kind none, a nil pointer, a Condition with no clauses, or an AnswerTest with every field zero. A zero field has no effect, so it is the same as an absent one, whether a list is nil or empty.
-- An `isSettled` that is set is written, including `false`, because `false` is a test.
+- An `isSettled` that is set is written, including `false`, because `false` is a test. A clause's `enabled` is written by the rule under Conditions.
 - An item of a list is always written. A clause, step, or check with every field zero is `{}`, and a variable with every field zero is `{"type":"string","phase":"planning"}`, because of the defaults. Dropping an item would shorten the list.
 - Nothing is validated. A check with two of `run` and `ask`, a `timing` that is not a timing, and a clause with two tests are all written as held.
 - A map is written as an object with its keys in ascending byte order of their UTF-8 text. This covers a step's `env` and the keys inside `unknownFields`. An entry is written even when its value is empty.
@@ -121,7 +121,12 @@ A Value of kind Text with no text is `""`, so a `default` of the empty string di
 
 ### Conditions
 
-A Condition with clauses is an object with `all`, a list of clauses. A Clause is an object with `question` and `answer`, and an AnswerTest is an object with the keys in the table, each written by the rules above. A Condition with no clauses is zero, so an empty `includeIf` or `askIf` hashes like an absent one.
+A Condition with clauses is an object with `all`, a list of clauses. A Clause has two forms, a question clause and a section clause (0050), and an AnswerTest is an object with the keys in the table, each written by the rules above. A Condition with no clauses is zero, so an empty `includeIf` or `askIf` hashes like an absent one.
+
+- A question clause is an object with `question` and `answer`, as before.
+- A section clause is an object with `section`, the id as held, and `enabled`. Its canonical form is `{"section":"id","enabled":true}`, and with a switch that is off, `{"section":"id","enabled":false}`. `enabled` is a test, as `isSettled` is, so `false` is written and not omitted. It is also written when it is `true` on a clause with no `section`.
+- A clause is never both forms in a plan, and the hasher does not check it, as it checks nothing else. A clause is written with its keys in the order of the table: `question` and `answer` by the rules for a zero field, `section` when it is not empty, and `enabled` when the clause has a `section` or when `enabled` is `true`. So a clause that holds both kinds of key is written with all of them.
+- The id in `section` is written exactly as held. A section clause differs from a question clause with the same text.
 
 ### Unknown fields
 
@@ -139,9 +144,11 @@ The unknown fields of a section are written as one object under the key `unknown
 
 Inside an unknown field, a key with an empty list or an empty map differs from an absent key. The hasher cannot know what it means to a newer tool, so it does not call it a zero. A decimal `2.0` differs from the integer `2` and from the string `"2"`.
 
-### Source
+### Source and switch
 
 `source` is not written. Two sections that differ only in `source`, or where one has a `source` and the other has none, have the same hash. The same holds for the contents of the `source`: its `template` and its `hash`.
+
+The switch `enabled` of a section is not written either. Two sections that differ only in `enabled`, or where one has `enabled` true or false and the other has none, have the same hash. A section clause inside a condition is a different thing. It is part of the condition, and it is written.
 
 ## Properties
 
@@ -151,7 +158,7 @@ These hold for every section the contract tests use.
 - **Stateless.** A hasher that has hashed other sections gives the same hash as a new one.
 - **Inputs unchanged.** The section, its lists, and its maps are the same after the call as before. Sorting a set happens on a copy.
 - **Shape.** The result is 64 lowercase hex digits.
-- **Behavior only.** Two sections hash alike exactly when their canonical forms are the same text. A change to any field of any type except `source` changes the hash, except a change that the rules above call no effect: a default written out, a zero field, noise at the edge of a prose field, and the order or repeats of a set.
+- **Behavior only.** Two sections hash alike exactly when their canonical forms are the same text. A change to any field of any type except `source` and a section's `enabled` changes the hash, except a change that the rules above call no effect: a default written out, a zero field, noise at the edge of a prose field, and the order or repeats of a set.
 
 ## Side effects and plan access
 
@@ -185,6 +192,17 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | Wrong implementation | Caught by |
 | -- | -- |
 | `source` included, or only its template | `source-ignored`, `full` |
+| A section's `enabled` written, as true, as false, or only when false | `enabled-ignored`, `switch-enabled-ignored`, `switch`, `full`, the switch test |
+| A section's `enabled` read as a zero so that an absent one hashes unlike a true one | `enabled-ignored`, the switch test |
+| A section clause dropped, or written as an empty clause `{}` | `switch`, `section-clauses`, `full`, the section clause test |
+| A section clause written as a question clause, or `section` written under the key `question` | `switch`, `section-clauses`, the section clause test |
+| A section clause written with `enabled` only when true | `switch`, `section-clauses`, the section clause test |
+| A section clause written with `enabled` only when false, or with it first | `switch`, `section-clauses`, the section clause test |
+| `section` and `enabled` swapped in a clause, or written in the order of the key sort | `switch`, `full`, the section clause test |
+| A section clause written with an empty answer, `"answer":{}` | `switch`, `full`, the section clause test |
+| A section clause that names one id the same as another, or its `enabled` ignored | `section-clauses`, `switch`, `full` |
+| A section clause moved between `includeIf` and `askIf`, or its place in the list lost | `section-clauses` |
+| `enabled` of a clause ignored when `section` is empty, or a clause with both kinds of key written as one kind | The held-clause test, `every-field` |
 | Unknown fields dropped, inlined, normalized, or an empty list in them dropped | `unknown-fields`, `unknown-shapes`, `field-boundaries`, `exact-strings`, `every-field` |
 | Unknown map keys in iteration order, in case-insensitive order, or not escaped | `unknown-fields`, `unknown-key-order`, the repeat-call test |
 | A list in an unknown field, a list default, or `options` sorted | `list-order`, `unknown-fields` |
