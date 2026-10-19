@@ -42,7 +42,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | [0020](../decisions/0020-binary-structure-and-regenerative-components.md) | One binary, rebuildable components, dependency rules, rate of change, output styles | Accepted |
 | [0025](../decisions/0025-contracts-and-tests.md) | Contracts, contract and acceptance tests, who writes them, and how a rebuild is run and reviewed | Accepted |
 | [0030](../decisions/0030-self-contained-plan-file.md) | The plan file holds everything, its format, versioning, and hashes | Accepted |
-| [0035](../decisions/0035-settled-and-deferred-answers.md) | An answer is unanswered, deferred, or settled, and the names of those states | Proposed |
+| [0035](../decisions/0035-settled-and-deferred-answers.md) | An answer is unanswered, deferred, or settled, and the names of those states | Accepted |
 
 ## Open decisions
 
