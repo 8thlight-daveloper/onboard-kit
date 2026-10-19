@@ -45,6 +45,10 @@ test:
 build:
     if [ -f go.mod ]; then go build -o output/onboard-kit ./binary; else echo "no Go module yet"; fi
 
+# Run the acceptance scenarios against the built binary. Skips until ./binary has Go files.
+acceptance:
+    if [ -f go.mod ]; then go test -race -count=1 -v ./acceptance/; else echo "no Go module yet"; fi
+
 # Run the binary. A no-op until the Go module exists.
 run *args:
     if [ -f go.mod ]; then go run ./binary {{ args }}; else echo "no Go module yet"; fi
