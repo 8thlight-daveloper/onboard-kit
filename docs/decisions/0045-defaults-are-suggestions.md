@@ -9,7 +9,7 @@ Builds on [0035](0035-settled-and-deferred-answers.md). It changes parts of [003
 A variable can declare a `default`. The docs call it "the value used when none is given". Three places act on that wording today.
 
 - Filling a variable reads the section's own answer, then the section's default ([0030](0030-self-contained-plan-file.md)).
-- A section is active when its `enabled` answer, or its default, is true (0030, [optional sections](../reference/section-template-schema/optional-sections.md)).
+- A section is active when its `enabled` answer, or its default, is true (0030, [optional sections](../reference/section-template-schema/optional-sections.md)). A separate decision takes this one out of the question model, see Not decided.
 - The editor reports each question "with its current answer or default" (0010).
 
 The conditions reference already goes the other way. A condition counts only an explicit answer, never the default.
@@ -25,7 +25,6 @@ A default is a suggestion. It is never an answer, and nothing acts on it unless 
 - **A user interface offers the default.** It shows the default as the suggested entry. The person accepts it with one action. An action such as "accept every default" is allowed, because a person chose it.
 - **A question with a default and no answer is unanswered.** It follows the rules in 0035: a required one blocks, and a variable that text uses becomes a gap.
 - **A new plan has no answers.** The plan instantiator copies no default into `answers`. This is what the instantiator contract already says.
-- **A section with an `enabled` variable is off until someone answers it.** The default of `enabled` only suggests `true` or `false`.
 
 ## Why
 
@@ -36,15 +35,15 @@ A default is a suggestion. It is never an answer, and nothing acts on it unless 
 
 ## Cost
 
-A person answers, or accepts, more questions than before. A section that was on by default is off until its toggle is answered. A walk through the questions that offers each default with one action keeps this short. The review screen can list every question that has a suggestion and no answer.
+A person answers, or accepts, more questions than before. A walk through the questions that offers each default with one action keeps this short. The review screen can list every question that has a suggestion and no answer.
 
 ## Consequences
 
-- **Parts of 0030 and 0010 change.** The lines on filling from the default, on `enabled` falling back to its default, and on the finder returning a question with "its current answer or default" now say the default is offered as a suggestion. A new ADR supersedes the old lines, so 0030 and 0010 get a pointer to this one.
+- **Parts of 0030 and 0010 change.** The lines on filling from the default and on the finder returning a question with "its current answer or default" now say the default is offered as a suggestion. A new ADR supersedes the old lines, so 0030 and 0010 get a pointer to this one.
 - **Schema docs.** `variables.md` (the `default` row), `optional-sections.md` (the "No answer" line), and the schema README (the section-active line) change.
 - **Contracts**, each its own small issue:
   - Section resolver: rule 3 (a default fills an unanswered variable) is removed. An unanswered variable is a gap, or `<name>` for an onboarding variable.
-  - Section selector: the `enabled` default is no longer read. A section with an `enabled` variable and no Flag answer is out.
+  - Section selector: no change from this ADR. Switching a section on or off is not a variable, and a separate decision covers it.
   - Plan instantiator: no change.
   - Question finder, plan editor, and plan validator, not yet drafted: each takes the rule from the start.
 - **The ACME example.** Its plan holds no answer for `output_style`, which only has a default today, so its assembled document needs an answer or shows a gap. A person decides which.
@@ -53,5 +52,6 @@ A person answers, or accepts, more questions than before. A section that was on 
 
 ## Not decided
 
+- How a section is switched on or off. It should not be a variable or a question. See the open decision on section switches.
 - Whether the TUI shows a default as a pre-filled entry or as a hint.
 - Whether a plan can record that a person accepted every default at once, or each answer stands alone.
