@@ -32,22 +32,64 @@ func (c *collector) clausesOf(node *yaml.Node, at location) []model.Clause {
 }
 
 func (c *collector) clauseOf(node *yaml.Node, at location) model.Clause {
-	var clause model.Clause
 	mapping := c.mappingOf(node, at)
 	if mapping == nil {
-		return clause
+		return model.Clause{}
 	}
-	for _, found := range c.entries(mapping, at) {
-		switch found.name {
+	found := c.entries(mapping, at)
+	if hasEntry(found, "section") {
+		return c.sectionClauseOf(found, at)
+	}
+	return c.questionClauseOf(found)
+}
+
+func hasEntry(found []entry, name string) bool {
+	for _, candidate := range found {
+		if candidate.name == name {
+			return true
+		}
+	}
+	return false
+}
+
+func (c *collector) questionClauseOf(found []entry) model.Clause {
+	var clause model.Clause
+	for _, item := range found {
+		switch item.name {
 		case "question":
-			clause.Question = c.stringOf(found.value, found.at)
+			clause.Question = c.stringOf(item.value, item.at)
 		case "answer":
-			clause.Answer = c.answerTestOf(found.value, found.at)
+			clause.Answer = c.answerTestOf(item.value, item.at)
 		default:
-			c.rejectUnknown(found)
+			c.rejectUnknown(item)
 		}
 	}
 	return clause
+}
+
+func (c *collector) sectionClauseOf(found []entry, at location) model.Clause {
+	var clause model.Clause
+	switched := false
+	for _, item := range found {
+		switch item.name {
+		case "section":
+			clause.Section = c.stringOf(item.value, item.at)
+		case "enabled":
+			clause.Enabled, switched = c.switchOf(item)
+		default:
+			c.rejectUnknown(item)
+		}
+	}
+	if !switched {
+		c.report(codeWrongType, at)
+	}
+	return clause
+}
+
+func (c *collector) switchOf(item entry) (bool, bool) {
+	reported := len(c.findings)
+	flag, present := c.optionalFlagOf(item.value, item.at)
+	return flag, present || len(c.findings) > reported
 }
 
 func (c *collector) answerTestOf(node *yaml.Node, at location) model.AnswerTest {

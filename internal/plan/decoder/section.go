@@ -32,6 +32,8 @@ func (c *collector) sectionOf(node *yaml.Node, at location) model.Section {
 			section.Owner = c.stringOf(found.value, found.at)
 		case "timing":
 			section.Timing = model.Timing(c.stringOf(found.value, found.at))
+		case "enabled":
+			section.Enabled = c.optionalFlagPointerOf(found.value, found.at)
 		case "verification":
 			section.Verification = c.stringOf(found.value, found.at)
 		case "body":
