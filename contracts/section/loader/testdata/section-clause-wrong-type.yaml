@@ -14,4 +14,24 @@ includeIf:
       enabled: [true]
     - section: true
     - section: a
+      enabled: true
       extra: 1
+    - section: a
+    - section: b
+      enabled:
+    - section: c
+      enabled: null
+    - section: d
+      enabled: ~
+    - section: e
+      enabled: {k: true}
+    - section:
+    - section: 12
+      enabled: true
+variables:
+  - name: v
+    askIf:
+      all:
+        - section: x
+        - section: z
+          enabled: Off

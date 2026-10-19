@@ -10,8 +10,10 @@
   "variables": [
     {"name": "v", "askIf": {"all": [
       {"section": "access", "enabled": false},
+      {"section": "setup", "enabled": true},
       {"section": "", "enabled": true},
-      {"section": "setup", "enabled": false}
+      {"section": "", "enabled": false},
+      {"section": "", "enabled": true}
     ]}}
   ]
 }

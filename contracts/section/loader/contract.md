@@ -32,7 +32,8 @@ The known keys at each level. A key not listed is unknown.
 | Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
-| Clause | `question`, `answer`, `section`, `enabled` |
+| Clause, question form | `question`, `answer` |
+| Clause, section form | `section`, `enabled` |
 | Answer test | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
@@ -67,19 +68,25 @@ As the decoder, with the same codes, the same path `schemaVersion`, and `support
 | `file.not-a-template` | The file is empty or holds only comments or a lone `---`, or its top level is not a map. A list of sections is not a template | none |
 | `version.invalid`, `version.too-old`, `version.too-new` | See Version | `schemaVersion` |
 | `format.boolean-spelling`, `format.number-spelling`, `format.null-spelling`, `format.alias`, `format.duplicate-key`, `format.wrong-type`, `format.empty-answer`, `format.empty-item` | As the decoder | As the decoder |
-| `format.wrong-type` | Also a clause with a key of each form. See Clauses | The clause |
-| `format.unknown-field` | A map has a key that the table above does not list | The key, such as `summery`, `source`, `enabled`, or `steps[0].extra` |
+| `format.wrong-type` | Also a section clause with no `enabled`, or with an empty or null one. See Clauses | The clause |
+| `format.unknown-field` | A map has a key that the table above does not list. A clause has the keys of its own form only | The key, such as `summery`, `source`, `enabled`, `steps[0].extra`, or `includeIf.all[0].question` |
 
 Problems come in the order of their places in the file, and all are reported. The detail of a problem names its place in `detail.path`. A file problem is the only problem, and a version problem is the only problem. The value of an unknown key is not read, so nothing inside it is reported. A repeated unknown key is reported each time, with `format.duplicate-key` for each repeat.
 
 ## Clauses
 
-A clause has one of two forms (0050).
+A clause has one of two forms, and a key that belongs to the other form is not known to it (0050). The loader reads a clause as the plan decoder does, see Section clauses in the [decoder contract](../../plan/decoder/contract.md). The same clause gives the same problem codes and the same paths in both.
 
-- A question clause has `question`, `answer`, or both, and none of the keys of a section clause.
-- A section clause has `section`, `enabled`, or both, and none of the keys of a question clause. It loads into `Section` and `Enabled` of the Clause. `section: access` with no `enabled` is `Enabled` false, by the rule for an absent field. `enabled: true` with no `section` is `Section` empty and `Enabled` true. The loader does not check the section id, as it does not check a question id. A clause with no key at all is a question clause with nothing in it, as before.
-- A clause with a key of each form is `format.wrong-type` at the clause, such as `includeIf.all[0]` or `variables[1].askIf.all[2]`. It is the code of the list that fits best: the clause is a kind the model does not allow, and no other code is about a clause as a whole. The clause is not read at all, so no other problem inside it is reported, not an unknown key, a spelling, or a wrong type. A key counts when it is present, even when its value is null. The Section is the zero Section, as for any problem.
-- In a section clause, `section` is text and `enabled` is a boolean, with the format guards of the decoder: `enabled: yes` is `format.boolean-spelling`, and `enabled: 1`, a quoted `"true"`, and a list are `format.wrong-type` at `enabled`. A `section` that is a plain `true` or a list is `format.wrong-type` at `section`. Any other key is `format.unknown-field`, at the key.
+| Form | Known keys | Loads into |
+| -- | -- | -- |
+| Section clause | `section`, `enabled` | `Section` and `Enabled` |
+| Question clause | `question`, `answer` | `Question` and `Answer` |
+
+- A clause is a section clause when it has a `section` key, with any value and in any key order. Otherwise it is a question clause, including a clause with no keys that it knows.
+- A key of the other form is `format.unknown-field` at the key, and its value is not read. So `question` and `answer` in a section clause are reported, and so is `enabled` in a clause with no `section`. A key counts when it is present, even when its value is null. The clause is read for its own keys as usual, and the problems of the clause come in the order of their places. See open question 5.
+- `section` is text and `enabled` is a boolean, with the format guards of the decoder: `enabled: yes` is `format.boolean-spelling`, and `enabled: 1`, a quoted `"true"`, a list, and a map are `format.wrong-type` at `enabled`. A `section` that is a plain `true` or a list is `format.wrong-type` at `section`, and a canonical number is `format.number-spelling` there.
+- A section clause whose `enabled` is absent, empty, or `null` is `format.wrong-type` at the clause, such as `includeIf.all[0]` or `variables[1].askIf.all[2]`. The model cannot tell an absent `enabled` from `false`, and reading it so would switch a section off by accident. A lone `section: access` is a problem. A `~` is the null spelling alone and is not also a problem of the clause. When the clause and its first key are one place, the problem of the clause comes before the other problems of that place, as in the decoder: before a `format.unknown-field`, and before a `format.wrong-type` at that key. See open question 6.
+- An empty `section`, whether `""`, `''`, or null, is read as the empty string, and `enabled` is read as written. The loader does not check the section id, as it does not check a question id.
 - The two forms are the same in `includeIf` and in `askIf`.
 
 ## Reading the file
@@ -145,9 +152,8 @@ Questions 2 to 4 are settled above so that the tests can run. A person decides w
 2. **A `source` key.** A template with a `source` is `format.unknown-field`. Another reading is a code of its own, such as `template.has-source`. The first needs no new code and keeps one rule for every unknown key.
 3. **The file code.** `file.not-a-template` is new. The decoder's `file.not-a-plan` names a plan.
 4. **`x-` keys.** The decoder keeps them on a plan and a section. A template rejects them. A person may want a place for author notes in a template, which would be an ADR 0030 change and a version bump.
-
-5. **Mixed clause code.** A clause with keys of both forms is `format.wrong-type` at the clause, because it is the code that fits best and no code is about a clause as a whole. A person may want a code of its own, such as `format.mixed-clause`. It would be a decoder change too.
-6. **Nothing read in a mixed clause.** The loader reports the mix and reads nothing else in the clause. Another reading reports the mix and the other problems of the clause.
+5. **Mixed clause.** The decoder contract has no code for a clause that holds keys of both forms. The loader follows it: the key of the other form is `format.unknown-field` at the key. A person may want a code of its own, such as `format.mixed-clause`. It would be a change to the decoder and the loader together.
+6. **Absent `enabled`.** The decoder contract refuses a section clause with no `enabled` as `format.wrong-type` at the clause, because `Clause.Enabled` cannot tell absent from `false`. The loader follows it. A person may prefer a model change that keeps the difference, such as a `*bool`, which would change both contracts.
 
 ## Wrong implementations tried
 
@@ -160,10 +166,15 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An `x-` key accepted | `unknown-field-top`, `unknown-field-repeated`, `many-problems` |
 | An `enabled` key accepted or read on the template, a variable, a step, or a check, its value read, or `Enabled` set to true or false on a loaded Section | `template-enabled-key`, the no-switch test, `all-fields` |
 | A section clause not read in `includeIf`, or not in `askIf`, or read as an empty question clause | `section-clauses`, `all-fields` |
-| `enabled` absent read as true, or `enabled` read from the wrong clause, or a section clause with `enabled: false` dropped | `section-clauses`, `all-fields` |
-| A clause with `section` and `question`, `section` and `answer`, or `enabled` and `question` loaded without a problem, or the first key winning | `section-clause-mixed` |
-| A mixed clause reported by another code, at the wrong path, reported more than once, or read for more problems, or a null mixing key ignored | `section-clause-mixed` |
-| A section clause with `enabled: yes`, `1`, `"true"`, or a list accepted, or `section` of the wrong kind accepted, or an extra key in it accepted | `section-clause-wrong-type` |
+| A section clause with `enabled: false` dropped, or `enabled` read from the wrong clause or the wrong key order | `section-clauses`, `all-fields` |
+| An empty or null `section` refused, or read as a question clause, or a section clause told apart by its first key | `section-clauses`, `all-fields` |
+| A key of the other form read as a form of its own: `question` or `answer` in a section clause kept, or reported by another code, such as `format.wrong-type` at the clause | `section-clause-mixed` |
+| A mixed clause skipped whole, or its other keys not read, or the value of the unknown key read for problems | `section-clause-mixed`, `section-clause-wrong-type` |
+| `enabled` in a clause with no `section` accepted or ignored, or read as the start of a section clause | `section-clause-mixed` |
+| A section clause with no `enabled` read as `false`, or the problem at the key and not at the clause | `section-clause-wrong-type` |
+| An empty or null `enabled` accepted, or a `~` reported twice, or a wrong-typed `enabled` reported again at the clause | `section-clause-wrong-type` |
+| The problem of the clause ordered after the problem of its first key | `section-clause-wrong-type`, `section-clause-mixed` |
+| A section clause with `enabled: yes`, `1`, `"true"`, a list, or a map accepted, or `section` of the wrong kind accepted, or an extra key in it accepted | `section-clause-wrong-type` |
 | A variable named `enabled` refused, or a question clause on `enabled` refused | `unvalidated`, `all-fields` |
 | A `source` accepted silently, or read into the Section | `source-key`, `unknown-field-repeated`, the no-source test |
 | A plan file's `provenance`, `answers`, or `sections` accepted | `plan-as-template` |
