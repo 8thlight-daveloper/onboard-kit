@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "single-pass": {
+      "a": "cost $$5 and $b",
+      "b": "B",
+      "c": "$$b",
+      "e": ["$b", "$$b"]
+    }
+  }
+}

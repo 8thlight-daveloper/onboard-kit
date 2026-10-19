@@ -1,0 +1,15 @@
+{
+  "id": "value-kinds",
+  "title": "Kinds",
+  "summary": "Each kind of answer",
+  "body": "name=[$name] enabled=[$enabled] review=[$review] size=[$size] padded=[$padded] lines=[$lines] flagword=[$flagword]",
+  "variables": [
+    {"name": "name", "description": "A string"},
+    {"name": "enabled", "type": "boolean", "description": "A flag set to true"},
+    {"name": "review", "type": "boolean", "description": "A flag set to false"},
+    {"name": "size", "type": "choice", "options": ["small", "large"], "description": "A choice"},
+    {"name": "padded", "description": "Text with spaces at both ends"},
+    {"name": "lines", "description": "Text with a line break"},
+    {"name": "flagword", "description": "Text that reads like a flag"}
+  ]
+}

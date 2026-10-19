@@ -1,0 +1,12 @@
+{
+  "id": "dollar-signs",
+  "title": "Costs $$5",
+  "summary": "Dollar signs",
+  "body": "Escaped: $$5 and $$STAGING_API_TOKEN and $$.\nNot filled: $$repo_url.\nThree: $$$repo_url.\nFour: $$$$repo_url.\nEnd: $$$\nLone: $5, $Repo_url, $HOME, $ , ${repo_url}, $-x and a final $\nEdges: $repo_url/x, ($repo_url), $repo_url.git, $repo_url-1\nLonger names: $repo_urlx and $repo_url_2 and $repo_url2",
+  "variables": [
+    {"name": "repo_url", "description": "Clone URL"}
+  ],
+  "steps": [
+    {"id": "token", "name": "Token", "run": ["echo", "$$HOME", "$$$repo_url"], "env": {"TOKEN": "$$SECRET"}}
+  ]
+}

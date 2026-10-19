@@ -1,0 +1,7 @@
+{
+  "plan": {"repo_url": "plan-url", "dir": "plan-dir"},
+  "sections": {
+    "access": {"repo_url": "access-url"},
+    "aaa-other": {"repo_url": "other-url", "dir": "other-dir"}
+  }
+}

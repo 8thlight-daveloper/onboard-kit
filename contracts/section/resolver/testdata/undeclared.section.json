@@ -1,0 +1,12 @@
+{
+  "id": "undeclared",
+  "title": "Undeclared",
+  "summary": "Names the section does not declare",
+  "body": "Declared: $repo_url. Plan: $organization. Own answer: $team. Nobody: $other.",
+  "variables": [
+    {"name": "repo_url", "description": "Clone URL"}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run", "run": ["echo", "$organization", "$team"]}
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "left-alone",
+  "title": "Team $team",
+  "summary": "Left alone",
+  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "$team"}}]},
+  "timing": "week-one",
+  "after": ["after-$team"],
+  "escalation": ["$contact"],
+  "variables": [
+    {"name": "team", "description": "Who is on $team", "default": "$team"},
+    {"name": "contact", "type": "person", "multiple": true, "description": "Ask $contact"},
+    {
+      "name": "size",
+      "type": "choice",
+      "options": ["$team"],
+      "pattern": "^$team$",
+      "patternHint": "Like $team",
+      "askIf": {"all": [{"question": "team", "answer": {"isOneOf": ["$team", "x"]}}]}
+    }
+  ],
+  "steps": [
+    {
+      "id": "step-$team",
+      "name": "Plain",
+      "escalation": ["$contact"],
+      "env": {"KEY_$team": "plain"},
+      "checks": [{"env": "$team"}]
+    }
+  ],
+  "source": {"template": "left-alone", "hash": "$team"},
+  "unknownFields": {"note": "$team", "nested": {"list": ["$team", {"deep": "$team"}]}}
+}

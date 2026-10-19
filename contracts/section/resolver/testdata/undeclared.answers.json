@@ -1,0 +1,6 @@
+{
+  "plan": {"organization": "ACME Corp", "repo_url": "plan-url"},
+  "sections": {
+    "undeclared": {"repo_url": "git@h:r.git", "team": "Platform team"}
+  }
+}

@@ -1,0 +1,196 @@
+[
+  {
+    "name": "every-field",
+    "section": "every-field.section.json",
+    "answers": "every-field.answers.json",
+    "resolved": "every-field.resolved.json",
+    "problems": [],
+    "source": "Hand-written. Contract rule: What is filled. variables.md: a variable is written $name and filled from the answer when the document is assembled. domain-model.md: owner may contain $name, a run item may contain $name. steps.md: env values may use $name. The values use the ACME example."
+  },
+  {
+    "name": "left-alone",
+    "section": "left-alone.section.json",
+    "answers": "left-alone.answers.json",
+    "resolved": "left-alone.resolved.json",
+    "problems": [],
+    "source": "Hand-written. Contract rule: What is left alone. domain-model.md: escalation is a list of variable names. steps.md: a check env is a variable name, and env names are uppercase. 0030: variables stay in the plan, and the declarations and source are not resolved."
+  },
+  {
+    "name": "value-kinds",
+    "section": "value-kinds.section.json",
+    "answers": "value-kinds.answers.json",
+    "resolved": "value-kinds.resolved.json",
+    "problems": [],
+    "source": "Hand-written. Contract rule: Text from a value. domain-model.md: a Value is Text, Flag, List, or Deferred, and a Flag is written true or false, lowercase. Text is filled as held, with its spaces and line breaks."
+  },
+  {
+    "name": "list-in-prose",
+    "section": "list-in-prose.section.json",
+    "answers": "list-in-prose.answers.json",
+    "resolved": "list-in-prose.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md: a command joins with spaces in prose. Person section: lines appear joined with a comma and the word then in a sentence. The people and the ACME example text come from acme.md and acme.obk.yaml, which use the same ordering."
+  },
+  {
+    "name": "command-in-run",
+    "section": "command-in-run.section.json",
+    "answers": "command-in-run.answers.json",
+    "resolved": "command-in-run.resolved.json",
+    "problems": [],
+    "source": "Hand-written. steps.md: a command variable is written [$name] in run and expands to its arguments. variables.md: a command expands as a list inside run. ACME example, clone-and-run-tests: run: [$test_command]."
+  },
+  {
+    "name": "dollar-signs",
+    "section": "dollar-signs.section.json",
+    "answers": "dollar-signs.answers.json",
+    "resolved": "dollar-signs.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md, Dollar signs: $$5 renders $5 and $$STAGING_API_TOKEN renders $STAGING_API_TOKEN. A name is [a-z][a-z0-9_]* and ends at the first other character. A $ followed by anything else is left to the validators. The rest follows from reading left to right."
+  },
+  {
+    "name": "undeclared",
+    "section": "undeclared.section.json",
+    "answers": "undeclared.answers.json",
+    "resolved": "undeclared.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md, Scope: a section uses only the variables it declares, and a $name it does not declare is a lint error even when a plan variable has that name. Decided by the contract: the resolver leaves it as written and reports nothing."
+  },
+  {
+    "name": "own-scope",
+    "section": "own-scope.section.json",
+    "answers": "own-scope.answers.json",
+    "resolved": "own-scope.resolved.json",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "access.dir"
+      }
+    ],
+    "source": "Hand-written. 0030, Answers are scoped: filling reads one scope, a variable takes its own section's value, then that section's default. The plan's answers and another section's are not read."
+  },
+  {
+    "name": "defaults",
+    "section": "defaults.section.json",
+    "answers": "defaults.answers.json",
+    "resolved": "defaults.resolved.json",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.i"
+      }
+    ],
+    "source": "Hand-written. 0030: a variable takes its own section's value, then that section's default. 0035: unanswered is nothing, empty text, or an empty list, and a settled answer has at least one character or non-empty item. A flag is always settled."
+  },
+  {
+    "name": "deferred",
+    "section": "deferred.section.json",
+    "answers": "deferred.answers.json",
+    "resolved": "deferred.resolved.json",
+    "problems": [
+      {
+        "code": "gap.deferred",
+        "question": "deferred.a"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "deferred.b"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "deferred.c"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "deferred.d"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "deferred.f"
+      }
+    ],
+    "source": "Hand-written. 0035: a deferred answer becomes a gap when the document is assembled, and the Text word deferred is a plain string. variables.md, Deferred answers: renders as a visible gap. Decided by the contract: a deferred answer is not replaced by a default, and a deferred default is a gap."
+  },
+  {
+    "name": "unanswered",
+    "section": "unanswered.section.json",
+    "answers": "unanswered.answers.json",
+    "resolved": "unanswered.resolved.json",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "unanswered.a"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "unanswered.b"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "unanswered.c"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "unanswered.d"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "unanswered.e"
+      }
+    ],
+    "source": "Hand-written. 0025, properties: every variable is resolved or reported as a gap. 0035: an unanswered question has nothing stored, empty text, or an empty list. The zero Answers value."
+  },
+  {
+    "name": "onboarding",
+    "section": "onboarding.section.json",
+    "answers": "onboarding.answers.json",
+    "resolved": "onboarding.resolved.json",
+    "problems": [
+      {
+        "code": "gap.deferred",
+        "question": "onboarding.laptop"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "onboarding.team"
+      }
+    ],
+    "source": "Hand-written. variables.md, Phase: the plan does not hold an onboarding answer, and the assembled document shows a blank, <name>. ACME example: account_name shows as <account_name>. Decided by the contract: a stored answer, a default, and a deferred answer still follow the general rules."
+  },
+  {
+    "name": "gap-report",
+    "section": "gap-report.section.json",
+    "answers": "gap-report.answers.json",
+    "resolved": "gap-report.resolved.json",
+    "problems": [
+      {
+        "code": "gap.deferred",
+        "question": "gap-report.z_last"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "gap-report.a_first"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "gap-report.mid"
+      }
+    ],
+    "source": "Hand-written. glossary, Gap: a value not known yet. Decided by the contract: a variable is reported once, when its marker is written, in the order of the section's variables."
+  },
+  {
+    "name": "single-pass",
+    "section": "single-pass.section.json",
+    "answers": "single-pass.answers.json",
+    "resolved": "single-pass.resolved.json",
+    "problems": [],
+    "source": "Hand-written. variables.md: $$ renders $. Decided by the contract: filling is one pass over the section, so an answer or default that holds $b or $$b is written as held."
+  },
+  {
+    "name": "nothing-to-fill",
+    "section": "nothing-to-fill.section.json",
+    "answers": "nothing-to-fill.answers.json",
+    "resolved": "nothing-to-fill.resolved.json",
+    "problems": [],
+    "source": "Hand-written. 0030: nothing resolved is stored, and a section with no variable in its text comes back as it was. components.md: the resolver reads the section and the answers and returns a changed copy of the section content only."
+  }
+]

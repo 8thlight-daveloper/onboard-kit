@@ -1,0 +1,21 @@
+{
+  "id": "command-in-run",
+  "title": "Commands",
+  "summary": "A command variable in run",
+  "variables": [
+    {"name": "setup_command", "type": "command", "description": "Installs dependencies"},
+    {"name": "test_command", "type": "command", "description": "Runs the tests"},
+    {"name": "one_word", "type": "command", "description": "A command of one word"},
+    {"name": "sentence", "description": "Text with a space"},
+    {"name": "repo_dir", "description": "Directory of the clone"},
+    {"name": "contacts", "type": "person", "multiple": true, "description": "Who can help"}
+  ],
+  "steps": [
+    {"id": "splice", "name": "Splice", "run": ["env", "make", "setup", "--", "make", "test", "make"]},
+    {"id": "string", "name": "String", "run": ["echo", "hello world"]},
+    {"id": "embedded", "name": "Embedded", "run": ["sh", "-c", "make setup && make test"]},
+    {"id": "joined", "name": "Joined", "run": ["--dir=widget-service", "widget-service"]},
+    {"id": "people", "name": "People", "run": ["notify", "Alex Rivera, alex.rivera@acme.example, @alex, then Sam Okafor, sam.okafor@acme.example, @sam"]},
+    {"id": "check", "name": "Check", "checks": [{"run": ["time", "make", "test", "-v"]}]}
+  ]
+}

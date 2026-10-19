@@ -1,0 +1,17 @@
+{
+  "id": "nothing-to-fill",
+  "title": "Nothing to fill",
+  "summary": "No variable is used",
+  "timing": "anytime",
+  "body": "Plain text with 5 dollars and no names.",
+  "variables": [
+    {"name": "repo_url", "description": "Declared and never used", "required": true},
+    {"name": "enabled", "type": "boolean", "description": "Declared and never used"}
+  ],
+  "steps": [
+    {"id": "no-env", "name": "No env"},
+    {"id": "empty-env", "name": "Empty env", "env": {}, "run": ["make"]},
+    {"id": "checks", "name": "Checks", "checks": [{"ask": "Is it done?"}, {"env": "TOKEN"}]}
+  ],
+  "unknownFields": {"x-note": "kept"}
+}

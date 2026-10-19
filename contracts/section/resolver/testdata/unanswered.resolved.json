@@ -1,0 +1,16 @@
+{
+  "id": "unanswered",
+  "title": "Unanswered",
+  "summary": "Variables with no answer and no default",
+  "body": "a=[_unanswered_] b=[_unanswered_] c=[_unanswered_] d=[_unanswered_]",
+  "variables": [
+    {"name": "a", "description": "No entry"},
+    {"name": "b", "description": "Empty text"},
+    {"name": "c", "description": "Empty list"},
+    {"name": "d", "description": "List of empty items"},
+    {"name": "e", "type": "command", "description": "A command with no answer"}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run", "run": ["make", "_unanswered_"]}
+  ]
+}

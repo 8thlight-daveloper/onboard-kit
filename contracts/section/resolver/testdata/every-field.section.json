@@ -1,0 +1,32 @@
+{
+  "id": "every-field",
+  "title": "Access for $team",
+  "summary": "Request access to $repo_url",
+  "timing": "week-one",
+  "owner": "$grantor",
+  "verification": "You can open $repo_url",
+  "body": "Ask $grantor about $team.",
+  "variables": [
+    {"name": "team", "description": "The team"},
+    {"name": "repo_url", "description": "Clone URL"},
+    {"name": "repo_dir", "description": "Directory of the clone"},
+    {"name": "grantor", "description": "Who grants access"}
+  ],
+  "steps": [
+    {
+      "id": "clone",
+      "name": "Clone $repo_url",
+      "notes": "Clone into $repo_dir.",
+      "owner": "$grantor",
+      "open": "$repo_url",
+      "directory": "$repo_dir",
+      "run": ["git", "clone", "$repo_url", "$repo_dir"],
+      "env": {"TARGET": "$repo_dir", "MODE": "plain"},
+      "checks": [
+        {"run": ["test", "-d", "$repo_dir/.git"]},
+        {"ask": "Is $repo_dir there?"},
+        {"env": "TOKEN"}
+      ]
+    }
+  ]
+}

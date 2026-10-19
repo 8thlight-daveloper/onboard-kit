@@ -1,0 +1,5 @@
+{
+  "sections": {
+    "aaa-other": {"a": "other-a", "b": "other-b", "c": ["other-c"], "d": ["other-d"], "e": ["other-e"]}
+  }
+}

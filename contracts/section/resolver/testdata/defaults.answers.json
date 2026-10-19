@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "defaults": {
+      "b": "",
+      "c": [],
+      "d": ["", ""],
+      "e": "E-answer",
+      "h": false,
+      "j": null
+    }
+  }
+}

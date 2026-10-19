@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "command-in-run": {
+      "setup_command": ["make", "setup"],
+      "test_command": ["make", "test"],
+      "one_word": ["make"],
+      "sentence": "hello world",
+      "repo_dir": "widget-service",
+      "contacts": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"]
+    }
+  }
+}

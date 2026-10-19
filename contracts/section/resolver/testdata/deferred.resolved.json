@@ -1,0 +1,23 @@
+{
+  "id": "deferred",
+  "title": "Deferred",
+  "summary": "Answers put off until later",
+  "body": "a=[_deferred_] b=[_deferred_] d=[_deferred_] e=[deferred]",
+  "variables": [
+    {"name": "a", "description": "Deferred, with a default", "default": "A-default"},
+    {"name": "b", "description": "Deferred, no default"},
+    {"name": "c", "type": "command", "description": "A deferred command"},
+    {"name": "d", "description": "Unanswered, default is deferred", "default": {"deferred": true}},
+    {"name": "e", "description": "The word as text"},
+    {"name": "f", "description": "Deferred in an environment value and a question"}
+  ],
+  "steps": [
+    {
+      "id": "run",
+      "name": "Run",
+      "run": ["make", "_deferred_"],
+      "env": {"VALUE": "x=_deferred_"},
+      "checks": [{"ask": "Is _deferred_ ready?"}]
+    }
+  ]
+}

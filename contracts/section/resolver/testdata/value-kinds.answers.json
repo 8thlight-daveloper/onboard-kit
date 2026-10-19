@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "value-kinds": {
+      "name": "Widget",
+      "enabled": true,
+      "review": false,
+      "size": "large",
+      "padded": "  two spaces both sides  ",
+      "lines": "first\nsecond",
+      "flagword": "true"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "gap-report",
+  "title": "Gaps",
+  "summary": "Which gaps are reported",
+  "escalation": ["$enabled"],
+  "body": "_unanswered_ then _unanswered_ then _deferred_ then _unanswered_ again, with done.",
+  "variables": [
+    {"name": "z_last", "description": "Deferred"},
+    {"name": "a_first", "description": "Unanswered"},
+    {"name": "unused", "description": "Unanswered and never used in text"},
+    {"name": "enabled", "type": "boolean", "description": "Named only where nothing is filled"},
+    {"name": "mid", "description": "Unanswered and used twice"},
+    {"name": "filled", "description": "Answered"}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run", "notes": "See _unanswered_.", "escalation": ["$unused"]}
+  ]
+}

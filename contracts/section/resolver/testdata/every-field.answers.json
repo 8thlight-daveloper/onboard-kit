@@ -1,0 +1,10 @@
+{
+  "sections": {
+    "every-field": {
+      "team": "Platform team",
+      "repo_url": "git@git.acme.example:platform/widget-service.git",
+      "repo_dir": "widget-service",
+      "grantor": "IT service desk"
+    }
+  }
+}

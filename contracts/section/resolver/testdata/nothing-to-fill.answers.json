@@ -1,0 +1,6 @@
+{
+  "plan": {"organization": "ACME Corp"},
+  "sections": {
+    "nothing-to-fill": {"repo_url": "git@h:r.git"}
+  }
+}

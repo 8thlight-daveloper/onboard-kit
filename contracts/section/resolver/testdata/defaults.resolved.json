@@ -1,0 +1,21 @@
+{
+  "id": "defaults",
+  "title": "Defaults",
+  "summary": "When a default is used",
+  "body": "a=[A-default] b=[B-default] c=[C-default] d=[D-default] e=[E-answer] f=[false] g=[make test] h=[false] i=[_unanswered_] j=[J-default]",
+  "variables": [
+    {"name": "a", "description": "No entry", "default": "A-default"},
+    {"name": "b", "description": "Empty text", "default": "B-default"},
+    {"name": "c", "description": "Empty list", "default": "C-default"},
+    {"name": "d", "description": "List of empty items", "default": "D-default"},
+    {"name": "e", "description": "Settled answer", "default": "E-default"},
+    {"name": "f", "type": "boolean", "description": "Flag default", "default": false},
+    {"name": "g", "type": "command", "description": "Command default", "default": ["make", "test"]},
+    {"name": "h", "type": "boolean", "description": "Settled false", "default": true},
+    {"name": "i", "description": "Default with no text", "default": ""},
+    {"name": "j", "description": "Answer of no kind", "default": "J-default"}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run", "run": ["go", "make", "test", "-v"]}
+  ]
+}

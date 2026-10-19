@@ -1,0 +1,21 @@
+{
+  "id": "list-in-prose",
+  "title": "Run make test",
+  "summary": "Lists in sentences",
+  "owner": "Jane Doe, jane@acme.example, @jane",
+  "verification": "make test passes.",
+  "body": "Run make test. Ask Alex Rivera, alex.rivera@acme.example, @alex, then Sam Okafor, sam.okafor@acme.example, @sam. Or ask Jane Doe, jane@acme.example, @jane.",
+  "variables": [
+    {"name": "test_command", "type": "command", "description": "Runs the tests"},
+    {"name": "contacts", "type": "person", "multiple": true, "description": "Who can help"},
+    {"name": "solo", "type": "person", "multiple": true, "description": "One person"}
+  ],
+  "steps": [
+    {
+      "id": "test",
+      "name": "Test",
+      "notes": "Command: make test",
+      "env": {"COMMAND": "make test"}
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "id": "every-field",
+  "title": "Access for Platform team",
+  "summary": "Request access to git@git.acme.example:platform/widget-service.git",
+  "timing": "week-one",
+  "owner": "IT service desk",
+  "verification": "You can open git@git.acme.example:platform/widget-service.git",
+  "body": "Ask IT service desk about Platform team.",
+  "variables": [
+    {"name": "team", "description": "The team"},
+    {"name": "repo_url", "description": "Clone URL"},
+    {"name": "repo_dir", "description": "Directory of the clone"},
+    {"name": "grantor", "description": "Who grants access"}
+  ],
+  "steps": [
+    {
+      "id": "clone",
+      "name": "Clone git@git.acme.example:platform/widget-service.git",
+      "notes": "Clone into widget-service.",
+      "owner": "IT service desk",
+      "open": "git@git.acme.example:platform/widget-service.git",
+      "directory": "widget-service",
+      "run": ["git", "clone", "git@git.acme.example:platform/widget-service.git", "widget-service"],
+      "env": {"TARGET": "widget-service", "MODE": "plain"},
+      "checks": [
+        {"run": ["test", "-d", "widget-service/.git"]},
+        {"ask": "Is widget-service there?"},
+        {"env": "TOKEN"}
+      ]
+    }
+  ]
+}

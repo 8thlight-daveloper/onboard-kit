@@ -1,0 +1,10 @@
+{
+  "id": "access",
+  "title": "Own scope",
+  "summary": "Only the section's own answers",
+  "body": "Url: $repo_url. Directory: $dir.",
+  "variables": [
+    {"name": "repo_url", "description": "Clone URL"},
+    {"name": "dir", "description": "Directory"}
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "list-in-prose": {
+      "test_command": ["make", "test"],
+      "contacts": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"],
+      "solo": ["Jane Doe, jane@acme.example, @jane"]
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "onboarding": {
+      "seat": "A4",
+      "laptop": {"deferred": true}
+    }
+  }
+}

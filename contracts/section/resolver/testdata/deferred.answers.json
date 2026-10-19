@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "deferred": {
+      "a": {"deferred": true},
+      "b": {"deferred": true},
+      "c": {"deferred": true},
+      "e": "deferred",
+      "f": {"deferred": true}
+    }
+  }
+}
