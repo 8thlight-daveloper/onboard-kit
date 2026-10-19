@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "off", "title": "Off", "summary": "Switched off", "enabled": false},
+    {"id": "on", "title": "On", "summary": "Switched on by the plan", "enabled": true},
+    {"id": "absent", "title": "Absent", "summary": "No switch"},
+    {
+      "id": "ordered",
+      "title": "Ordered",
+      "summary": "Every key before and after the switch",
+      "includeIf": {"all": [{"section": "off", "enabled": false}]},
+      "timing": "week-one",
+      "enabled": false,
+      "after": ["on"],
+      "owner": "newcomer",
+      "escalation": ["$backup"],
+      "verification": "It works.",
+      "body": "Body text.",
+      "variables": [
+        {"name": "backup", "description": "Backup", "type": "person"}
+      ],
+      "steps": [
+        {"id": "st", "name": "Step"}
+      ],
+      "source": {"template": "ordered", "hash": "abc"}
+    }
+  ]
+}

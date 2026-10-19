@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "unknownFields": {"enabled": true, "section": "x"},
+  "sections": [
+    {"id": "s", "title": "S", "summary": "S", "enabled": false, "unknownFields": {"section": "x", "switch": true}}
+  ]
+}

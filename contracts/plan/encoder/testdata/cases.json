@@ -60,6 +60,24 @@
     "source": "The ACME example plan, which is written in canonical form, so the example file is the expected output. The input JSON was first converted from that file with Ruby's YAML loader, then checked and fixed by hand: deferred answers became deferred markers, and a single run string became a one-item list."
   },
   {
+    "name": "section-switch",
+    "input": "section-switch.plan.json",
+    "output": "section-switch.yaml",
+    "source": "Hand-written. Contract rules: Keys, the Section key order with `enabled` after `timing`, and a switch written when it holds a value, true or false. 0050: the plan section carries an optional boolean `enabled`. The ids `on` and `off` and the title `Off` show the quoting rule for reserved words."
+  },
+  {
+    "name": "section-clause",
+    "input": "section-clause.plan.json",
+    "output": "section-clause.yaml",
+    "source": "Hand-written. Contract rules: Keys, the Clause key order, and a section clause always written with `enabled`, including false. 0050: the clause syntax `section` and `enabled`, in askIf and includeIf. The id `n` shows the quoting rule."
+  },
+  {
+    "name": "enabled-unknown",
+    "input": "enabled-unknown.plan.json",
+    "output": "enabled-unknown.yaml",
+    "source": "Hand-written. Contract rule: Unknown fields are written after the known keys. `enabled` is a known key of a Section only, so at the plan level it is an unknown field, and `section` is a known key of a Clause only."
+  },
+  {
     "name": "empty-answer",
     "input": "empty-answer.plan.json",
     "problems": [
@@ -138,5 +156,20 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, empty-item. Dropping an item would shift the list."
+  },
+  {
+    "name": "enabled-collision",
+    "input": "enabled-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].enabled"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[1].enabled"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `enabled` is a known key of a Section."
   }
 ]

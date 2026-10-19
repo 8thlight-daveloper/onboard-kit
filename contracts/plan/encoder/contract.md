@@ -24,7 +24,7 @@ The same rules apply everywhere. The goal is that two people, or two versions of
 
 ### Keys
 
-A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. A condition test written `isSettled` is the exception: it is written whenever it is set, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
+A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. Three keys are the exception, because the value `false` is a choice they hold. A condition test written `isSettled` is written whenever it is set, including `false`. A section's `enabled` is written whenever the section holds a value, `true` or `false`, and omitted only when the section holds none. A clause's `enabled` is written whenever the clause names a section, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
 
 | Type | Key order |
 | -- | -- |
@@ -32,9 +32,9 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Provenance | `templateSet`, `generatedOn` |
 | Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
 | Condition | `all` |
-| Clause | `question`, `answer` |
+| Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
-| Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
+| Section | `id`, `title`, `summary`, `includeIf`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
 | Source | `template`, `hash` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
@@ -94,9 +94,9 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | Code | When |
 | -- | -- |
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
-| `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. Dropping it would shift the list, so it is a problem |
+| `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` on a section collides, and `enabled` on the plan does not. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -137,3 +137,16 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A string with two final newlines as `\|+` | `multiline` |
 | An empty answer written as `null`, no problem | `empty-answer` |
 | The Text `deferred` written plain | `answers`, `strings` |
+| A section's `enabled` never written | `section-switch`, `enabled-unknown`, the switch test |
+| `enabled: false` omitted, as a zero value | `section-switch`, the switch test |
+| `enabled: true` omitted, as the default | `section-switch`, the switch test |
+| `enabled: true` written for a section that holds no value | `section-switch`, and every case with a section |
+| A section's `enabled` at the end, after `source`, or after `id`, or after `after` | `section-switch` |
+| A section clause's `enabled: false` omitted | `section-clause`, the section clause test |
+| A section clause written `enabled` before `section` | `section-clause` |
+| A section clause that also writes `question` and `answer` | The section clause test |
+| A section clause dropped, or written only when it has no question | `section-clause`, the section clause test |
+| A question clause that writes `enabled: true` | The question clause test |
+| A clause with only `enabled` written, not reported | The switch-value test |
+| `enabled` as an unknown field of a section not reported | `enabled-collision` |
+| `enabled` as an unknown field of the plan reported | `enabled-unknown` |
