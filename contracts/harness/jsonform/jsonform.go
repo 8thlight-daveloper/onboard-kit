@@ -295,7 +295,10 @@ func (r *reader) condition(path string, v any) *model.Condition {
 }
 
 func (r *reader) clause(path string, v any) model.Clause {
-	m := r.object(path, v, "question", "answer")
+	m := r.object(path, v, "question", "answer", "section", "enabled")
+	if _, ok := m["section"]; ok {
+		return model.Clause{Section: r.str(path, m, "section"), Enabled: r.boolean(path, m, "enabled")}
+	}
 	test := r.object(path+".answer", m["answer"], "is", "isNot", "isOneOf", "isNotOneOf", "isSettled")
 	clause := model.Clause{Question: r.str(path, m, "question")}
 	clause.Answer.Is = r.valueAt(path+".answer", test, "is")
@@ -314,7 +317,7 @@ func (r *reader) clause(path string, v any) model.Clause {
 }
 
 func (r *reader) section(path string, v any) model.Section {
-	m := r.object(path, v, "id", "title", "summary", "includeIf", "timing", "after", "owner", "escalation", "verification", "body", "variables", "steps", "source", "unknownFields")
+	m := r.object(path, v, "id", "title", "summary", "includeIf", "timing", "enabled", "after", "owner", "escalation", "verification", "body", "variables", "steps", "source", "unknownFields")
 	section := model.Section{
 		ID:            r.str(path, m, "id"),
 		Title:         r.str(path, m, "title"),
@@ -329,6 +332,10 @@ func (r *reader) section(path string, v any) model.Section {
 	}
 	if raw, ok := m["includeIf"]; ok {
 		section.IncludeIf = r.condition(path+".includeIf", raw)
+	}
+	if _, ok := m["enabled"]; ok {
+		enabled := r.boolean(path, m, "enabled")
+		section.Enabled = &enabled
 	}
 	for i, item := range r.list(path, m, "variables") {
 		section.Variables = append(section.Variables, r.variable(fmt.Sprintf("%s.variables[%d]", path, i), item))

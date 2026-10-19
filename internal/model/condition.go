@@ -7,7 +7,11 @@ type Condition struct {
 type Clause struct {
 	Question string
 	Answer   AnswerTest
+	Section  string
+	Enabled  bool
 }
+
+type Switches map[string]bool
 
 type AnswerTest struct {
 	Is         Value

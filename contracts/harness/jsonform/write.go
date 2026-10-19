@@ -176,6 +176,11 @@ func conditionObject(condition model.Condition) object {
 
 func clauseObject(clause model.Clause) object {
 	var o object
+	if clause.Section != "" {
+		o.addText("section", clause.Section)
+		o.add("enabled", clause.Enabled)
+		return o
+	}
 	o.addText("question", clause.Question)
 	var test object
 	if clause.Answer.Is.Kind != model.ValueKindNone {
@@ -214,6 +219,9 @@ func sectionObject(section model.Section) object {
 		o.add("includeIf", conditionObject(*section.IncludeIf))
 	}
 	o.addText("timing", string(section.Timing))
+	if section.Enabled != nil {
+		o.add("enabled", *section.Enabled)
+	}
 	o.addStrings("after", section.After)
 	o.addText("owner", section.Owner)
 	o.addStrings("escalation", section.Escalation)

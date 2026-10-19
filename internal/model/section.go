@@ -6,6 +6,7 @@ type Section struct {
 	Summary       string
 	Owner         string
 	Timing        Timing
+	Enabled       *bool
 	Verification  string
 	Body          string
 	IncludeIf     *Condition
