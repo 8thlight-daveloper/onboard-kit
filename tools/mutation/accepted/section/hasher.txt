@@ -1,0 +1,5 @@
+# Mutants of section/hasher that a person checked and accepted: the change alters no behavior.
+# Each line: checksum | file | change | why it alters nothing. Only a person adds a line.
+# A checksum depends on the mutated file, so an edit to the file brings its survivors back.
+# Approved on 2026-10-19. The same Go detail was checked on 10,000,017 floats for the plan encoder.
+7cb6ca7acb2553992e845dfa7c516413 | unknown.go | FormatFloat precision -1 becomes -2 | Go treats every negative precision as the shortest exact form, so the text is identical. This is a library detail, not a contract rule: the contract fixes the output text, and a rebuild in another language gets its own mutation run and list.
