@@ -19,11 +19,12 @@ type fixtureCheck struct {
 }
 
 type fixtureCase struct {
-	Name    string         `json:"name"`
-	Scope   string         `json:"scope"`
-	Answers string         `json:"answers"`
-	Checks  []fixtureCheck `json:"checks"`
-	Source  string         `json:"source"`
+	Name     string          `json:"name"`
+	Scope    string          `json:"scope"`
+	Answers  string          `json:"answers"`
+	Switches map[string]bool `json:"switches"`
+	Checks   []fixtureCheck  `json:"checks"`
+	Source   string          `json:"source"`
 }
 
 func readFixture(t *testing.T, name string) []byte {
@@ -53,6 +54,17 @@ func loadAnswers(t *testing.T, c fixtureCase) model.Answers {
 	return answers
 }
 
+func loadSwitches(c fixtureCase) model.Switches {
+	if c.Switches == nil {
+		return nil
+	}
+	switches := model.Switches{}
+	for id, on := range c.Switches {
+		switches[id] = on
+	}
+	return switches
+}
+
 func loadCondition(t *testing.T, c fixtureCase, check fixtureCheck) model.Condition {
 	t.Helper()
 	condition, err := jsonform.Condition(check.Condition)
@@ -75,9 +87,10 @@ func TestDecidesWhetherTheConditionHolds(t *testing.T) {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
 			answers := loadAnswers(t, c)
+			switches := loadSwitches(c)
 			for _, check := range c.Checks {
 				condition := loadCondition(t, c, check)
-				got := newEvaluator().Holds(condition, c.Scope, answers)
+				got := newEvaluator().Holds(condition, c.Scope, answers, switches)
 				if got != check.Holds {
 					t.Errorf("%s: got %v, want %v\ncondition: %s", check.Name, got, check.Holds, check.Condition)
 				}
@@ -92,13 +105,14 @@ func TestResultsDoNotDependOnEarlierCalls(t *testing.T) {
 		condition model.Condition
 		scope     string
 		answers   model.Answers
+		switches  model.Switches
 		want      bool
 	}
 	var calls []call
 	for _, c := range loadCases(t) {
 		answers := loadAnswers(t, c)
 		for _, check := range c.Checks {
-			calls = append(calls, call{loadCondition(t, c, check), c.Scope, answers, check.Holds})
+			calls = append(calls, call{loadCondition(t, c, check), c.Scope, answers, loadSwitches(c), check.Holds})
 		}
 	}
 	evaluator := newEvaluator()
@@ -108,7 +122,7 @@ func TestResultsDoNotDependOnEarlierCalls(t *testing.T) {
 			if pass == 1 {
 				index = len(calls) - 1 - i
 			}
-			got := evaluator.Holds(calls[index].condition, calls[index].scope, calls[index].answers)
+			got := evaluator.Holds(calls[index].condition, calls[index].scope, calls[index].answers, calls[index].switches)
 			if got != calls[index].want {
 				t.Fatalf("call %d on pass %d: got %v, want %v", index, pass, got, calls[index].want)
 			}
@@ -121,10 +135,15 @@ func TestInputsAreNotChanged(t *testing.T) {
 	for _, c := range loadCases(t) {
 		answers := loadAnswers(t, c)
 		snapshot := loadAnswers(t, c)
+		switches := loadSwitches(c)
+		switchesSnapshot := loadSwitches(c)
 		for _, check := range c.Checks {
 			condition := loadCondition(t, c, check)
 			conditionSnapshot := loadCondition(t, c, check)
-			newEvaluator().Holds(condition, c.Scope, answers)
+			newEvaluator().Holds(condition, c.Scope, answers, switches)
+			if !reflect.DeepEqual(switches, switchesSnapshot) {
+				t.Fatalf("%s, %s: the switches were changed", c.Name, check.Name)
+			}
 			if !reflect.DeepEqual(answers, snapshot) {
 				t.Fatalf("%s, %s: the answers were changed", c.Name, check.Name)
 			}
@@ -141,14 +160,45 @@ func TestZeroAnswersMeanNothingIsSettled(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if newEvaluator().Holds(condition, "access", model.Answers{}) {
+	if newEvaluator().Holds(condition, "access", model.Answers{}, nil) {
 		t.Errorf("want false: isNot on an unanswered question is false")
 	}
 	onlyUnanswered, err := jsonform.Condition([]byte(`{"all":[{"question":"plan.discipline","answer":{"isSettled":false}},{"question":"billing.plan_name","answer":{"isSettled":false}}]}`))
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !newEvaluator().Holds(onlyUnanswered, "access", model.Answers{}) {
+	if !newEvaluator().Holds(onlyUnanswered, "access", model.Answers{}, nil) {
 		t.Errorf("want true: nothing is settled when the answers are the zero value")
+	}
+}
+
+func TestNilSwitchesActLikeEmptySwitches(t *testing.T) {
+	t.Parallel()
+	for _, c := range loadCases(t) {
+		if len(c.Switches) != 0 {
+			continue
+		}
+		answers := loadAnswers(t, c)
+		for _, check := range c.Checks {
+			condition := loadCondition(t, c, check)
+			got := newEvaluator().Holds(condition, c.Scope, answers, nil)
+			if got != check.Holds {
+				t.Errorf("%s, %s: with nil switches got %v, want %v", c.Name, check.Name, got, check.Holds)
+			}
+		}
+	}
+}
+
+func TestSectionClauseNeedsNoAnswers(t *testing.T) {
+	t.Parallel()
+	condition, err := jsonform.Condition([]byte(`{"all":[{"section":"review","enabled":true}]}`))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !newEvaluator().Holds(condition, "access", model.Answers{}, model.Switches{"review": true}) {
+		t.Errorf("want true: the switch is on")
+	}
+	if newEvaluator().Holds(condition, "access", model.Answers{}, model.Switches{"review": false}) {
+		t.Errorf("want false: the switch is off")
 	}
 }
