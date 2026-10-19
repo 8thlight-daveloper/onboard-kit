@@ -9,7 +9,7 @@ Steps are plain YAML with a vocabulary borrowed from CI files. They are optional
 | `id`, `name` | Stable identifier and display name |
 | `notes` | Optional Markdown prose |
 | `owner`, `timing` | Who acts and when. A step inherits `timing` from its section, see [ordering](ordering.md) |
-| `run` | Command as an argument list, no shell. It is always a list. A variable of type `command` is written `[$name]` and expands to its arguments, and a bare `run: $name` or `run: make test` is an error |
+| `run` | Command as an argument list, no shell. It is always a list. A variable of type `command` is written as the list item `$name`, as in `run: [$test_command]`, and its list of arguments replaces that item, and a bare `run: $name` or `run: make test` is an error |
 | `open` | A URL or file to open |
 | `directory` | Directory to run `run` in |
 | `env` | Environment variables the command runs with. See below |

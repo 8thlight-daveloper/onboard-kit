@@ -16,7 +16,7 @@ A variable belongs to the plan or to one section.
 
 ## Syntax
 
-- A name starts with a lowercase letter, then continues with lowercase letters, digits, or underscores, and ends at the first other character. The pattern is `[a-z][a-z0-9_]*`.
+- A name starts with a lowercase letter, then continues with at least two more lowercase letters, digits, or underscores, and ends at the first other character. The pattern is `[a-z][a-z0-9_]{2,}`. A `$` followed by a shorter run, such as `$x`, is not a variable and stays as written. See [0040](../../decisions/0040-blank-text-and-variable-name-length.md).
 - `$name` parses as a plain string in both YAML flow and block context, and it shows in GitHub's Markdown preview. The other delimiters we tried either fail to parse or load wrong data silently. `{{ name }}` becomes a nested mapping if left unquoted.
 
 ### Dollar signs
@@ -29,7 +29,7 @@ A `$` must be followed by a valid name or by another `$`. Anything else is a lin
 | `$$5` | `$5` |
 | `$$STAGING_API_TOKEN` | `$STAGING_API_TOKEN` |
 
-Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a variable, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so a variable never expands inside `run`. To require or set one, see [environment variables in steps](steps.md#environment-variables).
+Environment variables are the common case. A shell variable such as `$HOME` or `$STAGING_API_TOKEN` in prose is not a variable, because uppercase does not match the name rule, so write it with `$$`. Commands are argument lists with no shell, so no shell expands anything in `run`. The tool fills `$name` in each item before the command runs. To require or set one, see [environment variables in steps](steps.md#environment-variables).
 
 ## Deferred answers
 

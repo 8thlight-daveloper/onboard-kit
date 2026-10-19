@@ -2,7 +2,7 @@
 
 Part of the [section template schema](README.md).
 
-Variable names start with a lowercase letter and continue with lowercase letters, digits, or underscores. Lint rejects the names below. The section validator rejects them in a plan too.
+Variable names start with a lowercase letter and continue with at least two more lowercase letters, digits, or underscores. Lint rejects the names below. The section validator rejects them in a plan too.
 
 | Reserved | Why |
 | -- | -- |

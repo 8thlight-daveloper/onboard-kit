@@ -1,6 +1,6 @@
 # Acceptance scenarios
 
-Status: proposed, and expected to change as the first scenarios are written. The shape below is a starting point. Anything marked as open is open on purpose.
+Status: accepted as the starting shape. It is expected to change as the first scenarios are written. Anything marked as open is open on purpose.
 
 An acceptance scenario describes one run of the built binary, from outside. It is data. It names the files a run starts with, what the run does, and what must be true afterward. A scenario sees the binary only through its arguments, standard input and output, exit code, and files. It never imports the code, so it keeps working if the implementation language changes. See [0025](../decisions/0025-contracts-and-tests.md) and [0010](../decisions/0010-plan-editor.md).
 

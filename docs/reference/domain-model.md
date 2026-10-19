@@ -151,7 +151,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | Field | Type | Notes |
 | -- | -- | -- |
 | `id` | Text | A lowercase slug. Never `plan` |
-| `title`, `summary` | Text | The only required fields besides `id` |
+| `title`, `summary` | Text | The only required fields besides `id`. Blank text counts as missing, see [0040](../decisions/0040-blank-text-and-variable-name-length.md) |
 | `owner` | Text, optional | May contain `$name` |
 | `timing` | Timing, optional | Defaults to `anytime` |
 | `verification`, `body` | Text, optional | Markdown prose |
@@ -174,7 +174,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 
 | Field | Type | Notes |
 | -- | -- | -- |
-| `name` | Text | `[a-z][a-z0-9_]*`, not reserved |
+| `name` | Text | `[a-z][a-z0-9_]{2,}`, not reserved. See [0040](../decisions/0040-blank-text-and-variable-name-length.md) |
 | `description` | Text |  |
 | `type` | VariableType | `string` by default |
 | `options` | List of text, optional | For a `choice` |
