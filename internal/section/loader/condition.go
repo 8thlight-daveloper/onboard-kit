@@ -32,12 +32,20 @@ func (c *collector) clausesOf(node *yaml.Node, at location) []model.Clause {
 }
 
 func (c *collector) clauseOf(node *yaml.Node, at location) model.Clause {
-	var clause model.Clause
 	mapping := c.mappingOf(node, at)
 	if mapping == nil {
-		return clause
+		return model.Clause{}
 	}
-	for _, found := range c.entries(mapping, at) {
+	found := c.entries(mapping, at)
+	if hasEntry(found, "section") {
+		return c.sectionClauseOf(found, at)
+	}
+	return c.questionClauseOf(found)
+}
+
+func (c *collector) questionClauseOf(entries []entry) model.Clause {
+	var clause model.Clause
+	for _, found := range entries {
 		switch found.name {
 		case "question":
 			clause.Question = c.stringOf(found.value, found.at)
@@ -48,6 +56,43 @@ func (c *collector) clauseOf(node *yaml.Node, at location) model.Clause {
 		}
 	}
 	return clause
+}
+
+func (c *collector) sectionClauseOf(entries []entry, at location) model.Clause {
+	var clause model.Clause
+	if switchIsMissing(entries) {
+		c.report(codeWrongType, at)
+	}
+	for _, found := range entries {
+		switch found.name {
+		case "section":
+			clause.Section = c.stringOf(found.value, found.at)
+		case "enabled":
+			clause.Enabled = c.flagOf(found.value, found.at)
+		default:
+			c.rejectUnknown(found)
+		}
+	}
+	return clause
+}
+
+func hasEntry(entries []entry, name string) bool {
+	for _, found := range entries {
+		if found.name == name {
+			return true
+		}
+	}
+	return false
+}
+
+func switchIsMissing(entries []entry) bool {
+	var last *entry
+	for index := range entries {
+		if entries[index].name == "enabled" {
+			last = &entries[index]
+		}
+	}
+	return last == nil || isNull(last.value)
 }
 
 func (c *collector) answerTestOf(node *yaml.Node, at location) model.AnswerTest {
