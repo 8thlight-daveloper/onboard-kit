@@ -52,7 +52,7 @@ The text contains a scheme, `://`, and then a user part, a colon, and a password
 
 ### Well-known token prefix
 
-The text contains a prefix from the table, followed by a run of body characters at least as long as the minimum. A longer run counts. The prefix is case sensitive, and it counts only when it is at the start of the text or the character before it is not an ASCII letter or digit. A body is the longest run of its characters that follows the prefix.
+The text contains a prefix from the table, followed by a run of body characters at least as long as the minimum. A longer run counts. The prefix is case sensitive, and it counts only when it is at the start of the text or the character before it is not an ASCII letter or digit. A body is the longest run of its characters that follows the prefix. A first character outside the set leaves a body of length 0, whatever follows it. A prefix after a letter or digit is not a token, but the text may still report `secret.random-string`: `0ghp_` followed by 36 upper case letters does.
 
 | Token | Prefix | Body characters | Minimum body |
 | -- | -- | -- | -- |
@@ -148,9 +148,11 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A range runs one too far: `@`, `[`, a backtick, `{`, `/`, or `:` accepted in a body or in a random string | `token-body-boundary-characters`, `random-string-characters` |
 | The AWS body takes letters only, or digits do not count toward its 16 | `aws-body-digits` |
 | A family takes the wrong extra characters: no `-` in a Slack body, no `_` in a `github_pat_` body, no `_` or `-` in a Google, GitLab, or `sk-` body, or an `_`, `-`, or `+` where the table gives none | `token-body-special-characters` |
+| The first body character is not read, so a prefix, one character outside the family's set, and a full-length body counts | `token-first-body-character` |
 | A minimum body is one too large or one too small: GitHub 36, fine-grained 22, GitLab 20, npm 36, `sk-` 40, Slack 10, Stripe 16 | `token-minimum-lengths` |
 | Random string: the first or last character is not read, so a word with one bad edge character counts, or one good edge character is the only upper case letter, lower case letter, or digit and is missed | `random-string-characters` |
 | Random string: `-`, `_`, `+`, or `=` is not in the set, or does not count as a character of the 32 | `random-string-characters` |
+| A prefix after a digit hides the whole text from the random string rule | `token-boundary-and-random-string` |
 | Web token ignores the boundary rule, or a part has a minimum of 9 or 11 | `web-token-boundaries` |
 | Message or detail repeats the value | Every case that has a secret |
 | Severity `warning`, an empty message, or `question` filled in | Every case with a problem |
