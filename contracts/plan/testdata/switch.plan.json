@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "discipline", "description": "Which discipline is this plan for?", "multiple": false, "options": ["software", "design"], "required": true}
+  ],
+  "answers": {"plan": {"discipline": "software"}, "sections": {"review-design-system": {"figma_url": "https://figma.acme.example/design-system"}}},
+  "sections": [
+    {"id": "access", "title": "Access", "summary": "Request the accounts you need.", "timing": "before-day-one", "enabled": true},
+    {
+      "id": "review-design-system",
+      "title": "Review the design system",
+      "summary": "Read the design system before the first design task.",
+      "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+      "timing": "week-one",
+      "enabled": false,
+      "variables": [
+        {"name": "figma_url", "description": "Where the design system lives", "type": "string", "multiple": false, "required": false,
+         "askIf": {"all": [{"section": "access", "enabled": true}]}}
+      ]
+    },
+    {
+      "id": "stuck-design",
+      "title": "When you are stuck on design",
+      "summary": "Who to ask.",
+      "includeIf": {"all": [{"section": "review-design-system", "enabled": false}, {"question": "plan.discipline", "answer": {"is": "software"}}]}
+    },
+    {"id": "clone-and-run-tests", "title": "Clone and run the tests", "summary": "Get the code running.", "timing": "week-one"}
+  ]
+}

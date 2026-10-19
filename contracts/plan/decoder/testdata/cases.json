@@ -1616,5 +1616,175 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, format.empty-item. It mirrors the encoder's encode.empty-item, because dropping a null item would shift the list. A List Value is a list, so a null item in one counts."
+  },
+  {
+    "name": "switch",
+    "input": "../../testdata/switch.yaml",
+    "output": "../../testdata/switch.plan.json",
+    "source": "Shared with the encoder contract in contracts/plan/testdata, where the file is the canonical output and the JSON is the input. ACME-style sections. Contract rules: Known fields and Section clauses. 0050: a switched-off section, an explicit true that is kept, an absent switch that stays absent, and a section clause in includeIf and askIf."
+  },
+  {
+    "name": "enabled-values",
+    "input": "enabled-values.yaml",
+    "output": "enabled-values.plan.json",
+    "source": "Hand-written. Contract rule: Section clauses, Known fields. 0050: enabled true and false on a section, absent or null is none, a variable and answers named enabled are ordinary, a quoted section id is text, and x-enabled is an unknown field."
+  },
+  {
+    "name": "enabled-wrong-type",
+    "input": "enabled-wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[1].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[2].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[3].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[4].section"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[5].section"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[1].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[2].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[2].includeIf.all[0].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[3].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[4].enabled"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, Section clauses. A boolean field takes a plain true or false, so a quoted false, the number 0 or 1.5, a list, or a map is format.wrong-type, in a section and in a section clause. A section id that is a list or a plain true is a wrong type too."
+  },
+  {
+    "name": "enabled-spelling",
+    "input": "enabled-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].askIf.all[0].enabled"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[0].askIf.all[1].enabled"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].enabled"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[1].enabled"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[1].includeIf.all[0].enabled"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards. A plain yes, Off, no, TRUE, or n where enabled belongs is format.boolean-spelling, in a section and in a section clause, and not a wrong type."
+  },
+  {
+    "name": "clause-forms",
+    "input": "clause-forms.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].question"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[0].answer"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[1].enabled"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[2].answer"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[3].extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].askIf.all[4].question"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].includeIf.all[0].answer"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Section clauses. A clause with a section key is a section clause whatever the order of its keys, and its question and answer are keys it does not know. Without a section key, enabled is a key a question clause does not know. The value of an unknown key is not read, so the plain yes is not reported."
+  },
+  {
+    "name": "clause-missing-enabled",
+    "input": "clause-missing-enabled.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].includeIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].includeIf.all[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].includeIf.all[2]"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "sections[0].includeIf.all[3].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].includeIf.all[4]"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].includeIf.all[4].question"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Section clauses. The model cannot tell an absent enabled from false, so a section clause with no enabled, an empty one, or a null one is refused and not read as false. A ~ is the null spelling alone. At one place the table order puts format.wrong-type before format.unknown-field."
+  },
+  {
+    "name": "clause-empty-section",
+    "input": "clause-empty-section.yaml",
+    "output": "clause-empty-section.plan.json",
+    "source": "Hand-written. Contract rule: Section clauses. The decoder does not validate, so an empty, null, or blank section id is read as the empty string and the plan validator judges it. A section key that is present makes it a section clause."
   }
 ]

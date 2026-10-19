@@ -17,7 +17,8 @@ answers:
     team_state: established
   sections:
     s:
-      enabled: true
+      backup:
+        - Ann
 sections:
   - id: s
     title: Everything
@@ -27,7 +28,10 @@ sections:
         - question: plan.team_state
           answer:
             is: established
+        - section: other
+          enabled: true
     timing: week-one
+    enabled: false
     after:
       - other
     owner: newcomer
@@ -46,9 +50,11 @@ sections:
         phase: onboarding
         askIf:
           all:
-            - question: enabled
+            - question: plan.team_state
               answer:
                 isSettled: true
+            - section: other
+              enabled: false
     steps:
       - id: st
         name: Step
