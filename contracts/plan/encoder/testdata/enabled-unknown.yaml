@@ -1,0 +1,10 @@
+schemaVersion: 1
+sections:
+  - id: s
+    title: S
+    summary: S
+    enabled: false
+    section: x
+    switch: true
+enabled: true
+section: x

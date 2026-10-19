@@ -1,0 +1,30 @@
+schemaVersion: 1
+variables:
+  - name: v
+    description: V
+    askIf:
+      all:
+        - section: design-review
+          enabled: true
+        - question: plan.discipline
+          answer:
+            is: software
+        - section: "n"
+          enabled: false
+        - section: team.review
+          enabled: true
+sections:
+  - id: s
+    title: S
+    summary: S
+    includeIf:
+      all:
+        - section: design-review
+          enabled: false
+    variables:
+      - name: w
+        description: W
+        askIf:
+          all:
+            - section: s
+              enabled: true

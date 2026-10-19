@@ -220,3 +220,70 @@ func TestReportsEveryUnsupportedNumberAndKind(t *testing.T) {
 		})
 	}
 }
+
+func planWithClause(clause model.Clause) model.Plan {
+	return model.Plan{
+		SchemaVersion: 1,
+		Sections: []model.Section{{
+			ID: "s", Title: "S", Summary: "S",
+			IncludeIf: &model.Condition{All: []model.Clause{clause}},
+		}},
+	}
+}
+
+func TestWritesASectionClauseWithoutQuestionOrAnswer(t *testing.T) {
+	yes := true
+	clause := model.Clause{
+		Question: "q",
+		Answer:   model.AnswerTest{Is: model.Value{Kind: model.ValueKindText, Text: "a"}, IsSettled: &yes},
+		Section:  "other",
+		Enabled:  false,
+	}
+	got, problems := newEncoder().Encode(planWithClause(clause))
+	want := "schemaVersion: 1\nsections:\n  - id: s\n    title: S\n    summary: S\n    includeIf:\n      all:\n        - section: other\n          enabled: false\n"
+	if len(problems) != 0 || string(got) != want {
+		t.Errorf("got %q and %+v, want %q", got, problems, want)
+	}
+}
+
+func TestWritesAQuestionClauseWithoutTheSwitch(t *testing.T) {
+	clause := model.Clause{Question: "q", Answer: model.AnswerTest{Is: model.Value{Kind: model.ValueKindText, Text: "a"}}, Enabled: true}
+	got, problems := newEncoder().Encode(planWithClause(clause))
+	want := "schemaVersion: 1\nsections:\n  - id: s\n    title: S\n    summary: S\n    includeIf:\n      all:\n        - question: q\n          answer:\n            is: a\n"
+	if len(problems) != 0 || string(got) != want {
+		t.Errorf("got %q and %+v, want %q", got, problems, want)
+	}
+}
+
+func TestReportsAClauseThatHoldsOnlyTheSwitchValue(t *testing.T) {
+	got, problems := newEncoder().Encode(planWithClause(model.Clause{Enabled: true}))
+	if len(got) != 0 {
+		t.Errorf("want no bytes, got %q", got)
+	}
+	want := "sections[0].includeIf.all[0]"
+	if len(problems) != 1 || problems[0].Code != "encode.empty-item" || problems[0].Detail["path"] != want {
+		t.Errorf("want one encode.empty-item at %s, got %+v", want, problems)
+	}
+}
+
+func TestWritesTheSwitchOnlyWhenTheSectionHoldsOne(t *testing.T) {
+	yes, no := true, false
+	cases := map[string]struct {
+		enabled *bool
+		want    string
+	}{
+		"absent": {nil, ""},
+		"true":   {&yes, "    enabled: true\n"},
+		"false":  {&no, "    enabled: false\n"},
+	}
+	for name, c := range cases {
+		t.Run(name, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, Sections: []model.Section{{ID: "s", Title: "S", Summary: "S", Enabled: c.enabled}}}
+			got, problems := newEncoder().Encode(plan)
+			want := "schemaVersion: 1\nsections:\n  - id: s\n    title: S\n    summary: S\n" + c.want
+			if len(problems) != 0 || string(got) != want {
+				t.Errorf("got %q and %+v, want %q", got, problems, want)
+			}
+		})
+	}
+}
