@@ -1,0 +1,17 @@
+schemaVersion: 1
+id: s
+title: T
+summary: S
+includeIf:
+  all:
+    - section: [a]
+      enabled: yes
+    - section: a
+      enabled: 1
+    - section: a
+      enabled: "true"
+    - section: a
+      enabled: [true]
+    - section: true
+    - section: a
+      extra: 1

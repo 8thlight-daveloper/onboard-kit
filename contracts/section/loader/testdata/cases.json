@@ -45,7 +45,7 @@
     "name": "unvalidated",
     "input": "unvalidated.yaml",
     "output": "unvalidated.section.json",
-    "source": "Hand-written. Contract rule: What passes through. Validating is the section validator's job (components doc). An unknown type, a bad name, a reserved id, a reserved name used as a toggle with a wrong type, two steps with one id, a check with two keys, an includeIf on a section question, and an empty condition pass unchanged."
+    "source": "Hand-written. Contract rule: What passes through. Validating is the section validator's job (components doc). An unknown type, a bad name, a reserved id, a variable named enabled, a reserved name (0050), with a default of Deferred, two steps with one id, a check with two keys, an includeIf on a section question, and an empty condition pass unchanged."
   },
   {
     "name": "placeholders",
@@ -883,5 +883,96 @@
       }
     ],
     "source": "Hand-written. Decided by a person: run is always a list. steps.md writes a command variable as run: [$test_command]. A scalar run is a wrong type at the field, in a step and in a check, whether it is plain text, a plain $name, or a quoted $name."
+  },
+  {
+    "name": "section-clauses",
+    "input": "section-clauses.yaml",
+    "output": "section-clauses.section.json",
+    "source": "Hand-written. 0050 Decision, a condition can test whether a section is on, and the section clause syntax in conditions.md. A section clause is read in includeIf and in askIf, in flow and block style, in either key order. A missing enabled is false by the rule for an absent field, and a missing section is the empty text. The loader does not check the id."
+  },
+  {
+    "name": "section-clause-mixed",
+    "input": "section-clause-mixed.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[2]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[3]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[1]"
+      }
+    ],
+    "source": "Hand-written. 0050: a clause with section has no question or answer, and a clause with both kinds of key is a format problem. The loader reports format.wrong-type at the clause (open question 5) and reads nothing else in it: the yes, the extra key, and the answer test are not reported. A null question still counts as a key. Valid clauses in between are read."
+  },
+  {
+    "name": "section-clause-wrong-type",
+    "input": "section-clause-wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[0].section"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "includeIf.all[0].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[1].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[2].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[3].enabled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[4].section"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "includeIf.all[5].extra"
+      }
+    ],
+    "source": "Hand-written. 0050 and the decoder contract, Known fields and Problems: enabled is a boolean with the spelling guard, section is text, and the clause keeps no unknown key. A quoted \"true\", a canonical number, and a list are wrong-type where a boolean belongs, and a plain true where text belongs."
+  },
+  {
+    "name": "template-enabled-key",
+    "input": "template-enabled-key.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "enabled"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[0].enabled"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "steps[0].enabled"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "steps[0].checks[0].enabled"
+      }
+    ],
+    "source": "Hand-written. 0050: a template never declares the section switch and a template section has no enabled. The key is unknown on the template, a variable, a step, and a check, as any unknown key is, and its plain yes is not read."
   }
 ]

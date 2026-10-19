@@ -1,0 +1,30 @@
+schemaVersion: 1
+id: s
+title: T
+summary: S
+includeIf:
+  all:
+    - question: plan.q
+      section: a
+      enabled: yes
+    - section: a
+      answer:
+        isSettled: yes
+    - enabled: false
+      question: q
+      extra: 1
+    - question:
+      section: b
+    - question: plan.q
+      answer:
+        is: x
+    - section: a
+      enabled: true
+variables:
+  - name: v
+    askIf:
+      all:
+        - section: a
+        - answer:
+            is: x
+          enabled: true

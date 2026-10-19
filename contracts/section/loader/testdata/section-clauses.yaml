@@ -1,0 +1,20 @@
+schemaVersion: 1
+id: s
+title: T
+summary: S
+includeIf:
+  all:
+    - section: access
+      enabled: true
+    - question: plan.discipline
+      answer:
+        is: design
+    - {enabled: false, section: setup}
+variables:
+  - name: v
+    askIf:
+      all:
+        - section: access
+        - enabled: true
+        - section: setup
+          enabled: false
