@@ -6,85 +6,85 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func (a App) updateWalk(key tea.KeyMsg) (tea.Model, tea.Cmd) {
-	if a.entry.typing() {
-		return a.updateTyping(key)
+func (app App) updateWalk(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+	if app.entry.typing() {
+		return app.updateTyping(key)
 	}
-	return a.updateChoosing(key)
+	return app.updateChoosing(key)
 }
 
-func (a App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "up", "k":
-		a.entry.choice = max(a.entry.choice-1, 0)
+		app.entry.choice = max(app.entry.choice-1, 0)
 	case "down", "j":
-		a.entry.choice = min(a.entry.choice+1, len(a.entry.choices)-1)
+		app.entry.choice = min(app.entry.choice+1, len(app.entry.choices)-1)
 	case "enter":
-		return a.accept(a.entry.choices[a.entry.choice].value), nil
+		return app.accept(app.entry.choices[app.entry.choice].value), nil
 	case "d":
-		return a.accept(model.Value{Kind: model.ValueKindDeferred}), nil
+		return app.accept(model.Value{Kind: model.ValueKindDeferred}), nil
 	case "x":
-		return a.clear(), nil
+		return app.clear(), nil
 	case "p", "left", "shift+tab", "ctrl+p":
-		return a.moveTo(a.cursor - 1), nil
+		return app.moveTo(app.cursor - 1), nil
 	case "n", "right", "ctrl+n":
-		return a.moveTo(a.cursor + 1), nil
+		return app.moveTo(app.cursor + 1), nil
 	case "o":
-		return a.openOverview(), nil
+		return app.openOverview(), nil
 	case "r":
-		return a.openReview(), nil
+		return app.openReview(), nil
 	case "s":
-		return a.openSections(), nil
+		return app.openSections(), nil
 	case "esc":
-		return a.leaveWalk(), nil
+		return app.leaveWalk(), nil
 	case "q":
-		return a.quit()
+		return app.quit()
 	case "?":
-		a.helpOpen = true
+		app.helpOpen = true
 	}
-	return a, nil
+	return app, nil
 }
 
-func (a App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (app App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "enter":
-		return a.acceptText(), nil
+		return app.acceptText(), nil
 	case "tab":
-		a.entry = a.entry.nextSuggestion()
-		return a, nil
+		app.entry = app.entry.nextSuggestion()
+		return app, nil
 	case "ctrl+d":
-		return a.accept(model.Value{Kind: model.ValueKindDeferred}), nil
+		return app.accept(model.Value{Kind: model.ValueKindDeferred}), nil
 	case "shift+tab", "ctrl+p":
-		return a.moveTo(a.cursor - 1), nil
+		return app.moveTo(app.cursor - 1), nil
 	case "ctrl+n":
-		return a.moveTo(a.cursor + 1), nil
+		return app.moveTo(app.cursor + 1), nil
 	case "esc":
-		return a.leaveWalk(), nil
+		return app.leaveWalk(), nil
 	case "f1":
-		a.helpOpen = true
-		return a, nil
+		app.helpOpen = true
+		return app, nil
 	}
 	var command tea.Cmd
-	a.entry.input, command = a.entry.input.Update(key)
-	return a, command
+	app.entry.input, command = app.entry.input.Update(key)
+	return app, command
 }
 
-func (a App) leaveWalk() App {
-	if a.returnTo == screenReview {
-		return a.openReview()
+func (app App) leaveWalk() App {
+	if app.returnTo == screenReview {
+		return app.openReview()
 	}
-	return a.openOverview()
+	return app.openOverview()
 }
 
-func (a App) accept(value model.Value) App {
-	question, ok := a.current()
+func (app App) accept(value model.Value) App {
+	question, ok := app.current()
 	if !ok {
-		return a
+		return app
 	}
 	if sameAnswer(question.Answer, value) {
-		return a.moveTo(a.cursor + 1)
+		return app.moveTo(app.cursor + 1)
 	}
-	next, saved := a.submit(value)
+	next, saved := app.submit(value)
 	if !saved {
 		return next
 	}
@@ -94,24 +94,24 @@ func (a App) accept(value model.Value) App {
 	return moved
 }
 
-func (a App) acceptText() App {
-	question, ok := a.current()
+func (app App) acceptText() App {
+	question, ok := app.current()
 	if !ok {
-		return a
+		return app
 	}
-	value := parseEntry(question, a.entry.input.Value())
+	value := parseEntry(question, app.entry.input.Value())
 	if value.Kind == model.ValueKindNone && stateOf(question.Answer) != "settled" {
-		return a.moveTo(a.cursor + 1)
+		return app.moveTo(app.cursor + 1)
 	}
-	return a.accept(value)
+	return app.accept(value)
 }
 
-func (a App) clear() App {
-	question, ok := a.current()
+func (app App) clear() App {
+	question, ok := app.current()
 	if !ok || stateOf(question.Answer) == "unanswered" {
-		return a
+		return app
 	}
-	next, saved := a.submit(model.Value{})
+	next, saved := app.submit(model.Value{})
 	if !saved {
 		return next
 	}

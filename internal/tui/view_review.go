@@ -2,54 +2,57 @@ package tui
 
 import "fmt"
 
-func (a App) reviewBody(l layout, p palette) []string {
-	items, focus := a.reviewItemLines(l.listWidthFor(), a.review.cursor)
-	items = append([]line{a.paneTitle("Items", !a.review.focusDocument)}, scrollWindow(items, focus, l.documentRows)...)
-	document := append([]line{a.paneTitle(a.documentTitle(), a.review.focusDocument)}, a.documentView(l)...)
+const itemsShareNumerator, itemsShareDenominator = 2, 5
+
+func (app App) reviewColumns(screenFrame frame) (int, int) {
+	if !screenFrame.wide() {
+		return screenFrame.innerWidth(), screenFrame.innerWidth()
+	}
+	return screenFrame.columns(itemsShareNumerator, itemsShareDenominator)
+}
+
+func (app App) reviewBody(screenFrame frame, colors palette) []string {
+	itemsWidth, documentWidth := app.reviewColumns(screenFrame)
+	itemsFocused := !app.review.focusDocument
+	rows, focus := app.reviewItemLines(itemsWidth, itemsFocused, colors)
+	items := pane{lines: append([]line{paneTitle("Items", itemsFocused, colors)}, scrollWindow(rows, focus, screenFrame.documentRows())...), focused: itemsFocused}
+	document := pane{lines: append([]line{paneTitle(app.documentTitle(), !itemsFocused, colors)}, app.documentView(screenFrame)...), focused: !itemsFocused}
 	switch {
-	case l.twoPanes:
-		return sideBySide(items, document, l, p)
-	case a.review.focusDocument:
-		return singlePane(document, l, p)
+	case screenFrame.wide():
+		return joinPanes(items, document, itemsWidth, documentWidth, screenFrame.bodyHeight, colors)
+	case app.review.focusDocument:
+		return stackPane(document, documentWidth, screenFrame.bodyHeight, colors)
 	}
-	return singlePane(items, l, p)
+	return stackPane(items, itemsWidth, screenFrame.bodyHeight, colors)
 }
 
-func (l layout) listWidthFor() int {
-	if l.twoPanes {
-		return l.listWidth
+func paneTitle(name string, focused bool, colors palette) line {
+	if !focused {
+		return line{text: "  " + name, tone: toneFaint}
 	}
-	return l.width
+	return line{text: colors.render(toneHere, true, "> ") + colors.render(toneStrong, true, name), raw: true}
 }
 
-func (a App) paneTitle(name string, focused bool) line {
-	if focused {
-		return line{text: "> " + name, tone: toneFocus}
-	}
-	return line{text: "  " + name, tone: toneMuted}
-}
-
-func (a App) documentTitle() string {
-	limit := a.documentOffsetLimit()
+func (app App) documentTitle() string {
+	limit := app.documentOffsetLimit()
 	if limit == 0 {
 		return "Document, all shown"
 	}
-	return fmt.Sprintf("Document, %d%%", a.review.scroll*100/limit)
+	return fmt.Sprintf("Document, %d%%", app.review.scroll*100/limit)
 }
 
-func (a App) documentView(l layout) []line {
-	wrapped := a.documentLines()
-	first := min(a.review.scroll, len(wrapped))
-	last := min(first+l.documentRows, len(wrapped))
-	return lines(tonePlain, wrapped[first:last])
+func (app App) documentView(screenFrame frame) []line {
+	wrapped := app.documentLines()
+	first := min(app.review.scroll, len(wrapped))
+	last := min(first+screenFrame.documentRows(), len(wrapped))
+	return lines(toneBody, wrapped[first:last])
 }
 
-func (a App) reviewItemLines(width int, selected int) ([]line, int) {
-	r := a.review
-	content := []line{plainLine(fmt.Sprintf("Answered %d of %d.", r.answered, r.total))}
-	if len(r.items) == 0 {
-		content = append(content, plainLine("Nothing is waiting."))
-		return content, 0
+func (app App) reviewItemLines(width int, focused bool, colors palette) ([]line, int) {
+	state := app.review
+	content := []line{bodyLine(fmt.Sprintf("Answered %d of %d.", state.answered, state.total))}
+	if len(state.items) == 0 {
+		return append(content, bodyLine("Nothing is waiting.")), 0
 	}
 	focus := 0
 	groups := []struct {
@@ -57,37 +60,39 @@ func (a App) reviewItemLines(width int, selected int) ([]line, int) {
 		title string
 	}{{reviewBlocker, "Blockers"}, {reviewDeferred, "Deferred"}, {reviewProblem, "Problems"}}
 	for _, group := range groups {
-		if r.counts(group.kind) == 0 {
+		if state.counts(group.kind) == 0 {
 			continue
 		}
-		content = append(content, plainLine(""), headingLine(fmt.Sprintf("%s (%d)", group.title, r.counts(group.kind))))
-		for index, item := range r.items {
+		content = append(content, blankLine(), strongLine(fmt.Sprintf("%s (%d)", group.title, state.counts(group.kind))))
+		for index, item := range state.items {
 			if item.kind != group.kind {
 				continue
 			}
-			if index == selected {
+			if index == state.cursor {
 				focus = len(content)
 			}
-			content = append(content, a.itemLines(item, index == selected, width)...)
+			content = append(content, itemLines(item, index == state.cursor, focused, width, colors)...)
 		}
 	}
 	return content, focus
 }
 
-func (a App) itemLines(item reviewItem, selected bool, width int) []line {
-	tone := tonePlain
-	switch {
-	case selected:
-		tone = toneFocus
-	case item.severity == "error":
-		tone = toneProblem
-	case item.severity == "warning":
-		tone = toneWarning
-	}
-	marker := "  "
+func itemLines(item reviewItem, selected bool, focused bool, width int, colors palette) []line {
+	text := item.label + ": " + item.text
 	if selected {
-		marker = "> "
+		rows := wrapText(text, width-2)
+		content := []line{hereLine(rows[0], true, focused, width, colors)}
+		for _, row := range rows[1:] {
+			content = append(content, line{text: "  " + row, tone: toneStrong})
+		}
+		return content
 	}
-	rows := hanging(marker, item.label+": "+item.text, width)
-	return lines(tone, rows)
+	weight := toneBody
+	switch item.severity {
+	case "error":
+		weight = toneProblem
+	case "warning":
+		weight = toneWarning
+	}
+	return lines(weight, hanging("  ", text, width))
 }

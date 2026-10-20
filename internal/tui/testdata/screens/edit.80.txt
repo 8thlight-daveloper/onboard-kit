@@ -1,24 +1,24 @@
-Onboarding plan  1 of 9  0 of 9 answered
-Plan
-1 of 9  * required
+  Onboarding plan  Walk                                        0 of 9 answered
+  ◆..  .....  .
 
-Name of the organization
+  Plan
+  1 of 9, required, not answered yet
 
-[ ] Answer: none yet
+  Name of the organization
 
-> Glob
+  > Glob
 
-Details
-Type: string
-Section: Plan
-Answered by: onboarder
-Name: plan.organization
+  About this question
 
-
+  Type: string
+  Answered by: onboarder
+  Name: plan.organization
 
 
 
 
 
 
-enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+
+
+  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help

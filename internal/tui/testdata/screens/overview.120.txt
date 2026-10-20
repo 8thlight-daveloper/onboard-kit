@@ -1,0 +1,30 @@
+  Onboarding plan  Overview                                                                          13 of 14 answered
+  x◆.  xxxxx~  xxxx  x
+
+  Plan                                                                  │ Plan
+    [x] * Name of the organization              ACME Corp               │ 2 of 14, required, answered
+  > [x] * Is the team established, or are we …  established             │
+    [ ]   Target format of the document                                 │ Is the team established, or are we the first
+                                                                        │ consultants?
+  Access                                                                │
+    [x] * Role of the person who owns onboard…  Engineering manager     │ Answer: established
+    [x] * Where to request source control acc…  https://access.acme.ex… │
+    [x] * Clone URL of the main repository      git@git.acme.example:p… │ About this question
+    [x] * Who grants source control access      IT service desk         │
+    [x] * Who grants CI dashboard access        Platform team lead      │ Type: choice: established, first-consultants
+    [~] * Who grants work tracker access        deferred, answer later  │ Answered by: onboarder
+                                                                        │ Name: plan.team_state
+  Clone the project and run the tests                                   │ Suggestion (given): established
+    [x] * Clone URL of the main repository      git@git.acme.example:p… │
+    [x]   Directory name for the clone          widget-service          │
+    [x] * Command that installs dependencies    make; setup             │
+    [x] * Command that runs the test suite      make; test              │
+                                                                        │
+  If you are stuck                                                      │
+    [x] * Who can help with anything            Alex Rivera, alex.rive… │
+
+
+
+
+
+  enter open  esc walk  r review  s sections  q quit  ? help

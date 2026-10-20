@@ -1,25 +1,89 @@
 package tui
 
-func (a App) overviewBody(l layout, p palette) []string {
-	if len(a.questions) == 0 {
-		return singlePane([]line{plainLine("No questions are active.")}, l, p)
+import (
+	"fmt"
+
+	"onboard-kit/internal/model"
+)
+
+const (
+	rowPrefixWidth      = 8
+	answerColumnMinimum = 36
+	rowTextShare        = 3
+	rowTextOutOf        = 5
+)
+
+func (app App) overviewBody(screenFrame frame, colors palette) []string {
+	if len(app.questions) == 0 {
+		return stackPane(pane{lines: []line{bodyLine("No questions are active.")}, focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}
-	if !l.twoPanes {
-		outline, focus := a.outlineLines(l.width, a.overviewCursor, true)
-		return singlePane(scrollWindow(outline, focus, l.bodyHeight), l, p)
+	listWidth, previewWidth := screenFrame.columns(answerShareNumerator, answerShareDenominator)
+	if !screenFrame.wide() {
+		listWidth = screenFrame.innerWidth()
 	}
-	outline, focus := a.outlineLines(l.listWidth, a.overviewCursor, false)
-	question := a.questions[a.overviewCursor]
-	right := a.questionSummary(a.overviewCursor, l.mainWidth)
-	right = append(right, a.detailLines(question, l.mainWidth)...)
-	return sideBySide(scrollWindow(outline, focus, l.bodyHeight), clipLines(right, l.bodyHeight), l, p)
+	rows, focus := app.outlineLines(listWidth, colors)
+	list := pane{lines: scrollWindow(rows, focus, screenFrame.bodyHeight), focused: true}
+	if !screenFrame.wide() {
+		return stackPane(list, listWidth, screenFrame.bodyHeight, colors)
+	}
+	preview := pane{lines: clipLines(app.previewLines(app.questions[app.overviewCursor], previewWidth), screenFrame.bodyHeight)}
+	return joinPanes(list, preview, listWidth, previewWidth, screenFrame.bodyHeight, colors)
 }
 
-func (a App) questionSummary(index int, width int) []line {
-	question := a.questions[index]
-	saved := a.cursor
-	a.cursor = index
-	content := a.questionLines(question, width)
-	a.cursor = saved
-	return append(content, plainLine(""))
+func (app App) outlineLines(width int, colors palette) ([]line, int) {
+	var content []line
+	focus := 0
+	heading := "\x00"
+	for index, question := range app.questions {
+		if title := app.sectionTitle(question.Scope); title != heading {
+			if heading != "\x00" {
+				content = append(content, blankLine())
+			}
+			heading = title
+			content = append(content, strongLine(title))
+		}
+		if index == app.overviewCursor {
+			focus = len(content)
+		}
+		content = append(content, outlineRow(question, index == app.overviewCursor, width, colors))
+	}
+	return content, focus
+}
+
+func outlineRow(question model.Question, selected bool, width int, colors palette) line {
+	available := width - rowPrefixWidth
+	text := truncateCells(singleLine(question.Description), available)
+	if available >= answerColumnMinimum && stateOf(question.Answer) != "unanswered" {
+		descriptionWidth := available * rowTextShare / rowTextOutOf
+		answerWidth := available - descriptionWidth - 2
+		description := truncateCells(singleLine(question.Description), descriptionWidth)
+		answer := truncateCells(singleLine(answerText(question.Answer)), answerWidth)
+		text = description + spaces(descriptionWidth-cellWidth(description)) + "  " + answer
+	}
+	body := stateMark(question.Answer) + " " + requiredMark(question) + " " + text
+	return hereLine(body, selected, true, width, colors)
+}
+
+func answerText(value model.Value) string {
+	switch stateOf(value) {
+	case "unanswered":
+		return "none yet"
+	case "deferred":
+		return "deferred, answer later"
+	}
+	return describeValue(value)
+}
+
+func (app App) previewLines(question model.Question, width int) []line {
+	index := app.indexOf(question.ID)
+	content := []line{
+		faintLine(app.sectionTitle(question.Scope)),
+		faintLine(fmt.Sprintf("%d of %d, %s, %s", index+1, len(app.questions), requiredWords(question), stateWords(question.Answer))),
+		blankLine(),
+	}
+	content = append(content, lines(toneFaint, wrapText(question.Description, width))...)
+	content = append(content, blankLine())
+	content = append(content, lines(toneFaint, hanging("", "Answer: "+answerText(question.Answer), width))...)
+	content = append(content, blankLine())
+	return append(content, app.noteLines(question, width)...)
 }

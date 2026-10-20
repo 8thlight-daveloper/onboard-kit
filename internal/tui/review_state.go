@@ -84,9 +84,9 @@ func problemText(problem model.Problem) string {
 	return problem.Question + ": " + problem.Message
 }
 
-func (r reviewState) counts(kind reviewKind) int {
+func (state reviewState) counts(kind reviewKind) int {
 	count := 0
-	for _, item := range r.items {
+	for _, item := range state.items {
 		if item.kind == kind {
 			count++
 		}
@@ -94,33 +94,36 @@ func (r reviewState) counts(kind reviewKind) int {
 	return count
 }
 
-func (r reviewState) moved(delta int) reviewState {
-	r.cursor = max(min(r.cursor+delta, len(r.items)-1), 0)
-	return r
+func (state reviewState) moved(delta int) reviewState {
+	state.cursor = max(min(state.cursor+delta, len(state.items)-1), 0)
+	return state
 }
 
-func (r reviewState) scrolled(limit int, delta int) reviewState {
-	r.scroll = max(min(r.scroll+delta, limit), 0)
-	return r
+func (state reviewState) scrolled(limit int, delta int) reviewState {
+	state.scroll = max(min(state.scroll+delta, limit), 0)
+	return state
 }
 
-func (r reviewState) selected() (reviewItem, bool) {
-	if r.cursor < 0 || r.cursor >= len(r.items) {
+func (state reviewState) selected() (reviewItem, bool) {
+	if state.cursor < 0 || state.cursor >= len(state.items) {
 		return reviewItem{}, false
 	}
-	return r.items[r.cursor], true
+	return state.items[state.cursor], true
 }
 
-func (a App) documentWidth() int { return layoutFor(a.width, a.height).mainWidth }
+func (app App) documentWidth() int {
+	_, width := app.reviewColumns(app.frame())
+	return width
+}
 
-func (a App) documentLines() []string {
+func (app App) documentLines() []string {
 	var wrapped []string
-	for _, source := range a.review.document {
-		wrapped = append(wrapped, wrapIndented(source, a.documentWidth())...)
+	for _, source := range app.review.document {
+		wrapped = append(wrapped, wrapIndented(source, app.documentWidth())...)
 	}
 	return wrapped
 }
 
-func (a App) documentOffsetLimit() int {
-	return max(len(a.documentLines())-layoutFor(a.width, a.height).documentRows, 0)
+func (app App) documentOffsetLimit() int {
+	return max(len(app.documentLines())-app.frame().documentRows(), 0)
 }

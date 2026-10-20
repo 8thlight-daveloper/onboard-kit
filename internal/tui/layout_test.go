@@ -12,13 +12,14 @@ import (
 
 const (
 	profileTrueColor = 0
+	profileANSI256   = 1
 	profileANSI      = 2
 	profileAscii     = 3
 )
 
 var (
-	widths  = []int{50, 60, 80, 99, 100, 120, 139, 140, 200}
-	heights = []int{10, 24, 50}
+	widths  = []int{60, 70, 80, 99, 100, 119, 120, 139, 140, 160, 200}
+	heights = []int{12, 13, 16, 24, 30, 40, 50}
 )
 
 func everyScreen(t *testing.T) map[string]App {
@@ -30,7 +31,7 @@ func everyScreen(t *testing.T) map[string]App {
 	reviewing, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	blocked := press(walking, esc, typed("r"))
 	onboardee, _ := startWith(t, blankPlan(t), model.AudienceOnboardee)
-	return map[string]App{
+	screens := map[string]App{
 		"walk typing":   walking,
 		"walk choosing": choosing,
 		"walk problem":  secret,
@@ -42,6 +43,10 @@ func everyScreen(t *testing.T) map[string]App {
 		"help":          press(choosing, typed("?")),
 		"onboardee":     onboardee,
 	}
+	for name, app := range longScreens() {
+		screens[name] = app
+	}
+	return screens
 }
 
 func TestNoLineIsWiderThanTheWindow(t *testing.T) {
@@ -49,8 +54,7 @@ func TestNoLineIsWiderThanTheWindow(t *testing.T) {
 	for name, app := range everyScreen(t) {
 		for _, width := range widths {
 			for _, height := range heights {
-				sized := resize(app, width, height)
-				rows := viewLines(sized)
+				rows := viewLines(resize(app, width, height))
 				if len(rows) > height {
 					t.Errorf("%s at %dx%d draws %d rows", name, width, height, len(rows))
 				}
@@ -78,75 +82,93 @@ func TestAWindowThatIsTooSmallGetsAPlainMessage(t *testing.T) {
 	}
 }
 
-func TestBothPanesShowAtOneHundredAndFortyColumns(t *testing.T) {
+func TestTheWalkHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testing.T) {
+	t.Parallel()
+	app, _ := startWalking(t)
+	for _, width := range []int{120, 140, 200} {
+		view := plainView(resize(app, width, 40))
+		if !strings.Contains(view, "│") || !strings.Contains(view, "About this question") {
+			t.Errorf("%d columns should show the answer and the notes side by side:\n%s", width, view)
+		}
+	}
+	for _, width := range []int{80, 99, 119} {
+		view := plainView(resize(app, width, 40))
+		if strings.Contains(view, "│") {
+			t.Errorf("%d columns is one column:\n%s", width, view)
+		}
+		if !strings.Contains(view, "About this question") {
+			t.Errorf("%d columns should still show the notes below the answer", width)
+		}
+	}
+}
+
+func TestTheQuestionListIsNotOnTheWalk(t *testing.T) {
 	t.Parallel()
 	app, _ := startWalking(t)
 	view := plainView(resize(app, 140, 40))
-	for _, row := range strings.Split(view, "\n")[1:6] {
-		if !strings.Contains(row, "│") {
-			t.Fatalf("expected two panes, got %q", row)
+	for _, title := range []string{"Where to request source control access", "Who can help with anything"} {
+		if strings.Contains(view, title) {
+			t.Errorf("the walk should show one question, found %q", title)
 		}
-	}
-	if !strings.Contains(view, "Details") || !strings.Contains(view, "Organization") && !strings.Contains(view, "Plan") {
-		t.Errorf("the detail and the list should both show:\n%s", view)
-	}
-	narrow := plainView(resize(app, 99, 40))
-	if strings.Contains(narrow, "│") {
-		t.Error("99 columns is one column")
-	}
-	if !strings.Contains(plainView(resize(app, 100, 40)), "│") {
-		t.Error("100 columns is two panes")
 	}
 }
 
 func TestEveryScreenKeepsItsKeyHintsAtEveryWidth(t *testing.T) {
 	t.Parallel()
 	for name, app := range everyScreen(t) {
-		for _, width := range widths[1:] {
+		for _, width := range widths {
 			rows := viewLines(resize(app, width, 24))
-			if !strings.Contains(rows[len(rows)-1], "help") && !strings.Contains(rows[len(rows)-1], "f1") && !strings.Contains(rows[len(rows)-1], "any key") {
-				t.Errorf("%s at %d has no help hint: %q", name, width, rows[len(rows)-1])
+			last := rows[len(rows)-1]
+			if !strings.Contains(last, "help") && !strings.Contains(last, "f1") && !strings.Contains(last, "any key") {
+				t.Errorf("%s at %d has no help hint: %q", name, width, last)
 			}
 		}
 	}
 }
 
-func TestWithNoColourTheFocusAndKeyHintsAreStillText(t *testing.T) {
+func TestWithNoColourTheMarksAndKeyHintsAreStillText(t *testing.T) {
 	previous := lipgloss.ColorProfile()
 	lipgloss.SetColorProfile(profileAscii)
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
 	for name, app := range everyScreen(t) {
-		sized := resize(app, 100, 30)
-		if strings.Contains(sized.View(), "\x1b[") {
+		if strings.Contains(resize(app, 120, 30).View(), "\x1b[") {
 			t.Fatalf("%s has escape codes with no colour", name)
 		}
 	}
 	screens := everyScreen(t)
-	choosing := resize(screens["walk choosing"], 100, 30)
-	view := choosing.View()
-	for _, want := range []string{"> ", "[ ]", "enter choose", "? help", "* required"} {
+	view := resize(screens["walk choosing"], 120, 30).View()
+	for _, want := range []string{"> established", "◆", "enter choose", "? help", "required", "not answered yet", "2 of 9"} {
 		if !strings.Contains(view, want) {
 			t.Errorf("walk choosing lacks %q:\n%s", want, view)
 		}
 	}
-	if !strings.Contains(resize(screens["walk problem"], 100, 30).View(), "! problem:") {
+	if !strings.Contains(resize(screens["walk problem"], 120, 30).View(), "! problem:") {
 		t.Error("a problem needs its text mark")
 	}
-	if !strings.Contains(resize(screens["review"], 100, 30).View(), "> Items") {
+	if !strings.Contains(resize(screens["review"], 120, 30).View(), "> Items") {
 		t.Error("the focused pane needs its mark")
+	}
+	if !strings.Contains(resize(screens["overview"], 120, 30).View(), "> [ ] *") {
+		t.Error("the overview cursor needs its mark")
 	}
 }
 
-func TestWithColourTheAccentIsTheBrandBlue(t *testing.T) {
+func TestWithColourTheAccentIsBrandBlueAndMarksPlaceNotTitles(t *testing.T) {
 	previous := lipgloss.ColorProfile()
 	lipgloss.SetColorProfile(profileTrueColor)
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
 	app, _ := startWalking(t)
-	if !strings.Contains(resize(app, 100, 30).View(), "38;2;0;113;206") {
+	view := resize(moveTo(t, app, "plan.team_state"), 120, 30).View()
+	if !strings.Contains(view, "38;2;0;113;206") {
 		t.Error("expected Branded Blue 0071CE in true colour")
 	}
+	for _, title := range []string{"Onboarding plan", "Plan", "Is the team established"} {
+		if sgrBefore(t, view, title) == "38;2;0;113;206" || strings.Contains(sgrBefore(t, view, title), "38;2;0;113;206") {
+			t.Errorf("the accent must not colour the text %q", title)
+		}
+	}
 	lipgloss.SetColorProfile(profileANSI)
-	if strings.Contains(resize(app, 100, 30).View(), "38;2;") {
+	if strings.Contains(resize(app, 120, 30).View(), "38;2;") {
 		t.Error("ANSI terminals get ANSI colours")
 	}
 }
