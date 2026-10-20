@@ -483,21 +483,14 @@
     "source": "docs/decisions/0010-plan-editor.md, Errors: an unknown question id is a problem"
   },
   {
-    "name": "onboarding-question-is-refused",
+    "name": "onboardee-question-is-applied",
     "operation": "submit",
     "before": "answered.plan.json",
     "question": "main.account",
     "value": "jdoe",
-    "after": "answered.plan.json",
-    "problems": [
-      {
-        "code": "answer.inactive-question",
-        "severity": "error",
-        "question": "main.account",
-        "section": "main"
-      }
-    ],
-    "source": "docs/decisions/0010-plan-editor.md, Phase: onboarding questions are not asked for planning"
+    "after": "answered-with-account.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0055-variable-audience.md: an onboardee question is active by its own condition and takes an answer like any other"
   },
   {
     "name": "question-of-a-switched-off-section-is-refused",

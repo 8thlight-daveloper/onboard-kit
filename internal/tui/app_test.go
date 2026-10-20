@@ -94,7 +94,7 @@ func TestAnsweringATextQuestionAppliesAndSavesIt(t *testing.T) {
 func TestAChoiceIsPickedFromItsOptions(t *testing.T) {
 	t.Parallel()
 	app, recorded := start(t)
-	app = moveTo(t, app, "plan.discipline")
+	app = moveTo(t, app, "plan.team_state")
 	app = press(app, enter)
 	if len(app.edit.choices) == 0 {
 		t.Fatal("a choice question should offer a list")
@@ -103,12 +103,12 @@ func TestAChoiceIsPickedFromItsOptions(t *testing.T) {
 	for _, option := range app.edit.choices {
 		labels = append(labels, option.label)
 	}
-	if strings.Join(labels, "|") != "software|design|deferred, answer later|clear the answer" {
+	if strings.Join(labels, "|") != "established|first-consultants|deferred, answer later|clear the answer" {
 		t.Fatalf("unexpected choices %q", labels)
 	}
 	app = press(app, down, enter)
-	if got := app.plan.Answers.Plan["discipline"]; got.Text != "design" {
-		t.Fatalf("expected design, got %+v", got)
+	if got := app.plan.Answers.Plan["team_state"]; got.Text != "first-consultants" {
+		t.Fatalf("expected first-consultants, got %+v", got)
 	}
 	if len(recorded.saved) != 1 {
 		t.Fatalf("expected one save, got %d", len(recorded.saved))
@@ -242,5 +242,33 @@ func TestPeopleAreSeparatedBySemicolons(t *testing.T) {
 	}
 	if parseEntry(question, "   ").Kind != model.ValueKindNone {
 		t.Fatal("blank text means no answer")
+	}
+}
+
+func TestTheOnboardeeSeesOnlyTheirQuestionsAndNoSectionSwitches(t *testing.T) {
+	t.Parallel()
+	recorded := &recorder{}
+	app := NewApp(NewBackend(), acmePlan(t), recorded.save, model.AudienceOnboardee)
+	ids := make([]string, 0, len(app.questions))
+	for _, question := range app.questions {
+		ids = append(ids, question.ID)
+		if question.Audience != model.AudienceOnboardee {
+			t.Errorf("%s is for %s", question.ID, question.Audience)
+		}
+	}
+	if len(ids) == 0 {
+		t.Fatal("the onboardee should have questions")
+	}
+	app = press(app, typed("s"))
+	if app.screen != screenQuestions {
+		t.Fatal("the onboardee has no section switches")
+	}
+	app = moveTo(t, app, "plan.discipline")
+	app = press(app, enter, down, enter)
+	if got := app.plan.Answers.Plan["discipline"]; got.Text != "design" {
+		t.Fatalf("expected design, got %+v", got)
+	}
+	if strings.Contains(app.View(), "s sections") {
+		t.Error("the onboardee hint should not offer sections")
 	}
 }

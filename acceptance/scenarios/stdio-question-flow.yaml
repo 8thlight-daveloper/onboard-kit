@@ -13,7 +13,7 @@ steps:
       - send: {command: blockers}
         expect:
           ok: true
-          blockers: [plan.organization, plan.team, plan.team_state, plan.discipline, access.onboarding_owner_role, access.access_request_url, access.repo_url, access.ci_grantor, access.tracker_grantor, stuck-general.general_contacts]
+          blockers: [plan.organization, plan.team_state, access.onboarding_owner_role, access.access_request_url, access.repo_url, access.ci_grantor, access.tracker_grantor, stuck-general.general_contacts]
       - send: {command: submit, question: plan.organization, value: ACME Corp}
         expect: {ok: true, applied: true, problems: []}
       - send: {command: submit, question: plan.discipline, value: software}
@@ -21,6 +21,14 @@ steps:
       - send: {command: submit, question: access.tracker_grantor, value: {deferred: true}}
         expect: {ok: true, applied: true, problems: []}
       - send: {command: blockers}
+        expect:
+          ok: true
+          blockers: [plan.team_state, access.onboarding_owner_role, access.access_request_url, access.repo_url, access.ci_grantor, clone-and-run-tests.repo_url, clone-and-run-tests.setup_command, clone-and-run-tests.test_command, stuck-general.general_contacts]
+      - send: {command: blockers, audience: onboardee}
+        expect:
+          ok: true
+          blockers: [plan.team]
+      - send: {command: blockers, audience: all}
         expect:
           ok: true
           blockers: [plan.team, plan.team_state, access.onboarding_owner_role, access.access_request_url, access.repo_url, access.ci_grantor, clone-and-run-tests.repo_url, clone-and-run-tests.setup_command, clone-and-run-tests.test_command, stuck-general.general_contacts]
