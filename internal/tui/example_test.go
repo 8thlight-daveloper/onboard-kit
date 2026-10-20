@@ -78,7 +78,7 @@ func TestAGuidedWalkOfManyQuestionsShowsThePositionAndSection(t *testing.T) {
 			t.Errorf("missing %q:\n%s", want, view)
 		}
 	}
-	if !strings.Contains(view, "xxx◆") {
+	if !strings.Contains(view, "✓✓✓◆") {
 		t.Errorf("the progress rail should show three answered then the position:\n%s", view)
 	}
 }

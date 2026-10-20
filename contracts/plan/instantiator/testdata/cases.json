@@ -6,7 +6,7 @@
     "templateSet": "example",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "access", "hash": "b4820a32303f00878e5a9039e3a2b882da62c682ca57aa606f65a482b3d4a0a4", "canonical": "acme-access.canonical.json"},
+      {"id": "access", "hash": "0661566cb6eb7a0d131133bb75f42f339b79bcccfdf39e49f2028e19c0e70a5a", "canonical": "acme-access.canonical.json"},
       {"id": "clone-and-run-tests", "hash": "c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6", "canonical": "acme-clone-and-run-tests.canonical.json"},
       {"id": "review-design-system", "hash": "cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9", "canonical": "acme-review-design-system.canonical.json"},
       {"id": "stuck-general", "hash": "b41dc482fe0a513d1474cb641d00f890914ee5722c24f6d04e61d6a0cc553829", "canonical": "acme-stuck-general.canonical.json"}

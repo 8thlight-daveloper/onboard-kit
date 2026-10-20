@@ -24,9 +24,3 @@ variables:
       - design
     required: true
     audience: onboardee
-  - name: output_style
-    description: Target format of the document
-    type: choice
-    options:
-      - markdown
-    default: markdown

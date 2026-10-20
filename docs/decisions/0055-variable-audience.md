@@ -41,7 +41,7 @@ Every onboardee question must exist for a reason: some section's `includeIf` or 
 | `discipline` | `onboardee` | The kind of work the person will do, software or design. It selects discipline-specific sections |
 | `team` | `onboardee` | The group the person joins |
 | `account_name` | `onboardee` | The person's own account |
-| `organization`, `output_style` | `onboarder` | Organization facts and document settings |
+| `organization` | `onboarder` | An organization fact |
 | `team_state` | `onboarder` | A fact about the engagement. It stays with the onboarder until per-team answers exist, see below |
 | Repositories and commands, grantors, contacts, URLs | `onboarder` | Facts the organization knows |
 

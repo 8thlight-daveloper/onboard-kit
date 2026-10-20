@@ -49,7 +49,9 @@ func textQuestion(id string, scope string, description string, example string) m
 
 func startFake(backend *fakeBackend) App {
 	saved := func(model.Plan) error { return nil }
-	return NewApp(backend, model.Plan{}, saved, model.AudienceOnboarder)
+	app := NewApp(backend, model.Plan{}, saved, model.AudienceOnboarder)
+	app.rail = unicodeRailGlyphs()
+	return app
 }
 
 func longScreens() map[string]App {

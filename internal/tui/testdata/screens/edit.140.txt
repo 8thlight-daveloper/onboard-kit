@@ -1,8 +1,8 @@
-  Onboarding plan  Walk                                                                                                    0 of 9 answered
-  ◆..  .....  .
+  Onboarding plan  Walk                                                                                                    0 of 8 answered
+  ◆○  ○○○○○  ○
 
   Plan                                                                              │ About this question
-  1 of 9, required, not answered yet                                                │
+  1 of 8, required, not answered yet                                                │
                                                                                     │ Example: ACME Corp
   What is the organization's name?                                                  │ Type: string
                                                                                     │ Answered by: onboarder

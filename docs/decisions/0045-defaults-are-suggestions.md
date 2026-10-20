@@ -46,7 +46,7 @@ A person answers, or accepts, more questions than before. A walk through the que
   - Section selector: no change from this ADR. Switching a section on or off is not a variable, and a separate decision covers it.
   - Plan instantiator: no change.
   - Question finder, plan editor, and plan validator, not yet drafted: each takes the rule from the start.
-- **The ACME example.** Its plan holds no answer for `output_style`, which only has a default today, so its assembled document needs an answer or shows a gap. A person decides which.
+- **The ACME example.** `repo_dir` and `onboarding_owner_role` carry defaults, and the plan answers both, so the example shows a default that was accepted and one that was overridden.
 - **Versioning.** As in 0035, nothing exists outside this repository, so the schema version stays 1. After the first release, a change like this needs a version bump.
 - **The hasher** still hashes declared defaults. A default is part of what the template says.
 

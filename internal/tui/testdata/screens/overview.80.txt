@@ -1,10 +1,9 @@
-  Onboarding plan  Overview                                  13 of 14 answered
-  x◆.  xxxxx~  xxxx  x
+  Onboarding plan  Overview                                  13 of 13 answered
+  ✓◆  ✓✓✓✓✓◐  ✓✓✓✓  ✓
 
   Plan
     [x] * What is the organization's name?          ACME Corp
   > [x] * Is the team established, or are we the …  established
-    [ ]   Target format of the document
 
   Access
     [x] * Who owns onboarding here? Give their ro…  Engineering manager
@@ -20,5 +19,6 @@
     [x] * Which command installs the dependencies?  make; setup
     [x] * Which command runs the test suite?        make; test
 
+  If you are stuck
 
   enter open  esc walk  r review  s sections  q quit  ? help

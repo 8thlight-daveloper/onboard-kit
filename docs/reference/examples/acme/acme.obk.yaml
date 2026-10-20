@@ -27,12 +27,6 @@ variables:
       - design
     required: true
     audience: onboardee
-  - name: output_style
-    description: Target format of the document
-    type: choice
-    options:
-      - markdown
-    default: markdown
 answers:
   plan:
     discipline: software
@@ -75,6 +69,7 @@ sections:
         description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
         example: Engineering manager
         required: true
+        default: Engineering manager
       - name: access_request_url
         description: Where do people request source control access?
         example: https://access.example.test/request

@@ -13,6 +13,7 @@ const (
 
 type App struct {
 	backend        Backend
+	rail           railGlyphs
 	audience       model.Audience
 	save           func(model.Plan) error
 	plan           model.Plan
@@ -33,7 +34,7 @@ type App struct {
 }
 
 func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audience model.Audience) App {
-	app := App{backend: backend, save: save, plan: plan, audience: audience, width: startWidth, height: startHeight}
+	app := App{rail: railGlyphsForTerminal(), backend: backend, save: save, plan: plan, audience: audience, width: startWidth, height: startHeight}
 	app.questions = backend.Questions(plan, audience)
 	return app.opening()
 }

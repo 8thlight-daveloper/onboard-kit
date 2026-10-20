@@ -10,6 +10,7 @@ variables:
     description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
     example: Engineering manager
     required: true
+    default: Engineering manager
   - name: access_request_url
     description: Where do people request source control access?
     example: https://access.example.test/request

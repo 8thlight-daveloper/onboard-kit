@@ -80,7 +80,7 @@ func TestClearingStaysOnTheQuestion(t *testing.T) {
 	t.Parallel()
 	app, _ := startWalking(t)
 	app = moveTo(t, app, "plan.team_state")
-	app = press(app, typed("d"), typed("p"), typed("x"))
+	app = press(app, typed("d"), shiftTab, typed("x"))
 	if _, there := app.plan.Answers.Plan["team_state"]; there {
 		t.Fatal("the answer should be cleared")
 	}

@@ -1,14 +1,40 @@
 package tui
 
-import "strings"
-
-const (
-	railAnswered = "x"
-	railDeferred = "~"
-	railOpen     = "."
-	railHere     = "◆"
-	railGap      = "  "
+import (
+	"os"
+	"strings"
 )
+
+const railGap = "  "
+
+type railGlyphs struct {
+	answered string
+	deferred string
+	open     string
+	here     string
+}
+
+func unicodeRailGlyphs() railGlyphs {
+	return railGlyphs{answered: "✓", deferred: "◐", open: "○", here: "◆"}
+}
+
+func plainRailGlyphs() railGlyphs {
+	return railGlyphs{answered: "x", deferred: "~", open: ".", here: "*"}
+}
+
+func railGlyphsForTerminal() railGlyphs {
+	for _, name := range []string{"LC_ALL", "LC_CTYPE", "LANG"} {
+		value := strings.ToLower(os.Getenv(name))
+		if value == "" {
+			continue
+		}
+		if strings.Contains(value, "utf-8") || strings.Contains(value, "utf8") {
+			return unicodeRailGlyphs()
+		}
+		return plainRailGlyphs()
+	}
+	return unicodeRailGlyphs()
+}
 
 func (app App) railPosition() int {
 	switch app.screen {
@@ -44,14 +70,14 @@ func (app App) railRow(width int, colors palette) string {
 
 func (app App) railCell(index int, here int, colors palette) string {
 	if index == here {
-		return colors.render(toneHere, true, railHere)
+		return colors.render(toneHere, true, app.rail.here)
 	}
-	glyph := railOpen
+	glyph := app.rail.open
 	switch stateOf(app.questions[index].Answer) {
 	case "settled":
-		glyph = railAnswered
+		glyph = app.rail.answered
 	case "deferred":
-		glyph = railDeferred
+		glyph = app.rail.deferred
 	}
 	return colors.render(toneFaint, true, glyph)
 }

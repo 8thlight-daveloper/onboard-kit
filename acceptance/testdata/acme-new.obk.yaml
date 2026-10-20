@@ -27,12 +27,6 @@ variables:
       - design
     required: true
     audience: onboardee
-  - name: output_style
-    description: Target format of the document
-    type: choice
-    options:
-      - markdown
-    default: markdown
 sections:
   - id: access
     title: Access
@@ -48,6 +42,7 @@ sections:
         description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
         example: Engineering manager
         required: true
+        default: Engineering manager
       - name: access_request_url
         description: Where do people request source control access?
         example: https://access.example.test/request
@@ -102,7 +97,7 @@ sections:
           - ask: Can you open the work tracker?
     source:
       template: access
-      hash: b4820a32303f00878e5a9039e3a2b882da62c682ca57aa606f65a482b3d4a0a4
+      hash: "0661566cb6eb7a0d131133bb75f42f339b79bcccfdf39e49f2028e19c0e70a5a"
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     summary: Get a working copy of the project and a passing test run on your machine.

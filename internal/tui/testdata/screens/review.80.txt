@@ -1,24 +1,24 @@
-  Onboarding plan  Review                                    13 of 14 answered
-  x~.  xxxxx~  xxxx  x
+  Onboarding plan  Walk                                      13 of 13 answered
+  ✓◐  ◆✓✓✓✓◐  ✓✓✓✓  ✓
 
-  > Items
-  Answered 13 of 14.
+  Access
+  3 of 13, required, answered
 
-  Deferred (2)
-  > deferred: Is the team established, or are we the first consultants?
-    deferred: Who grants work tracker access?
+  Who owns onboarding here? Give their role. It appears as the owner of the
+  Access section.
+
+  > Engineering managerr
+  Tab tries a suggestion: Engineering manager, Engineering manager
+
+  About this question
+
+  Example: Engineering manager
+  Type: string
+  Answered by: onboarder
+  Name: access.onboarding_owner_role
+  Suggestion (default): Engineering manager
+  Suggestion (given): Engineering manager
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  enter open  tab items/document  pgup/pgdn scroll  w walk  o overview  ? help
+  enter save  shift+tab back  tab suggest  ctrl+d defer  esc review  f1 help

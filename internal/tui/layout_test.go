@@ -137,7 +137,7 @@ func TestWithNoColourTheMarksAndKeyHintsAreStillText(t *testing.T) {
 	}
 	screens := everyScreen(t)
 	view := resize(screens["walk choosing"], 120, 30).View()
-	for _, want := range []string{"> established", "◆", "enter choose", "? help", "required", "not answered yet", "2 of 9"} {
+	for _, want := range []string{"> established", "◆", "enter choose", "? help", "required", "not answered yet", "2 of 8"} {
 		if !strings.Contains(view, want) {
 			t.Errorf("walk choosing lacks %q:\n%s", want, view)
 		}

@@ -44,7 +44,9 @@ func (recording *recorder) save(plan model.Plan) error {
 func startWith(t *testing.T, plan model.Plan, audience model.Audience) (App, *recorder) {
 	t.Helper()
 	recorded := &recorder{}
-	return NewApp(NewBackend(), plan, recorded.save, audience), recorded
+	app := NewApp(NewBackend(), plan, recorded.save, audience)
+	app.rail = unicodeRailGlyphs()
+	return app, recorded
 }
 
 func startWalking(t *testing.T) (App, *recorder) {

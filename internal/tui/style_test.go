@@ -39,7 +39,7 @@ func TestOnTheWalkTheAnswerIsBrightAndTheNotesAreFaint(t *testing.T) {
 		expectBright(t, view, "deferred, answer later")
 		expectFaint(t, view, "Type: choice")
 		expectFaint(t, view, "Answered by")
-		expectFaint(t, view, "2 of 9")
+		expectFaint(t, view, "2 of 8")
 	}
 }
 
