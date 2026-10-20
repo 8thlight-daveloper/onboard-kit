@@ -1,6 +1,6 @@
 # 0080. Directory
 
-Status: proposed
+Status: accepted
 
 Builds on [0055](0055-variable-audience.md), [0065](0065-messages-and-evidence.md), and [0075](0075-refreshing-a-personal-plan.md). It answers [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
 
@@ -74,14 +74,22 @@ A message to a role (0065) shows who it resolved to and why: "Engineering manage
 
 The plan validator reports:
 
-- Errors: a duplicate id, an answer that names an id that is not in the directory, a holder that is not a contact, and a team override for a role that does not exist.
-- Warnings: a role with no holder, an email with no `@` or with a space, and a contact with no way to reach them.
+- Errors: a duplicate id, a holder that is not a contact, and a team override for a role that does not exist.
+- Warnings: an answer that names an id that is not in the directory, a role with no holder, an email with no `@` or with a space, and a contact with no way to reach them.
+
+An answer that names an id that is not in the directory counts as unanswered, so a required question blocks until it is filled. The tool never creates such an answer, see removal below.
 
 An email check stays minimal, since valid addresses are varied.
+
+### Removing an entry clears its references
+
+Removing a contact, a role, or a team is allowed. The same edit clears every answer and every holder entry that named it, and reports how many places it cleared. A cleared required question is unanswered, so it blocks onboarding until the onboarder fills it. The tool never leaves a dangling reference behind.
 
 ### Scope
 
 The directory holds people, roles, and teams. It is not a place for general per-team settings. A repository per team stays the open question in 0055.
+
+Teams are a flat list, with no nesting. A section meant for several teams uses `includeIf` with `isOneOf` on the team answer.
 
 ### Privacy
 
@@ -111,6 +119,4 @@ The org plan then holds contact details for the people named. The org plan's loc
 ## Not decided
 
 - The exact rendering forms and whether a template can ask for a single field, such as a contact's email.
-- Whether a contact can be removed while an answer still names it, or removal must be refused.
 - Importing contacts from a directory service.
-- Whether a team can be part of another team.

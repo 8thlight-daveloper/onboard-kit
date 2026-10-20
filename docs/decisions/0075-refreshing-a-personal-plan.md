@@ -1,6 +1,6 @@
 # 0075. Refreshing a personal plan
 
-Status: proposed
+Status: accepted
 
 Builds on [0030](0030-self-contained-plan-file.md), [0055](0055-variable-audience.md), and [0060](0060-personal-plan.md). It replaces the "running again" part of 0060.
 
@@ -41,7 +41,7 @@ A personal plan holds a full copy of the org plan's content, plus the newcomer's
 | An answer to an onboardee question that the newcomer has not changed from `base` | Taken from `theirs`, so a changed pre-seed reaches them |
 | An answer to an onboardee question that the newcomer changed | Kept. The newcomer wins |
 | A new onboardee question | Appears unanswered |
-| A question that disappeared | The answer is kept but hidden, not deleted, in case it returns |
+| A question that disappeared | The answer is kept but hidden, not deleted, in case it returns. See pruning below |
 | An answer that is no longer valid, such as a choice option that was removed or a team that no longer exists | Marked as needing review and asked again. Never kept silently |
 | A new section or step | Appears as not done |
 | A step the newcomer finished, in a section whose content changed | Flagged as changed since it was finished |
@@ -61,9 +61,13 @@ The three-way comparison is what tells a newcomer's own change from an old pre-s
 
 ### Hosting
 
-The org plan is a file at a path or an HTTPS URL. The tool reads it and never publishes it. Versioning and rollback belong to the host, such as a git repository. A URL that serves a directory of people's emails (0080) must require authentication. Credentials never go in the plan.
+The org plan is a file at a path or an HTTPS URL. The tool reads it and never publishes it. Versioning and rollback belong to the host. Keeping the org plan in a git repository is strongly recommended: it gives history, review, merging, and rollback. The tool does not require git, and it never runs it. A URL that serves a directory of people's emails (0080) must require authentication. Credentials never go in the plan.
 
 Several onboarders may edit the org plan, so the file must merge cleanly. Lists are sorted by id and keys are in canonical order, as the encoder already does.
+
+### Hidden answers stay until the owner prunes them
+
+A refresh never deletes an answer on its own. Hidden answers would collect over time, so each file's owner can prune them whenever they choose. A prune action lists the hidden answers first and deletes only after a yes. The onboarder prunes the org plan, and a newcomer prunes their own file. A newcomer's hidden answers are not in the org plan, so the onboarder's prune cannot touch them.
 
 ### What is not locked
 
@@ -89,4 +93,3 @@ The personal plan holds a copy of org content, and a person could edit it by han
 - The progress record's format, which 0065 introduces.
 - How an update from a template set into an org plan shows a conflict. It stays deferred.
 - Rolling back to an earlier org plan.
-- Whether a refresh may delete a hidden answer after some time.
