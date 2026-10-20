@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "role", "description": "Job title", "example": "Engineering manager", "required": true},
+    {"name": "laptop", "description": "Laptop model"}
+  ],
+  "sections": [
+    {"id": "a", "variables": [
+      {"name": "role", "description": "Role in the team", "example": "Staff engineer"},
+      {"name": "team", "description": "Team", "example": "Platform", "default": "Core"}
+    ]},
+    {"id": "b", "variables": [
+      {"name": "role", "description": "Role in the team"},
+      {"name": "team", "description": "Team", "example": "Platform", "required": true}
+    ]}
+  ],
+  "answers": {"sections": {"a": {"team": "Billing"}}}
+}

@@ -1,0 +1,10 @@
+{
+  "id": "team-role",
+  "title": "Team role",
+  "summary": "Where the newcomer works.",
+  "variables": [
+    {"name": "role", "description": "Your role", "example": "Engineering manager"},
+    {"name": "team", "description": "Your team"}
+  ],
+  "steps": [{"id": "intro", "name": "Introduce"}]
+}

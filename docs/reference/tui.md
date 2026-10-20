@@ -34,7 +34,7 @@ Decided: the onboardee does not get a separate list of the organization's answer
 
 ## Screens
 
-Decided. There are four screens and a help page. Every screen has a header line, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
+Decided. There are four screens and a help page. Every screen has a header line, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
 
 | Screen | Holds | Opened by |
 | -- | -- | -- |
@@ -57,42 +57,88 @@ How a person moves:
 
 ## Layout
 
-Decided. Bubble Tea sends the window size at the start and on every resize, and the layout follows it. The panes are separated by a vertical bar.
+Decided. A designer judged the layout against the people in Intent, and it replaces the first draft, which put a question list beside every question. Bubble Tea sends the window size at the start and on every resize, and the layout follows it. Nothing has a fixed width. The design target is a window 120 to 140 columns wide.
+
+### What the layout does
+
+- The Walk shows one question and nothing else that competes with it. The answer column holds the section title, the position ("4 of 11, required, not answered yet"), the question, the way to answer, and any problem.
+- A progress rail sits under the header: one mark per question, grouped by section, with a diamond at the current question. The rail replaces the question list. It answers "where am I and how much is left" in one quiet line, and it never asks for a read. It is hidden when it does not fit.
+- The notes sit beside the answer at 120 columns and wider, and below it when narrower. They hold the example, the type and options, who answers, the name, and the suggestions. They are faint, because they are for a glance and never for action.
+- The Overview is one list, grouped by section, with each row showing its mark, its question, and its answer. At 120 columns and wider a faint preview of the chosen question sits beside it.
+- The Review keeps two panes, because it is a master and detail task: the items on the left, the document preview on the right. Below 120 columns, tab switches between them.
 
 | Width | Walk | Overview | Review |
 | -- | -- | -- | -- |
-| 140 or more | The question list on the left, about a third of the width and at most 52 columns. The question and its detail on the right | The list on the left. The detail of the chosen question on the right | Items on the left. The document on the right |
-| 100 to 139 | The same, with the list at about a third of the width, at least 30 columns | The same | The same |
-| 60 to 99 | One column: the question, then its detail if the height allows | One column. Each row shows its answer when there is room | One column. Tab switches between the items and the document |
+| 120 or more | Answer column about three fifths of the width, notes beside it | List about three fifths, preview beside it | Items about two fifths, document beside it |
+| 60 to 119 | One column up to 100 wide, notes below the answer if the height allows | One column | One column. Tab switches between the items and the document |
 | Under 60 wide or under 12 high | A plain message asking for a larger window |  |  |
 
-At 140 and more the right pane has room to wrap less. Rules that hold at any width:
+Rules that hold at any width:
 
-- Widths come from the window. Text wraps at the pane width, and a list scrolls by the real height around the chosen row.
-- A line is never wider than the window.
-- Rows that do not fit are cut with an ellipsis, and the key hint line drops its least useful hints before it drops `? help`.
+- Widths come from the window. Text wraps at the column width, and a list scrolls by the real height around the chosen row.
+- A line is never wider than the window. Rows that do not fit are cut with an ellipsis, and the key hint line drops its least useful hints before it drops `? help`.
+- The answer column comes first in reading order and sits at the left, so the eye starts on the task.
+- Leftover height stays empty. Breathing room is cheaper than a filled screen.
+
+### Layouts considered
+
+| Layout | For the first-time person (9 to 40 questions) | For the returning person | For the onboardee |
+| -- | -- | -- | -- |
+| A. Two panes, a question list on the left, the detail on the right (the first draft) | The bright list pulls the eye off the question, and every answer repaints a row beside the question | Good for jumping | A list of questions they will never answer reads like a form |
+| B. One focused column, a progress rail on top, notes beside or below (chosen) | One thing to read and one place to type. The rail gives position without a read | The Overview is the list, one key away, and the Review lists what is waiting | A short rail and a welcome line. Nothing else on screen |
+| C. One column only, a plain "4 of 11" and no rail or notes | Calmest, but there is no sense of the whole and no place for the example | Needs the Overview for everything | Fine, but bare |
+| D. The answer wide on the left, and the document preview always beside it | The document changes under every answer and draws the eye | Useful for checking | A document full of gaps is discouraging at the start |
+
+### Rejected
+
+- The question list beside the Walk (A). The product owner found it distracting, and the reasons hold: it is the brightest thing on screen and the person is not acting in it. The rail keeps what the list gave, a sense of place, at a tenth of the weight.
+- The document preview beside the Walk (D). It is the right tool for the Review, where the person judges the whole, and noise on the Walk, where the person answers one thing.
+- No rail and no notes (C). Fewer parts, but a person answering 40 questions loses their place, and the example needs a home.
+- A layout fixed at 80 columns. Modern terminals are wider. The 120 column break is where the notes fit beside a comfortable answer column. Below it the notes move under the answer, and the tool is still usable at 80.
+- A vertical rule down the whole screen. The rule stops where the content stops.
+
+Direction: the onboardee sees the same screens with fewer parts: no section switches, a welcome line while nothing is answered, and "3 of 5 to answer" in the header.
+
+## Emphasis
+
+Decided. The part of the screen where the person is acting is drawn bright, and every other part is drawn faint. Emphasis follows focus.
+
+| Screen | Bright | Faint |
+| -- | -- | -- |
+| Walk | The question, the answer, the problems | The rail, the notes, the status |
+| Overview | The list | The rail, the preview |
+| Review | The pane with focus, items or document | The other pane |
+| Sections, Help | The whole body |  |
+
+- The accent marks "you are here" and nothing else: the `>` before the chosen row or the focused pane, the diamond in the rail, and the prompt of the answer box. Titles, headings, and key names are never in the accent. A title is bold, and a key name is bold.
+- Bold and faint are enough to carry the hierarchy, so it holds on a light or dark background and with no colour.
 
 ## Wireframes
 
 Decided. No wireframe tool fits a terminal screen, so the screens are drawn by the code itself. A test renders the real view from a fixed plan with no colour and compares it to a text file. The files are the wireframes, and they cannot drift from the screen. Regenerate them on purpose with `go test ./internal/tui -run Wireframes -update`, and review the diff.
 
-| Screen | 80 columns | 140 columns |
-| -- | -- | -- |
-| Walk, choosing | [walk](../../internal/tui/testdata/screens/walk.80.txt) | [walk](../../internal/tui/testdata/screens/walk.140.txt) |
-| Walk, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
-| Overview | [overview](../../internal/tui/testdata/screens/overview.80.txt) | [overview](../../internal/tui/testdata/screens/overview.140.txt) |
-| Review | [review](../../internal/tui/testdata/screens/review.80.txt) | [review](../../internal/tui/testdata/screens/review.140.txt) |
-| Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
-| The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
-| Window too small | [too small](../../internal/tui/testdata/screens/too-small.80.txt) | [too small](../../internal/tui/testdata/screens/too-small.140.txt) |
+| Screen | 80 columns | 120 columns | 140 columns |
+| -- | -- | -- | -- |
+| Walk, choosing | [walk](../../internal/tui/testdata/screens/walk.80.txt) | [walk](../../internal/tui/testdata/screens/walk.120.txt) | [walk](../../internal/tui/testdata/screens/walk.140.txt) |
+| Walk, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
+| Walk, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
+| Overview | [overview](../../internal/tui/testdata/screens/overview.80.txt) | [overview](../../internal/tui/testdata/screens/overview.120.txt) | [overview](../../internal/tui/testdata/screens/overview.140.txt) |
+| Review | [review](../../internal/tui/testdata/screens/review.80.txt) | [review](../../internal/tui/testdata/screens/review.120.txt) | [review](../../internal/tui/testdata/screens/review.140.txt) |
+| Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.120.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
+| The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
+| Window too small | [too small](../../internal/tui/testdata/screens/too-small.80.txt) | [too small](../../internal/tui/testdata/screens/too-small.120.txt) | [too small](../../internal/tui/testdata/screens/too-small.140.txt) |
 
 ## Colour
 
-Decided. One accent, the Branded Blue `0071CE`, marks the focus: the cursor row, the headings, and the key names in the hint line. Two other brand colours mean status and nothing else: Orange `FF8300` for a warning, Red `F32735` for a problem. Everything quiet is drawn with the terminal's faint style, so it works on a light or a dark background and the tool never asks the terminal for its background colour.
+Decided. One accent, the Branded Blue `0071CE`, marks "you are here", see Emphasis. Two other brand colours mean status and nothing else: Orange `FF8300` for a warning, Red `F32735` for a problem. Everything quiet is drawn with the terminal's faint style, so it works on a light or a dark background and the tool never asks the terminal for its background colour. The styles are built when a screen is drawn, never at package level.
 
 - A terminal that reports true colour gets the hex values. One with 256 colours or 16 colours gets the nearest ANSI value. `NO_COLOR` and a terminal with no colour get plain text.
-- Colour never carries meaning alone. The cursor row starts with `>`. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required. Problems start with `problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
-- A test renders every screen with no colour and checks that these marks and the key hints are still there.
+- Colour never carries meaning alone. The chosen row starts with `>`. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required, and in the rail `x`, `~`, `.`, and a diamond for the current question. The position and state are also words under the section title. Problems start with `! problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
+- Tests render every screen with no colour and check that these marks and the key hints are still there. Other tests check, with colour on, that the focused pane is bright, the other is faint, and the accent is not on a title.
+
+## The example
+
+Decided. A question may carry one `Example`, an illustration of a good answer. It is shown as faint placeholder text in the answer box, after "e.g.", and as an "Example:" line in the notes. It is never an answer and never a default: enter on an empty box does not save it, and it disappears when the person types.
 
 ## Emphasis follows focus
 
@@ -144,21 +190,24 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 Decided.
 
 - Every action is reachable from the keyboard. There is no mouse use.
-- The focus is always visible: a `>` mark, bold, and the accent colour.
+- The focus is always visible: a `>` mark and bold text, and the rest of the screen is faint.
 - No information is carried by colour alone, see Colour.
 - A short key hint line is always the last line. `?` opens the full list.
 - Position is always stated in words: "4 of 11", and the count answered.
+- A window under 60 columns or 12 rows gets a plain message in place of the screen.
 - The tool makes no motion. The text cursor does not blink, and nothing animates.
 - Plain words on screen. The wording of a problem comes from the validator.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 50 to 200 and heights from 10 to 50, a test checks that no line is wider than the window, that the small-window message appears under the limits, and that both panes appear at 140. A no-colour test checks the marks. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Open
 
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
 - Whether the Walk goes to the next unanswered question when the person is revisiting from Review. Today it goes to the next in order.
 - How the tool reminds a person of deferred questions after they quit.
+- Whether the rail should show the section titles when the window is wide and the plan is small.
+- Whether the notes should hide while a person is typing, to leave only the answer.
 - A mouse and a way to change the accent are not planned.
 - The newcomer's view of the onboarder's answers, if the document preview proves not enough.

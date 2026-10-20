@@ -6,10 +6,10 @@
     "templateSet": "example",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "access", "hash": "714e6f801da509389e67bd1d0dacd1c26bfca6147bb55c34d05fcd1fdfb5ac2d", "canonical": "acme-access.canonical.json"},
-      {"id": "clone-and-run-tests", "hash": "ffc307f8f1eaf075421d0d1d58e0575e1e26bf6fcfc40d0fbdf87b1995f18748", "canonical": "acme-clone-and-run-tests.canonical.json"},
-      {"id": "review-design-system", "hash": "cf9d9426e1e55d73ff057bbfb823afe56bed7d9c2af26e30cd0203ad542c4ad4", "canonical": "acme-review-design-system.canonical.json"},
-      {"id": "stuck-general", "hash": "8d8ad17fef62f7d0453289ad4f2bffa1c40eb4eca666885cbdc7e4fead4750d3", "canonical": "acme-stuck-general.canonical.json"}
+      {"id": "access", "hash": "b4820a32303f00878e5a9039e3a2b882da62c682ca57aa606f65a482b3d4a0a4", "canonical": "acme-access.canonical.json"},
+      {"id": "clone-and-run-tests", "hash": "c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6", "canonical": "acme-clone-and-run-tests.canonical.json"},
+      {"id": "review-design-system", "hash": "cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9", "canonical": "acme-review-design-system.canonical.json"},
+      {"id": "stuck-general", "hash": "b41dc482fe0a513d1474cb641d00f890914ee5722c24f6d04e61d6a0cc553829", "canonical": "acme-stuck-general.canonical.json"}
     ],
     "source": "The four ACME templates, docs/reference/examples/acme/templates/, as the section loader contract's fixtures hold them (contracts/section/loader/testdata/acme-*.section.json), given out of order. The five plan variables are the plan variables of docs/reference/examples/acme/acme.obk.yaml, one with a default and one with options. 0030, The default plan: the axis variables and every template as a section, with no answers. Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract (Canonical form, Fields, Defaults, Prose, Strings), the four acme-*.canonical.json files. The ACME plan file records no real hash for them."
   },
@@ -166,5 +166,20 @@
       {"code": "variable.no-name", "detail": {"index": "0"}}
     ],
     "source": "Contract rule: Problems. One problem of each kind, template problem first. Kills an implementation that reports only one kind, and one that puts the variable problem first."
+  },
+  {
+    "name": "variable-example",
+    "templates": ["variable-example.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {
+        "id": "team-role",
+        "hash": "9e99a767cb7a9dccce3dfefa76f63d92bb204a1bacafdc780259fdf1179fac0c",
+        "canonical": "variable-example.canonical.json"
+      }
+    ],
+    "source": "A variable's optional example, an illustration of a good answer, is part of what a template says, so the section is its template copied with the example and the hash covers it. The canonical text is written by hand from the hasher rules, with example right after description and omitted when empty, and its hash is shasum -a 256 over that text. The role example is Engineering manager, from the change brief. A section that loses the example in the copy changes the plan, and a hash that ignores it differs from this one."
   }
 ]

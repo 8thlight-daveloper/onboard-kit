@@ -36,8 +36,8 @@ type recorder struct {
 	saved []model.Plan
 }
 
-func (r *recorder) save(plan model.Plan) error {
-	r.saved = append(r.saved, plan)
+func (recording *recorder) save(plan model.Plan) error {
+	recording.saved = append(recording.saved, plan)
 	return nil
 }
 
@@ -96,3 +96,30 @@ func plainView(app App) string {
 func viewLines(app App) []string {
 	return strings.Split(plainView(app), "\n")
 }
+
+var sgrSequence = regexp.MustCompile("\x1b\\[([0-9;]*)m")
+
+func sgrBefore(t *testing.T, view string, text string) string {
+	t.Helper()
+	index := strings.Index(view, text)
+	if index < 0 {
+		t.Fatalf("%q is not on the screen:\n%s", text, plainText(view))
+	}
+	found := sgrSequence.FindAllStringSubmatch(view[:index], -1)
+	if len(found) == 0 || found[len(found)-1][1] == "0" || found[len(found)-1][1] == "" {
+		return ""
+	}
+	return found[len(found)-1][1]
+}
+
+func isFaint(t *testing.T, view string, text string) bool {
+	t.Helper()
+	for _, parameter := range strings.Split(sgrBefore(t, view, text), ";") {
+		if parameter == "2" {
+			return true
+		}
+	}
+	return false
+}
+
+func plainText(view string) string { return escapeCodes.ReplaceAllString(view, "") }

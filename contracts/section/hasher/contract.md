@@ -13,7 +13,7 @@ The principle: **the hash changes only when the section's behavior changes.** A 
 The hash covers the section's definition:
 
 - Its text: title, summary, owner, verification, and body.
-- Its questions: the variables it declares, with their types, options, patterns, and defaults.
+- Its questions: the variables it declares, with their descriptions, examples, types, options, patterns, and defaults.
 - Its steps and checks.
 - Its conditions, `includeIf` and each `askIf`, with their question clauses and their section clauses.
 - Its `timing`, `after`, `escalation`, and unknown fields.
@@ -42,7 +42,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 | Type | Key order |
 | -- | -- |
 | Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
+| Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, `section`, `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
@@ -72,7 +72,7 @@ Nothing else is filled. A step with no `timing` or `escalation` inherits them fr
 
 ### Prose
 
-Prose is text that people read. Whitespace noise in it has no effect, so eight fields are normalized before they are written: a section's `title`, `summary`, `body`, and `verification`, a step's `notes`, a variable's `description` and `patternHint`, and a check's `ask`. The rule, in this order:
+Prose is text that people read. Whitespace noise in it has no effect, so nine fields are normalized before they are written: a section's `title`, `summary`, `body`, and `verification`, a step's `notes`, a variable's `description`, `example`, and `patternHint`, and a check's `ask`. An `example` is one illustration of a good answer, shown to the person answering. It is not an answer or a default, and it is written and normalized like `description`: omitted when it is empty after the rule, so a variable with no example and one with an empty or whitespace-only example hash alike. The rule, in this order:
 
 1. Replace each CR LF, and then each lone CR, with LF.
 2. Remove spaces and tabs at the end of every line.
@@ -183,7 +183,7 @@ These are not open. A rebuild keeps them.
 4. Unknown fields on a section are in the hash, as held.
 5. The key order is the encoder's, as an independent choice.
 
-Decided from the docs, as rules above: the three defaults, the eight prose fields and their rule, an empty condition as absent, and the three sets.
+Decided from the docs, as rules above: the three defaults, the nine prose fields and their rule, an empty condition as absent, and the three sets.
 
 ## Wrong implementations tried
 
@@ -215,7 +215,11 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | CR LF or a lone CR not normalized | `prose-whitespace` |
 | Trailing spaces or tabs kept, the whole-string trim missing, only the trailing newline trimmed, or leading blank lines kept | `prose-whitespace`, `omitted-zero` |
 | Inner whitespace, indentation, or blank lines collapsed, or a no-break space or form feed trimmed | `prose-content`, `prose`, `strings` |
-| One of the eight prose fields not normalized | `prose-whitespace` |
+| One of the nine prose fields not normalized, or `example` not normalized | `prose-whitespace`, `example-whitespace` |
+| `example` left out of the hash, or written when empty or when only whitespace | `example`, `example-differs`, `example-empty`, `every-field` |
+| `example` written in another place than right after `description`, or under another key, or on another variable | `example`, `example-places` |
+| `example` written only when `description` is set, or in place of `description` | `example`, `example-places` |
+| `example` trimmed beyond the prose rule, or its inner spacing, case, or line break collapsed | `example-differs`, `example`, `example-whitespace` |
 | A whitespace-only prose field written as `""` | `omitted-zero` |
 | A `run` item, `pattern`, option, `directory`, `owner`, name, default value, or id normalized or trimmed | `exact-strings`, `every-field`, `strings` |
 | An empty `includeIf` or `askIf` told apart from an absent one | `omitted-zero`, the empty-conditions test |

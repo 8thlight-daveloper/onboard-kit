@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "provenance": {"templateSet": "example", "generatedOn": "2026-10-15"},
+  "variables": [
+    {"name": "team_state", "description": "team state", "example": "established", "type": "choice", "options": ["established", "first-consultants"], "required": true},
+    {"name": "nickname", "description": "nickname", "example": "bob", "pattern": "^[a-z]+$", "patternHint": "Lower case letters only"},
+    {"name": "region", "description": "region", "example": "emea"}
+  ],
+  "sections": [
+    {"id": "main", "title": "Main", "summary": "The section with examples.", "variables": [
+      {"name": "repo_url", "description": "repo url", "example": "git@git.acme.example:team/service.git", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://"},
+      {"name": "tracker", "description": "tracker", "example": "IT service desk", "required": true},
+      {"name": "note", "description": "note", "example": "A short note"},
+      {"name": "plain", "description": "no example"}
+    ]},
+    {"id": "extra", "title": "Extra", "summary": "A second section.", "variables": [
+      {"name": "extra_note", "description": "extra note", "example": "Anything useful"}
+    ]}
+  ],
+  "answers": {
+    "plan": {"team_state": "established"},
+    "sections": {
+      "main": {"note": "first", "tracker": "Platform lead"}
+    }
+  }
+}

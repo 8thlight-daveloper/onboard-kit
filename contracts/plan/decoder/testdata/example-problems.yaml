@@ -1,0 +1,47 @@
+schemaVersion: 1
+variables:
+  - name: list
+    example: [Engineering manager]
+  - name: map
+    example:
+      k: yes
+  - name: flag
+    example: true
+  - name: other-flag
+    example: false
+  - name: spelled-flag
+    example: yes
+  - name: spelled-null
+    example: ~
+  - name: integer
+    example: 123
+  - name: decimal
+    example: 2.5
+  - name: hex
+    example: 0x1F
+  - name: anchored
+    example: &a Engineering manager
+  - name: anchored-list
+    example: &b [x]
+  - name: twice
+    example: One
+    example: Two
+  - name: capital
+    Example: Engineering manager
+  - name: plural
+    examples: Engineering manager
+  - name: fine
+    example: Engineering manager
+sections:
+  - id: s
+    title: S
+    variables:
+      - name: spelled-flag
+        example: Off
+      - name: list
+        example:
+          - a
+      - name: integer
+        example: 7
+      - name: capital
+        Example: x

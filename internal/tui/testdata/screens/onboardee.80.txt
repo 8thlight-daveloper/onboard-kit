@@ -1,24 +1,24 @@
-Your onboarding  1 of 3  0 of 3 answered
-Plan
-1 of 3  * required
+  Your onboarding  Walk                                       3 of 3 to answer
+  ◆.  .
 
-Which team are you joining?
+  Welcome. A few questions about you, then your own onboarding document.
 
-[ ] Answer: none yet
+  Plan
+  1 of 3, required, not answered yet
 
->
+  Which team are you joining?
 
-Details
-Type: string
-Section: Plan
-Answered by: onboardee
-Name: plan.team
+  > e.g. Platform team
 
+  About this question
 
-
-
-
+  Example: Platform team
+  Type: string
+  Answered by: onboardee
+  Name: plan.team
 
 
 
-enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+
+
+  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help

@@ -5,6 +5,7 @@ type Question struct {
 	Scope           string
 	Name            string
 	Description     string
+	Example         string
 	Type            VariableType
 	Options         []string
 	Required        bool

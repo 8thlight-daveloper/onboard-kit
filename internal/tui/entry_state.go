@@ -6,7 +6,12 @@ import (
 	"onboard-kit/internal/model"
 )
 
-const inputMargin = 6
+const (
+	inputPrompt   = "> "
+	inputPadding  = 4
+	inputMinimum  = 10
+	examplePrefix = "e.g. "
+)
 
 type entryState struct {
 	question   model.Question
@@ -29,31 +34,49 @@ func newEntryState(question model.Question, width int) entryState {
 		return entry
 	}
 	input := textinput.New()
+	input.Prompt = inputPrompt
 	input.SetValue(entryText(question))
 	input.CursorEnd()
 	input.Focus()
-	input.Width = max(width-inputMargin, 10)
 	entry.input = input
+	return entry.withWidth(width)
+}
+
+func exampleText(question model.Question) string {
+	if question.Example == "" {
+		return ""
+	}
+	return examplePrefix + singleLine(question.Example)
+}
+
+func (entry entryState) typing() bool { return !picksFromList(entry.question) }
+
+func (entry entryState) withWidth(width int) entryState {
+	if !entry.typing() {
+		return entry
+	}
+	entry.input.Width = max(width-inputPadding, inputMinimum)
+	entry.input.Placeholder = truncateCells(exampleText(entry.question), entry.input.Width)
 	return entry
 }
 
-func (e entryState) typing() bool { return !picksFromList(e.question) }
-
-func (e entryState) withWidth(width int) entryState {
-	e.input.Width = max(width-inputMargin, 10)
-	return e
+func (entry entryState) styledInputView(colors palette) string {
+	input := entry.input
+	input.PromptStyle = colors.styles[toneHere]
+	input.PlaceholderStyle = colors.styles[toneFaint]
+	return input.View()
 }
 
-func (e entryState) nextSuggestion() entryState {
-	suggestions := e.question.Suggestions
+func (entry entryState) nextSuggestion() entryState {
+	suggestions := entry.question.Suggestions
 	if len(suggestions) == 0 {
-		return e
+		return entry
 	}
-	chosen := suggestions[e.suggestion%len(suggestions)]
-	e.suggestion++
-	e.input.SetValue(describeValue(chosen.Value))
-	e.input.CursorEnd()
-	return e
+	chosen := suggestions[entry.suggestion%len(suggestions)]
+	entry.suggestion++
+	entry.input.SetValue(describeValue(chosen.Value))
+	entry.input.CursorEnd()
+	return entry
 }
 
 func sameValue(left model.Value, right model.Value) bool {

@@ -1,14 +1,12 @@
-Onboarding plan  Sections  0 of 9 answered
-Sections the plan can include. Space switches one on or off.
+  Onboarding plan  Sections                                                                                                0 of 9 answered
+  ...  .....  .
 
-> [x] Access
-  [x] Clone the project and run the tests
-  [x] Review the design system
-  [x] If you are stuck
+  Sections the plan can include. Space switches one on or off.
 
-
-
-
+  > [x] Access
+    [x] Clone the project and run the tests
+    [x] Review the design system
+    [x] If you are stuck
 
 
 
@@ -37,4 +35,6 @@ Sections the plan can include. Space switches one on or off.
 
 
 
-space switch  up/down move  esc back  ? help
+
+
+  space switch  up/down move  esc back  ? help

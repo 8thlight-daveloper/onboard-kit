@@ -1,24 +1,24 @@
-Onboarding plan  2 of 9  0 of 9 answered
-Plan
-2 of 9  * required
+  Onboarding plan  Walk                                        0 of 9 answered
+  .◆.  .....  .
 
-Is the team established, or are we the first consultants?
+  Plan
+  2 of 9, required, not answered yet
 
-[ ] Answer: none yet
+  Is the team established, or are we the first consultants?
 
-> established
-  first-consultants
-  deferred, answer later
-  clear the answer
+  > established
+    first-consultants
+    deferred, answer later
+    clear the answer
 
-Details
-Type: choice: established, first-consultants
-Section: Plan
-Answered by: onboarder
-Name: plan.team_state
+  About this question
 
-
+  Type: choice: established, first-consultants
+  Answered by: onboarder
+  Name: plan.team_state
 
 
 
-enter choose  p back  d defer  o overview  r review  x clear  n skip  ? help
+
+
+  enter choose  p back  d defer  o overview  r review  x clear  n skip  ? help

@@ -30,7 +30,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | -- | -- |
 | Plan | `schemaVersion`, `provenance`, `variables`, `answers`, `sections`, then the unknown fields |
 | Provenance | `templateSet`, `generatedOn` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
+| Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
@@ -39,6 +39,8 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
 | Answers | `plan`, `sections` |
+
+A variable's `example` is a plain text field. It is written right after `description`, by the same rules as `description`, and omitted when empty. A variable that holds only an `example` writes that one key, so it is not an `encode.empty-item`.
 
 A key is written by the same rules as a string, so a key such as `n` is quoted. Keys of a map are written in ascending byte order. This covers the plan's answers by variable name, the sections' answers by section id, a step's `env`, and unknown fields.
 
@@ -150,3 +152,10 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A clause with only `enabled` written, not reported | The switch-value test |
 | `enabled` as an unknown field of a section not reported | `enabled-collision` |
 | `enabled` as an unknown field of the plan reported | `enabled-unknown` |
+| `example` never written | `example` |
+| `example` written before `description`, or after `type` or `askIf` | `example` |
+| `example` written when empty, as `example: ""` | `example` |
+| `example` written plain when it needs quotes, such as `yes` or text with `: ` | `example` |
+| A multi-line `example` written in double quotes, not as a literal block | `example` |
+| A variable with only an `example` reported as `encode.empty-item` or dropped | `example` |
+| `example` written for a section's variables only, or only for the plan's | `example` |

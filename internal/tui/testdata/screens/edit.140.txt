@@ -1,40 +1,40 @@
-Onboarding plan  1 of 9  0 of 9 answered
-Plan                                           │ Plan
-> [ ] * Name of the organization               │ 1 of 9  * required
-  [ ] * Is the team established, or are we th… │
-  [ ]   Target format of the document          │ Name of the organization
-Access                                         │
-  [ ] * Role of the person who owns onboardin… │ [ ] Answer: none yet
-  [ ] * Where to request source control access │
-  [ ] * Clone URL of the main repository       │ > Glob
-  [ ] * Who grants CI dashboard access         │
-  [ ] * Who grants work tracker access         │ Details
-If you are stuck                               │ Type: string
-  [ ] * Who can help with anything             │ Section: Plan
-                                               │ Answered by: onboarder
-                                               │ Name: plan.organization
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
+  Onboarding plan  Walk                                                                                                    0 of 9 answered
+  ◆..  .....  .
 
-enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+  Plan                                                                              │ About this question
+  1 of 9, required, not answered yet                                                │
+                                                                                    │ Example: ACME Corp
+  What is the organization's name?                                                  │ Type: string
+                                                                                    │ Answered by: onboarder
+  > Glob                                                                            │ Name: plan.organization
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help

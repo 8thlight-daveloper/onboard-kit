@@ -123,6 +123,8 @@ The word `deferred` is the Deferred value only when it is a whole plain Value. Q
 
 A string field takes text. A boolean field takes a plain `true` or `false`. A section's `enabled` is a boolean field that is none when it is absent, empty, or null, and a Flag pointer otherwise, so `enabled: true` is kept as on and is not the same as absent. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
+A variable's `example` is a string field, read like its `description`: a quoted or plain string is text, and absent, empty, or null is the empty string. A plain `deferred` is text there, because a string is not a Value. It sits beside `description` and in any key order, in a variable of the plan and in a variable of a section. The decoder never copies it to or from another field. Its key is exact: `Example` and `examples` are unknown fields.
+
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
@@ -243,3 +245,13 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A section clause `enabled: false` read as `true`, or not kept | `conditions`, `switch`, `enabled-values`, `key-order` |
 | An empty `section` refused, or a section id that is a plain `true` or a list read as text | `clause-empty-section`, `enabled-wrong-type` |
 | An answer or a variable named `enabled` read as the switch | `enabled-values` |
+| An `example` key refused as an unknown field, or dropped, in a plan variable or a section variable | `example-values`, `key-order` |
+| An `example` read as a Value, so a plain `deferred` is Deferred or a list is accepted | `example-values`, `example-problems` |
+| An `example` that is absent, empty, or null read as the text `null` or as the description | `example-values` |
+| An `example` swapped with the description, or filled from it | `example-values`, `key-order` |
+| A quoted `yes`, `123`, `null`, or `~` in an `example` read as a boolean, a number, or null | `example-values` |
+| A plain `yes`, `~`, `123`, or `0x1F` in an `example` read as text | `example-problems` |
+| A list, a map, or a plain `true` or `false` in an `example` read as text or as a flag, or a map scanned for more problems | `example-problems` |
+| An anchor on an `example` not reported, or its wrong type not reported after it | `example-problems` |
+| A repeated `example` key accepted | `example-problems` |
+| `Example` or `examples` accepted as `example` | `example-problems` |

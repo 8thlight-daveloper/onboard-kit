@@ -2,21 +2,85 @@
   "id": "clone-and-run-tests",
   "title": "Clone the project and run the tests",
   "summary": "Get a working copy of the project and a passing test run on your machine.",
-  "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]},
+  "includeIf": {
+    "all": [
+      {
+        "question": "plan.discipline",
+        "answer": {
+          "is": "software"
+        }
+      }
+    ]
+  },
   "owner": "newcomer",
   "timing": "week-one",
   "verification": "$test_command passes on a fresh clone.",
   "body": "If a test fails on a fresh clone, write down the failure and ask the team before\nchanging anything.\n",
   "variables": [
-    {"name": "repo_url", "description": "Clone URL of the main repository", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://", "required": true},
-    {"name": "repo_dir", "description": "Directory name for the clone", "default": "project"},
-    {"name": "setup_command", "type": "command", "description": "Command that installs dependencies", "required": true},
-    {"name": "test_command", "type": "command", "description": "Command that runs the test suite", "required": true}
+    {
+      "name": "repo_url",
+      "description": "What is the clone URL of the main repository?",
+      "example": "git@git.example.test:team/service.git",
+      "pattern": "^(git@|https://)\\S+$",
+      "patternHint": "A clone URL, starting with git@ or https://",
+      "required": true
+    },
+    {
+      "name": "repo_dir",
+      "description": "What should the clone's folder be called?",
+      "example": "service",
+      "default": "project"
+    },
+    {
+      "name": "setup_command",
+      "type": "command",
+      "description": "Which command installs the dependencies?",
+      "example": "make setup",
+      "required": true
+    },
+    {
+      "name": "test_command",
+      "type": "command",
+      "description": "Which command runs the test suite?",
+      "example": "make test",
+      "required": true
+    }
   ],
   "steps": [
-    {"id": "clone", "name": "Clone the repository", "run": ["git", "clone", "$repo_url", "$repo_dir"],
-      "checks": [{"run": ["test", "-d", "$repo_dir/.git"]}]},
-    {"id": "install", "name": "Install dependencies", "directory": "$repo_dir", "run": ["$setup_command"]},
-    {"id": "run-tests", "name": "Run the tests", "directory": "$repo_dir", "run": ["$test_command"]}
+    {
+      "id": "clone",
+      "name": "Clone the repository",
+      "run": [
+        "git",
+        "clone",
+        "$repo_url",
+        "$repo_dir"
+      ],
+      "checks": [
+        {
+          "run": [
+            "test",
+            "-d",
+            "$repo_dir/.git"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "name": "Install dependencies",
+      "directory": "$repo_dir",
+      "run": [
+        "$setup_command"
+      ]
+    },
+    {
+      "id": "run-tests",
+      "name": "Run the tests",
+      "directory": "$repo_dir",
+      "run": [
+        "$test_command"
+      ]
+    }
   ]
 }

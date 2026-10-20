@@ -197,7 +197,7 @@ func sectionText(t *testing.T, section model.Section) string {
 
 var proseFields = map[string]bool{
 	"Title": true, "Summary": true, "Body": true, "Verification": true,
-	"Notes": true, "Description": true, "PatternHint": true, "Ask": true,
+	"Notes": true, "Description": true, "Example": true, "PatternHint": true, "Ask": true,
 }
 
 var unhashedFields = map[string]bool{"Section.Source": true, "Section.Enabled": true}

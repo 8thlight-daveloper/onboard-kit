@@ -6,7 +6,7 @@ Generated 2026-10-15 from template set `example`. A person must review this befo
 
 | Gap | Who fills it | By when |
 | --- | --- | --- |
-| Who grants work tracker access | Engineering manager | Before day one |
+| Who grants work tracker access? | Engineering manager | Before day one |
 
 ## Access
 

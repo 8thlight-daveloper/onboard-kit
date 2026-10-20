@@ -1,0 +1,69 @@
+schemaVersion: 1
+variables:
+  - name: role
+    description: Your role
+    example: Engineering manager
+  - name: absent
+    description: No example here
+  - name: empty
+    example:
+  - name: null-value
+    example: null
+  - name: empty-quoted
+    example: ""
+  - name: first
+    example: First
+    description: Key order is free
+  - name: apart
+    description: Description and example differ
+    example: Something else
+  - name: quoted-yes
+    example: "yes"
+  - name: quoted-number
+    example: "123"
+  - name: quoted-null
+    example: "null"
+  - name: quoted-tilde
+    example: "~"
+  - name: quoted-deferred
+    example: "deferred"
+  - name: plain-deferred
+    example: deferred
+  - name: plain-date
+    example: 2026-10-15
+  - name: plain-lookalike
+    example: 12ab
+  - name: plain-sentence
+    example: yes please
+  - name: plain-mixed-case-null
+    example: nULL
+  - name: single-quoted
+    example: 'it''s ok'
+  - name: literal-block
+    example: |-
+      first line
+      second line
+  - name: folded-block
+    example: >
+      folded
+      text
+  - {name: flow, example: Ann Lee}
+  - name: example
+    description: A variable named example
+    example: example
+answers:
+  plan:
+    example: Engineering manager
+sections:
+  - id: s
+    title: S
+    variables:
+      - name: owner
+        description: Who owns it
+        example: Ann Lee
+      - name: nothing
+      - name: empty
+        example:
+      - name: quoted
+        example: "no"
+x-example: kept

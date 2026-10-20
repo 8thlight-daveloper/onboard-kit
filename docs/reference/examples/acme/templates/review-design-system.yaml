@@ -12,10 +12,12 @@ timing: week-one
 verification: You can open the design system and the main design file.
 variables:
   - name: design_system_url
-    description: Where the design system lives
+    description: Where does the design system live?
+    example: https://design.example.test/system
     required: true
   - name: design_file_url
-    description: The main design file for the product
+    description: Which is the main design file for the product?
+    example: https://design.example.test/files/main
     required: true
 body: |
   Look at the design system before you start work. Write down anything that is

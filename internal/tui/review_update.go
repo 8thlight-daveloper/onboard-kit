@@ -2,84 +2,84 @@ package tui
 
 import tea "github.com/charmbracelet/bubbletea"
 
-func (a App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
-	scrolling := a.review.focusDocument
+func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+	scrolling := app.review.focusDocument
 	switch key.String() {
 	case "up", "k":
-		return a.reviewStep(-1, scrolling), nil
+		return app.reviewStep(-1, scrolling), nil
 	case "down", "j":
-		return a.reviewStep(1, scrolling), nil
+		return app.reviewStep(1, scrolling), nil
 	case "pgup", "b":
-		return a.scrollDocument(-a.pageSize()), nil
+		return app.scrollDocument(-app.pageSize()), nil
 	case "pgdown", "f", " ":
-		return a.scrollDocument(a.pageSize()), nil
+		return app.scrollDocument(app.pageSize()), nil
 	case "g", "home":
-		return a.reviewEdge(false, scrolling), nil
+		return app.reviewEdge(false, scrolling), nil
 	case "G", "end":
-		return a.reviewEdge(true, scrolling), nil
+		return app.reviewEdge(true, scrolling), nil
 	case "tab":
-		a.review.focusDocument = !a.review.focusDocument
+		app.review.focusDocument = !app.review.focusDocument
 	case "enter":
-		return a.openReviewItem(), nil
+		return app.openReviewItem(), nil
 	case "esc", "w":
-		return a.walkFromReview(), nil
+		return app.walkFromReview(), nil
 	case "o":
-		return a.openOverview(), nil
+		return app.openOverview(), nil
 	case "s":
-		return a.openSections(), nil
+		return app.openSections(), nil
 	case "q":
-		return a.quit()
+		return app.quit()
 	case "?":
-		a.helpOpen = true
+		app.helpOpen = true
 	}
-	return a, nil
+	return app, nil
 }
 
-func (a App) reviewStep(delta int, scrolling bool) App {
+func (app App) reviewStep(delta int, scrolling bool) App {
 	if scrolling {
-		return a.scrollDocument(delta)
+		return app.scrollDocument(delta)
 	}
-	a.review = a.review.moved(delta)
-	return a
+	app.review = app.review.moved(delta)
+	return app
 }
 
-func (a App) reviewEdge(end bool, scrolling bool) App {
+func (app App) reviewEdge(end bool, scrolling bool) App {
 	switch {
 	case scrolling && end:
-		a.review = a.review.scrolled(a.documentOffsetLimit(), a.documentOffsetLimit())
+		app.review = app.review.scrolled(app.documentOffsetLimit(), app.documentOffsetLimit())
 	case scrolling:
-		a.review.scroll = 0
+		app.review.scroll = 0
 	case end:
-		a.review.cursor = max(len(a.review.items)-1, 0)
+		app.review.cursor = max(len(app.review.items)-1, 0)
 	default:
-		a.review.cursor = 0
+		app.review.cursor = 0
 	}
-	return a
+	return app
 }
 
-func (a App) scrollDocument(delta int) App {
-	a.review = a.review.scrolled(a.documentOffsetLimit(), delta)
-	return a
+func (app App) scrollDocument(delta int) App {
+	app.review = app.review.scrolled(app.documentOffsetLimit(), delta)
+	return app
 }
 
-func (a App) openReviewItem() App {
-	item, ok := a.review.selected()
+func (app App) openReviewItem() App {
+	item, ok := app.review.selected()
 	if !ok {
-		return a
+		return app
 	}
-	index := a.indexOf(item.questionID)
+	index := app.indexOf(item.questionID)
 	if index < 0 {
-		a.status = line{text: "no question to open for this item", tone: toneWarning}
-		return a
+		app.status = line{text: "no question to open for this item", tone: toneWarning}
+		return app
 	}
-	a.returnTo = screenReview
-	return a.openQuestion(index)
+	app.returnTo = screenReview
+	return app.openQuestion(index)
 }
 
-func (a App) walkFromReview() App {
-	if len(a.questions) == 0 {
-		return a
+func (app App) walkFromReview() App {
+	if len(app.questions) == 0 {
+		return app
 	}
-	a.returnTo = screenReview
-	return a.openQuestion(a.firstUnanswered())
+	app.returnTo = screenReview
+	return app.openQuestion(app.firstUnanswered())
 }

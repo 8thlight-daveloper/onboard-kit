@@ -1,0 +1,10 @@
+{"questions": [
+  {"id": "plan.role", "required": true, "example": "Engineering manager", "group": "role"},
+  {"id": "plan.laptop", "group": "laptop"},
+  {"id": "a.role", "example": "Staff engineer", "group": "role"},
+  {"id": "a.team", "example": "Platform", "answer": "Billing", "declaredDefault": "Core", "group": "team", "suggestions": [
+    {"value": "Core", "source": "default"}, {"value": "Billing", "source": "given"}]},
+  {"id": "b.role", "group": "role"},
+  {"id": "b.team", "required": true, "example": "Platform", "group": "team", "suggestions": [
+    {"value": "Core", "source": "default"}, {"value": "Billing", "source": "given"}]}
+], "blockers": ["plan.role", "b.team"]}

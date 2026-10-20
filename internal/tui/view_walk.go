@@ -7,76 +7,74 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func (a App) walkBody(l layout, p palette) []string {
-	if len(a.questions) == 0 {
-		return singlePane([]line{plainLine("No questions are active.")}, l, p)
-	}
-	right := a.walkPane(l.mainWidth)
-	if !l.twoPanes {
-		return singlePane(right, l, p)
-	}
-	outline, focus := a.outlineLines(l.listWidth, a.cursor, false)
-	return sideBySide(scrollWindow(outline, focus, l.bodyHeight), clipLines(right, l.bodyHeight), l, p)
+const (
+	answerShareNumerator   = 3
+	answerShareDenominator = 5
+	welcomeText            = "Welcome. A few questions about you, then your own onboarding document."
+)
+
+func (app App) inputWidth() int {
+	answerWidth, _ := app.frame().columns(answerShareNumerator, answerShareDenominator)
+	return answerWidth
 }
 
-func (a App) walkPane(width int) []line {
-	question := a.questions[a.cursor]
-	content := a.questionLines(question, width)
-	content = append(content, a.entryLines(width)...)
-	content = append(content, a.problemLines(width)...)
-	content = append(content, plainLine(""))
-	return append(content, a.detailLines(question, width)...)
+func (app App) walkBody(screenFrame frame, colors palette) []string {
+	if len(app.questions) == 0 {
+		return stackPane(pane{lines: []line{bodyLine("No questions are active.")}, focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
+	}
+	question := app.questions[app.cursor]
+	answerWidth, notesWidth := screenFrame.columns(answerShareNumerator, answerShareDenominator)
+	answer := app.answerLines(question, answerWidth, colors)
+	if screenFrame.wide() {
+		notes := pane{lines: clipLines(app.noteLines(question, notesWidth), screenFrame.bodyHeight)}
+		answerPane := pane{lines: clipLines(answer, screenFrame.bodyHeight), focused: true}
+		return joinPanes(answerPane, notes, answerWidth, notesWidth, screenFrame.bodyHeight, colors)
+	}
+	combined := append(append(answer, blankLine()), app.noteLines(question, answerWidth)...)
+	return stackPane(pane{lines: clipLines(combined, screenFrame.bodyHeight), focused: true}, answerWidth, screenFrame.bodyHeight, colors)
 }
 
-func (a App) questionLines(question model.Question, width int) []line {
-	required := "optional"
+func (app App) answerLines(question model.Question, width int, colors palette) []line {
+	var content []line
+	if app.audience == model.AudienceOnboardee && app.answeredCount() == 0 {
+		content = append(lines(toneFaint, wrapText(welcomeText, width)), blankLine())
+	}
+	content = append(content,
+		strongLine(app.sectionTitle(question.Scope)),
+		faintLine(fmt.Sprintf("%s, %s, %s", app.position(), requiredWords(question), stateWords(question.Answer))),
+		blankLine(),
+	)
+	content = append(content, lines(toneBody, wrapText(question.Description, width))...)
+	content = append(content, blankLine())
+	content = append(content, app.entryLines(width, colors)...)
+	return append(content, app.problemLines(width)...)
+}
+
+func requiredWords(question model.Question) string {
 	if question.Required {
-		required = "* required"
+		return "required"
 	}
-	content := []line{
-		headingLine(a.groupTitle(question)),
-		mutedLine(fmt.Sprintf("%d of %d  %s", a.cursor+1, len(a.questions), required)),
-		plainLine(""),
-	}
-	content = append(content, lines(tonePlain, wrapText(question.Description, width))...)
-	content = append(content, plainLine(""))
-	return append(content, lines(tonePlain, hanging(stateMark(question.Answer)+" ", "Answer: "+answerText(question.Answer), width))...)
+	return "optional"
 }
 
-func answerText(value model.Value) string {
-	switch stateOf(value) {
-	case "unanswered":
-		return "none yet"
-	case "deferred":
-		return "deferred, answer later"
+func (app App) entryLines(width int, colors palette) []line {
+	if app.entry.typing() {
+		content := []line{{text: app.entry.styledInputView(colors), raw: true}}
+		return append(content, lines(toneFaint, app.entryHelp(width))...)
 	}
-	return describeValue(value)
-}
-
-func (a App) entryLines(width int) []line {
-	content := []line{plainLine("")}
-	if a.entry.typing() {
-		content = append(content, line{text: a.entry.input.View(), raw: true})
-		return append(content, lines(toneMuted, a.entryHelp(width))...)
-	}
-	for index, option := range a.entry.choices {
-		marker := "  "
-		tone := tonePlain
-		if index == a.entry.choice {
-			marker = "> "
-			tone = toneFocus
-		}
+	content := make([]line, 0, len(app.entry.choices))
+	for index, option := range app.entry.choices {
 		text := option.label
-		if stateOf(a.entry.question.Answer) != "unanswered" && sameValue(option.value, a.entry.question.Answer) {
+		if stateOf(app.entry.question.Answer) != "unanswered" && sameValue(option.value, app.entry.question.Answer) {
 			text += " (current)"
 		}
-		content = append(content, line{text: marker + text, tone: tone})
+		content = append(content, hereLine(text, index == app.entry.choice, true, width, colors))
 	}
 	return content
 }
 
-func (a App) entryHelp(width int) []string {
-	question := a.entry.question
+func (app App) entryHelp(width int) []string {
+	question := app.entry.question
 	var help []string
 	switch {
 	case question.Type == model.VariableTypeCommand:
@@ -94,12 +92,15 @@ func (a App) entryHelp(width int) []string {
 	return wrapped
 }
 
-func (a App) problemLines(width int) []line {
+func (app App) problemLines(width int) []line {
 	var content []line
-	for _, problem := range a.entry.problems {
+	for _, problem := range app.entry.problems {
 		content = append(content, lines(toneProblem, hanging("! problem: ", problem.Message, width))...)
 	}
-	return content
+	if len(content) == 0 {
+		return nil
+	}
+	return append([]line{blankLine()}, content...)
 }
 
 func suggestionList(question model.Question) string {

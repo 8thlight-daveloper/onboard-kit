@@ -1,0 +1,10 @@
+{
+  "id": "profile",
+  "title": "Profile",
+  "variables": [
+    {"name": "role", "description": "Your job title", "example": "Engineering manager", "type": "person", "patternHint": "A title"},
+    {"name": "team", "example": "Platform \"core\"\nWest"},
+    {"name": "start", "description": "First day"}
+  ],
+  "steps": [{"id": "intro", "name": "Intro"}]
+}

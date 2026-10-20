@@ -1,0 +1,40 @@
+  Onboarding plan  Walk                                                                                                    0 of 2 answered
+  ◆.
+
+  Plan                                                                              │ About this question
+  1 of 2, required, not answered yet                                                │
+                                                                                    │ Example: Acme Industrial
+  Name of the organization                                                          │ Type: string
+                                                                                    │ Answered by: onboarder
+  > e.g. Acme Industrial                                                            │ Name: plan.organization
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help

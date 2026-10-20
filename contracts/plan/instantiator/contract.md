@@ -43,6 +43,7 @@ Each section is its template, copied, with `source` set. The copy changes nothin
 - Nothing is resolved, selected, or ordered by `timing` or `after`. `$name` stays in place, and `includeIf`, `askIf`, and `after` are kept as loaded. A section clause in a condition is kept as loaded, like a question clause.
 - A new section is on, and its switch is left absent. The instantiator writes no `enabled` on a section, because a template has none and a section is its template copied. See [0050](../../../docs/decisions/0050-section-switch.md). A template with a variable named `enabled` is a template with a variable, copied like any other.
 - The unknown fields of a section are kept. The loader gives none, and a section from another source may have some.
+- A variable's `example`, an illustration of a good answer, is part of the template. It is copied with the variable, and the hash covers it. It is not an answer or a default, and nothing fills it.
 - Text is not trimmed or normalized. Only the hasher normalizes, and only for its hash.
 
 ### Axis variables
@@ -93,7 +94,7 @@ No side effects. It was not given a plan, so it creates one: every field of the 
 The hashes in `testdata/cases.json` come from the section hasher contract, in one of two ways, and each case cites which.
 
 - Five sections and their hashes are copied from the golden cases of [the hasher contract](../../section/hasher/testdata/cases.json), with their canonical texts.
-- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, six small sections for the order case, and one section with section clauses. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
+- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, six small sections for the order case, one section with section clauses, and one section whose variable has an `example`. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
 
 A test checks that each hash in the manifest is the SHA-256 of its canonical text. No hash was computed by a component.
 
@@ -144,6 +145,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `source.template` set to the title | every plan case |
 | The hash of the title only, shortened, or in upper case | every plan case |
 | The hash of the template changed first, for example a title with a full stop added | every plan case |
+| A variable's `example` dropped from the section when it is copied, or left out of the hash | `variable-example` |
 | Unknown fields of a section dropped | `hasher-goldens` |
 | Answers filled from the defaults, or an empty answer map for each section | every plan case with a default or a section |
 | A plan with unknown fields | every plan case |
