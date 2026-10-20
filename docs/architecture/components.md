@@ -23,6 +23,7 @@ flowchart TB
         editor["Plan editor"]
         assembler["Document assembler"]
         instantiator["Plan instantiator"]
+        refresher["Plan refresher"]
         migrator["Plan migrator"]
         decoder["Plan decoder"]
         encoder["Plan encoder"]
@@ -85,6 +86,7 @@ flowchart TB
 | Plan editor | Returns a copy of a plan with one answer applied, or one section's switch changed. An answer changes only `answers`, and a switch changes only that section's `enabled`. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
+| Plan refresher | Brings a personal plan up to date with a newer org plan, by a three-way comparison of the cached org plan, the new org plan, and the personal plan. Returns the new personal plan and a report of what changed |
 | Plan migrator | Deferred until the first breaking schema change. Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
 | Plan decoder | Turns plan file bytes into a Plan and problems. Refuses a version older than supported or newer than known, applies the migrator steps once any exist, decodes leniently so unknown fields survive, and reports format guard violations such as `yes` for a boolean, anchors, and aliases |
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
@@ -107,7 +109,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | Component | Side effects |
 | -- | -- |
 | `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator` | None. They take and return values, and a driver reads and writes the files |
-| `question/finder`, `plan/validator`, `plan/editor` | None. The editor returns a changed copy and the driver holds it |
+| `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
@@ -116,20 +118,21 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
-| Component | `schemaVersion` | `provenance` | `variables` | `answers` | section content | `source` |
-| -- | -- | -- | -- | -- | -- | -- |
-| `plan/instantiator` | C | C | C | C | C | C |
-| `plan/decoder` | C | C | C | C | C | C |
-| `plan/encoder` | R | R | R | R | R | R |
-| `plan/editor` |  |  |  | W | W |  |
-| `question/finder` |  |  | R | R | R |  |
-| `plan/validator` |  |  | R | R | R |  |
-| `section/selector` |  |  |  | R | R |  |
-| `section/resolver` |  |  |  | R | R |  |
-| `section/hasher` |  |  |  |  | R |  |
-| `section/validator` |  |  |  |  | R |  |
-| `document/assembler` | R | R | R | R | R |  |
-| Update action, deferred |  | W |  |  | W | W |
+| Component | `schemaVersion` | `id` | `provenance` | `origin` | `variables` | `answers` | section content | `source` |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| `plan/instantiator` | C |  | C |  | C | C | C | C |
+| `plan/decoder` | C | C | C | C | C | C | C | C |
+| `plan/encoder` | R | R | R | R | R | R | R | R |
+| `plan/editor` |  |  |  |  |  | W | W |  |
+| `plan/refresher` |  |  |  | W | W | W | W | W |
+| `question/finder` |  |  |  |  | R | R | R |  |
+| `plan/validator` |  |  |  |  | R | R | R |  |
+| `section/selector` |  |  |  |  |  | R | R |  |
+| `section/resolver` |  |  |  |  |  | R | R |  |
+| `section/hasher` |  |  |  |  |  |  | R |  |
+| `section/validator` |  |  |  |  |  |  | R |  |
+| `document/assembler` | R | R | R | R | R | R | R |  |
+| Update action, deferred |  |  | W |  |  |  | W | W |
 
 A person editing a plan by hand can change anything, and the plan validator checks the result on load. The template linter takes templates and not plans, so it has no row in the plan access table.
 

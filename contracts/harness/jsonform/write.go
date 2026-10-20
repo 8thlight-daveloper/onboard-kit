@@ -71,11 +71,20 @@ func planObject(plan model.Plan) object {
 	if plan.SchemaVersion != 0 {
 		o.add("schemaVersion", plan.SchemaVersion)
 	}
+	o.addText("id", plan.ID)
 	if plan.Provenance != (model.Provenance{}) {
 		var p object
 		p.addText("templateSet", plan.Provenance.TemplateSet)
 		p.addText("generatedOn", string(plan.Provenance.GeneratedOn))
 		o.add("provenance", p)
+	}
+	if plan.Origin != (model.Origin{}) {
+		var origin object
+		origin.addText("planId", plan.Origin.PlanID)
+		origin.addText("source", plan.Origin.Source)
+		origin.addText("contentHash", plan.Origin.ContentHash)
+		origin.addText("refreshedOn", string(plan.Origin.RefreshedOn))
+		o.add("origin", origin)
 	}
 	if len(plan.Variables) > 0 {
 		o.add("variables", mapList(plan.Variables, variableObject))

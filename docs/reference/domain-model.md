@@ -20,7 +20,9 @@ Stored types are what the decoder reads and the encoder writes. Computed types a
 classDiagram
     class Plan {
         schemaVersion
+        id
         provenance
+        origin
         variables
         answers
         sections
@@ -29,6 +31,12 @@ classDiagram
     class Provenance {
         templateSet
         generatedOn
+    }
+    class Origin {
+        planId
+        source
+        contentHash
+        refreshedOn
     }
     class Answers {
         plan
@@ -98,6 +106,7 @@ classDiagram
     }
 
     Plan "1" --> "1" Provenance
+    Plan "0..1" --> "1" Origin
     Plan "1" --> "*" Variable : plan variables
     Plan "1" --> "1" Answers
     Plan "1" --> "*" Section
@@ -115,7 +124,9 @@ classDiagram
 | Field | Type | Notes |
 | -- | -- | -- |
 | `schemaVersion` | Integer | See [0030](../decisions/0030-self-contained-plan-file.md#versioning) |
+| `id` | Text, optional | An org plan's identity, a UUID the driver makes when the plan is first created. See [0075](../decisions/0075-refreshing-a-personal-plan.md) |
 | `provenance` | Provenance |  |
+| `origin` | Origin, optional | Present in a personal plan only: the org plan it was refreshed from |
 | `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
 | `answers` | Answers | Every answer, by scope |
 | `sections` | List of Section | Every template, as a section |
@@ -129,6 +140,15 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | -- | -- | -- |
 | `templateSet` | Text | The build's commit sha or tag |
 | `generatedOn` | Date | Text in ISO form, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
+
+## Origin
+
+| Field | Type | Notes |
+| -- | -- | -- |
+| `planId` | Text | The `id` of the org plan. A different id means a different organization |
+| `source` | Text | A path or an HTTPS URL the org plan came from |
+| `contentHash` | Text | The hash of the org plan's file when last refreshed from. A driver computes it |
+| `refreshedOn` | Date | Passed in by a driver, because the core never reads a clock |
 
 ## Answers and Value
 

@@ -210,10 +210,12 @@ func (r *reader) valueAt(path string, m map[string]any, key string) model.Value 
 }
 
 func (r *reader) plan(path string, v any) model.Plan {
-	m := r.object(path, v, "schemaVersion", "provenance", "variables", "answers", "sections", "unknownFields")
+	m := r.object(path, v, "schemaVersion", "id", "provenance", "origin", "variables", "answers", "sections", "unknownFields")
 	plan := model.Plan{
 		SchemaVersion: r.integer(path, m, "schemaVersion"),
+		ID:            r.str(path, m, "id"),
 		Provenance:    r.provenance(path+".provenance", m["provenance"]),
+		Origin:        r.origin(path+".origin", m["origin"]),
 		Answers:       r.answers(path+".answers", m["answers"]),
 		UnknownFields: r.unknownFields(path+".unknownFields", m["unknownFields"]),
 	}
@@ -231,6 +233,16 @@ func (r *reader) provenance(path string, v any) model.Provenance {
 	return model.Provenance{
 		TemplateSet: r.str(path, m, "templateSet"),
 		GeneratedOn: model.Date(r.str(path, m, "generatedOn")),
+	}
+}
+
+func (r *reader) origin(path string, v any) model.Origin {
+	m := r.object(path, v, "planId", "source", "contentHash", "refreshedOn")
+	return model.Origin{
+		PlanID:      r.str(path, m, "planId"),
+		Source:      r.str(path, m, "source"),
+		ContentHash: r.str(path, m, "contentHash"),
+		RefreshedOn: model.Date(r.str(path, m, "refreshedOn")),
 	}
 }
 
