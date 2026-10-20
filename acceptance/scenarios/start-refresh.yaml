@@ -1,0 +1,56 @@
+name: start-refresh
+description: A newcomer who starts again after the organization changed its plan keeps their own answers, takes the organization's changes, and is told what changed.
+source: docs/decisions/0075-refreshing-a-personal-plan.md
+steps:
+  - run: [onboard-kit, new, --templates, templates, --template-set, example, --generated-on, "2026-10-15", --id, 6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5, --out, org.obk.yaml]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    expect:
+      exit: 0
+  - run: [onboard-kit, stdio, --plan, org.obk.yaml]
+    talk:
+      - send: {command: submit, question: plan.organization, value: Globex Inc}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: submit, question: access.repo_url, value: "https://git.example/old/app.git"}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: save, path: org.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, start, --org-plan, org.obk.yaml, --home, state, --no-walk, --refreshed-on, "2026-10-16"]
+    expect:
+      exit: 0
+  - run: [onboard-kit, stdio, --plan, state/globex-inc.obk.yaml]
+    talk:
+      - send: {command: submit, question: plan.team, value: Platform}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: save, path: state/globex-inc.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, stdio, --plan, org.obk.yaml]
+    talk:
+      - send: {command: submit, question: access.repo_url, value: "https://git.example/new/app.git"}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: save, path: org.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, start, --org-plan, org.obk.yaml, --home, state, --no-walk, --refreshed-on, "2026-10-17"]
+    expect:
+      exit: 0
+      stdout: {contains: "1 answers updated from the organization"}
+  - run: [onboard-kit, stdio, --plan, state/globex-inc.obk.yaml]
+    talk:
+      - send: {command: blockers, audience: onboardee}
+        expect: {ok: true, blockers: [plan.discipline]}
+    expect:
+      exit: 0
+  - run: [onboard-kit, assemble, --plan, state/globex-inc.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "https://git.example/new/app.git"}

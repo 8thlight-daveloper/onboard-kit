@@ -22,6 +22,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	output := options.String("out", "", "file to write, standard output when left out")
 	templateSet := options.String("template-set", "local", "name recorded as the template set")
 	generatedOn := options.String("generated-on", "", "date recorded in the plan, today when left out")
+	identifier := options.String("id", "", "identity of the plan, a new random one when left out")
 	if options.Parse(args) != nil {
 		return exitUsage
 	}
@@ -32,6 +33,10 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	plan, ok := planfile.FromTemplates(*templates, *templateSet, *generatedOn, stderr)
 	if !ok {
 		return exitProblem
+	}
+	plan.ID = *identifier
+	if plan.ID == "" {
+		plan.ID = newIdentifier()
 	}
 	data, ok := planfile.Encode(plan, stderr)
 	if !ok {
