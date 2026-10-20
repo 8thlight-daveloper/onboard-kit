@@ -1,0 +1,16 @@
+{"schemaVersion": 3,
+ "provenance": {"templateSet": "abc1234", "generatedOn": "2026-10-15"},
+ "variables": [{"name": "discipline", "description": "Discipline", "type": "choice", "options": ["software", "design"]}],
+ "answers": {"plan": {"discipline": "software"}},
+ "unknownFields": {"note": "kept"},
+ "sections": [
+  {"id": "access", "title": "Access", "timing": "before-day-one"},
+  {"id": "access-request", "title": "Request access", "parent": "access", "enabled": true, "summary": "Every field set.", "owner": "$manager",
+   "verification": "Check it.", "body": "Body text.",
+   "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "data"]}}]},
+   "after": ["access-note", "access-note"], "escalation": ["manager"],
+   "variables": [{"name": "manager", "description": "Manager", "type": "person", "required": true}],
+   "steps": [{"id": "one", "name": "One", "run": ["echo", "$manager"], "env": {"A": "b"}, "checks": [{"ask": "Done?"}]}],
+   "source": {"template": "access-request", "hash": "0123abcd"},
+   "unknownFields": {"future": [1, 2.5, {"k": null}]}},
+  {"id": "access-note", "title": "Note", "parent": "access"}]}

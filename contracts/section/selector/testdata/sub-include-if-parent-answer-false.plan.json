@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"access": {"self_service": "no"}}},
+ "sections": [
+  {"id": "access-request", "parent": "access", "includeIf": {"all": [{"question": "access.self_service", "answer": {"is": "yes"}}]}},
+  {"id": "access-not-yes", "parent": "access", "includeIf": {"all": [{"question": "access.self_service", "answer": {"isNot": "yes"}}]}},
+  {"id": "access-note", "parent": "access"},
+  {"id": "access"}]}

@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "late-root"},
+  {"id": "child", "parent": "parent", "timing": "before-day-one"},
+  {"id": "parent", "timing": "days-31-to-90"},
+  {"id": "other", "timing": "week-one"}]}

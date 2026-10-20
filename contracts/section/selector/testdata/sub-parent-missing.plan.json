@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "orphan-grandkid", "parent": "orphan-kid"},
+  {"id": "ok"},
+  {"id": "orphan-kid", "parent": "orphan"},
+  {"id": "orphan", "parent": "ghost"},
+  {"id": "case-kid", "parent": "OK"}]}

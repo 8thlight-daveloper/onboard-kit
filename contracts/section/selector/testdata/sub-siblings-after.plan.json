@@ -1,0 +1,9 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "s-a", "parent": "p", "after": ["s-c"]},
+  {"id": "t-1", "parent": "q", "after": ["t-2"]},
+  {"id": "p"},
+  {"id": "s-b", "parent": "p"},
+  {"id": "q"},
+  {"id": "t-2", "parent": "q"},
+  {"id": "s-c", "parent": "p"}]}

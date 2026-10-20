@@ -397,5 +397,329 @@
       "later"
     ],
     "source": "docs/reference/domain-model.md, Section: a returned section has every field of the plan's section as held, and no default is filled in. The enabled field, set or absent, comes back as held"
+  },
+  {
+    "name": "sub-one-level",
+    "plan": "sub-one-level.plan.json",
+    "active": [
+      "alpha",
+      "zeta",
+      "beta",
+      "gamma"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: a sub-section comes directly after its parent, not where its id would sort"
+  },
+  {
+    "name": "sub-two-levels",
+    "plan": "sub-two-levels.plan.json",
+    "active": [
+      "other",
+      "root",
+      "q",
+      "a",
+      "r"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: a grandchild comes after its parent and before the parent's later sibling, whatever the ids"
+  },
+  {
+    "name": "sub-three-levels",
+    "plan": "sub-three-levels.plan.json",
+    "active": [
+      "one",
+      "j",
+      "k",
+      "o",
+      "p",
+      "n",
+      "two",
+      "a"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order, depth first: each sub-section is followed by its whole subtree before its next sibling"
+  },
+  {
+    "name": "sub-same-parent-many-children",
+    "plan": "sub-same-parent-many-children.plan.json",
+    "active": [
+      "tree",
+      "t-a",
+      "t-b",
+      "t-b-1",
+      "t-c",
+      "t-d",
+      "t-e",
+      "t-e-1"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: siblings by the selector's rules, each followed by its subtree. Plan lists the children and grandchildren out of order"
+  },
+  {
+    "name": "sub-listed-before-parent",
+    "plan": "sub-listed-before-parent.plan.json",
+    "active": [
+      "top",
+      "mid",
+      "leaf"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section is active by its parent, wherever the plan lists the parent"
+  },
+  {
+    "name": "sub-siblings-timings",
+    "plan": "sub-siblings-timings.plan.json",
+    "active": [
+      "host",
+      "c-early",
+      "c-none",
+      "c-late",
+      "c-anytime",
+      "other"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: siblings by timing, a sub-section with none takes its parent's. ordering.md: the five timings in order"
+  },
+  {
+    "name": "sub-timing-inherited-through-levels",
+    "plan": "sub-timing-inherited-through-levels.plan.json",
+    "active": [
+      "top",
+      "mid",
+      "g-b",
+      "g-a",
+      "g-c"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, takes its parent's timing when it has none. A parent with none takes its own parent's in turn (chosen reading, see Decisions to know)"
+  },
+  {
+    "name": "sub-siblings-after",
+    "plan": "sub-siblings-after.plan.json",
+    "active": [
+      "p",
+      "s-b",
+      "s-c",
+      "s-a",
+      "q",
+      "t-2",
+      "t-1"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: after among siblings. ordering.md: a section goes after the sections it lists"
+  },
+  {
+    "name": "sub-siblings-after-cycle",
+    "plan": "sub-siblings-after-cycle.plan.json",
+    "active": [
+      "p",
+      "s-c",
+      "s-a",
+      "s-b"
+    ],
+    "source": "ordering.md: a cycle in after, applied among siblings. Chosen order as for roots, see Decisions to know in the contract"
+  },
+  {
+    "name": "sub-after-across-timings",
+    "plan": "sub-after-across-timings.plan.json",
+    "active": [
+      "p",
+      "c-early",
+      "c-late"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md and ordering.md: after never moves a section across a timing line, applied among siblings"
+  },
+  {
+    "name": "sub-after-names-nonsibling",
+    "plan": "sub-after-names-nonsibling.plan.json",
+    "active": [
+      "m",
+      "z",
+      "z-a",
+      "z-kid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Order: an after id that is not a sibling is ignored like any non-matching id"
+  },
+  {
+    "name": "sub-timing-earlier-than-parent",
+    "plan": "sub-timing-earlier-than-parent.plan.json",
+    "active": [
+      "other",
+      "parent",
+      "child",
+      "late-root"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section never moves a root across a timing line: it follows its parent whatever its own timing"
+  },
+  {
+    "name": "sub-timing-later-than-parent",
+    "plan": "sub-timing-later-than-parent.plan.json",
+    "active": [
+      "parent",
+      "child",
+      "mid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section follows its parent directly, before a root of an earlier timing than its own"
+  },
+  {
+    "name": "sub-parent-switched-off",
+    "plan": "sub-parent-switched-off.plan.json",
+    "active": [
+      "keep",
+      "keep-kid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Switches cascade: turning a section off turns off its sub-sections"
+  },
+  {
+    "name": "sub-switch-cascade",
+    "plan": "sub-switch-cascade.plan.json",
+    "active": [
+      "top-on",
+      "mid-ok",
+      "leaf-ok"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Switches cascade at every depth, and a switched-on sub-section under a switched-off ancestor stays out"
+  },
+  {
+    "name": "sub-off-alone",
+    "plan": "sub-off-alone.plan.json",
+    "active": [
+      "base",
+      "base-b",
+      "base-b-x"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section can be turned off alone: its parent and siblings stay, its own sub-sections go"
+  },
+  {
+    "name": "sub-parent-excluded-by-include-if",
+    "plan": "sub-parent-excluded-by-include-if.plan.json",
+    "active": [
+      "software-only",
+      "software-kid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section is active only if its parent is active, by the parent's includeIf too, even when its own includeIf holds"
+  },
+  {
+    "name": "sub-include-if-parent-answer-true",
+    "plan": "sub-include-if-parent-answer-true.plan.json",
+    "active": [
+      "access",
+      "access-note",
+      "access-request"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, example: access-request has an includeIf on its parent's answer. The parent's answers are read as stored"
+  },
+  {
+    "name": "sub-include-if-parent-answer-false",
+    "plan": "sub-include-if-parent-answer-false.plan.json",
+    "active": [
+      "access",
+      "access-not-yes",
+      "access-note"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, example: an answer of no puts the sub-section out. isNot holds for a settled answer that differs"
+  },
+  {
+    "name": "sub-include-if-parent-answer-unanswered",
+    "plan": "sub-include-if-parent-answer-unanswered.plan.json",
+    "active": [
+      "access",
+      "access-note"
+    ],
+    "source": "conditions.md: an unanswered question makes every test except isSettled false, before negation. docs/decisions/0070-sub-sections.md, the parent's answers"
+  },
+  {
+    "name": "sub-include-if-grandparent-answer",
+    "plan": "sub-include-if-grandparent-answer.plan.json",
+    "active": [
+      "top",
+      "mid",
+      "leaf-yes"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section's includeIf may name questions of its ancestors, a grandparent's included"
+  },
+  {
+    "name": "sub-include-if-own-scope",
+    "plan": "sub-include-if-own-scope.plan.json",
+    "active": [
+      "access",
+      "child-own"
+    ],
+    "source": "conditions.md: a bare name is a question in the same section. docs/decisions/0070-sub-sections.md, the section's own id is the scope, not its parent's"
+  },
+  {
+    "name": "sub-include-if-plan-variable",
+    "plan": "sub-include-if-plan-variable.plan.json",
+    "active": [
+      "root",
+      "kid-design"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, A sub-section's includeIf may still name plan variables"
+  },
+  {
+    "name": "sub-include-if-unrelated-answer",
+    "plan": "sub-include-if-unrelated-answer.plan.json",
+    "active": [
+      "other",
+      "root",
+      "root-kid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md and the selector's rule: no restriction is added, the condition goes to the evaluator as written. The plan validator reports a reference that is not up the tree"
+  },
+  {
+    "name": "sub-parent-missing",
+    "plan": "sub-parent-missing.plan.json",
+    "active": [
+      "ok"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Consequences: the plan validator checks the parent exists. The selector treats a parent that is not a section of the plan as making the section inactive (chosen, see Decisions to know in the contract)"
+  },
+  {
+    "name": "sub-parent-itself",
+    "plan": "sub-parent-itself.plan.json",
+    "active": [
+      "fine"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, no cycle is possible in a valid plan. A section that names itself as parent is inactive with its sub-sections (chosen, see Decisions to know in the contract)"
+  },
+  {
+    "name": "sub-parent-cycle-two",
+    "plan": "sub-parent-cycle-two.plan.json",
+    "active": [
+      "d",
+      "d-kid"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, as for sub-parent-itself: every section on a cycle and below it is inactive"
+  },
+  {
+    "name": "sub-parent-cycle-three",
+    "plan": "sub-parent-cycle-three.plan.json",
+    "active": [
+      "root",
+      "root-kid",
+      "tail"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, as for sub-parent-itself: a cycle of three and the sections below it are inactive, the tree beside it is not"
+  },
+  {
+    "name": "sub-switch-clause-reads-own-switch",
+    "plan": "sub-switch-clause-reads-own-switch.plan.json",
+    "active": [
+      "sees-gate-off",
+      "sees-kid-on"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md, Switches cascade, and docs/decisions/0050-section-switch.md: a section clause tests the named section's own switch, not its activity"
+  },
+  {
+    "name": "sub-empty-parent-is-root",
+    "plan": "sub-empty-parent-is-root.plan.json",
+    "active": [
+      "a",
+      "d",
+      "c"
+    ],
+    "source": "docs/decisions/0070-sub-sections.md: a section with no parent is a root. An empty parent is the same as none (chosen, see Decisions to know in the contract)"
+  },
+  {
+    "name": "sub-full-section",
+    "plan": "sub-full-section.plan.json",
+    "active": [
+      "access",
+      "access-note",
+      "access-request"
+    ],
+    "source": "docs/reference/domain-model.md, Section: a returned section has every field as held, no default filled in. docs/decisions/0070-sub-sections.md: the parent is part of the section's content"
   }
 ]

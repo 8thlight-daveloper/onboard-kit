@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "base-a-x", "parent": "base-a"},
+  {"id": "base-b-x", "parent": "base-b"},
+  {"id": "base-a", "parent": "base", "enabled": false},
+  {"id": "base"},
+  {"id": "base-b", "parent": "base"}]}

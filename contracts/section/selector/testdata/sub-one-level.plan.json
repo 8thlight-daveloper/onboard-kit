@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "beta"},
+  {"id": "zeta", "parent": "alpha"},
+  {"id": "gamma"},
+  {"id": "alpha"}]}

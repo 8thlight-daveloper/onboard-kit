@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "sees-kid-off", "includeIf": {"all": [{"section": "gate-kid", "enabled": false}]}},
+  {"id": "gate", "enabled": false},
+  {"id": "sees-kid-on", "includeIf": {"all": [{"section": "gate-kid", "enabled": true}]}},
+  {"id": "gate-kid", "parent": "gate"},
+  {"id": "sees-gate-off", "includeIf": {"all": [{"section": "gate", "enabled": false}]}}]}

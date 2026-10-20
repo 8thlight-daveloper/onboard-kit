@@ -1,0 +1,8 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"discipline": "software"}},
+ "sections": [
+  {"id": "design-grandkid", "parent": "design-kid"},
+  {"id": "software-kid", "parent": "software-only"},
+  {"id": "design-kid", "parent": "design-only", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
+  {"id": "design-only", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+  {"id": "software-only", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}}]}

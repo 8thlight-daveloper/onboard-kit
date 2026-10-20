@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"access": {"x": "yes"}, "child-own": {"x": "yes"}}},
+ "sections": [
+  {"id": "child", "parent": "access", "includeIf": {"all": [{"question": "x", "answer": {"is": "yes"}}]}},
+  {"id": "child-own", "parent": "access", "includeIf": {"all": [{"question": "x", "answer": {"is": "yes"}}]}},
+  {"id": "access"}]}

@@ -1,0 +1,8 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "other", "timing": "days-8-to-30"},
+  {"id": "c-late", "parent": "host", "timing": "days-31-to-90"},
+  {"id": "host", "timing": "week-one"},
+  {"id": "c-anytime", "parent": "host", "timing": "anytime"},
+  {"id": "c-none", "parent": "host"},
+  {"id": "c-early", "parent": "host", "timing": "before-day-one"}]}
