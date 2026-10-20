@@ -1786,5 +1786,94 @@
     "input": "clause-empty-section.yaml",
     "output": "clause-empty-section.plan.json",
     "source": "Hand-written. Contract rule: Section clauses. The decoder does not validate, so an empty, null, or blank section id is read as the empty string and the plan validator judges it. A section key that is present makes it a section clause."
+  },
+  {
+    "name": "example-values",
+    "input": "example-values.yaml",
+    "output": "example-values.plan.json",
+    "source": "Hand-written. Contract rules: Known fields, Scalars, Values. A variable's example is a string field like its description, so a quoted or plain string is text, absent, empty, and null are the empty string, and a plain deferred is text because a string is not a Value. 0030 and the example brief: example sits beside description in a variable at the plan and in a section."
+  },
+  {
+    "name": "example-problems",
+    "input": "example-problems.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[1].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[2].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[3].example"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "variables[4].example"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "variables[5].example"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[6].example"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[7].example"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[8].example"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[9].example"
+      },
+      {
+        "code": "format.alias",
+        "path": "variables[10].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[10].example"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "variables[11].example"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[12].Example"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "variables[13].examples"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].variables[0].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].variables[1].example"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[0].variables[2].example"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].variables[3].Example"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, Scalars, Numbers, Known fields. example is a string field like description, so a list, a map, and a plain true or false are wrong-type, a plain canonical number or hex is number-spelling, a plain yes is a boolean spelling, a plain ~ is the null spelling, an anchor is reported before the wrong type of the same node, a repeated key is reported once, and a key with other case or spelling is an unknown field. A wrong-type value is not read, so the yes in the map is not reported."
   }
 ]

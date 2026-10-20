@@ -5,6 +5,7 @@ provenance:
 variables:
   - name: team_state
     description: Team state
+    example: established
     type: choice
     options:
       - established
@@ -12,6 +13,9 @@ variables:
     required: true
     default: established
     audience: onboarder
+  - name: ticket_prefix
+    description: Prefix of ticket ids
+    example: "007"
 answers:
   plan:
     team_state: established
@@ -42,6 +46,7 @@ sections:
     variables:
       - name: backup
         description: Backup
+        example: Ann Lee
         type: person
         multiple: true
         required: true
