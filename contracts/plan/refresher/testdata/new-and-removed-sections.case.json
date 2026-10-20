@@ -1,0 +1,222 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [],
+    "answers": {
+      "sections": {
+        "access": {
+          "keep": "k"
+        },
+        "legacy": {
+          "old_a": "a"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "keep",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "legacy",
+        "title": "Legacy",
+        "summary": "About legacy",
+        "variables": [
+          {
+            "name": "old_a",
+            "audience": "onboardee"
+          },
+          {
+            "name": "old_b",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [],
+    "answers": {
+      "sections": {
+        "aws": {
+          "region": "eu-west-1"
+        },
+        "access": {
+          "keep": "k"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "keep",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "aws",
+        "title": "Aws",
+        "summary": "About aws",
+        "variables": [
+          {
+            "name": "region",
+            "audience": "onboarder"
+          },
+          {
+            "name": "role",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "overview",
+        "title": "Overview",
+        "summary": "About overview",
+        "variables": []
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [],
+    "answers": {
+      "sections": {
+        "access": {
+          "keep": "k"
+        },
+        "legacy": {
+          "old_a": "a"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "keep",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "legacy",
+        "title": "Legacy",
+        "summary": "About legacy",
+        "variables": [
+          {
+            "name": "old_a",
+            "audience": "onboardee"
+          },
+          {
+            "name": "old_b",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [],
+      "answers": {
+        "sections": {
+          "access": {
+            "keep": "k"
+          },
+          "aws": {
+            "region": "eu-west-1"
+          },
+          "legacy": {
+            "old_a": "a"
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": [
+            {
+              "name": "keep",
+              "audience": "onboardee"
+            }
+          ]
+        },
+        {
+          "id": "aws",
+          "title": "Aws",
+          "summary": "About aws",
+          "variables": [
+            {
+              "name": "region",
+              "audience": "onboarder"
+            },
+            {
+              "name": "role",
+              "audience": "onboardee"
+            }
+          ]
+        },
+        {
+          "id": "overview",
+          "title": "Overview",
+          "summary": "About overview",
+          "variables": []
+        }
+      ]
+    },
+    "report": {
+      "newSections": [
+        "aws",
+        "overview"
+      ],
+      "removedSections": [
+        "legacy"
+      ],
+      "newQuestions": [
+        "aws.region",
+        "aws.role"
+      ],
+      "removedQuestions": [
+        "legacy.old_a",
+        "legacy.old_b"
+      ],
+      "answersTaken": [
+        "aws.region"
+      ]
+    }
+  }
+}

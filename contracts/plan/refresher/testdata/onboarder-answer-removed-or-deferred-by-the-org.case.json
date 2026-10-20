@@ -1,0 +1,148 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "gone",
+        "audience": "onboarder"
+      },
+      {
+        "name": "grantor",
+        "audience": "onboarder"
+      },
+      {
+        "name": "lead",
+        "audience": "onboarder"
+      },
+      {
+        "name": "same",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "gone": "x",
+        "grantor": "Sam",
+        "lead": {
+          "deferred": true
+        },
+        "same": "s"
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "gone",
+        "audience": "onboarder"
+      },
+      {
+        "name": "grantor",
+        "audience": "onboarder"
+      },
+      {
+        "name": "lead",
+        "audience": "onboarder"
+      },
+      {
+        "name": "same",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "grantor": {
+          "deferred": true
+        },
+        "lead": "Alex",
+        "same": "s"
+      }
+    }
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "gone",
+        "audience": "onboarder"
+      },
+      {
+        "name": "grantor",
+        "audience": "onboarder"
+      },
+      {
+        "name": "lead",
+        "audience": "onboarder"
+      },
+      {
+        "name": "same",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "gone": "x",
+        "grantor": "Sam",
+        "lead": {
+          "deferred": true
+        },
+        "same": "s"
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "gone",
+          "audience": "onboarder"
+        },
+        {
+          "name": "grantor",
+          "audience": "onboarder"
+        },
+        {
+          "name": "lead",
+          "audience": "onboarder"
+        },
+        {
+          "name": "same",
+          "audience": "onboarder"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "grantor": {
+            "deferred": true
+          },
+          "lead": "Alex",
+          "same": "s"
+        }
+      }
+    },
+    "report": {
+      "answersTaken": [
+        "plan.gone",
+        "plan.grantor",
+        "plan.lead"
+      ]
+    }
+  }
+}

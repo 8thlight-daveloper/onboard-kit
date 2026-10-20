@@ -1,0 +1,154 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": []
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "back",
+        "audience": "onboardee"
+      },
+      {
+        "name": "back_org",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "back": "org",
+        "back_org": "org-b"
+      },
+      "sections": {
+        "access": {
+          "back2": "org2"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "back2",
+            "audience": "onboarder"
+          },
+          {
+            "name": "back3",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [],
+    "answers": {
+      "plan": {
+        "back": "old",
+        "back_org": "old"
+      },
+      "sections": {
+        "access": {
+          "back2": "old2",
+          "back3": "old3"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": []
+      }
+    ]
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "back",
+          "audience": "onboardee"
+        },
+        {
+          "name": "back_org",
+          "audience": "onboarder"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "back": "old",
+          "back_org": "org-b"
+        },
+        "sections": {
+          "access": {
+            "back2": "org2",
+            "back3": "old3"
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": [
+            {
+              "name": "back2",
+              "audience": "onboarder"
+            },
+            {
+              "name": "back3",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "report": {
+      "newQuestions": [
+        "access.back2",
+        "access.back3",
+        "plan.back",
+        "plan.back_org"
+      ],
+      "answersKept": [
+        "access.back3",
+        "plan.back"
+      ],
+      "answersTaken": [
+        "access.back2",
+        "plan.back_org"
+      ]
+    }
+  }
+}
