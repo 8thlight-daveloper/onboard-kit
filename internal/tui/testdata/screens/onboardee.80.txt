@@ -1,0 +1,24 @@
+Your onboarding  1 of 3  0 of 3 answered
+Plan
+1 of 3  * required
+
+Which team are you joining?
+
+[ ] Answer: none yet
+
+>
+
+Details
+Type: string
+Section: Plan
+Answered by: onboardee
+Name: plan.team
+
+
+
+
+
+
+
+
+enter save  shift+tab back  ctrl+d defer  esc overview  f1 help

@@ -1,0 +1,98 @@
+package tui
+
+import (
+	"os"
+	"regexp"
+	"strings"
+	"testing"
+
+	tea "github.com/charmbracelet/bubbletea"
+
+	"onboard-kit/internal/model"
+	"onboard-kit/internal/plan/decoder"
+)
+
+func acmePlan(t *testing.T) model.Plan {
+	t.Helper()
+	data, err := os.ReadFile("../../docs/reference/examples/acme/acme.obk.yaml")
+	if err != nil {
+		t.Fatal(err)
+	}
+	plan, problems := decoder.New().Decode(data)
+	if len(problems) > 0 {
+		t.Fatalf("the ACME plan has problems: %v", problems)
+	}
+	return plan
+}
+
+func blankPlan(t *testing.T) model.Plan {
+	t.Helper()
+	plan := acmePlan(t)
+	plan.Answers = model.Answers{}
+	return plan
+}
+
+type recorder struct {
+	saved []model.Plan
+}
+
+func (r *recorder) save(plan model.Plan) error {
+	r.saved = append(r.saved, plan)
+	return nil
+}
+
+func startWith(t *testing.T, plan model.Plan, audience model.Audience) (App, *recorder) {
+	t.Helper()
+	recorded := &recorder{}
+	return NewApp(NewBackend(), plan, recorded.save, audience), recorded
+}
+
+func startWalking(t *testing.T) (App, *recorder) {
+	t.Helper()
+	return startWith(t, blankPlan(t), model.AudienceOnboarder)
+}
+
+func press(app App, keys ...tea.KeyMsg) App {
+	for _, key := range keys {
+		next, _ := app.Update(key)
+		app = next.(App)
+	}
+	return app
+}
+
+func resize(app App, width int, height int) App {
+	next, _ := app.Update(tea.WindowSizeMsg{Width: width, Height: height})
+	return next.(App)
+}
+
+func typed(text string) tea.KeyMsg {
+	return tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(text)}
+}
+
+var (
+	enter    = tea.KeyMsg{Type: tea.KeyEnter}
+	down     = tea.KeyMsg{Type: tea.KeyDown}
+	space    = tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(" ")}
+	esc      = tea.KeyMsg{Type: tea.KeyEsc}
+	shiftTab = tea.KeyMsg{Type: tea.KeyShiftTab}
+	tab      = tea.KeyMsg{Type: tea.KeyTab}
+)
+
+func moveTo(t *testing.T, app App, id string) App {
+	t.Helper()
+	index := app.indexOf(id)
+	if index < 0 {
+		t.Fatalf("question %s is not asked", id)
+	}
+	return app.openQuestion(index)
+}
+
+var escapeCodes = regexp.MustCompile("\x1b\\[[0-9;?]*[a-zA-Z]|\x1b\\][^\x07\x1b]*(\x07|\x1b\\\\)")
+
+func plainView(app App) string {
+	return escapeCodes.ReplaceAllString(app.View(), "")
+}
+
+func viewLines(app App) []string {
+	return strings.Split(plainView(app), "\n")
+}

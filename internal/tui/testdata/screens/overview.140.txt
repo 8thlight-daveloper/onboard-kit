@@ -1,0 +1,40 @@
+Onboarding plan  Overview  13 of 14 answered
+Plan                                           │ Plan
+  [x] * Name of the organization               │ 2 of 14  * required
+> [x] * Is the team established, or are we th… │
+  [ ]   Target format of the document          │ Is the team established, or are we the first consultants?
+Access                                         │
+  [x] * Role of the person who owns onboardin… │ [x] Answer: established
+  [x] * Where to request source control access │
+  [x] * Clone URL of the main repository       │ Details
+  [x] * Who grants source control access       │ Type: choice: established, first-consultants
+  [x] * Who grants CI dashboard access         │ Section: Plan
+  [~] * Who grants work tracker access         │ Answered by: onboarder
+Clone the project and run the tests            │ Name: plan.team_state
+  [x] * Clone URL of the main repository       │ Suggestion (given): established
+  [x]   Directory name for the clone           │
+  [x] * Command that installs dependencies     │
+  [x] * Command that runs the test suite       │
+If you are stuck                               │
+  [x] * Who can help with anything             │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+                                               │
+
+enter open  esc walk  r review  s sections  q quit  ? help

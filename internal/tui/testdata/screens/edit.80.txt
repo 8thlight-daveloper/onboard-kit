@@ -1,0 +1,24 @@
+Onboarding plan  1 of 9  0 of 9 answered
+Plan
+1 of 9  * required
+
+Name of the organization
+
+[ ] Answer: none yet
+
+> Glob
+
+Details
+Type: string
+Section: Plan
+Answered by: onboarder
+Name: plan.organization
+
+
+
+
+
+
+
+
+enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
