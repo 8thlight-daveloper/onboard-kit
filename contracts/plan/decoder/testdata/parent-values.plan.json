@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "answers": {"plan": {"parent": "root"}, "sections": {"root": {"parent": "x"}}},
+  "sections": [
+    {"id": "root", "title": "Root"},
+    {"id": "child", "title": "Child", "parent": "root"},
+    {"id": "first", "title": "First", "parent": "root"},
+    {"id": "quoted", "title": "Quoted", "parent": "root"},
+    {"id": "single-quoted", "title": "Single", "parent": "it's"},
+    {"id": "absent", "title": "Absent"},
+    {"id": "empty", "title": "Empty"},
+    {"id": "null-value", "title": "Null parent"},
+    {"id": "empty-quoted", "title": "Empty quoted"},
+    {"id": "empty-single", "title": "Empty single"},
+    {"id": "quoted-yes", "title": "Q", "parent": "yes"},
+    {"id": "quoted-number", "title": "Q", "parent": "123"},
+    {"id": "quoted-null", "title": "Q", "parent": "null"},
+    {"id": "quoted-tilde", "title": "Q", "parent": "~"},
+    {"id": "quoted-deferred", "title": "Q", "parent": "deferred"},
+    {"id": "plain-deferred", "title": "Q", "parent": "deferred"},
+    {"id": "plain-date", "title": "Q", "parent": "2026-10-15"},
+    {"id": "plain-lookalike", "title": "Q", "parent": "12ab"},
+    {"id": "plain-dashed", "title": "Q", "parent": "access-request"},
+    {"id": "plain-mixed-case-null", "title": "Q", "parent": "nULL"},
+    {"id": "self", "title": "Self", "parent": "self"},
+    {"id": "missing", "title": "Missing", "parent": "nowhere"},
+    {"id": "cycle-a", "title": "A", "parent": "cycle-b"},
+    {"id": "cycle-b", "title": "B", "parent": "cycle-a"},
+    {"id": "literal-block", "title": "Block", "parent": "root"},
+    {"id": "folded-block", "title": "Folded", "parent": "root\n"},
+    {"id": "flow", "title": "Flow", "parent": "root"},
+    {"id": "other-keys", "title": "Other keys", "unknownFields": {"x-parent": "kept", "Parent": "kept too", "parents": "and this"}},
+    {
+      "id": "parent",
+      "title": "A section named parent",
+      "parent": "parent",
+      "variables": [
+        {"name": "parent", "description": "A variable named parent"}
+      ]
+    }
+  ]
+}

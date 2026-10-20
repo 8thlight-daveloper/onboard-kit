@@ -123,6 +123,8 @@ The word `deferred` is the Deferred value only when it is a whole plain Value. Q
 
 A string field takes text. A boolean field takes a plain `true` or `false`. A section's `enabled` is a boolean field that is none when it is absent, empty, or null, and a Flag pointer otherwise, so `enabled: true` is kept as on and is not the same as absent. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
+A section's `parent` is a string field, read exactly like `title`: a quoted or plain string is text, and absent, empty, or null is the empty string, which is a root section. A plain `deferred`, a plain date, and a quoted `yes` are text. A plain `yes`, `~`, or number is a spelling problem and a plain `true`, a list, or a map is `format.wrong-type`, at `sections[n].parent`. It sits in any key order. Its key is exact: `Parent`, `parents`, and `x-parent` are unknown fields. See [0070](../../../docs/decisions/0070-sub-sections.md).
+
 A variable's `example` is a string field, read like its `description`: a quoted or plain string is text, and absent, empty, or null is the empty string. A plain `deferred` is text there, because a string is not a Value. It sits beside `description` and in any key order, in a variable of the plan and in a variable of a section. The decoder never copies it to or from another field. Its key is exact: `Example` and `examples` are unknown fields.
 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
@@ -160,6 +162,7 @@ These hold for every file the contract tests use.
 
 - Reading files, which a driver does.
 - Checking that a plan is valid, which is the plan validator. Decoding templates is the section loader.
+- Checking that a `parent` names a section of the plan, is not the section itself, and forms no cycle. A parent that names no section, the section itself, and a cycle all pass through unchanged. The plan validator's structure check judges them.
 - Migrating an older version. The migrator is deferred until the first breaking change. See 0030.
 - Line and column numbers in a problem. The path names the place.
 - `%YAML` directives, and other YAML features that no plan uses.
@@ -255,3 +258,12 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An anchor on an `example` not reported, or its wrong type not reported after it | `example-problems` |
 | A repeated `example` key accepted | `example-problems` |
 | `Example` or `examples` accepted as `example` | `example-problems` |
+| A section `parent` ignored, or kept as an unknown field | `parent-values`, `key-order` |
+| A `parent` that is empty or null read as the text `null`, or an absent one filled from another field | `parent-values` |
+| A `parent` checked: a missing section, the section itself, or a cycle refused or cleared | `parent-values` |
+| A quoted `yes`, `123`, `null`, or `~` in a `parent` read as a boolean, a number, or null, or a plain `deferred` read as Deferred | `parent-values` |
+| A `parent` swapped with the `id` or the `title`, or read from `Parent`, `parents`, or `x-parent` | `parent-values`, `key-order` |
+| A plain `yes`, `~`, `123`, `0x1F`, `2.5`, or `Off` in a `parent` read as text | `parent-problems` |
+| A list, a map, or a plain `true` or `false` in a `parent` read as text or as a flag, or a map scanned for more problems | `parent-problems` |
+| An anchor on a `parent` not reported, or its wrong type not reported after it | `parent-problems` |
+| A repeated `parent` key accepted | `parent-problems` |

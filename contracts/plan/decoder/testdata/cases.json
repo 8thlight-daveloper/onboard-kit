@@ -1875,5 +1875,78 @@
       }
     ],
     "source": "Hand-written. Contract rules: Problems, Scalars, Numbers, Known fields. example is a string field like description, so a list, a map, and a plain true or false are wrong-type, a plain canonical number or hex is number-spelling, a plain yes is a boolean spelling, a plain ~ is the null spelling, an anchor is reported before the wrong type of the same node, a repeated key is reported once, and a key with other case or spelling is an unknown field. A wrong-type value is not read, so the yes in the map is not reported."
+  },
+  {
+    "name": "parent-values",
+    "input": "parent-values.yaml",
+    "output": "parent-values.plan.json",
+    "source": "Hand-written. 0070 and the sub-sections brief: parent is a plain text field read like title, so a quoted or plain string is text, absent, empty, and null are the empty string and the same as a root, a plain deferred is text, and a plain date is text. A parent that names no section, the section itself, or a cycle is kept as written, because the plan validator checks the structure. Contract rule: Known fields. Parent, x-parent, and parents are unknown fields, and a section or a variable named parent is ordinary."
+  },
+  {
+    "name": "parent-problems",
+    "input": "parent-problems.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].parent"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "sections[1].parent"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[2].parent"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[3].parent"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[4].parent"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[5].parent"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[6].parent"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[7].parent"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[8].parent"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[9].parent"
+      },
+      {
+        "code": "format.alias",
+        "path": "sections[10].parent"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[10].parent"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "sections[11].parent"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "sections[12].parent"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[13].parent"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, Scalars, Numbers, Known fields. parent is a string field like title and example, so a plain yes or Off is a boolean spelling, a plain ~ or NULL is the null spelling, a plain canonical or hex number is number-spelling, a plain true or false, a list, and a map are wrong-type, an anchor is reported before the wrong type of the same node, a repeated key is reported once, and a quoted yes is text. A wrong-type value is not read, so the yes in the map is not reported."
   }
 ]

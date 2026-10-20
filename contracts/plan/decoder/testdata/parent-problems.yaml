@@ -1,0 +1,36 @@
+schemaVersion: 1
+sections:
+  - id: s-a
+    parent: yes
+  - id: s-b
+    parent: ~
+  - id: s-c
+    parent: 123
+  - id: s-d
+    parent: 0x1F
+  - id: s-e
+    parent: 2.5
+  - id: s-f
+    parent: true
+  - id: s-g
+    parent: false
+  - id: s-h
+    parent: [root]
+  - id: s-i
+    parent:
+      k: yes
+  - id: s-j
+    parent: &anchor root
+  - id: s-k
+    parent: &list [root]
+  - id: s-l
+    parent: root
+    parent: other
+  - id: s-m
+    parent: NULL
+  - id: s-n
+    parent: Off
+  - id: s-o
+    parent: "yes"
+  - id: s-p
+    parent: root

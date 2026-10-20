@@ -12,6 +12,7 @@
       "title": "Everything",
       "summary": "All fields",
       "includeIf": {"all": [{"question": "plan.team_state", "answer": {"is": "established"}}, {"section": "other", "enabled": true}]},
+      "parent": "other",
       "timing": "week-one",
       "enabled": false,
       "after": ["other"],
