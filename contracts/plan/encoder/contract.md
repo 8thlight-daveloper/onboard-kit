@@ -24,12 +24,13 @@ The same rules apply everywhere. The goal is that two people, or two versions of
 
 ### Keys
 
-A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. Three keys are the exception, because the value `false` is a choice they hold. A condition test written `isSettled` is written whenever it is set, including `false`. A section's `enabled` is written whenever the section holds a value, `true` or `false`, and omitted only when the section holds none. A clause's `enabled` is written whenever the clause names a section, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty.
+A key is written in the order the tables below give. A key with a zero value is omitted. Zero means an empty string, `false`, an empty or absent list or map, or a Value of kind none. Three keys are the exception, because the value `false` is a choice they hold. A condition test written `isSettled` is written whenever it is set, including `false`. A section's `enabled` is written whenever the section holds a value, `true` or `false`, and omitted only when the section holds none. A clause's `enabled` is written whenever the clause names a section, including `false`. A map entry, such as an answer, is always written, even when its value is `false`. An answers section with no answers is omitted. Inside an unknown field, an empty map is written `{}` and an empty list is written `[]`, because that data belongs to someone else and is kept as it is. Two exceptions: `schemaVersion` is always written, and `provenance` is omitted only when both of its fields are empty. `origin` is omitted when all four of its fields are empty, and each empty field of an `origin` is omitted on its own.
 
 | Type | Key order |
 | -- | -- |
-| Plan | `schemaVersion`, `provenance`, `variables`, `answers`, `sections`, then the unknown fields |
+| Plan | `schemaVersion`, `id`, `provenance`, `origin`, `variables`, `answers`, `sections`, then the unknown fields |
 | Provenance | `templateSet`, `generatedOn` |
+| Origin | `planId`, `source`, `contentHash`, `refreshedOn` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
@@ -39,6 +40,10 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
 | Answers | `plan`, `sections` |
+
+A plan's `id` is a plain text field. It is written right after `schemaVersion`, by the same rules as a string, and omitted when empty. So a UUID, which starts with a digit, is quoted. The four fields of an `origin` are plain text, written by the same rules. A `refreshedOn` date and a `contentHash` that starts with a digit are quoted, and a `source` such as a URL or a path that starts with a letter or `/` is plain. A plan holds an `origin` in a personal plan only, and the encoder writes whatever the plan holds. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md).
+
+An unknown field on a plan whose key is `id` or `origin` collides, and on a section it does not. The keys of an Origin are not keys of a Plan, so `planId` or `source` as an unknown field of a plan is written as any other.
 
 A section's `parent` is a plain text field, the id of another section. It is written right after `includeIf`, by the same rules as `title`, and omitted when empty. An unknown field whose key is `parent` collides on a section and not on the plan. See [0070](../../../docs/decisions/0070-sub-sections.md).
 
@@ -100,7 +105,7 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
 | `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id` and `origin` collide, and the same keys on a section do not. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -169,3 +174,16 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `parent` dropped for a sub-section of a sub-section, or when the parent is not a section of the plan | `sub-section` |
 | `parent` as an unknown field of a section not reported | `parent-collision` |
 | `parent` as an unknown field of the plan reported | `parent-unknown` |
+| `id` never written | `id-only`, `id-origin` |
+| `id` written after `provenance`, or at the end | `id-origin` |
+| `id` written plain when it needs quotes, such as a UUID that starts with a digit, or `null` | `id-origin`, `origin-quoting` |
+| `id` written when empty, as `id: ""` | every case with no `id` |
+| `origin` never written | `id-origin`, `origin-planid-refreshed`, `origin-source-hash`, `origin-quoting` |
+| `origin` written before `provenance`, or after `variables` | `id-origin`, `origin-source-hash` |
+| `origin` keys in alphabetical order, not canonical order | `id-origin`, `origin-quoting`, `origin-source-hash` |
+| An empty `origin` written as `origin: {}`, or an empty key written as `source: ""` | every case with no `origin`, and `origin-planid-refreshed` |
+| One origin key never written, or all four written only when `planId` is set | `id-origin`, `origin-planid-refreshed`, `origin-source-hash` |
+| `origin` dropped when the plan also holds an `id` | `id-origin`, `origin-quoting` |
+| `refreshedOn` or `contentHash` written plain when it starts with a digit | `id-origin`, `origin-quoting`, `origin-planid-refreshed` |
+| `id` or `origin` as an unknown field of the plan not reported | `id-origin-collision` |
+| The keys of an Origin reported as collisions on the plan, or `origin` reported on a section | `origin-unknown` |

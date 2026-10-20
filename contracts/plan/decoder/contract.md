@@ -125,6 +125,10 @@ A string field takes text. A boolean field takes a plain `true` or `false`. A se
 
 A section's `parent` is a string field, read exactly like `title`: a quoted or plain string is text, and absent, empty, or null is the empty string, which is a root section. A plain `deferred`, a plain date, and a quoted `yes` are text. A plain `yes`, `~`, or number is a spelling problem and a plain `true`, a list, or a map is `format.wrong-type`, at `sections[n].parent`. It sits in any key order. Its key is exact: `Parent`, `parents`, and `x-parent` are unknown fields. See [0070](../../../docs/decisions/0070-sub-sections.md).
 
+A plan's `id` is a string field, read exactly like `title`: a quoted or plain string is text, and absent, empty, or null is the empty string. It sits in any key order. Its key is exact: `ID` and `x-id` are unknown fields. A plain UUID is text. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md).
+
+A plan's `origin` is a map of four string fields: `planId`, `source`, `contentHash`, and `refreshedOn`. Each is read like `title`, the date as the text written, with no check that it is a date. A plain `deferred` is text in each. An absent key is the empty string. An `origin` that is absent, null, empty, or holds only empty values is the zero Origin, because the model cannot tell them apart. An `origin` that is not a map is `format.wrong-type` at `origin`, and nothing inside it is read. Its keys are exact, in any order. An unknown key in it is `format.unknown-field`, as in `provenance`. The format guards apply the same: an anchor on `origin` or on a value, a repeated key, and a merge key are reported at their paths. A variable, an answer, a section, or an unknown field named `id` or `origin` is ordinary, and so is `origin` as a key of a section. The decoder does not check that `refreshedOn` is a date, that `planId` is a UUID, or that `source` is a path or a URL.
+
 A variable's `example` is a string field, read like its `description`: a quoted or plain string is text, and absent, empty, or null is the empty string. A plain `deferred` is text there, because a string is not a Value. It sits beside `description` and in any key order, in a variable of the plan and in a variable of a section. The decoder never copies it to or from another field. Its key is exact: `Example` and `examples` are unknown fields.
 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
@@ -148,7 +152,7 @@ A clause is a map in the `all` list of an `includeIf` or an `askIf`. It has one 
 
 ### Unknown fields
 
-A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. The value of such a key is not read, so nothing inside it is reported. Every such key is reported, a repeated one each time, together with `format.duplicate-key` for the repeat. Those maps are `provenance`, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
+A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. The value of such a key is not read, so nothing inside it is reported. Every such key is reported, a repeated one each time, together with `format.duplicate-key` for the repeat. Those maps are `provenance`, `origin`, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
 
 ## Properties
 
@@ -267,3 +271,13 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A list, a map, or a plain `true` or `false` in a `parent` read as text or as a flag, or a map scanned for more problems | `parent-problems` |
 | An anchor on a `parent` not reported, or its wrong type not reported after it | `parent-problems` |
 | A repeated `parent` key accepted | `parent-problems` |
+| A plan `id` or an `origin` ignored, or kept as an unknown field | `origin-values`, `origin-strings` |
+| An `origin` read for only some of its four keys, or two of them swapped | `origin-values`, `origin-partial`, `origin-strings` |
+| An empty `id`, a null or empty `origin`, or an origin of empty values read as a value, or as the text `null` | `origin-empty`, `origin-empty-map`, `origin-blank` |
+| `ID`, `Origin`, or an `x-id` key read as the identity | `origin-values` |
+| An origin value changed on the way in, such as trimmed or lowercased | `origin-values`, `origin-strings` |
+| An unknown key in `origin` dropped, kept, or read from a different case | `origin-problems`, `origin-duplicate` |
+| A wrong-type, spelling, or anchor problem not reported in `id` or in an `origin` value | `origin-problems`, `id-spelling`, `origin-wrong-type`, `origin-scalar` |
+| An `origin` that is not a map accepted, or its inside read for more problems | `origin-wrong-type`, `origin-scalar` |
+| An anchor on `origin` not reported | `origin-anchor` |
+| A repeated `id`, `origin`, or origin key accepted | `origin-duplicate`, `origin-problems` |

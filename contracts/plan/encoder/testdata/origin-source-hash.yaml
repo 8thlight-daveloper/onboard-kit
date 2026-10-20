@@ -1,0 +1,6 @@
+schemaVersion: 1
+provenance:
+  templateSet: t
+origin:
+  source: /srv/plans/org.yaml
+  contentHash: b7

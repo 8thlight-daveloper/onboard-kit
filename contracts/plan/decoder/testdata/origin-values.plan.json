@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "9b2f6d7a-41c3-4e08-8f55-0c1d2e3f4a5b",
+  "provenance": {"templateSet": "abc123", "generatedOn": "2026-10-15"},
+  "origin": {
+    "planId": "123e4567-e89b-12d3-a456-426614174000",
+    "source": "https://plans.example.org/Org/Acme.yaml",
+    "contentHash": "sha256:3fa9c2",
+    "refreshedOn": "2026-10-20"
+  },
+  "variables": [
+    {"name": "origin", "description": "A variable named origin"},
+    {"name": "id", "description": "A variable named id"}
+  ],
+  "answers": {
+    "plan": {"id": "kept", "origin": "kept too"},
+    "sections": {"origin": {"id": "x"}}
+  },
+  "sections": [
+    {
+      "id": "origin",
+      "title": "A section named origin",
+      "unknownFields": {"origin": "kept on the section", "x-origin": "kept"}
+    }
+  ],
+  "unknownFields": {"Origin": "kept", "ID": "kept", "x-id": "kept"}
+}
