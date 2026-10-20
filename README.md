@@ -36,17 +36,22 @@ The IDE does not see the dev shell's Go on its own. Run `just ide` once. It link
 
 ## The tool
 
-`onboard-kit` is a command-line tool, built from `binary/`. It is an early release candidate: it turns section templates into a plan file and a plan file into a document. It has no interactive walkthrough yet.
+`onboard-kit` is a command-line tool, built from `binary/`. It is an early release candidate. It turns section templates into a plan, walks a person through the plan's questions in a terminal screen, and turns the plan into a document.
 
 ```sh
 just build                                    # writes output/onboard-kit
-output/onboard-kit new --templates docs/reference/examples/acme/templates --out plan.obk.yaml
-output/onboard-kit assemble --plan docs/reference/examples/acme/acme.obk.yaml
+output/onboard-kit walk --plan plan.obk.yaml --templates docs/reference/examples/acme/templates
+output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 ```
 
-- `new` reads a folder of section template files, and an optional `plan-variables.yaml`, and writes a plan file.
-- `assemble` reads a plan file and writes a Markdown document. Gaps in the plan go on standard error and in the document's gap table.
-- `just acceptance` runs the scenarios under `acceptance/scenarios/` against the built binary.
+| Command | Does |
+| -- | -- |
+| `walk --plan FILE [--templates DIR]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `q` quits |
+| `assemble --plan FILE [--out FILE]` | Writes a Markdown document from a plan. Gaps go on standard error and in the document's gap table |
+| `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
+| `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |
+
+`just acceptance` runs the scenarios under `acceptance/scenarios/` against the built binary.
 
 ## What never goes in this repo
 

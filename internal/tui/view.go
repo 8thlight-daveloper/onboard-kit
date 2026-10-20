@@ -9,13 +9,15 @@ import (
 	"onboard-kit/internal/model"
 )
 
-var (
-	titleStyle   = lipgloss.NewStyle().Bold(true)
-	cursorStyle  = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("6"))
-	dimStyle     = lipgloss.NewStyle().Faint(true)
-	warnStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("3"))
-	problemStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
-)
+func titleStyle() lipgloss.Style { return lipgloss.NewStyle().Bold(true) }
+func cursorStyle() lipgloss.Style {
+	return lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("6"))
+}
+func dimStyle() lipgloss.Style  { return lipgloss.NewStyle().Faint(true) }
+func warnStyle() lipgloss.Style { return lipgloss.NewStyle().Foreground(lipgloss.Color("3")) }
+func problemStyle() lipgloss.Style {
+	return lipgloss.NewStyle().Foreground(lipgloss.Color("1"))
+}
 
 func (a App) View() string {
 	switch a.screen {
@@ -24,14 +26,14 @@ func (a App) View() string {
 	case screenSections:
 		return a.viewSections()
 	case screenReview:
-		return titleStyle.Render("Review") + "\n" + a.review.View() + "\n" + dimStyle.Render("up and down scroll, esc goes back")
+		return titleStyle().Render("Review") + "\n" + a.review.View() + "\n" + dimStyle().Render("up and down scroll, esc goes back")
 	}
 	return a.viewQuestions()
 }
 
 func (a App) viewQuestions() string {
 	var view strings.Builder
-	view.WriteString(titleStyle.Render("Onboarding plan") + "  " + dimStyle.Render(a.progress()) + "\n\n")
+	view.WriteString(titleStyle().Render("Onboarding plan") + "  " + dimStyle().Render(a.progress()) + "\n\n")
 	if len(a.questions) == 0 {
 		view.WriteString("No questions are active.\n")
 	}
@@ -41,12 +43,12 @@ func (a App) viewQuestions() string {
 		question := a.questions[index]
 		if question.Scope != scope {
 			scope = question.Scope
-			view.WriteString(dimStyle.Render(scopeTitle(scope)) + "\n")
+			view.WriteString(dimStyle().Render(scopeTitle(scope)) + "\n")
 		}
 		view.WriteString(a.questionLine(index, question) + "\n")
 	}
 	view.WriteString("\n" + a.messageLine())
-	view.WriteString(dimStyle.Render("enter answer  d defer  x clear  s sections  r review  q quit") + "\n")
+	view.WriteString(dimStyle().Render("enter answer  d defer  x clear  s sections  r review  q quit") + "\n")
 	return view.String()
 }
 
@@ -61,7 +63,7 @@ func (a App) questionLine(index int, question model.Question) string {
 	}
 	line := fmt.Sprintf("%s%s %s %-34s %s", marker, stateMark(question.Answer), required, truncate(question.Description, 34), describeValue(question.Answer))
 	if index == a.cursor {
-		return cursorStyle.Render(line)
+		return cursorStyle().Render(line)
 	}
 	return line
 }
@@ -69,8 +71,8 @@ func (a App) questionLine(index int, question model.Question) string {
 func (a App) viewEdit() string {
 	question := a.edit.question
 	var view strings.Builder
-	view.WriteString(titleStyle.Render(question.Description) + "\n")
-	view.WriteString(dimStyle.Render(question.ID+", "+string(effectiveType(question))) + "\n\n")
+	view.WriteString(titleStyle().Render(question.Description) + "\n")
+	view.WriteString(dimStyle().Render(question.ID+", "+string(effectiveType(question))) + "\n\n")
 	if picksFromList(question) {
 		for index, option := range a.edit.choices {
 			marker := "  "
@@ -79,13 +81,13 @@ func (a App) viewEdit() string {
 			}
 			view.WriteString(marker + option.label + "\n")
 		}
-		view.WriteString("\n" + dimStyle.Render("up and down, enter chooses, esc cancels") + "\n")
+		view.WriteString("\n" + dimStyle().Render("up and down, enter chooses, esc cancels") + "\n")
 	} else {
 		view.WriteString(a.edit.input.View() + "\n\n")
 		view.WriteString(a.entryHelp(question))
 	}
 	for _, problem := range a.edit.problems {
-		view.WriteString(problemStyle.Render(problem.Message) + "\n")
+		view.WriteString(problemStyle().Render(problem.Message) + "\n")
 	}
 	return view.String()
 }
@@ -94,20 +96,20 @@ func (a App) entryHelp(question model.Question) string {
 	var help strings.Builder
 	switch {
 	case question.Type == model.VariableTypeCommand:
-		help.WriteString(dimStyle.Render("words separated by spaces, quotes keep spaces together") + "\n")
+		help.WriteString(dimStyle().Render("words separated by spaces, quotes keep spaces together") + "\n")
 	case question.Multiple:
-		help.WriteString(dimStyle.Render("separate people with ;") + "\n")
+		help.WriteString(dimStyle().Render("separate people with ;") + "\n")
 	}
 	if len(question.Suggestions) > 0 {
-		help.WriteString(dimStyle.Render("tab tries a suggestion: "+suggestionList(question)) + "\n")
+		help.WriteString(dimStyle().Render("tab tries a suggestion: "+suggestionList(question)) + "\n")
 	}
-	help.WriteString(dimStyle.Render("enter saves, ctrl+d defers, esc cancels") + "\n")
+	help.WriteString(dimStyle().Render("enter saves, ctrl+d defers, esc cancels") + "\n")
 	return help.String()
 }
 
 func (a App) viewSections() string {
 	var view strings.Builder
-	view.WriteString(titleStyle.Render("Sections") + "\n\n")
+	view.WriteString(titleStyle().Render("Sections") + "\n\n")
 	for index, section := range a.plan.Sections {
 		marker := "  "
 		if index == a.sectionCursor {
@@ -119,12 +121,12 @@ func (a App) viewSections() string {
 		}
 		line := marker + box + " " + section.Title
 		if index == a.sectionCursor {
-			line = cursorStyle.Render(line)
+			line = cursorStyle().Render(line)
 		}
 		view.WriteString(line + "\n")
 	}
 	view.WriteString("\n" + a.messageLine())
-	view.WriteString(dimStyle.Render("space turns a section on or off, esc goes back") + "\n")
+	view.WriteString(dimStyle().Render("space turns a section on or off, esc goes back") + "\n")
 	return view.String()
 }
 
@@ -133,9 +135,9 @@ func (a App) messageLine() string {
 		return ""
 	}
 	if strings.HasPrefix(a.message, "saved") {
-		return dimStyle.Render(a.message) + "\n"
+		return dimStyle().Render(a.message) + "\n"
 	}
-	return warnStyle.Render(a.message) + "\n"
+	return warnStyle().Render(a.message) + "\n"
 }
 
 func (a App) progress() string {
