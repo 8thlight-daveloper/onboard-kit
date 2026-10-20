@@ -1,0 +1,305 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "deferred_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "deferred_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "empty_text_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "empty_list_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "empty_items_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "options_on_string",
+        "audience": "onboardee",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "pattern_not_checked",
+        "audience": "onboardee",
+        "pattern": "^[a-z]+$"
+      },
+      {
+        "name": "empty_text_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "answers": {
+      "plan": {
+        "deferred_boolean": "seed",
+        "deferred_choice": "seed",
+        "empty_text_boolean": "seed",
+        "empty_list_text": "seed",
+        "empty_items_choice": "seed",
+        "options_on_string": "seed",
+        "pattern_not_checked": "seed",
+        "empty_text_choice": "seed"
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "deferred_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "deferred_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "empty_text_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "empty_list_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "empty_items_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "options_on_string",
+        "audience": "onboardee",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "pattern_not_checked",
+        "audience": "onboardee",
+        "pattern": "^[a-z]+$"
+      },
+      {
+        "name": "empty_text_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "deferred_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "deferred_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "empty_text_boolean",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "empty_list_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "empty_items_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "options_on_string",
+        "audience": "onboardee",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "pattern_not_checked",
+        "audience": "onboardee",
+        "pattern": "^[a-z]+$"
+      },
+      {
+        "name": "empty_text_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "answers": {
+      "plan": {
+        "deferred_boolean": {
+          "deferred": true
+        },
+        "deferred_choice": {
+          "deferred": true
+        },
+        "empty_text_boolean": "",
+        "empty_list_text": [],
+        "empty_items_choice": [
+          "",
+          ""
+        ],
+        "options_on_string": "zzz",
+        "pattern_not_checked": "ABC",
+        "empty_text_choice": ""
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "deferred_boolean",
+          "audience": "onboardee",
+          "type": "boolean"
+        },
+        {
+          "name": "deferred_choice",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a"
+          ]
+        },
+        {
+          "name": "empty_text_boolean",
+          "audience": "onboardee",
+          "type": "boolean"
+        },
+        {
+          "name": "empty_list_text",
+          "audience": "onboardee"
+        },
+        {
+          "name": "empty_items_choice",
+          "audience": "onboardee",
+          "type": "choice",
+          "multiple": true,
+          "options": [
+            "a"
+          ]
+        },
+        {
+          "name": "options_on_string",
+          "audience": "onboardee",
+          "options": [
+            "a"
+          ]
+        },
+        {
+          "name": "pattern_not_checked",
+          "audience": "onboardee",
+          "pattern": "^[a-z]+$"
+        },
+        {
+          "name": "empty_text_choice",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a"
+          ]
+        }
+      ],
+      "answers": {
+        "plan": {
+          "deferred_boolean": {
+            "deferred": true
+          },
+          "deferred_choice": {
+            "deferred": true
+          },
+          "empty_text_boolean": "",
+          "empty_list_text": [],
+          "empty_items_choice": [
+            "",
+            ""
+          ],
+          "options_on_string": "zzz",
+          "pattern_not_checked": "ABC",
+          "empty_text_choice": ""
+        }
+      }
+    },
+    "report": {
+      "answersKept": [
+        "plan.deferred_boolean",
+        "plan.deferred_choice",
+        "plan.empty_items_choice",
+        "plan.empty_list_text",
+        "plan.empty_text_boolean",
+        "plan.empty_text_choice",
+        "plan.options_on_string",
+        "plan.pattern_not_checked"
+      ]
+    }
+  }
+}

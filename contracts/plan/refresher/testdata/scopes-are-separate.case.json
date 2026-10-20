@@ -1,0 +1,212 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "name",
+        "audience": "onboardee"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "name": "p"
+      },
+      "sections": {
+        "access": {
+          "name": "a"
+        },
+        "deploy": {
+          "name": "d"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "deploy",
+        "title": "Deploy",
+        "summary": "About deploy",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "name",
+        "audience": "onboardee"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "name": "p2"
+      },
+      "sections": {
+        "access": {
+          "name": "a"
+        },
+        "deploy": {
+          "name": "d2"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "deploy",
+        "title": "Deploy",
+        "summary": "About deploy",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "name",
+        "audience": "onboardee"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "name": "p"
+      },
+      "sections": {
+        "access": {
+          "name": "mine"
+        },
+        "deploy": {
+          "name": "d"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "deploy",
+        "title": "Deploy",
+        "summary": "About deploy",
+        "variables": [
+          {
+            "name": "name",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "name",
+          "audience": "onboardee"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "name": "p2"
+        },
+        "sections": {
+          "access": {
+            "name": "mine"
+          },
+          "deploy": {
+            "name": "d2"
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": [
+            {
+              "name": "name",
+              "audience": "onboardee"
+            }
+          ]
+        },
+        {
+          "id": "deploy",
+          "title": "Deploy",
+          "summary": "About deploy",
+          "variables": [
+            {
+              "name": "name",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "report": {
+      "answersKept": [
+        "access.name"
+      ],
+      "answersTaken": [
+        "deploy.name",
+        "plan.name"
+      ]
+    }
+  }
+}

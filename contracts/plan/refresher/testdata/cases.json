@@ -1,0 +1,152 @@
+[
+  {
+    "name": "onboarder-takes-theirs",
+    "file": "onboarder-takes-theirs.case.json",
+    "source": "Hand-written. 0075 table row 'An answer to an onboarder question: taken from theirs, the org wins'. Contract rule: Answers, onboarder question. The newcomer's hand edit of repo_url is replaced. An answer that equals theirs is not reported."
+  },
+  {
+    "name": "onboarder-answer-removed-or-deferred-by-the-org",
+    "file": "onboarder-answer-removed-or-deferred-by-the-org.case.json",
+    "source": "Hand-written. Brief: for an onboarder question, absent in theirs means unanswered. 0035: Deferred is a value. A theirs answer that is Deferred replaces a text, and a text replaces Deferred."
+  },
+  {
+    "name": "audience-defaults-to-onboarder",
+    "file": "audience-defaults-to-onboarder.case.json",
+    "source": "Hand-written. 0055: the audience is onboarder by default. Brief: use the variable's audience in theirs, default onboarder. A variable with no audience behaves as an explicit onboarder one."
+  },
+  {
+    "name": "onboardee-answer-not-changed-takes-theirs",
+    "file": "onboardee-answer-not-changed-takes-theirs.case.json",
+    "source": "Hand-written. 0075 table row 'An answer to an onboardee question that the newcomer has not changed from base: taken from theirs, so a changed pre-seed reaches them'. Both absent counts equal, so a new pre-seed arrives. Theirs absent clears an unchanged answer. Deferred equals Deferred."
+  },
+  {
+    "name": "onboardee-answer-changed-is-kept",
+    "file": "onboardee-answer-changed-is-kept.case.json",
+    "source": "Hand-written. 0075 table row 'An answer to an onboardee question that the newcomer changed: kept. The newcomer wins'. laptop_os is kept even though theirs holds the same value. account_name was cleared by the newcomer, so it stays unanswered. shell had no value in base, so any answer in ours is a change."
+  },
+  {
+    "name": "equality-by-kind-and-order",
+    "file": "equality-by-kind-and-order.case.json",
+    "source": "Hand-written. Contract rule: Equal answers. Two answers are equal when both are absent, or have the same kind and the same content. A list is equal only in the same order. The Text true differs from the Flag true. The Text deferred differs from Deferred. Empty text, a false flag, and an empty list each differ from absent."
+  },
+  {
+    "name": "choice-no-longer-listed-needs-review",
+    "file": "choice-no-longer-listed-needs-review.case.json",
+    "source": "Hand-written. 0075 table row 'An answer that is no longer valid, such as a choice option that was removed: marked as needing review. Never kept silently'. Contract rule: Valid answers. A choice takes text equal to one of its options, with case. The removed answer is not in the plan and is listed for review. A neighbour in the same section stays."
+  },
+  {
+    "name": "kind-no-longer-fits-needs-review",
+    "file": "kind-no-longer-fits-needs-review.case.json",
+    "source": "Hand-written. Brief: a kept onboardee answer whose kind no longer fits the variable type is removed and reported for review. Contract rule: Valid answers. A boolean takes a flag. A command, or a variable with multiple, takes a list. Anything else takes text. A choice with multiple takes a list whose non-empty items are all options."
+  },
+  {
+    "name": "answers-that-are-not-checked-stay",
+    "file": "answers-that-are-not-checked-stay.case.json",
+    "source": "Hand-written. Contract rule: Valid answers. A Deferred answer and an answer that is not settled (0035: empty text, an empty list, a list of only empty text) are valid for any variable. Options limit only a choice. A pattern is not checked here, and the plan validator reports it."
+  },
+  {
+    "name": "only-a-kept-answer-is-checked",
+    "file": "only-a-kept-answer-is-checked.case.json",
+    "source": "Hand-written. Contract rule: Valid answers. Validity is judged for a newcomer's answer that is kept. An answer taken from theirs is the organization's, and the plan validator judges it. An unchanged old answer takes theirs and needs no review."
+  },
+  {
+    "name": "new-question",
+    "file": "new-question.case.json",
+    "source": "Hand-written. 0075 table row 'A new onboardee question: appears unanswered'. Contract rule: Report. A question is new when theirs declares it and ours does not. A pre-seeded new question is also taken. A new question in an existing section is new too."
+  },
+  {
+    "name": "new-is-judged-against-ours",
+    "file": "new-is-judged-against-ours.case.json",
+    "source": "Hand-written. Contract rule: Report. The questions and sections ours declares are the ones the newcomer has seen. A question that ours has and base lacks is not new. One that base has and ours lacks is new."
+  },
+  {
+    "name": "new-and-removed-sections",
+    "file": "new-and-removed-sections.case.json",
+    "source": "Hand-written. 0075 table row 'A new section or step: appears as not done'. Contract rule: Report. A new section brings its questions as new questions. A removed section is listed with its questions, and its stored answers stay. The result holds the sections of theirs in their order."
+  },
+  {
+    "name": "removed-question-is-hidden-not-deleted",
+    "file": "removed-question-is-hidden-not-deleted.case.json",
+    "source": "Hand-written. 0075 table row 'A question that disappeared: the answer is kept but hidden, not deleted'. Brief: answers for a question not declared in theirs are kept untouched, in both scopes. Theirs holds answers for questions it no longer declares, and they are not copied."
+  },
+  {
+    "name": "returning-question-brings-its-hidden-answer-back",
+    "file": "returning-question-brings-its-hidden-answer-back.case.json",
+    "source": "Hand-written. 0075 table: a hidden answer is kept 'in case it returns'. Contract rule: Answers. A hidden answer is a stored answer like any other once theirs declares the question: an onboardee question keeps it when it differs from base, and an onboarder question takes theirs. The question is new, because ours did not declare it."
+  },
+  {
+    "name": "moved-question-is-gone-and-new",
+    "file": "moved-question-is-gone-and-new.case.json",
+    "source": "Hand-written. Brief: a question moved between scopes is not a move. The old one is gone, so its answer is hidden, and the new one is new and unanswered."
+  },
+  {
+    "name": "scopes-are-separate",
+    "file": "scopes-are-separate.case.json",
+    "source": "Hand-written. 0075 and the domain model: a question is `<scope>.<name>`. One name in the plan and in two sections is three questions, each judged on its own."
+  },
+  {
+    "name": "answers-with-no-question-in-theirs",
+    "file": "answers-with-no-question-in-theirs.case.json",
+    "source": "Hand-written. Brief: answers for a question not declared in theirs are kept untouched, in both scopes. Contract rule: Answers. An answer in theirs for a question theirs does not declare is not copied, and an answer in ours for a section or name that theirs does not declare is left as it is."
+  },
+  {
+    "name": "content-comes-from-theirs",
+    "file": "content-comes-from-theirs.case.json",
+    "source": "Hand-written. 0075: content (sections, variables, unknown fields) is taken from theirs, and a hand edit does not last. Contract rule: Result. The plan's own id, schemaVersion, and provenance stay as they were. The section switch, the source, and the order of sections come from theirs, and unknown fields of the plan and of a section come from theirs."
+  },
+  {
+    "name": "first-refresh-and-the-origin-passed-in",
+    "file": "first-refresh-and-the-origin-passed-in.case.json",
+    "source": "Hand-written. 0075: the origin records where the org plan came from, the hash, and the date. Brief: the plan id is taken from theirs, and a first refresh, with an empty origin plan id in ours, is accepted. A plan id carried in the origin argument is ignored."
+  },
+  {
+    "name": "later-refresh-replaces-the-origin",
+    "file": "later-refresh-replaces-the-origin.case.json",
+    "source": "Hand-written. 0075: the origin records the hash it was last refreshed from. An origin plan id in ours that equals theirs.id is accepted, and source, hash, and date are replaced."
+  },
+  {
+    "name": "refuse-a-different-organization",
+    "file": "refuse-a-different-organization.case.json",
+    "source": "Hand-written. 0075: a different id means a different organization, and the refresh refuses. Contract rule: Refusing. The plan comes back as it was, the report is empty, and one problem says which ids differ."
+  },
+  {
+    "name": "refuse-an-org-plan-with-no-id",
+    "file": "refuse-an-org-plan-with-no-id.case.json",
+    "source": "Hand-written. Brief: refuse when theirs.id is empty. The personal plan, including its answers and its origin, comes back unchanged."
+  },
+  {
+    "name": "missing-id-is-the-only-problem-when-both-apply",
+    "file": "missing-id-is-the-only-problem-when-both-apply.case.json",
+    "source": "Hand-written. Contract rule: Refusing. When theirs has no id, the only problem is the missing id, even if ours records another plan id."
+  },
+  {
+    "name": "nothing-changed",
+    "file": "nothing-changed.case.json",
+    "source": "Hand-written. 0075: a refresh of an unchanged org plan changes nothing but the origin. Contract rule: Report. Every list is empty, and an answer that is the same in theirs is not taken."
+  },
+  {
+    "name": "audience-comes-from-theirs",
+    "file": "audience-comes-from-theirs.case.json",
+    "source": "Hand-written. Brief: use the variable's audience in theirs. A question that became onboardee keeps the newcomer's changed answer. A question that became onboarder takes theirs."
+  },
+  {
+    "name": "no-base-answers-keeps-every-newcomer-answer",
+    "file": "no-base-answers-keeps-every-newcomer-answer.case.json",
+    "source": "Hand-written. Contract rule: Equal answers. The base is read for answers only. With an empty base, every onboardee answer in ours differs from base, so none is replaced. The base's own id is not checked."
+  },
+  {
+    "name": "report-lists-are-sorted-by-whole-id",
+    "file": "report-lists-are-sorted-by-whole-id.case.json",
+    "source": "Hand-written. Contract rule: Report. Each list is sorted by the bytes of the whole id, `<scope>.<name>`, with no repeats. Sorting by scope and then name gives another order for access-x.a, and sorting without regard to case does too. The sections list is sorted by id."
+  },
+  {
+    "name": "plans-with-no-answers-at-all",
+    "file": "plans-with-no-answers-at-all.case.json",
+    "source": "Hand-written. Contract rule: Answers. A plan with no answers, no maps, is an ordinary input. Nothing fails, and the answers of theirs that are for onboarder questions arrive."
+  },
+  {
+    "name": "a-taken-list-is-copied",
+    "file": "a-taken-list-is-copied.case.json",
+    "source": "Hand-written. Contract rule: Properties. The result shares no list or map with an argument, so changing the result cannot change theirs. The test changes every list and map in the result, then checks the inputs."
+  }
+]

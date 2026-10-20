@@ -1,0 +1,294 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "q_order",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_same_list",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_flag_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_same",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_empty_text_vs_absent",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_false_vs_absent",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_flag_same",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_empty_list_vs_absent",
+        "audience": "onboardee",
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "q_order": [
+          "a",
+          "b"
+        ],
+        "q_same_list": [
+          "a",
+          "b"
+        ],
+        "q_flag_vs_text": true,
+        "q_deferred_vs_text": {
+          "deferred": true
+        },
+        "q_deferred_same": {
+          "deferred": true
+        },
+        "q_flag_same": false,
+        "q_empty_list_vs_absent": []
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "q_order",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_same_list",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_flag_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_same",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_empty_text_vs_absent",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_false_vs_absent",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_flag_same",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_empty_list_vs_absent",
+        "audience": "onboardee",
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "q_order": [
+          "z"
+        ],
+        "q_same_list": [
+          "c"
+        ],
+        "q_flag_vs_text": "z",
+        "q_deferred_vs_text": "z",
+        "q_deferred_same": "z",
+        "q_empty_text_vs_absent": "z",
+        "q_false_vs_absent": true,
+        "q_flag_same": true,
+        "q_empty_list_vs_absent": [
+          "z"
+        ]
+      }
+    }
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "q_order",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_same_list",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "q_flag_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_vs_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_deferred_same",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_empty_text_vs_absent",
+        "audience": "onboardee"
+      },
+      {
+        "name": "q_false_vs_absent",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_flag_same",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "q_empty_list_vs_absent",
+        "audience": "onboardee",
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "q_order": [
+          "b",
+          "a"
+        ],
+        "q_same_list": [
+          "a",
+          "b"
+        ],
+        "q_flag_vs_text": "true",
+        "q_deferred_vs_text": "deferred",
+        "q_deferred_same": {
+          "deferred": true
+        },
+        "q_empty_text_vs_absent": "",
+        "q_false_vs_absent": false,
+        "q_flag_same": false
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "q_order",
+          "audience": "onboardee",
+          "multiple": true
+        },
+        {
+          "name": "q_same_list",
+          "audience": "onboardee",
+          "multiple": true
+        },
+        {
+          "name": "q_flag_vs_text",
+          "audience": "onboardee"
+        },
+        {
+          "name": "q_deferred_vs_text",
+          "audience": "onboardee"
+        },
+        {
+          "name": "q_deferred_same",
+          "audience": "onboardee"
+        },
+        {
+          "name": "q_empty_text_vs_absent",
+          "audience": "onboardee"
+        },
+        {
+          "name": "q_false_vs_absent",
+          "audience": "onboardee",
+          "type": "boolean"
+        },
+        {
+          "name": "q_flag_same",
+          "audience": "onboardee",
+          "type": "boolean"
+        },
+        {
+          "name": "q_empty_list_vs_absent",
+          "audience": "onboardee",
+          "multiple": true
+        }
+      ],
+      "answers": {
+        "plan": {
+          "q_order": [
+            "b",
+            "a"
+          ],
+          "q_same_list": [
+            "c"
+          ],
+          "q_flag_vs_text": "true",
+          "q_deferred_vs_text": "deferred",
+          "q_deferred_same": "z",
+          "q_empty_text_vs_absent": "",
+          "q_false_vs_absent": false,
+          "q_flag_same": true
+        }
+      }
+    },
+    "report": {
+      "answersKept": [
+        "plan.q_deferred_vs_text",
+        "plan.q_empty_text_vs_absent",
+        "plan.q_false_vs_absent",
+        "plan.q_flag_vs_text",
+        "plan.q_order"
+      ],
+      "answersTaken": [
+        "plan.q_deferred_same",
+        "plan.q_flag_same",
+        "plan.q_same_list"
+      ]
+    }
+  }
+}

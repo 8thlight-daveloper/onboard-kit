@@ -1,0 +1,317 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "accepts_flag",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "takes_list",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "many_text",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "one_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "flag_for_text",
+        "audience": "onboardee",
+        "type": "string"
+      },
+      {
+        "name": "multi_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "multi_choice_ok",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "person_one",
+        "audience": "onboardee",
+        "type": "person"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "accepts_flag": "no",
+        "takes_list": "no",
+        "many_text": "no",
+        "one_text": [
+          "no"
+        ],
+        "flag_for_text": "no",
+        "multi_choice": [
+          "a"
+        ],
+        "multi_choice_ok": [
+          "a"
+        ],
+        "person_one": "no"
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "accepts_flag",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "takes_list",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "many_text",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "one_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "flag_for_text",
+        "audience": "onboardee",
+        "type": "string"
+      },
+      {
+        "name": "multi_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "multi_choice_ok",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "person_one",
+        "audience": "onboardee",
+        "type": "person"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "accepts_flag": true,
+        "takes_list": [
+          "x"
+        ],
+        "many_text": [
+          "x"
+        ],
+        "one_text": "x",
+        "flag_for_text": "x",
+        "multi_choice": [
+          "a"
+        ],
+        "multi_choice_ok": [
+          "a"
+        ],
+        "person_one": "x"
+      }
+    }
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "accepts_flag",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "takes_list",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "many_text",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "one_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "flag_for_text",
+        "audience": "onboardee",
+        "type": "string"
+      },
+      {
+        "name": "multi_choice",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "multi_choice_ok",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b"
+        ]
+      },
+      {
+        "name": "person_one",
+        "audience": "onboardee",
+        "type": "person"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "accepts_flag": "yes",
+        "takes_list": "make",
+        "many_text": "a",
+        "one_text": [
+          "a"
+        ],
+        "flag_for_text": true,
+        "multi_choice": [
+          "a",
+          "c"
+        ],
+        "multi_choice_ok": [
+          "a",
+          "b"
+        ],
+        "person_one": [
+          "Pat"
+        ]
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "accepts_flag",
+          "audience": "onboardee",
+          "type": "boolean"
+        },
+        {
+          "name": "takes_list",
+          "audience": "onboardee",
+          "type": "command"
+        },
+        {
+          "name": "many_text",
+          "audience": "onboardee",
+          "multiple": true
+        },
+        {
+          "name": "one_text",
+          "audience": "onboardee"
+        },
+        {
+          "name": "flag_for_text",
+          "audience": "onboardee",
+          "type": "string"
+        },
+        {
+          "name": "multi_choice",
+          "audience": "onboardee",
+          "type": "choice",
+          "multiple": true,
+          "options": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "name": "multi_choice_ok",
+          "audience": "onboardee",
+          "type": "choice",
+          "multiple": true,
+          "options": [
+            "a",
+            "b"
+          ]
+        },
+        {
+          "name": "person_one",
+          "audience": "onboardee",
+          "type": "person"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "multi_choice_ok": [
+            "a",
+            "b"
+          ]
+        }
+      }
+    },
+    "report": {
+      "answersKept": [
+        "plan.multi_choice_ok"
+      ],
+      "answersToReview": [
+        "plan.accepts_flag",
+        "plan.flag_for_text",
+        "plan.many_text",
+        "plan.multi_choice",
+        "plan.one_text",
+        "plan.person_one",
+        "plan.takes_list"
+      ]
+    }
+  }
+}

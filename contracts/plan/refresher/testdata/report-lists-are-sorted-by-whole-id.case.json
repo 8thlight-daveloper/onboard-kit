@@ -1,0 +1,204 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [],
+    "sections": []
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "zz",
+        "audience": "onboarder"
+      },
+      {
+        "name": "Aa",
+        "audience": "onboarder"
+      },
+      {
+        "name": "m",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "zz": "1",
+        "Aa": "2",
+        "m": "3"
+      },
+      "sections": {
+        "plan-x": {
+          "a": "4"
+        },
+        "access": {
+          "b": "6",
+          "B": "7"
+        },
+        "access-x": {
+          "a": "8"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "plan-x",
+        "title": "Plan-X",
+        "summary": "About plan-x",
+        "variables": [
+          {
+            "name": "a",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "b",
+            "audience": "onboarder"
+          },
+          {
+            "name": "B",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "access-x",
+        "title": "Access-X",
+        "summary": "About access-x",
+        "variables": [
+          {
+            "name": "a",
+            "audience": "onboarder"
+          }
+        ]
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [],
+    "sections": []
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "variables": [
+        {
+          "name": "zz",
+          "audience": "onboarder"
+        },
+        {
+          "name": "Aa",
+          "audience": "onboarder"
+        },
+        {
+          "name": "m",
+          "audience": "onboarder"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "zz": "1",
+          "Aa": "2",
+          "m": "3"
+        },
+        "sections": {
+          "plan-x": {
+            "a": "4"
+          },
+          "access": {
+            "b": "6",
+            "B": "7"
+          },
+          "access-x": {
+            "a": "8"
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "plan-x",
+          "title": "Plan-X",
+          "summary": "About plan-x",
+          "variables": [
+            {
+              "name": "a",
+              "audience": "onboarder"
+            }
+          ]
+        },
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": [
+            {
+              "name": "b",
+              "audience": "onboarder"
+            },
+            {
+              "name": "B",
+              "audience": "onboarder"
+            }
+          ]
+        },
+        {
+          "id": "access-x",
+          "title": "Access-X",
+          "summary": "About access-x",
+          "variables": [
+            {
+              "name": "a",
+              "audience": "onboarder"
+            }
+          ]
+        }
+      ]
+    },
+    "report": {
+      "newQuestions": [
+        "access-x.a",
+        "access.B",
+        "access.b",
+        "plan-x.a",
+        "plan.Aa",
+        "plan.m",
+        "plan.zz"
+      ],
+      "answersTaken": [
+        "access-x.a",
+        "access.B",
+        "access.b",
+        "plan-x.a",
+        "plan.Aa",
+        "plan.m",
+        "plan.zz"
+      ],
+      "newSections": [
+        "access",
+        "access-x",
+        "plan-x"
+      ]
+    }
+  }
+}
