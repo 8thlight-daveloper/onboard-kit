@@ -177,5 +177,32 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `enabled` is a known key of a Section."
+  },
+  {
+    "name": "sub-section",
+    "input": "sub-section.plan.json",
+    "output": "sub-section.yaml",
+    "source": "Hand-written. Contract rules: Keys, the Section key order with `parent` right after `includeIf`, written like `title` (quoted for the reserved word `on` and for `Team: core`), omitted when empty. 0070: a section may name a parent section by id, and the file stays a flat list. The ids and the parent `missing` show that the encoder checks no reference."
+  },
+  {
+    "name": "parent-unknown",
+    "input": "parent-unknown.plan.json",
+    "output": "parent-unknown.yaml",
+    "source": "Hand-written. Contract rule: Keys, an unknown field is a collision only when its key is a known key of that type, and `parent` is not a key of a Plan. 0070: `parent` is a Section field only."
+  },
+  {
+    "name": "parent-collision",
+    "input": "parent-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].parent"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[1].parent"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `parent` is a known key of a Section (0070), so it collides whether or not the section holds a parent."
   }
 ]
