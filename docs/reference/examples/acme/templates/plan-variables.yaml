@@ -4,8 +4,9 @@ variables:
     description: Name of the organization
     required: true
   - name: team
-    description: Name of the team the consultant joins
+    description: Which team are you joining?
     required: true
+    audience: onboardee
   - name: team_state
     description: Is the team established, or are we the first consultants?
     type: choice
@@ -14,12 +15,13 @@ variables:
       - first-consultants
     required: true
   - name: discipline
-    description: Which discipline is this plan for?
+    description: What kind of work will you do?
     type: choice
     options:
       - software
       - design
     required: true
+    audience: onboardee
   - name: output_style
     description: Target format of the document
     type: choice

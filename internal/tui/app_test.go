@@ -36,7 +36,7 @@ func (r *recorder) save(plan model.Plan) error {
 func start(t *testing.T) (App, *recorder) {
 	t.Helper()
 	recorded := &recorder{}
-	return NewApp(NewBackend(), acmePlan(t), recorded.save), recorded
+	return NewApp(NewBackend(), acmePlan(t), recorded.save, model.AudienceOnboarder), recorded
 }
 
 func press(app App, keys ...tea.KeyMsg) App {

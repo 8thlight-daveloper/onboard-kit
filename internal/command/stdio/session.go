@@ -29,6 +29,7 @@ type request struct {
 	Command  string `json:"command"`
 	Question string `json:"question"`
 	Section  string `json:"section"`
+	Audience string `json:"audience"`
 	Enabled  *bool  `json:"enabled"`
 	Path     string `json:"path"`
 	Value    any    `json:"value"`
@@ -43,9 +44,9 @@ func (s *session) handle(line []byte) map[string]any {
 	}
 	switch asked.Command {
 	case "questions":
-		return success("questions", valuejson.EncodeQuestions(s.finder.Questions(s.plan)))
+		return s.questions(asked)
 	case "blockers":
-		return success("blockers", blockerIDs(s.finder.Blockers(s.plan)))
+		return s.blockers(asked)
 	case "validate":
 		return success("problems", valuejson.EncodeProblems(s.validator.Validate(s.plan)))
 	case "submit":
@@ -138,4 +139,32 @@ func success(key string, value any) map[string]any {
 
 func failure(code string, message string) map[string]any {
 	return map[string]any{"ok": false, "error": map[string]any{"code": code, "message": message}}
+}
+
+func (s *session) questions(asked request) map[string]any {
+	audience, ok := audienceOf(asked.Audience)
+	if !ok {
+		return failure("bad_request", "audience is onboarder, onboardee, or all")
+	}
+	return success("questions", valuejson.EncodeQuestions(s.finder.Questions(s.plan, audience)))
+}
+
+func (s *session) blockers(asked request) map[string]any {
+	audience, ok := audienceOf(asked.Audience)
+	if !ok {
+		return failure("bad_request", "audience is onboarder, onboardee, or all")
+	}
+	return success("blockers", blockerIDs(s.finder.Blockers(s.plan, audience)))
+}
+
+func audienceOf(text string) (model.Audience, bool) {
+	switch text {
+	case "", string(model.AudienceOnboarder):
+		return model.AudienceOnboarder, true
+	case "all":
+		return "", true
+	case string(model.AudienceOnboardee):
+		return model.AudienceOnboardee, true
+	}
+	return "", false
 }

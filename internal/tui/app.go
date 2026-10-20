@@ -21,6 +21,7 @@ const (
 
 type App struct {
 	backend       Backend
+	audience      model.Audience
 	save          func(model.Plan) error
 	plan          model.Plan
 	questions     []model.Question
@@ -44,9 +45,9 @@ type editState struct {
 	problems   []model.Problem
 }
 
-func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error) App {
-	app := App{backend: backend, save: save, plan: plan, width: 80, height: 24}
-	app.questions = backend.Questions(plan)
+func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audience model.Audience) App {
+	app := App{backend: backend, save: save, plan: plan, audience: audience, width: 80, height: 24}
+	app.questions = backend.Questions(plan, audience)
 	return app
 }
 
@@ -100,6 +101,9 @@ func (a App) updateQuestions(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "x":
 		return a.apply(model.Value{}), nil
 	case "s":
+		if a.audience == model.AudienceOnboardee {
+			return a, nil
+		}
 		a.screen = screenSections
 		a.message = ""
 	case "r":
@@ -223,7 +227,7 @@ func (a App) saveMessage(problems []model.Problem) string {
 }
 
 func (a *App) refresh(keep string) {
-	a.questions = a.backend.Questions(a.plan)
+	a.questions = a.backend.Questions(a.plan, a.audience)
 	a.cursor = min(a.cursor, max(len(a.questions)-1, 0))
 	for index, question := range a.questions {
 		if question.ID == keep {
@@ -272,7 +276,7 @@ func (a App) openReview() App {
 
 func (a App) reviewText(document string) string {
 	var text strings.Builder
-	blockers := a.backend.Blockers(a.plan)
+	blockers := a.backend.Blockers(a.plan, a.audience)
 	text.WriteString(blockerSummary(blockers))
 	problems := a.backend.Validate(a.plan)
 	for _, problem := range problems {

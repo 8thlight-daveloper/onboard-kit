@@ -24,11 +24,17 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	templates := options.String("templates", "", "folder of section templates to start a new plan from")
 	templateSet := options.String("template-set", "local", "name recorded as the template set")
 	generatedOn := options.String("generated-on", "", "date recorded in a new plan, today when left out")
+	audience := options.String("audience", "onboarder", "whose questions to walk: onboarder or onboardee")
 	if options.Parse(args) != nil {
 		return exitUsage
 	}
 	if *planPath == "" {
 		fmt.Fprintln(stderr, "walk: --plan is required")
+		return exitUsage
+	}
+	who, ok := parseAudience(*audience)
+	if !ok {
+		fmt.Fprintln(stderr, "walk: --audience is onboarder or onboardee")
 		return exitUsage
 	}
 	plan, ok := startPlan(*planPath, *templates, *templateSet, *generatedOn, stderr)
@@ -41,7 +47,7 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 		}
 		return nil
 	}
-	if err := tui.Run(tui.NewBackend(), plan, save, stdin, stdout); err != nil {
+	if err := tui.Run(tui.NewBackend(), plan, save, who, stdin, stdout); err != nil {
 		fmt.Fprintln(stderr, err)
 		return exitProblem
 	}
@@ -64,4 +70,12 @@ func startPlan(planPath string, templates string, templateSet string, generatedO
 		return model.Plan{}, false
 	}
 	return plan, true
+}
+
+func parseAudience(text string) (model.Audience, bool) {
+	switch model.Audience(text) {
+	case model.AudienceOnboarder, model.AudienceOnboardee:
+		return model.Audience(text), true
+	}
+	return "", false
 }
