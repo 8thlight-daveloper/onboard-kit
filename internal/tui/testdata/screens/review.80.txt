@@ -6,7 +6,7 @@
 
   Deferred (2)
   > deferred: Is the team established, or are we the first consultants?
-    deferred: Who grants work tracker access
+    deferred: Who grants work tracker access?
 
 
 

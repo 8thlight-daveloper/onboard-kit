@@ -180,6 +180,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | -- | -- | -- |
 | `name` | Text | `[a-z][a-z0-9_]{2,}`, not reserved. See [0040](../decisions/0040-blank-text-and-variable-name-length.md) |
 | `description` | Text |  |
+| `example` | Text, optional | An illustration of a good answer. Never an answer or a default |
 | `type` | VariableType | `string` by default |
 | `options` | List of text, optional | For a `choice` |
 | `pattern`, `patternHint` | Text, optional | RE2 syntax, for a `string` |
@@ -242,6 +243,7 @@ What the finder returns for one active question.
 | `scope` | Text | `plan` or a section id |
 | `name` | Text |  |
 | `description` | Text |  |
+| `example` | Text, optional |  |
 | `type` | VariableType |  |
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |

@@ -3,10 +3,10 @@
 
   Plan                                                                              │ About this question
   1 of 9, required, not answered yet                                                │
-                                                                                    │ Type: string
-  Name of the organization                                                          │ Answered by: onboarder
-                                                                                    │ Name: plan.organization
-  > Glob                                                                            │
+                                                                                    │ Example: ACME Corp
+  What is the organization's name?                                                  │ Type: string
+                                                                                    │ Answered by: onboarder
+  > Glob                                                                            │ Name: plan.organization
 
 
 

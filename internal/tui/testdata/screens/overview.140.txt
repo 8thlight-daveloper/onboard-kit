@@ -2,26 +2,26 @@
   x◆.  xxxxx~  xxxx  x
 
   Plan                                                                              │ Plan
-    [x] * Name of the organization                     ACME Corp                    │ 2 of 14, required, answered
+    [x] * What is the organization's name?             ACME Corp                    │ 2 of 14, required, answered
   > [x] * Is the team established, or are we the fir…  established                  │
     [ ]   Target format of the document                                             │ Is the team established, or are we the first
                                                                                     │ consultants?
   Access                                                                            │
-    [x] * Role of the person who owns onboarding at …  Engineering manager          │ Answer: established
-    [x] * Where to request source control access       https://access.acme.example… │
-    [x] * Clone URL of the main repository             git@git.acme.example:platfo… │ About this question
-    [x] * Who grants source control access             IT service desk              │
-    [x] * Who grants CI dashboard access               Platform team lead           │ Type: choice: established, first-consultants
-    [~] * Who grants work tracker access               deferred, answer later       │ Answered by: onboarder
+    [x] * Who owns onboarding here? Give their role.…  Engineering manager          │ Answer: established
+    [x] * Where do people request source control acc…  https://access.acme.example… │
+    [x] * What is the clone URL of the main reposito…  git@git.acme.example:platfo… │ About this question
+    [x] * Who grants source control access?            IT service desk              │
+    [x] * Who grants CI dashboard access?              Platform team lead           │ Type: choice: established, first-consultants
+    [~] * Who grants work tracker access?              deferred, answer later       │ Answered by: onboarder
                                                                                     │ Name: plan.team_state
   Clone the project and run the tests                                               │ Suggestion (given): established
-    [x] * Clone URL of the main repository             git@git.acme.example:platfo… │
-    [x]   Directory name for the clone                 widget-service               │
-    [x] * Command that installs dependencies           make; setup                  │
-    [x] * Command that runs the test suite             make; test                   │
+    [x] * What is the clone URL of the main reposito…  git@git.acme.example:platfo… │
+    [x]   What should the clone's folder be called?    widget-service               │
+    [x] * Which command installs the dependencies?     make; setup                  │
+    [x] * Which command runs the test suite?           make; test                   │
                                                                                     │
   If you are stuck                                                                  │
-    [x] * Who can help with anything                   Alex Rivera, alex.rivera@ac… │
+    [x] * Who can anyone ask for help with anything?   Alex Rivera, alex.rivera@ac… │
 
 
 

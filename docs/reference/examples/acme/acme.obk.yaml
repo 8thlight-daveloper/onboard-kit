@@ -4,10 +4,12 @@ provenance:
   generatedOn: "2026-10-15"
 variables:
   - name: organization
-    description: Name of the organization
+    description: What is the organization's name?
+    example: ACME Corp
     required: true
   - name: team
     description: Which team are you joining?
+    example: Platform team
     required: true
     audience: onboardee
   - name: team_state
@@ -70,18 +72,22 @@ sections:
       you asked.
     variables:
       - name: onboarding_owner_role
-        description: Role of the person who owns onboarding at the organization
+        description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
+        example: Engineering manager
         required: true
       - name: access_request_url
-        description: Where to request source control access
+        description: Where do people request source control access?
+        example: https://access.example.test/request
         required: true
       - name: repo_url
-        description: Clone URL of the main repository
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
         pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: source_control_grantor
-        description: Who grants source control access
+        description: Who grants source control access?
+        example: IT service desk
         required: true
         askIf:
           all:
@@ -89,13 +95,16 @@ sections:
               answer:
                 isSettled: true
       - name: ci_grantor
-        description: Who grants CI dashboard access
+        description: Who grants CI dashboard access?
+        example: Platform team lead
         required: true
       - name: tracker_grantor
-        description: Who grants work tracker access
+        description: Who grants work tracker access?
+        example: Engineering manager
         required: true
       - name: account_name
-        description: Your account name at the organization
+        description: What is your account name at the organization?
+        example: arivera
         audience: onboardee
     steps:
       - id: source-control
@@ -137,19 +146,23 @@ sections:
       changing anything.
     variables:
       - name: repo_url
-        description: Clone URL of the main repository
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
         pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: repo_dir
-        description: Directory name for the clone
+        description: What should the clone's folder be called?
+        example: service
         default: project
       - name: setup_command
-        description: Command that installs dependencies
+        description: Which command installs the dependencies?
+        example: make setup
         type: command
         required: true
       - name: test_command
-        description: Command that runs the test suite
+        description: Which command runs the test suite?
+        example: make test
         type: command
         required: true
     steps:
@@ -194,10 +207,12 @@ sections:
       missing or out of date, and tell the team.
     variables:
       - name: design_system_url
-        description: Where the design system lives
+        description: Where does the design system live?
+        example: https://design.example.test/system
         required: true
       - name: design_file_url
-        description: The main design file for the product
+        description: Which is the main design file for the product?
+        example: https://design.example.test/files/main
         required: true
     steps:
       - id: design-system
@@ -223,7 +238,8 @@ sections:
       Say what you tried and what you need. They will point you to someone else to try.
     variables:
       - name: general_contacts
-        description: Who can help with anything
+        description: Who can anyone ask for help with anything?
+        example: Alex Rivera, alex.rivera@acme.example, @alex
         type: person
         multiple: true
         required: true

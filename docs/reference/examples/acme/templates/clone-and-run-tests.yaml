@@ -12,20 +12,24 @@ timing: week-one
 verification: $test_command passes on a fresh clone.
 variables:
   - name: repo_url
-    description: Clone URL of the main repository
+    description: What is the clone URL of the main repository?
+    example: git@git.example.test:team/service.git
     pattern: '^(git@|https://)\S+$'
     patternHint: A clone URL, starting with git@ or https://
     required: true
   - name: repo_dir
-    description: Directory name for the clone
+    description: What should the clone's folder be called?
+    example: service
     default: project
   - name: setup_command
     type: command
-    description: Command that installs dependencies
+    description: Which command installs the dependencies?
+    example: make setup
     required: true
   - name: test_command
     type: command
-    description: Command that runs the test suite
+    description: Which command runs the test suite?
+    example: make test
     required: true
 body: |
   If a test fails on a fresh clone, write down the failure and ask the team before

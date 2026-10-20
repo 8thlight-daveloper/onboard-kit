@@ -4,16 +4,16 @@
   Plan
   1 of 9, required, not answered yet
 
-  Name of the organization
+  What is the organization's name?
 
   > Glob
 
   About this question
 
+  Example: ACME Corp
   Type: string
   Answered by: onboarder
   Name: plan.organization
-
 
 
 

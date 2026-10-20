@@ -40,7 +40,8 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | Field | Meaning |
 | -- | -- |
 | `name` | The `$name` the section uses |
-| `description` | What the question asks, in words |
+| `description` | What the question asks, in words. Write it as a question the answerer can respond to, and say where the answer appears when that is not obvious |
+| `example` | One illustration of a good answer, such as `Engineering manager`. It shows as placeholder text and in the detail of the question. It is never an answer or a default, and nothing fills it in. Part of the template, so a change to it changes the content hash |
 | `type` | `string` (the default), `boolean`, `choice`, `command`, or `person` |
 | `options` | The allowed values of a `choice` |
 | `pattern` | A regular expression a `string` must match |

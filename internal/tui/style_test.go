@@ -47,8 +47,8 @@ func TestOnTheOverviewTheListIsBrightAndThePreviewIsFaint(t *testing.T) {
 	withColour(t)
 	app, _ := startWalking(t)
 	view := resize(press(app, esc), 140, 40).View()
-	expectBright(t, view, "Where to request source control access")
-	expectBright(t, view, "Name of the organization")
+	expectBright(t, view, "Where do people request source control access?")
+	expectBright(t, view, "What is the organization's name?")
 	expectFaint(t, view, "About this question")
 	expectFaint(t, view, "Type: string")
 }

@@ -4,10 +4,12 @@ provenance:
   generatedOn: "2026-10-15"
 variables:
   - name: organization
-    description: Name of the organization
+    description: What is the organization's name?
+    example: ACME Corp
     required: true
   - name: team
     description: Which team are you joining?
+    example: Platform team
     required: true
     audience: onboardee
   - name: team_state
@@ -43,18 +45,22 @@ sections:
       you asked.
     variables:
       - name: onboarding_owner_role
-        description: Role of the person who owns onboarding at the organization
+        description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
+        example: Engineering manager
         required: true
       - name: access_request_url
-        description: Where to request source control access
+        description: Where do people request source control access?
+        example: https://access.example.test/request
         required: true
       - name: repo_url
-        description: Clone URL of the main repository
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
         pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: source_control_grantor
-        description: Who grants source control access
+        description: Who grants source control access?
+        example: IT service desk
         required: true
         askIf:
           all:
@@ -62,13 +68,16 @@ sections:
               answer:
                 isSettled: true
       - name: ci_grantor
-        description: Who grants CI dashboard access
+        description: Who grants CI dashboard access?
+        example: Platform team lead
         required: true
       - name: tracker_grantor
-        description: Who grants work tracker access
+        description: Who grants work tracker access?
+        example: Engineering manager
         required: true
       - name: account_name
-        description: Your account name at the organization
+        description: What is your account name at the organization?
+        example: arivera
         audience: onboardee
     steps:
       - id: source-control
@@ -93,7 +102,7 @@ sections:
           - ask: Can you open the work tracker?
     source:
       template: access
-      hash: "714e6f801da509389e67bd1d0dacd1c26bfca6147bb55c34d05fcd1fdfb5ac2d"
+      hash: b4820a32303f00878e5a9039e3a2b882da62c682ca57aa606f65a482b3d4a0a4
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     summary: Get a working copy of the project and a passing test run on your machine.
@@ -110,19 +119,23 @@ sections:
       changing anything.
     variables:
       - name: repo_url
-        description: Clone URL of the main repository
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
         pattern: "^(git@|https://)\\S+$"
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: repo_dir
-        description: Directory name for the clone
+        description: What should the clone's folder be called?
+        example: service
         default: project
       - name: setup_command
-        description: Command that installs dependencies
+        description: Which command installs the dependencies?
+        example: make setup
         type: command
         required: true
       - name: test_command
-        description: Command that runs the test suite
+        description: Which command runs the test suite?
+        example: make test
         type: command
         required: true
     steps:
@@ -150,7 +163,7 @@ sections:
         directory: $repo_dir
     source:
       template: clone-and-run-tests
-      hash: ffc307f8f1eaf075421d0d1d58e0575e1e26bf6fcfc40d0fbdf87b1995f18748
+      hash: c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6
   - id: review-design-system
     title: Review the design system
     summary: Find the design system and the main design file, and note what you cannot open.
@@ -167,10 +180,12 @@ sections:
       missing or out of date, and tell the team.
     variables:
       - name: design_system_url
-        description: Where the design system lives
+        description: Where does the design system live?
+        example: https://design.example.test/system
         required: true
       - name: design_file_url
-        description: The main design file for the product
+        description: Which is the main design file for the product?
+        example: https://design.example.test/files/main
         required: true
     steps:
       - id: design-system
@@ -185,7 +200,7 @@ sections:
           - ask: Can you open the main design file?
     source:
       template: review-design-system
-      hash: cf9d9426e1e55d73ff057bbfb823afe56bed7d9c2af26e30cd0203ad542c4ad4
+      hash: cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9
   - id: stuck-general
     title: If you are stuck
     summary: Who to ask when something is blocked and nobody named in a section can help.
@@ -196,10 +211,11 @@ sections:
       Say what you tried and what you need. They will point you to someone else to try.
     variables:
       - name: general_contacts
-        description: Who can help with anything
+        description: Who can anyone ask for help with anything?
+        example: Alex Rivera, alex.rivera@acme.example, @alex
         type: person
         multiple: true
         required: true
     source:
       template: stuck-general
-      hash: "8d8ad17fef62f7d0453289ad4f2bffa1c40eb4eca666885cbdc7e4fead4750d3"
+      hash: b41dc482fe0a513d1474cb641d00f890914ee5722c24f6d04e61d6a0cc553829

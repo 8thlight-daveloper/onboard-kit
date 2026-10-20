@@ -2,23 +2,23 @@
   x◆.  xxxxx~  xxxx  x
 
   Plan
-    [x] * Name of the organization                  ACME Corp
+    [x] * What is the organization's name?          ACME Corp
   > [x] * Is the team established, or are we the …  established
     [ ]   Target format of the document
 
   Access
-    [x] * Role of the person who owns onboarding …  Engineering manager
-    [x] * Where to request source control access    https://access.acme.examp…
-    [x] * Clone URL of the main repository          git@git.acme.example:plat…
-    [x] * Who grants source control access          IT service desk
-    [x] * Who grants CI dashboard access            Platform team lead
-    [~] * Who grants work tracker access            deferred, answer later
+    [x] * Who owns onboarding here? Give their ro…  Engineering manager
+    [x] * Where do people request source control …  https://access.acme.examp…
+    [x] * What is the clone URL of the main repos…  git@git.acme.example:plat…
+    [x] * Who grants source control access?         IT service desk
+    [x] * Who grants CI dashboard access?           Platform team lead
+    [~] * Who grants work tracker access?           deferred, answer later
 
   Clone the project and run the tests
-    [x] * Clone URL of the main repository          git@git.acme.example:plat…
-    [x]   Directory name for the clone              widget-service
-    [x] * Command that installs dependencies        make; setup
-    [x] * Command that runs the test suite          make; test
+    [x] * What is the clone URL of the main repos…  git@git.acme.example:plat…
+    [x]   What should the clone's folder be calle…  widget-service
+    [x] * Which command installs the dependencies?  make; setup
+    [x] * Which command runs the test suite?        make; test
 
 
   enter open  esc walk  r review  s sections  q quit  ? help

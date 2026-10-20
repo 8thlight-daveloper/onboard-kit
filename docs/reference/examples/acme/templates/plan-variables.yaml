@@ -1,10 +1,12 @@
 schemaVersion: 1
 variables:
   - name: organization
-    description: Name of the organization
+    description: What is the organization's name?
+    example: ACME Corp
     required: true
   - name: team
     description: Which team are you joining?
+    example: Platform team
     required: true
     audience: onboardee
   - name: team_state

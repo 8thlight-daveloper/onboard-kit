@@ -7,11 +7,11 @@
   Deferred (2)                                           │ Generated 2026-10-15 from template set `example`. A person must review this
   > deferred: Is the team established, or are we the     │ before it is sent.
     first consultants?                                   │
-    deferred: Who grants work tracker access             │ ## Gaps to fill
+    deferred: Who grants work tracker access?            │ ## Gaps to fill
                                                          │
                                                          │ | Gap | Who fills it | By when |
                                                          │ | --- | --- | --- |
-                                                         │ | Who grants work tracker access | Engineering manager | Before day one |
+                                                         │ | Who grants work tracker access? | Engineering manager | Before day one |
                                                          │
                                                          │ ## Access
                                                          │
