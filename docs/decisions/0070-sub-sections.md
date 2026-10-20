@@ -1,6 +1,6 @@
 # 0070. Sub-sections
 
-Status: proposed
+Status: accepted
 
 Builds on [0050](0050-section-switch.md) and [0065](0065-messages-and-evidence.md). It relaxes the rule in [conditions](../reference/section-template-schema/conditions.md) that a section's `includeIf` names only plan variables.
 
