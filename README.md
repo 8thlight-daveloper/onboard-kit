@@ -46,7 +46,8 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 
 | Command | Does |
 | -- | -- |
-| `walk --plan FILE [--templates DIR]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `q` quits |
+| `start --org-plan FILE` | For a newcomer. Copies the organization's plan into their own plan file in a per-user folder (`OBK_HOME` or `--home` change it) and opens the walkthrough with only the onboardee questions. Running it again reopens their file. Refreshing from a changed org plan is not built yet |
+| `walk --plan FILE [--templates DIR] [--audience onboarder\|onboardee]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `q` quits |
 | `assemble --plan FILE [--out FILE]` | Writes a Markdown document from a plan. Gaps go on standard error and in the document's gap table |
 | `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
 | `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |

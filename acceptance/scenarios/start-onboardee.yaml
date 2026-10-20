@@ -1,0 +1,49 @@
+name: start-onboardee
+description: A newcomer starts from the organization's plan, gets their own plan file, and is asked only the onboardee questions.
+source: docs/decisions/0060-personal-plan.md
+steps:
+  - run: [onboard-kit, new, --templates, templates, --template-set, example, --generated-on, "2026-10-15", --out, org.obk.yaml]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    expect:
+      exit: 0
+  - run: [onboard-kit, stdio, --plan, org.obk.yaml]
+    talk:
+      - send: {command: submit, question: plan.organization, value: Globex Inc}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: save, path: org.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, start, --org-plan, org.obk.yaml, --home, state, --no-walk]
+    expect:
+      exit: 0
+      stdout: {contains: globex-inc.obk.yaml}
+  - run: [onboard-kit, stdio, --plan, state/globex-inc.obk.yaml]
+    talk:
+      - send: {command: blockers, audience: onboardee}
+        expect: {ok: true, blockers: [plan.team, plan.discipline]}
+      - send: {command: submit, question: plan.team, value: Platform}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: submit, question: plan.discipline, value: design}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: blockers, audience: onboardee}
+        expect: {ok: true, blockers: []}
+      - send: {command: save, path: state/globex-inc.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, stdio, --plan, state/globex-inc.org.obk.yaml]
+    talk:
+      - send: {command: blockers, audience: onboardee}
+        expect: {ok: true, blockers: [plan.team, plan.discipline]}
+    expect:
+      exit: 0
+  - run: [onboard-kit, assemble, --plan, state/globex-inc.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "Review the design system"}

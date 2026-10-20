@@ -9,9 +9,9 @@ The code is `internal/tui`, opened by `onboard-kit walk`. The toolkit is Bubble 
 | Person | Command | Sees | Changes |
 | -- | -- | -- | -- |
 | The onboarder | `walk --plan FILE` | Onboarder questions, section switches, the assembled document | Onboarder answers and switches |
-| The onboardee | `start`, not built yet | Onboardee questions, the onboarder's answers read-only, their own document | Onboardee answers only |
+| The onboardee | `start --org-plan FILE` | Onboardee questions, the onboarder's answers read-only, their own document | Onboardee answers only |
 
-Decided: the onboardee mode hides section switches. Only the onboarder decides what applies.
+Decided: the onboardee mode hides section switches. Only the onboarder decides what applies. Built: `start` makes the newcomer's own plan file from the org plan and opens `walk` for the onboardee audience. The newcomer's file today holds a full copy of the org plan, and the org plan is cached beside it. Refresh from a changed org plan, a URL, and the locks are not built, see 0060.
 
 ## Flow
 
