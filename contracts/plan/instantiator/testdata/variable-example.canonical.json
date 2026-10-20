@@ -1,0 +1,1 @@
+{"id":"team-role","title":"Team role","summary":"Where the newcomer works.","timing":"anytime","variables":[{"name":"role","description":"Your role","example":"Engineering manager","type":"string","audience":"onboarder"},{"name":"team","description":"Your team","type":"string","audience":"onboarder"}],"steps":[{"id":"intro","name":"Introduce"}]}

@@ -1,0 +1,12 @@
+{
+  "id": "variable-examples",
+  "title": "Role of Staff engineer",
+  "summary": "Where Platform works",
+  "body": "Your role is Staff engineer on Platform.",
+  "variables": [
+    {"name": "role", "description": "Your role", "example": "Engineering manager"},
+    {"name": "team", "description": "Your team", "example": "Payments, as in $role $$", "default": "Platform"},
+    {"name": "plain", "description": "No example"},
+    {"name": "tools", "type": "choice", "options": ["git", "make"], "description": "Tools", "example": "git"}
+  ]
+}

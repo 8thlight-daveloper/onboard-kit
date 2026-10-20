@@ -32,11 +32,11 @@ These are left as held, even when they hold `$`.
 - Names and identifiers: `id`, `timing`, `after`, and a step's `id` and `timing`.
 - `escalation` on a section and on a step. Its items name variables and are not text.
 - The keys of a step's `env`, and a check's `env`, which is a variable name.
-- `includeIf`, and every part of every variable the section declares: its description, default, options, pattern, hint, and `askIf`. A declaration is not resolved.
+- `includeIf`, and every part of every variable the section declares: its description, example, default, options, pattern, hint, and `askIf`. A declaration is not resolved.
 - `enabled`, and the section clauses in a condition. They are not text.
 - `source` and `unknownFields`.
 
-The returned Section keeps every declared variable, so it still describes its own questions.
+The returned Section keeps every declared variable, so it still describes its own questions. Each variable comes back whole, with its `example` as held. An `example` is an illustration for the person answering. It is not an answer and not a default, so it never fills a `$name` and is never read for one.
 
 ## Reading the text
 
@@ -182,6 +182,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The answers changed, or an input list or map changed | The inputs-unchanged test |
 | The result sharing a list, map, or pointer with the input | The shares-nothing test |
 | A cache by section id | `command-in-run`, `defaults`, `deferred` |
+| An `example` dropped when a variable is copied, written from the answer or the default, or read for `$name` | `variable-examples`, the example test, and the shares-nothing test |
 | The variables dropped from the result | `command-in-run`, `defaults`, `deferred` |
 | After the first build: a read one character past a `$` that panics at the end of a field, for `$`, `$$`, and `$$$` | `dollar-at-end` |
 | After the first build: a name that stops before `0`, `9`, `a`, or `z`, takes a character just outside those ranges or an upper case letter, starts at a fixed place, or fails at the end of the text | `name-edges` |

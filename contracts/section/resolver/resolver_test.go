@@ -175,12 +175,40 @@ func TestInputsAreNotChanged(t *testing.T) {
 	}
 }
 
+func TestResultKeepsEveryVariableExample(t *testing.T) {
+	t.Parallel()
+	examples := 0
+	for _, c := range loadCases(t) {
+		section := loadSection(t, c.Section)
+		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		if len(got.Variables) != len(section.Variables) {
+			t.Fatalf("%s: got %d variables, want %d", c.Name, len(got.Variables), len(section.Variables))
+		}
+		for i, variable := range section.Variables {
+			if got.Variables[i].Example != variable.Example {
+				t.Errorf("%s: variable %s: got example %q, want %q", c.Name, variable.Name, got.Variables[i].Example, variable.Example)
+			}
+			if variable.Example != "" {
+				examples++
+			}
+		}
+	}
+	if examples == 0 {
+		t.Fatal("no fixture variable holds an example")
+	}
+}
+
 func TestResultSharesNothingWithTheInput(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
 		section := loadSection(t, c.Section)
 		snapshot := loadSection(t, c.Section)
 		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		for i, variable := range section.Variables {
+			if got.Variables[i].Example != variable.Example {
+				t.Fatalf("%s: variable %s: got example %q, want %q", c.Name, variable.Name, got.Variables[i].Example, variable.Example)
+			}
+		}
 		overwrite(reflect.ValueOf(&got).Elem())
 		if !reflect.DeepEqual(section, snapshot) {
 			t.Fatalf("%s: changing the result changed the input section", c.Name)
