@@ -135,7 +135,7 @@
         {
           "name": "account_name",
           "description": "Your account name at the organization",
-          "phase": "onboarding"
+          "audience": "onboardee"
         }
       ],
       "body": "Request each system on day minus five if you can. Record who grants it and when\nyou asked.\n",

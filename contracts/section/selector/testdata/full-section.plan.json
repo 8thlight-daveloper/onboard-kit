@@ -11,7 +11,7 @@
    "after": ["access", "access"], "escalation": ["manager"],
    "variables": [
     {"name": "manager", "description": "Manager", "type": "person", "required": true},
-    {"name": "include", "description": "Include?", "type": "boolean", "default": true, "phase": "onboarding"}],
+    {"name": "include", "description": "Include?", "type": "boolean", "default": true, "audience": "onboardee"}],
    "steps": [{"id": "one", "name": "One", "run": ["echo", "$manager"], "env": {"A": "b"}, "checks": [{"ask": "Done?"}]}],
    "source": {"template": "everything", "hash": "0123abcd"},
    "unknownFields": {"future": [1, 2.5, {"k": null}]}},

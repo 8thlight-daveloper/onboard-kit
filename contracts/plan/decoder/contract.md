@@ -184,7 +184,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | Quoted `deferred` read as Deferred, or plain read as text | `answers`, `strings`, `hand-edited`, `zero-and-null` |
 | `1.0`, `123`, `0123`, `0x1F`, `1e3`, `.inf`, or an over-long integer read as text or as a number | `number-spelling` |
 | `~`, `Null`, `NULL` read as null | `null-spelling` |
-| Defaults filled for `type`, `timing`, or `phase` | `conditions`, `zero-and-null`, `acme` |
+| Defaults filled for `type`, `timing`, or `audience` | `conditions`, `zero-and-null`, `acme` |
 | Stopping at the first problem, or sorting problems by path | `many-problems`, `duplicate-key` |
 | A partly filled Plan returned with problems | every problem case |
 | A key `on` or `y` read as a boolean, or flagged | `hand-edited` |

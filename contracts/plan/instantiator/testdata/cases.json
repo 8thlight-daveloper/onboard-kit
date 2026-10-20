@@ -6,10 +6,10 @@
     "templateSet": "example",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "access", "hash": "41b8d95b8e27d852b693e2f77f6db8d7ebd6cd146ac3260f41fd661ef0beb90e", "canonical": "acme-access.canonical.json"},
-      {"id": "clone-and-run-tests", "hash": "baba68e931cfe9e8bcfc9386e5b61631852e935b087e98bb511174f14c39b6c3", "canonical": "acme-clone-and-run-tests.canonical.json"},
-      {"id": "review-design-system", "hash": "8d3b83952994b823e23d2606beb4db8bc701b6579e96b7c1f9afe36ba790e094", "canonical": "acme-review-design-system.canonical.json"},
-      {"id": "stuck-general", "hash": "fe1746d0ab6623c7b0d54d72c9b336efd20df7588d8a170802bc55944695ef23", "canonical": "acme-stuck-general.canonical.json"}
+      {"id": "access", "hash": "714e6f801da509389e67bd1d0dacd1c26bfca6147bb55c34d05fcd1fdfb5ac2d", "canonical": "acme-access.canonical.json"},
+      {"id": "clone-and-run-tests", "hash": "ffc307f8f1eaf075421d0d1d58e0575e1e26bf6fcfc40d0fbdf87b1995f18748", "canonical": "acme-clone-and-run-tests.canonical.json"},
+      {"id": "review-design-system", "hash": "cf9d9426e1e55d73ff057bbfb823afe56bed7d9c2af26e30cd0203ad542c4ad4", "canonical": "acme-review-design-system.canonical.json"},
+      {"id": "stuck-general", "hash": "8d8ad17fef62f7d0453289ad4f2bffa1c40eb4eca666885cbdc7e4fead4750d3", "canonical": "acme-stuck-general.canonical.json"}
     ],
     "source": "The four ACME templates, docs/reference/examples/acme/templates/, as the section loader contract's fixtures hold them (contracts/section/loader/testdata/acme-*.section.json), given out of order. The five plan variables are the plan variables of docs/reference/examples/acme/acme.obk.yaml, one with a default and one with options. 0030, The default plan: the axis variables and every template as a section, with no answers. Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract (Canonical form, Fields, Defaults, Prose, Strings), the four acme-*.canonical.json files. The ACME plan file records no real hash for them."
   },
@@ -20,9 +20,9 @@
     "templateSet": "7652e0e",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "access", "hash": "ba4e0687bfdf77afc6349a7c09e930c8d2669b1c4dc2b5723c410b4a55a19270", "canonical": "hasher-full.canonical.json"},
-      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"},
-      {"id": "prose", "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18", "canonical": "hasher-prose.canonical.json"},
+      {"id": "access", "hash": "43cd3a85e1870c9f056d0d4cbf8240de3ad448a49ea5ecfa63123805eb72f05c", "canonical": "hasher-full.canonical.json"},
+      {"id": "basic", "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5", "canonical": "hasher-basic.canonical.json"},
+      {"id": "prose", "hash": "3318ca853ba4f69e75de8865ff59ab46dcc2e1d7e338b6adef4d479cbdebce47", "canonical": "hasher-prose.canonical.json"},
       {"id": "sets", "hash": "df52f01608459f10e7aba68668ea35879e1cfa3fb8bde2c23179faa10f6361d7", "canonical": "hasher-sets.canonical.json"},
       {"id": "u", "hash": "3725ff2d1173ffae5c78d0b831f8a266ed58f9d2034e85d148906f2d24cf6614", "canonical": "hasher-unknown-fields.canonical.json"}
     ],
@@ -51,7 +51,7 @@
     "templateSet": "v2.1-beta",
     "generatedOn": "2027-02-03",
     "sections": [
-      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"}
+      {"id": "basic", "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5", "canonical": "hasher-basic.canonical.json"}
     ],
     "source": "Domain model, Provenance: templateSet is the build's sha or tag and generatedOn is a date a driver passes in, because the core never reads a clock. Values that differ from the other cases show that the plan holds what it was given. Hash from the hasher golden case basic."
   },
@@ -62,7 +62,7 @@
     "templateSet": "7652e0e",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "follow-up", "hash": "eac39091f4d341b6452089fdfbde466cb20646e4a336c03559cc352cbaae5d8c", "canonical": "section-clauses.canonical.json"}
+      {"id": "follow-up", "hash": "be619a90537c71c10a64d40246b32d3b5c5f59a00ef5912d529f363e6e22a7ae", "canonical": "section-clauses.canonical.json"}
     ],
     "source": "0050, A condition can test whether a section is on: the instantiator copies a section clause as loaded, in includeIf and in a variable's askIf, with both enabled true and enabled false. The canonical text is written by hand from the hasher rules and 0050, which hashes the clause as {\"section\":\"id\",\"enabled\":true}, and its hash is shasum -a 256 over that text. A section clause that is dropped or changed in the copy, or an enabled false that is lost, changes the plan."
   },
@@ -82,7 +82,7 @@
     "templateSet": "7652e0e",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "basic", "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa", "canonical": "hasher-basic.canonical.json"}
+      {"id": "basic", "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5", "canonical": "hasher-basic.canonical.json"}
     ],
     "source": "Contract rule: Empty inputs. The variables a plan holds are the ones given, and none given means none. Hash from the hasher golden case basic."
   },

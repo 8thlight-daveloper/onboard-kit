@@ -19,7 +19,7 @@ This contract covers the answer checks only. The checks between sections (refere
 
 ## Rules
 
-**Which questions can take an answer.** A question is active when the question finder returns it for the plan. That is a planning question of a section that is on and included, whose `askIf` holds. The plan's own variables are active unless their `askIf` fails. A variable with `phase: onboarding` is not active. A question can be declared and not active.
+**Which questions can take an answer.** A question is active when the question finder returns it for the plan. That is a planning question of a section that is on and included, whose `askIf` holds. The plan's own variables are active unless their `askIf` fails. A variable with `audience: onboardee` is not active. A question can be declared and not active.
 
 **What `Validate` checks.** Every answer stored in `plan.Answers`, plan scope and each section, in three groups:
 

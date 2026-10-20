@@ -10,6 +10,6 @@ type Variable struct {
 	Required    bool
 	Multiple    bool
 	Default     Value
-	Phase       Phase
+	Audience    Audience
 	AskIf       *Condition
 }

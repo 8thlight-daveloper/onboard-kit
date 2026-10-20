@@ -6,7 +6,7 @@
       "basic.section.json"
     ],
     "canonical": "basic.canonical.json",
-    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "Hand-written. Contract rules: Canonical form, Fields, Defaults. A hash covers a section's definition."
   },
   {
@@ -16,7 +16,7 @@
       "full.section.json"
     ],
     "canonical": "full.canonical.json",
-    "hash": "5eeb55219153854bdd63c2e8ae4da4c90de207a14159af643ec71cc8164e5f58",
+    "hash": "45683359053c0c7b8ba2d7f46ae0fbbe48338fcccb952fd4aaaad3fd3ce6cf87",
     "source": "Hand-written. Every field of every type is set, with a source and a section switch that must be left out, an env entry with an empty value, repeats in the two sets, and a section clause in an includeIf and in an askIf. Contract rules: the key order tables, Fields, Sets, Conditions. 0030: it excludes source. 0050: it leaves the switch out and hashes a section clause."
   },
   {
@@ -36,7 +36,7 @@
       "values.section.json"
     ],
     "canonical": "values.canonical.json",
-    "hash": "d6b24b9ad42669b2348dbcba4a65a01e98b19e6c106a03853c6087b6349d4f72",
+    "hash": "5f77d92e2d34fd163a14ab3ff7d6a35073e8fdc94469c6c0b7fe195607bc082e",
     "source": "Hand-written. Contract rules: Values, Conditions, Sets. The Value kinds are from the domain model. The Text deferred is the stored word from 0035, and differs from the Deferred kind. The isOneOf items are out of order on purpose."
   },
   {
@@ -56,7 +56,7 @@
       "prose.section.json"
     ],
     "canonical": "prose.canonical.json",
-    "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18",
+    "hash": "3318ca853ba4f69e75de8865ff59ab46dcc2e1d7e338b6adef4d479cbdebce47",
     "source": "Hand-written. Contract rule: Prose. Every prose field is set, and the body holds a blank line, an indented line, and two spaces inside a line, all of which stay."
   },
   {
@@ -76,7 +76,7 @@
       "switch.section.json"
     ],
     "canonical": "switch.canonical.json",
-    "hash": "9643ccbf3124eec3e34b587e20915de6d573148c531c2cff2b64b6e819407d24",
+    "hash": "fa6f649f5678623ea610945695fd5eec8c8725e06c2c0ab71275fd38a71ae302",
     "source": "Hand-written. Contract rules: Conditions, Switch. 0050: a condition clause is a question clause or a section clause, and the hasher leaves the switch out. A section with enabled false. A section clause with enabled true and with enabled false, beside a question clause, in an includeIf and in an askIf, and alone in an askIf."
   },
   {
@@ -86,7 +86,7 @@
       "basic.section.json",
       "source-ignored.sections.json"
     ],
-    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "0030: the hash excludes source. One section with no source, and the same section with three different sources, one of them empty."
   },
   {
@@ -96,7 +96,7 @@
       "basic.section.json",
       "enabled-ignored.sections.json"
     ],
-    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "0050: the hasher leaves the switch out, the same as source. The same section with enabled absent, true, and false."
   },
   {
@@ -106,7 +106,7 @@
       "switch.section.json",
       "switch-enabled-ignored.sections.json"
     ],
-    "hash": "9643ccbf3124eec3e34b587e20915de6d573148c531c2cff2b64b6e819407d24",
+    "hash": "fa6f649f5678623ea610945695fd5eec8c8725e06c2c0ab71275fd38a71ae302",
     "source": "0050: the hasher leaves the switch out, and a section clause is not the switch. A section with section clauses and enabled false, true, and absent."
   },
   {
@@ -126,7 +126,7 @@
       "basic.section.json",
       "omitted-zero.section.json"
     ],
-    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "Contract rules: Zero values, Conditions. Every zero field of a section, a variable, and a step is written out, and so are an empty includeIf and an empty askIf. The hash is the same as when they are absent."
   },
   {
@@ -136,7 +136,7 @@
       "basic.section.json",
       "defaults-explicit.sections.json"
     ],
-    "hash": "edeff617b44d7b818110ce642d33e3ed9f35ca165b0b05b0606f13fa7d22ceaa",
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "Contract rule: Defaults. The domain model gives timing, type, and phase their defaults. Each default written out, alone and together, hashes like the absent field."
   },
   {
@@ -146,7 +146,7 @@
       "prose.section.json",
       "prose-whitespace.sections.json"
     ],
-    "hash": "f9549188a696c3ff89403277fe6740b3715f7cbdf91d1ff14840a268f1c74e18",
+    "hash": "3318ca853ba4f69e75de8865ff59ab46dcc2e1d7e338b6adef4d479cbdebce47",
     "source": "Contract rule: Prose. Each of the eight prose fields gets whitespace noise at its edges or in its line endings: CRLF, a lone CR, trailing spaces and tabs, a trailing newline, and leading blank lines."
   },
   {

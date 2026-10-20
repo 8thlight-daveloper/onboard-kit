@@ -19,7 +19,7 @@ func onboardingBlanks(variables []model.Variable) []string {
 	var blanks []string
 	seen := map[string]bool{}
 	for _, variable := range variables {
-		if variable.Phase != model.PhaseOnboarding || seen[variable.Name] {
+		if variable.Audience != model.AudienceOnboardee || seen[variable.Name] {
 			continue
 		}
 		seen[variable.Name] = true

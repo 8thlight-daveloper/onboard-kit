@@ -24,7 +24,7 @@ func resolveVariable(variable model.Variable, answer model.Value) resolution {
 	case valueDeferred:
 		return resolution{text: deferredMarker, gapCode: codeDeferred}
 	}
-	if variable.Phase == model.PhaseOnboarding {
+	if variable.Audience == model.AudienceOnboardee {
 		return resolution{text: "<" + variable.Name + ">"}
 	}
 	return resolution{text: unansweredMarker, gapCode: codeUnanswered}

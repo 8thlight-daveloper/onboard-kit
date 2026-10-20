@@ -22,7 +22,7 @@ A plan holds every template as a section and every variable of the plan and its 
 1. Every plan variable, in declared order. Its scope is `plan`.
 2. Then, for each section the section selector returns, in the order it returns them, every variable of the section in declared order. Its scope is the section's `id`.
 
-A section the selector leaves out has no candidate. It is out because its `includeIf` fails or its switch is off, as [0050](../../../docs/decisions/0050-section-switch.md) says. A variable with `phase: onboarding` is not a candidate. A variable with no `phase` is a planning variable. The finder lists no question for a section's switch: the switch is the `Enabled` field of the plan section, and it is not a question, so no `<section>.enabled` question exists. A candidate's id is `<scope>.<name>`.
+A section the selector leaves out has no candidate. It is out because its `includeIf` fails or its switch is off, as [0050](../../../docs/decisions/0050-section-switch.md) says. A variable with `audience: onboardee` is not a candidate. A variable with no `phase` is a planning variable. The finder lists no question for a section's switch: the switch is the `Enabled` field of the plan section, and it is not a question, so no `<section>.enabled` question exists. A candidate's id is `<scope>.<name>`.
 
 **Switches.** The finder builds a Switches value from every section of the plan, active or not: the section's `id` maps to false when its `Enabled` is false, and to true when it is true or absent. It passes this to the condition evaluator for every `askIf`.
 

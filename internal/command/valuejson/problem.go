@@ -54,7 +54,7 @@ func encodeQuestion(question model.Question) map[string]any {
 		"options":         options,
 		"required":        question.Required,
 		"multiple":        question.Multiple,
-		"phase":           string(question.Phase),
+		"audience":        string(question.Audience),
 		"answer":          Encode(question.Answer),
 		"declaredDefault": Encode(question.DeclaredDefault),
 		"group":           question.Group,

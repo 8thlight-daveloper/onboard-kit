@@ -70,7 +70,7 @@ The cost is one small copy per answer. Questions number in the tens, so this doe
 
 - **Optional sections.** Superseded by [0050](0050-section-switch.md). A section is switched off with its `enabled` setting, which is not a question. When it is off, the section's other questions are inactive. See [section template schema](../reference/section-template-schema/optional-sections.md).
 
-- **Phase.** Questions with `phase: onboarding` are not returned for planning. They are not asked and do not block.
+- **Audience.** The finder lists the active questions for one audience, see [0055](0055-variable-audience.md).
 
 - **Order.** Plan variables come first, then each active section's questions in document order, which [ordering](../reference/section-template-schema/ordering.md) defines. A question is never asked before the questions its condition names.
 

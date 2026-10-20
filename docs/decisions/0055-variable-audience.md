@@ -10,7 +10,7 @@ Two kinds of person touch a plan. The onboarder builds it. The onboardee is the 
 
 A variable's `phase` is `planning` or `onboarding`. That one word stands for three separate ideas: who answers, when they answer, and where the answer is kept. It also forces rules that no longer hold.
 
-- A plan variable may not use `phase: onboarding`, "because the plan holds one answer for everyone". That assumes one plan for everyone. With one plan for each onboardee, a plan-wide question such as "which team are you on?" can be asked of the onboardee. Its answer chooses which sections they see.
+- A plan variable may not use `audience: onboardee`, "because the plan holds one answer for everyone". That assumes one plan for everyone. With one plan for each onboardee, a plan-wide question such as "which team are you on?" can be asked of the onboardee. Its answer chooses which sections they see.
 - 0030 says newcomer answers are outside the plan. They will live in the onboardee's own plan file, see 0060.
 
 ## Decision

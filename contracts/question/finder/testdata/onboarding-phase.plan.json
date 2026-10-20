@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "variables": [{"name": "org_name", "description": "Organization", "phase": "planning"}],
+  "variables": [{"name": "org_name", "description": "Organization", "audience": "onboarder"}],
   "sections": [
     {"id": "access", "variables": [
-      {"name": "account_name", "description": "Your account name", "phase": "onboarding", "required": true},
+      {"name": "account_name", "description": "Your account name", "audience": "onboardee", "required": true},
       {"name": "repo_url", "description": "Repository", "required": true},
-      {"name": "laptop_tag", "description": "Laptop tag", "phase": "onboarding"}
+      {"name": "laptop_tag", "description": "Laptop tag", "audience": "onboardee"}
     ]}
   ]
 }

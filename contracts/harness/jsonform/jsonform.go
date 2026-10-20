@@ -266,7 +266,7 @@ func allKeys(v any) []string {
 }
 
 func (r *reader) variable(path string, v any) model.Variable {
-	m := r.object(path, v, "name", "description", "type", "multiple", "options", "pattern", "patternHint", "required", "default", "phase", "askIf")
+	m := r.object(path, v, "name", "description", "type", "multiple", "options", "pattern", "patternHint", "required", "default", "audience", "askIf")
 	variable := model.Variable{
 		Name:        r.str(path, m, "name"),
 		Description: r.str(path, m, "description"),
@@ -277,7 +277,7 @@ func (r *reader) variable(path string, v any) model.Variable {
 		PatternHint: r.str(path, m, "patternHint"),
 		Required:    r.boolean(path, m, "required"),
 		Default:     r.valueAt(path, m, "default"),
-		Phase:       model.Phase(r.str(path, m, "phase")),
+		Audience:    model.Audience(r.str(path, m, "audience")),
 	}
 	if raw, ok := m["askIf"]; ok {
 		variable.AskIf = r.condition(path+".askIf", raw)

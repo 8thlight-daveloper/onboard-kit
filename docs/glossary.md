@@ -16,7 +16,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Provenance | A record of where a plan came from: the template set version and when it was made. |
 | Default plan | The plan a new walkthrough starts from: the axis variables and every standard template as a section, with no answers. |
 | Active section | A section whose `includeIf` condition holds, or that has none, and whose `enabled` setting is true. Only active sections appear in the document. |
-| Axis variables | The plan variables that decide which sections are included: `team_state` and `discipline`. They are data in the default plan, like every other variable. |
+| Axis variables | The plan variables that decide which sections are included, such as `team_state` and `discipline`. `discipline` is the kind of work the person will do, answered by the onboardee. They are data in the default plan, like every other variable. |
 
 ## The tool
 
@@ -24,7 +24,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | -- | -- |
 | Tool | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it. |
 | Scope | Where a variable and its answer attach: the plan, or one section. A question's id is `<scope>.<name>`, such as `access.repo_url`. |
-| Phase | Which process asks a question: `planning`, while the consultant builds the plan, or `onboarding`, while a newcomer works through it. Planning skips onboarding questions. |
+| Audience | Who answers a question: the `onboarder`, who builds and maintains the plan, or the `onboardee`, the person being onboarded. |
 | Question group | Questions with the same name, type, and options, which a user interface can ask once and apply to every member. |
 | Question condition | An optional `askIf` on a variable. The question is asked only when other answers match. When it is false the question is skipped, keeps any stored answer, and does not block. See [conditions](reference/section-template-schema/conditions.md). |
 | Section condition | An optional `includeIf` on a section or template, with the same syntax as `askIf`. The section is in the plan's document only when it holds, and it may name only plan variables. See [conditions](reference/section-template-schema/conditions.md#section-conditions). |

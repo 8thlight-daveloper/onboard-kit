@@ -10,7 +10,7 @@ A variable belongs to the plan or to one section.
 
 - **Section variables** are declared in the section's `variables`. Each is its own variable with its own answer, even when two sections use the same name.
 - **Plan variables** are declared in the plan's `variables`. They are the axis variables `team_state` and `discipline`, document details such as `organization` and `team`, and settings such as `output_style`. The default plan carries the built-in ones. Their values live in `answers.plan`.
-- A plan variable is the same type as a section variable, with these limits. It may not use `phase: onboarding`, because the plan holds one answer for everyone. It should not use `askIf`, and the validator reports one that does.
+- A plan variable is the same type as a section variable, with these limits. It should not use `askIf`, and the validator reports one that does.
 - **A section uses only the variables it declares.** A `$name` the section does not declare is a lint error, even when a plan variable has that name. So a section stays self-contained if a plan variable is later removed. The finder still groups questions with the same name, type, and options across scopes, and offers a plan variable's answer as a suggestion. The consultant types `organization` once, and a section's own `organization` variable offers it.
 - A question id is `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`.
 
@@ -48,7 +48,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `required` | Whether the question must have an answer. Defaults to false |
 | `multiple` | Whether the variable takes several answers, held as a list. Defaults to false. Only `person` allows it for now, and lint rejects the rest |
 | `default` | A suggestion offered when the question is asked. It is never an answer and nothing fills it in, see [0045](../../decisions/0045-defaults-are-suggestions.md). It must satisfy the type, options, and pattern |
-| `phase` | `planning` (the default) or `onboarding`. See below |
+| `audience` | `onboarder` (the default) or `onboardee`. See below |
 | `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
 
 ## Types
@@ -83,9 +83,13 @@ A `person` variable names someone who can help with something. One answer is one
 - **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
 - **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. The declaration stays `type: person` with `multiple: true`, and only the stored answer changes, through a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
 
-## Phase
+## Audience
 
-`phase` says which process asks the question.
+`audience` says who answers the question. See [0055](../../decisions/0055-variable-audience.md).
 
-- **`planning`** is asked while the consultant builds the plan, and the value is stored in the plan.
-- **`onboarding`** is asked of each newcomer while they onboard. The plan does not hold the value, because each person has their own. Planning skips it: it is not asked and does not block. The assembled document shows it as a blank, `<name>`. Storing and asking for these answers waits for the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+- **`onboarder`** is the default. It is asked of the person who builds and maintains the plan. It holds facts the organization knows and every newcomer shares, such as a repository, who grants access, or who to contact.
+- **`onboardee`** is asked of the person being onboarded. It holds what the newcomer knows about themselves, such as their account name, their team, or the kind of work they do, and choices that decide which sections apply to them. Each newcomer's answers live in their own plan file.
+
+The onboarder writes the question and its options, and the onboardee gives the answer. Three questions decide the audience: who knows the answer, whether it varies per person, and whether the onboardee should be able to change it. If not, it is an onboarder variable. Every onboardee question must change what some section says or shows.
+
+Scope and audience are separate: a plan variable or a section variable can have either audience. The assembled document shows an onboardee variable with no value as a blank, `<name>`.

@@ -94,7 +94,7 @@ sections:
         required: true
       - name: account_name
         description: Your account name at the organization
-        phase: onboarding
+        audience: onboardee
     steps:
       - id: source-control
         name: Source control

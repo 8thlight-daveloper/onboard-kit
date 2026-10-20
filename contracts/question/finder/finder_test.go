@@ -28,7 +28,7 @@ type expectedFile struct {
 type expectedQuestion struct {
 	ID              string               `json:"id"`
 	Type            string               `json:"type"`
-	Phase           string               `json:"phase"`
+	Audience        string               `json:"audience"`
 	Required        bool                 `json:"required"`
 	Answer          json.RawMessage      `json:"answer"`
 	DeclaredDefault json.RawMessage      `json:"declaredDefault"`
@@ -246,9 +246,9 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 				if want.Type == "" {
 					wantType = model.DefaultVariableType
 				}
-				wantPhase := model.Phase(want.Phase)
-				if want.Phase == "" {
-					wantPhase = model.DefaultPhase
+				wantAudience := model.Audience(want.Audience)
+				if want.Audience == "" {
+					wantAudience = model.DefaultAudience
 				}
 				switch {
 				case question.Scope != scope || question.Name != name:
@@ -257,8 +257,8 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 					t.Errorf("%s: description is %q, want %q", want.ID, question.Description, variable.Description)
 				case question.Type != wantType:
 					t.Errorf("%s: type is %q, want %q", want.ID, question.Type, wantType)
-				case question.Phase != wantPhase:
-					t.Errorf("%s: phase is %q, want %q", want.ID, question.Phase, wantPhase)
+				case question.Audience != wantAudience:
+					t.Errorf("%s: phase is %q, want %q", want.ID, question.Audience, wantAudience)
 				case question.Required != want.Required || question.Required != variable.Required:
 					t.Errorf("%s: required is %v, want %v", want.ID, question.Required, want.Required)
 				case question.Multiple != variable.Multiple:
@@ -377,7 +377,7 @@ func TestBlockersAgreeWithTheQuestions(t *testing.T) {
 		finder := newFinder()
 		want := []string{}
 		for _, question := range finder.Questions(plan) {
-			if question.Required && question.Phase == model.PhasePlanning && !isSettledOrDeferred(question.Answer) {
+			if question.Required && question.Audience == model.AudienceOnboarder && !isSettledOrDeferred(question.Answer) {
 				want = append(want, question.ID)
 			}
 		}

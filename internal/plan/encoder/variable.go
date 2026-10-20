@@ -13,7 +13,7 @@ func (c *collector) variableNode(variable model.Variable, path string) node {
 	builder.add("patternHint", stringField(variable.PatternHint))
 	builder.add("required", flagField(variable.Required))
 	builder.add("default", valueNode(variable.Default))
-	builder.add("phase", stringField(string(variable.Phase)))
+	builder.add("audience", stringField(string(variable.Audience)))
 	builder.add("askIf", c.conditionNode(variable.AskIf, path+".askIf"))
 	return c.requireKeys(builder.build(), path)
 }

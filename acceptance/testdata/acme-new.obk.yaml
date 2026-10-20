@@ -67,7 +67,7 @@ sections:
         required: true
       - name: account_name
         description: Your account name at the organization
-        phase: onboarding
+        audience: onboardee
     steps:
       - id: source-control
         name: Source control
@@ -91,7 +91,7 @@ sections:
           - ask: Can you open the work tracker?
     source:
       template: access
-      hash: "41b8d95b8e27d852b693e2f77f6db8d7ebd6cd146ac3260f41fd661ef0beb90e"
+      hash: "714e6f801da509389e67bd1d0dacd1c26bfca6147bb55c34d05fcd1fdfb5ac2d"
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     summary: Get a working copy of the project and a passing test run on your machine.
@@ -148,7 +148,7 @@ sections:
         directory: $repo_dir
     source:
       template: clone-and-run-tests
-      hash: baba68e931cfe9e8bcfc9386e5b61631852e935b087e98bb511174f14c39b6c3
+      hash: ffc307f8f1eaf075421d0d1d58e0575e1e26bf6fcfc40d0fbdf87b1995f18748
   - id: review-design-system
     title: Review the design system
     summary: Find the design system and the main design file, and note what you cannot open.
@@ -183,7 +183,7 @@ sections:
           - ask: Can you open the main design file?
     source:
       template: review-design-system
-      hash: "8d3b83952994b823e23d2606beb4db8bc701b6579e96b7c1f9afe36ba790e094"
+      hash: cf9d9426e1e55d73ff057bbfb823afe56bed7d9c2af26e30cd0203ad542c4ad4
   - id: stuck-general
     title: If you are stuck
     summary: Who to ask when something is blocked and nobody named in a section can help.
@@ -200,4 +200,4 @@ sections:
         required: true
     source:
       template: stuck-general
-      hash: fe1746d0ab6623c7b0d54d72c9b336efd20df7588d8a170802bc55944695ef23
+      hash: "8d8ad17fef62f7d0453289ad4f2bffa1c40eb4eca666885cbdc7e4fead4750d3"

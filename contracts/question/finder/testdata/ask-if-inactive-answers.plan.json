@@ -18,7 +18,7 @@
       {"name": "d_settled", "description": "Asks if hidden b is settled", "askIf": {"all": [{"question": "b", "answer": {"isSettled": true}}]}},
       {"name": "e_unsettled", "description": "Asks if hidden b is not settled", "askIf": {"all": [{"question": "b", "answer": {"isSettled": false}}]}},
       {"name": "f_orphan", "description": "Asks about an answer with no question", "askIf": {"all": [{"question": "plan.extra", "answer": {"is": "x"}}]}},
-      {"name": "g_onboarding", "description": "Onboarding", "phase": "onboarding"},
+      {"name": "g_onboarding", "description": "Onboarding", "audience": "onboardee"},
       {"name": "h_asks_onboarding", "description": "Asks about an onboarding question", "askIf": {"all": [{"question": "g_onboarding", "answer": {"isSettled": false}}]}},
       {"name": "i_off_section", "description": "Asks about a switched-off section", "askIf": {"all": [{"question": "off.o", "answer": {"is": "yes"}}]}},
       {"name": "j_off_unsettled", "description": "Asks if switched-off answer is unsettled", "askIf": {"all": [{"question": "off.o", "answer": {"isSettled": false}}]}}

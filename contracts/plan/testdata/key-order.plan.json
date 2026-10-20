@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "provenance": {"templateSet": "abc1234", "generatedOn": "2026-10-15"},
   "variables": [
-    {"name": "team_state", "description": "Team state", "type": "choice", "multiple": false, "options": ["established", "first-consultants"], "required": true, "default": "established", "phase": "planning"}
+    {"name": "team_state", "description": "Team state", "type": "choice", "multiple": false, "options": ["established", "first-consultants"], "required": true, "default": "established", "audience": "onboarder"}
   ],
   "answers": {"plan": {"team_state": "established"}, "sections": {"s": {"backup": ["Ann"]}}},
   "sections": [
@@ -19,7 +19,7 @@
       "verification": "It works.",
       "body": "Body text.",
       "variables": [
-        {"name": "backup", "description": "Backup", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "phase": "onboarding",
+        {"name": "backup", "description": "Backup", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "audience": "onboardee",
          "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": true}}, {"section": "other", "enabled": false}]}}
       ],
       "steps": [

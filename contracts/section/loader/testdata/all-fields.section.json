@@ -11,8 +11,8 @@
   "body": "Run the build.\nThen check it.\n",
   "variables": [
     {"name": "review", "type": "boolean", "description": "Run the review?", "default": true},
-    {"name": "target", "type": "choice", "description": "Build target", "options": ["debug", "release"], "default": "debug", "required": true, "phase": "planning"},
-    {"name": "code", "description": "A code", "pattern": "^[A-Z]{3}$", "patternHint": "Three capitals", "phase": "onboarding"},
+    {"name": "target", "type": "choice", "description": "Build target", "options": ["debug", "release"], "default": "debug", "required": true, "audience": "onboarder"},
+    {"name": "code", "description": "A code", "pattern": "^[A-Z]{3}$", "patternHint": "Three capitals", "audience": "onboardee"},
     {"name": "build_command", "type": "command", "description": "Build command", "default": ["make", "build"]},
     {"name": "backup", "type": "person", "multiple": true, "description": "Backup",
       "askIf": {"all": [

@@ -9,7 +9,7 @@ type Question struct {
 	Options         []string
 	Required        bool
 	Multiple        bool
-	Phase           Phase
+	Audience        Audience
 	Answer          Value
 	DeclaredDefault Value
 	Group           string

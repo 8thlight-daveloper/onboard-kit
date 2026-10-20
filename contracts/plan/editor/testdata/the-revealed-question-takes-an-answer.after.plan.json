@@ -17,7 +17,7 @@
       {"name": "contacts", "description": "contacts", "type": "person", "multiple": true},
       {"name": "note", "description": "note"},
       {"name": "follow_up", "description": "follow up", "askIf": {"all": [{"question": "note", "answer": {"isSettled": true}}]}},
-      {"name": "account", "description": "account", "phase": "onboarding"}
+      {"name": "account", "description": "account", "audience": "onboardee"}
     ]},
     {"id": "extra", "title": "Extra", "summary": "A section that starts switched off.", "enabled": false, "variables": [
       {"name": "extra_note", "description": "extra note"}

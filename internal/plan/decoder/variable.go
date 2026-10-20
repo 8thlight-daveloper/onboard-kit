@@ -40,8 +40,8 @@ func (c *collector) variableOf(node *yaml.Node, at location) model.Variable {
 			variable.Multiple = c.flagOf(found.value, found.at)
 		case "default":
 			variable.Default = c.optionalValueOf(found.value, found.at)
-		case "phase":
-			variable.Phase = model.Phase(c.stringOf(found.value, found.at))
+		case "audience":
+			variable.Audience = model.Audience(c.stringOf(found.value, found.at))
 		case "askIf":
 			variable.AskIf = c.conditionOf(found.value, found.at)
 		default:

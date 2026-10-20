@@ -65,7 +65,7 @@ classDiagram
         required
         multiple
         default
-        phase
+        audience
         askIf
     }
     class Condition {
@@ -186,7 +186,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `required` | Boolean, optional |  |
 | `multiple` | Boolean, optional | Takes several answers, held as a list. Only `person` allows it for now |
 | `default` | Value, optional | Must satisfy the type, options, and pattern |
-| `phase` | Phase, optional | `planning` by default |
+| `audience` | Audience, optional | `onboarder` by default |
 | `askIf` | Condition, optional |  |
 
 ## Condition, Clause, and AnswerTest
@@ -226,7 +226,7 @@ A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no ques
 | Name | Values |
 | -- | -- |
 | VariableType | `string`, `boolean`, `choice`, `command`, `person` |
-| Phase | `planning`, `onboarding` |
+| Audience | `onboarder`, `onboardee` |
 | Timing | `before-day-one`, `week-one`, `days-8-to-30`, `days-31-to-90`, `anytime`. Each has a fixed day window, see [ordering](section-template-schema/ordering.md#timing) |
 | Severity | `error`, `warning` |
 
@@ -246,7 +246,7 @@ What the finder returns for one active question.
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |
 | `multiple` | Boolean |  |
-| `phase` | Phase |  |
+| `audience` | Audience |  |
 | `answer` | Value, optional | The stored answer, if any |
 | `declaredDefault` | Value, optional | The variable's `default`, shown to the person. Not a stored answer |
 | `group` | Text | The key shared by questions with the same name, type, options, and `multiple` |

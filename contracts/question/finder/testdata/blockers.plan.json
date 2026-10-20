@@ -28,7 +28,7 @@
         "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
       {"name": "shown_no_answer", "description": "Required, shown, no answer", "required": true,
         "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}},
-      {"name": "onboarding_only", "description": "Required, onboarding", "required": true, "phase": "onboarding"}
+      {"name": "onboarding_only", "description": "Required, onboarding", "required": true, "audience": "onboardee"}
     ]},
     {"id": "switched-off", "enabled": false, "variables": [{"name": "off_required", "description": "Switched off", "required": true}]},
     {"id": "left-out", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},

@@ -30,7 +30,7 @@ The known keys at each level. A key not listed is unknown.
 | Level | Keys |
 | -- | -- |
 | Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
+| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause, question form | `question`, `answer` |
 | Clause, section form | `section`, `enabled` |
@@ -111,7 +111,7 @@ The loader judges the file's format and not its meaning. The section validator a
 
 - A missing `id`, `title`, or `summary`, and an empty string for any of them. A file with only `schemaVersion` is the zero Section.
 - An `id` that is not a slug, or is `plan` or a reserved word. A variable `name` that breaks `[a-z][a-z0-9_]*` or is reserved. Two variables with one name, and two steps with one id.
-- A `timing`, `type`, or `phase` that is not in its list. A `type` that is absent stays empty, a `timing` stays empty, and a `phase` stays empty. The loader fills no default.
+- A `timing`, `type`, or `audience` that is not in its list. A `type` that is absent stays empty, a `timing` stays empty, and an `audience` stays empty. The loader fills no default.
 - A `multiple` on a type that does not allow it, a `default` that does not fit its type, options, or pattern, and a `pattern` that is not valid RE2.
 - A variable named `enabled`, of any type. It is an ordinary Variable, with no special reading. The name is reserved (0050, reserved names), and reserved-name checks are the job of the section validator and the plan validator, not the loader. A clause with `question: enabled` is an ordinary question clause.
 - A section clause that names a section that does not exist, or the section itself. The plan validator reports it.
@@ -189,7 +189,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A duplicate key accepted, or `"K"` and `K` told apart | `duplicate-key`, `unknown-field-repeated` |
 | A tag changing how a scalar is read | `tags` |
 | A key that is not a scalar skipped | `complex-key` |
-| Defaults filled for `type`, `timing`, or `phase` | every case with a variable or a section that omits them |
+| Defaults filled for `type`, `timing`, or `audience` | every case with a variable or a section that omits them |
 | The template validated: a missing `id` or `title`, an unknown `type` or `timing`, `id: plan`, an `after` naming the section, a bad variable name, two steps with one id, a check with two keys, an `includeIf` on a section question | `version-only`, `minimal`, `unvalidated` |
 | `$$` unescaped, a `$name` resolved or refused, or a trailing newline trimmed | `placeholders`, `acme-clone-and-run-tests`, `acme-access`, `strings` |
 | Text trimmed, such as an owner or a directory with spaces | `strings` |

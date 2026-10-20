@@ -36,7 +36,7 @@ func newQuestion(answers model.Answers, asked candidate) model.Question {
 		Options:         variable.Options,
 		Required:        variable.Required,
 		Multiple:        variable.Multiple,
-		Phase:           model.PhasePlanning,
+		Audience:        model.AudienceOnboarder,
 		Answer:          answer,
 		DeclaredDefault: variable.Default,
 	}

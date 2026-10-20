@@ -159,7 +159,7 @@ func variableObject(variable model.Variable) object {
 	if variable.Default.Kind != model.ValueKindNone {
 		o.add("default", valueOf(variable.Default))
 	}
-	o.addText("phase", string(variable.Phase))
+	o.addText("audience", string(variable.Audience))
 	if variable.AskIf != nil {
 		o.add("askIf", conditionObject(*variable.AskIf))
 	}

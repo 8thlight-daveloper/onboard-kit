@@ -42,7 +42,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 | Type | Key order |
 | -- | -- |
 | Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
+| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, `section`, `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
@@ -54,7 +54,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 - A key is written as a string, then `:`, then its value. Keys and items are separated by `,`. An object is `{` and `}`, and a list is `[` and `]`.
 - A key with a zero value is omitted. Zero means an empty string, `false`, a list with no items, a map with no entries, a Value of kind none, a nil pointer, a Condition with no clauses, or an AnswerTest with every field zero. A zero field has no effect, so it is the same as an absent one, whether a list is nil or empty.
 - An `isSettled` that is set is written, including `false`, because `false` is a test. A clause's `enabled` is written by the rule under Conditions.
-- An item of a list is always written. A clause, step, or check with every field zero is `{}`, and a variable with every field zero is `{"type":"string","phase":"planning"}`, because of the defaults. Dropping an item would shorten the list.
+- An item of a list is always written. A clause, step, or check with every field zero is `{}`, and a variable with every field zero is `{"type":"string","audience": "onboarder"}`, because of the defaults. Dropping an item would shorten the list.
 - Nothing is validated. A check with two of `run` and `ask`, a `timing` that is not a timing, and a clause with two tests are all written as held.
 - A map is written as an object with its keys in ascending byte order of their UTF-8 text. This covers a step's `env` and the keys inside `unknownFields`. An entry is written even when its value is empty.
 
@@ -66,7 +66,7 @@ The hasher fills three defaults before it writes, so an absent field and its def
 | -- | -- |
 | A section's `timing` | `anytime` |
 | A variable's `type` | `string` |
-| A variable's `phase` | `planning` |
+| A variable's `audience` | `onboarder` |
 
 Nothing else is filled. A step with no `timing` or `escalation` inherits them from its section, and the hasher leaves them as held. A step with `timing: anytime` therefore differs from a step with none, because the first does not follow its section. A `required` or `multiple` that is `false` is zero and omitted, so it already hashes like an absent one. A value that is not the default differs.
 
@@ -210,7 +210,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `after`, `isOneOf`, or `isNotOneOf` kept in the order held, or sorted with repeats kept | `sets`, `sets-order`, `full`, `values` |
 | A set sorted by its text without quotes | `sets`, `sets-order`, `values` |
 | `after` sorted in place, or any other change to the argument | The inputs-unchanged test |
-| Timing, type, or phase default not filled | `defaults-explicit`, `omitted-zero`, `basic`, the model-defaults test |
+| Timing, type, or audience default not filled | `defaults-explicit`, `omitted-zero`, `basic`, the model-defaults test |
 | A default filled on a step, or the section's `escalation` copied to a step | `defaults-differ`, `defaults-explicit`, `basic` |
 | CR LF or a lone CR not normalized | `prose-whitespace` |
 | Trailing spaces or tabs kept, the whole-string trim missing, only the trailing newline trimmed, or leading blank lines kept | `prose-whitespace`, `omitted-zero` |

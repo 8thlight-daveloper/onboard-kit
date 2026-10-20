@@ -30,7 +30,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | -- | -- |
 | Plan | `schemaVersion`, `provenance`, `variables`, `answers`, `sections`, then the unknown fields |
 | Provenance | `templateSet`, `generatedOn` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `phase`, `askIf` |
+| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |

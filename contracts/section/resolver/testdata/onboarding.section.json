@@ -4,12 +4,12 @@
   "summary": "Questions each newcomer answers",
   "body": "account=[$account_name] badge=[$badge] seat=[$seat] laptop=[$laptop] team=[$team]",
   "variables": [
-    {"name": "account_name", "phase": "onboarding", "description": "No answer, no default"},
-    {"name": "badge", "phase": "onboarding", "description": "A default", "default": "default-badge"},
-    {"name": "seat", "phase": "onboarding", "description": "A settled answer"},
-    {"name": "laptop", "phase": "onboarding", "description": "Deferred"},
+    {"name": "account_name", "audience": "onboardee", "description": "No answer, no default"},
+    {"name": "badge", "audience": "onboardee", "description": "A default", "default": "default-badge"},
+    {"name": "seat", "audience": "onboardee", "description": "A settled answer"},
+    {"name": "laptop", "audience": "onboardee", "description": "Deferred"},
     {"name": "team", "description": "A planning question with no answer"},
-    {"name": "login", "phase": "onboarding", "type": "command", "description": "A command"}
+    {"name": "login", "audience": "onboardee", "type": "command", "description": "A command"}
   ],
   "steps": [
     {"id": "run", "name": "Run", "run": ["ssh", "$login"]}

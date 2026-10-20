@@ -3,7 +3,7 @@ variables:
   - name: ""
     description: V
     type: colour
-    phase: someday
+    audience: someday
     pattern: "["
 sections:
   - id: s

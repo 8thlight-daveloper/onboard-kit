@@ -14,7 +14,7 @@
       "askIf": {"all": [{"question": "repo_url", "answer": {"isSettled": true}}]}},
     {"name": "ci_grantor", "description": "Who grants CI dashboard access", "required": true},
     {"name": "tracker_grantor", "description": "Who grants work tracker access", "required": true},
-    {"name": "account_name", "description": "Your account name at the organization", "phase": "onboarding"}
+    {"name": "account_name", "description": "Your account name at the organization", "audience": "onboardee"}
   ],
   "steps": [
     {"id": "source-control", "name": "Source control", "owner": "$source_control_grantor", "open": "$access_request_url",

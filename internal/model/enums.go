@@ -12,13 +12,13 @@ const (
 	DefaultVariableType = VariableTypeString
 )
 
-type Phase string
+type Audience string
 
 const (
-	PhasePlanning   Phase = "planning"
-	PhaseOnboarding Phase = "onboarding"
+	AudienceOnboarder Audience = "onboarder"
+	AudienceOnboardee Audience = "onboardee"
 
-	DefaultPhase = PhasePlanning
+	DefaultAudience = AudienceOnboarder
 )
 
 type Timing string

@@ -30,12 +30,12 @@ variables:
     options: [debug, release]
     default: debug
     required: true
-    phase: planning
+    audience: onboarder
   - name: code
     description: A code
     pattern: '^[A-Z]{3}$'
     patternHint: Three capitals
-    phase: onboarding
+    audience: onboardee
   - name: build_command
     type: command
     description: Build command

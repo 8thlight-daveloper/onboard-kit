@@ -66,7 +66,7 @@ For a declared variable the resolver takes the answer stored for it in the secti
 1. A settled answer is used.
 2. A deferred answer is a deferred value. A default does not replace it.
 3. An unanswered answer takes the section's default for the variable, when the default is settled. A default that is deferred gives a deferred value. A default that is not settled, or none, gives no value.
-4. No value in a variable with `phase: onboarding` becomes `<name>`, with the variable's name. It is not a gap.
+4. No value in a variable with `audience: onboardee` becomes `<name>`, with the variable's name. It is not a gap.
 5. No value in any other variable is an unanswered gap.
 
 Settled, deferred, and unanswered are as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) defines them. Text is settled when it has at least one character. A Flag is always settled. A List is settled when it has at least one item that is not empty. The Text `deferred` is a plain string, and it is settled. A value of no kind is unanswered. Nothing is checked against the variable's type, options, or pattern.

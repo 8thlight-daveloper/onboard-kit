@@ -357,7 +357,7 @@ func TestEmptyConditionsHashAsAbsentOnes(t *testing.T) {
 	t.Parallel()
 	absent := model.Section{ID: "s", Variables: []model.Variable{{Name: "v"}}}
 	empty := model.Section{ID: "s", IncludeIf: &model.Condition{All: []model.Clause{}}, Variables: []model.Variable{{Name: "v", AskIf: &model.Condition{}}}}
-	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning"}]}`)
+	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","audience":"onboarder"}]}`)
 	for name, section := range map[string]model.Section{"absent": absent, "empty": empty} {
 		if got := newHasher().Hash(section); got != want {
 			t.Errorf("%s conditions: got %s, want %s", name, got, want)
@@ -368,8 +368,8 @@ func TestEmptyConditionsHashAsAbsentOnes(t *testing.T) {
 func TestTheModelsDefaultsHashAsAbsentFields(t *testing.T) {
 	t.Parallel()
 	absent := model.Section{ID: "s", Variables: []model.Variable{{Name: "v"}}}
-	explicit := model.Section{ID: "s", Timing: model.DefaultTiming, Variables: []model.Variable{{Name: "v", Type: model.DefaultVariableType, Phase: model.DefaultPhase}}}
-	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning"}]}`)
+	explicit := model.Section{ID: "s", Timing: model.DefaultTiming, Variables: []model.Variable{{Name: "v", Type: model.DefaultVariableType, Audience: model.DefaultAudience}}}
+	want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","audience":"onboarder"}]}`)
 	for name, section := range map[string]model.Section{"absent": absent, "explicit": explicit} {
 		if got := newHasher().Hash(section); got != want {
 			t.Errorf("%s defaults: got %s, want %s", name, got, want)
@@ -443,7 +443,7 @@ func TestAValueIsHashedByItsKindAlone(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			section := model.Section{ID: "s", Variables: []model.Variable{{Name: "v", Default: c.value}}}
-			want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string"` + c.want + `,"phase":"planning"}]}`)
+			want := textHash(`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string"` + c.want + `,"audience":"onboarder"}]}`)
 			if got := newHasher().Hash(section); got != want {
 				t.Errorf("got %s, want %s", got, want)
 			}
@@ -499,7 +499,7 @@ func TestASectionClauseIsWrittenWithItsSectionAndSwitch(t *testing.T) {
 			},
 			"askIf": {
 				model.Section{ID: "s", Variables: []model.Variable{{Name: "v", AskIf: &model.Condition{All: []model.Clause{clause}}}}},
-				`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","phase":"planning","askIf":{"all":[` + text + `]}}]}`,
+				`{"id":"s","timing":"anytime","variables":[{"name":"v","type":"string","audience":"onboarder","askIf":{"all":[` + text + `]}}]}`,
 			},
 		}
 		for name, c := range cases {

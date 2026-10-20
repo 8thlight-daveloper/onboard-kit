@@ -27,7 +27,7 @@
         "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "show"}}]}},
       {"name": "v_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Shown by a condition",
         "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}},
-      {"name": "ob_flag", "type": "boolean", "phase": "onboarding", "description": "Asked of the newcomer"}
+      {"name": "ob_flag", "type": "boolean", "audience": "onboardee", "description": "Asked of the newcomer"}
     ]}
   ]
 }

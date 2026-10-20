@@ -15,9 +15,9 @@ func variableText(variable model.Variable) string {
 	if variableType == "" {
 		variableType = model.DefaultVariableType
 	}
-	phase := variable.Phase
-	if phase == "" {
-		phase = model.DefaultPhase
+	audience := variable.Audience
+	if audience == "" {
+		audience = model.DefaultAudience
 	}
 	asked := hasClauses(variable.AskIf)
 	return fields{}.
@@ -30,7 +30,7 @@ func variableText(variable model.Variable) string {
 		withProse("patternHint", variable.PatternHint).
 		withFlag("required", variable.Required).
 		withRaw("default", valueText(variable.Default), hasValue(variable.Default)).
-		withString("phase", string(phase)).
+		withString("audience", string(audience)).
 		withRaw("askIf", conditionTextOrEmpty(variable.AskIf), asked).
 		text()
 }

@@ -24,7 +24,7 @@ func listCandidates(plan model.Plan, sections []model.Section) []candidate {
 func planningCandidates(scope string, variables []model.Variable) []candidate {
 	candidates := []candidate{}
 	for _, variable := range variables {
-		if variable.Phase != model.PhaseOnboarding {
+		if variable.Audience != model.AudienceOnboardee {
 			candidates = append(candidates, candidate{scope: scope, variable: variable})
 		}
 	}

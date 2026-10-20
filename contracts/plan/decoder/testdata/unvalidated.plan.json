@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "variables": [
-    {"name": "", "description": "V", "type": "colour", "phase": "someday", "pattern": "["}
+    {"name": "", "description": "V", "type": "colour", "audience": "someday", "pattern": "["}
   ],
   "answers": {
     "plan": {"undeclared": "x"}

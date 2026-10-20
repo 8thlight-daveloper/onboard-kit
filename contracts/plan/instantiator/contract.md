@@ -39,7 +39,7 @@ Each section is its template, copied, with `source` set. The copy changes nothin
 - `source.template` is the template's `id`.
 - `source.hash` is the section hasher's hash of the template as given.
 - A `source` that the template already has is replaced. The hash does not cover it.
-- Nothing is filled in. A template with no `timing` has no `timing` in the plan, although its hash is of the default `anytime`. The same holds for a variable's `type` and `phase`.
+- Nothing is filled in. A template with no `timing` has no `timing` in the plan, although its hash is of the default `anytime`. The same holds for a variable's `type` and `audience`.
 - Nothing is resolved, selected, or ordered by `timing` or `after`. `$name` stays in place, and `includeIf`, `askIf`, and `after` are kept as loaded. A section clause in a condition is kept as loaded, like a question clause.
 - A new section is on, and its switch is left absent. The instantiator writes no `enabled` on a section, because a template has none and a section is its template copied. See [0050](../../../docs/decisions/0050-section-switch.md). A template with a variable named `enabled` is a template with a variable, copied like any other.
 - The unknown fields of a section are kept. The loader gives none, and a section from another source may have some.
