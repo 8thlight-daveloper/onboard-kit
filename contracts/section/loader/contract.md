@@ -29,7 +29,7 @@ The known keys at each level. A key not listed is unknown.
 
 | Level | Keys |
 | -- | -- |
-| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
+| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause, question form | `question`, `answer` |
@@ -92,6 +92,10 @@ A clause has one of two forms, and a key that belongs to the other form is not k
 - The two forms are the same in `includeIf` and in `askIf`.
 - An item of `all` that is not a map, whether plain text or a list, is `format.wrong-type` at the item, such as `includeIf.all[0]` or `variables[0].askIf.all[1]`. An `answer` that is not a map is `format.wrong-type` at `answer`. An `all` that is not a list is `format.wrong-type` at `all`. Nothing inside any of them is read, and the loader reads the other items as usual. The decoder gives the same codes and paths.
 
+## Reading a parent
+
+`parent` is the id of the section that this one is a sub-section of (0070). A template is a section copied into a plan, so a template that names a parent is allowed. The loader reads `parent` exactly as it reads `title`: a plain or quoted string, with the spelling, wrong-type, anchor, duplicate-key, and empty-value rules of a text field and the same codes and paths, such as `parent`. A null, empty, or absent `parent` is the empty string, which is a root section. The text is not trimmed, resolved, or checked: ` access ` and `$parent` load as written, and a plain `deferred` is text. The loader does not check that the parent exists, that it is not the section itself, or that no chain of parents loops. A template alone cannot know. The plan validator checks them.
+
 ## Reading the file
 
 ### What is read as the decoder reads it
@@ -138,6 +142,7 @@ These hold for every file the contract tests use.
 ## Not covered
 
 - Reading files, which the driver does, and the folder layout of a template set.
+- Checking that a `parent` names a section of the plan, that it is not the section itself, and that no chain of parents loops. That is the structure check of the plan validator, a later contract.
 - Checking that a template is valid, which is the section validator. Checking the set of templates is the plan validator on the default plan, and style rules are the template linter.
 - Warnings. The loader reports errors only.
 - Migrating an older version. The migrator is deferred until the first breaking change. See 0030.
@@ -201,6 +206,12 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `example` read into `description` or `default`, or `description` read into `example`, or `example` used when `description` is empty | `all-fields`, `strings` |
 | `example` trimmed, resolved as a placeholder, or its text changed | `strings`, `placeholders` |
 | `example` not checked as a text field: a spelling not reported, a list, a map, or a plain `true` accepted, or a null read as the text `null` | `boolean-spelling`, `number-spelling`, `null-spelling`, `wrong-type-values`, `null-and-empty` |
+| `parent` not read, or reported as an unknown field | `sub-section`, `all-fields` |
+| `parent` read into `title` or `after`, or kept only when a section has an `includeIf`, or an `includeIf` question read into `parent` | `sub-section`, `all-fields` |
+| `parent` not checked as a text field: a spelling not reported, a list, a map, or a plain `true` accepted, an anchor not reported, a null read as the text `null`, or a repeated key accepted | `boolean-spelling`, `number-spelling`, `null-spelling`, `alias`, `tags`, `wrong-type`, `duplicate-key`, `parent-null` |
+| A null or empty `parent` read as text, or refused | `null-and-empty`, `parent-null`, `parent-quoted-empty` |
+| `parent` trimmed, resolved as a placeholder, or a plain `deferred` read as Deferred | `strings`, `placeholders`, `deferred` |
+| A `parent` that names no section, or the section itself, refused or dropped | `unvalidated`, `parent-names-itself` |
 | A scalar `run` accepted, read as one item, or split on spaces | `run-scalar`, `wrong-type` |
 | A scalar `run` refused only in a step, or only in a check | `run-scalar` |
 | A scalar `run` refused where a list of one `$name` must load | `acme-clone-and-run-tests`, `placeholders` |

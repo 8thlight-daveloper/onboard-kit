@@ -1,6 +1,7 @@
 schemaVersion: 1
 id: 007
 title: 1.0
+parent: 1.0
 summary: 123
 owner: 0x1F
 timing: 1e3

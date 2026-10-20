@@ -1,6 +1,8 @@
 schemaVersion: 1
 id: a
 id: b
+parent: a
+"parent": b
 title: T
 summary: S
 "summary": S2

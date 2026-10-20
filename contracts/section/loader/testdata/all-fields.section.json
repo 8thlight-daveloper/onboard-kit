@@ -1,6 +1,7 @@
 {
   "id": "all-fields",
   "title": "All fields",
+  "parent": "access",
   "summary": "Do the thing.",
   "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "design"]}}, {"section": "access", "enabled": true}]},
   "timing": "days-8-to-30",
