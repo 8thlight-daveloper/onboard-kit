@@ -1,21 +1,17 @@
 package tui
 
-func (a App) sectionLines(l layout) []line {
-	content := []line{plainLine("Sections the plan can include. Space switches one on or off."), plainLine("")}
+func (app App) sectionLines(screenFrame frame, colors palette) []line {
+	content := []line{bodyLine("Sections the plan can include. Space switches one on or off."), blankLine()}
 	focus := 0
-	for index, section := range a.plan.Sections {
-		marker := "  "
-		tone := tonePlain
-		if index == a.sectionCursor {
-			marker = "> "
-			tone = toneFocus
-			focus = len(content)
-		}
+	for index, section := range app.plan.Sections {
 		box := "[x] "
 		if !isOn(section) {
 			box = "[ ] "
 		}
-		content = append(content, line{text: marker + box + section.Title, tone: tone})
+		if index == app.sectionCursor {
+			focus = len(content)
+		}
+		content = append(content, hereLine(box+section.Title, index == app.sectionCursor, true, screenFrame.innerWidth(), colors))
 	}
-	return scrollWindow(content, focus, l.bodyHeight)
+	return scrollWindow(content, focus, screenFrame.bodyHeight)
 }

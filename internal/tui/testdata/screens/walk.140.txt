@@ -1,40 +1,40 @@
-Onboarding plan  2 of 9  0 of 9 answered
-Plan                                           │ Plan
-  [ ] * Name of the organization               │ 2 of 9  * required
-> [ ] * Is the team established, or are we th… │
-  [ ]   Target format of the document          │ Is the team established, or are we the first consultants?
-Access                                         │
-  [ ] * Role of the person who owns onboardin… │ [ ] Answer: none yet
-  [ ] * Where to request source control access │
-  [ ] * Clone URL of the main repository       │ > established
-  [ ] * Who grants CI dashboard access         │   first-consultants
-  [ ] * Who grants work tracker access         │   deferred, answer later
-If you are stuck                               │   clear the answer
-  [ ] * Who can help with anything             │
-                                               │ Details
-                                               │ Type: choice: established, first-consultants
-                                               │ Section: Plan
-                                               │ Answered by: onboarder
-                                               │ Name: plan.team_state
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
-                                               │
+  Onboarding plan  Walk                                                                                                    0 of 9 answered
+  .◆.  .....  .
 
-enter choose  p back  d defer  o overview  r review  x clear  n skip  s sections  q quit  ? help
+  Plan                                                                              │ About this question
+  2 of 9, required, not answered yet                                                │
+                                                                                    │ Type: choice: established, first-consultants
+  Is the team established, or are we the first consultants?                         │ Answered by: onboarder
+                                                                                    │ Name: plan.team_state
+  > established                                                                     │
+    first-consultants                                                               │
+    deferred, answer later                                                          │
+    clear the answer                                                                │
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter choose  p back  d defer  o overview  r review  x clear  n skip  s sections  q quit  ? help

@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	startWidth  = 80
-	startHeight = 24
+	startWidth  = 120
+	startHeight = 30
 )
 
 type App struct {
@@ -38,216 +38,60 @@ func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audie
 	return app.opening()
 }
 
-func (a App) opening() App {
-	if len(a.questions) == 0 || a.holdsAnswers() {
-		return a.openReview()
+func (app App) opening() App {
+	if len(app.questions) == 0 || app.holdsAnswers() {
+		return app.openReview()
 	}
-	a.returnTo = screenOverview
-	return a.openQuestion(0)
+	app.returnTo = screenOverview
+	return app.openQuestion(0)
 }
 
-func (a App) holdsAnswers() bool {
-	for _, question := range a.questions {
-		if stateOf(question.Answer) != "unanswered" {
-			return true
-		}
-	}
-	return false
-}
+func (app App) Plan() model.Plan { return app.plan }
 
-func (a App) Plan() model.Plan { return a.plan }
+func (app App) Finished() bool { return app.finished }
 
-func (a App) Finished() bool { return a.finished }
+func (app App) Init() tea.Cmd { return nil }
 
-func (a App) Init() tea.Cmd { return nil }
-
-func (a App) Update(message tea.Msg) (tea.Model, tea.Cmd) {
+func (app App) Update(message tea.Msg) (tea.Model, tea.Cmd) {
 	switch typed := message.(type) {
 	case tea.WindowSizeMsg:
-		a.width, a.height = typed.Width, typed.Height
-		return a.resized(), nil
+		app.width, app.height = typed.Width, typed.Height
+		return app.resized(), nil
 	case tea.KeyMsg:
-		return a.updateKey(typed)
+		return app.updateKey(typed)
 	}
-	return a, nil
+	return app, nil
 }
 
-func (a App) resized() App {
-	a.entry = a.entry.withWidth(layoutFor(a.width, a.height).mainWidth)
-	a.review = a.review.scrolled(a.documentOffsetLimit(), 0)
-	return a
+func (app App) frame() frame { return newFrame(app.width, app.height) }
+
+func (app App) resized() App {
+	app.entry = app.entry.withWidth(app.inputWidth())
+	app.review = app.review.scrolled(app.documentOffsetLimit(), 0)
+	return app
 }
 
-func (a App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if key.String() == "ctrl+c" {
-		return a.quit()
+		return app.quit()
 	}
-	a.status = line{}
-	if a.helpOpen {
-		a.helpOpen = false
-		return a, nil
+	app.status = line{}
+	if app.helpOpen {
+		app.helpOpen = false
+		return app, nil
 	}
-	switch a.screen {
+	switch app.screen {
 	case screenOverview:
-		return a.updateOverview(key)
+		return app.updateOverview(key)
 	case screenReview:
-		return a.updateReview(key)
+		return app.updateReview(key)
 	case screenSections:
-		return a.updateSections(key)
+		return app.updateSections(key)
 	}
-	return a.updateWalk(key)
+	return app.updateWalk(key)
 }
 
-func (a App) quit() (tea.Model, tea.Cmd) {
-	a.finished = true
-	return a, tea.Quit
-}
-
-func (a App) current() (model.Question, bool) {
-	if a.cursor < 0 || a.cursor >= len(a.questions) {
-		return model.Question{}, false
-	}
-	return a.questions[a.cursor], true
-}
-
-func (a App) canSwitchSections() bool { return a.audience != model.AudienceOnboardee }
-
-func (a App) openQuestion(index int) App {
-	a.cursor = max(min(index, len(a.questions)-1), 0)
-	if question, ok := a.current(); ok {
-		a.entry = newEntryState(question, layoutFor(a.width, a.height).mainWidth)
-	}
-	a.screen = screenWalk
-	return a
-}
-
-func (a App) openOverview() App {
-	a.overviewCursor = a.cursor
-	a.screen = screenOverview
-	a.returnTo = screenOverview
-	return a
-}
-
-func (a App) openReview() App {
-	document, _ := a.backend.Assemble(a.plan)
-	a.review = newReviewState(a.backend, a.plan, a.audience, a.questions, document)
-	a.screen = screenReview
-	a.returnTo = screenReview
-	return a
-}
-
-func (a App) openSections() App {
-	if !a.canSwitchSections() {
-		return a
-	}
-	a.cameFrom = a.screen
-	a.screen = screenSections
-	return a
-}
-
-func (a App) closeSections() App {
-	switch a.cameFrom {
-	case screenOverview:
-		a.screen = screenOverview
-		a.overviewCursor = min(a.overviewCursor, max(len(a.questions)-1, 0))
-		return a
-	case screenReview:
-		return a.openReview()
-	}
-	return a.openQuestion(a.cursor)
-}
-
-func (a App) returnToWalk() App {
-	if len(a.questions) == 0 {
-		return a
-	}
-	return a.openQuestion(a.cursor)
-}
-
-func (a App) moveTo(index int) App {
-	if index >= len(a.questions) {
-		return a.openReview()
-	}
-	return a.openQuestion(max(index, 0))
-}
-
-func (a App) jumpTo(index int) App {
-	if index < 0 || index >= len(a.questions) {
-		return a
-	}
-	return a.openQuestion(index)
-}
-
-func (a App) firstUnanswered() int {
-	for index, question := range a.questions {
-		if stateOf(question.Answer) == "unanswered" {
-			return index
-		}
-	}
-	return a.cursor
-}
-
-func (a App) indexOf(id string) int {
-	for index, question := range a.questions {
-		if question.ID == id {
-			return index
-		}
-	}
-	return -1
-}
-
-func (a App) submit(value model.Value) (App, bool) {
-	question, ok := a.current()
-	if !ok {
-		return a, false
-	}
-	next, problems := a.backend.Submit(a.plan, question.ID, value)
-	if hasError(problems) {
-		a.entry.problems = problems
-		a.status = line{text: "not saved", tone: toneProblem}
-		return a, false
-	}
-	a.plan = next
-	a.refresh(question.ID)
-	a.status = a.saveStatus(problems)
-	return a, true
-}
-
-func (a App) saveStatus(problems []model.Problem) line {
-	if err := a.save(a.plan); err != nil {
-		return line{text: "could not save: " + err.Error(), tone: toneProblem}
-	}
-	if len(problems) > 0 {
-		return line{text: "saved. warning: " + firstMessage(problems), tone: toneWarning}
-	}
-	return line{text: "saved", tone: toneMuted}
-}
-
-func (a *App) refresh(keep string) {
-	a.questions = a.backend.Questions(a.plan, a.audience)
-	a.cursor = min(a.cursor, max(len(a.questions)-1, 0))
-	if index := a.indexOf(keep); index >= 0 {
-		a.cursor = index
-	}
-	a.overviewCursor = min(a.overviewCursor, max(len(a.questions)-1, 0))
-}
-
-func isOn(section model.Section) bool {
-	return section.Enabled == nil || *section.Enabled
-}
-
-func hasError(problems []model.Problem) bool {
-	for _, problem := range problems {
-		if problem.Severity == model.SeverityError {
-			return true
-		}
-	}
-	return false
-}
-
-func firstMessage(problems []model.Problem) string {
-	if len(problems) == 0 {
-		return ""
-	}
-	return problems[0].Message
+func (app App) quit() (tea.Model, tea.Cmd) {
+	app.finished = true
+	return app, tea.Quit
 }

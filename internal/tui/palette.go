@@ -5,37 +5,45 @@ import "github.com/charmbracelet/lipgloss"
 type tone int
 
 const (
-	tonePlain tone = iota
-	toneHeading
-	toneFocus
-	toneMuted
+	toneBody tone = iota
+	toneStrong
+	toneHere
+	toneFaint
 	toneWarning
 	toneProblem
 )
 
 type palette struct {
 	styles map[tone]lipgloss.Style
-	key    lipgloss.Style
 }
 
-func accentColor() lipgloss.TerminalColor {
+func brandBlue() lipgloss.TerminalColor {
 	return lipgloss.CompleteColor{TrueColor: "#0071CE", ANSI256: "32", ANSI: "4"}
 }
 
-func newPalette() palette {
-	warning := lipgloss.CompleteColor{TrueColor: "#FF8300", ANSI256: "208", ANSI: "3"}
-	problem := lipgloss.CompleteColor{TrueColor: "#F32735", ANSI256: "196", ANSI: "1"}
-	return palette{
-		styles: map[tone]lipgloss.Style{
-			tonePlain:   lipgloss.NewStyle(),
-			toneHeading: lipgloss.NewStyle().Bold(true).Foreground(accentColor()),
-			toneFocus:   lipgloss.NewStyle().Bold(true).Foreground(accentColor()),
-			toneMuted:   lipgloss.NewStyle().Faint(true),
-			toneWarning: lipgloss.NewStyle().Foreground(warning),
-			toneProblem: lipgloss.NewStyle().Foreground(problem),
-		},
-		key: lipgloss.NewStyle().Bold(true).Foreground(accentColor()),
-	}
+func brandOrange() lipgloss.TerminalColor {
+	return lipgloss.CompleteColor{TrueColor: "#FF8300", ANSI256: "208", ANSI: "3"}
 }
 
-func (p palette) style(of tone) lipgloss.Style { return p.styles[of] }
+func brandRed() lipgloss.TerminalColor {
+	return lipgloss.CompleteColor{TrueColor: "#F32735", ANSI256: "196", ANSI: "1"}
+}
+
+func newPalette() palette {
+	return palette{styles: map[tone]lipgloss.Style{
+		toneBody:    lipgloss.NewStyle(),
+		toneStrong:  lipgloss.NewStyle().Bold(true),
+		toneHere:    lipgloss.NewStyle().Bold(true).Foreground(brandBlue()),
+		toneFaint:   lipgloss.NewStyle().Faint(true),
+		toneWarning: lipgloss.NewStyle().Foreground(brandOrange()),
+		toneProblem: lipgloss.NewStyle().Foreground(brandRed()),
+	}}
+}
+
+func (colors palette) render(weight tone, focused bool, text string) string {
+	style := colors.styles[weight]
+	if !focused {
+		style = style.Faint(true)
+	}
+	return style.Render(text)
+}

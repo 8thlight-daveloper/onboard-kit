@@ -2,36 +2,36 @@ package tui
 
 import tea "github.com/charmbracelet/bubbletea"
 
-func (a App) updateOverview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
-	last := max(len(a.questions)-1, 0)
+func (app App) updateOverview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+	last := max(len(app.questions)-1, 0)
 	switch key.String() {
 	case "up", "k":
-		a.overviewCursor = max(a.overviewCursor-1, 0)
+		app.overviewCursor = max(app.overviewCursor-1, 0)
 	case "down", "j":
-		a.overviewCursor = min(a.overviewCursor+1, last)
+		app.overviewCursor = min(app.overviewCursor+1, last)
 	case "pgup":
-		a.overviewCursor = max(a.overviewCursor-a.pageSize(), 0)
+		app.overviewCursor = max(app.overviewCursor-app.pageSize(), 0)
 	case "pgdown":
-		a.overviewCursor = min(a.overviewCursor+a.pageSize(), last)
+		app.overviewCursor = min(app.overviewCursor+app.pageSize(), last)
 	case "g", "home":
-		a.overviewCursor = 0
+		app.overviewCursor = 0
 	case "G", "end":
-		a.overviewCursor = last
+		app.overviewCursor = last
 	case "enter":
-		a.returnTo = screenOverview
-		return a.jumpTo(a.overviewCursor), nil
+		app.returnTo = screenOverview
+		return app.jumpTo(app.overviewCursor), nil
 	case "esc", "w":
-		return a.returnToWalk(), nil
+		return app.returnToWalk(), nil
 	case "r":
-		return a.openReview(), nil
+		return app.openReview(), nil
 	case "s":
-		return a.openSections(), nil
+		return app.openSections(), nil
 	case "q":
-		return a.quit()
+		return app.quit()
 	case "?":
-		a.helpOpen = true
+		app.helpOpen = true
 	}
-	return a, nil
+	return app, nil
 }
 
-func (a App) pageSize() int { return max(layoutFor(a.width, a.height).bodyHeight-1, 1) }
+func (app App) pageSize() int { return max(app.frame().bodyHeight-1, 1) }

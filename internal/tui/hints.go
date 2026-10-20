@@ -7,56 +7,54 @@ type hint struct {
 	label string
 }
 
-const helpHint = "? help"
-
-func (a App) hints() []hint {
-	if a.helpOpen {
+func (app App) hints() []hint {
+	if app.helpOpen {
 		return []hint{{"any key", "closes help"}}
 	}
-	switch a.screen {
+	switch app.screen {
 	case screenOverview:
-		return a.overviewHints()
+		return app.overviewHints()
 	case screenReview:
-		return a.reviewHints()
+		return app.reviewHints()
 	case screenSections:
 		return []hint{{"space", "switch"}, {"up/down", "move"}, {"esc", "back"}, {"?", "help"}}
 	}
-	return a.walkHints()
+	return app.walkHints()
 }
 
-func (a App) walkHints() []hint {
-	if a.entry.typing() {
+func (app App) walkHints() []hint {
+	if app.entry.typing() {
 		hints := []hint{{"enter", "save"}, {"shift+tab", "back"}}
-		if len(a.entry.question.Suggestions) > 0 {
+		if len(app.entry.question.Suggestions) > 0 {
 			hints = append(hints, hint{"tab", "suggest"})
 		}
-		return append(hints, hint{"ctrl+d", "defer"}, hint{"esc", a.leaveName()}, hint{"f1", "help"})
+		return append(hints, hint{"ctrl+d", "defer"}, hint{"esc", app.leaveName()}, hint{"f1", "help"})
 	}
 	hints := []hint{{"enter", "choose"}, {"p", "back"}, {"d", "defer"}, {"o", "overview"}, {"r", "review"}, {"x", "clear"}, {"n", "skip"}}
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		hints = append(hints, hint{"s", "sections"})
 	}
 	return append(hints, hint{"q", "quit"}, hint{"?", "help"})
 }
 
-func (a App) leaveName() string {
-	if a.returnTo == screenReview {
+func (app App) leaveName() string {
+	if app.returnTo == screenReview {
 		return "review"
 	}
 	return "overview"
 }
 
-func (a App) overviewHints() []hint {
+func (app App) overviewHints() []hint {
 	hints := []hint{{"enter", "open"}, {"esc", "walk"}, {"r", "review"}}
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		hints = append(hints, hint{"s", "sections"})
 	}
 	return append(hints, hint{"q", "quit"}, hint{"?", "help"})
 }
 
-func (a App) reviewHints() []hint {
+func (app App) reviewHints() []hint {
 	hints := []hint{{"enter", "open"}, {"tab", "items/document"}, {"pgup/pgdn", "scroll"}, {"w", "walk"}, {"o", "overview"}}
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		hints = append(hints, hint{"s", "sections"})
 	}
 	return append(hints, hint{"q", "quit"}, hint{"?", "help"})
@@ -82,14 +80,14 @@ func fitHints(hints []hint, width int) []hint {
 	return append(append([]hint{}, body...), last)
 }
 
-func (a App) hintRow(l layout, p palette) string {
-	fitted := fitHints(a.hints(), l.width)
-	if cellWidth(hintText(fitted)) > l.width {
-		return renderRow(mutedLine(hintText(fitted)), l.width, p)
+func (app App) hintRow(width int, colors palette) string {
+	fitted := fitHints(app.hints(), width)
+	if cellWidth(hintText(fitted)) > width {
+		return renderCell(faintLine(hintText(fitted)), width, true, colors)
 	}
 	parts := make([]string, 0, len(fitted))
 	for _, entry := range fitted {
-		parts = append(parts, p.key.Render(entry.key)+p.style(toneMuted).Render(" "+entry.label))
+		parts = append(parts, colors.render(toneStrong, true, entry.key)+colors.render(toneFaint, true, " "+entry.label))
 	}
 	return strings.Join(parts, "  ")
 }

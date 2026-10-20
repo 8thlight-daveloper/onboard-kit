@@ -21,7 +21,7 @@ type goldenSize struct {
 	height int
 }
 
-var goldenSizes = []goldenSize{{80, 24}, {140, 40}}
+var goldenSizes = []goldenSize{{80, 24}, {120, 30}, {140, 40}}
 
 func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 	t.Helper()
@@ -48,10 +48,21 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"review":    build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
 		"sections":  build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
 		"onboardee": build(blankPlan(t), model.AudienceOnboardee),
+		"example":   buildFake(),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)
 		},
+	}
+}
+
+func buildFake() func(goldenSize) App {
+	return func(size goldenSize) App {
+		backend := newFakeBackend(
+			textQuestion("plan.organization", "plan", "Name of the organization", "Acme Industrial"),
+			textQuestion("plan.lead", "plan", "Who leads the onboarding, and what do they need to tell a newcomer on the first day?", "Sam Rivera, sam@acme.test"),
+		)
+		return resize(startFake(backend), size.width, size.height)
 	}
 }
 

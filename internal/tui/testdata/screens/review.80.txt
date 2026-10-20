@@ -1,14 +1,12 @@
-Onboarding plan  Review  13 of 14 answered
-> Items
-Answered 13 of 14.
+  Onboarding plan  Review                                    13 of 14 answered
+  x~.  xxxxx~  xxxx  x
 
-Deferred (2)
-> deferred: Is the team established, or are we the first consultants?
-  deferred: Who grants work tracker access
+  > Items
+  Answered 13 of 14.
 
-
-
-
+  Deferred (2)
+  > deferred: Is the team established, or are we the first consultants?
+    deferred: Who grants work tracker access
 
 
 
@@ -21,4 +19,6 @@ Deferred (2)
 
 
 
-enter open  tab items/document  pgup/pgdn scroll  w walk  o overview  ? help
+
+
+  enter open  tab items/document  pgup/pgdn scroll  w walk  o overview  ? help

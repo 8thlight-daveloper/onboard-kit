@@ -2,38 +2,38 @@ package tui
 
 import tea "github.com/charmbracelet/bubbletea"
 
-func (a App) updateSections(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (app App) updateSections(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "esc", "q":
-		return a.closeSections(), nil
+		return app.closeSections(), nil
 	case "up", "k":
-		a.sectionCursor = max(a.sectionCursor-1, 0)
+		app.sectionCursor = max(app.sectionCursor-1, 0)
 	case "down", "j":
-		a.sectionCursor = min(a.sectionCursor+1, max(len(a.plan.Sections)-1, 0))
+		app.sectionCursor = min(app.sectionCursor+1, max(len(app.plan.Sections)-1, 0))
 	case " ", "enter":
-		return a.toggleSection(), nil
+		return app.toggleSection(), nil
 	case "?":
-		a.helpOpen = true
+		app.helpOpen = true
 	}
-	return a, nil
+	return app, nil
 }
 
-func (a App) toggleSection() App {
-	if a.sectionCursor >= len(a.plan.Sections) {
-		return a
+func (app App) toggleSection() App {
+	if app.sectionCursor >= len(app.plan.Sections) {
+		return app
 	}
-	section := a.plan.Sections[a.sectionCursor]
-	next, problems := a.backend.SetSectionEnabled(a.plan, section.ID, !isOn(section))
+	section := app.plan.Sections[app.sectionCursor]
+	next, problems := app.backend.SetSectionEnabled(app.plan, section.ID, !isOn(section))
 	if hasError(problems) {
-		a.status = line{text: firstMessage(problems), tone: toneProblem}
-		return a
+		app.status = line{text: firstMessage(problems), tone: toneProblem}
+		return app
 	}
 	keep := ""
-	if question, ok := a.current(); ok {
+	if question, ok := app.current(); ok {
 		keep = question.ID
 	}
-	a.plan = next
-	a.refresh(keep)
-	a.status = a.saveStatus(problems)
-	return a
+	app.plan = next
+	app = app.refreshed(keep)
+	app.status = app.saveStatus(problems)
+	return app
 }

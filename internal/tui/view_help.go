@@ -1,28 +1,29 @@
 package tui
 
-func (a App) helpLines(width int) []line {
+func (app App) helpLines(width int) []line {
 	var content []line
-	content = append(content, headingLine("Keys"))
-	for _, entry := range a.helpEntries() {
-		content = append(content, lines(tonePlain, hanging("", entry.key+"  "+entry.label, width))...)
+	content = append(content, strongLine("Keys"))
+	for _, entry := range app.helpEntries() {
+		content = append(content, lines(toneBody, hanging("", entry.key+"  "+entry.label, width))...)
 	}
-	content = append(content, plainLine(""), mutedLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
+	content = append(content, blankLine(), faintLine("Marks: x answered, ~ deferred, . not answered, ◆ you are here."))
+	content = append(content, faintLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
 	return content
 }
 
-func (a App) helpEntries() []hint {
-	switch a.screen {
+func (app App) helpEntries() []hint {
+	switch app.screen {
 	case screenOverview:
-		return a.overviewHelp()
+		return app.overviewHelp()
 	case screenReview:
-		return a.reviewHelp()
+		return app.reviewHelp()
 	case screenSections:
 		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}}
 	}
-	return a.walkHelp()
+	return app.walkHelp()
 }
 
-func (a App) walkHelp() []hint {
+func (app App) walkHelp() []hint {
 	entries := []hint{
 		{"enter", "accept the answer and move to the next question"},
 		{"p, left, shift+tab", "back one question"},
@@ -34,7 +35,7 @@ func (a App) walkHelp() []hint {
 		{"esc", "back to the overview or review"},
 		{"q", "quit"},
 	}
-	if a.entry.typing() {
+	if app.entry.typing() {
 		return []hint{
 			{"enter", "accept the text and move to the next question"},
 			{"tab", "try a suggestion"},
@@ -47,13 +48,13 @@ func (a App) walkHelp() []hint {
 		}
 	}
 	entries = append([]hint{{"up, down, k, j", "move the choice"}}, entries...)
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
 	return entries
 }
 
-func (a App) overviewHelp() []hint {
+func (app App) overviewHelp() []hint {
 	entries := []hint{
 		{"up, down, k, j", "move"},
 		{"pgup, pgdn", "move a page"},
@@ -63,13 +64,13 @@ func (a App) overviewHelp() []hint {
 		{"r", "review"},
 		{"q", "quit"},
 	}
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
 	return entries
 }
 
-func (a App) reviewHelp() []hint {
+func (app App) reviewHelp() []hint {
 	entries := []hint{
 		{"up, down, k, j", "move between items, or scroll when the document has focus"},
 		{"tab", "switch focus between the items and the document"},
@@ -79,7 +80,7 @@ func (a App) reviewHelp() []hint {
 		{"o", "overview"},
 		{"q", "quit"},
 	}
-	if a.canSwitchSections() {
+	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
 	return entries

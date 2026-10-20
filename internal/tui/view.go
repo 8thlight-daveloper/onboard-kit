@@ -7,50 +7,60 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func (a App) View() string {
-	l := layoutFor(a.width, a.height)
-	p := newPalette()
-	if l.tooSmall() {
-		return a.smallWindowMessage()
+func (app App) View() string {
+	screenFrame := app.frame()
+	if screenFrame.tooSmall() {
+		return app.smallWindowMessage()
 	}
-	rows := []string{renderRow(a.header(), l.width, p)}
-	rows = append(rows, a.body(l, p)...)
-	rows = append(rows, renderRow(a.status, l.width, p))
-	rows = append(rows, a.hintRow(l, p))
+	colors := newPalette()
+	inner := screenFrame.innerWidth()
+	rows := []string{app.headerRow(inner, colors), app.railRow(inner, colors), ""}
+	rows = append(rows, app.body(screenFrame, colors)...)
+	rows = append(rows, renderCell(app.status, inner, true, colors), app.hintRow(inner, colors))
+	margin := spaces(sideMargin)
+	for index, row := range rows {
+		rows[index] = strings.TrimRight(margin+row, " ")
+	}
 	return strings.Join(rows, "\n")
 }
 
-func (a App) smallWindowMessage() string {
+func (app App) smallWindowMessage() string {
 	text := fmt.Sprintf("Please make the window larger, at least %d columns by %d rows.", minimumWidth, minimumHeight)
-	rows := wrapText(text, max(a.width, 1))
-	return strings.Join(rows[:min(len(rows), max(a.height, 1))], "\n")
+	rows := wrapText(text, max(app.width, 1))
+	return strings.Join(rows[:min(len(rows), max(app.height, 1))], "\n")
 }
 
-func (a App) body(l layout, p palette) []string {
-	if a.helpOpen {
-		return singlePane(a.helpLines(l.width), l, p)
+func (app App) body(screenFrame frame, colors palette) []string {
+	if app.helpOpen {
+		return stackPane(pane{lines: app.helpLines(screenFrame.innerWidth()), focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}
-	switch a.screen {
+	switch app.screen {
 	case screenOverview:
-		return a.overviewBody(l, p)
+		return app.overviewBody(screenFrame, colors)
 	case screenReview:
-		return a.reviewBody(l, p)
+		return app.reviewBody(screenFrame, colors)
 	case screenSections:
-		return singlePane(a.sectionLines(l), l, p)
+		return stackPane(pane{lines: app.sectionLines(screenFrame, colors), focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}
-	return a.walkBody(l, p)
+	return app.walkBody(screenFrame, colors)
 }
 
-func (a App) header() line {
+func (app App) headerRow(width int, colors palette) string {
 	title := "Onboarding plan"
-	if a.audience == model.AudienceOnboardee {
+	if app.audience == model.AudienceOnboardee {
 		title = "Your onboarding"
 	}
-	return headingLine(title + "  " + a.screenName() + "  " + a.progress())
+	left := colors.render(toneStrong, true, title) + colors.render(toneFaint, true, "  "+app.screenName())
+	right := app.progressText()
+	gap := width - cellWidth(left) - cellWidth(right)
+	if gap < 2 {
+		return left
+	}
+	return left + spaces(gap) + colors.render(toneFaint, true, right)
 }
 
-func (a App) screenName() string {
-	switch a.screen {
+func (app App) screenName() string {
+	switch app.screen {
 	case screenOverview:
 		return "Overview"
 	case screenReview:
@@ -58,44 +68,26 @@ func (a App) screenName() string {
 	case screenSections:
 		return "Sections"
 	}
-	return a.position()
+	return "Walk"
 }
 
-func (a App) position() string {
-	if len(a.questions) == 0 {
-		return "No questions"
-	}
-	return fmt.Sprintf("%d of %d", a.cursor+1, len(a.questions))
-}
-
-func (a App) progress() string {
-	return fmt.Sprintf("%d of %d answered", a.answeredCount(), len(a.questions))
-}
-
-func (a App) answeredCount() int {
-	count := 0
-	for _, question := range a.questions {
-		if stateOf(question.Answer) != "unanswered" {
-			count++
+func (app App) progressText() string {
+	total := len(app.questions)
+	left := total - app.answeredCount()
+	if app.audience == model.AudienceOnboardee {
+		switch {
+		case total == 0:
+			return "no questions"
+		case left == 0:
+			return "all answered"
 		}
+		return fmt.Sprintf("%d of %d to answer", left, total)
 	}
-	return count
+	return fmt.Sprintf("%d of %d answered", app.answeredCount(), total)
 }
 
-func (a App) sectionTitle(scope string) string {
-	if scope == "plan" {
-		return "Plan"
-	}
-	for _, section := range a.plan.Sections {
-		if section.ID == scope {
-			return section.Title
-		}
-	}
-	return scope
-}
-
-func (a App) groupTitle(question model.Question) string {
-	return a.sectionTitle(question.Scope)
+func (app App) position() string {
+	return fmt.Sprintf("%d of %d", app.cursor+1, len(app.questions))
 }
 
 func stateMark(value model.Value) string {
@@ -106,6 +98,16 @@ func stateMark(value model.Value) string {
 		return "[~]"
 	}
 	return "[ ]"
+}
+
+func stateWords(value model.Value) string {
+	switch stateOf(value) {
+	case "settled":
+		return "answered"
+	case "deferred":
+		return "deferred"
+	}
+	return "not answered yet"
 }
 
 func requiredMark(question model.Question) string {
