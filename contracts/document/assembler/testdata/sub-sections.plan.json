@@ -1,0 +1,11 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"access-request-chat","title":"Chat access","summary":"Ask in chat.","parent":"access-request","after":["access-request-github"]},
+  {"id":"office","title":"Office","summary":"Find the desk.","timing":"week-one"},
+  {"id":"access-request-github","title":"GitHub access","summary":"Ask for GitHub.","parent":"access-request"},
+  {"id":"access","title":"Access","summary":"Accounts for the team.","timing":"week-one"},
+  {"id":"access-request","title":"Request access","summary":"Ask $approver for each account.","owner":"Kim","parent":"access",
+   "variables":[{"name":"approver","description":"Who approves access"}]},
+  {"id":"setup","title":"Setup","summary":"Before the first day.","timing":"before-day-one"},
+  {"id":"access-token","title":"Security token","summary":"Collect the token.","parent":"access","timing":"before-day-one"},
+  {"id":"access-help","title":"Access help","summary":"Where to get help.","parent":"access","timing":"days-8-to-30"}]}

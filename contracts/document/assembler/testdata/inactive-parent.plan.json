@@ -1,0 +1,17 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core","discipline":"software"}},
+ "sections":[
+  {"id":"keep","title":"Keep","summary":"Stays."},
+  {"id":"keep-child","title":"Keep child","summary":"Stays under Keep.","parent":"keep"},
+  {"id":"keep-off","title":"Child switched off","summary":"Hidden $thing.","parent":"keep","enabled":false,
+   "variables":[{"name":"thing","description":"Hidden thing"}]},
+  {"id":"keep-off-grandchild","title":"Under a switched off child","summary":"Hidden $thing.","parent":"keep-off",
+   "variables":[{"name":"thing","description":"Hidden grandchild thing"}]},
+  {"id":"off","title":"Switched off","summary":"Hidden.","enabled":false},
+  {"id":"off-child","title":"Child of a switched off section","summary":"Hidden $thing.","owner":"Kim","parent":"off","enabled":true,
+   "variables":[{"name":"thing","description":"Hidden child thing"}]},
+  {"id":"off-grandchild","title":"Grandchild of a switched off section","summary":"Hidden $thing.","parent":"off-child",
+   "variables":[{"name":"thing","description":"Hidden grandchild of off"}]},
+  {"id":"design-only","title":"Design only","summary":"Hidden.","owner":"Kim",
+   "includeIf":{"all":[{"question":"plan.discipline","answer":{"is":"design"}}]}},
+  {"id":"design-child","title":"Child of design only","summary":"Hidden $thing.","parent":"design-only",
+   "variables":[{"name":"thing","description":"Hidden design child"}]}]}

@@ -181,5 +181,18 @@
       }
     ],
     "source": "A variable's optional example, an illustration of a good answer, is part of what a template says, so the section is its template copied with the example and the hash covers it. The canonical text is written by hand from the hasher rules, with example right after description and omitted when empty, and its hash is shasum -a 256 over that text. The role example is Engineering manager, from the change brief. A section that loses the example in the copy changes the plan, and a hash that ignores it differs from this one."
+  },
+  {
+    "name": "sub-sections",
+    "templates": ["sub-sections.sections.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "access", "hash": "8b8801556bdfca112a2515841a4f6d45ea5cb3d48dd9e945050246b3877904b7", "canonical": "sub-sections-access.canonical.json"},
+      {"id": "access-chat", "hash": "09f5b742f2fb53dcc07f3ee6a4cbddf72fd2e93e3286117500872c98ddff91cf", "canonical": "sub-sections-access-chat.canonical.json"},
+      {"id": "access-request", "hash": "68e4194ffa64a8122dcd294371d0403b148ac7feeed30eb861a1deca35c00215", "canonical": "sub-sections-access-request.canonical.json"}
+    ],
+    "source": "0070: a template may name a parent, the section is its template copied with the parent as held, and the hash covers the parent, written like any text identifier, omitted when empty, right after includeIf. Three templates given out of order: a root, a sub-section of it with an includeIf on the root's question and a timing, and a sub-section of that one. The canonical texts are written by hand from the hasher rules with parent after includeIf, and each hash is shasum -a 256 over its file. A section that loses the parent in the copy, or a hash that leaves it out or writes it in another place, differs from this one."
   }
 ]

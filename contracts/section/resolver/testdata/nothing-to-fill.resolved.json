@@ -2,6 +2,7 @@
   "id": "nothing-to-fill",
   "title": "Nothing to fill",
   "summary": "No variable is used",
+  "parent": "access",
   "timing": "anytime",
   "body": "Plain text with 5 dollars and no names.",
   "variables": [

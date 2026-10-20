@@ -240,5 +240,13 @@
     "resolved": "variable-examples.resolved.json",
     "problems": [],
     "source": "Hand-written. Contract rule: What is filled, the returned Section keeps every declared variable, and a variable's example is part of its declaration, so it is not resolved and is not an answer or a default. The role example is the Engineering manager illustration of the change brief. Kills an example dropped when the variables are copied, an example filled from the answers or the default, and an example read for $name."
+  },
+  {
+    "name": "sub-section",
+    "section": "sub-section.section.json",
+    "answers": "sub-section.answers.json",
+    "resolved": "sub-section.resolved.json",
+    "problems": [],
+    "source": "Hand-written. 0070: a sub-section names its parent with parent, an id as held. Contract rule: the returned Section keeps the parent as held, and a parent is an identifier and not text, so a $team in it is not filled, although the section declares team and holds an answer for it. The section's own text is filled from its own answers, and the answers of its parent (access.self_service) are not read. Kills a parent dropped or emptied, a parent filled like text, a parent taken from the plan or an answer, and the includeIf of a sub-section changed."
   }
 ]

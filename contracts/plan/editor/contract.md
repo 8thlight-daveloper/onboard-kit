@@ -42,6 +42,7 @@ The section switch is a field of the plan section and not an answer ([0050](../.
 - Turning a section **off** stores `enabled: false` on it. Turning a section **on** removes the field, so that the plan records only the sections turned off. This holds when the section already has an explicit `enabled: true` written by hand: it is removed.
 - A section already in the requested state stays in it. Turning on a section that has no field, and turning off a section that is off, change nothing.
 - Nothing else changes. The answers of every section stay, including those of the section turned off, and so do the other sections, their order, and every other field of the plan.
+- Only the named section changes. A switch is the section's own field, so turning a section off stores `enabled: false` on that section and writes nothing on its sub-sections, and turning a section on removes that section's own field and nothing on its sub-sections. A sub-section keeps its own `enabled`, a hand-written `true` included, and it keeps its `parent`. That a sub-section is inactive while its parent is off is the selector's rule and not stored, see [0070](../../../docs/decisions/0070-sub-sections.md). A sub-section can be turned off alone.
 - A section id that the plan does not hold, an empty id, and the id `plan` give one problem, `switch.unknown-section`, with severity `error`, and the returned plan equals the plan given. The problem's `section` is the id as given, and its `question` is empty.
 - The editor does not report sections that depend on the switch. A question of a section that is off is not active, so a later `Submit` for it is refused with `answer.inactive-question`.
 
@@ -61,6 +62,7 @@ These hold for every plan the contract tests use.
 - **Arguments unchanged.** The plan and the value are the same after the calls as before.
 - **Same input, same output.** The same call gives the same result on a shared editor, whatever calls came before, forward or in reverse order, however often it is repeated, and when calls run at the same time.
 - **Nothing shared that an edit changes.** The returned plan holds its own `answers`, with their maps and their lists, and its own `sections` list and each section's `enabled`. Changing any of them in the result changes neither the argument nor a later result, and changing the same parts of the argument after the call does not change the result. This holds when the answer is refused too. A list in a submitted value is copied when it is stored. Other parts of the plan, such as a section's variables and steps, may be shared.
+- **Sections keep their `parent`.** Every section of the returned plan has the `parent` it had in the argument, when the call applies and when it refuses, for `Submit` and for `SetSectionEnabled`. The editor does not read `parent`, check that it names a section, or move a section for it. The order of the sections is the argument's.
 - **Only the named change.** A `Submit` that applies changes one entry of `answers` and nothing else. `SetSectionEnabled` changes the `enabled` field of one section and nothing else. In both, every field outside the change, `unknownFields` included, comes back as it was.
 - **Examples stay.** Every variable of the returned plan, in `variables` and in each section, keeps its `example` as held, whether the call applies, refuses, clears, or switches. An `example` is an illustration for the person answering. It is not an answer and not a default, and no call changes it.
 - **Section order.** The sections of the result are in the order of the argument's sections. Rotating or reversing the argument's sections does not change the answers or the problems.
@@ -76,6 +78,7 @@ None. `Submit` returns a changed copy that differs only in `answers`, and `SetSe
 ## Not covered
 
 - Whether a section's map stays in `answers.sections` after its last answer is removed.
+- That a `parent` names a section, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them, and the editor copies a section as held.
 - Duplicate section ids, and duplicate variable names in one scope.
 - A section that holds `enabled: true` and is turned off, and a plan that holds both a `plan` section and plan variables.
 - The wording of a message, and the codes the validator will add for checks between sections, which `Submit` does not return.
@@ -99,6 +102,8 @@ None. `Submit` returns a changed copy that differs only in `answers`, and `SetSe
 11. **Clearing needs an active question like any answer.** An unanswered value for an unknown question is `answer.unknown-question`, and for one that is not active it is `answer.inactive-question`. Raised by the same sequence. Case: `clearing-an-unknown-question-is-refused`. `cheap`
 12. **A switch to the state a section already has is not a problem.** The result equals the plan, apart from a hand-written `enabled: true` that is removed. Raised by 0050, which does not say. Cases: `switch-on-when-on`, `switch-off-when-off`. `cheap`
 13. **The sections of the result keep the argument's order.** Raised by "differs only in" in 0010. Cases: the section order property. `cheap`
+14. **A switch does not cascade in the plan.** Turning a parent off writes its own `enabled: false` and nothing on a sub-section, and turning it on leaves the explicit `true` of a sub-section in place. The selector applies the cascade when it is read, as 0070 says, so a plan file records only the switches a person made. The other choice was to write the switch on every descendant. Raised by 0070 "Switches cascade" and 0050 "the plan records only the sections turned off". Cases: `switch-off-a-parent-leaves-its-sub-sections-alone`, `switch-on-a-parent-leaves-its-sub-sections-alone`, `switch-off-a-sub-section-alone`. `hard`
+15. **A question of a sub-section of a section that is off cannot be answered.** The editor relies on the finder, which treats a sub-section as active only when its parent is. Raised by 0070 and the finder's new rule. Case: `question-of-a-sub-section-of-a-switched-off-section-is-refused`. `cheap`
 
 ## Wrong implementations tried
 
@@ -130,4 +135,9 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | A variable's `example` dropped when the plan is copied, in the plan's variables, in every section, or in one section, after an applied answer, a clear, a refusal, or a switch | `examples-kept-by-a-section-answer`, `examples-kept-by-a-plan-answer`, `examples-kept-by-a-clear`, `examples-kept-by-a-refused-answer`, `examples-kept-by-a-switch-off`, `examples-kept-by-a-switch-on` |
 | An argument is changed | The arguments-unchanged test |
 | The result shares the answers, the sections list, a stored list, or an `enabled` pointer with the argument | The shared-parts test, the stored-list test, the arguments-unchanged test |
+| A copy of the sections that drops `parent`, in an applied answer, a clear, a refusal, or a switch | `parents-kept-by-a-sub-section-answer`, `parents-kept-by-a-clear`, `parents-kept-by-a-refused-answer`, `switch-off-a-sub-section-alone`, the parent test |
+| A copy that keeps the `parent` of the first level only, or drops it from a section that has a parent that is itself a sub-section | `parents-kept-by-an-answer-of-a-sub-sub-section`, the parent test |
+| A switch off that writes `enabled: false` on the sub-sections, or turns off the parent of a sub-section switched off alone | `switch-off-a-parent-leaves-its-sub-sections-alone`, `switch-off-a-sub-section-alone` |
+| A switch on that removes the explicit `enabled` of a sub-section | `switch-on-a-parent-leaves-its-sub-sections-alone` |
+| An answer of a sub-section of a switched-off section applied | `question-of-a-sub-section-of-a-switched-off-section-is-refused` |
 | An earlier result returned on a later call | The same-input test, and most cases |

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "access-request",
+    "title": "Request access",
+    "summary": "Ask for each account.",
+    "includeIf": {"all": [{"question": "access.self_service", "answer": {"is": true}}]},
+    "parent": "access",
+    "timing": "week-one",
+    "steps": [{"id": "ask", "name": "Ask"}]
+  },
+  {
+    "id": "access-chat",
+    "title": "Chat access",
+    "summary": "Join the channels.",
+    "parent": "access-request"
+  },
+  {
+    "id": "access",
+    "title": "Access",
+    "summary": "Accounts for the team.",
+    "variables": [
+      {"name": "self_service", "description": "Do people request their own access?", "type": "boolean"}
+    ]
+  }
+]

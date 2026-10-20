@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "provenance": {"templateSet": "example", "generatedOn": "2026-10-15"},
+  "sections": [
+    {"id": "access", "title": "Access", "summary": "Accounts for the team.", "variables": [{"name": "self_service", "description": "Do people request their own access?", "type": "boolean"}]},
+    {"id": "access-request", "title": "Request access", "summary": "Ask for each account.", "includeIf": {"all": [{"question": "access.self_service", "answer": {"is": true}}]}, "parent": "access", "enabled": true, "variables": [{"name": "approver", "description": "Who approves access"}]},
+    {"id": "access-chat", "title": "Chat access", "summary": "Join the channels.", "parent": "access-request", "variables": [{"name": "channel", "description": "Which channel"}]},
+    {"id": "office", "title": "Office", "summary": "Find the desk."}
+  ],
+  "answers": {
+    "plan": {},
+    "sections": {
+      "access": {"self_service": true},
+      "access-request": {"approver": "Kim"},
+      "access-chat": {"channel": "general"}
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "plan": {"team": "plan-team"},
+  "sections": {
+    "access": {"self_service": true, "team": "access-team"},
+    "access-request": {"team": "Platform", "approver": "Kim"}
+  }
+}

@@ -904,5 +904,98 @@
     "after": "examples.plan.json",
     "problems": [],
     "source": "0050: turning on a section that has no switch leaves the plan as it was. Every example stays. Kills a switch that rebuilds the variables of the section it changes."
+  },
+  {
+    "name": "parents-kept-by-a-sub-section-answer",
+    "operation": "submit",
+    "before": "parents.plan.json",
+    "question": "access-request.approver",
+    "value": "Lee",
+    "after": "parents-section-answer.after.plan.json",
+    "problems": [],
+    "source": "0070: a section keeps its parent, the editor copies a section as held, and an answer changes only answers (0010, Plans are values). The plan has a sub-section with an includeIf on its parent's question and an explicit enabled true, and a sub-section of that one. The answer replaces the sub-section's own. Kills a copy of the sections that drops the parent or the explicit switch."
+  },
+  {
+    "name": "parents-kept-by-an-answer-of-a-sub-sub-section",
+    "operation": "submit",
+    "before": "parents.plan.json",
+    "question": "access-chat.channel",
+    "value": "general",
+    "after": "parents-grandchild-answer.after.plan.json",
+    "problems": [],
+    "source": "0070: the answers of a section are its own, at any depth, and the parent of every section stays. A question of a sub-section of a sub-section is active when every ancestor is on and its own gates hold. Kills a copy that keeps the parent of the first level only, or an answer stored under the parent."
+  },
+  {
+    "name": "parents-kept-by-a-clear",
+    "operation": "submit",
+    "before": "parents.plan.json",
+    "question": "access-request.approver",
+    "after": "parents-clear.after.plan.json",
+    "problems": [],
+    "source": "0070 and 0035: an unanswered value removes the stored answer, and every section keeps its parent. Kills a clear that rebuilds the sections."
+  },
+  {
+    "name": "parents-kept-by-a-refused-answer",
+    "operation": "submit",
+    "before": "parents.plan.json",
+    "question": "access-chat.nobody",
+    "value": "x",
+    "after": "parents.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error",
+        "question": "access-chat.nobody",
+        "section": "access-chat"
+      }
+    ],
+    "source": "0010, Errors: an unknown question is refused and the returned plan equals the original, parents included. Kills a refusal that returns a copy without the parents."
+  },
+  {
+    "name": "switch-off-a-parent-leaves-its-sub-sections-alone",
+    "operation": "switch",
+    "before": "parents.plan.json",
+    "section": "access",
+    "enabled": false,
+    "after": "parents-switch-off.after.plan.json",
+    "problems": [],
+    "source": "0070: switches cascade by the selector, and a section's switch is its own field. Turning a parent off stores enabled false on the parent only. A sub-section keeps its own switch, here an explicit true, and a sub-section of that one keeps none. Kills a switch that writes false on the sub-sections, or clears their fields."
+  },
+  {
+    "name": "switch-off-a-sub-section-alone",
+    "operation": "switch",
+    "before": "parents.plan.json",
+    "section": "access-chat",
+    "enabled": false,
+    "after": "parents-switch-off-a-sub-section.after.plan.json",
+    "problems": [],
+    "source": "0070: a sub-section can be turned off alone, and the parent and every other section are untouched. Its parent stays on it. Kills a switch that turns off the parent too, or drops the parent of the section it changes."
+  },
+  {
+    "name": "switch-on-a-parent-leaves-its-sub-sections-alone",
+    "operation": "switch",
+    "before": "parents-off.plan.json",
+    "section": "access",
+    "enabled": true,
+    "after": "parents.plan.json",
+    "problems": [],
+    "source": "0050 and 0070: turning a section on removes its own field, and the explicit true of a sub-section is not removed with it. Kills a switch to on that clears the field of every sub-section."
+  },
+  {
+    "name": "question-of-a-sub-section-of-a-switched-off-section-is-refused",
+    "operation": "submit",
+    "before": "parents-off.plan.json",
+    "question": "access-request.approver",
+    "value": "Lee",
+    "after": "parents-off.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "access-request.approver",
+        "section": "access-request"
+      }
+    ],
+    "source": "0070 and the finder contract: a sub-section is active only if its parent is active, so the questions of a sub-section of a switched-off section are not active, whatever its own switch says. The stored answers stay. Kills an editor that applies the answer, and a switch that lets the sub-section's own true count."
   }
 ]
