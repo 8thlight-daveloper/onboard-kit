@@ -1,0 +1,5 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "audience": "onboardee", "required": true, "answer": "design", "suggestions": [{"value": "design", "source": "given"}]},
+  {"id": "design-setup.design_url", "required": true},
+  {"id": "design-setup.design_tool", "audience": "onboardee", "required": true}
+], "blockers": ["design-setup.design_url", "design-setup.design_tool"]}

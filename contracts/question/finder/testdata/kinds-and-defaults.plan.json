@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "sections": [
     {"id": "kinds", "variables": [
-      {"name": "no_type", "description": "No type and no phase"},
+      {"name": "no_type", "description": "No type and no audience"},
       {"name": "uses_ci", "type": "boolean", "description": "Uses CI"},
       {"name": "style", "type": "choice", "options": ["markdown", "html"], "description": "Style", "audience": "onboarder"},
       {"name": "setup_command", "type": "command", "description": "Setup command", "required": true},

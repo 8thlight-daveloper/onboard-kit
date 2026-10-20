@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Kind of work", "audience": "onboardee", "required": true}
+  ],
+  "answers": {"plan": {"discipline": "design"}},
+  "sections": [
+    {"id": "software-setup", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]}, "variables": [
+      {"name": "repo_url", "description": "Repository", "required": true},
+      {"name": "editor", "description": "Editor", "audience": "onboardee", "required": true}
+    ]},
+    {"id": "design-setup", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}, "variables": [
+      {"name": "design_url", "description": "Design system", "required": true},
+      {"name": "design_tool", "description": "Design tool", "audience": "onboardee", "required": true}
+    ]}
+  ]
+}

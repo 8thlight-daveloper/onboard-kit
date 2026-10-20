@@ -1,4 +1,0 @@
-{"questions": [
-  {"id": "plan.org_name"},
-  {"id": "access.repo_url", "required": true}
-], "blockers": ["access.repo_url"]}

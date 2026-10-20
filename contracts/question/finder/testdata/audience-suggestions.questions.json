@@ -1,0 +1,8 @@
+{"questions": [
+  {"id": "plan.team", "group": "team", "declaredDefault": "platform", "suggestions": [
+    {"value": "platform", "source": "default"}, {"value": "design", "source": "default"}, {"value": "data", "source": "given"}, {"value": "gone", "source": "given"}]},
+  {"id": "s.team", "group": "team", "audience": "onboardee", "declaredDefault": "design", "answer": "data", "suggestions": [
+    {"value": "platform", "source": "default"}, {"value": "design", "source": "default"}, {"value": "data", "source": "given"}, {"value": "gone", "source": "given"}]},
+  {"id": "t.team", "group": "team", "audience": "onboardee", "declaredDefault": "platform", "answer": "data", "suggestions": [
+    {"value": "platform", "source": "default"}, {"value": "design", "source": "default"}, {"value": "data", "source": "given"}, {"value": "gone", "source": "given"}]}
+], "blockers": []}

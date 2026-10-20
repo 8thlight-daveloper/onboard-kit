@@ -23,7 +23,7 @@
         "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}},
       {"name": "hidden", "description": "Hidden by a condition",
         "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "show"}}]}},
-      {"name": "onboard", "audience": "onboardee", "description": "Asked of the newcomer"}
+      {"name": "ee_text", "audience": "onboardee", "description": "Asked of the onboardee"}
     ]},
     {"id": "off", "enabled": false, "variables": [
       {"name": "o_str", "description": "Text in a switched off section"}

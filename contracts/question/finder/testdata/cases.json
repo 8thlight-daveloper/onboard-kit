@@ -18,16 +18,16 @@
     "source": "docs/decisions/0050-section-switch.md: a switched-off section is not active and its questions are not asked. conditions.md: includeIf false puts the section out. A section clause tests the switch only. No question is listed for the switch"
   },
   {
-    "name": "onboarding-phase",
-    "plan": "onboarding-phase.plan.json",
-    "expected": "onboarding-phase.questions.json",
-    "source": "docs/reference/section-template-schema/variables.md, Phase: planning skips an onboarding question, it is not asked and does not block. docs/decisions/0010-plan-editor.md, Phase"
+    "name": "audience-split",
+    "plan": "audience-split.plan.json",
+    "expected": "audience-split.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Rules: a variable has an audience, onboarder by default, and either scope can have either. Every active question is listed whoever answers it, in one order. A named audience lists its own questions, and its blockers are its own required questions with no answer. docs/reference/section-template-schema/variables.md, Audience"
   },
   {
     "name": "kinds-and-defaults",
     "plan": "kinds-and-defaults.plan.json",
     "expected": "kinds-and-defaults.questions.json",
-    "source": "docs/reference/section-template-schema/variables.md, Fields: type is string by default, phase is planning by default. docs/reference/domain-model.md, Question: type and phase are not optional"
+    "source": "docs/reference/section-template-schema/variables.md, Fields: type is string by default, audience is onboarder by default. docs/reference/domain-model.md, Question: type and audience are not optional"
   },
   {
     "name": "answers-as-stored",
@@ -45,7 +45,7 @@
     "name": "blockers",
     "plan": "blockers.plan.json",
     "expected": "blockers.questions.json",
-    "source": "docs/decisions/0010-plan-editor.md, Where the behavior lives: Blockers lists active required planning questions with no answer. docs/decisions/0035-settled-and-deferred-answers.md: a required question is satisfied by a settled or a deferred answer, unanswered blocks. A false flag is settled"
+    "source": "docs/decisions/0010-plan-editor.md, Where the behavior lives: Blockers lists active required questions with no answer, for an audience. docs/decisions/0035-settled-and-deferred-answers.md: a required question is satisfied by a settled or a deferred answer, unanswered blocks. A false flag is settled"
   },
   {
     "name": "ask-if-tests",
@@ -147,6 +147,36 @@
     "name": "acme",
     "plan": "acme.plan.json",
     "expected": "acme.questions.json",
-    "source": "docs/reference/examples/acme, as contracts/plan/testdata/acme.plan.json. Expected questions written by hand from the plan: the software discipline leaves out review-design-system, account_name is onboarding, tracker_grantor is deferred"
+    "source": "docs/reference/examples/acme, as contracts/plan/testdata/acme.plan.json. Expected questions written by hand from the plan: the software discipline leaves out review-design-system, account_name is an onboardee question and is asked in the full list, tracker_grantor is deferred"
+  },
+  {
+    "name": "audience-ask-if",
+    "plan": "audience-ask-if.plan.json",
+    "expected": "audience-ask-if.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Rules: a question is active by its own condition, whoever answers it, so an onboarder question may depend on an onboardee answer, and the other way round. Conditions are unchanged: a condition on an unanswered question is false. docs/decisions/0010-plan-editor.md, order: a question comes after the question it needs. conditions.md: a settled answer is one for a question that is active"
+  },
+  {
+    "name": "audience-blockers",
+    "plan": "audience-blockers.plan.json",
+    "expected": "audience-blockers.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Rules: blockers are per audience, a required onboardee question does not block the onboarder, and an answer already in the file is respected. docs/decisions/0035-settled-and-deferred-answers.md: settled or deferred satisfies a required question. 0050: an off or left-out section is not asked"
+  },
+  {
+    "name": "audience-section-choice",
+    "plan": "audience-section-choice.plan.json",
+    "expected": "audience-section-choice.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Context and Rules: a plan variable may have audience onboardee and its answer chooses sections through includeIf, and the evaluator needs no change. conditions.md: includeIf reads the stored plan answers"
+  },
+  {
+    "name": "audience-unanswered-choice",
+    "plan": "audience-unanswered-choice.plan.json",
+    "expected": "audience-unanswered-choice.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Rules: a condition on an unanswered question is false, so sections that depend on an onboardee answer stay out until the answer exists, and a required onboardee question does not block the onboarder"
+  },
+  {
+    "name": "audience-suggestions",
+    "plan": "audience-suggestions.plan.json",
+    "expected": "audience-suggestions.questions.json",
+    "source": "docs/decisions/0045-defaults-are-suggestions.md: the defaults of the questions in the group and the answers already given for the name, in any scope. docs/decisions/0055-variable-audience.md: scope and audience are separate, and the finder lists questions by audience only. Written by hand from the plan"
   }
 ]
