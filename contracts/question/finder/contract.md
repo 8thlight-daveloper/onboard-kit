@@ -11,7 +11,7 @@ A plan holds every template as a section and every variable of the plan and its 
 `Questions(plan, audience) -> list of Question` and `Blockers(plan, audience) -> list of Blocker`.
 
 - `plan` is a Plan, as stored. The finder reads `plan.Variables`, `plan.Answers`, and `plan.Sections`. It reads no other field.
-- `Question` and `Blocker` are the model types. A Question has `ID`, `Scope`, `Name`, `Description`, `Type`, `Options`, `Required`, `Multiple`, `Audience`, `Answer`, `DeclaredDefault`, `Group`, and `Suggestions`.
+- `Question` and `Blocker` are the model types. A Question has `ID`, `Scope`, `Name`, `Description`, `Example`, `Type`, `Options`, `Required`, `Multiple`, `Audience`, `Answer`, `DeclaredDefault`, `Group`, and `Suggestions`.
 - Both results are empty when the plan has no active question. There is no error and no problem list. The finder evaluates the plan as written, and the validators report plans that cannot do their job.
 - `audience` is a `model.Audience`: `onboarder`, `onboardee`, or the empty value, which means both. An empty audience lists every active question in one list. A named audience lists the active questions that variables of that audience declare. A driver that wants the questions and the blockers calls both, with the same audience.
 - Both functions take the plan and the audience and nothing else.
@@ -49,7 +49,7 @@ So a question that does not name a later question stays where it is in candidate
 **What a question holds.**
 
 - `ID`, `Scope`, and `Name` as above.
-- `Description`, `Options`, `Required`, and `Multiple` are the variable's own. A variable with `options` and a type other than `choice` keeps its options.
+- `Description`, `Example`, `Options`, `Required`, and `Multiple` are the variable's own. `Example` is one illustration of a good answer, and it is empty when the variable has none. Each question keeps the `Example` of its own variable, so two questions in one group can hold different examples. It is never an answer, never a default, and never a suggestion. It plays no part in the group key, activity, the order, the suggestions, or the blockers. A variable with `options` and a type other than `choice` keeps its options.
 - `Type` is the variable's type, or `string` when it has none. `Audience` is the variable's audience, or `onboarder` when it has none, so it is never empty.
 - `Answer` is the answer stored for the question, exactly as stored: a settled value, a Deferred value, empty text, an empty list, or a value of no kind when nothing is stored. It is never filled from the default.
 - `DeclaredDefault` is the variable's `default`, exactly as declared, and a value of no kind when it has none. It is not an answer. A question with a default and no answer has no answer and blocks when it is required, as [0045](../../../docs/decisions/0045-defaults-are-suggestions.md) says.
@@ -126,6 +126,7 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 18. **Suggestions and groups draw on every question and every stored answer, whatever the audience.** A default of an onboardee question is offered to an onboarder question of the same group, and an answer stored for an onboardee question is a given answer. The model has one group key and one suggestion list for a name. Case: `audience-suggestions`. `hard`
 19. **A required question with an answer already in the file does not block, whoever put the answer there.** An onboarder who fills in an onboardee answer settles it. 0055 says "An answer already in the file is respected". Case: `audience-blockers`. `cheap`
 20. **An audience that is none of the three values is not covered.** The finder may return no question or treat it as both. `cheap`
+21. **A question's `Example` is its own variable's, and nothing else reads it.** It is never an answer, so a required question with only an example blocks, and it is never offered as a suggestion. The model docs do not describe the field yet, so the rule comes from the change that added it. Case: `examples`. `cheap`
 
 ## Wrong implementations tried
 
@@ -183,4 +184,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An onboardee plan variable is skipped, or an onboardee section variable is skipped | `audience-split`, `audience-section-choice` |
 | An argument changed: the answers or the order of the sections | The plan-unchanged test |
 | An earlier result returned on a later call | The no-memory test, and most cases |
+| Example left out of the question, or empty when the variable has one | `examples` |
+| Example taken from another variable of the group, such as the first one or the last one | `examples` |
+| Example used as the answer, or as a default, or satisfies a required question | `examples` |
+| Example offered as a suggestion | `examples` |
+| Example added to the group key, so the questions of a group split | `examples` |
 | A result list shared between calls | The result-list test |

@@ -27,6 +27,7 @@ type expectedFile struct {
 
 type expectedQuestion struct {
 	ID              string               `json:"id"`
+	Example         string               `json:"example"`
 	Type            string               `json:"type"`
 	Audience        string               `json:"audience"`
 	Required        bool                 `json:"required"`
@@ -333,6 +334,8 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 					t.Errorf("%s: scope and name are %q and %q", want.ID, question.Scope, question.Name)
 				case question.Description != variable.Description:
 					t.Errorf("%s: description is %q, want %q", want.ID, question.Description, variable.Description)
+				case question.Example != want.Example || want.Example != variable.Example:
+					t.Errorf("%s: example is %q, want %q", want.ID, question.Example, want.Example)
 				case question.Type != wantType:
 					t.Errorf("%s: type is %q, want %q", want.ID, question.Type, wantType)
 				case question.Audience != wantAudience:

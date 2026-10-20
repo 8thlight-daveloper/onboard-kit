@@ -178,5 +178,11 @@
     "plan": "audience-suggestions.plan.json",
     "expected": "audience-suggestions.questions.json",
     "source": "docs/decisions/0045-defaults-are-suggestions.md: the defaults of the questions in the group and the answers already given for the name, in any scope. docs/decisions/0055-variable-audience.md: scope and audience are separate, and the finder lists questions by audience only. Written by hand from the plan"
+  },
+  {
+    "name": "examples",
+    "plan": "examples.plan.json",
+    "expected": "examples.questions.json",
+    "source": "The example field change (model.Variable.Example and model.Question.Example): a variable has an optional example, one illustration of a good answer, empty when absent, and its question carries it. Nothing fills it in or accepts it as an answer or a default. The group key, activity, order, suggestions and blockers do not use it. Written by hand from the plan"
   }
 ]
