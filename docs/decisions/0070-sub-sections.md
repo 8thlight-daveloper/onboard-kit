@@ -46,7 +46,7 @@ An example: an `access` section asks the onboarder "Do new people request their 
   - Assembler: heading level from depth.
   - Plan validator, in its structure checks: the parent exists, there is no cycle, and an `includeIf` reference points only to an ancestor or a plan variable.
 - **Docs.** The schema docs and the domain model, and the conditions rule changes from "plan variables only" to "plan variables and ancestors".
-- **The walkthrough** groups a sub-section under its parent. The wireframes show it.
+- **The walkthrough** groups a sub-section under its parent. The overview shows it indented one level for each level of depth, under its own section title, and the progress rail keeps its cells next to its parent's. The wireframes show it.
 - **ADR 0030.** Sections stay a flat list in the file, each with its own `parent` field, so the file keeps its shape and diffs stay small.
 
 ## Not decided

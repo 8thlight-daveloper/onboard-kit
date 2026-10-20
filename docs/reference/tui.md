@@ -191,6 +191,13 @@ Decided.
 
 Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
+## Direction: screen tabs and sub-sections
+
+Direction, from using the redesigned walk.
+
+- **A tab strip names the screens.** The header lists the screens a person can move between, with the current one highlighted, such as `Walk  [Overview]  Review  Sections`. The current tab is bold in the accent colour, which is "you are here". The others are faint, each with its key beside it. With no colour the current tab is in brackets. A screen the audience cannot use, such as Sections for the onboardee, is left out. A bare title does not show which screen a person is on.
+- **A sub-section is indented.** Under [0070](../decisions/0070-sub-sections.md) a section can have a parent. The overview shows it one indent level for each level of depth, under its own section title. The progress rail keeps its cells next to its parent's, and the document preview nests it by heading level.
+
 ## Open
 
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
