@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"}],
+  "answers": {"plan": {"discipline": "software"}},
+  "sections": [
+    {"id": "base", "variables": [{"name": "b_q", "description": "Parent"}]},
+    {"id": "own-off", "parent": "base", "enabled": false, "variables": [{"name": "off_q", "description": "Own switch off", "required": true}]},
+    {"id": "own-false", "parent": "base", "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]},
+      "variables": [{"name": "false_q", "description": "Own includeIf false", "required": true}]},
+    {"id": "own-true", "parent": "base", "enabled": true, "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]},
+      "variables": [{"name": "true_q", "description": "Own gates pass", "required": true}]}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "watcher", "variables": [
+      {"name": "child_on", "description": "Asked when child's own switch is on", "askIf": {"all": [{"section": "child", "enabled": true}]}},
+      {"name": "child_off", "description": "Asked when child's own switch is off", "askIf": {"all": [{"section": "child", "enabled": false}]}},
+      {"name": "parent_off", "description": "Asked when the parent's own switch is off", "askIf": {"all": [{"section": "switched-off", "enabled": false}]}},
+      {"name": "grand_on", "description": "Asked when the grandchild's own switch is on", "askIf": {"all": [{"section": "grand", "enabled": true}]}}
+    ]},
+    {"id": "switched-off", "enabled": false, "variables": [{"name": "p_q", "description": "Switched off"}]},
+    {"id": "child", "parent": "switched-off", "variables": [{"name": "c_q", "description": "Own switch absent, parent off"}]},
+    {"id": "grand", "parent": "child", "enabled": true, "variables": [{"name": "g_q", "description": "Own switch on, ancestor off"}]}
+  ]
+}

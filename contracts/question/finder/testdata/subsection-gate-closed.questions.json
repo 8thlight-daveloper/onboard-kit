@@ -1,0 +1,4 @@
+{"questions": [
+  {"id": "access.self_service", "type": "boolean", "required": true, "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "access.tool", "answer": "github", "suggestions": [{"value": "github", "source": "given"}]}
+], "blockers": []}

@@ -2,7 +2,7 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `question/finder`. Issue: [#68](https://github.com/8thlight-daveloper/onboard-kit/issues/68).
 
-The question finder reads a plan and says what it asks. It returns every active question with the answer stored for it, its declared default, its group, and its suggestions. It also returns the blockers, which are the required questions that have no answer. Both take an audience, the person who answers: the onboarder, the onboardee, or both. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), the [domain model](../../../docs/reference/domain-model.md), and the [section template schema](../../../docs/reference/section-template-schema/README.md).
+The question finder reads a plan and says what it asks. It returns every active question with the answer stored for it, its declared default, its group, and its suggestions. It also returns the blockers, which are the required questions that have no answer. Both take an audience, the person who answers: the onboarder, the onboardee, or both. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0070](../../../docs/decisions/0070-sub-sections.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), the [domain model](../../../docs/reference/domain-model.md), and the [section template schema](../../../docs/reference/section-template-schema/README.md).
 
 A plan holds every template as a section and every variable of the plan and its sections. The finder works out the active questions from the plan whenever it is asked. It finds the active sections with the section selector and evaluates `askIf` with the condition evaluator.
 
@@ -23,9 +23,11 @@ A plan holds every template as a section and every variable of the plan and its 
 1. Every plan variable, in declared order. Its scope is `plan`.
 2. Then, for each section the section selector returns, in the order it returns them, every variable of the section in declared order. Its scope is the section's `id`.
 
-A section the selector leaves out has no candidate. It is out because its `includeIf` fails or its switch is off, as [0050](../../../docs/decisions/0050-section-switch.md) says. A variable of either audience is a candidate. A variable with no `audience` is an onboarder variable. The finder lists no question for a section's switch: the switch is the `Enabled` field of the plan section, and it is not a question, so no `<section>.enabled` question exists. A candidate's id is `<scope>.<name>`.
+A section the selector leaves out has no candidate. It is out because its `includeIf` fails or its switch is off, as [0050](../../../docs/decisions/0050-section-switch.md) says, or because it is a sub-section that is not active, as the next paragraph says. A variable of either audience is a candidate. A variable with no `audience` is an onboarder variable. The finder lists no question for a section's switch: the switch is the `Enabled` field of the plan section, and it is not a question, so no `<section>.enabled` question exists. A candidate's id is `<scope>.<name>`.
 
-**Switches.** The finder builds a Switches value from every section of the plan, active or not: the section's `id` maps to false when its `Enabled` is false, and to true when it is true or absent. It passes this to the condition evaluator for every `askIf`.
+**Sub-sections.** A section may name a parent section, as [0070](../../../docs/decisions/0070-sub-sections.md) says. The finder does not read `parent`. It takes the sections the selector returns, in the order it returns them. So the questions of a sub-section come directly after the questions of its parent, and the questions of a section below the sub-section come after the sub-section's, in the order the selector gives for the whole subtree. A question of a sub-section the selector leaves out is not a candidate, whatever the reason: its parent is out or switched off, its own switch is off, its own `includeIf` fails, its parent is not a section of the plan, or its parent chain is a cycle. Such a question is not returned and does not block, and an answer stored for it stays in the plan. The question of an active sub-section is active by its own `askIf` like any other, and it blocks when it is required and has no answer. Whether a sub-section is active is the selector's rule and not restated here: the finder shows it only through which questions it returns. The selector reads the answers as stored, so a stored answer of a parent's question counts for the sub-section's `includeIf` even when that question is not asked, while an `askIf` still reads only the answers of active questions, as the next paragraphs say.
+
+**Switches.** The finder builds a Switches value from every section of the plan, active or not: the section's `id` maps to false when its `Enabled` is false, and to true when it is true or absent. It passes this to the condition evaluator for every `askIf`. A sub-section's value is its own switch only: a switched-off parent does not change the value of its sub-sections, so a section clause on a sub-section whose parent is off tests that sub-section's own switch.
 
 **Which candidates are active.** A candidate with no `askIf` is active. Otherwise the finder asks the condition evaluator, `Holds(askIf, scope, answers, switches)`, with the candidate's scope as the scope and the answers described next. The candidate is active when the condition holds. An active question keeps its stored answer and is returned. A candidate whose condition does not hold is not returned and does not block. It keeps its stored answer in the plan.
 
@@ -86,11 +88,12 @@ These hold for every plan the contract tests use.
 
 ## Side effects and plan access
 
-None. It reads the plan's variables, the answers, and the content of the sections it needs: `id`, `includeIf`, `timing`, `after`, `Enabled`, and `variables`. It returns no plan. This matches the row for `question/finder` in [components](../../../docs/architecture/components.md).
+None. It reads the plan's variables, the answers, and the content of the sections it needs: `id`, `includeIf`, `parent`, `timing`, `after`, `Enabled`, and `variables`. It returns no plan. This matches the row for `question/finder` in [components](../../../docs/architecture/components.md).
 
 ## Not covered
 
 - Duplicate section ids, and duplicate variable names in one scope.
+- Whether a section's `parent` names a section of the plan, whether the parent chain has a cycle, and whether an `includeIf` or an `askIf` names only an ancestor's questions and plan variables. The plan validator's structure check reports them. The finder reads such a plan as the selector returns it and never hangs.
 - A `timing` that is not one of the five names, a `type` that is not one of the five types, and an `audience` on a variable, or an audience asked for, that is none of the values above.
 - A `pattern` that does not compile. The validators report it.
 - An answer stored under a section id the plan does not hold, or under a name that no variable of the plan declares. Whether such an answer is offered as a given answer is left open.
@@ -127,6 +130,9 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 19. **A required question with an answer already in the file does not block, whoever put the answer there.** An onboarder who fills in an onboardee answer settles it. 0055 says "An answer already in the file is respected". Case: `audience-blockers`. `cheap`
 20. **An audience that is none of the three values is not covered.** The finder may return no question or treat it as both. `cheap`
 21. **A question's `Example` is its own variable's, and nothing else reads it.** It is never an answer, so a required question with only an example blocks, and it is never offered as a suggestion. The model docs do not describe the field yet, so the rule comes from the change that added it. Case: `examples`. `cheap`
+22. **A sub-section's `includeIf` sees the stored answer of a parent's question that is not asked, and an `askIf` does not.** A parent question hidden by its own `askIf` that has a stored answer can still open its sub-section, because the selector reads the answers as stored. A question of that sub-section whose `askIf` names the hidden question reads it as unanswered, because the finder counts only the answers of active questions (decision 01). Raised by 0070, "A sub-section's `includeIf` may name questions of its ancestors", which does not say whether a hidden ancestor question counts, against "a settled answer is one for an active question" in conditions.md. Case: `subsection-gate-hidden-parent-answer`. `hard`
+23. **The Switches value of a sub-section is its own switch.** A switched-off parent makes its sub-sections inactive but does not turn their values false in the Switches the finder passes, so a section clause still tests the section's own switch. Raised by 0070, "Switches cascade", which says what a switched-off parent does to activity and not to a section clause. Case: `subsection-switch-clause`. `cheap`
+24. **Plans with a missing parent or a cycle give the questions of the sections that stay active.** The finder returns what the selector returns and has no error for them. Raised by 0070, "no cycle is possible", which holds only for a plan that passed the validator. Case: `subsection-bad-parent`. `cheap`
 
 ## Wrong implementations tried
 
@@ -190,3 +196,15 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | Example offered as a suggestion | `examples` |
 | Example added to the group key, so the questions of a group split | `examples` |
 | A result list shared between calls | The result-list test |
+| Sub-sections' questions listed after every root's, or the plan's section order used instead of the selector's | `subsection-order`, `subsection-order-timing`, `subsection-grandchild-open` |
+| Sub-sections sorted among the roots by timing or id, so a sub-section does not follow its parent | `subsection-order`, `subsection-order-timing` |
+| Siblings of a sub-section in plan order, or `after` among them ignored | `subsection-order`, `subsection-grandchild-open` |
+| Questions of a sub-section of a switched-off section returned, or only the parent's own switch checked | `subsection-parent-off`, `subsection-grandchild-middle-out`, `subsection-switch-clause` |
+| Questions of a sub-section whose own switch is off, or whose own `includeIf` fails, returned | `subsection-own-gates`, `subsection-gate-closed`, `subsection-gate-unanswered`, `subsection-grandchild-own-gates-closed` |
+| A sub-section's `includeIf` that names its parent's answer ignored, or read as unanswered | `subsection-gate-open`, `subsection-grandchild-open` |
+| A sub-section's `includeIf` that names a parent question that is not asked read as unanswered | `subsection-gate-hidden-parent-answer` |
+| A question's `askIf` that names a hidden question reads the stored answer | `subsection-gate-hidden-parent-answer` |
+| A sub-section with a missing parent treated as a root, or a section on a cycle or below one returned | `subsection-bad-parent` |
+| The Switches value of a sub-section made false by its parent | `subsection-switch-clause` |
+| Blockers of a sub-section that is out, or of one below a switched-off section | `subsection-gate-closed`, `subsection-parent-off`, `subsection-bad-parent` |
+| Blockers of a sub-section that is in left out | `subsection-gate-open`, `subsection-grandchild-open` |

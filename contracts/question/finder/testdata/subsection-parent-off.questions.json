@@ -1,0 +1,4 @@
+{"questions": [
+  {"id": "base.b_q", "answer": "kept", "suggestions": [{"value": "kept", "source": "given"}]},
+  {"id": "base-child.bc_q", "required": true}
+], "blockers": ["base-child.bc_q"]}

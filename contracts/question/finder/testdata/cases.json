@@ -184,5 +184,83 @@
     "plan": "examples.plan.json",
     "expected": "examples.questions.json",
     "source": "The example field change (model.Variable.Example and model.Question.Example): a variable has an optional example, one illustration of a good answer, empty when absent, and its question carries it. Nothing fills it in or accepts it as an answer or a default. The group key, activity, order, suggestions and blockers do not use it. Written by hand from the plan"
+  },
+  {
+    "name": "subsection-gate-open",
+    "plan": "subsection-gate-open.plan.json",
+    "expected": "subsection-gate-open.questions.json",
+    "source": "A sub-section's includeIf on its parent's answer holds: its questions come directly after the parent's, and its required question blocks. docs/decisions/0070-sub-sections.md, Decision: active by its own includeIf, which may name ancestors' questions; Order: its questions are asked after its parent's. docs/decisions/0050-section-switch.md for the blocker rule"
+  },
+  {
+    "name": "subsection-gate-closed",
+    "plan": "subsection-gate-closed.plan.json",
+    "expected": "subsection-gate-closed.questions.json",
+    "source": "The same plan with the gate answered no: the sub-section's questions are not returned and its stored answer is not shown, and nothing blocks. docs/decisions/0070-sub-sections.md, Decision: active only if its own includeIf holds. 0070 Its answers stay its own"
+  },
+  {
+    "name": "subsection-gate-unanswered",
+    "plan": "subsection-gate-unanswered.plan.json",
+    "expected": "subsection-gate-unanswered.questions.json",
+    "source": "The same plan with the gate unanswered: the sub-section is out, and only the parent's required question blocks. conditions.md: a test on an unanswered question is false. docs/decisions/0070-sub-sections.md, Decision"
+  },
+  {
+    "name": "subsection-gate-hidden-parent-answer",
+    "plan": "subsection-gate-hidden-parent-answer.plan.json",
+    "expected": "subsection-gate-hidden-parent-answer.questions.json",
+    "source": "The parent's gate question is hidden by its own askIf but has a stored answer. The sub-section is in, because the selector reads stored answers, while a question of the sub-section whose askIf names the hidden question reads it as unanswered. docs/decisions/0070-sub-sections.md says a sub-section's includeIf names its ancestors' questions; conditions.md says a settled answer is one for an active question, which is the finder's rule for askIf (decision 01)"
+  },
+  {
+    "name": "subsection-grandchild-open",
+    "plan": "subsection-grandchild-open.plan.json",
+    "expected": "subsection-grandchild-open.questions.json",
+    "source": "A parent, a child and two grandchildren, one gated by the child's answer and one by the grandparent's. Questions come depth first, with siblings by id. docs/decisions/0070-sub-sections.md, Decision: includeIf may name questions of its ancestors, with a root's and a parent's; Order"
+  },
+  {
+    "name": "subsection-grandchild-middle-out",
+    "plan": "subsection-grandchild-middle-out.plan.json",
+    "expected": "subsection-grandchild-middle-out.questions.json",
+    "source": "The middle section's gate fails while both grandchildren have stored answers that would pass their own gates: nothing below the middle section is returned. docs/decisions/0070-sub-sections.md, Decision: a sub-section is active only if its parent is active, and its own parent in turn"
+  },
+  {
+    "name": "subsection-grandchild-own-gates-closed",
+    "plan": "subsection-grandchild-own-gates-closed.plan.json",
+    "expected": "subsection-grandchild-own-gates-closed.questions.json",
+    "source": "The middle section is on and each grandchild's own gate fails: the middle section's questions are returned and no grandchild's. docs/decisions/0070-sub-sections.md, Decision: a sub-section is then active by its own includeIf"
+  },
+  {
+    "name": "subsection-order",
+    "plan": "subsection-order.plan.json",
+    "expected": "subsection-order.questions.json",
+    "source": "Sub-sections, a grandchild, an earlier root and a later root, with the sections listed out of order in the plan: each sub-section's questions follow its parent's and its earlier siblings' subtrees, siblings follow after then id, and roots keep their order. docs/decisions/0070-sub-sections.md, Order: directly after its parent and its earlier siblings, in the order the selector gives. ordering.md: timing, then after, then id"
+  },
+  {
+    "name": "subsection-order-timing",
+    "plan": "subsection-order-timing.plan.json",
+    "expected": "subsection-order-timing.questions.json",
+    "source": "A sub-section whose own timing is earlier than its root's stays after its root, and one whose timing is later does not let the next root move ahead of it. docs/decisions/0070-sub-sections.md, Order: directly after its parent. ordering.md: timing, then after, then id"
+  },
+  {
+    "name": "subsection-parent-off",
+    "plan": "subsection-parent-off.plan.json",
+    "expected": "subsection-parent-off.questions.json",
+    "source": "Sub-sections of a switched-off section, down to a grandchild whose own switch is on, are not returned and do not block, and their stored answers stay in the plan. docs/decisions/0070-sub-sections.md, Decision: switches cascade. 0050: a switched-off section is not active"
+  },
+  {
+    "name": "subsection-own-gates",
+    "plan": "subsection-own-gates.plan.json",
+    "expected": "subsection-own-gates.questions.json",
+    "source": "A sub-section is out when its own switch is off or its own includeIf fails, and in when both pass, while its parent is on. docs/decisions/0070-sub-sections.md, Decision: a sub-section can be turned off alone, and is active by its own includeIf and switch"
+  },
+  {
+    "name": "subsection-bad-parent",
+    "plan": "subsection-bad-parent.plan.json",
+    "expected": "subsection-bad-parent.questions.json",
+    "source": "A parent that is not a section, a cycle, a section that names itself, and sections below them give no question, while a valid sub-section is returned. Plans the validators reject: the finder reads them as written and does not hang. docs/decisions/0070-sub-sections.md, Consequences: the plan validator checks that the parent exists and that there is no cycle, so the finder only reads what the selector returns"
+  },
+  {
+    "name": "subsection-switch-clause",
+    "plan": "subsection-switch-clause.plan.json",
+    "expected": "subsection-switch-clause.questions.json",
+    "source": "A section clause tests the named section's own switch: a child whose parent is off still has its own switch on, and a section clause on a switched-off parent holds for off. The finder builds Switches from every section's own enabled field. docs/decisions/0070-sub-sections.md, Decision: switches cascade for activity; docs/decisions/0050-section-switch.md: a condition tests the switch the section holds"
   }
 ]

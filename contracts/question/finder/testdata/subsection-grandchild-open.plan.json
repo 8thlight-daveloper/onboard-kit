@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"onboarding": {"needs_vpn": true, "team": "platform"}, "vpn": {"vpn_kind": "hardware"}}},
+  "sections": [
+    {"id": "vpn-hardware", "parent": "vpn", "includeIf": {"all": [{"question": "vpn.vpn_kind", "answer": {"is": "hardware"}}]},
+      "variables": [
+        {"name": "hardware_model", "description": "Which token model", "required": true},
+        {"name": "shipping_address", "description": "Where it ships"}
+      ]},
+    {"id": "onboarding", "variables": [
+      {"name": "needs_vpn", "type": "boolean", "description": "Does the person need the VPN?"},
+      {"name": "team", "description": "Team"}
+    ]},
+    {"id": "vpn-audit", "parent": "vpn", "includeIf": {"all": [{"question": "onboarding.team", "answer": {"is": "platform"}}]},
+      "variables": [{"name": "audit_ticket", "description": "Audit ticket"}]},
+    {"id": "vpn", "parent": "onboarding", "includeIf": {"all": [{"question": "onboarding.needs_vpn", "answer": {"is": true}}]},
+      "variables": [
+        {"name": "vpn_group", "description": "VPN group"},
+        {"name": "vpn_kind", "type": "choice", "options": ["software", "hardware"], "description": "Kind of VPN client"}
+      ]}
+  ]
+}

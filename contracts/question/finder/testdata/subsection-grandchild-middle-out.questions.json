@@ -1,0 +1,4 @@
+{"questions": [
+  {"id": "onboarding.needs_vpn", "type": "boolean", "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "onboarding.team", "answer": "platform", "suggestions": [{"value": "platform", "source": "given"}]}
+], "blockers": []}

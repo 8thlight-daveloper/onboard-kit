@@ -1,0 +1,9 @@
+{"questions": [
+  {"id": "onboarding.needs_vpn", "type": "boolean", "answer": true, "suggestions": [{"value": true, "source": "given"}]},
+  {"id": "onboarding.team", "answer": "platform", "suggestions": [{"value": "platform", "source": "given"}]},
+  {"id": "vpn.vpn_group"},
+  {"id": "vpn.vpn_kind", "type": "choice", "answer": "hardware", "suggestions": [{"value": "hardware", "source": "given"}]},
+  {"id": "vpn-audit.audit_ticket"},
+  {"id": "vpn-hardware.hardware_model", "required": true},
+  {"id": "vpn-hardware.shipping_address"}
+], "blockers": ["vpn-hardware.hardware_model"]}
