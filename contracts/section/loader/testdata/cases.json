@@ -39,7 +39,7 @@
     "name": "all-fields",
     "input": "all-fields.yaml",
     "output": "all-fields.section.json",
-    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md. The section clauses follow the decoder contract, Section clauses: both keys, either order, and an empty section read as the empty string."
+    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md. The section clauses follow the decoder contract, Section clauses: both keys, either order, and an empty section read as the empty string. A variable may hold example, in any key order, and it is a text field like description, never the default."
   },
   {
     "name": "unvalidated",
@@ -51,7 +51,7 @@
     "name": "placeholders",
     "input": "placeholders.yaml",
     "output": "placeholders.section.json",
-    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name."
+    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name. An example keeps its dollar signs as written, like a description."
   },
   {
     "name": "deferred",
@@ -63,13 +63,13 @@
     "name": "null-and-empty",
     "input": "null-and-empty.yaml",
     "output": "null-and-empty.section.json",
-    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isSettled stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items."
+    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isSettled stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items. A null, empty, or quoted empty example is the empty string."
   },
   {
     "name": "strings",
     "input": "strings.yaml",
     "output": "strings.section.json",
-    "source": "Hand-written. 0030 Format: quote what would read as a boolean, a number, or null. Decoder contract, Scalars: quoted and block scalars are always text, and a plain date, nULL, 12ab, v1.0, 12:30:45, and 1,000 are text. A quoted string keeps its leading and trailing spaces."
+    "source": "Hand-written. 0030 Format: quote what would read as a boolean, a number, or null. Decoder contract, Scalars: quoted and block scalars are always text, and a plain date, nULL, 12ab, v1.0, 12:30:45, and 1,000 are text. A quoted string keeps its leading and trailing spaces. A variable example is text like a description: quoted or plain, a quoted yes, a plain date, 1,000, v1.0, and padded spaces are kept, and a variable may hold an example and no description."
   },
   {
     "name": "style-is-free",
@@ -268,6 +268,10 @@
       },
       {
         "code": "format.boolean-spelling",
+        "path": "variables[0].example"
+      },
+      {
+        "code": "format.boolean-spelling",
         "path": "variables[0].required"
       },
       {
@@ -303,7 +307,7 @@
         "path": "steps[0].checks[0].ask"
       }
     ],
-    "source": "Hand-written. 0030 Format: an unquoted yes, no, on, off, y, n, True, or TRUE is an error, so a hand-edited required: yes is a problem and not a silent true. Spelling is checked before type, in a string field, a boolean field, a Value, a list item, and a map value."
+    "source": "Hand-written. 0030 Format: an unquoted yes, no, on, off, y, n, True, or TRUE is an error, so a hand-edited required: yes is a problem and not a silent true. Spelling is checked before type, in a string field, a boolean field, a Value, a list item, and a map value. An example is a string field, so a plain Off in it is a spelling problem."
   },
   {
     "name": "number-spelling",
@@ -343,6 +347,10 @@
       },
       {
         "code": "format.number-spelling",
+        "path": "variables[0].example"
+      },
+      {
+        "code": "format.number-spelling",
         "path": "variables[0].default"
       },
       {
@@ -370,7 +378,7 @@
         "path": "steps[0].env.A"
       }
     ],
-    "source": "Hand-written. 0030 Format: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Decoder contract, Numbers: the list of spellings, and a canonical number where a string or a Value is read."
+    "source": "Hand-written. 0030 Format: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Decoder contract, Numbers: the list of spellings, and a canonical number where a string or a Value is read. An example is a string field, so a canonical decimal in it is a spelling problem."
   },
   {
     "name": "null-spelling",
@@ -390,6 +398,10 @@
       },
       {
         "code": "format.null-spelling",
+        "path": "variables[0].example"
+      },
+      {
+        "code": "format.null-spelling",
         "path": "variables[0].default"
       },
       {
@@ -405,7 +417,7 @@
         "path": "steps[0].env.A"
       }
     ],
-    "source": "Hand-written. 0030 Format: null is null or an omitted key. Decoder contract, Scalars: ~, Null, and NULL are problems. null and nULL are not."
+    "source": "Hand-written. 0030 Format: null is null or an omitted key. Decoder contract, Scalars: ~, Null, and NULL are problems. null and nULL are not. An example is a string field, so a ~ in it is the null spelling."
   },
   {
     "name": "alias",
@@ -774,6 +786,10 @@
     "problems": [
       {
         "code": "format.wrong-type",
+        "path": "variables[0].example"
+      },
+      {
+        "code": "format.wrong-type",
         "path": "variables[0].default"
       },
       {
@@ -811,9 +827,17 @@
       {
         "code": "format.wrong-type",
         "path": "variables[0].askIf.all[0].answer.isSettled"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[1].example"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[2].example"
       }
     ],
-    "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and the problem is at the list item that is not text, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported."
+    "source": "Hand-written. Decoder contract, Values and Problems: a map, or a list holding a list or a map, is not a Value, and the problem is at the list item that is not text, and a list or map where a boolean or a string belongs is a wrong type. Nothing inside a value of the wrong type is read, so the yes and the 1.0 in them are not reported. An example that is a list or a map, or a plain true, is a wrong type, as a description is, and nothing inside it is read."
   },
   {
     "name": "tags",
@@ -1030,5 +1054,40 @@
       }
     ],
     "source": "Hand-written. 0050: a template never declares the section switch and a template section has no enabled. The key is unknown on the template, a variable, a step, and a check, as any unknown key is, and its plain yes is not read."
+  },
+  {
+    "name": "wrong-type-items",
+    "input": "wrong-type-items.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "includeIf.all[1].answer"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[1].answer"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[2]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[0].askIf.all[3].answer"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "variables[1].askIf.all"
+      }
+    ],
+    "source": "Hand-written from the decoder contract, Problems: format.wrong-type, and its case wrong-type-items. A plain text where a condition clause or an answer test belongs is a wrong type at the item or at answer, in includeIf and in askIf, and the loader goes on without it. A list where a clause or an answer test belongs is the same wrong kind. A plain text where all belongs is a wrong type at all. The section clause after them is read."
   }
 ]

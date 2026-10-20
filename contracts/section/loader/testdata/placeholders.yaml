@@ -6,6 +6,7 @@ owner: $owner_role
 variables:
   - name: repo_url
     description: Where is $repo_dir?
+    example: Like $$HOME or $Repo_url
     default: $repo_dir
   - name: tests
     type: command

@@ -9,6 +9,7 @@ body: y
 variables:
   - name: a
     description: False
+    example: Off
     required: yes
     multiple: True
     default: TRUE

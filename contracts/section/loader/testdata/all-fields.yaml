@@ -25,6 +25,7 @@ variables:
     description: Run the review?
     default: true
   - name: target
+    example: release
     description: Build target
     type: choice
     options: [debug, release]
@@ -33,6 +34,7 @@ variables:
     audience: onboarder
   - name: code
     description: A code
+    example: ABC
     pattern: '^[A-Z]{3}$'
     patternHint: Three capitals
     audience: onboardee

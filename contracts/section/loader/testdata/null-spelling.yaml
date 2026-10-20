@@ -7,6 +7,7 @@ body: null
 timing: nULL
 variables:
   - name: a
+    example: ~
     default: ~
     required: Null
 steps:
