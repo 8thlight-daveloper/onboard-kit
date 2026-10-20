@@ -15,7 +15,7 @@ type railGlyphs struct {
 }
 
 func unicodeRailGlyphs() railGlyphs {
-	return railGlyphs{answered: "✓", deferred: "◐", open: "·", here: "◆"}
+	return railGlyphs{answered: "✓", deferred: "~", open: "·", here: "◆"}
 }
 
 func plainRailGlyphs() railGlyphs {
