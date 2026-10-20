@@ -32,6 +32,7 @@ func newQuestion(answers model.Answers, asked candidate) model.Question {
 		Scope:           asked.scope,
 		Name:            variable.Name,
 		Description:     variable.Description,
+		Example:         variable.Example,
 		Type:            typeOf(variable),
 		Options:         variable.Options,
 		Required:        variable.Required,

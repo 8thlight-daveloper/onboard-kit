@@ -23,6 +23,7 @@ func variableText(variable model.Variable) string {
 	return fields{}.
 		withString("name", variable.Name).
 		withProse("description", variable.Description).
+		withProse("example", variable.Example).
 		withString("type", string(variableType)).
 		withFlag("multiple", variable.Multiple).
 		withStrings("options", variable.Options).

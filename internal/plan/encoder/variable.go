@@ -6,6 +6,7 @@ func (c *collector) variableNode(variable model.Variable, path string) node {
 	builder := &mappingBuilder{}
 	builder.add("name", stringField(variable.Name))
 	builder.add("description", stringField(variable.Description))
+	builder.add("example", stringField(variable.Example))
 	builder.add("type", stringField(string(variable.Type)))
 	builder.add("multiple", flagField(variable.Multiple))
 	builder.add("options", listField(variable.Options))
