@@ -25,7 +25,7 @@ func (a Assembler) Assemble(plan model.Plan) (string, []model.Problem) {
 		gapTable(filled),
 	}
 	for _, section := range filled {
-		blocks = append(blocks, sectionBlocks(section.filled, section.declared)...)
+		blocks = append(blocks, sectionBlocks(section.filled, section.declared, section.depth)...)
 	}
 	return strings.Join(blocks, blockSeparator) + lineBreak, problems
 }

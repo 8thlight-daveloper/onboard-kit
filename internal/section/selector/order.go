@@ -7,18 +7,18 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func orderSections(active []model.Section) []model.Section {
-	ordered := make([]model.Section, 0, len(active))
-	for _, group := range groupByTiming(active) {
+func orderSiblings(siblings []model.Section, inherited model.Timing) []model.Section {
+	ordered := make([]model.Section, 0, len(siblings))
+	for _, group := range groupByTiming(siblings, inherited) {
 		ordered = append(ordered, orderWithinTiming(group)...)
 	}
 	return ordered
 }
 
-func groupByTiming(sections []model.Section) [][]model.Section {
+func groupByTiming(sections []model.Section, inherited model.Timing) [][]model.Section {
 	byTiming := map[model.Timing][]model.Section{}
 	for _, section := range sections {
-		timing := timingOf(section)
+		timing := effectiveTiming(section, inherited)
 		byTiming[timing] = append(byTiming[timing], section)
 	}
 	timings := make([]model.Timing, 0, len(byTiming))

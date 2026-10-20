@@ -10,5 +10,5 @@ func New() Selector {
 
 func (Selector) Select(plan model.Plan) []model.Section {
 	active := activeSections(plan)
-	return orderSections(active)
+	return arrangeTree(active)
 }

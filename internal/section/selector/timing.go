@@ -10,9 +10,9 @@ var timingRanks = map[model.Timing]int{
 	model.TimingAnytime:      4,
 }
 
-func timingOf(section model.Section) model.Timing {
+func effectiveTiming(section model.Section, inherited model.Timing) model.Timing {
 	if section.Timing == "" {
-		return model.DefaultTiming
+		return inherited
 	}
 	return section.Timing
 }

@@ -6,11 +6,11 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func sectionBlocks(section model.Section, declared []model.Variable) []string {
+func sectionBlocks(section model.Section, declared []model.Variable, depth int) []string {
 	text := prose{blanks: onboardingBlanks(declared)}
 	var blocks []string
 	if text.present(section.Title) {
-		blocks = append(blocks, "## "+text.of(section.Title))
+		blocks = append(blocks, headingMark(depth)+" "+text.of(section.Title))
 	}
 	if text.present(section.Summary) {
 		blocks = append(blocks, text.of(section.Summary))
