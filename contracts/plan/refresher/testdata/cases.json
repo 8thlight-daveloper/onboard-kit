@@ -148,5 +148,20 @@
     "name": "a-taken-list-is-copied",
     "file": "a-taken-list-is-copied.case.json",
     "source": "Hand-written. Contract rule: Properties. The result shares no list or map with an argument, so changing the result cannot change theirs. The test changes every list and map in the result, then checks the inputs."
+  },
+  {
+    "name": "multiple-choice-checks-every-item",
+    "file": "multiple-choice-checks-every-item.case.json",
+    "source": "Hand-written. 0035: an empty item is not settled content, so it is not judged against the options. Contract rule: Valid answers, with multiple every item that is not empty must be an option. An invalid item first or last in the list is invalid. An empty item first or last beside valid options is valid."
+  },
+  {
+    "name": "hidden-list-answers-are-copied",
+    "file": "hidden-list-answers-are-copied.case.json",
+    "source": "Hand-written. Contract rule: Where answers are written, the result shares no map or list in answers with an argument. List answers for questions theirs does not declare, in the plan scope, a declared section, and an undeclared section, are left as they are and are still copies."
+  },
+  {
+    "name": "answers-removed-leave-no-entry-and-no-empty-section",
+    "file": "answers-removed-leave-no-entry-and-no-empty-section.case.json",
+    "source": "Hand-written. Contract rule: Where answers are written, an entry that is removed leaves no entry of no kind behind, and the result may hold no empty map for a section. Every answer of the section access is removed by theirs, so no entry and no map for access remains."
   }
 ]

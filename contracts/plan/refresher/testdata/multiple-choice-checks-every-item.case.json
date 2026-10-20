@@ -1,0 +1,273 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "bad_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "bad_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "bad_first": [
+          "a"
+        ],
+        "bad_last": [
+          "a"
+        ],
+        "empty_first": [
+          "a"
+        ],
+        "empty_last": [
+          "a"
+        ]
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "bad_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "bad_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "bad_first": [
+          "b"
+        ],
+        "bad_last": [
+          "b"
+        ],
+        "empty_first": [
+          "b"
+        ],
+        "empty_last": [
+          "b"
+        ]
+      }
+    }
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "bad_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "bad_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "bad_first": [
+          "bad",
+          "a"
+        ],
+        "bad_last": [
+          "a",
+          "bad"
+        ],
+        "empty_first": [
+          "",
+          "a"
+        ],
+        "empty_last": [
+          "a",
+          ""
+        ]
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "variables": [
+        {
+          "name": "bad_first",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a",
+            "b"
+          ],
+          "multiple": true
+        },
+        {
+          "name": "bad_last",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a",
+            "b"
+          ],
+          "multiple": true
+        },
+        {
+          "name": "empty_first",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a",
+            "b"
+          ],
+          "multiple": true
+        },
+        {
+          "name": "empty_last",
+          "audience": "onboardee",
+          "type": "choice",
+          "options": [
+            "a",
+            "b"
+          ],
+          "multiple": true
+        }
+      ],
+      "answers": {
+        "plan": {
+          "empty_first": [
+            "",
+            "a"
+          ],
+          "empty_last": [
+            "a",
+            ""
+          ]
+        }
+      },
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      }
+    },
+    "report": {
+      "answersKept": [
+        "plan.empty_first",
+        "plan.empty_last"
+      ],
+      "answersToReview": [
+        "plan.bad_first",
+        "plan.bad_last"
+      ]
+    }
+  }
+}

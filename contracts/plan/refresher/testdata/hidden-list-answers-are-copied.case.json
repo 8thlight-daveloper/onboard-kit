@@ -1,0 +1,142 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "real",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {}
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": []
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "real",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "real": "r"
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": []
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "real",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "real": "r",
+        "gone_list": [
+          "x",
+          "y"
+        ]
+      },
+      "sections": {
+        "access": {
+          "gone_list": [
+            "p",
+            "q"
+          ]
+        },
+        "elsewhere": {
+          "gone_list": [
+            "m",
+            "n"
+          ]
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": []
+      }
+    ]
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "variables": [
+        {
+          "name": "real",
+          "audience": "onboarder"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "real": "r",
+          "gone_list": [
+            "x",
+            "y"
+          ]
+        },
+        "sections": {
+          "access": {
+            "gone_list": [
+              "p",
+              "q"
+            ]
+          },
+          "elsewhere": {
+            "gone_list": [
+              "m",
+              "n"
+            ]
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": []
+        }
+      ],
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      }
+    },
+    "report": {}
+  }
+}
