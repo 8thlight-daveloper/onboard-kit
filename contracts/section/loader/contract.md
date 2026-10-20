@@ -30,13 +30,15 @@ The known keys at each level. A key not listed is unknown.
 | Level | Keys |
 | -- | -- |
 | Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
-| Variable | `name`, `description`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
+| Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause, question form | `question`, `answer` |
 | Clause, section form | `section`, `enabled` |
 | Answer test | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, `env` |
+
+`example` on a variable is one illustration of a good answer, such as `Engineering manager`. The loader reads it exactly as it reads `description`: a plain or quoted string, with the spelling, wrong-type, and empty-value rules of a text field and the same codes and paths, such as `variables[0].example`. A null, empty, or absent `example` is the empty string. It is text and nothing else: it is not a `default`, it is not an answer, it is not trimmed, and a dollar sign in it is kept as written. A variable may hold an `example` with no `description`.
 
 The `env` of a step is a map whose keys are the variable names it sets, so any scalar key is allowed there. Its values are text.
 
@@ -88,6 +90,7 @@ A clause has one of two forms, and a key that belongs to the other form is not k
 - A section clause whose `enabled` is absent, empty, or `null` is `format.wrong-type` at the clause, such as `includeIf.all[0]` or `variables[1].askIf.all[2]`. The model cannot tell an absent `enabled` from `false`, and reading it so would switch a section off by accident. A lone `section: access` is a problem. A `~` is the null spelling alone and is not also a problem of the clause. When the clause and its first key are one place, the problem of the clause comes before the other problems of that place, as in the decoder: before a `format.unknown-field`, and before a `format.wrong-type` at that key. See open question 6.
 - An empty `section`, whether `""`, `''`, or null, is read as the empty string, and `enabled` is read as written. The loader does not check the section id, as it does not check a question id.
 - The two forms are the same in `includeIf` and in `askIf`.
+- An item of `all` that is not a map, whether plain text or a list, is `format.wrong-type` at the item, such as `includeIf.all[0]` or `variables[0].askIf.all[1]`. An `answer` that is not a map is `format.wrong-type` at `answer`. An `all` that is not a list is `format.wrong-type` at `all`. Nothing inside any of them is read, and the loader reads the other items as usual. The decoder gives the same codes and paths.
 
 ## Reading the file
 
@@ -194,6 +197,10 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `$$` unescaped, a `$name` resolved or refused, or a trailing newline trimmed | `placeholders`, `acme-clone-and-run-tests`, `acme-access`, `strings` |
 | Text trimmed, such as an owner or a directory with spaces | `strings` |
 | Quoted `"deferred"` read as Deferred, a plain one read as text in a Value, or read as Deferred or dropped in a string or a list | `deferred`, `all-fields` |
+| `example` not read, or reported as an unknown field | `all-fields`, `strings` |
+| `example` read into `description` or `default`, or `description` read into `example`, or `example` used when `description` is empty | `all-fields`, `strings` |
+| `example` trimmed, resolved as a placeholder, or its text changed | `strings`, `placeholders` |
+| `example` not checked as a text field: a spelling not reported, a list, a map, or a plain `true` accepted, or a null read as the text `null` | `boolean-spelling`, `number-spelling`, `null-spelling`, `wrong-type-values`, `null-and-empty` |
 | A scalar `run` accepted, read as one item, or split on spaces | `run-scalar`, `wrong-type` |
 | A scalar `run` refused only in a step, or only in a check | `run-scalar` |
 | A scalar `run` refused where a list of one `$name` must load | `acme-clone-and-run-tests`, `placeholders` |
@@ -201,6 +208,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The plan file code for a non-template, an empty file giving the zero Section, a list of sections read as one, only the first document read, a syntax error in a later document hidden | the file cases |
 | A nil list or map made empty or the reverse, a null `includeIf` made empty, a present empty `askIf` made none, a null `isSettled` made false, a null `default` made empty text, an empty List Value made none | `null-and-empty` |
 | A null item dropped from a list, a null `isOneOf` item reported as an empty item | `null-items` |
+| A plain text or a list where a clause or an answer test belongs crashes the loader or is skipped without a problem, in `includeIf` or in `askIf`, or a plain text where `all` belongs | `wrong-type-items` |
 | A map, or a list holding a map, scanned for more problems or read item by item | `wrong-type-values`, `wrong-type` |
 | A plain `true` accepted in a string field, a quoted `"true"` accepted as a boolean, a wrong type in a list item skipped | `wrong-type`, `wrong-type-values`, `many-problems` |
 | A list sorted, reversed, or stripped of repeats, in `after`, `options`, `steps`, or `variables` | `list-order` and the ACME cases |

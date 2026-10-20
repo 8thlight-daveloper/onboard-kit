@@ -1,0 +1,24 @@
+schemaVersion: 1
+id: s
+title: T
+summary: S
+includeIf:
+  all:
+    - foo
+    - question: plan.q
+      answer: bar
+    - section: a
+      enabled: true
+variables:
+  - name: v
+    askIf:
+      all:
+        - x
+        - question: q
+          answer: w
+        - [a]
+        - question: r
+          answer: [b]
+  - name: w
+    askIf:
+      all: foo

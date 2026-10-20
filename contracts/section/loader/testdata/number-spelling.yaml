@@ -9,6 +9,7 @@ body: .inf
 variables:
   - name: a
     description: 0o17
+    example: 12.5
     default: 1_000
     options: ['1.0', 2.5]
     required: 0b1

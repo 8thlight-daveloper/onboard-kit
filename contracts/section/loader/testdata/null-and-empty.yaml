@@ -9,10 +9,12 @@ escalation:
 includeIf:
 variables:
   - name: a
+    example:
     default:
     options: []
     askIf: {}
   - name: b
+    example: null
     askIf:
       all:
   - name: c
@@ -29,6 +31,7 @@ variables:
           answer: {}
         - question: c
   - name: d
+    example: ""
     default: []
 steps:
   - id: s

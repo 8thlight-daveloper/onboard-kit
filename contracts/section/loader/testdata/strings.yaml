@@ -10,18 +10,24 @@ body: |
 variables:
   - name: a
     description: "123"
+    example: "yes"
     pattern: '^\d+$'
     default: "true"
   - name: b
     description: nULL
+    example: 2026-10-15
     default: "null"
   - name: c
     description: 12ab
     patternHint: v1.0
+    example: ' 0x1F '
     default: '0x1F'
   - name: d
     description: 12:30:45
+    example: 1,000
     default: 1,000
+  - name: e
+    example: v1.0
 steps:
   - id: s
     name: >-
