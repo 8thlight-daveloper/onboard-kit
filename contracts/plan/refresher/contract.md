@@ -153,6 +153,8 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | Provenance, variables, sections, the switch, or unknown fields taken from the wrong plan | `content-comes-from-theirs` |
 | A missing id accepted, a first refresh refused, or both problems reported | `refuse-an-org-plan-with-no-id`, `missing-id-is-the-only-problem-when-both-apply`, `first-refresh-and-the-origin-passed-in` |
 | A refusal that changes the plan, or has the wrong severity or detail | `refuse-a-different-organization`, the refusal test |
-| Answers shared with an argument, or a taken list shared with theirs | The arguments test, the changing-the-result test |
+| Answers shared with an argument, a taken list shared with theirs, or a list answer that no decision touches shared with ours | The arguments test, the changing-the-result test, `a-taken-list-is-copied`, `hidden-list-answers-are-copied` |
+| A removed answer left as an entry of no kind, or a section left with an empty map | The no-empty-entries test, `answers-removed-leave-no-entry-and-no-empty-section` |
+| Only some items of a multiple choice list checked, the first item skipped, or an empty item beside valid options rejected | `multiple-choice-checks-every-item` |
 | State kept between calls | The same-result tests, `new-question` |
 | A refresh that is not idempotent | The refresh-again test |

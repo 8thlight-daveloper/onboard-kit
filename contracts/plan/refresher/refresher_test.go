@@ -498,3 +498,25 @@ func TestRefreshingAgainWithTheSameOrgPlanChangesOnlyTheOrigin(t *testing.T) {
 		}
 	}
 }
+
+func TestResultHoldsNoEntryOfNoKindAndNoEmptySectionMap(t *testing.T) {
+	refresher := newRefresher()
+	for _, c := range loadCases(t) {
+		plan, _, _ := run(t, refresher, c)
+		for name, value := range plan.Answers.Plan {
+			if value.Kind == model.ValueKindNone {
+				t.Errorf("case %s: plan answer %s has no kind", c.name, name)
+			}
+		}
+		for id, values := range plan.Answers.Sections {
+			if len(values) == 0 {
+				t.Errorf("case %s: section %s holds an empty map", c.name, id)
+			}
+			for name, value := range values {
+				if value.Kind == model.ValueKindNone {
+					t.Errorf("case %s: answer %s.%s has no kind", c.name, id, name)
+				}
+			}
+		}
+	}
+}
