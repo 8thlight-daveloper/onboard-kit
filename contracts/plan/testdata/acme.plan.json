@@ -18,6 +18,7 @@
     {
       "name": "team_state",
       "description": "Is the team established, or are we the first consultants?",
+      "type": "choice",
       "options": [
         "established",
         "first-consultants"
@@ -27,6 +28,7 @@
     {
       "name": "discipline",
       "description": "Which discipline is this plan for?",
+      "type": "choice",
       "options": [
         "software",
         "design"
@@ -36,6 +38,7 @@
     {
       "name": "output_style",
       "description": "Target format of the document",
+      "type": "choice",
       "options": [
         "markdown"
       ],

@@ -124,7 +124,7 @@ func (a App) startEdit() App {
 	if picksFromList(question) {
 		a.edit.choices = choicesFor(question)
 		for index, option := range a.edit.choices {
-			if option.value == question.Answer {
+			if sameValue(option.value, question.Answer) {
 				a.edit.choice = index
 			}
 		}
@@ -323,4 +323,8 @@ func blockerSummary(blockers []model.Blocker) string {
 		text.WriteString("  - " + blocker.Question + "\n")
 	}
 	return text.String()
+}
+
+func sameValue(left model.Value, right model.Value) bool {
+	return left.Kind == right.Kind && describeValue(left) == describeValue(right)
 }

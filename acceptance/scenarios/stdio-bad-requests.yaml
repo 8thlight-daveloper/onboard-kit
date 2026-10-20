@@ -1,0 +1,28 @@
+name: stdio-bad-requests
+description: A request that cannot be read, a command that does not exist, and a question that does not exist are answered with an error and the process keeps going.
+source: docs/decisions/0010-plan-editor.md, errors and shutdown
+steps:
+  - run: [onboard-kit, stdio, --templates, templates, --generated-on, "2026-10-15"]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    talk:
+      - send: {command: nonsense}
+        expect: {ok: false, error: {code: unknown_command}}
+      - send: {command: submit, question: plan.nothing, value: x}
+        expect:
+          ok: true
+          applied: false
+          problems:
+            - {code: answer.unknown-question}
+      - send: {command: submit, question: plan.organization, value: {map: 1}}
+        expect: {ok: false, error: {code: bad_value}}
+      - send: {command: toggle, section: access}
+        expect: {ok: false, error: {code: bad_request}}
+      - send: {command: blockers}
+        expect: {ok: true}
+    expect:
+      exit: 0

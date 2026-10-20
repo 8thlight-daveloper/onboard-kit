@@ -1,0 +1,36 @@
+name: stdio-switch-and-save
+description: A section switched off over stdio is saved with the plan, the saved plan opens again, and it assembles into a document.
+source: docs/decisions/0050-section-switch.md
+steps:
+  - run: [onboard-kit, stdio, --templates, templates, --generated-on, "2026-10-15"]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    talk:
+      - send: {command: submit, question: plan.discipline, value: software}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: toggle, section: access, enabled: false}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: toggle, section: nothing, enabled: false}
+        expect:
+          ok: true
+          applied: false
+          problems:
+            - {code: switch.unknown-section}
+      - send: {command: save, path: saved.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+  - run: [onboard-kit, assemble, --plan, saved.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "## Clone the project and run the tests"}
+  - run: [onboard-kit, stdio, --plan, saved.obk.yaml]
+    talk:
+      - send: {command: toggle, section: access, enabled: true}
+        expect: {ok: true, applied: true, problems: []}
+    expect:
+      exit: 0
