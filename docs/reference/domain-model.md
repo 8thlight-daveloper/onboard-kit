@@ -44,6 +44,7 @@ classDiagram
         verification
         body
         includeIf
+        parent
         after
         escalation
         variables
@@ -159,7 +160,8 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `timing` | Timing, optional | Defaults to `anytime` |
 | `enabled` | Boolean, optional | True by default. Only a plan section has it, and a person turns a section off. See [0050](../decisions/0050-section-switch.md) |
 | `verification`, `body` | Text, optional | Markdown prose |
-| `includeIf` | Condition, optional | Names plan variables only |
+| `parent` | Text, optional | The id of another section. A section with a parent is a sub-section: it is active only if its parent is. See [0070](../decisions/0070-sub-sections.md) |
+| `includeIf` | Condition, optional | Names plan variables and the questions of its ancestors |
 | `after` | List of section ids, optional |  |
 | `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `person` variables the section declares. See [escalation](section-template-schema/escalation.md) |
 | `variables` | List of Variable, optional |  |

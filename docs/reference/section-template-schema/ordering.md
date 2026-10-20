@@ -33,6 +33,25 @@ timing: week-one
 after: [access]
 ```
 
+## Sub-sections
+
+A section may name a parent with `parent: <section id>`. A section with a parent is a sub-section. See [0070](../../decisions/0070-sub-sections.md).
+
+```yaml
+id: access-request
+parent: access
+includeIf:
+  all:
+    - question: access.self_service
+      answer:
+        is: true
+```
+
+- A sub-section is active only if its parent is active, and then by its own `includeIf` and switch. Turning a parent off turns off its sub-sections. A parent that is not in the plan, or a cycle of parents, makes a section inactive.
+- It comes directly after its parent, depth first. Siblings are ordered by timing, then `after`, then id. A sub-section with no `timing` takes its parent's for ordering among its siblings. A sub-section never moves a root across a timing line.
+- The assembled document writes it one heading level below its parent.
+- The plan validator reports a parent that does not exist, a cycle, and an `includeIf` that names anything but a plan variable or an ancestor's question.
+
 ## How the order is computed
 
 1. Sort the active sections by `timing`, in the order of the table above.
