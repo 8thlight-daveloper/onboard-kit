@@ -1,0 +1,10 @@
+schemaVersion: 1
+id: &anchor abc
+origin:
+  planId: 123
+  source: yes
+  contentHash: true
+  refreshedOn: [2026-10-20]
+  extra: 1
+  PlanId: x
+  planId: other

@@ -1948,5 +1948,159 @@
       }
     ],
     "source": "Hand-written. Contract rules: Problems, Scalars, Numbers, Known fields. parent is a string field like title and example, so a plain yes or Off is a boolean spelling, a plain ~ or NULL is the null spelling, a plain canonical or hex number is number-spelling, a plain true or false, a list, and a map are wrong-type, an anchor is reported before the wrong type of the same node, a repeated key is reported once, and a quoted yes is text. A wrong-type value is not read, so the yes in the map is not reported."
+  },
+  {
+    "name": "origin-values",
+    "input": "origin-values.yaml",
+    "output": "origin-values.plan.json",
+    "source": "Hand-written. ADR 0075 (Identity and origin) and the domain model (Plan, Origin): a plan has an optional text `id`, and a personal plan an optional `origin` with `planId`, `source`, `contentHash`, and `refreshedOn`, all text, the date in ISO form like `generatedOn`. Contract rule: Known fields. Key order is free, a plain UUID, a plain date, and a URL are text, and `Origin`, `ID`, and `x-id` on the plan, `origin` and `x-origin` on a section, and a variable, an answer, or a section named `id` or `origin` are ordinary."
+  },
+  {
+    "name": "origin-partial",
+    "input": "origin-partial.yaml",
+    "output": "origin-partial.plan.json",
+    "source": "Hand-written. Domain model, Origin: every field is optional, so an origin with only a `source` keeps that one and leaves the plan `id` empty. Contract rule: Known fields."
+  },
+  {
+    "name": "origin-empty",
+    "input": "origin-empty.yaml",
+    "output": "origin-empty.plan.json",
+    "source": "Hand-written. Contract rule: Known fields, a key whose value is null, empty, or absent is the zero value. Domain model: `id` and `origin` are optional, so an empty `id` and a null `origin` are the same as absent."
+  },
+  {
+    "name": "origin-blank",
+    "input": "origin-blank.yaml",
+    "output": "origin-blank.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. An `origin` whose four keys are empty, null, or quoted empty is the same as no `origin`, because the model holds an Origin value and cannot tell them apart. An empty `id` is the empty string."
+  },
+  {
+    "name": "origin-empty-map",
+    "input": "origin-empty-map.yaml",
+    "output": "origin-empty-map.plan.json",
+    "source": "Hand-written. Contract rule: Known fields. `origin: {}` is an empty Origin, the same as absent."
+  },
+  {
+    "name": "origin-strings",
+    "input": "origin-strings.yaml",
+    "output": "origin-strings.plan.json",
+    "source": "Hand-written. Contract rule: Known fields and Scalars. A string field is text, so quoted `yes`, `null`, and `0123` stay text, with their spaces and capitals as written, and a plain `deferred` is text in `source` because a string is not a Value. ADR 0075: the ids are text."
+  },
+  {
+    "name": "origin-problems",
+    "input": "origin-problems.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "id"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "origin.planId"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "origin.source"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "origin.contentHash"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "origin.refreshedOn"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "origin.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "origin.PlanId"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "origin.planId"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, Scalars, and Unknown fields. `origin` is a map that cannot keep unknown fields, like `provenance`, so `extra` and `PlanId` are `format.unknown-field` at the key. A plain `123` is a number spelling and a plain `yes` a boolean spelling in a text field, and a plain `true` or a list is `format.wrong-type`. An anchor on the `id` is `format.alias`, and a repeated `planId` is a duplicate key."
+  },
+  {
+    "name": "origin-anchor",
+    "input": "origin-anchor.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "origin"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.alias. An anchor on the `origin` map is reported at its path, and the map is still read."
+  },
+  {
+    "name": "origin-wrong-type",
+    "input": "origin-wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "origin"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.wrong-type. A map where `id` belongs and a list where `origin` belongs are not read, so the plain `yes` inside the map is not reported."
+  },
+  {
+    "name": "origin-scalar",
+    "input": "origin-scalar.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "origin"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, format.wrong-type. A list in `id` and a plain text in `origin`, which holds a mapping."
+  },
+  {
+    "name": "id-spelling",
+    "input": "id-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "id"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "origin.source"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "origin.planId"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Scalars and Numbers. A plain `yes`, `~`, and `0x1F` where text belongs are spelling problems, at `id` and at the keys of `origin`."
+  },
+  {
+    "name": "origin-duplicate",
+    "input": "origin-duplicate.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "id"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "origin"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "origin.extra"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, format.duplicate-key. The path of a duplicate key is the second and later keys, and the value of a duplicate key is read like any other, so the unknown key in the second `origin` is reported."
   }
 ]

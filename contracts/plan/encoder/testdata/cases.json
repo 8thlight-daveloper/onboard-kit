@@ -204,5 +204,56 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `parent` is a known key of a Section (0070), so it collides whether or not the section holds a parent."
+  },
+  {
+    "name": "id-origin",
+    "input": "id-origin.plan.json",
+    "output": "id-origin.yaml",
+    "source": "Hand-written. ADR 0075 (Identity and origin) and the domain model (Plan, Origin). Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `variables`, `answers`, `sections`, then unknown fields, and the Origin key order `planId`, `source`, `contentHash`, `refreshedOn`. A UUID and a date start with a digit, so they are quoted. A hash that starts with a digit is quoted, and a URL starting with a letter is plain."
+  },
+  {
+    "name": "id-only",
+    "input": "id-only.plan.json",
+    "output": "id-only.yaml",
+    "source": "Hand-written. Domain model: `origin` is present in a personal plan only, so a plan with an `id` and no origin writes no `origin` key. Contract rules: Keys, a zero value is omitted. An id that starts with a letter is plain."
+  },
+  {
+    "name": "origin-planid-refreshed",
+    "input": "origin-planid-refreshed.plan.json",
+    "output": "origin-planid-refreshed.yaml",
+    "source": "Hand-written. Contract rules: Keys. Each zero key of an Origin is omitted by itself, and an empty `id` is omitted. This writes only `planId` and `refreshedOn`."
+  },
+  {
+    "name": "origin-source-hash",
+    "input": "origin-source-hash.plan.json",
+    "output": "origin-source-hash.yaml",
+    "source": "Hand-written. Contract rules: Keys. This writes only `source` and `contentHash`, with `provenance` before `origin` and no `id`. A path starting with `/` is plain."
+  },
+  {
+    "name": "origin-quoting",
+    "input": "origin-quoting.plan.json",
+    "output": "origin-quoting.yaml",
+    "source": "Hand-written. Contract rules: Scalars. An `id`, a `planId`, a `source`, and a `contentHash` are written by the same rules as any string: `null`, `Team: core`, and `on` are quoted by the reserved-word and `: ` rules, and a hash such as `0e1234` is quoted because it starts with a digit."
+  },
+  {
+    "name": "origin-unknown",
+    "input": "origin-unknown.plan.json",
+    "output": "origin-unknown.yaml",
+    "source": "Hand-written. Contract rules: Keys, an unknown field collides only when its key is a known key of that type. `planId`, `source`, `contentHash`, and `refreshedOn` are keys of an Origin and not of a Plan, and `origin` is not a key of a Section, so none collides. Unknown fields are written after the known keys."
+  },
+  {
+    "name": "id-origin-collision",
+    "input": "id-origin-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "id"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "origin"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `id` and `origin` are known keys of a Plan (ADR 0075), so an unknown field with either key collides, whether or not the plan holds an id. Problems come in key order, and the other unknown field, `x-ok`, is fine."
   }
 ]

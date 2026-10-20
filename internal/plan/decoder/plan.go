@@ -13,6 +13,10 @@ func (c *collector) planFrom(root *yaml.Node) model.Plan {
 		switch found.name {
 		case versionKey:
 			c.open(found.value, found.at)
+		case "id":
+			plan.ID = c.stringOf(found.value, found.at)
+		case "origin":
+			plan.Origin = c.originOf(found.value, found.at)
 		case "provenance":
 			plan.Provenance = c.provenanceOf(found.value, found.at)
 		case "variables":

@@ -1,0 +1,11 @@
+schemaVersion: 1
+sections:
+  - id: s
+    title: S
+    summary: S
+    origin: kept
+contentHash: x
+planId: p
+refreshedOn: z
+source: w
+x-origin: v

@@ -9,7 +9,9 @@ import (
 func (c *collector) planNode(plan model.Plan) node {
 	builder := &mappingBuilder{}
 	builder.add("schemaVersion", scalarNode(strconv.Itoa(plan.SchemaVersion)))
+	builder.add("id", stringField(plan.ID))
 	builder.add("provenance", provenanceNode(plan.Provenance))
+	builder.add("origin", originNode(plan.Origin))
 	builder.add("variables", c.variableSequence(plan.Variables, "variables"))
 	builder.add("answers", c.answersNode(plan.Answers))
 	builder.add("sections", c.sectionSequence(plan.Sections))
@@ -26,7 +28,7 @@ func provenanceNode(provenance model.Provenance) node {
 
 func isPlanKey(key string) bool {
 	switch key {
-	case "schemaVersion", "provenance", "variables", "answers", "sections":
+	case "schemaVersion", "id", "provenance", "origin", "variables", "answers", "sections":
 		return true
 	}
 	return false
