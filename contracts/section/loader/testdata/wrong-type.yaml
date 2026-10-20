@@ -1,6 +1,7 @@
 schemaVersion: 1
 id: [a]
 title: {k: v}
+parent: [a]
 summary: true
 owner: [yes]
 timing: false

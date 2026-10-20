@@ -39,37 +39,37 @@
     "name": "all-fields",
     "input": "all-fields.yaml",
     "output": "all-fields.section.json",
-    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md. The section clauses follow the decoder contract, Section clauses: both keys, either order, and an empty section read as the empty string. A variable may hold example, in any key order, and it is a text field like description, never the default."
+    "source": "Hand-written. Every field of the domain model Section, Variable, Condition, Clause, AnswerTest, Step, and Check that a template can hold, in a key order that is not the canonical one. Section template schema, variables.md, conditions.md, steps.md, escalation.md, optional-sections.md. The section clauses follow the decoder contract, Section clauses: both keys, either order, and an empty section read as the empty string. A variable may hold example, in any key order, and it is a text field like description, never the default. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "unvalidated",
     "input": "unvalidated.yaml",
     "output": "unvalidated.section.json",
-    "source": "Hand-written. Contract rule: What passes through. Validating is the section validator's job (components doc). An unknown type, a bad name, a reserved id, a variable named enabled, a reserved name (0050), with a default of Deferred, two steps with one id, a check with two keys, an includeIf on a section question, and an empty condition pass unchanged."
+    "source": "Hand-written. Contract rule: What passes through. Validating is the section validator's job (components doc). An unknown type, a bad name, a reserved id, a variable named enabled, a reserved name (0050), with a default of Deferred, two steps with one id, a check with two keys, an includeIf on a section question, and an empty condition pass unchanged. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "placeholders",
     "input": "placeholders.yaml",
     "output": "placeholders.section.json",
-    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name. An example keeps its dollar signs as written, like a description."
+    "source": "Hand-written. variables.md, Syntax and Dollar signs: $name and $$ are plain text in the file and stay unresolved. steps.md: a command variable is written run: [$name], a list of one item holding the text $name. An example keeps its dollar signs as written, like a description. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "deferred",
     "input": "deferred.yaml",
     "output": "deferred.section.json",
-    "source": "Hand-written. variables.md, Deferred answers, and the decoder contract, Values: the plain word is Deferred only as a whole plain Value. In a string field and in a list of strings it is text, and quoted it is text."
+    "source": "Hand-written. variables.md, Deferred answers, and the decoder contract, Values: the plain word is Deferred only as a whole plain Value. In a string field and in a list of strings it is text, and quoted it is text. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "null-and-empty",
     "input": "null-and-empty.yaml",
     "output": "null-and-empty.section.json",
-    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isSettled stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items. A null, empty, or quoted empty example is the empty string."
+    "source": "Hand-written. Decoder contract, Known fields: a null or absent field is the zero value, a present includeIf or askIf is a Condition even when empty, an unset isSettled stays unset, a null env value is the empty string, and an env map that is present is not nil. An empty list of values is nil, and an empty list as a Value is a List with no items. A null, empty, or quoted empty example is the empty string. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "strings",
     "input": "strings.yaml",
     "output": "strings.section.json",
-    "source": "Hand-written. 0030 Format: quote what would read as a boolean, a number, or null. Decoder contract, Scalars: quoted and block scalars are always text, and a plain date, nULL, 12ab, v1.0, 12:30:45, and 1,000 are text. A quoted string keeps its leading and trailing spaces. A variable example is text like a description: quoted or plain, a quoted yes, a plain date, 1,000, v1.0, and padded spaces are kept, and a variable may hold an example and no description."
+    "source": "Hand-written. 0030 Format: quote what would read as a boolean, a number, or null. Decoder contract, Scalars: quoted and block scalars are always text, and a plain date, nULL, 12ab, v1.0, 12:30:45, and 1,000 are text. A quoted string keeps its leading and trailing spaces. A variable example is text like a description: quoted or plain, a quoted yes, a plain date, 1,000, v1.0, and padded spaces are kept, and a variable may hold an example and no description. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "style-is-free",
@@ -244,6 +244,10 @@
       },
       {
         "code": "format.boolean-spelling",
+        "path": "parent"
+      },
+      {
+        "code": "format.boolean-spelling",
         "path": "summary"
       },
       {
@@ -307,7 +311,7 @@
         "path": "steps[0].checks[0].ask"
       }
     ],
-    "source": "Hand-written. 0030 Format: an unquoted yes, no, on, off, y, n, True, or TRUE is an error, so a hand-edited required: yes is a problem and not a silent true. Spelling is checked before type, in a string field, a boolean field, a Value, a list item, and a map value. An example is a string field, so a plain Off in it is a spelling problem."
+    "source": "Hand-written. 0030 Format: an unquoted yes, no, on, off, y, n, True, or TRUE is an error, so a hand-edited required: yes is a problem and not a silent true. Spelling is checked before type, in a string field, a boolean field, a Value, a list item, and a map value. An example is a string field, so a plain Off in it is a spelling problem. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "number-spelling",
@@ -320,6 +324,10 @@
       {
         "code": "format.number-spelling",
         "path": "title"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "parent"
       },
       {
         "code": "format.number-spelling",
@@ -378,7 +386,7 @@
         "path": "steps[0].env.A"
       }
     ],
-    "source": "Hand-written. 0030 Format: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Decoder contract, Numbers: the list of spellings, and a canonical number where a string or a Value is read. An example is a string field, so a canonical decimal in it is a spelling problem."
+    "source": "Hand-written. 0030 Format: numbers that parse surprisingly, such as 1.0 or a leading zero, are errors where a string is meant. Decoder contract, Numbers: the list of spellings, and a canonical number where a string or a Value is read. An example is a string field, so a canonical decimal in it is a spelling problem. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "null-spelling",
@@ -387,6 +395,10 @@
       {
         "code": "format.null-spelling",
         "path": "title"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "parent"
       },
       {
         "code": "format.null-spelling",
@@ -417,7 +429,7 @@
         "path": "steps[0].env.A"
       }
     ],
-    "source": "Hand-written. 0030 Format: null is null or an omitted key. Decoder contract, Scalars: ~, Null, and NULL are problems. null and nULL are not. An example is a string field, so a ~ in it is the null spelling."
+    "source": "Hand-written. 0030 Format: null is null or an omitted key. Decoder contract, Scalars: ~, Null, and NULL are problems. null and nULL are not. An example is a string field, so a ~ in it is the null spelling. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "alias",
@@ -430,6 +442,10 @@
       {
         "code": "format.alias",
         "path": "title"
+      },
+      {
+        "code": "format.alias",
+        "path": "parent"
       },
       {
         "code": "format.alias",
@@ -452,7 +468,7 @@
         "path": "steps[1].checks"
       }
     ],
-    "source": "Hand-written. 0030 Format: anchors and aliases are rejected. Decoder contract, Problems: a merge key is one problem at the key, and its value is not read."
+    "source": "Hand-written. 0030 Format: anchors and aliases are rejected. Decoder contract, Problems: a merge key is one problem at the key, and its value is not read. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "duplicate-key",
@@ -461,6 +477,10 @@
       {
         "code": "format.duplicate-key",
         "path": "id"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "parent"
       },
       {
         "code": "format.duplicate-key",
@@ -483,7 +503,7 @@
         "path": "steps[0].env.K"
       }
     ],
-    "source": "Hand-written. Decoder contract, Problems: format.duplicate-key. Each key after the first is reported, and a quoted key is the same key as a plain one."
+    "source": "Hand-written. Decoder contract, Problems: format.duplicate-key. Each key after the first is reported, and a quoted key is the same key as a plain one. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "wrong-type",
@@ -496,6 +516,10 @@
       {
         "code": "format.wrong-type",
         "path": "title"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "parent"
       },
       {
         "code": "format.wrong-type",
@@ -554,7 +578,7 @@
         "path": "steps[2].run"
       }
     ],
-    "source": "Hand-written. Decoder contract, Problems: format.wrong-type, from the domain model's type of each field. A scalar run is a wrong type in a step and in a check, so run: git status, run: $Upper, and a check's run: $cmd are wrong types. A map or list in a value of the wrong type is not read."
+    "source": "Hand-written. Decoder contract, Problems: format.wrong-type, from the domain model's type of each field. A scalar run is a wrong type in a step and in a check, so run: git status, run: $Upper, and a check's run: $cmd are wrong types. A map or list in a value of the wrong type is not read. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "null-items",
@@ -853,10 +877,14 @@
       },
       {
         "code": "format.number-spelling",
+        "path": "parent"
+      },
+      {
+        "code": "format.number-spelling",
         "path": "summary"
       }
     ],
-    "source": "Hand-written. Decoder contract, Style is free: a tag is ignored, and a scalar is read by its text and its style alone, so !!str yes is still the spelling yes."
+    "source": "Hand-written. Decoder contract, Style is free: a tag is ignored, and a scalar is read by its text and its style alone, so !!str yes is still the spelling yes. A parent is read like a title in this case: ADR 0070, a plain text field with the codes and paths of title."
   },
   {
     "name": "complex-key",
@@ -1089,5 +1117,29 @@
       }
     ],
     "source": "Hand-written from the decoder contract, Problems: format.wrong-type, and its case wrong-type-items. A plain text where a condition clause or an answer test belongs is a wrong type at the item or at answer, in includeIf and in askIf, and the loader goes on without it. A list where a clause or an answer test belongs is the same wrong kind. A plain text where all belongs is a wrong type at all. The section clause after them is read."
+  },
+  {
+    "name": "sub-section",
+    "input": "sub-section.yaml",
+    "output": "sub-section.section.json",
+    "source": "Hand-written from the ADR 0070 example: a sub-section access-request names its parent access and its includeIf names the question of its parent. The loader keeps both as written and does not check that the parent exists."
+  },
+  {
+    "name": "parent-null",
+    "input": "parent-null.yaml",
+    "output": "parent-null.section.json",
+    "source": "Hand-written. ADR 0070 and the loader contract, Reading a parent: a null parent is the same as absent, so the Section has an empty Parent."
+  },
+  {
+    "name": "parent-quoted-empty",
+    "input": "parent-quoted-empty.yaml",
+    "output": "parent-quoted-empty.section.json",
+    "source": "Hand-written. ADR 0070 and the loader contract, Reading a parent: an empty parent, quoted or not, is the same as absent, so the Section has an empty Parent."
+  },
+  {
+    "name": "parent-names-itself",
+    "input": "parent-names-itself.yaml",
+    "output": "parent-names-itself.section.json",
+    "source": "Hand-written. ADR 0070: the loader does not check that a parent exists or that there is no cycle. A template that names its own id as parent loads as written, and the validators report it."
   }
 ]

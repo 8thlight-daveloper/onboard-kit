@@ -1,6 +1,7 @@
 schemaVersion: 1
 id: &id alias
 title: *id
+parent: *id
 summary: S
 variables:
   - &variable

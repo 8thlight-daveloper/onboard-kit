@@ -1,6 +1,7 @@
 schemaVersion: 1
 id: deferred
 title: deferred
+parent: deferred
 summary: The plain word is text in a string field and the Deferred value in a Value.
 variables:
   - name: a

@@ -1,6 +1,7 @@
 schemaVersion: 1
 id: plan
 title: ""
+parent: no-such-section
 summary: S
 timing: someday
 after: [plan, plan]

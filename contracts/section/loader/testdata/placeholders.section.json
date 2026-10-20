@@ -1,6 +1,7 @@
 {
   "id": "placeholders",
   "title": "Use $name",
+  "parent": "$parent and $$5",
   "summary": "$$5 and $HOME and $Repo_url stay as written",
   "owner": "$owner_role",
   "variables": [
