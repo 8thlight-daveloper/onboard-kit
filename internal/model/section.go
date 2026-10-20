@@ -4,6 +4,7 @@ type Section struct {
 	ID            string
 	Title         string
 	Summary       string
+	Parent        string
 	Owner         string
 	Timing        Timing
 	Enabled       *bool

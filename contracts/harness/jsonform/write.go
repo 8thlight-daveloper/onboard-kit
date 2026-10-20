@@ -216,6 +216,7 @@ func sectionObject(section model.Section) object {
 	o.addText("id", section.ID)
 	o.addText("title", section.Title)
 	o.addText("summary", section.Summary)
+	o.addText("parent", section.Parent)
 	if section.IncludeIf != nil {
 		o.add("includeIf", conditionObject(*section.IncludeIf))
 	}
