@@ -121,7 +121,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `plan/instantiator` | C | C | C | C | C | C |
 | `plan/decoder` | C | C | C | C | C | C |
 | `plan/encoder` | R | R | R | R | R | R |
-| `plan/editor` |  |  |  | W |  |  |
+| `plan/editor` |  |  |  | W | W |  |
 | `question/finder` |  |  | R | R | R |  |
 | `plan/validator` |  |  | R | R | R |  |
 | `section/selector` |  |  |  | R | R |  |
