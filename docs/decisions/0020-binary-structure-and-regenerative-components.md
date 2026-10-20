@@ -89,6 +89,7 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `plan/encoder` | `model` |
 | 2 | `section/selector` | `condition/evaluator`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
+| 2 | `plan/refresher` | `model` |
 | 2 | `plan/decoder` | `plan/migrator`, `model` |
 | 3 | `question/finder` | `section/selector`, `condition/evaluator`, `model` |
 | 3 | `document/assembler` | `section/selector`, `section/resolver`, `model` |
