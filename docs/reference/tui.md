@@ -63,6 +63,7 @@ Decided. The app is a Bubble Tea model, so tests send key messages and window-si
 
 ## Open
 
+- Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
 - The final key set and the screens' look. A design pass with the `/ux-designer` skill takes the flow and the layout above as its brief.
 - Whether the review screen is also the first screen of the onboardee's walk.
 - How a person sees the questions they deferred, and how the tool reminds them.
