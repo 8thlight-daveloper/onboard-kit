@@ -6,9 +6,9 @@ import (
 	"io"
 	"os"
 
+	"onboard-kit/internal/command/planfile"
 	"onboard-kit/internal/command/report"
 	"onboard-kit/internal/document/assembler"
-	"onboard-kit/internal/plan/decoder"
 )
 
 const (
@@ -29,14 +29,8 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 		fmt.Fprintln(stderr, "assemble: --plan is required")
 		return exitUsage
 	}
-	data, err := os.ReadFile(*planPath)
-	if err != nil {
-		fmt.Fprintln(stderr, err)
-		return exitProblem
-	}
-	plan, problems := decoder.New().Decode(data)
-	if len(problems) > 0 {
-		report.Problems(stderr, *planPath, problems)
+	plan, ok := planfile.Open(*planPath, stderr)
+	if !ok {
 		return exitProblem
 	}
 	document, gaps := assembler.New().Assemble(plan)
