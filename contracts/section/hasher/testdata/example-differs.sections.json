@@ -1,0 +1,15 @@
+[
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Engineering manager"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Designer"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"engineering manager"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Engineering  manager"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Engineering\nmanager"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Engineering manager."}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"x"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","patternHint":"x"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","pattern":"x"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","options":["x"]}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","default":"x"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"x","default":"x"}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":"Clone URL"}],"steps":[{"id":"clone","name":"Clone"}]}]
