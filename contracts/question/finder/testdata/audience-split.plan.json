@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "org_name", "description": "Organization", "audience": "onboarder"},
+    {"name": "team", "description": "Your team", "audience": "onboardee", "required": true},
+    {"name": "region", "description": "Region", "required": true}
+  ],
+  "answers": {
+    "plan": {"region": "emea"},
+    "sections": {"access": {"laptop_tag": "L-1"}}
+  },
+  "sections": [
+    {"id": "access", "variables": [
+      {"name": "account_name", "description": "Your account name", "audience": "onboardee", "required": true},
+      {"name": "repo_url", "description": "Repository", "required": true},
+      {"name": "laptop_tag", "description": "Laptop tag", "audience": "onboardee"}
+    ]}
+  ]
+}

@@ -14,19 +14,17 @@ func (asked candidate) id() string {
 }
 
 func listCandidates(plan model.Plan, sections []model.Section) []candidate {
-	candidates := planningCandidates(planScope, plan.Variables)
+	candidates := variableCandidates(planScope, plan.Variables)
 	for _, section := range sections {
-		candidates = append(candidates, planningCandidates(section.ID, section.Variables)...)
+		candidates = append(candidates, variableCandidates(section.ID, section.Variables)...)
 	}
 	return candidates
 }
 
-func planningCandidates(scope string, variables []model.Variable) []candidate {
+func variableCandidates(scope string, variables []model.Variable) []candidate {
 	candidates := []candidate{}
 	for _, variable := range variables {
-		if variable.Audience != model.AudienceOnboardee {
-			candidates = append(candidates, candidate{scope: scope, variable: variable})
-		}
+		candidates = append(candidates, candidate{scope: scope, variable: variable})
 	}
 	return candidates
 }

@@ -8,8 +8,8 @@
       {"name": "m_plain", "description": "Plain"},
       {"name": "late_off", "description": "Not asked", "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
       {"name": "n_names_unknown", "description": "Names no question", "askIf": {"all": [{"question": "nothing_here", "answer": {"isSettled": false}}]}},
-      {"name": "o_names_onboarding", "description": "Names an onboarding question", "askIf": {"all": [{"question": "z_onboarding", "answer": {"isSettled": false}}]}},
-      {"name": "z_onboarding", "description": "Onboarding", "audience": "onboardee"},
+      {"name": "o_names_hidden_onboardee", "description": "Names an onboardee question that is not asked", "askIf": {"all": [{"question": "z_hidden_onboardee", "answer": {"isSettled": false}}]}},
+      {"name": "z_hidden_onboardee", "description": "Onboardee, not asked", "audience": "onboardee", "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
       {"name": "p_last", "description": "Last"}
     ]},
     {"id": "off", "enabled": false, "variables": [{"name": "off_one", "description": "Switched off"}]},

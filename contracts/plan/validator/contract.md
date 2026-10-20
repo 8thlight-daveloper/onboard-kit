@@ -2,7 +2,7 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `plan/validator`. Issue: [#49](https://github.com/8thlight-daveloper/onboard-kit/issues/49).
 
-The plan validator checks whether the answers in a plan are acceptable. `Validate` checks every answer stored in a plan, for example after a hand edit. `CheckValue` checks one proposed value for one question, so the editor can refuse a bad answer before it applies it. Both are pure functions. They read no file, keep no state between calls, and change no argument. See [0010](../../../docs/decisions/0010-plan-editor.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and the [variables reference](../../../docs/reference/section-template-schema/variables.md).
+The plan validator checks whether the answers in a plan are acceptable. `Validate` checks every answer stored in a plan, for example after a hand edit. `CheckValue` checks one proposed value for one question, so the editor can refuse a bad answer before it applies it. Both are pure functions. They read no file, keep no state between calls, and change no argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and the [variables reference](../../../docs/reference/section-template-schema/variables.md).
 
 This contract covers the answer checks only. The checks between sections (references, `after`, cycles, timing, conditions) and the call to the section validator are other work, and they report other codes. A caller of `Validate` gets all of them in one list, and this contract judges only the problems whose code starts with `answer.` or `secret.`.
 
@@ -15,11 +15,11 @@ This contract covers the answer checks only. The checks between sections (refere
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed and is treated as unanswered.
 - Both results are empty when nothing is wrong. There is no error return.
 
-**Where the other components come from.** [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) puts the validator after the question finder and the secrets check and lets it depend on both. `New()` takes no argument, so the validator uses the real components. It asks the finder for the active questions of the plan and the secrets check for each text. The expected problems in the fixtures therefore rest on the [finder contract](../../question/finder/contract.md) and the [secrets contract](../../secrets/contract.md), and they use only what those contracts fix.
+**Where the other components come from.** [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) puts the validator after the question finder and the secrets check and lets it depend on both. `New()` takes no argument, so the validator uses the real components. It asks the finder for the active questions of the plan, for both audiences, and the secrets check for each text. The expected problems in the fixtures therefore rest on the [finder contract](../../question/finder/contract.md) and the [secrets contract](../../secrets/contract.md), and they use only what those contracts fix.
 
 ## Rules
 
-**Which questions can take an answer.** A question is active when the question finder returns it for the plan. That is a planning question of a section that is on and included, whose `askIf` holds. The plan's own variables are active unless their `askIf` fails. A variable with `audience: onboardee` is not active. A question can be declared and not active.
+**Which questions can take an answer.** A question is active when the question finder returns it for the plan with the empty audience, which means both. That is a question of either audience, in a section that is on and included, whose `askIf` holds. The plan's own variables are active unless their `askIf` fails. A variable with `audience: onboardee` is active on the same terms as one with `audience: onboarder`, and its answer is checked by the same rules. A question can be declared and not active.
 
 **What `Validate` checks.** Every answer stored in `plan.Answers`, plan scope and each section, in three groups:
 
@@ -102,7 +102,7 @@ None. It reads the plan's variables, the answers, and the content of the section
 
 `hard` choices change what a template author writes, what a plan file holds, or what a person sees in the interface. They come first.
 
-1. **Stored answers of questions that are not active are not checked, except for secrets.** An answer to a question hidden by its `askIf`, in a section that is off or left out, or for an onboarding question is kept in the plan and may become active again, so a wrong type or option there is not reported. The secrets check still runs, because the plan file holds the text. Raised by "It keeps its stored answer, is not asked, and does not block" and "Turning a section off keeps its answers" in 0010 and 0050, against "so a secret added to a plan by hand is reported as a problem" in 0010. Cases: `stale-answers`, `secrets`. `hard`
+1. **Stored answers of questions that are not active are not checked, except for secrets.** An answer to a question hidden by its `askIf`, or in a section that is off or left out, is kept in the plan and may become active again, so a wrong type or option there is not reported. The secrets check still runs, because the plan file holds the text. Raised by "It keeps its stored answer, is not asked, and does not block" and "Turning a section off keeps its answers" in 0010 and 0050, against "so a secret added to a plan by hand is reported as a problem" in 0010. Cases: `stale-answers`, `secrets`, `audience-answers`. `hard`
 2. **A stored answer that no variable declares is a warning, and a submitted value for such a question is an error.** A typo in a hand edit would otherwise be ignored without a word. Raised by "unknown question id ... Severity `error` or `warning`" in the table of 0010. Cases: `unknown-answers`, `check-value`. `hard`
 3. **`CheckValue` rejects a question that is declared and not active.** The editor then needs no activity check of its own, and a hidden question cannot be given an answer by mistake. Raised by the sequence in 0010, where the editor asks the finder before it asks the validator, and by the list of problem classes, which names only an unknown id. Case: `check-value`. `hard`
 4. **A wrong kind, a value outside the options, and a pattern mismatch are errors. The person findings are warnings.** An error stops the answer. Raised by "a value of the wrong type" as an error example in 0010, "shown when a value does not match" for `patternHint`, and "a person with fewer than two gets a warning" in variables.md. Cases: `wrong-kinds`, `choice-options`, `patterns`, `people`. `hard`
@@ -119,9 +119,13 @@ None. It reads the plan's variables, the answers, and the content of the section
 15. **`section` is the id of a section the plan holds, and the details are `expected`, `found`, and `item`.** Raised by the Problem fields in the domain model, which leave both open. Cases: most. `cheap`
 16. **A pattern is read as RE2, so `$` means the end of the text.** A text that ends in a line break does not match a pattern that ends in `$`. Raised by "`pattern` uses RE2 syntax" in variables.md. Cases: `patterns`. `cheap`
 
+17. **A question is active when the finder returns it for both audiences, and the answer checks do not depend on the audience.** An onboardee answer is checked like an onboarder answer, in `Validate` and in `CheckValue`, and an onboardee question that is hidden, switched off, or left out is inactive like any other. 0055 says a question is active by its own condition, whoever answers it, and does not say which list the validator reads. The editor lists the onboarder questions and the TUI the onboardee questions, and a hand edit can hold both. Cases: `audience-answers`, `stale-answers`, `acme`, `check-value`. `hard`
+18. **A stored answer to an onboardee question is not stale, and it is checked.** The old rule treated it as inactive. Cases: `audience-answers`, `stale-answers`. `hard`
+19. **An onboarder question that depends on an onboardee answer is active when that answer is stored, even if the stored answer is invalid.** Whether the answer fits its question is a problem of its own, and it does not change which questions are active. Case: `audience-answers`. `cheap`
+
 ## Wrong implementations tried
 
-Each row names a plausible wrong implementation and the cases or tests that fail it. Sixty variants were run against the tests, and each one fails at least one named test.
+Each row names a plausible wrong implementation and the cases or tests that fail it. Each one fails at least one named test.
 
 | Wrong implementation | Caught by |
 | -- | -- |
@@ -133,7 +137,15 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | The `patternHint` is left out of the message, or a pattern mismatch is a warning | `patterns`, `check-value` |
 | A Deferred value is checked, or the text `deferred` is skipped as if it were Deferred | `deferred-and-empty`, `deferred-word` |
 | Empty text, an empty list, or a list of empty text is checked, or only spaces count as unanswered | `deferred-and-empty`, `choice-options`, `check-value` |
-| Answers of a hidden, onboarding, switched off, or left out question are checked | `stale-answers`, `check-value` |
+| Answers of a hidden, switched off, or left out question are checked | `stale-answers`, `check-value`, `audience-answers` |
+| Answers of onboardee questions are not checked, or `CheckValue` calls an onboardee question inactive | `audience-answers`, `stale-answers`, `check-value`, `acme` |
+| Onboardee answers get only some answer checks, such as the options but not the kind, the pattern, or the person checks | `audience-answers` |
+| An onboardee plan variable is not checked | `audience-answers` |
+| Activity read from the finder for one audience only, so onboarder questions or onboardee questions are inactive | `audience-answers`, `check-value` |
+| An onboarder question that depends on an onboardee answer is inactive, or an onboardee question that depends on an onboarder answer | `audience-answers` |
+| A hidden, switched off, or left out onboardee question is checked, or is not inactive in `CheckValue` | `audience-answers` |
+| An onboardee problem has a different severity from the same onboarder problem | `audience-answers` |
+| The secrets check is skipped for onboardee questions | `secrets`, `audience-answers` |
 | An unknown stored answer is not reported, or is an error in `Validate`, or a submitted unknown question is a warning | `unknown-answers`, `check-value` |
 | The secrets check is skipped for inactive or unknown answers, or skipped in `CheckValue` | `secrets`, `check-value` |
 | A secrets problem has no `question` or no `section`, loses its `item`, or repeats the secret in its detail | `secrets`, `check-value` |

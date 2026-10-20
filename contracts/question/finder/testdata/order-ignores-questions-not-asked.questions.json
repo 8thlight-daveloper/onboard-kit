@@ -3,7 +3,7 @@
   {"id": "s.c_waits"},
   {"id": "s.m_plain"},
   {"id": "s.n_names_unknown"},
-  {"id": "s.o_names_onboarding"},
+  {"id": "s.o_names_hidden_onboardee"},
   {"id": "s.p_last"},
   {"id": "t.t_names_off"}
 ], "blockers": []}

@@ -1,0 +1,8 @@
+{"questions": [
+  {"id": "plan.org_name"},
+  {"id": "plan.team", "audience": "onboardee", "required": true},
+  {"id": "plan.region", "required": true, "answer": "emea", "suggestions": [{"value": "emea", "source": "given"}]},
+  {"id": "access.account_name", "audience": "onboardee", "required": true},
+  {"id": "access.repo_url", "required": true},
+  {"id": "access.laptop_tag", "audience": "onboardee", "answer": "L-1", "suggestions": [{"value": "L-1", "source": "given"}]}
+], "blockers": ["plan.team", "access.account_name", "access.repo_url"]}

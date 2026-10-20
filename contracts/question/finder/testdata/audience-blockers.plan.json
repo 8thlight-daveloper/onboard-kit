@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "p_onboarder_open", "description": "Onboarder, required, no answer", "required": true},
+    {"name": "p_onboardee_open", "description": "Onboardee, required, no answer", "audience": "onboardee", "required": true},
+    {"name": "p_onboardee_given", "description": "Onboardee, required, answered by the onboarder", "audience": "onboardee", "required": true},
+    {"name": "p_onboardee_deferred", "description": "Onboardee, required, deferred", "audience": "onboardee", "required": true}
+  ],
+  "answers": {
+    "plan": {"p_onboardee_given": "yes", "p_onboardee_deferred": {"deferred": true}},
+    "sections": {"first": {"e_flag_false": false, "e_empty_text": "", "e_blank_list": [""]}}
+  },
+  "sections": [
+    {"id": "first", "variables": [
+      {"name": "o_open", "description": "Onboarder, required, no answer", "required": true},
+      {"name": "e_flag_false", "type": "boolean", "description": "Onboardee, required, false", "audience": "onboardee", "required": true},
+      {"name": "e_empty_text", "description": "Onboardee, required, empty text", "audience": "onboardee", "required": true},
+      {"name": "e_blank_list", "type": "command", "description": "Onboardee, required, list of empty text", "audience": "onboardee", "required": true},
+      {"name": "e_optional", "description": "Onboardee, not required", "audience": "onboardee"},
+      {"name": "e_hidden", "description": "Onboardee, required, hidden by askIf", "audience": "onboardee", "required": true,
+        "askIf": {"all": [{"question": "plan.p_onboarder_open", "answer": {"isSettled": true}}]}}
+    ]},
+    {"id": "off", "enabled": false, "variables": [{"name": "e_off", "description": "Onboardee, required, switched off", "audience": "onboardee", "required": true}]},
+    {"id": "out", "includeIf": {"all": [{"question": "plan.p_onboardee_given", "answer": {"is": "no"}}]},
+      "variables": [{"name": "e_out", "description": "Onboardee, required, left out", "audience": "onboardee", "required": true}]}
+  ]
+}

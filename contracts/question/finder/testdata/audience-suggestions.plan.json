@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "team", "description": "Team", "default": "platform"}
+  ],
+  "answers": {"sections": {"s": {"team": "data"}, "t": {"team": "data"}, "u": {"team": "gone"}}},
+  "sections": [
+    {"id": "s", "variables": [{"name": "team", "description": "Your team", "audience": "onboardee", "default": "design"}]},
+    {"id": "t", "timing": "anytime", "variables": [{"name": "team", "description": "Your team again", "audience": "onboardee", "default": "platform"}]},
+    {"id": "u", "enabled": false, "timing": "anytime", "variables": [{"name": "team", "description": "Switched off", "audience": "onboardee", "default": "hidden"}]}
+  ]
+}

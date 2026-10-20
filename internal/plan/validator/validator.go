@@ -57,7 +57,7 @@ func secretProblems(plan model.Plan, target question, value model.Value) []model
 
 func activeQuestions(plan model.Plan) map[string]bool {
 	active := map[string]bool{}
-	for _, asked := range finder.New().Questions(plan) {
+	for _, asked := range finder.New().Questions(plan, "") {
 		active[asked.ID] = true
 	}
 	return active

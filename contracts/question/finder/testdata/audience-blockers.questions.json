@@ -1,0 +1,11 @@
+{"questions": [
+  {"id": "plan.p_onboarder_open", "required": true},
+  {"id": "plan.p_onboardee_open", "audience": "onboardee", "required": true},
+  {"id": "plan.p_onboardee_given", "audience": "onboardee", "required": true, "answer": "yes", "suggestions": [{"value": "yes", "source": "given"}]},
+  {"id": "plan.p_onboardee_deferred", "audience": "onboardee", "required": true, "answer": {"deferred": true}},
+  {"id": "first.o_open", "required": true},
+  {"id": "first.e_flag_false", "type": "boolean", "audience": "onboardee", "required": true, "answer": false, "suggestions": [{"value": false, "source": "given"}]},
+  {"id": "first.e_empty_text", "audience": "onboardee", "required": true, "answer": ""},
+  {"id": "first.e_blank_list", "type": "command", "audience": "onboardee", "required": true, "answer": [""]},
+  {"id": "first.e_optional", "audience": "onboardee"}
+], "blockers": ["plan.p_onboarder_open", "plan.p_onboardee_open", "first.o_open", "first.e_empty_text", "first.e_blank_list"]}

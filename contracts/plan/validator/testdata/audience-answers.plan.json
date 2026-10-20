@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "mode", "type": "choice", "options": ["show", "hide"], "description": "Mode"},
+    {"name": "team", "type": "choice", "options": ["platform", "design"], "audience": "onboardee", "description": "Your team"}
+  ],
+  "answers": {
+    "plan": {"mode": "hide", "team": "gamma"},
+    "sections": {
+      "main": {
+        "ee_flag": "yes",
+        "ee_pat": "12a",
+        "ee_pick": "alpha",
+        "ee_who": "Ann Lee",
+        "ee_crew": ["Jane Doe, jane@acme.example, @jane"],
+        "ee_cmd": "make test",
+        "ee_hidden": "not a flag",
+        "ee_needs_mode": "zzz",
+        "ob_needs_team": "zzz",
+        "ob_needs_other": "zzz"
+      },
+      "off": {"ee_off": "not a flag"},
+      "left-out": {"ee_out": "not a flag"}
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "ee_flag", "type": "boolean", "audience": "onboardee", "description": "Boolean"},
+      {"name": "ee_pat", "pattern": "^[0-9]+$", "patternHint": "digits only", "audience": "onboardee", "description": "Digits"},
+      {"name": "ee_pick", "type": "choice", "options": ["alpha", "beta"], "audience": "onboardee", "description": "Choice"},
+      {"name": "ee_who", "type": "person", "audience": "onboardee", "description": "One person"},
+      {"name": "ee_crew", "type": "person", "multiple": true, "audience": "onboardee", "description": "Several people"},
+      {"name": "ee_cmd", "type": "command", "audience": "onboardee", "description": "Command"},
+      {"name": "ee_hidden", "type": "boolean", "audience": "onboardee", "description": "Hidden by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "show"}}]}},
+      {"name": "ee_needs_mode", "type": "choice", "options": ["alpha", "beta"], "audience": "onboardee", "description": "Shown by an onboarder answer",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}},
+      {"name": "ob_needs_team", "type": "choice", "options": ["x", "y"], "description": "Onboarder question shown by an onboardee answer",
+        "askIf": {"all": [{"question": "plan.team", "answer": {"isSettled": true}}]}},
+      {"name": "ob_needs_other", "type": "choice", "options": ["x", "y"], "description": "Onboarder question hidden by an onboardee answer",
+        "askIf": {"all": [{"question": "plan.team", "answer": {"is": "design"}}]}}
+    ]},
+    {"id": "off", "enabled": false, "variables": [
+      {"name": "ee_off", "type": "boolean", "audience": "onboardee", "description": "Switched off"}
+    ]},
+    {"id": "left-out", "includeIf": {"all": [{"question": "plan.team", "answer": {"is": "design"}}]}, "variables": [
+      {"name": "ee_out", "type": "boolean", "audience": "onboardee", "description": "Left out by an onboardee answer"}
+    ]}
+  ]
+}

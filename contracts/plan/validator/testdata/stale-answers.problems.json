@@ -1,3 +1,4 @@
 {"problems": [
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.ee_flag", "section": "main", "detail": {"expected": "flag", "found": "text"}},
   {"code": "answer.not-an-option", "severity": "error", "question": "main.v_pick", "section": "main"}
 ]}

@@ -41,6 +41,45 @@ type expectedSuggestion struct {
 	Source string          `json:"source"`
 }
 
+const bothAudiences = model.Audience("")
+
+var audiences = []model.Audience{bothAudiences, model.AudienceOnboarder, model.AudienceOnboardee}
+
+func audienceLabel(audience model.Audience) string {
+	if audience == bothAudiences {
+		return "both"
+	}
+	return string(audience)
+}
+
+func audienceOfVariable(plan model.Plan, id string) model.Audience {
+	variable, _ := findVariable(plan, id)
+	if variable.Audience == "" {
+		return model.DefaultAudience
+	}
+	return variable.Audience
+}
+
+func wantedIDs(plan model.Plan, ids []string, audience model.Audience) []string {
+	kept := []string{}
+	for _, id := range ids {
+		if audience == bothAudiences || audienceOfVariable(plan, id) == audience {
+			kept = append(kept, id)
+		}
+	}
+	return kept
+}
+
+func questionsOf(questions []model.Question, audience model.Audience) []model.Question {
+	kept := []model.Question{}
+	for _, question := range questions {
+		if audience == bothAudiences || question.Audience == audience {
+			kept = append(kept, question)
+		}
+	}
+	return kept
+}
+
 func readFixture(t *testing.T, name string) []byte {
 	t.Helper()
 	data, err := os.ReadFile(filepath.Join("testdata", name))
@@ -180,6 +219,7 @@ func isSettledOrDeferred(value model.Value) bool {
 func TestEveryCaseCitesItsSourceAndNamesItsQuestions(t *testing.T) {
 	names := map[string]bool{}
 	someCaseAsksQuestions, someCaseBlocks := false, false
+	someCaseAsksOnboardee, someCaseBlocksOnboardee, someCaseBlocksOnboarder := false, false, false
 	for _, c := range loadCases(t) {
 		if strings.TrimSpace(c.Source) == "" {
 			t.Errorf("case %s has no source", c.Name)
@@ -197,33 +237,71 @@ func TestEveryCaseCitesItsSourceAndNamesItsQuestions(t *testing.T) {
 			asked[question.ID] = true
 			if _, found := findVariable(plan, question.ID); !found {
 				t.Errorf("case %s expects %s, which its plan does not declare", c.Name, question.ID)
+				continue
 			}
+			wantAudience := model.Audience(question.Audience)
+			if question.Audience == "" {
+				wantAudience = model.DefaultAudience
+			}
+			if audienceOfVariable(plan, question.ID) != wantAudience {
+				t.Errorf("case %s expects %s for the audience %q, but its variable has %q", c.Name, question.ID, wantAudience, audienceOfVariable(plan, question.ID))
+			}
+			someCaseAsksOnboardee = someCaseAsksOnboardee || wantAudience == model.AudienceOnboardee
 		}
 		for _, id := range expected.Blockers {
 			if !asked[id] {
 				t.Errorf("case %s expects blocker %s, which is not among its questions", c.Name, id)
 			}
+			someCaseBlocksOnboardee = someCaseBlocksOnboardee || audienceOfVariable(plan, id) == model.AudienceOnboardee
+			someCaseBlocksOnboarder = someCaseBlocksOnboarder || audienceOfVariable(plan, id) == model.AudienceOnboarder
 		}
 	}
 	if !someCaseAsksQuestions || !someCaseBlocks {
 		t.Errorf("no case expects a question, or no case expects a blocker")
 	}
+	if !someCaseAsksOnboardee || !someCaseBlocksOnboardee || !someCaseBlocksOnboarder {
+		t.Errorf("no case expects an onboardee question, an onboardee blocker, and an onboarder blocker")
+	}
 }
 
-func TestAsksTheActiveQuestionsInOrder(t *testing.T) {
+func TestAsksTheActiveQuestionsOfTheAudienceInOrder(t *testing.T) {
 	for _, c := range loadCases(t) {
-		t.Run(c.Name, func(t *testing.T) {
-			t.Parallel()
-			plan := loadPlan(t, c)
-			want := idsOf(nil)
-			for _, question := range loadExpected(t, c).Questions {
-				want = append(want, question.ID)
-			}
-			got := idsOf(newFinder().Questions(plan))
-			if !slices.Equal(got, want) {
-				t.Errorf("got  %v\nwant %v", got, want)
-			}
-		})
+		for _, audience := range audiences {
+			t.Run(c.Name+"/"+audienceLabel(audience), func(t *testing.T) {
+				t.Parallel()
+				plan := loadPlan(t, c)
+				all := idsOf(nil)
+				for _, question := range loadExpected(t, c).Questions {
+					all = append(all, question.ID)
+				}
+				want := wantedIDs(plan, all, audience)
+				got := idsOf(newFinder().Questions(plan, audience))
+				if !slices.Equal(got, want) {
+					t.Errorf("got  %v\nwant %v", got, want)
+				}
+			})
+		}
+	}
+}
+
+func TestANamedAudienceGetsItsQuestionsOfTheFullListAsTheyAre(t *testing.T) {
+	for _, c := range loadCases(t) {
+		for _, audience := range []model.Audience{model.AudienceOnboarder, model.AudienceOnboardee} {
+			t.Run(c.Name+"/"+audienceLabel(audience), func(t *testing.T) {
+				t.Parallel()
+				plan := loadPlan(t, c)
+				got := newFinder().Questions(plan, audience)
+				want := questionsOf(newFinder().Questions(plan, bothAudiences), audience)
+				if len(got) != len(want) || (len(got) > 0 && !reflect.DeepEqual(got, want)) {
+					t.Errorf("got  %v\nwant %v", idsOf(got), idsOf(want))
+				}
+				for _, question := range got {
+					if question.Audience != audience {
+						t.Errorf("%s: audience is %q, want %q", question.ID, question.Audience, audience)
+					}
+				}
+			})
+		}
 	}
 }
 
@@ -233,7 +311,7 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 			t.Parallel()
 			plan := loadPlan(t, c)
 			expected := loadExpected(t, c)
-			got := questionsByID(newFinder().Questions(plan))
+			got := questionsByID(newFinder().Questions(plan, bothAudiences))
 			for _, want := range expected.Questions {
 				question, found := got[want.ID]
 				if !found {
@@ -258,7 +336,7 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 				case question.Type != wantType:
 					t.Errorf("%s: type is %q, want %q", want.ID, question.Type, wantType)
 				case question.Audience != wantAudience:
-					t.Errorf("%s: phase is %q, want %q", want.ID, question.Audience, wantAudience)
+					t.Errorf("%s: audience is %q, want %q", want.ID, question.Audience, wantAudience)
 				case question.Required != want.Required || question.Required != variable.Required:
 					t.Errorf("%s: required is %v, want %v", want.ID, question.Required, want.Required)
 				case question.Multiple != variable.Multiple:
@@ -275,7 +353,7 @@ func TestAnswersAndDeclaredDefaultsAreReturnedAsStored(t *testing.T) {
 	for _, c := range loadCases(t) {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
-			got := questionsByID(newFinder().Questions(loadPlan(t, c)))
+			got := questionsByID(newFinder().Questions(loadPlan(t, c), bothAudiences))
 			for _, want := range loadExpected(t, c).Questions {
 				question, found := got[want.ID]
 				if !found {
@@ -297,7 +375,7 @@ func TestOffersTheSuggestionsInOrder(t *testing.T) {
 	for _, c := range loadCases(t) {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
-			got := questionsByID(newFinder().Questions(loadPlan(t, c)))
+			got := questionsByID(newFinder().Questions(loadPlan(t, c), bothAudiences))
 			for _, want := range loadExpected(t, c).Questions {
 				question, found := got[want.ID]
 				if !found {
@@ -327,7 +405,7 @@ func TestGroupsQuestionsByNameTypeOptionsAndMultiple(t *testing.T) {
 	for _, c := range loadCases(t) {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
-			got := questionsByID(newFinder().Questions(loadPlan(t, c)))
+			got := questionsByID(newFinder().Questions(loadPlan(t, c), bothAudiences))
 			labelOfKey := map[string]string{}
 			keyOfLabel := map[string]string{}
 			for _, want := range loadExpected(t, c).Questions {
@@ -357,16 +435,19 @@ func TestGroupsQuestionsByNameTypeOptionsAndMultiple(t *testing.T) {
 	}
 }
 
-func TestBlockersAreTheActiveRequiredQuestionsWithNoAnswerInOrder(t *testing.T) {
+func TestBlockersAreTheActiveRequiredQuestionsOfTheAudienceWithNoAnswerInOrder(t *testing.T) {
 	for _, c := range loadCases(t) {
-		t.Run(c.Name, func(t *testing.T) {
-			t.Parallel()
-			want := loadExpected(t, c).Blockers
-			got := blockerIDs(newFinder().Blockers(loadPlan(t, c)))
-			if !slices.Equal(got, append([]string{}, want...)) {
-				t.Errorf("got  %v\nwant %v", got, want)
-			}
-		})
+		for _, audience := range audiences {
+			t.Run(c.Name+"/"+audienceLabel(audience), func(t *testing.T) {
+				t.Parallel()
+				plan := loadPlan(t, c)
+				want := wantedIDs(plan, loadExpected(t, c).Blockers, audience)
+				got := blockerIDs(newFinder().Blockers(plan, audience))
+				if !slices.Equal(got, want) {
+					t.Errorf("got  %v\nwant %v", got, want)
+				}
+			})
+		}
 	}
 }
 
@@ -375,14 +456,16 @@ func TestBlockersAgreeWithTheQuestions(t *testing.T) {
 	for _, c := range loadCases(t) {
 		plan := loadPlan(t, c)
 		finder := newFinder()
-		want := []string{}
-		for _, question := range finder.Questions(plan) {
-			if question.Required && question.Audience == model.AudienceOnboarder && !isSettledOrDeferred(question.Answer) {
-				want = append(want, question.ID)
+		for _, audience := range audiences {
+			want := []string{}
+			for _, question := range finder.Questions(plan, audience) {
+				if question.Required && !isSettledOrDeferred(question.Answer) {
+					want = append(want, question.ID)
+				}
 			}
-		}
-		if got := blockerIDs(finder.Blockers(plan)); !slices.Equal(got, want) {
-			t.Errorf("%s: blockers %v, but the required questions with no answer are %v", c.Name, got, want)
+			if got := blockerIDs(finder.Blockers(plan, audience)); !slices.Equal(got, want) {
+				t.Errorf("%s, %s: blockers %v, but the required questions with no answer are %v", c.Name, audienceLabel(audience), got, want)
+			}
 		}
 	}
 }
@@ -393,8 +476,10 @@ func TestPlanIsNotChanged(t *testing.T) {
 		plan := loadPlan(t, c)
 		snapshot := loadPlan(t, c)
 		finder := newFinder()
-		finder.Questions(plan)
-		finder.Blockers(plan)
+		for _, audience := range audiences {
+			finder.Questions(plan, audience)
+			finder.Blockers(plan, audience)
+		}
 		if !reflect.DeepEqual(plan, snapshot) {
 			t.Fatalf("%s: the plan was changed", c.Name)
 		}
@@ -406,13 +491,23 @@ func TestResultsDoNotDependOnEarlierCallsOrOnRepeats(t *testing.T) {
 	cases := loadCases(t)
 	finder := newFinder()
 	type result struct {
-		questions []model.Question
-		blockers  []model.Blocker
+		questions [][]model.Question
+		blockers  [][]model.Blocker
+	}
+	resultOf := func(finder interface {
+		Questions(model.Plan, model.Audience) []model.Question
+		Blockers(model.Plan, model.Audience) []model.Blocker
+	}, plan model.Plan) result {
+		var got result
+		for _, audience := range audiences {
+			got.questions = append(got.questions, finder.Questions(plan, audience))
+			got.blockers = append(got.blockers, finder.Blockers(plan, audience))
+		}
+		return got
 	}
 	first := map[string]result{}
 	for _, c := range cases {
-		plan := loadPlan(t, c)
-		first[c.Name] = result{newFinder().Questions(plan), newFinder().Blockers(plan)}
+		first[c.Name] = resultOf(newFinder(), loadPlan(t, c))
 	}
 	for pass := 0; pass < 2; pass++ {
 		for i := range cases {
@@ -422,8 +517,7 @@ func TestResultsDoNotDependOnEarlierCallsOrOnRepeats(t *testing.T) {
 			}
 			c := cases[index]
 			for repeat := 0; repeat < 10; repeat++ {
-				plan := loadPlan(t, c)
-				got := result{finder.Questions(plan), finder.Blockers(plan)}
+				got := resultOf(finder, loadPlan(t, c))
 				if !reflect.DeepEqual(got, first[c.Name]) {
 					t.Fatalf("%s on pass %d, repeat %d: the result changed", c.Name, pass, repeat)
 				}
@@ -436,8 +530,6 @@ func TestResultDoesNotDependOnTheOrderOfTheSectionsInThePlan(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
 		plan := loadPlan(t, c)
-		wantQuestions := newFinder().Questions(plan)
-		wantBlockers := newFinder().Blockers(plan)
 		count := len(plan.Sections)
 		variants := []model.Plan{}
 		for turn := 1; turn < count; turn++ {
@@ -448,12 +540,16 @@ func TestResultDoesNotDependOnTheOrderOfTheSectionsInThePlan(t *testing.T) {
 		reversed := loadPlan(t, c)
 		slices.Reverse(reversed.Sections)
 		variants = append(variants, reversed)
-		for _, variant := range variants {
-			if got := newFinder().Questions(variant); !reflect.DeepEqual(got, wantQuestions) {
-				t.Errorf("%s: sections reordered, questions %v, want %v", c.Name, idsOf(got), idsOf(wantQuestions))
-			}
-			if got := newFinder().Blockers(variant); !reflect.DeepEqual(got, wantBlockers) {
-				t.Errorf("%s: sections reordered, blockers %v, want %v", c.Name, blockerIDs(got), blockerIDs(wantBlockers))
+		for _, audience := range audiences {
+			wantQuestions := newFinder().Questions(plan, audience)
+			wantBlockers := newFinder().Blockers(plan, audience)
+			for _, variant := range variants {
+				if got := newFinder().Questions(variant, audience); !reflect.DeepEqual(got, wantQuestions) {
+					t.Errorf("%s, %s: sections reordered, questions %v, want %v", c.Name, audienceLabel(audience), idsOf(got), idsOf(wantQuestions))
+				}
+				if got := newFinder().Blockers(variant, audience); !reflect.DeepEqual(got, wantBlockers) {
+					t.Errorf("%s, %s: sections reordered, blockers %v, want %v", c.Name, audienceLabel(audience), blockerIDs(got), blockerIDs(wantBlockers))
+				}
 			}
 		}
 	}
@@ -465,23 +561,25 @@ func TestResultListsAreNotThePlansOrTheNextCalls(t *testing.T) {
 		plan := loadPlan(t, c)
 		snapshot := loadPlan(t, c)
 		finder := newFinder()
-		questions := finder.Questions(plan)
-		blockers := finder.Blockers(plan)
-		wantIDs := idsOf(questions)
-		wantBlockers := blockerIDs(blockers)
-		slices.Reverse(questions)
-		slices.Reverse(blockers)
-		if len(questions) > 0 {
-			questions[0] = model.Question{ID: "changed"}
-		}
-		if len(blockers) > 0 {
-			blockers[0] = model.Blocker{Question: "changed"}
-		}
-		if !reflect.DeepEqual(plan, snapshot) {
-			t.Fatalf("%s: changing the results changed the plan", c.Name)
-		}
-		if !slices.Equal(idsOf(finder.Questions(plan)), wantIDs) || !slices.Equal(blockerIDs(finder.Blockers(plan)), wantBlockers) {
-			t.Fatalf("%s: changing the results changed the next call", c.Name)
+		for _, audience := range audiences {
+			questions := finder.Questions(plan, audience)
+			blockers := finder.Blockers(plan, audience)
+			wantIDs := idsOf(questions)
+			wantBlockers := blockerIDs(blockers)
+			slices.Reverse(questions)
+			slices.Reverse(blockers)
+			if len(questions) > 0 {
+				questions[0] = model.Question{ID: "changed"}
+			}
+			if len(blockers) > 0 {
+				blockers[0] = model.Blocker{Question: "changed"}
+			}
+			if !reflect.DeepEqual(plan, snapshot) {
+				t.Fatalf("%s, %s: changing the results changed the plan", c.Name, audienceLabel(audience))
+			}
+			if !slices.Equal(idsOf(finder.Questions(plan, audience)), wantIDs) || !slices.Equal(blockerIDs(finder.Blockers(plan, audience)), wantBlockers) {
+				t.Fatalf("%s, %s: changing the results changed the next call", c.Name, audienceLabel(audience))
+			}
 		}
 	}
 }
@@ -489,10 +587,12 @@ func TestResultListsAreNotThePlansOrTheNextCalls(t *testing.T) {
 func TestPlanWithNothingHasNoQuestionsAndNoBlockers(t *testing.T) {
 	t.Parallel()
 	finder := newFinder()
-	if got := finder.Questions(model.Plan{}); len(got) != 0 {
-		t.Errorf("got questions %v, want none", idsOf(got))
-	}
-	if got := finder.Blockers(model.Plan{}); len(got) != 0 {
-		t.Errorf("got blockers %v, want none", blockerIDs(got))
+	for _, audience := range audiences {
+		if got := finder.Questions(model.Plan{}, audience); len(got) != 0 {
+			t.Errorf("%s: got questions %v, want none", audienceLabel(audience), idsOf(got))
+		}
+		if got := finder.Blockers(model.Plan{}, audience); len(got) != 0 {
+			t.Errorf("%s: got blockers %v, want none", audienceLabel(audience), blockerIDs(got))
+		}
 	}
 }

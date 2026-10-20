@@ -1,0 +1,3 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "audience": "onboardee", "required": true}
+], "blockers": ["plan.discipline"]}

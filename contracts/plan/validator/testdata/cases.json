@@ -8,8 +8,7 @@
       {"name": "a clone URL that does not fit, with the hint", "question": "access.repo_url", "value": "ftp://git.acme.example/widget-service.git",
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "access.repo_url", "section": "access", "messageContains": "A clone URL, starting with git@ or https://"}]},
       {"name": "a question shown by its condition", "question": "access.source_control_grantor", "value": "IT service desk", "problems": []},
-      {"name": "an onboarding question", "question": "access.account_name", "value": "jdoe",
-        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "access.account_name", "section": "access"}]},
+      {"name": "an onboardee question", "question": "access.account_name", "value": "jdoe", "problems": []},
       {"name": "a question of a section left out by its includeIf", "question": "review-design-system.design_system_url", "value": "https://design.acme.example",
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "review-design-system.design_system_url", "section": "review-design-system"}]},
       {"name": "a command", "question": "clone-and-run-tests.setup_command", "value": ["make", "setup"], "problems": []},
@@ -153,7 +152,9 @@
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
       {"name": "a token on a question no variable declares", "question": "main.nobody", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
         "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "main.nobody", "section": "main"}]},
-      {"name": "a flag", "question": "main.ok_flag", "value": true, "problems": []}
+      {"name": "a flag", "question": "main.ok_flag", "value": true, "problems": []},
+      {"name": "a token as text for an onboardee question", "question": "main.onboard", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [{"code": "secret.token-prefix", "severity": "error", "question": "main.onboard", "section": "main"}]}
     ],
     "source": "0010, Where the behavior lives, Secrets: the check runs in Submit and in Validate, so a secret added to a plan by hand is reported as a problem. contracts/secrets/contract.md: the codes, the item detail, and that a problem never repeats the secret. Fake values as in that contract, with the marker character removed by the test"
   },
@@ -161,7 +162,7 @@
     "name": "stale-answers",
     "plan": "stale-answers.plan.json",
     "expected": "stale-answers.problems.json",
-    "source": "0010, Conditions: a question whose condition is false keeps its stored answer and is not asked. 0050: a switched off section keeps its answers. variables.md, Phase: an onboarding question is not asked in planning. So an answer to a question that is not active is not checked, and main.v_pick, which is active, is"
+    "source": "0010, Conditions: a question whose condition is false keeps its stored answer and is not asked. 0050: a switched off section keeps its answers. 0055: a question is active by its own rules, whoever answers it. So an answer to a question that is not active is not checked, and main.v_pick and main.ee_flag, which are active, are"
   },
   {
     "name": "unknown-answers",
@@ -214,8 +215,7 @@
       {"name": "a question shown by its condition", "question": "main.shown", "value": "x", "problems": []},
       {"name": "a question hidden by its condition", "question": "main.hidden", "value": "x",
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
-      {"name": "an onboarding question", "question": "main.onboard", "value": "x",
-        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.onboard", "section": "main"}]},
+      {"name": "an onboardee question", "question": "main.ee_text", "value": "x", "problems": []},
       {"name": "a question of a switched off section", "question": "off.o_str", "value": "x",
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "off.o_str", "section": "off"}]},
       {"name": "a plan variable", "question": "plan.p_text", "value": "x", "problems": []},
@@ -232,5 +232,36 @@
       {"name": "no value on a question", "question": "main.s_str", "problems": []}
     ],
     "source": "0010, Surface and Sequence: CheckValue(plan, id, value) checks one value, with the same checks as Validate, and the editor asks whether the question is active. 0010, Errors and shutdown: an unknown question id is a problem. A bad stored answer is not the value being checked"
+  },
+  {
+    "name": "audience-answers",
+    "plan": "audience-answers.plan.json",
+    "expected": "audience-answers.problems.json",
+    "checks": [
+      {"name": "an onboardee choice with an option", "question": "main.ee_pick", "value": "alpha", "problems": []},
+      {"name": "an onboardee choice outside its options", "question": "main.ee_pick", "value": "gamma",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.ee_pick", "section": "main"}]},
+      {"name": "text for an onboardee boolean", "question": "main.ee_flag", "value": "true",
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.ee_flag", "section": "main", "detail": {"expected": "flag", "found": "text"}}]},
+      {"name": "a flag for an onboardee boolean", "question": "main.ee_flag", "value": true, "problems": []},
+      {"name": "an onboardee pattern that does not fit", "question": "main.ee_pat", "value": "abc",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.ee_pat", "section": "main", "messageContains": "digits only"}]},
+      {"name": "an onboardee person with no contact", "question": "main.ee_who", "value": "Ann Lee",
+        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.ee_who", "section": "main"}]},
+      {"name": "an onboardee plan variable with an option", "question": "plan.team", "value": "design", "problems": []},
+      {"name": "an onboardee plan variable outside its options", "question": "plan.team", "value": "nope",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "plan.team"}]},
+      {"name": "an onboardee question shown by an onboarder answer", "question": "main.ee_needs_mode", "value": "beta", "problems": []},
+      {"name": "an onboarder question shown by an onboardee answer", "question": "main.ob_needs_team", "value": "x", "problems": []},
+      {"name": "an onboarder question hidden by an onboardee answer", "question": "main.ob_needs_other", "value": "x",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.ob_needs_other", "section": "main"}]},
+      {"name": "an onboardee question hidden by its condition", "question": "main.ee_hidden", "value": true,
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.ee_hidden", "section": "main"}]},
+      {"name": "an onboardee question of a switched off section", "question": "off.ee_off", "value": true,
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "off.ee_off", "section": "off"}]},
+      {"name": "an onboardee question of a section left out by an onboardee answer", "question": "left-out.ee_out", "value": true,
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "left-out.ee_out", "section": "left-out"}]}
+    ],
+    "source": "docs/decisions/0055-variable-audience.md, Rules: scope and audience are separate, a question is active by its own condition whoever answers it, and an onboarder question may depend on an onboardee answer. contracts/question/finder/contract.md, Audience: an empty audience lists both. docs/decisions/0010-plan-editor.md and 0050: a hidden, switched off, or left out question keeps its answer unchecked. Written by hand from the plan"
   }
 ]

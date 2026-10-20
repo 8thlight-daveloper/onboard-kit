@@ -10,6 +10,7 @@
   {"id": "access.source_control_grantor", "required": true, "answer": "IT service desk", "suggestions": [{"value": "IT service desk", "source": "given"}]},
   {"id": "access.ci_grantor", "required": true, "answer": "Platform team lead", "suggestions": [{"value": "Platform team lead", "source": "given"}]},
   {"id": "access.tracker_grantor", "required": true, "answer": {"deferred": true}},
+  {"id": "access.account_name", "audience": "onboardee"},
   {"id": "clone-and-run-tests.repo_url", "required": true, "group": "repo_url", "answer": "git@git.acme.example:platform/widget-service.git", "suggestions": [{"value": "git@git.acme.example:platform/widget-service.git", "source": "given"}]},
   {"id": "clone-and-run-tests.repo_dir", "declaredDefault": "project", "answer": "widget-service", "suggestions": [{"value": "project", "source": "default"}, {"value": "widget-service", "source": "given"}]},
   {"id": "clone-and-run-tests.setup_command", "type": "command", "required": true, "answer": ["make", "setup"], "suggestions": [{"value": ["make", "setup"], "source": "given"}]},

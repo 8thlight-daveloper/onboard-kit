@@ -1,0 +1,10 @@
+{"questions": [
+  {"id": "plan.team", "type": "choice", "audience": "onboardee", "required": true, "answer": "platform", "suggestions": [{"value": "platform", "source": "given"}]},
+  {"id": "plan.region", "answer": "emea", "suggestions": [{"value": "emea", "source": "given"}]},
+  {"id": "s.lead_if_platform", "answer": "Dana", "suggestions": [{"value": "Dana", "source": "given"}]},
+  {"id": "s.later_onboardee", "audience": "onboardee", "answer": "x", "suggestions": [{"value": "x", "source": "given"}]},
+  {"id": "s.early_needs_later", "required": true},
+  {"id": "s.c_from_region", "audience": "onboardee"},
+  {"id": "s.e_unanswered_onboardee", "audience": "onboardee", "required": true},
+  {"id": "s.g_needs_unanswered_false"}
+], "blockers": ["s.early_needs_later", "s.e_unanswered_onboardee"]}

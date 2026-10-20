@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "team", "type": "choice", "options": ["platform", "design"], "description": "Your team", "audience": "onboardee", "required": true},
+    {"name": "region", "description": "Region"}
+  ],
+  "answers": {
+    "plan": {"team": "platform", "region": "emea"},
+    "sections": {"s": {"lead_if_platform": "Dana", "later_onboardee": "x", "h_hidden_onboardee": "stale"}}
+  },
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "lead_if_platform", "description": "Onboarder question that needs an onboardee answer", "askIf": {"all": [{"question": "plan.team", "answer": {"is": "platform"}}]}},
+      {"name": "lead_if_design", "description": "Needs the other answer", "askIf": {"all": [{"question": "plan.team", "answer": {"is": "design"}}]}},
+      {"name": "early_needs_later", "description": "Onboarder question declared before the onboardee question it needs", "required": true,
+        "askIf": {"all": [{"question": "later_onboardee", "answer": {"isSettled": true}}]}},
+      {"name": "later_onboardee", "description": "Onboardee question", "audience": "onboardee"},
+      {"name": "c_from_region", "description": "Onboardee question that needs an onboarder answer", "audience": "onboardee",
+        "askIf": {"all": [{"question": "plan.region", "answer": {"is": "emea"}}]}},
+      {"name": "d_from_region_other", "description": "Needs the other answer", "audience": "onboardee",
+        "askIf": {"all": [{"question": "plan.region", "answer": {"is": "apac"}}]}},
+      {"name": "e_unanswered_onboardee", "description": "Required, not answered", "audience": "onboardee", "required": true},
+      {"name": "f_needs_unanswered", "description": "Onboarder question that needs an answer that is not there",
+        "askIf": {"all": [{"question": "e_unanswered_onboardee", "answer": {"isSettled": true}}]}},
+      {"name": "g_needs_unanswered_false", "description": "Holds when the onboardee has not answered",
+        "askIf": {"all": [{"question": "e_unanswered_onboardee", "answer": {"isSettled": false}}]}},
+      {"name": "h_hidden_onboardee", "description": "Hidden onboardee question with a kept answer", "audience": "onboardee", "required": true,
+        "askIf": {"all": [{"question": "plan.region", "answer": {"is": "apac"}}]}},
+      {"name": "j_needs_hidden", "description": "Needs the kept answer of a hidden onboardee question",
+        "askIf": {"all": [{"question": "h_hidden_onboardee", "answer": {"isSettled": true}}]}}
+    ]}
+  ]
+}
