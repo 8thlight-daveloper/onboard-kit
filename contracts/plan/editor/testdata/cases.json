@@ -1,0 +1,847 @@
+[
+  {
+    "name": "new-plan-answer",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "plan.team_state",
+    "value": "established",
+    "after": "new-plan-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: Submit(p0, team state, \"established\") returns plan p1 and no problems. A plan scope id is plan.<name>"
+  },
+  {
+    "name": "new-section-answer",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.tracker",
+    "value": "IT service desk",
+    "after": "new-section-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Walking the questions: the id is <scope>.<name>. A section answer is stored under the section id"
+  },
+  {
+    "name": "replace-text-answer",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.tracker",
+    "value": "Platform lead",
+    "after": "replace-text-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Plans are values: the returned plan differs by the answer. Every other entry stays"
+  },
+  {
+    "name": "same-name-in-a-section-scope",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.region",
+    "value": "apac",
+    "after": "same-name-in-a-section-scope.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Walking the questions: a plan variable and a section variable can share a name, and the id carries the scope. The plan's own answer stays"
+  },
+  {
+    "name": "same-name-in-the-plan-scope",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.region",
+    "value": "apac",
+    "after": "same-name-in-the-plan-scope.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Walking the questions: the id carries the scope. The section's answer for the same name stays"
+  },
+  {
+    "name": "flag-true",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "plan.ready",
+    "value": true,
+    "after": "flag-true.after.plan.json",
+    "problems": [],
+    "source": "docs/reference/domain-model.md, Answers and Value: a Flag is written as true or false"
+  },
+  {
+    "name": "flag-false-is-an-answer",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "plan.ready",
+    "value": false,
+    "after": "flag-false-is-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: a flag that is false is settled. It is stored"
+  },
+  {
+    "name": "command-list-replaces-the-old-list",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.setup_command",
+    "value": [
+      "make",
+      "build"
+    ],
+    "after": "command-list-replaces-the-old-list.after.plan.json",
+    "problems": [],
+    "source": "docs/reference/domain-model.md, Answers and Value: a List is used by command variables. The new list replaces the old one"
+  },
+  {
+    "name": "list-is-stored-as-given",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.setup_command",
+    "value": [
+      "make",
+      "",
+      "build"
+    ],
+    "after": "list-is-stored-as-given.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: a list with a non-empty item is settled. The editor stores what it is given"
+  },
+  {
+    "name": "list-of-people",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.contacts",
+    "value": [
+      "Ann Lee, ann.lee@acme.example, @ann",
+      "Bo Ray, bo.ray@acme.example, @bo"
+    ],
+    "after": "list-of-people.after.plan.json",
+    "problems": [],
+    "source": "docs/reference/section-template-schema/variables.md, Person: a multiple variable is held as a list"
+  },
+  {
+    "name": "deferred-is-applied",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.tracker",
+    "value": {
+      "deferred": true
+    },
+    "after": "deferred-is-applied.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: the person chose to answer later. docs/decisions/0010-plan-editor.md, Deferred answers: the value deferred is an answer that satisfies a required question"
+  },
+  {
+    "name": "deferred-is-replaced-by-an-answer",
+    "operation": "submit",
+    "before": "deferred-stored.plan.json",
+    "question": "main.tracker",
+    "value": "Platform lead",
+    "after": "deferred-is-replaced-by-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: a settled answer is not final, and a deferred one can be answered"
+  },
+  {
+    "name": "the-word-deferred-is-text",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.tracker",
+    "value": "deferred",
+    "after": "the-word-deferred-is-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, Rules: the quoted \"deferred\" is the Text answer with that word. The editor stores it as text"
+  },
+  {
+    "name": "whitespace-text-is-an-answer",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.tracker",
+    "value": "  ",
+    "after": "whitespace-text-is-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0040-blank-text-and-variable-name-length.md: a single space is a legitimate answer"
+  },
+  {
+    "name": "clear-with-empty-text",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.tracker",
+    "value": "",
+    "after": "clear-with-empty-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers"
+  },
+  {
+    "name": "clear-with-an-empty-list",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.setup_command",
+    "value": [],
+    "after": "clear-with-an-empty-list.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers"
+  },
+  {
+    "name": "clear-with-a-list-of-empty-text",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.setup_command",
+    "value": [
+      ""
+    ],
+    "after": "clear-with-a-list-of-empty-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers"
+  },
+  {
+    "name": "clear-with-no-value",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.tracker",
+    "after": "clear-with-no-value.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers"
+  },
+  {
+    "name": "clear-a-plan-answer",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.nickname",
+    "value": "",
+    "after": "clear-a-plan-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers"
+  },
+  {
+    "name": "clear-a-flag-with-empty-text",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.ready",
+    "value": "",
+    "after": "clear-a-flag-with-empty-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers. An unanswered value needs no kind check, as for every type"
+  },
+  {
+    "name": "clear-when-nothing-is-stored",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.tracker",
+    "value": "",
+    "after": "empty.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md, table: unanswered is nothing, empty text, or an empty list. docs/decisions/0045-defaults-are-suggestions.md: the plan holds only answers. Nothing is stored, so nothing changes"
+  },
+  {
+    "name": "answer-hides-a-question-and-keeps-its-answer",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.note",
+    "value": "",
+    "after": "answer-hides-a-question-and-keeps-its-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Conditions: a question whose condition is false keeps its stored answer. The editor does not remove it"
+  },
+  {
+    "name": "answer-reveals-a-question",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.note",
+    "value": "first",
+    "after": "answer-reveals-a-question.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Conditions: askIf is judged on the plan. A settled answer to note starts the follow up question"
+  },
+  {
+    "name": "the-revealed-question-takes-an-answer",
+    "operation": "submit",
+    "before": "answer-reveals-a-question.after.plan.json",
+    "question": "main.follow_up",
+    "value": "second",
+    "after": "the-revealed-question-takes-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: Submit judges the question against the plan it is given"
+  },
+  {
+    "name": "hidden-question-is-refused",
+    "operation": "submit",
+    "before": "empty.plan.json",
+    "question": "main.follow_up",
+    "value": "second",
+    "after": "empty.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "main.follow_up",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: the editor asks whether the question is active. A question hidden by askIf is not"
+  },
+  {
+    "name": "axis-answer-brings-a-section-in",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.team_state",
+    "value": "first-consultants",
+    "after": "axis-answer-brings-a-section-in.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Reopening a plan: changing an axis answer changes which sections are active. The answers of other sections stay"
+  },
+  {
+    "name": "a-question-of-the-section-now-in-takes-an-answer",
+    "operation": "submit",
+    "before": "axis-answer-brings-a-section-in.after.plan.json",
+    "question": "later.later_note",
+    "value": "fresh",
+    "after": "a-question-of-the-section-now-in-takes-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Reopening a plan: after the axis change the section is active"
+  },
+  {
+    "name": "a-question-of-a-section-out-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "later.later_note",
+    "value": "fresh",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "later.later_note",
+        "section": "later"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: an inactive question is not applied. includeIf is false for team_state established"
+  },
+  {
+    "name": "text-for-a-boolean-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.ready",
+    "value": "yes",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.wrong-kind",
+        "severity": "error",
+        "question": "plan.ready",
+        "detail": {
+          "expected": "flag",
+          "found": "text"
+        }
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: a value of the wrong type is a problem with severity error, and an error is not applied"
+  },
+  {
+    "name": "text-for-a-command-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.setup_command",
+    "value": "make setup",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.wrong-kind",
+        "severity": "error",
+        "question": "main.setup_command",
+        "section": "main",
+        "detail": {
+          "expected": "list",
+          "found": "text"
+        }
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: a value of the wrong type. A command takes a list"
+  },
+  {
+    "name": "value-outside-the-options-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "plan.team_state",
+    "value": "other",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.not-an-option",
+        "severity": "error",
+        "question": "plan.team_state"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Entry rules: a choice accepts only its options"
+  },
+  {
+    "name": "pattern-mismatch-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.repo_url",
+    "value": "ftp://git.acme.example/service.git",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.pattern-mismatch",
+        "severity": "error",
+        "question": "main.repo_url",
+        "section": "main",
+        "messageContains": "A clone URL, starting with git@ or https://"
+      }
+    ],
+    "source": "docs/reference/section-template-schema/variables.md, patternHint: shown when a value does not match. docs/decisions/0010-plan-editor.md, Errors"
+  },
+  {
+    "name": "secret-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.tracker",
+    "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "secret.token-prefix",
+        "severity": "error",
+        "question": "main.tracker",
+        "section": "main"
+      }
+    ],
+    "secretFragments": [
+      "FAKEFAKE"
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: Submit(p2, repo access, a credential-like value) returns a plan equal to p2 and a problem. The secrets check runs in Submit"
+  },
+  {
+    "name": "unknown-question-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.nobody",
+    "value": "x",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error",
+        "question": "main.nobody",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: an unknown question id is a problem. The answer is not applied"
+  },
+  {
+    "name": "clearing-an-unknown-question-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.nobody",
+    "value": "",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error",
+        "question": "main.nobody",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: an unknown question id is a problem. Nothing is applied, and clearing is an application"
+  },
+  {
+    "name": "unknown-section-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "nobody.tracker",
+    "value": "x",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error",
+        "question": "nobody.tracker"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: an unknown question id is a problem"
+  },
+  {
+    "name": "id-without-a-dot-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "tracker",
+    "value": "x",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error",
+        "question": "tracker"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Walking the questions: an id is <scope>.<name>"
+  },
+  {
+    "name": "empty-id-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "",
+    "value": "x",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.unknown-question",
+        "severity": "error"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Errors: an unknown question id is a problem"
+  },
+  {
+    "name": "onboarding-question-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.account",
+    "value": "jdoe",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "main.account",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Phase: onboarding questions are not asked for planning"
+  },
+  {
+    "name": "question-of-a-switched-off-section-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "extra.extra_note",
+    "value": "again",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "extra.extra_note",
+        "section": "extra"
+      }
+    ],
+    "source": "docs/decisions/0050-section-switch.md: the questions of a section that is switched off are not asked"
+  },
+  {
+    "name": "clearing-an-inactive-question-is-refused",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "extra.extra_note",
+    "value": "",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "extra.extra_note",
+        "section": "extra"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: the editor asks whether the question is active before it applies anything. docs/decisions/0050-section-switch.md: a switched-off section keeps its answers"
+  },
+  {
+    "name": "an-error-and-a-warning-are-both-returned",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.owner",
+    "value": "Jane Doe, ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE",
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "answer.thin-contact",
+        "severity": "warning",
+        "question": "main.owner",
+        "section": "main"
+      },
+      {
+        "code": "secret.token-prefix",
+        "severity": "error",
+        "question": "main.owner",
+        "section": "main"
+      }
+    ],
+    "secretFragments": [
+      "FAKEFAKE"
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Plans are values: an answer with an error is not applied. Errors: warning or error problems are normal results"
+  },
+  {
+    "name": "warning-is-applied-and-returned",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.owner",
+    "value": "Jane Doe",
+    "after": "warning-is-applied-and-returned.after.plan.json",
+    "problems": [
+      {
+        "code": "answer.thin-contact",
+        "severity": "warning",
+        "question": "main.owner",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Plans are values: a warning is returned with the new plan and never stops an answer"
+  },
+  {
+    "name": "single-person-warning-is-applied",
+    "operation": "submit",
+    "before": "answered.plan.json",
+    "question": "main.contacts",
+    "value": [
+      "Ann Lee, ann.lee@acme.example, @ann"
+    ],
+    "after": "single-person-warning-is-applied.after.plan.json",
+    "problems": [
+      {
+        "code": "answer.single-person",
+        "severity": "warning",
+        "question": "main.contacts",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Plans are values: a warning never stops an answer. variables.md, Person: a list with exactly one person gets a warning"
+  },
+  {
+    "name": "switch-off",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "main",
+    "enabled": false,
+    "after": "switch-off.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: the plan section carries an optional enabled. A person turns a section off. Turning it off keeps its answers"
+  },
+  {
+    "name": "question-after-switch-off-is-refused",
+    "operation": "submit",
+    "before": "switch-off.after.plan.json",
+    "question": "main.tracker",
+    "value": "Platform lead",
+    "after": "switch-off.after.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "main.tracker",
+        "section": "main"
+      }
+    ],
+    "source": "docs/decisions/0050-section-switch.md: when a section is off its questions are not asked. The answer is refused and the plan is as it was"
+  },
+  {
+    "name": "switch-on-clears-the-field",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "extra",
+    "enabled": true,
+    "after": "switch-on-clears-the-field.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: a section is on when the field is absent, so the plan records only the sections turned off. Its answers come back"
+  },
+  {
+    "name": "question-after-switch-on-takes-an-answer",
+    "operation": "submit",
+    "before": "switch-on-clears-the-field.after.plan.json",
+    "question": "extra.extra_note",
+    "value": "again",
+    "after": "question-after-switch-on-takes-an-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: turning a section on again brings its questions back"
+  },
+  {
+    "name": "switch-on-when-on",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "main",
+    "enabled": true,
+    "after": "answered.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: a section is on unless the plan says otherwise. Nothing changes"
+  },
+  {
+    "name": "switch-off-when-off",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "extra",
+    "enabled": false,
+    "after": "answered.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: the section is already off. Nothing changes"
+  },
+  {
+    "name": "switch-on-clears-an-explicit-true",
+    "operation": "switch",
+    "before": "explicit-true.plan.json",
+    "section": "main",
+    "enabled": true,
+    "after": "switch-on-clears-an-explicit-true.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: true is the default, and the plan records only the sections turned off. A hand-written true is cleared the same way"
+  },
+  {
+    "name": "switch-off-over-an-explicit-true",
+    "operation": "switch",
+    "before": "explicit-true.plan.json",
+    "section": "main",
+    "enabled": false,
+    "after": "switch-off-over-an-explicit-true.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: a section turned off is stored as enabled false"
+  },
+  {
+    "name": "switch-leaves-other-sections-alone",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "later",
+    "enabled": false,
+    "after": "switch-leaves-other-sections-alone.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: the switch is a setting on one section. Other sections and every answer stay"
+  },
+  {
+    "name": "switch-of-an-unknown-section-is-refused",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "nobody",
+    "enabled": false,
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "switch.unknown-section",
+        "severity": "error",
+        "section": "nobody"
+      }
+    ],
+    "source": "docs/decisions/0050-section-switch.md: the editor offers the switch as an action on a section of the plan"
+  },
+  {
+    "name": "plan-is-not-a-section",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "plan",
+    "enabled": false,
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "switch.unknown-section",
+        "severity": "error",
+        "section": "plan"
+      }
+    ],
+    "source": "docs/reference/domain-model.md, Section: the id is a lowercase slug, never plan"
+  },
+  {
+    "name": "switch-of-an-empty-id-is-refused",
+    "operation": "switch",
+    "before": "answered.plan.json",
+    "section": "",
+    "enabled": true,
+    "after": "answered.plan.json",
+    "problems": [
+      {
+        "code": "switch.unknown-section",
+        "severity": "error"
+      }
+    ],
+    "source": "docs/decisions/0050-section-switch.md: the section must be one the plan holds"
+  },
+  {
+    "name": "acme-change-the-clone-url",
+    "operation": "submit",
+    "before": "acme-0.plan.json",
+    "question": "access.repo_url",
+    "value": "https://git.acme.example/platform/widget-service.git",
+    "after": "acme-1.plan.json",
+    "problems": [],
+    "source": "docs/reference/examples/acme: a plan with every answer. docs/decisions/0010-plan-editor.md, Sequence: Submit returns the next plan"
+  },
+  {
+    "name": "acme-change-the-discipline",
+    "operation": "submit",
+    "before": "acme-1.plan.json",
+    "question": "plan.discipline",
+    "value": "design",
+    "after": "acme-2.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Reopening a plan: Submit(p1, discipline, \"design\") returns plan p2 with different sections active. Answers of the other sections stay"
+  },
+  {
+    "name": "acme-answer-in-the-design-section",
+    "operation": "submit",
+    "before": "acme-2.plan.json",
+    "question": "review-design-system.design_system_url",
+    "value": "https://design.acme.example",
+    "after": "acme-3.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Reopening a plan: after the change the design section is active"
+  },
+  {
+    "name": "acme-clone-url-that-does-not-fit-is-refused",
+    "operation": "submit",
+    "before": "acme-3.plan.json",
+    "question": "access.repo_url",
+    "value": "ftp://git.acme.example/widget-service.git",
+    "after": "acme-3.plan.json",
+    "problems": [
+      {
+        "code": "answer.pattern-mismatch",
+        "severity": "error",
+        "question": "access.repo_url",
+        "section": "access",
+        "messageContains": "A clone URL, starting with git@ or https://"
+      }
+    ],
+    "source": "docs/reference/examples/acme: the repo_url pattern. docs/decisions/0010-plan-editor.md, Errors"
+  },
+  {
+    "name": "acme-deferred-answer-is-given",
+    "operation": "submit",
+    "before": "acme-3.plan.json",
+    "question": "access.tracker_grantor",
+    "value": "IT service desk",
+    "after": "acme-4.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: a deferred answer is answered later. ACME stores tracker_grantor as deferred"
+  },
+  {
+    "name": "acme-secret-is-refused",
+    "operation": "submit",
+    "before": "acme-4.plan.json",
+    "question": "access.ci_grantor",
+    "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE",
+    "after": "acme-4.plan.json",
+    "problems": [
+      {
+        "code": "secret.token-prefix",
+        "severity": "error",
+        "question": "access.ci_grantor",
+        "section": "access"
+      }
+    ],
+    "secretFragments": [
+      "FAKEFAKE"
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: a credential-like value is refused and the plan is equal to the one before"
+  },
+  {
+    "name": "acme-section-left-out-by-the-discipline-is-refused",
+    "operation": "submit",
+    "before": "acme-4.plan.json",
+    "question": "clone-and-run-tests.repo_dir",
+    "value": "service",
+    "after": "acme-4.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "clone-and-run-tests.repo_dir",
+        "section": "clone-and-run-tests"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Sequence: an inactive question is not applied. The plan is for design, so the software section is out"
+  },
+  {
+    "name": "acme-switch-off-a-section",
+    "operation": "switch",
+    "before": "acme-4.plan.json",
+    "section": "stuck-general",
+    "enabled": false,
+    "after": "acme-5.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0050-section-switch.md: a person turns a section off. Its answers stay"
+  }
+]
