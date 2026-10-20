@@ -150,6 +150,7 @@ func variableObject(variable model.Variable) object {
 	var o object
 	o.addText("name", variable.Name)
 	o.addText("description", variable.Description)
+	o.addText("example", variable.Example)
 	o.addText("type", string(variable.Type))
 	o.addFlag("multiple", variable.Multiple)
 	o.addStrings("options", variable.Options)

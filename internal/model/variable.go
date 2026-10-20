@@ -3,6 +3,7 @@ package model
 type Variable struct {
 	Name        string
 	Description string
+	Example     string
 	Type        VariableType
 	Options     []string
 	Pattern     string
