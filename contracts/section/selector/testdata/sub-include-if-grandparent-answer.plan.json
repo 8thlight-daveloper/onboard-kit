@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"top": {"k": "yes"}}},
+ "sections": [
+  {"id": "leaf-no", "parent": "mid", "includeIf": {"all": [{"question": "top.k", "answer": {"is": "no"}}]}},
+  {"id": "leaf-yes", "parent": "mid", "includeIf": {"all": [{"question": "top.k", "answer": {"is": "yes"}}]}},
+  {"id": "mid", "parent": "top"},
+  {"id": "top"}]}

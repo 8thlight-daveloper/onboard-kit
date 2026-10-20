@@ -1,0 +1,10 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "leaf-on", "parent": "mid-on", "enabled": true},
+  {"id": "top-off", "enabled": false},
+  {"id": "leaf-ok", "parent": "mid-ok"},
+  {"id": "mid-on", "parent": "top-off", "enabled": true},
+  {"id": "top-on", "enabled": true},
+  {"id": "leaf-under-off", "parent": "mid-off", "enabled": true},
+  {"id": "mid-off", "parent": "top-on", "enabled": false},
+  {"id": "mid-ok", "parent": "top-on", "enabled": true}]}

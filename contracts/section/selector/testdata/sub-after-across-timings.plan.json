@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "c-early", "parent": "p", "timing": "before-day-one", "after": ["c-late"]},
+  {"id": "c-late", "parent": "p", "timing": "days-31-to-90"},
+  {"id": "p"}]}

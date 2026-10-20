@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 	"testing"
+	"time"
 
 	"onboard-kit/contracts/harness/jsonform"
 	"onboard-kit/internal/model"
@@ -142,6 +143,42 @@ func TestOrderDoesNotDependOnTheOrderOfTheSectionsInThePlan(t *testing.T) {
 		if got := idsOf(newSelector().Select(reversed)); !slices.Equal(got, *c.Active) {
 			t.Errorf("%s, sections reversed: got %v, want %v", c.Name, got, *c.Active)
 		}
+	}
+}
+
+func TestOrderDoesNotDependOnAShuffleOfTheSectionsInThePlan(t *testing.T) {
+	t.Parallel()
+	for _, c := range loadCases(t) {
+		count := len(loadPlan(t, c).Sections)
+		for _, stride := range []int{2, 3, 5, 7} {
+			if count < 2 || count%stride == 0 {
+				continue
+			}
+			plan := loadPlan(t, c)
+			shuffled := loadPlan(t, c)
+			for i := range plan.Sections {
+				shuffled.Sections[i] = plan.Sections[(i*stride+1)%count]
+			}
+			if got := idsOf(newSelector().Select(shuffled)); !slices.Equal(got, *c.Active) {
+				t.Errorf("%s, sections shuffled by stride %d: got %v, want %v", c.Name, stride, got, *c.Active)
+			}
+		}
+	}
+}
+
+func TestEverySelectionFinishes(t *testing.T) {
+	for _, c := range loadCases(t) {
+		t.Run(c.Name, func(t *testing.T) {
+			t.Parallel()
+			plan := loadPlan(t, c)
+			done := make(chan []model.Section, 1)
+			go func() { done <- newSelector().Select(plan) }()
+			select {
+			case <-done:
+			case <-time.After(10 * time.Second):
+				t.Fatalf("the selector did not finish")
+			}
+		})
 	}
 }
 

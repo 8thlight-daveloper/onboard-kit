@@ -1,0 +1,7 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "off-grandkid", "parent": "off-kid"},
+  {"id": "keep-kid", "parent": "keep"},
+  {"id": "off-kid", "parent": "off"},
+  {"id": "off", "enabled": false},
+  {"id": "keep"}]}

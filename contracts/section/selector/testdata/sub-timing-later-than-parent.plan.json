@@ -1,0 +1,5 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "mid", "timing": "week-one"},
+  {"id": "child", "parent": "parent", "timing": "anytime"},
+  {"id": "parent", "timing": "before-day-one"}]}

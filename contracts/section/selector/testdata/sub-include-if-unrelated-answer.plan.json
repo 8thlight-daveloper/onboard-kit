@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"sections": {"other": {"flag": "yes"}}},
+ "sections": [
+  {"id": "root-kid", "parent": "root", "includeIf": {"all": [{"question": "other.flag", "answer": {"is": "yes"}}]}},
+  {"id": "root"},
+  {"id": "other"}]}

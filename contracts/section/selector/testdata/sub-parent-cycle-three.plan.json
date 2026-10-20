@@ -1,0 +1,10 @@
+{"schemaVersion": 1,
+ "sections": [
+  {"id": "x", "parent": "y"},
+  {"id": "tail", "parent": "root-kid"},
+  {"id": "y", "parent": "z"},
+  {"id": "v", "parent": "w"},
+  {"id": "z", "parent": "x"},
+  {"id": "root"},
+  {"id": "w", "parent": "x"},
+  {"id": "root-kid", "parent": "root"}]}
