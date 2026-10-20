@@ -48,7 +48,7 @@ func (a App) viewQuestions() string {
 		view.WriteString(a.questionLine(index, question) + "\n")
 	}
 	view.WriteString("\n" + a.messageLine())
-	view.WriteString(dimStyle().Render("enter answer  d defer  x clear  s sections  r review  q quit") + "\n")
+	view.WriteString(dimStyle().Render("enter answer  d defer  x clear  r review  q quit"+a.sectionsHint()) + "\n")
 	return view.String()
 }
 
@@ -138,6 +138,13 @@ func (a App) messageLine() string {
 		return dimStyle().Render(a.message) + "\n"
 	}
 	return warnStyle().Render(a.message) + "\n"
+}
+
+func (a App) sectionsHint() string {
+	if a.audience == model.AudienceOnboardee {
+		return ""
+	}
+	return "  s sections"
 }
 
 func (a App) progress() string {

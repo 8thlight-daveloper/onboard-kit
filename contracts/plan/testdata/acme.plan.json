@@ -12,8 +12,9 @@
     },
     {
       "name": "team",
-      "description": "Name of the team the consultant joins",
-      "required": true
+      "description": "Which team are you joining?",
+      "required": true,
+      "audience": "onboardee"
     },
     {
       "name": "team_state",
@@ -27,13 +28,14 @@
     },
     {
       "name": "discipline",
-      "description": "Which discipline is this plan for?",
+      "description": "What kind of work will you do?",
       "type": "choice",
       "options": [
         "software",
         "design"
       ],
-      "required": true
+      "required": true,
+      "audience": "onboardee"
     },
     {
       "name": "output_style",
