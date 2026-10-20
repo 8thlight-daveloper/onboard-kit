@@ -1,0 +1,53 @@
+schemaVersion: 1
+sections:
+  - id: "on"
+    title: "On"
+    summary: A root
+  - id: child
+    title: Child
+    summary: Every key around the parent
+    includeIf:
+      all:
+        - question: on.ask
+          answer:
+            is: "yes"
+    parent: "on"
+    timing: week-one
+    enabled: true
+    after:
+      - "on"
+    owner: newcomer
+    escalation:
+      - $backup
+    verification: It works.
+    body: Body text.
+    variables:
+      - name: backup
+        description: Backup
+        type: person
+    steps:
+      - id: st
+        name: Step
+    source:
+      template: child
+      hash: abc
+    x-note: kept
+  - id: grandchild
+    title: Grandchild
+    summary: Two levels down
+    parent: child
+  - id: odd
+    title: Odd
+    summary: A parent that needs quotes
+    parent: "Team: core"
+  - id: padded
+    title: Padded
+    summary: A parent with a leading space
+    parent: " core"
+  - id: blank
+    title: Blank
+    summary: An empty parent is a root
+  - id: stray
+    title: Stray
+    summary: A parent that is not in the plan
+    parent: missing

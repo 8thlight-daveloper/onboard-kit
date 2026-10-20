@@ -34,11 +34,13 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
-| Section | `id`, `title`, `summary`, `includeIf`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
 | Source | `template`, `hash` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
 | Answers | `plan`, `sections` |
+
+A section's `parent` is a plain text field, the id of another section. It is written right after `includeIf`, by the same rules as `title`, and omitted when empty. An unknown field whose key is `parent` collides on a section and not on the plan. See [0070](../../../docs/decisions/0070-sub-sections.md).
 
 A variable's `example` is a plain text field. It is written right after `description`, by the same rules as `description`, and omitted when empty. A variable that holds only an `example` writes that one key, so it is not an `encode.empty-item`.
 
@@ -98,7 +100,7 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
 | `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` on a section collides, and `enabled` on the plan does not. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -115,7 +117,7 @@ These hold for every plan the contract tests use.
 
 - Reading plan files, which is the decoder.
 - Writing the bytes to a file, which a driver does.
-- Checking that a plan is valid. An encoder writes any plan it can, and the plan validator judges it.
+- Checking that a plan is valid. An encoder writes any plan it can, and the plan validator judges it. That includes whether a `parent` names a section of the plan and whether the parents form a cycle: the encoder writes the text as held, and the plan validator's structure check judges it.
 - Decimal numbers written in exponent form, and decimals too large or small for plain notation.
 
 ## Wrong implementations tried
@@ -159,3 +161,11 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A multi-line `example` written in double quotes, not as a literal block | `example` |
 | A variable with only an `example` reported as `encode.empty-item` or dropped | `example` |
 | `example` written for a section's variables only, or only for the plan's | `example` |
+| `parent` never written | `sub-section` |
+| `parent` written after `timing`, `enabled`, or `source`, or before `includeIf` | `sub-section` |
+| `parent` written when empty, as `parent: ""` | `sub-section` |
+| `parent` changed on the way out, such as trimmed or lowercased | `sub-section` |
+| `parent` written plain when it needs quotes, such as `on`, `Team: core`, or a leading space | `sub-section` |
+| `parent` dropped for a sub-section of a sub-section, or when the parent is not a section of the plan | `sub-section` |
+| `parent` as an unknown field of a section not reported | `parent-collision` |
+| `parent` as an unknown field of the plan reported | `parent-unknown` |
