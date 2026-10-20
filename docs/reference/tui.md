@@ -94,6 +94,17 @@ Decided. One accent, the Branded Blue `0071CE`, marks the focus: the cursor row,
 - Colour never carries meaning alone. The cursor row starts with `>`. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required. Problems start with `problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
 - A test renders every screen with no colour and checks that these marks and the key hints are still there.
 
+## Emphasis follows focus
+
+Direction, from the first round of use. The first version drew the left column in bright text all the time, which pulled the eye away from the question being answered.
+
+- The pane a person is acting in is bright, and the other pane is drawn faint.
+- While typing or choosing an answer, the detail pane is bright and the list is faint. The list is context there, not a control.
+- While the list is what a person is moving through, as in the overview, the list is bright and the detail pane is faint.
+- The accent colour marks "you are here" in the focused pane, so there is one bright spot at a time. It comes out of titles. Whether it stays on the position counter, such as "3 of 9", and on section names, such as "If you are stuck", is left to the design pass.
+- No colour still reads, because the cursor mark `>` carries the focus. Brightness only reinforces it.
+- Golden wireframes are plain text and cannot show this. A style test checks which pane is drawn bright in each state.
+
 ## Answering
 
 Decided, and built. The answer is made on the Walk, under the question.
