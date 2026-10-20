@@ -38,6 +38,10 @@ A condition is data, not an expression string. Every implementation language rea
 | `question` | The id of the question to test. A bare name is a question in the same section. `plan.<name>` is a plan variable |
 | `answer` | The tests on that question's answer. Several tests in one `answer` must all hold |
 
+### A section is the unit of "only if"
+
+There are no step-level conditions. Every step in a section applies together. A step that applies only for some people goes in its own small section, with an `includeIf` on a plan variable or a switch the onboarder can turn off. Text that differs inside a step is a variable the organization fills in. See [0065](../../decisions/0065-messages-and-evidence.md).
+
 ### Section clause
 
 A clause can test another section's [switch](optional-sections.md) instead of an answer.
