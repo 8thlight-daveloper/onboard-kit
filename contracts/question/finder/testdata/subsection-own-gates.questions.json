@@ -1,0 +1,5 @@
+{"questions": [
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "base.b_q"},
+  {"id": "own-true.true_q", "required": true}
+], "blockers": ["own-true.true_q"]}

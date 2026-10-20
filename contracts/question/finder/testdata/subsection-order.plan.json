@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "project", "description": "Project"}],
+  "sections": [
+    {"id": "zz-root", "variables": [{"name": "z_q", "description": "Last root"}]},
+    {"id": "aa-sub", "parent": "mm-root", "after": ["bb-sub"], "variables": [{"name": "aa_q", "description": "Sub-section placed after its sibling"}]},
+    {"id": "mm-root", "variables": [{"name": "mm_q", "description": "Parent"}]},
+    {"id": "bb-sub", "parent": "mm-root", "variables": [{"name": "bb_q", "description": "Sub-section placed first among siblings"}]},
+    {"id": "ll-root", "variables": [{"name": "ll_q", "description": "Earlier root"}]},
+    {"id": "aa-deep", "parent": "aa-sub", "variables": [{"name": "deep_q", "description": "Grandchild"}]},
+    {"id": "cc-sub", "parent": "mm-root", "variables": [{"name": "cc_q", "description": "Last sub-section"}]}
+  ]
+}

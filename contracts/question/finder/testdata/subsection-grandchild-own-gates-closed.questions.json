@@ -1,0 +1,6 @@
+{"questions": [
+  {"id": "onboarding.needs_vpn", "type": "boolean", "answer": true, "suggestions": [{"value": true, "source": "given"}]},
+  {"id": "onboarding.team", "answer": "other", "suggestions": [{"value": "other", "source": "given"}]},
+  {"id": "vpn.vpn_group"},
+  {"id": "vpn.vpn_kind", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]}
+], "blockers": []}

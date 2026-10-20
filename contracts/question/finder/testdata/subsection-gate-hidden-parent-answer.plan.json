@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"}],
+  "answers": {"plan": {"discipline": "software"}, "sections": {"access": {"self_service": true}}},
+  "sections": [
+    {"id": "access", "variables": [
+      {"name": "self_service", "type": "boolean", "description": "Do new people request their own source control access?", "required": true,
+        "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": "design"}}]}},
+      {"name": "tool", "description": "Source control tool"}
+    ]},
+    {"id": "access-request", "parent": "access", "includeIf": {"all": [{"question": "access.self_service", "answer": {"is": true}}]},
+      "variables": [
+        {"name": "request_url", "description": "Where requests go", "required": true},
+        {"name": "confirm", "description": "Asked only when the hidden parent question has an answer",
+          "askIf": {"all": [{"question": "access.self_service", "answer": {"isSettled": true}}]}}
+      ]}
+  ]
+}

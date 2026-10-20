@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "base", "variables": [{"name": "b_q", "description": "A root that is on"}]},
+    {"id": "orphan", "parent": "nowhere", "variables": [{"name": "o_q", "description": "Parent is not a section", "required": true}]},
+    {"id": "loop-a", "parent": "loop-b", "variables": [{"name": "a_q", "description": "On a cycle", "required": true}]},
+    {"id": "loop-b", "parent": "loop-a", "variables": [{"name": "b_q", "description": "On a cycle", "required": true}]},
+    {"id": "below-loop", "parent": "loop-b", "variables": [{"name": "bl_q", "description": "Below a cycle", "required": true}]},
+    {"id": "self", "parent": "self", "variables": [{"name": "s_q", "description": "Names itself", "required": true}]},
+    {"id": "below-orphan", "parent": "orphan", "variables": [{"name": "bo_q", "description": "Below a missing parent", "required": true}]},
+    {"id": "base-child", "parent": "base", "variables": [{"name": "bc_q", "description": "Fine", "required": true}]}
+  ]
+}

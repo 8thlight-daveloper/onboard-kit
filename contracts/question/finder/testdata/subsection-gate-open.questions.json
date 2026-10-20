@@ -1,0 +1,6 @@
+{"questions": [
+  {"id": "access.self_service", "type": "boolean", "required": true, "answer": true, "suggestions": [{"value": true, "source": "given"}]},
+  {"id": "access.tool", "answer": "github", "suggestions": [{"value": "github", "source": "given"}]},
+  {"id": "access-request.request_url", "required": true},
+  {"id": "access-request.approver"}
+], "blockers": ["access-request.request_url"]}

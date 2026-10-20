@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "late-sub", "parent": "late-root", "timing": "before-day-one", "variables": [{"name": "ls_q", "description": "Sub-section with an earlier timing than its parent"}]},
+    {"id": "late-root", "variables": [{"name": "lr_q", "description": "Anytime root"}]},
+    {"id": "early-sub", "parent": "early-root", "timing": "days-31-to-90", "variables": [{"name": "es_q", "description": "Sub-section with a later timing than its parent"}]},
+    {"id": "early-root", "timing": "week-one", "variables": [{"name": "er_q", "description": "Week one root"}]}
+  ]
+}

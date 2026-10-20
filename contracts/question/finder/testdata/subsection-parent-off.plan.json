@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"base": {"b_q": "kept"}, "off-parent": {"op_q": "kept"}, "off-child": {"oc_q": "kept"}, "off-grandchild": {"og_q": "kept"}}},
+  "sections": [
+    {"id": "base", "variables": [{"name": "b_q", "description": "A root that is on"}]},
+    {"id": "off-parent", "enabled": false, "variables": [{"name": "op_q", "description": "Switched off", "required": true}]},
+    {"id": "off-child", "parent": "off-parent", "variables": [{"name": "oc_q", "description": "Child of a switched-off section", "required": true}]},
+    {"id": "off-grandchild", "parent": "off-child", "enabled": true, "variables": [{"name": "og_q", "description": "Switched on, below a switched-off section", "required": true}]},
+    {"id": "base-child", "parent": "base", "variables": [{"name": "bc_q", "description": "Child of a root that is on", "required": true}]}
+  ]
+}

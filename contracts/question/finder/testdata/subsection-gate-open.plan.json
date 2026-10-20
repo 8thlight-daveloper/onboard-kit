@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"access": {"self_service": true, "tool": "github"}}},
+  "sections": [
+    {"id": "access", "variables": [
+      {"name": "self_service", "type": "boolean", "description": "Do new people request their own source control access?", "required": true},
+      {"name": "tool", "description": "Source control tool"}
+    ]},
+    {"id": "access-request", "parent": "access", "includeIf": {"all": [{"question": "access.self_service", "answer": {"is": true}}]},
+      "variables": [
+        {"name": "request_url", "description": "Where requests go", "required": true},
+        {"name": "approver", "description": "Who approves requests"}
+      ]}
+  ]
+}
