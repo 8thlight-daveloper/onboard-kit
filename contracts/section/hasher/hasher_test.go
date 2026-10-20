@@ -556,3 +556,31 @@ func TestTheSwitchOfASectionIsNotWritten(t *testing.T) {
 		}
 	}
 }
+
+func TestAParentIsWrittenAsHeldAfterTheIncludeIf(t *testing.T) {
+	t.Parallel()
+	condition := &model.Condition{All: []model.Clause{{Section: "design", Enabled: true}}}
+	cases := map[string]struct {
+		section model.Section
+		want    string
+	}{
+		"parent alone":           {model.Section{ID: "s", Parent: "a"}, `{"id":"s","parent":"a","timing":"anytime"}`},
+		"parent and includeIf":   {model.Section{ID: "s", Parent: "a", IncludeIf: condition}, `{"id":"s","includeIf":{"all":[{"section":"design","enabled":true}]},"parent":"a","timing":"anytime"}`},
+		"parent with spaces":     {model.Section{ID: "s", Parent: " a \n"}, `{"id":"s","parent":" a \n","timing":"anytime"}`},
+		"parent with a title":    {model.Section{ID: "s", Title: "T", Parent: "a", Summary: "S"}, `{"id":"s","title":"T","summary":"S","parent":"a","timing":"anytime"}`},
+		"parent named by itself": {model.Section{ID: "s", Parent: "s"}, `{"id":"s","parent":"s","timing":"anytime"}`},
+	}
+	for name, c := range cases {
+		if got, want := newHasher().Hash(c.section), textHash(c.want); got != want {
+			t.Errorf("%s: got %s, want the hash of %s", name, got, c.want)
+		}
+	}
+}
+
+func TestAnEmptyParentHashesAsAnAbsentOne(t *testing.T) {
+	t.Parallel()
+	want := textHash(`{"id":"s","timing":"anytime"}`)
+	if got := newHasher().Hash(model.Section{ID: "s", Parent: ""}); got != want {
+		t.Errorf("an empty parent: got %s, want %s", got, want)
+	}
+}

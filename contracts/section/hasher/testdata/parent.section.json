@@ -1,0 +1,12 @@
+{
+  "id": "laptop-setup",
+  "title": "Set up the laptop",
+  "summary": "Runs only when the parent asks for it.",
+  "parent": "access",
+  "includeIf": {"all": [{"question": "access.needs_laptop", "answer": {"is": "yes"}}]},
+  "timing": "week-one",
+  "enabled": false,
+  "after": ["welcome"],
+  "owner": "$manager",
+  "steps": [{"id": "unbox", "name": "Unbox"}]
+}

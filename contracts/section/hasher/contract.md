@@ -16,7 +16,7 @@ The hash covers the section's definition:
 - Its questions: the variables it declares, with their descriptions, examples, types, options, patterns, and defaults.
 - Its steps and checks.
 - Its conditions, `includeIf` and each `askIf`, with their question clauses and their section clauses.
-- Its `timing`, `after`, `escalation`, and unknown fields.
+- Its `parent`, `timing`, `after`, `escalation`, and unknown fields.
 
 It does not cover answers, because answers live in the plan and not in the section. It does not cover `source`, and it does not cover the section's switch `enabled`, which is the plan's own setting. It detects an edit to a section and a change to its template. It does not detect that someone answered a question.
 
@@ -41,7 +41,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 
 | Type | Key order |
 | -- | -- |
-| Section | `id`, `title`, `summary`, `includeIf`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, `section`, `enabled` |
@@ -82,7 +82,7 @@ Whitespace in step 3 means exactly three characters: space (U+0020), tab (U+0009
 
 Nothing else changes. Whitespace inside a line, the indentation of a line, and the blank lines between paragraphs are content, because they can change how Markdown reads. A normalized string with no characters left is empty and is omitted.
 
-Every other string is written exactly as held: a `pattern`, a `run` item, an `env` value, a `directory`, an `open`, an option, an `id`, a `name`, an `owner`, a `timing`, a default or test value, and every string inside an unknown field. A trailing space in a pattern or a run item can change what it does.
+Every other string is written exactly as held: a section's `parent`, a `pattern`, a `run` item, an `env` value, a `directory`, an `open`, an option, an `id`, a `name`, an `owner`, a `timing`, a default or test value, and every string inside an unknown field. A trailing space in a pattern or a run item can change what it does.
 
 ### Strings
 
@@ -144,6 +144,10 @@ The unknown fields of a section are written as one object under the key `unknown
 
 Inside an unknown field, a key with an empty list or an empty map differs from an absent key. The hasher cannot know what it means to a newer tool, so it does not call it a zero. A decimal `2.0` differs from the integer `2` and from the string `"2"`.
 
+### Parent
+
+`parent` is the id of another section of the same plan, 0070. It is written like any text identifier: exactly as held, never normalized, trimmed, or case-folded, because it is an identifier and not prose. A parent with a trailing space, or in another case, differs. It is written right after `includeIf` and before `timing`, and it is omitted when it is empty, so an empty `parent` hashes like an absent one and every hash written before `parent` existed stays the same. A section that names itself as its parent is written as held. The hasher does not check that the parent exists, and it does not read the parent section.
+
 ### Source and switch
 
 `source` is not written. Two sections that differ only in `source`, or where one has a `source` and the other has none, have the same hash. The same holds for the contents of the `source`: its `template` and its `hash`.
@@ -170,7 +174,7 @@ None, and it reads the section content only. It reads no plan field, no answer, 
 - Writing the hash into `source`. That is the plan instantiator.
 - The values of an unknown field that are not in the table under Unknown fields, such as NaN, infinity, other integer widths, `float32`, and a value that is not data. The result for them is not specified.
 - A string that is not valid UTF-8, and Unicode normal forms. Two strings that look alike but are not the same code points hash differently.
-- Whether a section is valid. The hasher writes any section.
+- Whether a section is valid, including whether its `parent` names a section of the plan or names an ancestor and not a cycle. The hasher writes any section. The plan validator's structure check does that, in a later contract.
 - Whether two different texts mean the same to Markdown. Only the whitespace rule above is applied.
 
 ## Decided by a person
@@ -191,6 +195,12 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| `parent` left out of the hash | `parent`, `parent-differs`, the parent test, `every-field` |
+| `parent` written in another place, such as after `timing` or in the order of the key sort, or under another key | `parent`, the parent test |
+| `parent` trimmed, normalized as prose, or case-folded | `parent-differs`, the parent test, `every-field` |
+| An empty `parent` written as `"parent":""`, or told apart from an absent one | `parent-empty`, the empty-parent test |
+| `parent` written only when it differs from the section's own `id`, or only when it exists in the plan | `parent-differs`, the parent test |
+| `parent` written into `unknownFields`, or an unknown field named `parent` taken for it | `parent-differs` |
 | `source` included, or only its template | `source-ignored`, `full` |
 | A section's `enabled` written, as true, as false, or only when false | `enabled-ignored`, `switch-enabled-ignored`, `switch`, `full`, the switch test |
 | A section's `enabled` read as a zero so that an absent one hashes unlike a true one | `enabled-ignored`, the switch test |

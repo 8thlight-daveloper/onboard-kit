@@ -270,6 +270,34 @@
     "source": "Contract rules: the Variable key order, Fields. An example belongs to its own variable and its own key. Moving it to another variable, swapping two, or writing its text as the description or the pattern hint gives another hash."
   },
   {
+    "name": "parent",
+    "relation": "golden",
+    "inputs": [
+      "parent.section.json"
+    ],
+    "canonical": "parent.canonical.json",
+    "hash": "a68072f2dc1e3c2e4ee0c24fcac5ce3de12c91c7d4d08aca0e5bef9a9b5c66fa",
+    "source": "Hand-written. 0070 and the brief for sub-sections: `parent` is written like any text identifier, as held, right after `includeIf` and before `timing`. The includeIf names a question of the parent by its qualified id, and the section has a switch that is left out. Contract rules: the key order table, Fields."
+  },
+  {
+    "name": "parent-empty",
+    "relation": "same",
+    "inputs": [
+      "parent-empty.sections.json",
+      "parent-empty.section.json"
+    ],
+    "hash": "77a8877758f8a5fc800007fcf60089fc0f45883095351af0451c04f77e2c566f",
+    "source": "Contract rule: Fields. An empty or null `parent` is zero, so it hashes like an absent one, and every existing hash stays the same."
+  },
+  {
+    "name": "parent-differs",
+    "relation": "different",
+    "inputs": [
+      "parent-differs.sections.json"
+    ],
+    "source": "0070 and the contract rules Fields and Prose. Sections that differ only by parent: none, one id, another id, the same id in another case, with a trailing space, with a leading space, with a trailing newline, naming itself, and the same text in `owner`, in `after`, and in an unknown field named `parent`. A parent is an identifier and is never normalized."
+  },
+  {
     "name": "every-field",
     "relation": "every-field",
     "inputs": [
