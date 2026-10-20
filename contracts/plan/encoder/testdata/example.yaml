@@ -1,0 +1,42 @@
+schemaVersion: 1
+variables:
+  - name: role
+    description: Role
+    example: Engineering manager
+    type: text
+    pattern: "^[A-Za-z ]+$"
+    patternHint: Letters only
+    required: true
+    default: Developer
+    audience: onboarder
+    askIf:
+      all:
+        - question: plan.other
+          answer:
+            isSettled: true
+  - name: no_example
+    description: Nothing to show
+  - name: only_example
+    example: "yes"
+  - name: colon
+    description: Colon
+    example: "Pairing: two hours a day"
+  - name: date
+    example: "2026-10-15"
+  - name: tags
+    description: Tags
+    example: |
+      one
+      two
+    type: text
+  - example: Only this
+sections:
+  - id: s
+    title: S
+    summary: S
+    variables:
+      - name: backup
+        description: Backup
+        example: Ann Lee
+        type: person
+        multiple: true

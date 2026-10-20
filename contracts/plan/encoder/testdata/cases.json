@@ -12,6 +12,12 @@
     "source": "Hand-written. Contract rule: Keys, zero values are omitted."
   },
   {
+    "name": "example",
+    "input": "example.plan.json",
+    "output": "example.yaml",
+    "source": "Hand-written. Contract rules: Keys, the Variable key order puts `example` right after `description`, and a zero `example` is omitted. Scalars and Multi-line strings: `example` is written like `description`. The value `Engineering manager` is the brief's own illustration."
+  },
+  {
     "name": "strings",
     "input": "../../testdata/strings.plan.json",
     "output": "../../testdata/strings.yaml",
