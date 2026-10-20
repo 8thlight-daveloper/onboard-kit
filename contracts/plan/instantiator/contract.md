@@ -42,6 +42,7 @@ Each section is its template, copied, with `source` set. The copy changes nothin
 - Nothing is filled in. A template with no `timing` has no `timing` in the plan, although its hash is of the default `anytime`. The same holds for a variable's `type` and `audience`.
 - Nothing is resolved, selected, or ordered by `timing` or `after`. `$name` stays in place, and `includeIf`, `askIf`, and `after` are kept as loaded. A section clause in a condition is kept as loaded, like a question clause.
 - A new section is on, and its switch is left absent. The instantiator writes no `enabled` on a section, because a template has none and a section is its template copied. See [0050](../../../docs/decisions/0050-section-switch.md). A template with a variable named `enabled` is a template with a variable, copied like any other.
+- A template's `parent`, the id of another section, is copied as held, and the hash covers it, written like any text identifier, omitted when empty, right after `includeIf`, see [0070](../../../docs/decisions/0070-sub-sections.md). A template with a `parent` is a sub-section in the plan. The instantiator does not look for the parent among the templates, does not order a sub-section after it, and does not change the plan to suit it: sections stay in id order. An `includeIf` that names a question of an ancestor is kept as loaded.
 - The unknown fields of a section are kept. The loader gives none, and a section from another source may have some.
 - A variable's `example`, an illustration of a good answer, is part of the template. It is copied with the variable, and the hash covers it. It is not an answer or a default, and nothing fills it.
 - Text is not trimmed or normalized. Only the hasher normalizes, and only for its hash.
@@ -94,7 +95,7 @@ No side effects. It was not given a plan, so it creates one: every field of the 
 The hashes in `testdata/cases.json` come from the section hasher contract, in one of two ways, and each case cites which.
 
 - Five sections and their hashes are copied from the golden cases of [the hasher contract](../../section/hasher/testdata/cases.json), with their canonical texts.
-- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, six small sections for the order case, one section with section clauses, and one section whose variable has an `example`. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
+- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, three sections with a `parent` (`sub-sections`), six small sections for the order case, one section with section clauses, and one section whose variable has an `example`. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
 
 A test checks that each hash in the manifest is the SHA-256 of its canonical text. No hash was computed by a component.
 
@@ -107,7 +108,8 @@ The templates of the ACME case are the section loader contract's fixtures for th
 - Whether the axis variables are the right ones, and what the built-in file holds. The driver reads that file.
 - Whether `templateSet` or `generatedOn` is well formed, or empty. They are written as given.
 - Reading, listing, or loading template files, and reading the clock. The driver does.
-- The hash itself. The hasher contract defines it, and these tests rely on its golden cases.
+- That a `parent` names a template, that no chain of parents loops, and that an `includeIf` names only ancestors and plan variables. The plan validator's structure check covers them, and `onboard-kit lint` runs it on the default plan.
+- The hash itself. The hasher contract defines it, and these tests rely on its golden cases. The `sub-sections` case relies on the hasher writing `parent` as 0070 says.
 - Updating a plan from a newer template set. It is deferred, see 0030.
 - Pruning inactive sections. It is deferred, see 0030.
 
@@ -124,6 +126,7 @@ The docs left these open, and this contract picked. The `hard` ones change what 
 1. **`cheap`. No templates, or no axis variables, is not an error.** The plan then holds what is left. The docs say "every template", and none is a valid case of every.
 1. **`cheap`. A `source` that the template already has is replaced.** The loader never gives one, so this only fixes what a caller who passes one gets.
 1. **`cheap`. The result shares nothing with the arguments.** The docs say plans are values and no component changes an argument. A shared list would let a later edit of the result change the loaded templates.
+1. **`cheap`. A sub-section is where its id puts it.** The plan lists sections in id order and the selector orders them for use, so a sub-section is not moved after its parent in the file. Raised by 0070, which keeps sections a flat list. Case: `sub-sections`.
 1. **`cheap`. The date and the template set are written as given, unchecked.** Time comes in as a parameter, and the validators judge the plan.
 
 ## Wrong implementations tried
@@ -170,6 +173,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The variable problems before the template problems, or only one kind reported | `both-problems`, `single-duplicate-and-single-nameless` |
 | The plan returned when there is exactly one problem, for example by testing for more than one | `single-duplicate-id`, `single-nameless-axis-variable` |
 | The index of a single nameless variable counted from one | `single-nameless-axis-variable` |
+| The `parent` dropped in the copy, or set to the section's own id, or to its grandparent's | `sub-sections` |
+| A hash that leaves out the `parent`, or writes it before `includeIf` or after `timing` | `sub-sections` |
+| A sub-section sorted after its parent, or by its parent's id | `sub-sections` |
 | An unknown field's nested list or map shared with the argument, or copied only one level deep | the nothing-shared test on `hasher-goldens`, whose `x-nested` and `a` fields hold nested lists and maps |
 
 Found later by the mutation tool, and judged equivalent because empty and absent are the same: dropping the nil checks that keep an absent list or map absent in the result. The tests compare plans with empty lists and maps treated as absent, at every depth.

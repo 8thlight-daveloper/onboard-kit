@@ -66,14 +66,14 @@ The heading `## Gaps to fill`, a blank line, and a table.
 
 Each active section is these blocks, in this order, from the section as the resolver returned it. A block with nothing in it is left out, with its blank line.
 
-1. `## ` and the `title`.
+1. The heading: the heading mark and then the `title`. The mark is `#` repeated `2 + depth` times. The depth of a section is the number of its ancestors in the plan, by `parent`: 0 for a section with no `parent`, 1 for a sub-section, 2 for its sub-section, and so on. The mark is never longer than six, so every depth from 4 up is written with `######`.
 2. The `summary`.
 3. The steps, as a list, see Steps.
 4. The `body`.
 5. `Done when: ` and the `verification`.
 6. The footer.
 
-A section that is not active is not in the document, and its gaps are not in the table. The assembler does not group sections or put a heading for a timing. The order is the selector's.
+A section that is not active is not in the document, and its gaps are not in the table. The assembler does not group sections or put a heading for a timing. The order is the selector's, and it puts a sub-section after its parent, see the [section selector contract](../../section/selector/contract.md). A sub-section of a section that is not active is not active, so it is left out with its gaps, at any depth. The assembler does not follow `parent` to decide that. It reads `parent` only to count the depth, in the plan as held, and the selector gives the sections it returns.
 
 A section with `enabled` false is not active, so it is left out of the document and its gaps are left out of the table, whatever else it holds. A section with `enabled` true, or with no `enabled`, is on. A section whose `includeIf` holds a section clause that does not hold, for example `enabled: true` for a section that has been switched off, is left out in the same way, and so are its gaps. A section clause reads the switch of the section it names and nothing else, so a section that is left out by its own `includeIf` is still on for a clause that asks for it to be on. The selector decides all of this, see [0050](../../../docs/decisions/0050-section-switch.md) and the [section selector contract](../../section/selector/contract.md). The assembler does not read `enabled` or a section clause itself. A variable named `enabled` is an ordinary variable: its answer is written as text and its gap is a gap, and it does not switch the section.
 
@@ -139,6 +139,7 @@ None. It reads `provenance`, `answers`, and section content. It writes nothing b
 - Escaping any other Markdown in a field, such as `*`, `_`, or a tag. The one exception is the blank for an onboarding variable.
 - An onboarding blank that sits inside a code span a template author wrote.
 - What the selector and the resolver do. Their contracts cover it, and the assembler tests rely on it. That includes how a variable with a `default` is filled, see [0045](../../../docs/decisions/0045-defaults-are-suggestions.md). The fixtures here declare no default.
+- That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them. The selector leaves out a section whose parent is not in the plan or whose chain of parents loops, so the assembler never writes one.
 - Escalation. It is not written, because it names people by variable and no document rule says how to show them.
 - Output styles other than Markdown, and wrapping lines at a width.
 - The format of the plan file, and the file the document is written to. Drivers do both.
@@ -161,6 +162,9 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 12. **A step with `run` and no checks gets no check line.** The steps reference says it passes on exit code 0, and the document does not say so. Raised by the unequal treatment of two like steps in the ACME document. Cases: `acme`. `cheap`
 13. **The assembler gets the selector and resolver itself, with `New()` and no arguments.** The contract tests run against the real ones. Raised by the dependency table in 0020, which lets the assembler use both, and by the rule that a contract may import only the model, the shared test code, and its own component. `cheap`
 14. **The problems returned are the resolver's, unchanged and in table order.** The assembler adds none, and no type is added to the model. A document is a string. Raised by "document text + problems", with no list of problems given. Case: all. `cheap`
+
+15. **A sub-section is written as held, with no timing taken from its parent.** The selector orders it by its parent's timing when it has none. The footer and the gap row show the section's own `timing`, so a sub-section with no `timing` has no `When:` part and the `Anytime` of a gap row. Raised by 0070, which lets a sub-section take its parent's timing for order only. Case: `sub-sections`. `cheap`
+16. **The heading level counts the ancestors in the plan, and stops at six.** The document does not show how deep a sub-section is in any other way. Raised by 0070 "The document nests it" and the brief. Cases: `sub-sections`, `depth-cap`. `hard`
 
 ## Wrong implementations tried
 
@@ -203,3 +207,12 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | The problems not returned, or their severity changed | `acme`, `gaps-deferred`, `gaps-unanswered`, `people-list` |
 | A step with a command and no checks gets a check line | `acme` |
 | The assembler panics on a plan with no sections | `empty-plan`, the zero plan test |
+| A sub-section written with the heading of a root, or every sub-section at `###` whatever its depth | `sub-sections`, `depth-cap` |
+| The heading deeper than six | `depth-cap` |
+| The heading level from the `parent` of the section only, or from the timing, or from the order | `sub-sections`, `depth-cap` |
+| A sub-section of a section that is not active is written, or its gaps are listed | `inactive-parent` |
+| Only the sub-sections of a root left out, and the grandchildren of an inactive section kept | `inactive-parent` |
+| A sub-section's own switch read as enough to write it | `inactive-parent` |
+| Sub-sections placed by their own timing across the root's place, or grouped away from their parent | `sub-sections` |
+| A sub-section's timing taken from its parent in the footer or the gap row | `sub-sections` |
+| The order of sub-sections that follows the plan and not the selector | `sub-sections`, the order test |

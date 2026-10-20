@@ -369,6 +369,29 @@ func TestArgumentsAreNotChanged(t *testing.T) {
 	}
 }
 
+func TestEverySectionOfTheResultKeepsItsParent(t *testing.T) {
+	t.Parallel()
+	parents := 0
+	for _, c := range loadCases(t) {
+		before := loadPlanFile(t, c.Before)
+		got := run(t, newEditor(), c, before).plan
+		if len(got.Sections) != len(before.Sections) {
+			t.Fatalf("%s: got %d sections, want %d", c.Name, len(got.Sections), len(before.Sections))
+		}
+		for i, section := range before.Sections {
+			if got.Sections[i].ID != section.ID || got.Sections[i].Parent != section.Parent {
+				t.Errorf("%s: section %d is %q with parent %q, want %q with parent %q", c.Name, i, got.Sections[i].ID, got.Sections[i].Parent, section.ID, section.Parent)
+			}
+			if section.Parent != "" {
+				parents++
+			}
+		}
+	}
+	if parents == 0 {
+		t.Fatal("no fixture section holds a parent")
+	}
+}
+
 func TestResultsDoNotDependOnEarlierCallsOrOnRepeats(t *testing.T) {
 	t.Parallel()
 	cases := loadCases(t)

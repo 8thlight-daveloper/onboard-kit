@@ -29,7 +29,7 @@ A `$name` is filled in these fields, and only in these.
 
 These are left as held, even when they hold `$`.
 
-- Names and identifiers: `id`, `timing`, `after`, and a step's `id` and `timing`.
+- Names and identifiers: `id`, `parent`, `timing`, `after`, and a step's `id` and `timing`. A `parent` is the id of another section of the plan, as [0070](../../../docs/decisions/0070-sub-sections.md) says. The resolver keeps it as held, even when it holds `$`, and does not look for the section it names.
 - `escalation` on a section and on a step. Its items name variables and are not text.
 - The keys of a step's `env`, and a check's `env`, which is a variable name.
 - `includeIf`, and every part of every variable the section declares: its description, example, default, options, pattern, hint, and `askIf`. A declaration is not resolved.
@@ -117,7 +117,7 @@ These hold for every input the contract tests use.
 - **Nothing shared.** The returned Section shares no list, map, or pointer with the input. Changing it changes nothing in the input.
 - **A copy of the switch and the clauses.** The returned Section holds the same `enabled` as the input, absent when absent, `false` when `false`, and `true` when `true`, and it is a new pointer. The resolver never turns a section on or off, and never reads the switch. A condition in `includeIf` or in a variable's `askIf` comes back as held: a question clause and a section clause, with the section id and the `enabled` of the section clause kept, `false` as well as `true`. Neither shares anything with the input. See [0050](../../../docs/decisions/0050-section-switch.md).
 - **No memory.** The same call gives the same result whatever calls came before, forward or in reverse order.
-- **Text only.** Every field that is not listed under What is filled is equal to the input.
+- **Text only.** Every field that is not listed under What is filled is equal to the input, `parent` included. A section with a `parent` comes back with that `parent`, and one with none comes back with none.
 - **Nothing to fill.** A section that holds no `$name` for a declared variable comes back equal to the input, with no problem. A list with no items is not told apart from an absent one. A step's `env` is, so an absent `env` stays absent and an empty one stays empty.
 - **Zero values.** The zero Section with the zero Answers gives the zero Section and no problem.
 
@@ -134,6 +134,7 @@ None, and it reads section content and the section's own answers only. It writes
 - Text of only whitespace.
 - A name that does not follow the schema's name rule, in a declaration.
 - Which sections are active. The caller passes the section it wants filled.
+- That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The resolver is given one section and never sees the others, and it reads only the section's own answers, so an ancestor's answer is not read here. The plan validator's structure check covers the parent.
 
 ## Decisions to know
 
@@ -151,6 +152,7 @@ These are choices the docs did not settle. Each says what the resolver does, wha
 10. **Problems are the model's Problem.** The gaps come back as `gap.deferred` and `gap.unanswered` warnings, only for variables the text uses, once each, in the order of the section's variables. No new type is added to the model. Raised by: "perhaps a list of variables it could not fill, so a caller can build a gap table". `cheap`.
 11. **The resolver reads only the section's own answers and does not evaluate `askIf`.** Raised by: "Filling reads one scope". `cheap`.
 12. **A default that is not settled is no default.** An empty text default and an empty list default do not fill, and a deferred default gives a deferred value. Raised by: "`default` ... The value used when none is given." `cheap`.
+13. **A `parent` is an identifier, so it is not filled.** A `$` in it stays. Raised by 0070, which names the resolver as having nothing to do for sub-sections, and by the rule that identifiers are left as held. Case: `sub-section`. `cheap`.
 
 ## Wrong implementations tried
 
@@ -193,4 +195,5 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A section clause dropped from `includeIf` or from `askIf`, or its section id lost | `switch-clauses`, and the switch-and-clauses test |
 | A section clause read as a question clause, or its `enabled` of `false` lost or flipped | `switch-clauses`, and the switch-and-clauses test |
 | A section clause list shared with the input, so that changing the result changes the input | the switch-and-clauses test |
+| A `parent` dropped, emptied, filled like text, or taken from an answer | `sub-section`, `nothing-to-fill`, the parent test |
 | A variable named `enabled` left as written, written as a marker, or taken for the switch | `switch-clauses`, `value-kinds` |

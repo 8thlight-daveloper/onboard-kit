@@ -1,0 +1,10 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"d6","title":"Depth six","summary":"Six.","parent":"d5"},
+  {"id":"d3","title":"Depth three","summary":"Three.","parent":"d2"},
+  {"id":"d0","title":"Depth zero","summary":"Zero."},
+  {"id":"d5","title":"Depth five","summary":"Five.","parent":"d4"},
+  {"id":"d2","title":"Depth two","summary":"Two.","parent":"d1"},
+  {"id":"d4","title":"Depth four","summary":"Four.","parent":"d3"},
+  {"id":"d1","title":"Depth one","summary":"One.","parent":"d0"},
+  {"id":"d7","title":"Depth seven","summary":"Seven.","parent":"d6"}]}

@@ -241,5 +241,33 @@
       }
     ],
     "source": "Hand-written. 0050: a variable named enabled is no longer the toggle, it is an ordinary variable. Contract rule: Sections and the resolver contract. A section whose variable enabled is answered false stays in the document and the answer is written as text. The same name unanswered is a gap like any other."
+  },
+  {
+    "name": "sub-sections",
+    "plan": "sub-sections.plan.json",
+    "document": "sub-sections.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "access-request.approver",
+        "section": "access-request",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. 0070 and the selector contract, Order: a sub-section comes after its parent and its earlier siblings' subtrees, depth first, siblings by effective timing (own, or the parent's), then after, then id, and no root crosses a timing line. Contract rule: Sections, heading level. The sub-section with no timing has no When line and a gap row of Anytime, because the section is written as held. The plan lists the sections out of order. Among the siblings, the id order differs from the timing order, and the sub-section with no timing sorts by its parent's."
+  },
+  {
+    "name": "inactive-parent",
+    "plan": "inactive-parent.plan.json",
+    "document": "inactive-parent.md",
+    "problems": [],
+    "source": "Hand-written. 0070: a sub-section is active only if its parent is active, at any depth, by the parent's own includeIf and switch. Contract rule: Sections. A sub-section whose own switch is true under a switched-off parent is left out with its gaps, and so is the grandchild of a switched-off sub-section and of an excluded parent. A sub-section of an active parent stays."
+  },
+  {
+    "name": "depth-cap",
+    "plan": "depth-cap.plan.json",
+    "document": "depth-cap.md",
+    "problems": [],
+    "source": "Hand-written. 0070 and the brief: the heading is 2 plus the depth of the section in the plan, and never deeper than six. Contract rule: Sections. The chain runs from depth zero to depth seven."
   }
 ]

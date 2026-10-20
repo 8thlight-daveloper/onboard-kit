@@ -198,6 +198,24 @@ func TestResultKeepsEveryVariableExample(t *testing.T) {
 	}
 }
 
+func TestResultKeepsTheParentAsHeld(t *testing.T) {
+	t.Parallel()
+	parents := 0
+	for _, c := range loadCases(t) {
+		section := loadSection(t, c.Section)
+		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		if got.Parent != section.Parent {
+			t.Errorf("%s: got parent %q, want %q", c.Name, got.Parent, section.Parent)
+		}
+		if section.Parent != "" {
+			parents++
+		}
+	}
+	if parents < 2 {
+		t.Fatalf("%d fixture sections hold a parent, want at least 2", parents)
+	}
+}
+
 func TestResultSharesNothingWithTheInput(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
