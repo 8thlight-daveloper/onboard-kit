@@ -26,6 +26,8 @@ func (c *collector) variableOf(node *yaml.Node, at location) model.Variable {
 			variable.Name = c.stringOf(found.value, found.at)
 		case "description":
 			variable.Description = c.stringOf(found.value, found.at)
+		case "example":
+			variable.Example = c.stringOf(found.value, found.at)
 		case "type":
 			variable.Type = model.VariableType(c.stringOf(found.value, found.at))
 		case "options":
