@@ -80,6 +80,16 @@
     "source": "Hand-written. Contract rules: Conditions, Switch. 0050: a condition clause is a question clause or a section clause, and the hasher leaves the switch out. A section with enabled false. A section clause with enabled true and with enabled false, beside a question clause, in an includeIf and in an askIf, and alone in an askIf."
   },
   {
+    "name": "example",
+    "relation": "golden",
+    "inputs": [
+      "example.section.json"
+    ],
+    "canonical": "example.canonical.json",
+    "hash": "028da8aca661b3ecc6d249f6a7a404c7254b189d787145ef6713a6d6c6231578",
+    "source": "Hand-written. Contract rules: the Variable key order, Prose. A variable's example sits right after description. One variable has a description, an example, and a pattern hint. One has an example and no description. One has none. The second example holds a quote and a newline."
+  },
+  {
     "name": "source-ignored",
     "relation": "same",
     "inputs": [
@@ -138,6 +148,26 @@
     ],
     "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
     "source": "Contract rule: Defaults. The domain model gives timing, type, and phase their defaults. Each default written out, alone and together, hashes like the absent field."
+  },
+  {
+    "name": "example-empty",
+    "relation": "same",
+    "inputs": [
+      "basic.section.json",
+      "example-empty.sections.json"
+    ],
+    "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5",
+    "source": "Contract rules: Fields, Prose. An empty example is a zero field and is left out, so it hashes like an absent one. An example of only space, tab, and line ends is empty after the prose rule."
+  },
+  {
+    "name": "example-whitespace",
+    "relation": "same",
+    "inputs": [
+      "example.section.json",
+      "example-whitespace.sections.json"
+    ],
+    "hash": "028da8aca661b3ecc6d249f6a7a404c7254b189d787145ef6713a6d6c6231578",
+    "source": "Contract rule: Prose. An example is normalized like a description: CRLF, a lone CR, trailing spaces and tabs, and blank edges. The inner quote and newline of the second example stay."
   },
   {
     "name": "prose-whitespace",
@@ -222,6 +252,22 @@
       "unknown-shapes.sections.json"
     ],
     "source": "Contract rule: Unknown fields. An unknown value keeps its kind, and an empty list or map differs from an absent key, because what it means belongs to a newer tool."
+  },
+  {
+    "name": "example-differs",
+    "relation": "different",
+    "inputs": [
+      "example-differs.sections.json"
+    ],
+    "source": "Contract rules: Canonical form, Fields, Prose. Sections that differ only by example, from none, in a letter, in case, in inner spacing, in a line break, and in a final stop, and the same text in another field of the variable."
+  },
+  {
+    "name": "example-places",
+    "relation": "different",
+    "inputs": [
+      "example-places.sections.json"
+    ],
+    "source": "Contract rules: the Variable key order, Fields. An example belongs to its own variable and its own key. Moving it to another variable, swapping two, or writing its text as the description or the pattern hint gives another hash."
   },
   {
     "name": "every-field",

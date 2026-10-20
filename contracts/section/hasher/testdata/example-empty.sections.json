@@ -1,0 +1,3 @@
+[
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":""}],"steps":[{"id":"clone","name":"Clone"}]},
+{"id":"basic","title":"Basic","summary":"The required fields, one variable, and one step.","variables":[{"name":"repo","description":"Clone URL","example":" \n\t \r\n"}],"steps":[{"id":"clone","name":"Clone"}]}]
