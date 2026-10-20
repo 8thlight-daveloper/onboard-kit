@@ -836,5 +836,73 @@
     "after": "acme-5.plan.json",
     "problems": [],
     "source": "docs/decisions/0050-section-switch.md: a person turns a section off. Its answers stay"
+  },
+  {
+    "name": "examples-kept-by-a-section-answer",
+    "operation": "submit",
+    "before": "examples.plan.json",
+    "question": "main.tracker",
+    "value": "Platform lead",
+    "after": "examples-section-answer.after.plan.json",
+    "problems": [],
+    "source": "A variable's optional example is part of the plan's variables and the plan's sections' variables, and an answer changes only answers (0010, Plans are values: the returned plan differs by the answer). A copy that drops an example in the plan variables, in the section variables, or in one section only changes the plan. Plan written by hand with the ACME style example values."
+  },
+  {
+    "name": "examples-kept-by-a-plan-answer",
+    "operation": "submit",
+    "before": "examples.plan.json",
+    "question": "plan.region",
+    "value": "central",
+    "after": "examples-plan-answer.after.plan.json",
+    "problems": [],
+    "source": "Same rule, for an answer in the plan scope: 0010, Plans are values. An example is not an answer, so storing an answer changes no example. Kills a copy of the plan variables that drops the example."
+  },
+  {
+    "name": "examples-kept-by-a-clear",
+    "operation": "submit",
+    "before": "examples.plan.json",
+    "question": "main.note",
+    "value": "",
+    "after": "examples-clear.after.plan.json",
+    "problems": [],
+    "source": "0035, table: empty text is unanswered and clears the stored answer. The example of the question stays, because it is part of the variable and not of the answer. Kills a clear that rebuilds the section variables without the example."
+  },
+  {
+    "name": "examples-kept-by-a-refused-answer",
+    "operation": "submit",
+    "before": "examples.plan.json",
+    "question": "main.repo_url",
+    "value": "ftp://git.acme.example/service.git",
+    "after": "examples.plan.json",
+    "problems": [
+      {
+        "code": "answer.pattern-mismatch",
+        "severity": "error",
+        "question": "main.repo_url",
+        "section": "main",
+        "messageContains": "A clone URL, starting with git@ or https://"
+      }
+    ],
+    "source": "0010, Errors: an answer with an error is not applied and the plan comes back as it was, examples included. Kills a refusal that returns a copy without the examples."
+  },
+  {
+    "name": "examples-kept-by-a-switch-off",
+    "operation": "switch",
+    "before": "examples.plan.json",
+    "section": "extra",
+    "enabled": false,
+    "after": "examples-switch-off.after.plan.json",
+    "problems": [],
+    "source": "0050: the plan section carries an optional enabled and a person turns a section off. Nothing else changes, so every example stays. Kills a switch that copies the sections without the examples."
+  },
+  {
+    "name": "examples-kept-by-a-switch-on",
+    "operation": "switch",
+    "before": "examples.plan.json",
+    "section": "main",
+    "enabled": true,
+    "after": "examples.plan.json",
+    "problems": [],
+    "source": "0050: turning on a section that has no switch leaves the plan as it was. Every example stays. Kills a switch that rebuilds the variables of the section it changes."
   }
 ]

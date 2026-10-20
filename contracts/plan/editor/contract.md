@@ -62,6 +62,7 @@ These hold for every plan the contract tests use.
 - **Same input, same output.** The same call gives the same result on a shared editor, whatever calls came before, forward or in reverse order, however often it is repeated, and when calls run at the same time.
 - **Nothing shared that an edit changes.** The returned plan holds its own `answers`, with their maps and their lists, and its own `sections` list and each section's `enabled`. Changing any of them in the result changes neither the argument nor a later result, and changing the same parts of the argument after the call does not change the result. This holds when the answer is refused too. A list in a submitted value is copied when it is stored. Other parts of the plan, such as a section's variables and steps, may be shared.
 - **Only the named change.** A `Submit` that applies changes one entry of `answers` and nothing else. `SetSectionEnabled` changes the `enabled` field of one section and nothing else. In both, every field outside the change, `unknownFields` included, comes back as it was.
+- **Examples stay.** Every variable of the returned plan, in `variables` and in each section, keeps its `example` as held, whether the call applies, refuses, clears, or switches. An `example` is an illustration for the person answering. It is not an answer and not a default, and no call changes it.
 - **Section order.** The sections of the result are in the order of the argument's sections. Rotating or reversing the argument's sections does not change the answers or the problems.
 - **Repeating changes nothing more.** The same call on the result gives a plan equal to the result.
 - **Take back.** Clearing an answer that a `Submit` added gives the plan from before. Turning off a section that has no `enabled` field and turning it on again gives the plan from before.
@@ -126,6 +127,7 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | The sections are sorted by id, by `Submit` or by `SetSectionEnabled` | `new-plan-answer`, `switch-on-when-on`, the section order property |
 | An unknown section gives no problem, or a warning, or no `section` | `switch-of-an-unknown-section-is-refused`, `plan-is-not-a-section`, `switch-of-an-empty-id-is-refused` |
 | Turning off a section reports a warning | `switch-off`, `switch-off-when-off` |
+| A variable's `example` dropped when the plan is copied, in the plan's variables, in every section, or in one section, after an applied answer, a clear, a refusal, or a switch | `examples-kept-by-a-section-answer`, `examples-kept-by-a-plan-answer`, `examples-kept-by-a-clear`, `examples-kept-by-a-refused-answer`, `examples-kept-by-a-switch-off`, `examples-kept-by-a-switch-on` |
 | An argument is changed | The arguments-unchanged test |
 | The result shares the answers, the sections list, a stored list, or an `enabled` pointer with the argument | The shared-parts test, the stored-list test, the arguments-unchanged test |
 | An earlier result returned on a later call | The same-input test, and most cases |

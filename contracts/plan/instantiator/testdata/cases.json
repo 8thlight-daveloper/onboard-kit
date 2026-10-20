@@ -166,5 +166,20 @@
       {"code": "variable.no-name", "detail": {"index": "0"}}
     ],
     "source": "Contract rule: Problems. One problem of each kind, template problem first. Kills an implementation that reports only one kind, and one that puts the variable problem first."
+  },
+  {
+    "name": "variable-example",
+    "templates": ["variable-example.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {
+        "id": "team-role",
+        "hash": "9e99a767cb7a9dccce3dfefa76f63d92bb204a1bacafdc780259fdf1179fac0c",
+        "canonical": "variable-example.canonical.json"
+      }
+    ],
+    "source": "A variable's optional example, an illustration of a good answer, is part of what a template says, so the section is its template copied with the example and the hash covers it. The canonical text is written by hand from the hasher rules, with example right after description and omitted when empty, and its hash is shasum -a 256 over that text. The role example is Engineering manager, from the change brief. A section that loses the example in the copy changes the plan, and a hash that ignores it differs from this one."
   }
 ]

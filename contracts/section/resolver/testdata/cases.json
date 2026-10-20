@@ -232,5 +232,13 @@
     "resolved": "switch-clauses.resolved.json",
     "problems": [],
     "source": "Hand-written. 0050: a section carries an optional enabled, and a condition clause can be a section clause with enabled true or false. Contract rule: the returned Section is a copy with only its text filled, so a section that is off stays off, and a section clause in includeIf and in askIf comes back as held, true and false both. A variable named enabled is an ordinary variable and is filled like any other. Kills a switch dropped, set to on, or shared by pointer with the input, a section clause dropped, with its section or its enabled lost, or a clause with enabled false read as true, and a variable named enabled treated as the switch."
+  },
+  {
+    "name": "variable-examples",
+    "section": "variable-examples.section.json",
+    "answers": "variable-examples.answers.json",
+    "resolved": "variable-examples.resolved.json",
+    "problems": [],
+    "source": "Hand-written. Contract rule: What is filled, the returned Section keeps every declared variable, and a variable's example is part of its declaration, so it is not resolved and is not an answer or a default. The role example is the Engineering manager illustration of the change brief. Kills an example dropped when the variables are copied, an example filled from the answers or the default, and an example read for $name."
   }
 ]
