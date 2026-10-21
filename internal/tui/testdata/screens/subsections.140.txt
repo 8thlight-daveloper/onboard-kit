@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s                                                                1 of 5 answered
+  ·  ·◆·  ·
+
+  Plan                                                                              │ Access request
+    [ ] * Name of the organization                                                  │ 3 of 5, required, answered
+                                                                                    │
+  Access                                                                            │ Where do people request access?
+    [ ] * Who owns access?                                                          │
+                                                                                    │ Answer: https://access.example.test
+    Access request                                                                  │
+  >   [x] * Where do people request access?             https://access.example.test │ About this question
+                                                                                    │
+      Access tokens                                                                 │ Type: string
+        [ ] * How often are tokens rotated?                                         │ Answered by: onboarder
+                                                                                    │ Name: access-request.url
+  Tools                                                                             │
+    [ ] * Which editor is standard?                                                 │
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  esc walk  q quit  ? help

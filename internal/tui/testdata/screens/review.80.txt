@@ -1,24 +1,24 @@
-  Onboarding plan  Walk                                      13 of 13 answered
-  ✓~  ◆✓✓✓✓~  ✓✓✓✓  ✓
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s  13 of 13 answered
+  ✓~  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
-  Access
-  3 of 13, required, answered
+  > Items
+  Answered 13 of 13.
 
-  Which role owns onboarding here? It appears as the owner of the Access
-  section.
-
-  > engineering-managerr
-  Tab tries a suggestion: engineering-manager, engineering-manager
-
-  About this question
-
-  Type: role
-  Answered by: onboarder
-  Name: access.onboarding_owner_role
-  Suggestion (default): engineering-manager
-  Suggestion (given): engineering-manager
+  Deferred (2)
+  > deferred: Is the team established, or are we the first consultants?
+    deferred: Which role grants work tracker access?
 
 
 
 
-  enter save  shift+tab back  tab suggest  ctrl+d defer  esc review  f1 help
+
+
+
+
+
+
+
+
+
+
+  enter open  tab items/document  pgup/pgdn scroll  q quit  ? help

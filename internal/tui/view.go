@@ -45,32 +45,6 @@ func (app App) body(screenFrame frame, colors palette) []string {
 	return app.walkBody(screenFrame, colors)
 }
 
-func (app App) headerRow(width int, colors palette) string {
-	title := "Onboarding plan"
-	if app.audience == model.AudienceOnboardee {
-		title = "Your onboarding"
-	}
-	left := colors.render(toneStrong, true, title) + colors.render(toneFaint, true, "  "+app.screenName())
-	right := app.progressText()
-	gap := width - cellWidth(left) - cellWidth(right)
-	if gap < 2 {
-		return left
-	}
-	return left + spaces(gap) + colors.render(toneFaint, true, right)
-}
-
-func (app App) screenName() string {
-	switch app.screen {
-	case screenOverview:
-		return "Overview"
-	case screenReview:
-		return "Review"
-	case screenSections:
-		return "Sections"
-	}
-	return "Walk"
-}
-
 func (app App) progressText() string {
 	total := len(app.questions)
 	left := total - app.answeredCount()
@@ -90,8 +64,8 @@ func (app App) position() string {
 	return fmt.Sprintf("%d of %d", app.cursor+1, len(app.questions))
 }
 
-func stateMark(value model.Value) string {
-	switch stateOf(value) {
+func stateMark(question model.Question) string {
+	switch answerState(question) {
 	case "settled":
 		return "[x]"
 	case "deferred":
@@ -100,8 +74,8 @@ func stateMark(value model.Value) string {
 	return "[ ]"
 }
 
-func stateWords(value model.Value) string {
-	switch stateOf(value) {
+func stateWords(question model.Question) string {
+	switch answerState(question) {
 	case "settled":
 		return "answered"
 	case "deferred":

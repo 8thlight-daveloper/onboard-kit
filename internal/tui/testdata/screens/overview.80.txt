@@ -1,4 +1,4 @@
-  Onboarding plan  Overview                                  13 of 13 answered
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s  13 of 13 answered
   ✓◆  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Plan
@@ -6,11 +6,11 @@
   > [x] * Is the team established, or are we the …  established
 
   Access
-    [x] * Which role owns onboarding here? It app…  engineering-manager
+    [x] * Which role owns onboarding here? It app…  Engineering manager
     [x] * Where do people request source control …  https://access.acme.examp…
     [x] * What is the clone URL of the main repos…  git@git.acme.example:plat…
-    [x] * Which role grants source control access?  it-contact
-    [x] * Which role grants CI dashboard access?    platform-team-lead
+    [x] * Which role grants source control access?  IT contact
+    [x] * Which role grants CI dashboard access?    Platform team lead
     [~] * Which role grants work tracker access?    deferred, answer later
 
   Clone the project and run the tests
@@ -21,4 +21,4 @@
 
   If you are stuck
 
-  enter open  esc walk  r review  s sections  q quit  ? help
+  enter open  esc walk  q quit  ? help

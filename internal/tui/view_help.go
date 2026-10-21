@@ -18,14 +18,14 @@ func (app App) helpEntries() []hint {
 	case screenReview:
 		return app.reviewHelp()
 	case screenSections:
-		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}}
+		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}}
 	}
 	return app.walkHelp()
 }
 
 func (app App) walkHelp() []hint {
 	entries := []hint{
-		{"enter", "accept the answer and move to the next question"},
+		app.enterHelp(),
 		{"p, left, shift+tab", "back one question"},
 		{"n, right", "skip forward without changing the answer"},
 		{"d", "defer the question and move on"},
@@ -47,11 +47,25 @@ func (app App) walkHelp() []hint {
 			{"f1", "this help"},
 		}
 	}
-	entries = append([]hint{{"up, down, k, j", "move the choice"}}, entries...)
+	moving := []hint{{"up, down, k, j", "move the choice"}}
+	if app.entry.pickingMany() {
+		moving = append(moving, hint{"space", "pick or unpick the choice, the order you pick is the order kept"})
+	}
+	entries = append(moving, entries...)
 	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
 	return entries
+}
+
+func (app App) enterHelp() hint {
+	switch {
+	case len(app.entry.choices) == 0:
+		return hint{"enter", "move to the next question"}
+	case app.entry.pickingMany():
+		return hint{"enter", "accept the picks and move to the next question"}
+	}
+	return hint{"enter", "accept the answer and move to the next question"}
 }
 
 func (app App) overviewHelp() []hint {

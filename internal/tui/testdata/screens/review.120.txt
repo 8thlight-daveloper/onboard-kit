@@ -1,30 +1,30 @@
-  Onboarding plan  Walk                                                                              13 of 13 answered
-  ✓~  ◆✓✓✓✓~  ✓✓✓✓  ✓
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s                                          13 of 13 answered
+  ✓~  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
-  Access                                                                │ About this question
-  3 of 13, required, answered                                           │
-                                                                        │ Type: role
-  Which role owns onboarding here? It appears as the owner of the       │ Answered by: onboarder
-  Access section.                                                       │ Name: access.onboarding_owner_role
-                                                                        │ Suggestion (default): engineering-manager
-  > engineering-managerr                                                │ Suggestion (given): engineering-manager
-  Tab tries a suggestion: engineering-manager, engineering-manager      │
+  > Items                                        │   Document, 0%
+  Answered 13 of 13.                             │ # ACME Corp onboarding: Platform team
+                                                 │
+  Deferred (2)                                   │ Generated 2026-10-15 from template set `example`. A person must
+  > deferred: Is the team established, or are we │ review this before it is sent.
+    the first consultants?                       │
+    deferred: Which role grants work tracker     │ ## Gaps to fill
+    access?                                      │
+                                                 │ | Gap | Who fills it | By when |
+                                                 │ | --- | --- | --- |
+                                                 │ | Which role grants work tracker access? | Sam Okafor, @sam |
+                                                 │ Before day one |
+                                                 │
+                                                 │ ## Access
+                                                 │
+                                                 │ Request the accounts and permissions you need, and record who
+                                                 │ grants each.
+                                                 │
+                                                 │ - [ ] **Source control.** Owner: IT service desk, #it-help. Open:
+                                                 │ https://access.acme.example/request. Check: `git ls-remote
+                                                 │ git@git.acme.example:platform/widget-service.git` exits with code
+                                                 │ 0.
+                                                 │ - [ ] **CI dashboard.** Owner: Alex Rivera, @alex. Sign in as
+                                                 │ `<account_name>`. Check: Can you open the CI dashboard?
+                                                 │ - [ ] **Work tracker.** Owner: _deferred_. Check: Can you open the
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  enter save  shift+tab back  tab suggest  ctrl+d defer  esc review  f1 help
+  enter open  tab items/document  pgup/pgdn scroll  q quit  ? help

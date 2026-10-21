@@ -1,4 +1,4 @@
-  Onboarding plan  Overview                                                                                              13 of 13 answered
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s                                                              13 of 13 answered
   ✓◆  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Plan                                                                              │ Plan
@@ -6,11 +6,11 @@
   > [x] * Is the team established, or are we the fir…  established                  │
                                                                                     │ Is the team established, or are we the first
   Access                                                                            │ consultants?
-    [x] * Which role owns onboarding here? It appear…  engineering-manager          │
+    [x] * Which role owns onboarding here? It appear…  Engineering manager          │
     [x] * Where do people request source control acc…  https://access.acme.example… │ Answer: established
     [x] * What is the clone URL of the main reposito…  git@git.acme.example:platfo… │
-    [x] * Which role grants source control access?     it-contact                   │ About this question
-    [x] * Which role grants CI dashboard access?       platform-team-lead           │
+    [x] * Which role grants source control access?     IT contact                   │ About this question
+    [x] * Which role grants CI dashboard access?       Platform team lead           │
     [~] * Which role grants work tracker access?       deferred, answer later       │ Type: choice: established, first-consultants
                                                                                     │ Answered by: onboarder
   Clone the project and run the tests                                               │ Name: plan.team_state
@@ -20,7 +20,7 @@
     [x] * Which command runs the test suite?           make; test                   │
                                                                                     │
   If you are stuck                                                                  │
-    [x] * Who can anyone ask for help with anything?   alex-rivera; sam-okafor      │
+    [x] * Who can anyone ask for help with anything?   Alex Rivera; Sam Okafor      │
 
 
 
@@ -37,4 +37,4 @@
 
 
 
-  enter open  esc walk  r review  s sections  q quit  ? help
+  enter open  esc walk  q quit  ? help

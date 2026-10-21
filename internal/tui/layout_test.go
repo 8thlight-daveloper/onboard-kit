@@ -31,6 +31,12 @@ func everyScreen(t *testing.T) map[string]App {
 	reviewing, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	blocked := press(walking, esc, typed("r"))
 	onboardee, _ := startWith(t, blankPlan(t), model.AudienceOnboardee)
+	owner := moveTo(t, walking, "access.onboarding_owner_role")
+	contacts := moveTo(t, walking, "stuck-general.general_contacts")
+	emptyPlan, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboarder)
+	emptyOnboardee, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboardee)
+	subsectionFake, subsectionPlan := subsectionBackend()
+	subsections := startFakeIn(subsectionFake, subsectionPlan, model.AudienceOnboarder).openOverview()
 	screens := map[string]App{
 		"walk typing":   walking,
 		"walk choosing": choosing,
@@ -42,6 +48,14 @@ func everyScreen(t *testing.T) map[string]App {
 		"sections":      press(choosing, typed("s")),
 		"help":          press(choosing, typed("?")),
 		"onboardee":     onboardee,
+
+		"pick one":             owner,
+		"pick many":            press(contacts, typed("j"), space, typed("j"), space),
+		"pick empty":           moveTo(t, emptyPlan, "access.onboarding_owner_role"),
+		"pick empty onboardee": emptyOnboardee,
+		"pick help":            press(contacts, typed("?")),
+		"subsections":          subsections,
+		"sections with tabs":   press(owner, typed("s")),
 	}
 	for name, app := range longScreens() {
 		screens[name] = app

@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s    1 of 5 answered
+  ·  ·◆·  ·
+
+  Plan
+    [ ] * Name of the organization
+
+  Access
+    [ ] * Who owns access?
+
+    Access request
+  >   [x] * Where do people request access?          https://access.example.t…
+
+      Access tokens
+        [ ] * How often are tokens rotated?
+
+  Tools
+    [ ] * Which editor is standard?
+
+
+
+
+
+
+  enter open  esc walk  q quit  ? help

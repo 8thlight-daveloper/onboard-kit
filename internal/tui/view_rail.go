@@ -55,7 +55,7 @@ func (app App) railRow(width int, colors palette) string {
 	scope := ""
 	for index, question := range app.questions {
 		gap := ""
-		if index > 0 && question.Scope != scope {
+		if index > 0 && app.sectionRoot(question.Scope) != app.sectionRoot(scope) {
 			gap = railGap
 		}
 		scope = question.Scope
@@ -73,7 +73,7 @@ func (app App) railCell(index int, here int, colors palette) string {
 		return colors.render(toneHere, true, app.rail.here)
 	}
 	glyph := app.rail.open
-	switch stateOf(app.questions[index].Answer) {
+	switch answerState(app.questions[index]) {
 	case "settled":
 		glyph = app.rail.answered
 	case "deferred":

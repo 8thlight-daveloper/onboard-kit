@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"slices"
+
 	"github.com/charmbracelet/bubbles/textinput"
 
 	"onboard-kit/internal/model"
@@ -17,6 +19,7 @@ type entryState struct {
 	question   model.Question
 	choices    []choice
 	choice     int
+	picked     []string
 	input      textinput.Model
 	suggestion int
 	problems   []model.Problem
@@ -26,8 +29,12 @@ func newEntryState(question model.Question, width int) entryState {
 	entry := entryState{question: question}
 	if picksFromList(question) {
 		entry.choices = choicesFor(question)
+		entry.picked = pickedFrom(question)
 		for index, option := range entry.choices {
-			if stateOf(question.Answer) != "unanswered" && sameValue(option.value, question.Answer) {
+			if len(entry.picked) > 0 && option.value.Text == entry.picked[0] {
+				entry.choice = index
+			}
+			if !entry.pickingMany() && answerState(question) != "unanswered" && sameValue(option.value, question.Answer) {
 				entry.choice = index
 			}
 		}
@@ -88,4 +95,55 @@ func sameAnswer(left model.Value, right model.Value) bool {
 		return true
 	}
 	return sameValue(left, right)
+}
+
+func pickedFrom(question model.Question) []string {
+	if !picksMany(question) {
+		return nil
+	}
+	var ids []string
+	switch question.Answer.Kind {
+	case model.ValueKindText:
+		ids = []string{question.Answer.Text}
+	case model.ValueKindList:
+		ids = question.Answer.List
+	}
+	var known []string
+	for _, id := range ids {
+		if _, ok := labelOf(question.Choices, id); ok && !slices.Contains(known, id) {
+			known = append(known, id)
+		}
+	}
+	return known
+}
+
+func (entry entryState) pickingMany() bool { return picksMany(entry.question) }
+
+func (entry entryState) moved(delta int) entryState {
+	entry.choice = max(min(entry.choice+delta, len(entry.choices)-1), 0)
+	return entry
+}
+
+func (entry entryState) toggled() entryState {
+	if !entry.pickingMany() || len(entry.choices) == 0 {
+		return entry
+	}
+	id := entry.choices[entry.choice].value.Text
+	if index := slices.Index(entry.picked, id); index >= 0 {
+		entry.picked = slices.Delete(slices.Clone(entry.picked), index, index+1)
+		return entry
+	}
+	entry.picked = append(slices.Clone(entry.picked), id)
+	return entry
+}
+
+func (entry entryState) pickedValue() model.Value {
+	if len(entry.picked) == 0 {
+		return model.Value{}
+	}
+	return model.Value{Kind: model.ValueKindList, List: entry.picked}
+}
+
+func (entry entryState) pickOrder(index int) int {
+	return slices.Index(entry.picked, entry.choices[index].value.Text) + 1
 }

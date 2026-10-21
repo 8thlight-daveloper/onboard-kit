@@ -1,4 +1,4 @@
-  Onboarding plan  Walk                                        0 of 8 answered
+  Onboarding plan  [Walk]  Overview o  Review r  Sections s    0 of 8 answered
   ·◆  ·····  ·
 
   Plan
@@ -21,4 +21,4 @@
 
 
 
-  enter choose  p back  d defer  o overview  r review  x clear  n skip  ? help
+  enter choose  p back  d defer  x clear  n skip  q quit  ? help
