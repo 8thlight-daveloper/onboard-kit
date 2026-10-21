@@ -86,6 +86,9 @@ func planObject(plan model.Plan) object {
 		origin.addText("refreshedOn", string(plan.Origin.RefreshedOn))
 		o.add("origin", origin)
 	}
+	if directory := directoryObject(plan.Directory); len(directory) > 0 {
+		o.add("directory", directory)
+	}
 	if len(plan.Variables) > 0 {
 		o.add("variables", mapList(plan.Variables, variableObject))
 	}
@@ -378,4 +381,44 @@ func writeList(out *bytes.Buffer, items []any, depth int) error {
 	}
 	out.WriteString(strings.Repeat("  ", depth) + "]")
 	return nil
+}
+
+func directoryObject(directory model.Directory) object {
+	var o object
+	if len(directory.Contacts) > 0 {
+		o.add("contacts", mapList(directory.Contacts, func(contact model.Contact) object {
+			var c object
+			c.addText("id", contact.ID)
+			c.addText("name", contact.Name)
+			c.addText("email", contact.Email)
+			c.addText("slack", contact.Slack)
+			c.addText("slackId", contact.SlackID)
+			return c
+		}))
+	}
+	if len(directory.Roles) > 0 {
+		o.add("roles", mapList(directory.Roles, func(role model.Role) object {
+			var r object
+			r.addText("id", role.ID)
+			r.addText("name", role.Name)
+			r.addStrings("holders", role.Holders)
+			return r
+		}))
+	}
+	if len(directory.Teams) > 0 {
+		o.add("teams", mapList(directory.Teams, func(team model.Team) object {
+			var t object
+			t.addText("id", team.ID)
+			t.addText("name", team.Name)
+			if team.Holders != nil {
+				var held object
+				for _, role := range sortedKeys(team.Holders) {
+					held.add(role, stringsOf(team.Holders[role]))
+				}
+				t.add("holders", held)
+			}
+			return t
+		}))
+	}
+	return o
 }

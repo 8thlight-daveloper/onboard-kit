@@ -23,6 +23,7 @@ classDiagram
         id
         provenance
         origin
+        directory
         variables
         answers
         sections
@@ -37,6 +38,11 @@ classDiagram
         source
         contentHash
         refreshedOn
+    }
+    class Directory {
+        contacts
+        roles
+        teams
     }
     class Answers {
         plan
@@ -107,6 +113,7 @@ classDiagram
 
     Plan "1" --> "1" Provenance
     Plan "0..1" --> "1" Origin
+    Plan "0..1" --> "1" Directory
     Plan "1" --> "*" Variable : plan variables
     Plan "1" --> "1" Answers
     Plan "1" --> "*" Section
@@ -127,6 +134,7 @@ classDiagram
 | `id` | Text, optional | An org plan's identity, a UUID the driver makes when the plan is first created. See [0075](../decisions/0075-refreshing-a-personal-plan.md) |
 | `provenance` | Provenance |  |
 | `origin` | Origin, optional | Present in a personal plan only: the org plan it was refreshed from |
+| `directory` | Directory, optional | Contacts, roles, and teams, in the org plan. See [0080](../decisions/0080-directory.md) |
 | `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
 | `answers` | Answers | Every answer, by scope |
 | `sections` | List of Section | Every template, as a section |
@@ -149,6 +157,19 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | `source` | Text | A path or an HTTPS URL the org plan came from |
 | `contentHash` | Text | The hash of the org plan's file when last refreshed from. A driver computes it |
 | `refreshedOn` | Date | Passed in by a driver, because the core never reads a clock |
+
+## Directory
+
+Ids are permanent. An answer to a `contact`, `role`, or `team` variable stores an id and never a name.
+
+| Type | Field | Type | Notes |
+| -- | -- | -- | -- |
+| Contact | `id`, `name` | Text | A person or a shared contact such as a help channel |
+| Contact | `email`, `slack`, `slackId` | Text, optional | `slack` is for display, and `slackId` is for links |
+| Role | `id`, `name` | Text | A named job |
+| Role | `holders` | List of contact ids, optional | The organization-wide holders, in order |
+| Team | `id`, `name` | Text | Teams are a flat list |
+| Team | `holders` | Map of role id to a list of contact ids, optional | Who holds the role for this team, in order. It overrides the role's own holders |
 
 ## Answers and Value
 
@@ -248,7 +269,7 @@ A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no ques
 
 | Name | Values |
 | -- | -- |
-| VariableType | `string`, `boolean`, `choice`, `command`, `person` |
+| VariableType | `string`, `boolean`, `choice`, `command`, `person`, `contact`, `role`, `team` |
 | Audience | `onboarder`, `onboardee` |
 | Timing | `before-day-one`, `week-one`, `days-8-to-30`, `days-31-to-90`, `anytime`. Each has a fixed day window, see [ordering](section-template-schema/ordering.md#timing) |
 | Severity | `error`, `warning` |

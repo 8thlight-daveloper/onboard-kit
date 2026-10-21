@@ -210,12 +210,13 @@ func (r *reader) valueAt(path string, m map[string]any, key string) model.Value 
 }
 
 func (r *reader) plan(path string, v any) model.Plan {
-	m := r.object(path, v, "schemaVersion", "id", "provenance", "origin", "variables", "answers", "sections", "unknownFields")
+	m := r.object(path, v, "schemaVersion", "id", "provenance", "origin", "directory", "variables", "answers", "sections", "unknownFields")
 	plan := model.Plan{
 		SchemaVersion: r.integer(path, m, "schemaVersion"),
 		ID:            r.str(path, m, "id"),
 		Provenance:    r.provenance(path+".provenance", m["provenance"]),
 		Origin:        r.origin(path+".origin", m["origin"]),
+		Directory:     r.directory(path+".directory", m["directory"]),
 		Answers:       r.answers(path+".answers", m["answers"]),
 		UnknownFields: r.unknownFields(path+".unknownFields", m["unknownFields"]),
 	}
@@ -244,6 +245,40 @@ func (r *reader) origin(path string, v any) model.Origin {
 		ContentHash: r.str(path, m, "contentHash"),
 		RefreshedOn: model.Date(r.str(path, m, "refreshedOn")),
 	}
+}
+
+func (r *reader) directory(path string, v any) model.Directory {
+	m := r.object(path, v, "contacts", "roles", "teams")
+	var directory model.Directory
+	for i, item := range r.list(path, m, "contacts") {
+		at := fmt.Sprintf("%s.contacts[%d]", path, i)
+		c := r.object(at, item, "id", "name", "email", "slack", "slackId")
+		directory.Contacts = append(directory.Contacts, model.Contact{
+			ID: r.str(at, c, "id"), Name: r.str(at, c, "name"), Email: r.str(at, c, "email"),
+			Slack: r.str(at, c, "slack"), SlackID: r.str(at, c, "slackId"),
+		})
+	}
+	for i, item := range r.list(path, m, "roles") {
+		at := fmt.Sprintf("%s.roles[%d]", path, i)
+		c := r.object(at, item, "id", "name", "holders")
+		directory.Roles = append(directory.Roles, model.Role{
+			ID: r.str(at, c, "id"), Name: r.str(at, c, "name"), Holders: r.strings(at, c, "holders"),
+		})
+	}
+	for i, item := range r.list(path, m, "teams") {
+		at := fmt.Sprintf("%s.teams[%d]", path, i)
+		c := r.object(at, item, "id", "name", "holders")
+		team := model.Team{ID: r.str(at, c, "id"), Name: r.str(at, c, "name")}
+		if held, present := c["holders"]; present {
+			byRole := r.object(at+".holders", held, allKeys(held)...)
+			team.Holders = map[string][]string{}
+			for role := range byRole {
+				team.Holders[role] = r.strings(at+".holders", byRole, role)
+			}
+		}
+		directory.Teams = append(directory.Teams, team)
+	}
+	return directory
 }
 
 func (r *reader) answers(path string, v any) model.Answers {

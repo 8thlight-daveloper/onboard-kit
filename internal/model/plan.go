@@ -7,6 +7,7 @@ type Plan struct {
 	ID            string
 	Provenance    Provenance
 	Origin        Origin
+	Directory     Directory
 	Variables     []Variable
 	Answers       Answers
 	Sections      []Section
@@ -23,4 +24,30 @@ type Origin struct {
 	Source      string
 	ContentHash string
 	RefreshedOn Date
+}
+
+type Directory struct {
+	Contacts []Contact
+	Roles    []Role
+	Teams    []Team
+}
+
+type Contact struct {
+	ID      string
+	Name    string
+	Email   string
+	Slack   string
+	SlackID string
+}
+
+type Role struct {
+	ID      string
+	Name    string
+	Holders []string
+}
+
+type Team struct {
+	ID      string
+	Name    string
+	Holders map[string][]string
 }

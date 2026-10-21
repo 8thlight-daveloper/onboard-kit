@@ -5,6 +5,7 @@ Contract tests keep their fixtures as plain data. This page says how a Plan is w
 - An object has the fields of the type in the [domain model](../../../docs/reference/domain-model.md). An absent key means the zero value. An unknown key is an error, so a typo in a fixture fails loudly.
 - A Value is a JSON string for Text, a boolean for Flag, an array of strings for List, and `{"deferred": true}` for Deferred. The Text `"deferred"` is a plain string and differs from Deferred.
 - `unknownFields` on a plan or a section is an object of any JSON data. Integers stay integers and decimals stay decimals.
+- A plan's `directory` is an object with `contacts`, `roles`, and `teams`, each a list of objects with the fields in the domain model. A team's `holders` is an object of role id to a list of contact ids. A plan has an optional `id` and an `origin` with `planId`, `source`, `contentHash`, and `refreshedOn`.
 - A section's `source` is an object with `template` and `hash`.
 - A condition is `{"all": [{"question": "...", "answer": {"is": ...}}]}` or, for a section clause, `{"all": [{"section": "access", "enabled": true}]}`. A section has an optional boolean `enabled`.
 
