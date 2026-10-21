@@ -17,6 +17,10 @@ directory:
       name: IT service desk
       email: help@acme.example
       slack: "#it-help"
+    - id: platform-team
+      name: Platform team channel
+      email: platform@acme.example
+      slack: "#platform-team"
   roles:
     - id: engineering-manager
       name: Engineering manager
@@ -33,6 +37,7 @@ directory:
   teams:
     - id: platform
       name: Platform team
+      contact: platform-team
     - id: design
       name: Design team
       holders:

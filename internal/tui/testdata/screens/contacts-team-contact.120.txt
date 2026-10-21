@@ -1,0 +1,30 @@
+  Onboarding plan  Walk  Overview  Review  Sections  [Contacts]                                      13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Edit team
+  Id: platform, which never changes
+
+    Name      Platform team
+
+  Team contact, for Platform team
+    ( ) No team contact
+    ( ) Alex Rivera
+    ( ) Sam Okafor
+    ( ) IT service desk
+  > (o) Platform team channel
+
+  Enter chooses. Esc goes back without changing it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter choose  esc back  f1 help

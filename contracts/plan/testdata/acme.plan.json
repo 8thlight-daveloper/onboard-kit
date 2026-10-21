@@ -24,6 +24,12 @@
         "name": "IT service desk",
         "email": "help@acme.example",
         "slack": "#it-help"
+      },
+      {
+        "id": "platform-team",
+        "name": "Platform team channel",
+        "email": "platform@acme.example",
+        "slack": "#platform-team"
       }
     ],
     "roles": [
@@ -52,7 +58,8 @@
     "teams": [
       {
         "id": "platform",
-        "name": "Platform team"
+        "name": "Platform team",
+        "contact": "platform-team"
       },
       {
         "id": "design",

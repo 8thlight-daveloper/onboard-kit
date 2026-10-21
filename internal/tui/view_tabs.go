@@ -29,7 +29,7 @@ func (app App) tabs() []screenTab {
 		tabs = append(tabs, screenTab{screenSections, "Sections", "s"})
 	}
 	if app.canEditDirectory() {
-		tabs = append(tabs, screenTab{screenPeople, "People", "P"})
+		tabs = append(tabs, screenTab{screenContacts, "Contacts", "c"})
 	}
 	return tabs
 }
@@ -67,7 +67,7 @@ func (app App) headerLeft(layout headerLayout, colors palette) string {
 }
 
 func (app App) typingNow() bool {
-	return app.screen == screenWalk && app.entry.typing() || app.screen == screenPeople && app.people.typing()
+	return app.screen == screenWalk && app.entry.typing() || app.screen == screenContacts && app.contacts.typing()
 }
 
 func (app App) headerLayout(width int, colors palette) headerLayout {

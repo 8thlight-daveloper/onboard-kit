@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  [Contacts]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Remove the role Engineering manager?
+
+  This also clears 1 answer and removes 1 team override for this role.
+
+  Answers cleared
+    - Which role owns onboarding here? It appears as the owner of the Access
+      section.
+
+  Holders removed
+    - Design team, as Engineering manager
+
+  Nothing is removed until you press y.
+
+
+
+
+
+
+
+
+  y remove  esc keep  ? help

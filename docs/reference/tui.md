@@ -42,7 +42,7 @@ Decided. There are five screens and a help page. Every screen has a header line 
 | Overview | Every question in order with a mark for its state. The cursor jumps to any of them | `o` |
 | Review | Blockers, deferred questions, validator problems, and the document preview | `r`, finishing the last question, or the start when the plan holds answers |
 | Sections | Section switches. The onboarder only | `s` |
-| People | The organization's contacts, roles, and teams, to add, change, and remove. The onboarder only | `P` |
+| Contacts | The organization's contacts, roles, and teams, to add, change, and remove. The onboarder only | `c` |
 | Help | Every key of the current screen | `?`, or `f1` while typing |
 
 How a person moves:
@@ -50,12 +50,12 @@ How a person moves:
 - Start: if the plan holds an answer to any question of this audience, open Review. Otherwise open Walk at the first question. A plan with no active questions opens Review.
 - Enter accepts the answer on the screen and moves to the next question in order. This was a choice between the next question and the next unanswered one. The next in order is predictable, and a person who wants an unanswered one opens Review, where the blockers are listed.
 - Past the last question, the person lands on Review.
-- `w`, `o`, `r`, `s`, and `P` open the Walk, Overview, Review, Sections, and People from any screen while the person is not typing. The tab strip names them, see Screen tabs.
+- `w`, `o`, `r`, `s`, and `c` open the Walk, Overview, Review, Sections, and Contacts from any screen while the person is not typing. The tab strip names them, see Screen tabs.
 - `p`, left arrow, or shift+tab goes back one question. `n` or right arrow skips forward without changing anything.
 - `d` defers the question and moves on. `x` clears the answer and stays, so the person can answer again.
 - Escape on the Walk returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Walk.
 - From Overview or Review, enter opens the chosen question in the Walk. `w` on Review returns to the Walk at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
-- `q` quits from the Overview, Review, and Walk, except while typing. The Sections and People screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
+- `q` quits from the Overview, Review, and Walk, except while typing. The Sections and Contacts screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
 
 ## Layout
 
@@ -111,8 +111,8 @@ Decided. The part of the screen where the person is acting is drawn bright, and 
 | Overview | The list | The rail, the preview |
 | Review | The pane with focus, items or document | The other pane |
 | Sections, Help | The whole body |  |
-| People, list | The list and the list names at the top | The detail of the chosen entry |
-| People, form and removal | The whole body |  |
+| Contacts, list | The list and the list names at the top | The detail of the chosen entry |
+| Contacts, form and removal | The whole body |  |
 
 - The accent marks "you are here" and nothing else: the `>` before the chosen row or the focused pane, the diamond in the rail, the prompt of the answer box, and the current tab. Titles, headings, and key names are never in the accent. A title is bold, and a key name is bold.
 - Bold and faint are enough to carry the hierarchy, so it holds on a light or dark background and with no colour.
@@ -135,15 +135,18 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 | Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.120.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
 | The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
 | The onboardee, nothing to pick | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.80.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.120.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.140.txt) |
-| People, contacts | [people](../../internal/tui/testdata/screens/people.80.txt) | [people](../../internal/tui/testdata/screens/people.120.txt) | [people](../../internal/tui/testdata/screens/people.140.txt) |
-| People, roles | [roles](../../internal/tui/testdata/screens/people-roles.80.txt) | [roles](../../internal/tui/testdata/screens/people-roles.120.txt) | [roles](../../internal/tui/testdata/screens/people-roles.140.txt) |
-| People, teams | [teams](../../internal/tui/testdata/screens/people-teams.80.txt) | [teams](../../internal/tui/testdata/screens/people-teams.120.txt) | [teams](../../internal/tui/testdata/screens/people-teams.140.txt) |
-| People, nothing yet | [empty](../../internal/tui/testdata/screens/people-empty.80.txt) | [empty](../../internal/tui/testdata/screens/people-empty.120.txt) | [empty](../../internal/tui/testdata/screens/people-empty.140.txt) |
-| People, new contact | [form](../../internal/tui/testdata/screens/people-form.80.txt) | [form](../../internal/tui/testdata/screens/people-form.120.txt) | [form](../../internal/tui/testdata/screens/people-form.140.txt) |
-| People, picking holders of a role | [holders](../../internal/tui/testdata/screens/people-holders.80.txt) | [holders](../../internal/tui/testdata/screens/people-holders.120.txt) | [holders](../../internal/tui/testdata/screens/people-holders.140.txt) |
-| People, a team's holders for one role | [override](../../internal/tui/testdata/screens/people-override.80.txt) | [override](../../internal/tui/testdata/screens/people-override.120.txt) | [override](../../internal/tui/testdata/screens/people-override.140.txt) |
-| People, removing a contact | [remove](../../internal/tui/testdata/screens/people-remove.80.txt) | [remove](../../internal/tui/testdata/screens/people-remove.120.txt) | [remove](../../internal/tui/testdata/screens/people-remove.140.txt) |
-| People, removing a role | [remove role](../../internal/tui/testdata/screens/people-remove-role.80.txt) | [remove role](../../internal/tui/testdata/screens/people-remove-role.120.txt) | [remove role](../../internal/tui/testdata/screens/people-remove-role.140.txt) |
+| Contacts, contacts | [list](../../internal/tui/testdata/screens/contacts-list.80.txt) | [list](../../internal/tui/testdata/screens/contacts-list.120.txt) | [list](../../internal/tui/testdata/screens/contacts-list.140.txt) |
+| Contacts, roles | [roles](../../internal/tui/testdata/screens/contacts-roles.80.txt) | [roles](../../internal/tui/testdata/screens/contacts-roles.120.txt) | [roles](../../internal/tui/testdata/screens/contacts-roles.140.txt) |
+| Contacts, teams | [teams](../../internal/tui/testdata/screens/contacts-teams.80.txt) | [teams](../../internal/tui/testdata/screens/contacts-teams.120.txt) | [teams](../../internal/tui/testdata/screens/contacts-teams.140.txt) |
+| Contacts, nothing yet | [empty](../../internal/tui/testdata/screens/contacts-empty.80.txt) | [empty](../../internal/tui/testdata/screens/contacts-empty.120.txt) | [empty](../../internal/tui/testdata/screens/contacts-empty.140.txt) |
+| Contacts, new contact | [form](../../internal/tui/testdata/screens/contacts-form.80.txt) | [form](../../internal/tui/testdata/screens/contacts-form.120.txt) | [form](../../internal/tui/testdata/screens/contacts-form.140.txt) |
+| Contacts, picking holders of a role | [holders](../../internal/tui/testdata/screens/contacts-holders.80.txt) | [holders](../../internal/tui/testdata/screens/contacts-holders.120.txt) | [holders](../../internal/tui/testdata/screens/contacts-holders.140.txt) |
+| Contacts, a team's holders for one role | [override](../../internal/tui/testdata/screens/contacts-override.80.txt) | [override](../../internal/tui/testdata/screens/contacts-override.120.txt) | [override](../../internal/tui/testdata/screens/contacts-override.140.txt) |
+| Contacts, removing a contact | [remove](../../internal/tui/testdata/screens/contacts-remove.80.txt) | [remove](../../internal/tui/testdata/screens/contacts-remove.120.txt) | [remove](../../internal/tui/testdata/screens/contacts-remove.140.txt) |
+| Contacts, removing a role | [remove role](../../internal/tui/testdata/screens/contacts-remove-role.80.txt) | [remove role](../../internal/tui/testdata/screens/contacts-remove-role.120.txt) | [remove role](../../internal/tui/testdata/screens/contacts-remove-role.140.txt) |
+| Contacts, editing a team | [team-form](../../internal/tui/testdata/screens/contacts-team-form.80.txt) | [team-form](../../internal/tui/testdata/screens/contacts-team-form.120.txt) | [team-form](../../internal/tui/testdata/screens/contacts-team-form.140.txt) |
+| Contacts, picking a team's contact | [team-contact](../../internal/tui/testdata/screens/contacts-team-contact.80.txt) | [team-contact](../../internal/tui/testdata/screens/contacts-team-contact.120.txt) | [team-contact](../../internal/tui/testdata/screens/contacts-team-contact.140.txt) |
+| Contacts, removing a team's contact | [remove-team-contact](../../internal/tui/testdata/screens/contacts-remove-team-contact.80.txt) | [remove-team-contact](../../internal/tui/testdata/screens/contacts-remove-team-contact.120.txt) | [remove-team-contact](../../internal/tui/testdata/screens/contacts-remove-team-contact.140.txt) |
 | Window too small | [too small](../../internal/tui/testdata/screens/too-small.80.txt) | [too small](../../internal/tui/testdata/screens/too-small.120.txt) | [too small](../../internal/tui/testdata/screens/too-small.140.txt) |
 
 ## Colour
@@ -173,7 +176,7 @@ Decided, and built. The answer is made on the Walk, under the question.
 
 ## Pick lists
 
-Decided, and built. A `contact`, `role`, or `team` question carries the directory's entries as `Question.Choices`, each with an id and a name, in directory order, see [0080](../decisions/0080-directory.md). The Walk shows the names and stores the id. The id stays out of sight. The People screen is where entries are made, see People.
+Decided, and built. A `contact`, `role`, or `team` question carries the directory's entries as `Question.Choices`, each with an id and a name, in directory order, see [0080](../decisions/0080-directory.md). The Walk shows the names and stores the id. The id stays out of sight. The Contacts screen is where entries are made, see Contacts.
 
 ```text
   Which role owns onboarding here? It appears as the owner of the Access
@@ -203,7 +206,7 @@ Decided, and built. A `contact`, `role`, or `team` question carries the director
 - **Same names.** Two entries with the same name show their ids in brackets, `Sam Okafor (sam-1)` and `Sam Okafor (sam-2)`, and only those two. A name that is unique shows no id.
 - **Defer and move on.** `d` defers, `x` clears, `n` and `p` move, as for every other question. A several-answers list has no rows for defer and clear, because enter confirms the picks.
 - **Long lists.** The list scrolls around the cursor to fit the window. A cut list adds a faint "Showing 12 to 19 of 40" line. The help lines under a several-answers list go first when there is no room.
-- **Nothing to pick.** When the directory has no entry of the kind, a message takes the list's place and every other key still works, so a person can defer and come back. The onboarder reads "No contacts to pick from yet. Add them on the People screen, press P." with "roles" or "teams" for those types, and `P` opens the People screen on the list the question needs. The onboardee reads "No teams to pick from yet. Ask your onboarder to add this."
+- **Nothing to pick.** When the directory has no entry of the kind, a message takes the list's place and every other key still works, so a person can defer and come back. The onboarder reads "No contacts to pick from yet. Add them on the Contacts screen, press c." with "roles" or "teams" for those types, and `c` opens the Contacts screen on the list the question needs. The onboardee reads "No teams to pick from yet. Ask your onboarder to add this."
 - **Names everywhere.** The Overview, its preview, and the suggestion lines in the notes show the name, and several names are separated by `;` in the order stored. The Review lists blockers, deferred questions, and validator problems, which are about questions and not about answers, so it needs no name. The document preview shows the names the assembler resolves.
 - **Stale answers.** An answer that names an id the directory no longer holds counts as not answered, as the finder counts it. The Walk, Overview, rail, and counts show it as not answered, and no id is shown. A faint "was sam-okafor" was rejected: the validator already warns about the stale id on the Review, and the person's task is to pick again. A list with at least one known id counts as answered and shows only the known names. Confirming the picks drops the unknown ids.
 
@@ -227,7 +230,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | `?` | Help | f1 | Help | Help | Help |
 | `q` | Quit |  | Quit | Quit | Back |
 
-`s`, `P`, the Sections screen, and the People screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
+`s`, `c`, the Sections screen, and the Contacts screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
 
 ## Accessibility
 
@@ -244,7 +247,7 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The People tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Screen tabs
 
@@ -256,11 +259,11 @@ The header line holds the title, the tab strip, and the progress count at the ri
   Onboarding plan  Walk w  [Overview]  Review r  Sections s          13 of 13 answered
 ```
 
-- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections, People. A screen the audience cannot use, such as Sections and People for the onboardee, is left out. The People key is the capital `P`, because `p` already means back on the Walk and no other letter says People.
+- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections, Contacts. A screen the audience cannot use, such as Sections and Contacts for the onboardee, is left out. The Contacts key is lowercase `c`. It was the capital `P` when the screen was named People. `p` is back on the Walk, so `P` was a special case that only worked with shift. `b` is page-up on the scrolling screens. `c` is free on every screen and matches the screen name.
 - The current tab is bold in the accent colour, which is "you are here". With no colour it is in brackets. The other tabs are faint, each with its key.
 - The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Walk while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
 - While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` leaves.
-- When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The onboarder's strip with five tabs and keys is 67 columns wide, so at 80 columns the progress count goes and the keys stay. At 60 columns the strip shows names only, and its gaps shrink to one column.
+- When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The onboarder's strip with five tabs and keys is 70 columns wide, so at 80 columns the progress count goes and the keys stay. At 60 columns the strip shows names only, and its gaps shrink to one column.
 
 Rejected: the screen name beside the title, as before (`Onboarding plan  Overview`), because it shows one screen and hides that there are others. Also rejected: a tab for Help, because help is a page over the current screen and the current tab stays marked while it is open.
 
@@ -272,7 +275,7 @@ Decided, and built. Under [0070](../decisions/0070-sub-sections.md) a section ca
 - The progress rail keeps the cells of a section and its sub-sections together, with the usual gap only between families of sections.
 - The Walk shows the sub-section's own title. The document preview nests it by heading level.
 
-## People
+## Contacts
 
 Decided, and built. The onboarder's screen for the directory in [0080](../decisions/0080-directory.md). The onboardee has no tab and no key for it. It does the same work as the editor's directory operations, shows each one's result, and leaves every rule to the editor and the validator.
 
@@ -290,8 +293,8 @@ The three lists are three sub-tabs under the header, with a count each: `Contact
     Front desk       ! no way to reach                                  │
 ```
 
-- **Contacts** show the name, the email, and the Slack handle. **Roles** show the name and the holders' names in order, or `! vacant`. **Teams** show the name and the number of roles they override.
-- **Problems.** The validator's directory problems sit next to the entry in words: `! vacant`, `! no way to reach`, `! email looks wrong`, `! holder is not a contact`, `! role does not exist`, and `! id is shared`. A flagged row shows the flag before its other details, so a narrow window cuts the details and keeps the flag. The detail says what it means: "warning: Nobody holds this role, so it shows as a gap in the document." Colour adds orange, and the words and the `!` carry the meaning without it. A problem that is an error reads `! problem:`.
+- **Contacts** show the name, the email, and the Slack handle. **Roles** show the name and the holders' names in order, or `! vacant`. **Teams** show the name and the number of roles they override. The detail of a team starts with its contact by name and Slack handle, or email when it has no handle: "Contact: Platform team channel, #platform-team". A team with no contact reads "Contact: none".
+- **Problems.** The validator's directory problems sit next to the entry in words: `! vacant`, `! no way to reach`, `! email looks wrong`, `! holder is not a contact`, `! team contact is not a contact`, `! role does not exist`, and `! id is shared`. The detail of a team contact problem says "The contact for this team is not one of the contacts. Pick another, or choose no team contact." A flagged row shows the flag before its other details, so a narrow window cuts the details and keeps the flag. The detail says what it means: "warning: Nobody holds this role, so it shows as a gap in the document." Colour adds orange, and the words and the `!` carry the meaning without it. A problem that is an error reads `! problem:`.
 - **Layout.** At 120 columns and wider the list is the left three fifths and the detail of the chosen entry is faint at the right. Below 120 the list is one column and the detail sits under it, cut to the height that is left. The detail holds every field, the holders in order, and for a team the roles whose holders differ.
 - **Nothing yet.** A list with no entry says "No contacts yet." and "Press a to add one."
 
@@ -305,7 +308,7 @@ One list with three headers would show everything at once, but the add key would
 
 - **Contact.** Name, Email, Slack, and Slack id. Email, Slack, and Slack id are optional and each says what it is for in faint placeholder text.
 - **Role.** A name, and the holders picked from the contacts. The pick works as a several-answers list does: space picks or unpicks, the numbers and an "Order:" line show the order, and the order is stored. A role with no holder can be saved, and the list then flags it vacant.
-- **Team.** A name, and a row for every role showing who holds it for this team. Enter on a row opens a pick list with two rows on top, "Use the role's own holders" and "Vacant for this team", then the contacts. The first stores no override. The second stores an empty override, which is different: the role is vacant for the team and does not fall back to its own holders. Picking a contact leaves the top two rows.
+- **Team.** A name, a team contact, and a row for every role showing who holds it for this team. The team contact row comes first, because most teams have one contact and few have overrides. Enter on it opens a pick list of one choice, with "No team contact" on top and then the contacts, and enter on a row chooses it and closes the list. A team with no contact saves with an empty `contact`. The contact is part of the team the form sends, so changing an override or the name never drops it. A contact that is not a contact is not in the form, as for a holder, and saving drops it. Enter on a role row opens a pick list with two rows on top, "Use the role's own holders" and "Vacant for this team", then the contacts. The first stores no override. The second stores an empty override, which is different: the role is vacant for the team and does not fall back to its own holders. Picking a contact leaves the top two rows.
 - **The id.** An entry's id is made from the name as a lowercase slug and shown under the title as it is typed: "Id: pat-lee, made from the name". If the id is taken in that list the form adds a number and says why: "Id: pat-lee-2, made from the name, with a number because pat-lee is taken". The id of an existing entry never changes, and the form says so. A letter outside A to Z, such as an accent, is left out of the id and stays in the name.
 - **Replace whole.** A change sends the whole entry, as the editor replaces it whole. A form starts from the stored entry, so a field a person does not touch comes back as it was. A holder that is not a contact, and a team override for a role that is gone, are not in the form, and saving drops them. That clears a flag.
 - **Refusal.** A problem from the editor shows under the form in words, such as "A name is needed.", with `! problem:` in front. The form stays open, the status says "not saved", and the plan is as it was. A name with no letter or digit gets "The name needs a letter or a digit, so an id can be made from it."
@@ -331,7 +334,7 @@ One list with three headers would show everything at once, but the add key would
   Nothing is removed until you press y.
 ```
 
-- The sentence counts the cleared answers, and the roles and team overrides the entry leaves. Below it are the questions, by their text and not their ids, and the places. "Left with nobody" names a role or a team override that the removal empties, so a person sees the vacancy before they cause it. A list of more than five is cut with "and 3 more".
+- The sentence counts the cleared answers, and the roles and team overrides the entry leaves. A contact that is the contact of teams adds "and removes it as the contact of 1 team", and the places list "Platform team, as the team contact". The team stays and has no contact afterwards, as the editor reports in `team-contact:<team id>`. Below it are the questions, by their text and not their ids, and the places. "Left with nobody" names a role or a team override that the removal empties, so a person sees the vacancy before they cause it. A list of more than five is cut with "and 3 more".
 - `y` applies it, with the plan the dry run returned, and saves. Every other key keeps the entry and says "nothing removed". The key is `y` and not enter because enter is the key a person presses to get on, and a removal needs a deliberate one.
 - A cleared required question is unanswered afterwards, and the walk and the Review show it so.
 
@@ -341,14 +344,14 @@ One list with three headers would show everything at once, but the add key would
 - After a change the screen asks the finder again, so the walk's questions, their pick lists, the counts, and the rail are current. Returning to the walk with escape, `q`, or `w` opens the question the person left, with the new entries in its list.
 - Escape and `q` go back to the screen the person came from, including the Walk, the Overview, and the Review. From the Sections screen they go to where Sections was opened from.
 
-### People keys
+### Contacts keys
 
 | Key | List | Form | Removal |
 | -- | -- | -- | -- |
 | up, down, `k`, `j` | Move | Move between fields, or in a pick list |  |
 | tab, shift+tab, left, right | Next or previous list | Next or previous field |  |
 | `a` | Add to this list |  |  |
-| enter, `e` | Change the chosen entry | Next field, save on the last, open a team row | Keep |
+| enter, `e` | Change the chosen entry | Next field, save on the last, open the team contact or a role row, and choose a row in the team contact list | Keep |
 | `x`, delete | Remove, after the dry run |  |  |
 | space |  | Pick or unpick | Keep |
 | ctrl+s |  | Save |  |
@@ -363,7 +366,7 @@ One list with three headers would show everything at once, but the add key would
 - A separate window for each kind. The three lists share one cursor model, so one screen is less to learn.
 - A key to move a holder up or down. The numbered pick order is enough for the two or three holders a role has, as for any several-answers list.
 - Enter to confirm a removal. See above.
-- Inline adding from the walk's pick list. The People screen is one key away, opens on the right list, and brings the person back to the same question. A second way to add would need the whole form inside the walk.
+- Inline adding from the walk's pick list. The Contacts screen is one key away, opens on the right list, and brings the person back to the same question. A second way to add would need the whole form inside the walk.
 - Letting the id be typed. The name makes it, and a person who sees `sam-okafor` is not asked to invent one.
 
 ## Open
@@ -371,7 +374,7 @@ One list with three headers would show everything at once, but the add key would
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
 - A key to move a pick up or down in a several-answers list.
 - Importing contacts from a directory service. It is not planned, see 0080.
-- A key to move a holder up or down in the People forms.
+- A key to move a holder up or down in the Contacts forms.
 - Accents in ids. The slug keeps only A to Z and digits, so a name such as "José" makes the id `jos`.
 - Whether the progress count should outrank the tab keys at 80 columns now that the strip has five tabs.
 - Whether the Walk goes to the next unanswered question when the person is revisiting from Review. Today it goes to the next in order.

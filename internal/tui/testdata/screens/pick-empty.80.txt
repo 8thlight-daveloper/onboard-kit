@@ -1,4 +1,4 @@
-  Onboarding plan  [Walk]  Overview o  Review r  Sections s  People P
+  Onboarding plan  [Walk]  Overview o  Review r  Sections s  Contacts c
   ··  ◆····  ·
 
   Access
@@ -7,7 +7,7 @@
   Which role owns onboarding here? It appears as the owner of the Access
   section.
 
-  No roles to pick from yet. Add them on the People screen, press P.
+  No roles to pick from yet. Add them on the Contacts screen, press c.
 
   About this question
 

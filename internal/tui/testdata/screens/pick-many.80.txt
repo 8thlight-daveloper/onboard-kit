@@ -1,4 +1,4 @@
-  Onboarding plan  [Walk]  Overview o  Review r  Sections s  People P
+  Onboarding plan  [Walk]  Overview o  Review r  Sections s  Contacts c
   ··  ·····  ◆
 
   If you are stuck
@@ -9,6 +9,7 @@
   > [2] Alex Rivera
     [1] Sam Okafor
     [ ] IT service desk
+    [ ] Platform team channel
 
   Space picks or unpicks. Enter confirms. Pick order is kept.
   Order: Sam Okafor, then Alex Rivera
@@ -18,7 +19,6 @@
   Type: contact, several allowed
   Answered by: onboarder
   Name: stuck-general.general_contacts
-
 
 
   space pick  enter confirm  p back  d defer  x clear  n skip  q quit  ? help

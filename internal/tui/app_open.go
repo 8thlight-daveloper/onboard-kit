@@ -33,23 +33,23 @@ func (app App) openSections() App {
 	return app
 }
 
-func (app App) openPeople() App {
+func (app App) openContacts() App {
 	if !app.canEditDirectory() {
 		return app
 	}
 	if question, ok := app.current(); ok && app.screen == screenWalk {
 		if kind, found := kindOfQuestion(question); found {
-			app.people.kind = kind
+			app.contacts.kind = kind
 		}
 	}
 	app = app.leavingForSideScreen()
-	app.people.mode = peopleBrowsing
-	app.screen = screenPeople
-	return app.refreshedPeople()
+	app.contacts.mode = contactsBrowsing
+	app.screen = screenContacts
+	return app.refreshedContacts()
 }
 
 func (app App) leavingForSideScreen() App {
-	if app.screen != screenSections && app.screen != screenPeople {
+	if app.screen != screenSections && app.screen != screenContacts {
 		app.cameFrom = app.screen
 	}
 	return app
