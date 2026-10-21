@@ -1,0 +1,269 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "contact_given_role",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_given_contact",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_given_role",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "contact_given_team",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_capitals",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_name",
+        "audience": "onboardee",
+        "type": "contact"
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk",
+          "email": "help@acme.example",
+          "slack": "#it-help"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor",
+          "email": "sam.okafor@acme.example",
+          "slack": "@sam",
+          "slackId": "U01ABC123"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design team"
+        },
+        {
+          "id": "platform",
+          "name": "Platform team",
+          "holders": {
+            "engineering-manager": [
+              "sam-okafor"
+            ]
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_given_role",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_given_contact",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_given_role",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "contact_given_team",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_capitals",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_name",
+        "audience": "onboardee",
+        "type": "contact"
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "contact_given_role",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_given_contact",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_given_role",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "contact_given_team",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_capitals",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_given_name",
+        "audience": "onboardee",
+        "type": "contact"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "contact_given_role": "design-lead",
+        "role_given_contact": "sam-okafor",
+        "team_given_role": "engineering-manager",
+        "contact_given_team": "platform",
+        "contact_given_capitals": "Sam-Okafor",
+        "contact_given_name": "Sam Okafor"
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "it-help",
+            "name": "IT help desk",
+            "email": "help@acme.example",
+            "slack": "#it-help"
+          },
+          {
+            "id": "sam-okafor",
+            "name": "Sam Okafor",
+            "email": "sam.okafor@acme.example",
+            "slack": "@sam",
+            "slackId": "U01ABC123"
+          }
+        ],
+        "roles": [
+          {
+            "id": "design-lead",
+            "name": "Design lead"
+          },
+          {
+            "id": "engineering-manager",
+            "name": "Engineering manager",
+            "holders": [
+              "sam-okafor"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "design",
+            "name": "Design team"
+          },
+          {
+            "id": "platform",
+            "name": "Platform team",
+            "holders": {
+              "engineering-manager": [
+                "sam-okafor"
+              ]
+            }
+          }
+        ]
+      },
+      "variables": [
+        {
+          "name": "contact_given_role",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "role_given_contact",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "team_given_role",
+          "audience": "onboardee",
+          "type": "team"
+        },
+        {
+          "name": "contact_given_team",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_given_capitals",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_given_name",
+          "audience": "onboardee",
+          "type": "contact"
+        }
+      ]
+    },
+    "report": {
+      "answersToReview": [
+        "plan.contact_given_capitals",
+        "plan.contact_given_name",
+        "plan.contact_given_role",
+        "plan.contact_given_team",
+        "plan.role_given_contact",
+        "plan.team_given_role"
+      ]
+    }
+  }
+}

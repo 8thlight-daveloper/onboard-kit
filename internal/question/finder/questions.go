@@ -10,23 +10,23 @@ func findQuestions(plan model.Plan) []model.Question {
 	candidates := listCandidates(plan, sections)
 	active := findActive(plan, candidates)
 	ordered := orderActive(active)
-	return buildQuestions(plan.Answers, ordered)
+	return buildQuestions(plan, ordered)
 }
 
-func buildQuestions(answers model.Answers, ordered []candidate) []model.Question {
+func buildQuestions(plan model.Plan, ordered []candidate) []model.Question {
 	questions := make([]model.Question, len(ordered))
 	for index, asked := range ordered {
-		questions[index] = newQuestion(answers, asked)
+		questions[index] = newQuestion(plan, asked)
 	}
 	for index, asked := range ordered {
-		questions[index].Suggestions = suggest(answers, asked, questions, index)
+		questions[index].Suggestions = suggest(plan.Answers, asked, questions, index)
 	}
 	return questions
 }
 
-func newQuestion(answers model.Answers, asked candidate) model.Question {
+func newQuestion(plan model.Plan, asked candidate) model.Question {
 	variable := asked.variable
-	answer, _ := storedAnswer(answers, asked.scope, variable.Name)
+	answer, _ := storedAnswer(plan.Answers, asked.scope, variable.Name)
 	question := model.Question{
 		ID:              asked.id(),
 		Scope:           asked.scope,
@@ -34,7 +34,8 @@ func newQuestion(answers model.Answers, asked candidate) model.Question {
 		Description:     variable.Description,
 		Example:         variable.Example,
 		Type:            typeOf(variable),
-		Options:         variable.Options,
+		Options:         optionsOf(variable),
+		Choices:         choicesOf(plan.Directory, variable),
 		Required:        variable.Required,
 		Multiple:        variable.Multiple,
 		Audience:        audienceOf(variable),
@@ -50,4 +51,18 @@ func typeOf(variable model.Variable) model.VariableType {
 		return model.DefaultVariableType
 	}
 	return variable.Type
+}
+
+func optionsOf(variable model.Variable) []string {
+	if isDirectoryType(variable.Type) {
+		return nil
+	}
+	return variable.Options
+}
+
+func choicesOf(directory model.Directory, variable model.Variable) []model.Choice {
+	if !isDirectoryType(variable.Type) {
+		return nil
+	}
+	return directoryChoices(directory, variable.Type)
 }

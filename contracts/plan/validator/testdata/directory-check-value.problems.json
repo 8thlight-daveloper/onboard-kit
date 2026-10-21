@@ -1,0 +1,7 @@
+{"problems": [
+  {"code": "directory.contact-unreachable", "severity": "warning", "detail": {"contact": "ghost-contact"}},
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "contact", "id": "sam-okafor"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "missing-role", "team": "platform", "holder": "nobody"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "vacant-role"}},
+  {"code": "directory.team-role-unknown", "severity": "error", "detail": {"team": "platform", "role": "missing-role"}}
+]}

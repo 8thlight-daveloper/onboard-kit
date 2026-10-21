@@ -2,7 +2,9 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `question/finder`. Issue: [#68](https://github.com/8thlight-daveloper/onboard-kit/issues/68).
 
-The question finder reads a plan and says what it asks. It returns every active question with the answer stored for it, its declared default, its group, and its suggestions. It also returns the blockers, which are the required questions that have no answer. Both take an audience, the person who answers: the onboarder, the onboardee, or both. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0070](../../../docs/decisions/0070-sub-sections.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), the [domain model](../../../docs/reference/domain-model.md), and the [section template schema](../../../docs/reference/section-template-schema/README.md).
+The question finder reads a plan and says what it asks. It returns every active question with the answer stored for it, its declared default, its group, and its suggestions. It also returns the blockers, which are the required questions that have no answer. Both take an audience, the person who answers: the onboarder, the onboardee, or both. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0070](../../../docs/decisions/0070-sub-sections.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0080](../../../docs/decisions/0080-directory.md), the [domain model](../../../docs/reference/domain-model.md), and the [section template schema](../../../docs/reference/section-template-schema/README.md).
+
+A question of type `contact`, `role`, or `team` picks from the plan's directory. The finder lists the directory's entries as the question's choices, and it reads an answer that names an id the directory does not hold as no answer.
 
 A plan holds every template as a section and every variable of the plan and its sections. The finder works out the active questions from the plan whenever it is asked. It finds the active sections with the section selector and evaluates `askIf` with the condition evaluator.
 
@@ -10,8 +12,8 @@ A plan holds every template as a section and every variable of the plan and its 
 
 `Questions(plan, audience) -> list of Question` and `Blockers(plan, audience) -> list of Blocker`.
 
-- `plan` is a Plan, as stored. The finder reads `plan.Variables`, `plan.Answers`, and `plan.Sections`. It reads no other field.
-- `Question` and `Blocker` are the model types. A Question has `ID`, `Scope`, `Name`, `Description`, `Example`, `Type`, `Options`, `Required`, `Multiple`, `Audience`, `Answer`, `DeclaredDefault`, `Group`, and `Suggestions`.
+- `plan` is a Plan, as stored. The finder reads `plan.Variables`, `plan.Answers`, `plan.Sections`, and `plan.Directory`. It reads no other field.
+- `Question` and `Blocker` are the model types. A Question has `ID`, `Scope`, `Name`, `Description`, `Example`, `Type`, `Options`, `Choices`, `Required`, `Multiple`, `Audience`, `Answer`, `DeclaredDefault`, `Group`, and `Suggestions`.
 - Both results are empty when the plan has no active question. There is no error and no problem list. The finder evaluates the plan as written, and the validators report plans that cannot do their job.
 - `audience` is a `model.Audience`: `onboarder`, `onboardee`, or the empty value, which means both. An empty audience lists every active question in one list. A named audience lists the active questions that variables of that audience declare. A driver that wants the questions and the blockers calls both, with the same audience.
 - Both functions take the plan and the audience and nothing else.
@@ -31,7 +33,7 @@ A section the selector leaves out has no candidate. It is out because its `inclu
 
 **Which candidates are active.** A candidate with no `askIf` is active. Otherwise the finder asks the condition evaluator, `Holds(askIf, scope, answers, switches)`, with the candidate's scope as the scope and the answers described next. The candidate is active when the condition holds. An active question keeps its stored answer and is returned. A candidate whose condition does not hold is not returned and does not block. It keeps its stored answer in the plan.
 
-The answers passed to the evaluator hold only the stored answers of the questions found active before this one, whoever answers them. The answer of any other question counts as unanswered: a question whose condition fails, a question of a section that is out, an answer stored for a name that no candidate declares, the question itself, and a question not decided yet. This is the rule in [conditions](../../../docs/reference/section-template-schema/conditions.md): a settled answer is one for a question that is active. A declared default is not in the answers, so it never counts.
+The answers passed to the evaluator hold only the stored answers of the questions found active before this one, whoever answers them. For a directory question the answer passed is the answer when it is found, with the items that are not in the directory removed from a list, and no answer when it is not found. The answer of any other question counts as unanswered: a question whose condition fails, a question of a section that is out, an answer stored for a name that no candidate declares, the question itself, and a question not decided yet. This is the rule in [conditions](../../../docs/reference/section-template-schema/conditions.md): a settled answer is one for a question that is active. A declared default is not in the answers, so it never counts.
 
 **Audience.** A question is active by its own rules, whoever answers it, as [0055](../../../docs/decisions/0055-variable-audience.md) says. So an onboarder question can depend on an onboardee answer and the other way round, and the finder decides activity and order the same way for every audience. The audience then only chooses what is returned. The questions for an empty audience are the active questions as the rules above give them. The questions for a named audience are those of the empty audience whose variable has that audience, in the order they have there. Each question keeps the group, the suggestions, and the answer it has in the full list. A condition never reads the audience.
 
@@ -51,10 +53,21 @@ So a question that does not name a later question stays where it is in candidate
 **What a question holds.**
 
 - `ID`, `Scope`, and `Name` as above.
-- `Description`, `Example`, `Options`, `Required`, and `Multiple` are the variable's own. `Example` is one illustration of a good answer, and it is empty when the variable has none. Each question keeps the `Example` of its own variable, so two questions in one group can hold different examples. It is never an answer, never a default, and never a suggestion. It plays no part in the group key, activity, the order, the suggestions, or the blockers. A variable with `options` and a type other than `choice` keeps its options.
+- `Description`, `Example`, `Options`, `Required`, and `Multiple` are the variable's own. `Example` is one illustration of a good answer, and it is empty when the variable has none. Each question keeps the `Example` of its own variable, so two questions in one group can hold different examples. It is never an answer, never a default, and never a suggestion. It plays no part in the group key, activity, the order, the suggestions, or the blockers. A variable with `options` and a type other than `choice`, `contact`, `role`, or `team` keeps its options.
 - `Type` is the variable's type, or `string` when it has none. `Audience` is the variable's audience, or `onboarder` when it has none, so it is never empty.
 - `Answer` is the answer stored for the question, exactly as stored: a settled value, a Deferred value, empty text, an empty list, or a value of no kind when nothing is stored. It is never filled from the default.
 - `DeclaredDefault` is the variable's `default`, exactly as declared, and a value of no kind when it has none. It is not an answer. A question with a default and no answer has no answer and blocks when it is required, as [0045](../../../docs/decisions/0045-defaults-are-suggestions.md) says.
+
+**Directory questions.** A question whose type is `contact`, `role`, or `team` picks from the plan's directory, as [0080](../../../docs/decisions/0080-directory.md) says.
+
+- `Choices` holds the entries of the directory list for the type: `contacts` for a contact, `roles` for a role, `teams` for a team. There is one choice for each entry, in the order of the directory. Its `Value` is the entry's id and its `Label` is the entry's name. A plan with no directory, or an empty list for the type, gives no choices.
+- `Options` is empty, whatever the variable declares. A variable of any other type has no choices, including `choice` and `person`.
+- The choices are the same for every question of a type, whatever its scope, audience, or answer.
+- An id is in the directory when an entry of the list for the question's type has exactly that id. Ids are compared as written, so case and spaces count. A contact id is not a role id, and a role id is not a team id.
+- An answer is a Text id, or a List of ids when the question is `multiple`. The answer is **found** when its id is in the directory. A List is found when at least one of its items is in the directory. A Deferred answer is found. Everything else is not found: an id that is not in the directory, empty text, an empty list, a list with no id in the directory, and nothing stored.
+- A question whose answer is not found counts as unanswered, as [0080](../../../docs/decisions/0080-directory.md) says. It blocks when it is required. A condition reads it as unanswered.
+- `Answer` is still the stored answer as it is. The finder keeps an answer that names an unknown id, so an interface can show it, and it does not remove the unknown items of a list.
+- A directory question is active by the same rules as any other question, and the audience, the order, the groups, and the blockers of the other types hold for it.
 
 **Groups.** `Group` is a text key. Two returned questions have the same key exactly when they have the same name, the same type, the same options, and the same `multiple`. Options are compared as a set, so their order and repeats do not matter. The description, the pattern, `required`, the default, and the scope play no part, so a plan variable and a section variable with the same name and type share a group. The key is not empty. Its text is not specified, and only equal or different matters. The finder only reports the group. It never merges anything.
 
@@ -68,11 +81,12 @@ A candidate is offered only when it fits the question:
 - It is settled. A deferred answer, empty text, and a list with no non-empty item are never offered. Deferred has its own entry in an interface, and it is not a suggestion.
 - A `boolean` offers a Flag. A `command`, or any question with `multiple` true, offers a List. Every other type offers Text.
 - A `choice` offers only Text that is one of its options.
+- A `contact`, a `role`, or a `team` offers only an answer made of ids that are in the directory for its type: Text for one id, and a List for a `multiple` question in which every item is in the directory. A default or a given answer that names an id outside the directory, or that mixes known and unknown ids, is not offered. A contact id given as the answer of a role question of the same name is not offered to it.
 - A `string` with a `pattern` offers only Text the pattern matches. The pattern uses RE2 syntax and matches anywhere in the text, so a pattern that must match the whole text starts with `^` and ends with `$`.
 
 Two values are equal when they have the same kind and the same content. A list equals a list with the same items in the same order. Among the defaults, a value that equals an earlier one is dropped, and the same holds among the given answers. A value that is both a default and a given answer is listed twice, once with source `default` and once with source `given`. The suggestions of two questions in one group can differ, because the type is the same and the pattern and the options need not be.
 
-**Blockers.** A blocker is an active question that is required and has no answer. The blockers for a named audience are those of its questions, so a required onboardee question does not block the onboarder, and the other way round. The blockers for an empty audience are those of both, in the order of the full list. A required question is satisfied by a settled or a deferred answer, as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) says. These do not satisfy it: nothing stored, empty text, an empty list, and a list of only empty text. A false Flag is settled. A default is not an answer. The blockers are listed in the order of the questions, and each holds the question's id. A question that is not active never blocks, whether its section is out, its switch is off, or its condition fails. An answer already stored for a question of either audience counts, whoever put it there.
+**Blockers.** A blocker is an active question that is required and has no answer. The blockers for a named audience are those of its questions, so a required onboardee question does not block the onboarder, and the other way round. The blockers for an empty audience are those of both, in the order of the full list. A required question is satisfied by a settled or a deferred answer, as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) says. These do not satisfy it: nothing stored, empty text, an empty list, and a list of only empty text. For a directory question an answer that is not found does not satisfy it, as the rules above say. A false Flag is settled. A default is not an answer. The blockers are listed in the order of the questions, and each holds the question's id. A question that is not active never blocks, whether its section is out, its switch is off, or its condition fails. An answer already stored for a question of either audience counts, whoever put it there.
 
 ## Properties
 
@@ -81,14 +95,14 @@ These hold for every plan the contract tests use.
 - **Pure.** The plan is the same after the calls as before.
 - **No memory.** The same plan gives the same result on a shared finder, whatever calls came before, forward or in reverse order, and however often it is repeated.
 - **Same plan, same result.** For every audience, rotating or reversing `plan.Sections` does not change the questions, their suggestions, or the blockers.
-- **Blockers agree with the questions.** For every audience, the blockers are the returned questions that are required and neither settled nor deferred, in the same order.
+- **Blockers agree with the questions.** For every audience, the blockers are the returned questions that are required and have no answer, in the same order. An answer is none when it is neither settled nor deferred, and, for a directory question, when it is not found in the directory.
 - **A named audience is a filter.** The questions of a named audience are the questions of the empty audience that have that audience, unchanged and in the same order. Their blockers are the blockers of the empty audience for those questions.
 - **New lists.** Changing, reordering, or replacing an item of a result does not change the plan or a later result. The lists inside a Question, such as its options and its suggestions, may share their data with the plan.
 - **Empty plan.** A plan with nothing in it gives no question and no blocker, for every audience.
 
 ## Side effects and plan access
 
-None. It reads the plan's variables, the answers, and the content of the sections it needs: `id`, `includeIf`, `parent`, `timing`, `after`, `Enabled`, and `variables`. It returns no plan. This matches the row for `question/finder` in [components](../../../docs/architecture/components.md).
+None. It reads the plan's variables, the answers, the directory, and the content of the sections it needs: `id`, `includeIf`, `parent`, `timing`, `after`, `Enabled`, and `variables`. It returns no plan. This matches the row for `question/finder` in [components](../../../docs/architecture/components.md).
 
 ## Not covered
 
@@ -103,6 +117,10 @@ None. It reads the plan's variables, the answers, and the content of the section
 - Whitespace only text as an answer or a default.
 - Whether a choice or a boolean answer is valid. That is the plan validator's check.
 - The interface's own entries, such as `deferred`. A suggestion is never `deferred`.
+- Duplicate ids in the directory, a holder or a team override that names no contact or role, and an id that is not a lowercase slug. The plan validator reports them. The finder lists every entry as written and does not read holders.
+- Whether a directory answer has the right shape: a List for a question that is not `multiple`, Text for one that is, a List for a `team`, or `multiple` on a `team`. The finder treats Text as one id and a List as its items.
+- Whether a section's `includeIf` that names a directory question reads an unknown id as unanswered. The section selector decides, and the finder passes the plan as stored.
+- A directory entry with an empty name. Its choice has an empty label.
 
 ## Decisions to know
 
@@ -133,6 +151,14 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 22. **A sub-section's `includeIf` sees the stored answer of a parent's question that is not asked, and an `askIf` does not.** A parent question hidden by its own `askIf` that has a stored answer can still open its sub-section, because the selector reads the answers as stored. A question of that sub-section whose `askIf` names the hidden question reads it as unanswered, because the finder counts only the answers of active questions (decision 01). Raised by 0070, "A sub-section's `includeIf` may name questions of its ancestors", which does not say whether a hidden ancestor question counts, against "a settled answer is one for an active question" in conditions.md. Case: `subsection-gate-hidden-parent-answer`. `hard`
 23. **The Switches value of a sub-section is its own switch.** A switched-off parent makes its sub-sections inactive but does not turn their values false in the Switches the finder passes, so a section clause still tests the section's own switch. Raised by 0070, "Switches cascade", which says what a switched-off parent does to activity and not to a section clause. Case: `subsection-switch-clause`. `cheap`
 24. **Plans with a missing parent or a cycle give the questions of the sections that stay active.** The finder returns what the selector returns and has no error for them. Raised by 0070, "no cycle is possible", which holds only for a plan that passed the validator. Case: `subsection-bad-parent`. `cheap`
+
+25. **A `multiple` directory question is answered when at least one of its ids is in the directory.** A list of one known and one unknown id satisfies a required question, and a list with no known id blocks. The other choice was that every id must be known. The answer keeps both ids, and the interface can show the unknown one. 0080 says an answer that names an unknown id counts as unanswered and does not say what a list that mixes known and unknown ids is. Cases: `directory-multiple`, `directory-ask-if`. `hard`
+26. **A condition reads an unknown id as unanswered, and a list as only its known ids.** `isSettled: false` holds for it, and `is` and `isNot` do not, so a follow-up that depends on a contact does not start from an id that is gone. The other choice was that a condition reads the stored answer. 0080 says it counts as unanswered "everywhere" in the sentence about the finder blocker and the resolver, and does not name conditions. It follows decision 01, that a condition reads only what is settled. Cases: `directory-ask-if`, `directory-audience`. `hard`
+27. **`Answer` keeps the stored id, and the question blocks or not on its own.** The finder does not blank an unknown id or drop it from a list, so the interface can show what is stored and mark it. The other choice was an empty answer, which would hide the id. The model says `Answer` is "the stored answer, if any". Cases: `directory-unknown-answers`, `directory-multiple`. `hard`
+28. **A default or a given answer is offered only when every id in it is in the directory for the question's type.** A list that mixes known and unknown ids is not offered, so the offer is wholly valid, where an answer needs only one known id (decision 25). A contact id stored under the name of a role question is not offered to it. The other choice was to offer the known items of a list. It follows 0045, "a choice offers only valid values", and 0080 does not say. Cases: `directory-suggestions`, `directory-unknown-answers`. `hard`
+29. **A directory question has choices and no options, and nothing else has choices.** A variable of type `contact`, `role`, or `team` that declares `options` has them dropped, since the directory is the list. A `choice`, a `person`, and a string with options keep their options and have no choices. 0080 says "the walkthrough offers the directory's entries" and the `team` question's "options are the directory's teams", and the model has a separate `Choices` field. Case: `directory-choices`. `cheap`
+30. **Ids are compared as written, and each type has its own list.** `Sam-Okafor` and ` sam-okafor` are not `sam-okafor`, and a role id is no answer to a contact question. 0080 gives ids as permanent and does not say how they are compared. Cases: `directory-unknown-answers`, `directory-contacts-only`. `cheap`
+31. **An optional directory question with an unknown id does not block, and empty text and a deferred answer behave as before.** Raised by "so a required question blocks until it is filled" in 0080. Case: `directory-unknown-answers`. `cheap`
 
 ## Wrong implementations tried
 
@@ -208,3 +234,24 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The Switches value of a sub-section made false by its parent | `subsection-switch-clause` |
 | Blockers of a sub-section that is out, or of one below a switched-off section | `subsection-gate-closed`, `subsection-parent-off`, `subsection-bad-parent` |
 | Blockers of a sub-section that is in left out | `subsection-gate-open`, `subsection-grandchild-open` |
+| Choices sorted by name or id, or the directory order not kept | `directory-choices`, `directory-suggestions` |
+| The label is the id, or the value is the name | `directory-choices` |
+| Contacts offered for a role or a team, or one list for all three types | `directory-choices`, `directory-contacts-only` |
+| Choices for every question, or for a `person`, a `choice`, or a string with options | `directory-choices`, `directory-unknown-answers` |
+| Choices left out for onboardee questions, or built only for onboarder questions | `directory-audience` |
+| Ids copied into `Options`, or the declared options of a directory question kept | `directory-choices` |
+| Choices missing when the directory has no entry of that type, or from a plan with no directory | `directory-contacts-only`, `directory-empty` |
+| An unknown id satisfies a required question | `directory-unknown-answers`, `directory-empty`, `directory-contacts-only` |
+| An id of another list satisfies the question: a contact id for a role, a role id for a team | `directory-unknown-answers`, `directory-multiple` |
+| Ids compared ignoring case, or after trimming | `directory-unknown-answers` |
+| An answer is blanked or trimmed of its unknown ids in `Answer` | `directory-unknown-answers`, `directory-multiple`, `directory-ask-if` |
+| A list needs every id to be known, or only its first id, or any non-empty item | `directory-multiple` |
+| An optional directory question blocks, or a deferred one blocks | `directory-unknown-answers`, `directory-multiple` |
+| No check at all when the directory is empty | `directory-empty`, `directory-contacts-only` |
+| A condition reads the stored unknown id, so `is` holds for it or `isSettled` is true | `directory-ask-if`, `directory-audience` |
+| A condition ignores every directory answer, so a known id counts as unanswered | `directory-ask-if`, `directory-audience` |
+| An unknown id is offered as a default or a given answer | `directory-suggestions`, `directory-unknown-answers` |
+| A list that mixes known and unknown ids is offered | `directory-suggestions`, `directory-multiple` |
+| A suggestion checked against the ids of every list and not of the question's type | `directory-suggestions` |
+| The group key split by scope for a directory question | `directory-suggestions` |
+| The choices of one question changed by editing the plan's directory in place | the plan-unchanged test, the named-audience test |

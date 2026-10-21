@@ -31,10 +31,16 @@ type expectedQuestion struct {
 	Type            string               `json:"type"`
 	Audience        string               `json:"audience"`
 	Required        bool                 `json:"required"`
+	Choices         []expectedChoice     `json:"choices"`
 	Answer          json.RawMessage      `json:"answer"`
 	DeclaredDefault json.RawMessage      `json:"declaredDefault"`
 	Group           string               `json:"group"`
 	Suggestions     []expectedSuggestion `json:"suggestions"`
+}
+
+type expectedChoice struct {
+	Value string `json:"value"`
+	Label string `json:"label"`
 }
 
 type expectedSuggestion struct {
@@ -205,6 +211,45 @@ func questionsByID(questions []model.Question) map[string]model.Question {
 	return byID
 }
 
+func isDirectoryType(variableType model.VariableType) bool {
+	return variableType == model.VariableTypeContact || variableType == model.VariableTypeRole || variableType == model.VariableTypeTeam
+}
+
+func directoryIDs(directory model.Directory, variableType model.VariableType) []string {
+	ids := []string{}
+	switch variableType {
+	case model.VariableTypeContact:
+		for _, contact := range directory.Contacts {
+			ids = append(ids, contact.ID)
+		}
+	case model.VariableTypeRole:
+		for _, role := range directory.Roles {
+			ids = append(ids, role.ID)
+		}
+	case model.VariableTypeTeam:
+		for _, team := range directory.Teams {
+			ids = append(ids, team.ID)
+		}
+	}
+	return ids
+}
+
+func isAnswered(directory model.Directory, question model.Question) bool {
+	if !isDirectoryType(question.Type) {
+		return isSettledOrDeferred(question.Answer)
+	}
+	known := directoryIDs(directory, question.Type)
+	switch question.Answer.Kind {
+	case model.ValueKindDeferred:
+		return true
+	case model.ValueKindText:
+		return question.Answer.Text != "" && slices.Contains(known, question.Answer.Text)
+	case model.ValueKindList:
+		return slices.ContainsFunc(question.Answer.List, func(item string) bool { return item != "" && slices.Contains(known, item) })
+	}
+	return false
+}
+
 func isSettledOrDeferred(value model.Value) bool {
 	switch value.Kind {
 	case model.ValueKindText:
@@ -221,6 +266,7 @@ func TestEveryCaseCitesItsSourceAndNamesItsQuestions(t *testing.T) {
 	names := map[string]bool{}
 	someCaseAsksQuestions, someCaseBlocks := false, false
 	someCaseAsksOnboardee, someCaseBlocksOnboardee, someCaseBlocksOnboarder := false, false, false
+	someCaseOffersChoices, someCaseBlocksOnDirectory := false, false
 	for _, c := range loadCases(t) {
 		if strings.TrimSpace(c.Source) == "" {
 			t.Errorf("case %s has no source", c.Name)
@@ -248,6 +294,10 @@ func TestEveryCaseCitesItsSourceAndNamesItsQuestions(t *testing.T) {
 				t.Errorf("case %s expects %s for the audience %q, but its variable has %q", c.Name, question.ID, wantAudience, audienceOfVariable(plan, question.ID))
 			}
 			someCaseAsksOnboardee = someCaseAsksOnboardee || wantAudience == model.AudienceOnboardee
+			someCaseOffersChoices = someCaseOffersChoices || len(question.Choices) > 0
+			if len(question.Choices) > 0 && !isDirectoryType(model.VariableType(question.Type)) {
+				t.Errorf("case %s expects choices for %s, which is not a directory question", c.Name, question.ID)
+			}
 		}
 		for _, id := range expected.Blockers {
 			if !asked[id] {
@@ -255,10 +305,15 @@ func TestEveryCaseCitesItsSourceAndNamesItsQuestions(t *testing.T) {
 			}
 			someCaseBlocksOnboardee = someCaseBlocksOnboardee || audienceOfVariable(plan, id) == model.AudienceOnboardee
 			someCaseBlocksOnboarder = someCaseBlocksOnboarder || audienceOfVariable(plan, id) == model.AudienceOnboarder
+			variable, _ := findVariable(plan, id)
+			someCaseBlocksOnDirectory = someCaseBlocksOnDirectory || isDirectoryType(variable.Type)
 		}
 	}
 	if !someCaseAsksQuestions || !someCaseBlocks {
 		t.Errorf("no case expects a question, or no case expects a blocker")
+	}
+	if !someCaseOffersChoices || !someCaseBlocksOnDirectory {
+		t.Errorf("no case expects choices, or no case expects a blocker on a directory question")
 	}
 	if !someCaseAsksOnboardee || !someCaseBlocksOnboardee || !someCaseBlocksOnboarder {
 		t.Errorf("no case expects an onboardee question, an onboardee blocker, and an onboarder blocker")
@@ -329,6 +384,10 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 				if want.Audience == "" {
 					wantAudience = model.DefaultAudience
 				}
+				wantOptions := variable.Options
+				if isDirectoryType(wantType) {
+					wantOptions = nil
+				}
 				switch {
 				case question.Scope != scope || question.Name != name:
 					t.Errorf("%s: scope and name are %q and %q", want.ID, question.Scope, question.Name)
@@ -344,11 +403,39 @@ func TestEachQuestionCarriesItsVariable(t *testing.T) {
 					t.Errorf("%s: required is %v, want %v", want.ID, question.Required, want.Required)
 				case question.Multiple != variable.Multiple:
 					t.Errorf("%s: multiple is %v, want %v", want.ID, question.Multiple, variable.Multiple)
-				case !slices.Equal(question.Options, variable.Options):
-					t.Errorf("%s: options are %v, want %v", want.ID, question.Options, variable.Options)
+				case !slices.Equal(question.Options, wantOptions):
+					t.Errorf("%s: options are %v, want %v", want.ID, question.Options, wantOptions)
 				}
 			}
 		})
+	}
+}
+
+func TestOffersTheDirectoryEntriesAsChoicesInDirectoryOrder(t *testing.T) {
+	for _, c := range loadCases(t) {
+		for _, audience := range audiences {
+			t.Run(c.Name+"/"+audienceLabel(audience), func(t *testing.T) {
+				t.Parallel()
+				plan := loadPlan(t, c)
+				got := questionsByID(newFinder().Questions(plan, audience))
+				for _, want := range loadExpected(t, c).Questions {
+					question, found := got[want.ID]
+					if !found {
+						if audience == bothAudiences || audienceOfVariable(plan, want.ID) == audience {
+							t.Errorf("%s: not returned", want.ID)
+						}
+						continue
+					}
+					wantChoices := []model.Choice{}
+					for _, choice := range want.Choices {
+						wantChoices = append(wantChoices, model.Choice{Value: choice.Value, Label: choice.Label})
+					}
+					if len(question.Choices) != len(wantChoices) || (len(wantChoices) > 0 && !reflect.DeepEqual(question.Choices, wantChoices)) {
+						t.Errorf("%s: choices are %v, want %v", want.ID, question.Choices, wantChoices)
+					}
+				}
+			})
+		}
 	}
 }
 
@@ -462,7 +549,7 @@ func TestBlockersAgreeWithTheQuestions(t *testing.T) {
 		for _, audience := range audiences {
 			want := []string{}
 			for _, question := range finder.Questions(plan, audience) {
-				if question.Required && !isSettledOrDeferred(question.Answer) {
+				if question.Required && !isAnswered(plan.Directory, question) {
 					want = append(want, question.ID)
 				}
 			}

@@ -1,0 +1,506 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "contact_text",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_list_single",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_text_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_flag",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_text",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_list_single",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_text_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_flag",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_text",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_list",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_flag",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_text_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      },
+      {
+        "name": "contact_deferred",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_blank",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_deferred",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ]
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk",
+          "email": "help@acme.example",
+          "slack": "#it-help"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor",
+          "email": "sam.okafor@acme.example",
+          "slack": "@sam",
+          "slackId": "U01ABC123"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design team"
+        },
+        {
+          "id": "platform",
+          "name": "Platform team",
+          "holders": {
+            "engineering-manager": [
+              "sam-okafor"
+            ]
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_text",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_list_single",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_text_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_flag",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_text",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_list_single",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_text_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_flag",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_text",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_list",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_flag",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_text_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      },
+      {
+        "name": "contact_deferred",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_blank",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_deferred",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "variables": [
+      {
+        "name": "contact_text",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_list_single",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_text_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_flag",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_text",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_list_single",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_text_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_flag",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_text",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_list",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_flag",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_text_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      },
+      {
+        "name": "contact_deferred",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_blank",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_deferred",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "contact_text": "sam-okafor",
+        "contact_list_single": [
+          "sam-okafor"
+        ],
+        "contact_text_multiple": "sam-okafor",
+        "contact_flag": true,
+        "role_text": "design-lead",
+        "role_list_single": [
+          "design-lead"
+        ],
+        "role_text_multiple": "design-lead",
+        "role_flag": true,
+        "team_text": "design",
+        "team_list": [
+          "design"
+        ],
+        "team_flag": true,
+        "team_text_though_multiple": "design",
+        "contact_deferred": {
+          "deferred": true
+        },
+        "role_blank": "",
+        "team_deferred": {
+          "deferred": true
+        }
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "it-help",
+            "name": "IT help desk",
+            "email": "help@acme.example",
+            "slack": "#it-help"
+          },
+          {
+            "id": "sam-okafor",
+            "name": "Sam Okafor",
+            "email": "sam.okafor@acme.example",
+            "slack": "@sam",
+            "slackId": "U01ABC123"
+          }
+        ],
+        "roles": [
+          {
+            "id": "design-lead",
+            "name": "Design lead"
+          },
+          {
+            "id": "engineering-manager",
+            "name": "Engineering manager",
+            "holders": [
+              "sam-okafor"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "design",
+            "name": "Design team"
+          },
+          {
+            "id": "platform",
+            "name": "Platform team",
+            "holders": {
+              "engineering-manager": [
+                "sam-okafor"
+              ]
+            }
+          }
+        ]
+      },
+      "variables": [
+        {
+          "name": "contact_text",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_list_single",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_text_multiple",
+          "audience": "onboardee",
+          "type": "contact",
+          "multiple": true
+        },
+        {
+          "name": "contact_flag",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "role_text",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "role_list_single",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "role_text_multiple",
+          "audience": "onboardee",
+          "type": "role",
+          "multiple": true
+        },
+        {
+          "name": "role_flag",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "team_text",
+          "audience": "onboardee",
+          "type": "team"
+        },
+        {
+          "name": "team_list",
+          "audience": "onboardee",
+          "type": "team"
+        },
+        {
+          "name": "team_flag",
+          "audience": "onboardee",
+          "type": "team"
+        },
+        {
+          "name": "team_text_though_multiple",
+          "audience": "onboardee",
+          "type": "team",
+          "multiple": true
+        },
+        {
+          "name": "contact_deferred",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "role_blank",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "team_deferred",
+          "audience": "onboardee",
+          "type": "team"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "contact_text": "sam-okafor",
+          "role_text": "design-lead",
+          "team_text": "design",
+          "team_text_though_multiple": "design",
+          "contact_deferred": {
+            "deferred": true
+          },
+          "role_blank": "",
+          "team_deferred": {
+            "deferred": true
+          }
+        }
+      }
+    },
+    "report": {
+      "answersKept": [
+        "plan.contact_deferred",
+        "plan.contact_text",
+        "plan.role_blank",
+        "plan.role_text",
+        "plan.team_deferred",
+        "plan.team_text",
+        "plan.team_text_though_multiple"
+      ],
+      "answersToReview": [
+        "plan.contact_flag",
+        "plan.contact_list_single",
+        "plan.contact_text_multiple",
+        "plan.role_flag",
+        "plan.role_list_single",
+        "plan.role_text_multiple",
+        "plan.team_flag",
+        "plan.team_list"
+      ]
+    }
+  }
+}

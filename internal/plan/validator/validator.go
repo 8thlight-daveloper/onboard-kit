@@ -14,7 +14,7 @@ func New() Validator {
 
 func (Validator) Validate(plan model.Plan) []model.Problem {
 	active := activeQuestions(plan)
-	problems := []model.Problem{}
+	problems := planWideProblems(plan)
 	for _, stored := range storedAnswers(plan) {
 		problems = append(problems, validateStored(plan, active, stored)...)
 	}
@@ -30,7 +30,7 @@ func (Validator) CheckValue(plan model.Plan, question string, value model.Value)
 	if !activeQuestions(plan)[target.id] {
 		return []model.Problem{inactiveQuestion(plan, target)}
 	}
-	return checkActive(plan, target, variable, value)
+	return checkActive(plan, target, variable, value, model.SeverityError)
 }
 
 func validateStored(plan model.Plan, active map[string]bool, stored storedAnswer) []model.Problem {
@@ -40,14 +40,14 @@ func validateStored(plan model.Plan, active map[string]bool, stored storedAnswer
 		unknown := unknownQuestion(plan, stored.question, model.SeverityWarning)
 		return append([]model.Problem{unknown}, secretProblems(plan, stored.question, stored.value)...)
 	case active[stored.question.id]:
-		return checkActive(plan, stored.question, variable, stored.value)
+		return checkActive(plan, stored.question, variable, stored.value, model.SeverityWarning)
 	default:
 		return secretProblems(plan, stored.question, stored.value)
 	}
 }
 
-func checkActive(plan model.Plan, target question, variable model.Variable, value model.Value) []model.Problem {
-	problems := annotate(plan, target, answerProblems(variable, value))
+func checkActive(plan model.Plan, target question, variable model.Variable, value model.Value, unknownIDSeverity model.Severity) []model.Problem {
+	problems := annotate(plan, target, answerProblems(plan.Directory, unknownIDSeverity, variable, value))
 	return append(problems, secretProblems(plan, target, value)...)
 }
 

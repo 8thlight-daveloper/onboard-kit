@@ -1,0 +1,6 @@
+{"problems": [
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "contact", "id": "dup3"}},
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "contact", "id": "sam-okafor"}},
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "role", "id": "engineering-manager"}},
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "team", "id": "platform"}}
+]}

@@ -1,0 +1,11 @@
+{"questions": [
+  {"id": "plan.team", "type": "team", "required": true, "answer": "platform", "choices": [{"value": "platform", "label": "Platform team"}, {"value": "design", "label": "Design team"}], "suggestions": [{"value": "platform", "source": "given"}]},
+  {"id": "plan.owner", "type": "contact", "required": true, "answer": "lee-park", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}], "suggestions": [{"value": "lee-park", "source": "given"}]},
+  {"id": "plan.reviewers", "type": "contact", "answer": ["sam-okafor", "it-help"], "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}], "suggestions": [{"value": ["sam-okafor", "it-help"], "source": "given"}]},
+  {"id": "plan.escalation", "type": "role", "choices": [{"value": "engineering-manager", "label": "Engineering manager"}, {"value": "it-contact", "label": "IT contact"}, {"value": "design-lead", "label": "Design lead"}]},
+  {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
+  {"id": "plan.note", "answer": "a", "suggestions": [{"value": "a", "source": "given"}]},
+  {"id": "plan.legacy", "type": "person", "answer": "Pat Doe", "suggestions": [{"value": "Pat Doe", "source": "given"}]},
+  {"id": "access.manager", "type": "role", "required": true, "answer": "engineering-manager", "choices": [{"value": "engineering-manager", "label": "Engineering manager"}, {"value": "it-contact", "label": "IT contact"}, {"value": "design-lead", "label": "Design lead"}], "suggestions": [{"value": "engineering-manager", "source": "given"}]},
+  {"id": "access.mentor", "type": "contact", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]}
+], "blockers": []}

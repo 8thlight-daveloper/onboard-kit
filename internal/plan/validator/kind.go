@@ -17,6 +17,8 @@ func wrongKind(variable model.Variable, value model.Value) (model.Problem, bool)
 
 func expectedKind(variable model.Variable) model.ValueKind {
 	switch {
+	case typeOf(variable) == model.VariableTypeTeam:
+		return model.ValueKindText
 	case typeOf(variable) == model.VariableTypeCommand || variable.Multiple:
 		return model.ValueKindList
 	case typeOf(variable) == model.VariableTypeBoolean:
