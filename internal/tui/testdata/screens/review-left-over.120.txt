@@ -1,0 +1,30 @@
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s  Contacts c                               2 of 12 answered
+  ✓✓  ·····  ····  ·
+
+  > Items                                        │   Document, 0%
+  Answered 2 of 12.                              │ # ACME Corp onboarding: Platform team
+  3 answers are left over from questions that    │
+  are no longer asked. Press h to review them.   │ Generated 2026-10-15 from template set `example`. A person must
+                                                 │ review this before it is sent.
+  Blockers (9)                                   │
+  > required: Which role owns onboarding here?   │ ## Gaps to fill
+    It appears as the owner of the Access        │
+    section.                                     │ | Gap | Who fills it | By when |
+    required: Where do people request source     │ | --- | --- | --- |
+    control access?                              │ | Where do people request source control access? | Sam Okafor, @sam
+    required: What is the clone URL of the main  │ | Before day one |
+    repository?                                  │ | What is the clone URL of the main repository? | Sam Okafor, @sam
+    required: Which role grants CI dashboard     │ | Before day one |
+    access?                                      │ | Which role grants source control access? | Sam Okafor, @sam |
+    required: Which role grants work tracker     │ Before day one |
+    access?                                      │ | Which role grants CI dashboard access? | Sam Okafor, @sam |
+    required: What is the clone URL of the main  │ Before day one |
+    repository?                                  │ | Which role grants work tracker access? | Sam Okafor, @sam |
+    required: Which command installs the         │ Before day one |
+    dependencies?                                │ | What is the clone URL of the main repository? | newcomer | Week
+    required: Which command runs the test suite? │ one |
+    required: Who can anyone ask for help with   │ | Which command installs the dependencies? | newcomer | Week one |
+    anything?                                    │ | Which command runs the test suite? | newcomer | Week one |
+                                                 │ | Who can anyone ask for help with anything? | | Anytime |
+
+  enter open  tab items/document  pgup/pgdn scroll  h left over  q quit  ? help

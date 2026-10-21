@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s  Contacts c
+  ✓✓  ·····  ····  ·
+
+  > Items
+  Answered 2 of 12.
+  3 answers are left over from questions that are no longer asked. Press h to
+  review them.
+
+  Blockers (9)
+  > required: Which role owns onboarding here? It appears as the owner of the
+    Access section.
+    required: Where do people request source control access?
+    required: What is the clone URL of the main repository?
+    required: Which role grants CI dashboard access?
+    required: Which role grants work tracker access?
+    required: What is the clone URL of the main repository?
+    required: Which command installs the dependencies?
+    required: Which command runs the test suite?
+    required: Who can anyone ask for help with anything?
+
+  Problems (3)
+    warning: plan.old_token: No variable declares this question.
+
+  enter open  tab items/document  pgup/pgdn scroll  h left over  ? help

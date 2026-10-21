@@ -3,6 +3,9 @@ package tui
 import tea "github.com/charmbracelet/bubbletea"
 
 func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+	if app.review.pruning.asking {
+		return app.updatePruning(key), nil
+	}
 	scrolling := app.review.focusDocument
 	switch key.String() {
 	case "up", "k":
@@ -29,6 +32,8 @@ func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openSections(), nil
 	case "c":
 		return app.openContacts(), nil
+	case "h":
+		return app.askToPrune(), nil
 	case "q":
 		return app.quit()
 	case "?":

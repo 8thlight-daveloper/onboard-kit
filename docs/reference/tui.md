@@ -40,7 +40,7 @@ Decided. There are five screens and a help page. Every screen has a header line 
 | -- | -- | -- |
 | Walk | One question: its position, its section and group, what it asks, whether it is required, its current answer, the way to answer, suggestions, problems | The start, enter on an overview or review row, finishing a question |
 | Overview | Every question in order with a mark for its state. The cursor jumps to any of them | `o` |
-| Review | Blockers, deferred questions, validator problems, and the document preview | `r`, finishing the last question, or the start when the plan holds answers |
+| Review | Blockers, deferred questions, validator problems, the document preview, and a quiet line when answers are left over, see Left over answers | `r`, finishing the last question, or the start when the plan holds answers |
 | Sections | Section switches. The onboarder only | `s` |
 | Contacts | The organization's contacts, roles, and teams, to add, change, and remove. The onboarder only | `c` |
 | Help | Every key of the current screen | `?`, or `f1` while typing |
@@ -132,6 +132,8 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 | Overview | [overview](../../internal/tui/testdata/screens/overview.80.txt) | [overview](../../internal/tui/testdata/screens/overview.120.txt) | [overview](../../internal/tui/testdata/screens/overview.140.txt) |
 | Overview with sub-sections | [subsections](../../internal/tui/testdata/screens/subsections.80.txt) | [subsections](../../internal/tui/testdata/screens/subsections.120.txt) | [subsections](../../internal/tui/testdata/screens/subsections.140.txt) |
 | Review | [review](../../internal/tui/testdata/screens/review.80.txt) | [review](../../internal/tui/testdata/screens/review.120.txt) | [review](../../internal/tui/testdata/screens/review.140.txt) |
+| Review, with answers left over | [review-left-over](../../internal/tui/testdata/screens/review-left-over.80.txt) | [review-left-over](../../internal/tui/testdata/screens/review-left-over.120.txt) | [review-left-over](../../internal/tui/testdata/screens/review-left-over.140.txt) |
+| Review, removing left over answers | [review-prune](../../internal/tui/testdata/screens/review-prune.80.txt) | [review-prune](../../internal/tui/testdata/screens/review-prune.120.txt) | [review-prune](../../internal/tui/testdata/screens/review-prune.140.txt) |
 | Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.120.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
 | The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
 | The onboardee, nothing to pick | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.80.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.120.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.140.txt) |
@@ -210,6 +212,43 @@ Decided, and built. A `contact`, `role`, or `team` question carries the director
 - **Names everywhere.** The Overview, its preview, and the suggestion lines in the notes show the name, and several names are separated by `;` in the order stored. The Review lists blockers, deferred questions, and validator problems, which are about questions and not about answers, so it needs no name. The document preview shows the names the assembler resolves.
 - **Stale answers.** An answer that names an id the directory no longer holds counts as not answered, as the finder counts it. The Walk, Overview, rail, and counts show it as not answered, and no id is shown. A faint "was sam-okafor" was rejected: the validator already warns about the stale id on the Review, and the person's task is to pick again. A list with at least one known id counts as answered and shows only the known names. Confirming the picks drops the unknown ids.
 
+## Left over answers
+
+Decided, and built. For both audiences, under [0075](../decisions/0075-refreshing-a-personal-plan.md): a refresh never removes an answer whose question the plan no longer asks. The owner removes it, and the editor's `PruneHiddenAnswers` does the work. The onboarder removes them from the organization's plan they walk, and a newcomer from their own plan.
+
+A left over answer is data, not something the person gave on purpose today. The words say so: "left over from questions that are no longer asked". They never say "your answers", because the person did not choose to keep them and may never have seen them.
+
+```text
+  > Items
+  Answered 2 of 12.
+  3 answers are left over from questions that are no longer asked. Press h to
+  review them.
+```
+
+- **Where.** On the Review, under "Answered 2 of 12", in faint text. It is there only when something is left over, so a plan with none shows no new line. The Review is where a person checks the plan before handing it on, and the line sits next to the validator's problems about the same answers. Each of those problems, "No variable declares this question", stays as it is.
+- **Key.** `h`. It is free on the Review and is not typing, so it cannot collide with text. `x` was rejected because it clears an answer on the Walk, and `p` because it is back. `r` is the Review itself. The hint line shows `h left over` while something is left over. With nothing left over, `h` says "No answers are left over from removed questions." and changes nothing.
+- **Confirmation.** `h` runs `PruneHiddenAnswers` on the current plan as a dry run and shows the result in place of the Review panes, as the Contacts removal does. Each answer shows its id, such as `plan.old_tool`, because the plan no longer declares the question and has no text to show for it, and its value in a short form below. A list of more than five is cut with "and 5 more". `y` applies it. Every other key keeps the answers and says "nothing removed". `?` opens help over it. Enter does not confirm, for the reason given under Removing an entry.
+
+```text
+  Remove 3 left over answers?
+
+  These belong to questions the plan no longer asks, so they are not part of
+  the current plan. They stay in the file until you remove them.
+
+    - plan.old_token
+        value: "sk-l…" (30 characters)
+    - plan.old_tool
+        value: "Trello"
+    - retired.flag
+        value: yes
+
+  Nothing is removed until you press y.
+```
+
+- **Values.** A value can be long or secret-like, so a value of up to 20 characters shows whole, in quotes, and a longer one shows its first 4 characters and its length: `"sk-l…" (30 characters)`. A list shows its first 4 characters and the number of items when it is long. A flag shows yes or no, and a deferred answer shows "deferred". Rejected: showing every value whole, because a stale token would then be on screen, and hiding every value, because a person cannot judge "plan.old_tool" without a hint of what it held. A short secret can still show whole. The tool cannot tell a short secret from a short word.
+- **After `y`.** The plan the dry run returned replaces the plan, and it is saved at once, as every answer is. The status says "removed 3 left over answers. saved", or "could not save" with the reason, and the plan stays changed in memory as for an answer. The Review is rebuilt, so the line and the validator's problems go, and the cursor and focus stay where they were.
+- **Rejected.** A prune on start with no question asked, because the decision says the owner prunes. A Contacts-style tab for them, because there are few and a person visits once. Listing each answer with its own key to remove it, because the reason for removing one is the same as for the rest.
+
 ## Keys
 
 Decided. The key hint line shows the most useful keys for the screen and the width, and `?` shows all of them.
@@ -230,6 +269,8 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | `?` | Help | f1 | Help | Help | Help |
 | `q` | Quit |  | Quit | Quit | Back |
 
+On the Review, `h` shows the answers left over from questions the plan no longer asks, see Left over answers. It is free on every other screen and is not a screen key, so the tab strip does not list it. The key hint line shows `h left over` only while something is left over.
+
 `s`, `c`, the Sections screen, and the Contacts screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
 
 ## Accessibility
@@ -247,7 +288,7 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Screen tabs
 

@@ -19,6 +19,7 @@ type Backend interface {
 	RemoveContact(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
 	RemoveRole(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
 	RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
+	PruneHiddenAnswers(plan model.Plan) (model.Plan, model.Cleared, []model.Problem)
 	Validate(plan model.Plan) []model.Problem
 	Assemble(plan model.Plan) (string, []model.Problem)
 }
@@ -80,4 +81,8 @@ func (parts components) RemoveRole(plan model.Plan, id string) (model.Plan, mode
 
 func (parts components) RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
 	return parts.editor.RemoveTeam(plan, id)
+}
+
+func (parts components) PruneHiddenAnswers(plan model.Plan) (model.Plan, model.Cleared, []model.Problem) {
+	return parts.editor.PruneHiddenAnswers(plan)
 }

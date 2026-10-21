@@ -62,6 +62,10 @@ func (backend *fakeBackend) RemoveTeam(plan model.Plan, id string) (model.Plan, 
 	return editor.New().RemoveTeam(plan, id)
 }
 
+func (backend *fakeBackend) PruneHiddenAnswers(plan model.Plan) (model.Plan, model.Cleared, []model.Problem) {
+	return editor.New().PruneHiddenAnswers(plan)
+}
+
 func (backend *fakeBackend) Validate(model.Plan) []model.Problem { return nil }
 
 func (backend *fakeBackend) Assemble(model.Plan) (string, []model.Problem) {

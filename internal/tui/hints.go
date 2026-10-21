@@ -95,7 +95,13 @@ func (app App) overviewHints(tabKeysShown bool) []hint {
 }
 
 func (app App) reviewHints(tabKeysShown bool) []hint {
+	if app.review.pruning.asking {
+		return []hint{{"y", "remove"}, {"esc", "keep"}, {"?", "help"}}
+	}
 	hints := []hint{{"enter", "open"}, {"tab", "items/document"}, {"pgup/pgdn", "scroll"}}
+	if app.review.leftOver > 0 {
+		hints = append(hints, hint{"h", "left over"})
+	}
 	hints = append(hints, app.jumpHints(tabKeysShown)...)
 	return append(hints, hint{"q", "quit"}, hint{"?", "help"})
 }
