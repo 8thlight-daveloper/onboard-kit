@@ -1,0 +1,17 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: sam
+      contact: &a yes
+  roles:
+    - id: r
+      contact: 0x1F
+  teams:
+    - id: t
+      Contact: sam
+      contacts: sam
+      team-contact: sam
+      x-contact: sam
+      contactId: sam
+      contact: sam
+      name: T

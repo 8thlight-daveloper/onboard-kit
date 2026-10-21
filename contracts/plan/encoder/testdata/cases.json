@@ -293,6 +293,43 @@
     "source": "Hand-written. Contract rules: Scalars, Multi-line strings. Every directory field, holder, and role id key is written by the string rules. Plain: `sam-okafor`, `U01ABC123`, an email that starts with a letter, `$HOME`, `<noreply@acme.example>`, `/it`. Quoted: `@sam`, `#it-help`, `@42`, an id, a slack id, an email, or a holder that starts with a digit such as `42`, `007`, `1password@acme.example`, and `2026-10-15`, the reserved words `true`, `on`, `null`, `y`, `n`, `no`, `yes`, and `deferred`, `Sam: Okafor`, `Sam #1`, `ends:`, a leading space, and `Ünal@acme.example`. As keys of a team's `holders`: `2fa`, `@it`, `deferred`, `n`, and `on` are quoted, and `Z`, `engineering-manager`, and `it help` are plain. A name with a newline is a literal block, `|-` with no final newline and `|` with one. An empty email is omitted."
   },
   {
+    "name": "directory-team-contact",
+    "input": "directory-team-contact.plan.json",
+    "output": "directory-team-contact.yaml",
+    "source": "Hand-written. ADR 0080: a team may name a `contact`, the id of a directory contact. Contract rules: Keys, the Team row is `id`, `name`, `contact`, `holders`. `contact` is written after `name` and before `holders`, whether or not the team has a name or holders, and omitted when empty. `platform-team` is plain. A team's contact is not a holder, so it never appears under `holders`, and a vacant entry beside it is still written `[]`. A contact that names no contact of the directory, repeats, and case are written as held."
+  },
+  {
+    "name": "directory-team-contact-quoting",
+    "input": "directory-team-contact-quoting.plan.json",
+    "output": "directory-team-contact-quoting.yaml",
+    "source": "Hand-written. Contract rules: Scalars, Multi-line strings. A team's `contact` is written by the string rules, like a holder. Plain: `platform-team`, `$HOME`, `/oncall`, `<noreply@acme.example>`, and an email that starts with a letter. Quoted: an id that starts with a digit such as `42` and `2fa-team`, the reserved words `true`, `on`, `null`, `y`, `no`, and `deferred`, `@oncall`, `#platform`, a date, an email that starts with a digit, `Sam: Okafor`, a leading space, `ends:`, `a #b`, and `Ünal@acme.example`. Text with a newline is a literal block, `|-` with no final newline and `|` with one."
+  },
+  {
+    "name": "directory-team-contact-only",
+    "input": "directory-team-contact-only.plan.json",
+    "output": "directory-team-contact-only.yaml",
+    "source": "Hand-written. Contract rules: Keys, and Problems, `encode.empty-item`. A team that holds only a `contact` writes that one key, so it is not an empty item, and the directory that holds it is written. The empty `contacts` and `roles` are omitted."
+  },
+  {
+    "name": "directory-team-contact-empty-items",
+    "input": "directory-team-contact-empty-items.plan.json",
+    "problems": [
+      {
+        "code": "encode.empty-item",
+        "path": "directory.teams[1]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.teams[2]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.teams[3]"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, `encode.empty-item`. A team with a `contact` is not empty. A team with an empty `contact` and nothing else, and one with an empty `contact` and an empty `holders` map, write no keys. A team with an empty `contact` and a vacant entry writes the entry, so it is not empty."
+  },
+  {
     "name": "directory-section-unknown",
     "input": "directory-section-unknown.plan.json",
     "output": "directory-section-unknown.yaml",

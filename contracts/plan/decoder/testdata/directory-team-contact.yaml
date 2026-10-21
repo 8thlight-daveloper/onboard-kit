@@ -1,0 +1,61 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: platform-team
+      name: Platform channel
+      slack: "#platform"
+    - id: sam
+  teams:
+    - holders:
+        manager: [sam]
+      contact: platform-team
+      name: Platform team
+      id: platform
+    - id: design
+      name: Design team
+      contact: design-oncall
+    - id: only-contact
+      contact: platform-team
+    - id: no-contact
+      name: No contact
+      holders:
+        manager: []
+    - id: empty-holders
+      contact: sam
+      holders: {}
+    - id: null-contact
+      name: Nil
+      contact: null
+    - id: empty-contact
+      contact: ""
+    - id: bare-contact
+      contact:
+    - id: quoted-number
+      contact: "42"
+    - id: quoted-flag
+      contact: 'true'
+    - id: quoted-yes
+      contact: "yes"
+    - id: quoted-null
+      contact: 'null'
+    - id: at-sign
+      contact: "@oncall"
+    - id: deferred-word
+      contact: deferred
+    - id: plain-date
+      contact: 2026-10-15
+    - id: padded
+      contact: "  Padded  "
+    - id: Upper
+      contact: Platform-Team
+    - id: block
+      contact: |-
+        line one
+        line two
+    - id: shared-contact
+      contact: platform-team
+    - id: both-holder-and-contact
+      contact: sam
+      holders:
+        manager: [sam]
+        lead: []

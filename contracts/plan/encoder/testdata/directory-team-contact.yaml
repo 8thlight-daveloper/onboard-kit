@@ -1,0 +1,42 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: platform-team
+      name: Platform channel
+      slack: "#platform"
+    - id: sam
+  roles:
+    - id: manager
+      holders:
+        - sam
+  teams:
+    - id: platform
+      name: Platform team
+      contact: platform-team
+      holders:
+        lead: []
+        manager:
+          - sam
+    - id: design
+      contact: design-oncall
+    - id: named
+      name: Named
+    - id: no-contact
+      holders:
+        manager: []
+    - id: vacant-only
+      contact: sam
+      holders:
+        manager: []
+    - id: shared
+      contact: platform-team
+    - id: dup
+      contact: platform-team
+    - id: Upper
+      contact: Platform-Team
+variables:
+  - name: team
+    type: team
+sections:
+  - id: s
+    title: S

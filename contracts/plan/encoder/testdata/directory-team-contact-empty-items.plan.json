@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "teams": [{"contact": "x"}, {"contact": ""}, {}, {"contact": "", "holders": {}}, {"contact": "", "holders": {"r": []}}]
+  }
+}

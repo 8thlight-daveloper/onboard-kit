@@ -34,7 +34,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Directory | `contacts`, `roles`, `teams` |
 | Contact | `id`, `name`, `email`, `slack`, `slackId` |
 | Role | `id`, `name`, `holders` |
-| Team | `id`, `name`, `holders` |
+| Team | `id`, `name`, `contact`, `holders` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
@@ -51,6 +51,7 @@ A plan's `directory` is written right after `origin` and before `variables`. See
 
 - It holds `contacts`, `roles`, and `teams`, each a list. Each item is a map written with the keys of its table, in that order. List items stay in the order the plan holds them, repeats and shared ids included. The encoder never sorts a list or removes an item.
 - A key with a zero value is omitted, as everywhere. So an empty `contacts`, `roles`, or `teams`, an empty `holders` list on a role, and an empty or absent `holders` map on a team are omitted, and a contact that holds only an `id` writes only that key. The `directory` itself is omitted when it holds nothing, so a plan with no contacts, roles, or teams writes no `directory` key, whether its lists are nil or empty.
+- A team's `contact` is the id of a directory contact that reaches the team. It is written after `name` and before `holders`, as a plain text field by the string rules, and omitted when empty. So `platform-team` is plain, and `42`, `2fa-team`, `@oncall`, `true`, and `deferred` are quoted. It is written as held, with no check that it names a contact. It is not a holder, so it is never written under `holders`, and a team that holds only a `contact` writes that one key.
 - A team's `holders` is a map of role id to a list of contact ids. Its role ids are written in ascending byte order, like every other map, whatever the map's own order. Each role id is written as a key by the string rules, and each holder is written as a string by the string rules. An entry whose list is empty is the exception to the empty-list rule: it is written `role: []`, because a map entry is always written and the entry says the role has no holder for that team. Dropping it would give the role back to its organization-wide holders.
 - Every directory field, holder, and role id is a plain text field written by the string rules in Scalars. That includes the values a person is likely to type: `sam-okafor`, `U01ABC123`, an email that starts with a letter, and `$HOME` are plain, and `@sam`, `#it-help`, an id or a holder that starts with a digit such as `42` or `2fa-team`, an email that starts with a digit, `true`, `on`, `null`, `y`, `n`, `no`, `yes`, and `deferred`, are quoted. A name with a newline follows Multi-line strings. A directory string is never changed on the way out.
 
@@ -114,7 +115,7 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | Code | When |
 | -- | -- |
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
-| `encode.empty-item` | A variable, section, step, contact, role, team, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem. A team whose `holders` map is empty writes no keys. A team whose map has an entry with no holder does write a key, so it is not empty. The path is such as `directory.contacts[1]`. |
+| `encode.empty-item` | A variable, section, step, contact, role, team, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem. A team whose `holders` map is empty and whose `contact` is empty writes no keys. A team with a `contact`, or whose map has an entry with no holder, does write a key, so it is not empty. The path is such as `directory.contacts[1]`. |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
 | `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id`, `origin`, and `directory` collide, and the same keys on a section do not, so a section's own `directory` unknown field is written as any other, and a step's `directory` stays its working directory. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
@@ -145,6 +146,7 @@ These are the choices the directory change made where the docs were silent.
 3. **cheap.** A contact, role, or team that would write no keys is `encode.empty-item` at its path, such as `directory.teams[0]`. The task did not name it. Writing `- {}` or dropping the item are the other choices, and dropping shifts the list.
 4. **cheap.** An unknown field named `directory` on the plan collides, and on a section it does not, as for `origin`.
 5. **cheap.** A team's `holders` with only an empty map is omitted, so a team with only that is an empty item. A team with only an entry that has no holder writes that entry.
+6. **cheap.** A team's `contact` is written after `name` and before `holders`, the order the shared decisions gave, and an empty one is omitted like any empty text. A team with only a `contact` is not an empty item.
 
 ## Wrong implementations tried
 
@@ -213,7 +215,15 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A contact, role, team, or holder list sorted, reversed, deduplicated, or stripped of an item that shares an id | `directory-order` |
 | A list sorted in place, so the plan the caller holds changes | `directory-order`, the inputs-unchanged test |
 | A team's role ids in map order, or sorted without regard to case | `directory-order`, `directory-quoting`, `directory-vacant-role`, the determinism test |
-| A team's entry with no holder dropped, written as `null`, or written as an empty block | `directory-vacant-role`, the vacant role test |
+| A team's entry with no holder dropped, written as `null`, or written as an empty block | `directory-vacant-role`, `directory-team-contact`, the vacant role test |
+| A team's `contact` never written, or written under `holders` or as a holder | `directory-team-contact`, `directory-team-contact-only` |
+| A team's `contact` written before `name`, or after `holders`, or first among the team's keys | `directory-team-contact` |
+| A team's empty `contact` written as `contact: ""` or `contact: null` | `directory-team-contact` |
+| A team's `contact` written plain when it needs quotes, such as `42`, `2fa-team`, `true`, `on`, `deferred`, `@oncall`, a date, or text with `: ` or ` #`, or in quotes when it is plain, such as `platform-team`, `$HOME`, or an email that starts with a letter | `directory-team-contact-quoting`, `directory-team-contact` |
+| A team's `contact` with a newline written in quotes, or as the wrong block | `directory-team-contact-quoting` |
+| A team's `contact` lowercased, trimmed, deduplicated across teams, or dropped when it names no contact | `directory-team-contact` |
+| A team that holds only a `contact` taken for an empty item, or dropped, or its directory omitted | `directory-team-contact-only`, `directory-team-contact-empty-items` |
+| A team with an empty `contact` and nothing else not reported as an empty item, or a team with an empty `contact` and a vacant entry reported | `directory-team-contact-empty-items` |
 | An empty `holders`, an empty `contacts`, or a directory that holds nothing written, as `holders: {}`, `contacts: []`, or `directory: {}` | `directory-omit-zero`, `directory-only-teams`, `directory-blank`, the empty directory test |
 | A zero field written, such as `slack: ""` | `directory-order`, `directory-omit-zero` |
 | A field dropped, such as `slackId` | `directory-order`, `directory-shared`, `directory-quoting` |

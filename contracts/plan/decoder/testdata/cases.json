@@ -2110,6 +2110,110 @@
     "source": "Hand-written YAML for the shared plan in contracts/plan/testdata/directory.plan.json. ADR 0080 (Directory) and the domain model (Directory, Contact, Role, Team): the 0080 example, with a quoted `@sam` and `#it-help`, a plain `U01ABC123`, a contact with only an id and a name, a role with no holders, and a team with no holders. Contract rule: Directory."
   },
   {
+    "name": "directory-team-contact",
+    "input": "directory-team-contact.yaml",
+    "output": "directory-team-contact.plan.json",
+    "source": "Hand-written. ADR 0080: a team may name a `contact`, the id of a directory contact, and the contact never stands in for a role holder. Contract rule: Directory, a team's `contact`. It is text read like `title`, in any key order, kept as written: quoted `\"42\"`, `'true'`, `\"yes\"`, `'null'`, and `\"\\u0040oncall\"` are text, a plain `deferred`, a plain date, and a literal block are text, spaces and case are kept. An absent, null, empty, or bare `contact` is the empty string. An id that names no contact passes through, and a contact never appears in a team's `holders`, with or without them, so a team with only a contact, with an empty `holders` map, or with a vacant entry is read as written."
+  },
+  {
+    "name": "directory-team-contact-problems",
+    "input": "directory-team-contact-problems.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[0].contact"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[1].contact"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[2].contact"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[3].contact"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.teams[4].contact"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.teams[5].contact"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[6].contact"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.teams[7].contact"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "directory.teams[8].contact"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.teams[9].contact"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[10].holders"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[10].contact"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[11].contact"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[11].name"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. A team's `contact` is a string read like a `title`: a list, a map, and a plain `true` are `format.wrong-type` at `directory.teams[n].contact`, a plain `yes`, `Off`, `no`, `42`, `0x1F`, and `1e3` are spelling problems, an anchor is `format.alias`, and a repeated key is `format.duplicate-key`. Problems come in file order: team 10 has `holders` before `contact`, and team 11 has `contact` before `holders` and `name`."
+  },
+  {
+    "name": "directory-team-contact-elsewhere",
+    "input": "directory-team-contact-elsewhere.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].contact"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.roles[0].contact"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].Contact"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].contacts"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].team-contact"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].x-contact"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].contactId"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Directory. `contact` is a key of a team only. In a contact or a role it is an unknown field, and the anchor and the `0x1F` in those values are not read. On a team the key is exact: `Contact`, `contacts`, `team-contact`, `x-contact`, and `contactId` are unknown, and the exact `contact: sam` beside them is no problem."
+  },
+  {
     "name": "directory-values",
     "input": "directory-values.yaml",
     "output": "directory-values.plan.json",

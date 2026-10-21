@@ -1,0 +1,32 @@
+schemaVersion: 1
+directory:
+  teams:
+    - id: a
+      contact: [x]
+    - id: b
+      contact: {k: v}
+    - id: c
+      contact: true
+    - id: d
+      contact: yes
+    - id: e
+      contact: 42
+    - id: f
+      contact: 0x1F
+    - id: g
+      contact: Off
+    - id: h
+      contact: &c sam
+    - id: i
+      contact: platform-team
+      contact: other
+    - id: j
+      contact: 1e3
+    - id: k
+      holders: sam
+      contact: no
+    - id: l
+      contact: yes
+      holders:
+        r: [a]
+      name: [x]
