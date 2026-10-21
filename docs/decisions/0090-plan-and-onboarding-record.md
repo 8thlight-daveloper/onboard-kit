@@ -39,6 +39,7 @@ The words in older documents change as follows.
 
 ```yaml
 schemaVersion: 1
+kind: record
 account: dnawara
 plan:
   id: 6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5
@@ -59,6 +60,7 @@ outcomes:
     differently: The IT desk wanted the request in their channel, not by email
 ```
 
+- `kind` says this is a record and not a plan.
 - `account` is the permanent key. It is in the path, and a fix is an explicit move, see 0085.
 - `plan` says which plan the record was last reconciled against: its `id`, the hash of that plan, and where the latest copy lives.
 - `answers` holds only the answers the newcomer gave, to onboardee questions. It never holds an onboarder answer, and the plan never needs the newcomer's.
@@ -92,13 +94,24 @@ To refresh, the tool fetches the latest plan from `planUrl` (or reads a path giv
 
 The plan refresher of 0075 is retired and rebuilt as this smaller component.
 
-### The invitation
+### The invitation is an archive
 
-The onboarder must be able to send a newcomer something that works before the newcomer has any access. The plan's `planUrl` may be behind that access, so an invitation carries the plan itself.
+The onboarder must be able to send a newcomer something that works before the newcomer has any access. The plan's `planUrl` may be behind that access, so the invitation carries the plan itself.
 
-- An `invite` command makes one file for an account: the plan with a seeded record, in the same joined form that the tool already reads and writes as a plan file.
-- On first run, `start` splits it. The plan goes to the plan copy, and a record is created at `resultsPath`.
+- An `invite` command makes one zip file for an account. It holds the plan as `plan.obk.yaml`, a record seeded with the account and the plan reference as `records/<account>/record.obk.yaml`, and optionally `first-steps.md`, the assembled document, for someone with nothing installed. Both files are in their own canonical shapes, so there is no joined form and nothing to split.
+- `onboard-kit start --invitation <file>` reads the archive directly. The newcomer extracts nothing by hand. The tool puts the plan in the plan copy and the record at `resultsPath`.
+- The archive is untrusted input. The tool reads only those fixed entries, never a path taken from inside the archive, and enforces a size limit.
+- A record that already exists at that path is never overwritten. The tool reconciles it against the plan from the archive instead.
 - The newcomer sees "Is this you?" for the account and confirms, as 0085 says.
+
+### The record's name and marker
+
+- A record is kept at `resultsPath`, which by default is `records/{account}/record.obk.yaml`. The folder per account leaves room for another record for the same person later, such as a transfer to another team, with no renaming. The path is a convention.
+- A record also carries `kind: record`, and a plan carries `kind: plan` or no `kind`. The decoder refuses a file of the wrong kind with a message that says which it is, so a command given the wrong file does not guess.
+
+### Getting a lost plan back
+
+A record names its plan in `plan.url`. When the plan lives in the same repository as the records, the url may be a path relative to the repository root. A newcomer on a new machine clones the repository and runs `start` inside it, and the tool finds the record by account and the plan by that path. Without repository access, the onboarder sends a fresh invitation. Getting access is what the bootstrap sections are for.
 
 ### Reports read records
 
@@ -115,12 +128,11 @@ A report reads records and the plan, and nothing else. It does not need each per
 
 - **The domain model changes.** A Record type holds the account, the plan reference, the answers, the outcomes, and unknown fields. This needs `slow-change`.
 - **Components**, each its own small increment: a record decoder and encoder, a joiner and a splitter, a reconciler that replaces the plan refresher, and the outcome recorder and section walker of 0085. The plan decoder and encoder lose `origin`, and a plan keeps its `id`, `planUrl`, and `resultsPath`.
-- **Drivers.** `start` reads the plan copy and the record, joins them, saves the record on every change, and creates the files on first run. A new `invite` command writes the invitation.
+- **Drivers.** `start` reads the plan copy and the record, joins them, saves the record on every change, and creates the files on first run, from the plan copy or an invitation. A new `invite` command writes the invitation archive, and `start` reads it with `--invitation`.
 - **The existing refresher** and its tests are retired. Nothing is released, so there is no migration.
 - **The decisions** 0060 and 0075 carry a note that this replaces them in part.
 
 ## Not decided
 
-- The record's file name and a marker that tells a record from a plan, such as a `kind` key or a file extension.
-- Whether the joined invitation file needs a marker so that `start` knows to split it.
-- How a record that points at a plan the person no longer has gets that plan back.
+- The size limit for an invitation, and whether `first-steps.md` is always included.
+- Whether a person with several records can pick which one `start` opens, and how.
