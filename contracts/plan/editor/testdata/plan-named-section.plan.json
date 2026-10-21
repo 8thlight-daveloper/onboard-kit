@@ -1,0 +1,25 @@
+{
+ "schemaVersion": 1,
+ "provenance": {
+  "templateSet": "example",
+  "generatedOn": "2026-10-15"
+ },
+ "sections": [
+  {
+   "id": "plan",
+   "title": "Plan",
+   "summary": "A section that a valid plan never holds.",
+   "variables": [
+    {
+     "name": "note",
+     "description": "note"
+    }
+   ]
+  },
+  {
+   "id": "main",
+   "title": "Main",
+   "summary": "An ordinary section."
+  }
+ ]
+}

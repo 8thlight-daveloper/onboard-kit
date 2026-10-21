@@ -1155,3 +1155,113 @@ func TestDirectoryOperationsOnAPlanWithNothing(t *testing.T) {
 		assertCleared(t, "remove "+removal.kind, cleared, nil)
 	}
 }
+
+func TestARefusalReturnsThePlanAsGivenWithNothingAbsentFilledIn(t *testing.T) {
+	t.Parallel()
+	refusals := 0
+	for _, c := range loadCases(t) {
+		if !isRefusal(c) {
+			continue
+		}
+		refusals++
+		before := loadPlanFile(t, c.Before)
+		if got := run(t, newEditor(), c, before); !reflect.DeepEqual(got.plan, before) {
+			t.Errorf("%s: the refused plan is not the plan given, an absent map or list may have become empty", c.Name)
+		}
+	}
+	if refusals == 0 {
+		t.Fatal("no case is a refusal")
+	}
+}
+
+func TestARefusalOnAPlanWithNothingReturnsThatPlanExactly(t *testing.T) {
+	t.Parallel()
+	editor := newEditor()
+	got, _ := editor.Submit(model.Plan{}, "plan.anything", model.Value{Kind: model.ValueKindText, Text: "x"})
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("submit gives %+v", got)
+	}
+	got, _ = editor.SetSectionEnabled(model.Plan{}, "anything", true)
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("switch gives %+v", got)
+	}
+	got, _ = editor.SetContact(model.Plan{}, model.Contact{})
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("set contact gives %+v", got)
+	}
+	got, _ = editor.SetRole(model.Plan{}, model.Role{})
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("set role gives %+v", got)
+	}
+	got, _ = editor.SetTeam(model.Plan{}, model.Team{})
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("set team gives %+v", got)
+	}
+	got, _, _ = editor.RemoveContact(model.Plan{}, "anything")
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("remove contact gives %+v", got)
+	}
+	got, _, _ = editor.RemoveRole(model.Plan{}, "anything")
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("remove role gives %+v", got)
+	}
+	got, _, _ = editor.RemoveTeam(model.Plan{}, "anything")
+	if !reflect.DeepEqual(got, model.Plan{}) {
+		t.Errorf("remove team gives %+v", got)
+	}
+}
+
+func entriesOtherThan[Entry any](entries []Entry, idOf func(Entry) string, id string) []Entry {
+	others := []Entry{}
+	for _, held := range entries {
+		if idOf(held) != id {
+			others = append(others, held)
+		}
+	}
+	return others
+}
+
+func directoryWithoutTheSetEntry(directory model.Directory, c fixtureCase, held entry) model.Directory {
+	switch c.Operation {
+	case operationSetContact:
+		directory.Contacts = entriesOtherThan(directory.Contacts, func(contact model.Contact) string { return contact.ID }, held.contact.ID)
+	case operationSetRole:
+		directory.Roles = entriesOtherThan(directory.Roles, func(role model.Role) string { return role.ID }, held.role.ID)
+	case operationSetTeam:
+		directory.Teams = entriesOtherThan(directory.Teams, func(team model.Team) string { return team.ID }, held.team.ID)
+	}
+	return directory
+}
+
+func TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument(t *testing.T) {
+	t.Parallel()
+	for _, c := range loadCases(t) {
+		if !isApplied(c) {
+			continue
+		}
+		before := loadPlanFile(t, c.Before)
+		held := loadEntry(t, c)
+		got := run(t, newEditor(), c, before).plan
+		switch {
+		case c.Operation == operationSubmit:
+			if !reflect.DeepEqual(got.Directory, before.Directory) || !reflect.DeepEqual(got.Sections, before.Sections) {
+				t.Errorf("%s: the directory or the sections differ from the argument", c.Name)
+			}
+		case c.Operation == operationSwitch:
+			if !reflect.DeepEqual(got.Directory, before.Directory) || !reflect.DeepEqual(got.Answers, before.Answers) {
+				t.Errorf("%s: the directory or the answers differ from the argument", c.Name)
+			}
+		case isSet(c):
+			if !reflect.DeepEqual(got.Answers, before.Answers) || !reflect.DeepEqual(got.Sections, before.Sections) {
+				t.Errorf("%s: the answers or the sections differ from the argument", c.Name)
+			}
+			if !reflect.DeepEqual(directoryWithoutTheSetEntry(got.Directory, c, held), directoryWithoutTheSetEntry(before.Directory, c, held)) {
+				t.Errorf("%s: an entry the set did not name differs from the argument", c.Name)
+			}
+		case isRemove(c):
+			if !reflect.DeepEqual(got.Sections, before.Sections) {
+				t.Errorf("%s: the sections differ from the argument", c.Name)
+			}
+		}
+	}
+}
