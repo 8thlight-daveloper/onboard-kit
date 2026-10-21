@@ -7,7 +7,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "  Engineering manager \t\n",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -34,7 +34,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "\n\nEngineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -61,7 +61,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "Engineering manager\r\n",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {

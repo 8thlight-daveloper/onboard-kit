@@ -1,1 +1,1 @@
-{"sections": {"command-values": {"build": ["make", "build"], "lint": ["make", "lint"], "as_text": "make test", "e2e_test": ["make", "e2e"], "v_1": ["make", "vet"], "people": ["Alex Rivera", "Sam Okafor"]}}}
+{"sections": {"command-values": {"build": ["make", "build"], "lint": ["make", "lint"], "as_text": "make test", "e2e_test": ["make", "e2e"], "v_1": ["make", "vet"], "people": "Alex Rivera"}}}

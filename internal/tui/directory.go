@@ -65,7 +65,7 @@ func describeAnswer(question model.Question, value model.Value) string {
 	case model.ValueKindText:
 		return strings.Join(knownLabels(question, []string{value.Text}), "")
 	case model.ValueKindList:
-		return strings.Join(knownLabels(question, value.List), personSeparator+" ")
+		return strings.Join(knownLabels(question, value.List), itemSeparator+" ")
 	}
 	return describeValue(value)
 }

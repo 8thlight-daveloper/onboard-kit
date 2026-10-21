@@ -11,10 +11,6 @@
         "pick_list": ["alpha"],
         "cmd_text": "make test",
         "cmd_flag": true,
-        "who_flag": true,
-        "who_list": ["Jane Doe, jane@acme.example, @jane"],
-        "crew_text": "Jane Doe, jane@acme.example, @jane",
-        "crew_flag": false,
         "many_text": "abc"
       }
     }
@@ -29,10 +25,6 @@
       {"name": "pick_list", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
       {"name": "cmd_text", "type": "command", "description": "Command"},
       {"name": "cmd_flag", "type": "command", "description": "Command"},
-      {"name": "who_flag", "type": "person", "description": "Person"},
-      {"name": "who_list", "type": "person", "description": "Person"},
-      {"name": "crew_text", "type": "person", "multiple": true, "description": "People"},
-      {"name": "crew_flag", "type": "person", "multiple": true, "description": "People"},
       {"name": "many_text", "multiple": true, "description": "String with several answers"}
     ]}
   ]

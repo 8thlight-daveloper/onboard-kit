@@ -1,0 +1,10 @@
+{
+  "id": "directory-string-unchanged",
+  "title": "String unchanged",
+  "summary": "A string is not looked up",
+  "body": "id=[$id] name=[$name]",
+  "variables": [
+    {"name": "id", "description": "A string that holds a contact id"},
+    {"name": "name", "type": "string", "description": "A string that holds a contact name"}
+  ]
+}

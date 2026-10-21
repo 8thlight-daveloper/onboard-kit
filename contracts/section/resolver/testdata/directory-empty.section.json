@@ -7,6 +7,6 @@
     {"name": "contact", "type": "contact", "description": "A contact"},
     {"name": "role", "type": "role", "description": "A role"},
     {"name": "team", "type": "team", "description": "A team"},
-    {"name": "one", "type": "person", "description": "A person, held as text"}
+    {"name": "one", "type": "string", "description": "Text that holds a contact id"}
   ]
 }

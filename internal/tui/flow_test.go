@@ -301,12 +301,12 @@ func TestWordsAreSplitAndJoinedWithQuotes(t *testing.T) {
 	}
 }
 
-func TestContactsAreSeparatedBySemicolons(t *testing.T) {
+func TestSeveralAnswersAreSeparatedBySemicolons(t *testing.T) {
 	t.Parallel()
-	question := model.Question{Type: model.VariableTypePerson, Multiple: true}
-	value := parseEntry(question, "Ann Lee, ann@x.test, @ann; Bo Ray, bo@x.test, @bo ;")
-	if len(value.List) != 2 || value.List[1] != "Bo Ray, bo@x.test, @bo" {
-		t.Fatalf("unexpected people %q", value.List)
+	question := model.Question{Type: model.VariableTypeString, Multiple: true}
+	value := parseEntry(question, "first item; second item ;")
+	if len(value.List) != 2 || value.List[1] != "second item" {
+		t.Fatalf("unexpected items %q", value.List)
 	}
 	if parseEntry(question, "   ").Kind != model.ValueKindNone {
 		t.Fatal("blank text means no answer")

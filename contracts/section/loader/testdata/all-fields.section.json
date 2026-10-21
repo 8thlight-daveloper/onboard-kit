@@ -15,7 +15,7 @@
     {"name": "target", "type": "choice", "description": "Build target", "example": "release", "options": ["debug", "release"], "default": "debug", "required": true, "audience": "onboarder"},
     {"name": "code", "description": "A code", "example": "ABC", "pattern": "^[A-Z]{3}$", "patternHint": "Three capitals", "audience": "onboardee"},
     {"name": "build_command", "type": "command", "description": "Build command", "default": ["make", "build"]},
-    {"name": "backup", "type": "person", "multiple": true, "description": "Backup",
+    {"name": "backup", "type": "contact", "multiple": true, "description": "Backup",
       "askIf": {"all": [
         {"question": "target", "answer": {"is": "release"}},
         {"question": "plan.discipline", "answer": {"isNot": "design"}},

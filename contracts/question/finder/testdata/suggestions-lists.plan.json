@@ -1,18 +1,23 @@
 {
   "schemaVersion": 1,
+  "directory": {"contacts": [
+    {"id": "ann", "name": "Ann"},
+    {"id": "bo", "name": "Bo"},
+    {"id": "cy", "name": "Cy"}
+  ]},
   "answers": {"sections": {
-    "a": {"setup_command": ["make", "setup"], "ci_grantor": "Ann, ann@example.test, @ann"},
-    "b": {"ci_grantor": ["Bo, bo@example.test, @bo", "Cy, cy@example.test, @cy"]},
+    "a": {"setup_command": ["make", "setup"], "ci_grantor": "ann"},
+    "b": {"ci_grantor": ["bo", "cy"]},
     "d": {"setup_command": "make setup"}
   }},
   "sections": [
     {"id": "a", "variables": [
       {"name": "setup_command", "type": "command", "default": ["make", "setup"], "description": "Setup command"},
-      {"name": "ci_grantor", "type": "person", "description": "One person"}
+      {"name": "ci_grantor", "type": "contact", "description": "One contact"}
     ]},
     {"id": "b", "variables": [
       {"name": "setup_command", "type": "command", "default": ["make", "setup"], "description": "Same list again"},
-      {"name": "ci_grantor", "type": "person", "multiple": true, "description": "Several people"}
+      {"name": "ci_grantor", "type": "contact", "multiple": true, "description": "Several contacts"}
     ]},
     {"id": "c", "variables": [{"name": "setup_command", "type": "command", "default": ["make", "build"], "description": "Another list"}]},
     {"id": "d", "variables": [{"name": "setup_command", "description": "Text, not a list"}]}

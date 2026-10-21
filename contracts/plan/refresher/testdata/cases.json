@@ -37,7 +37,7 @@
   {
     "name": "kind-no-longer-fits-needs-review",
     "file": "kind-no-longer-fits-needs-review.case.json",
-    "source": "Hand-written. Brief: a kept onboardee answer whose kind no longer fits the variable type is removed and reported for review. Contract rule: Valid answers. A boolean takes a flag. A command, or a variable with multiple, takes a list. Anything else takes text. A choice with multiple takes a list whose non-empty items are all options."
+    "source": "Hand-written. Brief: a kept onboardee answer whose kind no longer fits the variable type is removed and reported for review. Contract rule: Valid answers. A boolean takes a flag. A command, or a variable with multiple, takes a list. Anything else takes text, and a single contact does not take a list. A choice with multiple takes a list whose non-empty items are all options."
   },
   {
     "name": "answers-that-are-not-checked-stay",

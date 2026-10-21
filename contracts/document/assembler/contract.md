@@ -241,7 +241,7 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | No line break at the end, or two | The test of the end of the document |
 | The plan changed, or its sections sorted in place | The plan-unchanged test, the order test |
 | A cache between calls | The no-memory test |
-| The problems not returned, or their severity changed | `acme`, `gaps-deferred`, `gaps-unanswered`, `people-list` |
+| The problems not returned, or their severity changed | `acme`, `gaps-deferred`, `gaps-unanswered` |
 | A step with a command and no checks gets a check line | `acme` |
 | The assembler panics on a plan with no sections | `empty-plan`, the zero plan test |
 | A sub-section written with the heading of a root, or every sub-section at `###` whatever its depth | `sub-sections`, `depth-cap` |

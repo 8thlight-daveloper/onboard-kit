@@ -13,8 +13,6 @@
       {"name": "tracker", "description": "tracker", "required": true},
       {"name": "region", "description": "region"},
       {"name": "setup_command", "description": "setup command", "type": "command"},
-      {"name": "owner", "description": "owner", "type": "person"},
-      {"name": "contacts", "description": "contacts", "type": "person", "multiple": true},
       {"name": "note", "description": "note"},
       {"name": "follow_up", "description": "follow up", "askIf": {"all": [{"question": "note", "answer": {"isSettled": true}}]}},
       {"name": "account", "description": "account", "audience": "onboardee"}
@@ -30,7 +28,7 @@
   "answers": {
     "plan": {"team_state": "established", "nickname": "bob", "ready": false, "region": "emea"},
     "sections": {
-      "main": {"repo_url": "git@git.acme.example:team/service.git", "tracker": "IT service desk", "region": "apac", "setup_command": ["make", "setup"], "contacts": ["Ann Lee, ann.lee@acme.example, @ann", "Bo Ray, bo.ray@acme.example, @bo"], "note": "first", "follow_up": "second"},
+      "main": {"repo_url": "git@git.acme.example:team/service.git", "tracker": "IT service desk", "region": "apac", "setup_command": ["make", "setup"], "note": "first", "follow_up": "second"},
       "extra": {"extra_note": "kept"},
       "later": {"later_note": "kept too"}
     }

@@ -26,7 +26,6 @@
       {"name": "rm", "type": "role", "multiple": true, "description": "Roles"},
       {"name": "t", "type": "team", "description": "Team"},
       {"name": "tm", "type": "team", "multiple": true, "description": "Team"},
-      {"name": "who", "type": "person", "description": "A person, the old type"},
       {"name": "hidden", "type": "contact", "description": "Hidden by a condition",
         "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}}
     ]}

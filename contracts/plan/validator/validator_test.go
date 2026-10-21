@@ -52,8 +52,6 @@ var answerCodes = []string{
 	"answer.wrong-kind",
 	"answer.not-an-option",
 	"answer.pattern-mismatch",
-	"answer.thin-contact",
-	"answer.single-person",
 	"answer.unknown-question",
 	"answer.inactive-question",
 	"secret.token-prefix",

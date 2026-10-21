@@ -16,7 +16,7 @@
       "verification": "It works.",
       "body": "Body text.",
       "variables": [
-        {"name": "backup", "description": "Backup", "type": "person"}
+        {"name": "backup", "description": "Backup", "type": "contact"}
       ],
       "steps": [
         {"id": "st", "name": "Step"}

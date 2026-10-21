@@ -84,8 +84,6 @@ var codesEveryCaseSet = []string{
 	"answer.wrong-kind",
 	"answer.not-an-option",
 	"answer.pattern-mismatch",
-	"answer.thin-contact",
-	"answer.single-person",
 	"answer.unknown-question",
 	"answer.inactive-question",
 	"secret.token-prefix",
@@ -446,7 +444,7 @@ func TestEveryCaseCitesItsSourceAndTheCasesCoverEveryCode(t *testing.T) {
 			t.Errorf("no case expects the code %s", code)
 		}
 	}
-	for _, severity := range []string{"error", "warning"} {
+	for _, severity := range []string{"error"} {
 		if !severities[severity] {
 			t.Errorf("no case expects a problem of severity %s", severity)
 		}

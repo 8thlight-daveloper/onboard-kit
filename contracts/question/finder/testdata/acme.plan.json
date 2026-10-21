@@ -42,6 +42,12 @@
       "default": "markdown"
     }
   ],
+  "directory": {
+    "contacts": [
+      {"id": "alex-rivera", "name": "Alex Rivera", "email": "alex.rivera@acme.example", "slack": "@alex"},
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example", "slack": "@sam"}
+    ]
+  },
   "answers": {
     "plan": {
       "organization": "ACME Corp",
@@ -74,8 +80,8 @@
       },
       "stuck-general": {
         "general_contacts": [
-          "Alex Rivera, alex.rivera@acme.example, @alex",
-          "Sam Okafor, sam.okafor@acme.example, @sam"
+          "alex-rivera",
+          "sam-okafor"
         ]
       }
     }
@@ -332,7 +338,7 @@
       "variables": [
         {
           "name": "general_contacts",
-          "type": "person",
+          "type": "contact",
           "multiple": true,
           "description": "Who can help with anything",
           "required": true

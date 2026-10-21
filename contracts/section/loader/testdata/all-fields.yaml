@@ -43,7 +43,7 @@ variables:
     description: Build command
     default: [make, build]
   - name: backup
-    type: person
+    type: contact
     multiple: true
     description: Backup
     askIf:

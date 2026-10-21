@@ -8,7 +8,7 @@
     {"name": "as_text", "type": "command", "description": "A command held as text"},
     {"name": "e2e_test", "type": "command", "description": "A name whose second character is a digit"},
     {"name": "v_1", "type": "command", "description": "A name whose second character is an underscore"},
-    {"name": "people", "type": "person", "multiple": true, "description": "Who can help"}
+    {"name": "people", "type": "string", "description": "Who can help"}
   ],
   "steps": [
     {"id": "text", "name": "Text", "run": ["make test"]},
@@ -21,7 +21,7 @@
         {"run": ["make", "build", "make", "lint"]},
         {"run": ["time", "make", "build", "-v"]},
         {"run": ["make test"]},
-        {"run": ["notify", "Alex Rivera, then Sam Okafor"]},
+        {"run": ["notify", "Alex Rivera"]},
         {"run": ["sh", "-c", "make build && make lint"]},
         {"run": ["make", "lint"], "ask": "Did make build pass?"}
       ]

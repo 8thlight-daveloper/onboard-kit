@@ -22,11 +22,10 @@
     {"name": "reviewers", "type": "contact", "multiple": true, "description": "Reviewers"},
     {"name": "escalation", "type": "role", "options": ["x", "y"], "description": "Escalation role, with options the directory type ignores"},
     {"name": "discipline", "type": "choice", "options": ["software", "design"], "description": "Discipline"},
-    {"name": "note", "options": ["a", "b"], "description": "A string that carries options"},
-    {"name": "legacy", "type": "person", "description": "A person written as text"}
+    {"name": "note", "options": ["a", "b"], "description": "A string that carries options"}
   ],
   "answers": {
-    "plan": {"team": "platform", "owner": "lee-park", "reviewers": ["sam-okafor", "it-help"], "discipline": "software", "note": "a", "legacy": "Pat Doe"},
+    "plan": {"team": "platform", "owner": "lee-park", "reviewers": ["sam-okafor", "it-help"], "discipline": "software", "note": "a"},
     "sections": {"access": {"manager": "engineering-manager"}}
   },
   "sections": [

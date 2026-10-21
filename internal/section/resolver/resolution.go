@@ -39,7 +39,7 @@ func settledResolution(variable model.Variable, value model.Value, book book) (r
 	if !isSettled(value) {
 		return resolution{}, false
 	}
-	result := resolution{text: writtenValue(value, variable.Type)}
+	result := resolution{text: writtenValue(value)}
 	if variable.Type == model.VariableTypeCommand && value.Kind == model.ValueKindList {
 		result.commands = value.List
 	}

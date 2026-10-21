@@ -9,7 +9,7 @@
    "verification": "Check it.", "body": "Body text.",
    "includeIf": {"all": [{"question": "plan.discipline", "answer": {"isOneOf": ["software", "data"]}}]},
    "after": ["access-note", "access-note"], "escalation": ["manager"],
-   "variables": [{"name": "manager", "description": "Manager", "type": "person", "required": true}],
+   "variables": [{"name": "manager", "description": "Manager", "type": "contact", "required": true}],
    "steps": [{"id": "one", "name": "One", "run": ["echo", "$manager"], "env": {"A": "b"}, "checks": [{"ask": "Done?"}]}],
    "source": {"template": "access-request", "hash": "0123abcd"},
    "unknownFields": {"future": [1, 2.5, {"k": null}]}},

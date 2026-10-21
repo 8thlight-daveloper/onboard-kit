@@ -38,5 +38,5 @@ sections:
       - name: backup
         description: Backup
         example: Ann Lee
-        type: person
+        type: contact
         multiple: true

@@ -8,7 +8,7 @@
   "escalation": ["$contact"],
   "variables": [
     {"name": "team", "description": "Who is on $team", "default": "$team"},
-    {"name": "contact", "type": "person", "multiple": true, "description": "Ask $contact"},
+    {"name": "contact", "type": "contact", "multiple": true, "description": "Ask $contact"},
     {
       "name": "size",
       "type": "choice",

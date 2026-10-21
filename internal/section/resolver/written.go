@@ -7,25 +7,15 @@ import (
 	"onboard-kit/internal/model"
 )
 
-const (
-	personSeparator = ", then "
-	listSeparator   = " "
-)
+const listSeparator = " "
 
-func writtenValue(value model.Value, variableType model.VariableType) string {
+func writtenValue(value model.Value) string {
 	switch value.Kind {
 	case model.ValueKindFlag:
 		return strconv.FormatBool(value.Flag)
 	case model.ValueKindList:
-		return strings.Join(value.List, listSeparatorFor(variableType))
+		return strings.Join(value.List, listSeparator)
 	default:
 		return value.Text
 	}
-}
-
-func listSeparatorFor(variableType model.VariableType) string {
-	if variableType == model.VariableTypePerson {
-		return personSeparator
-	}
-	return listSeparator
 }

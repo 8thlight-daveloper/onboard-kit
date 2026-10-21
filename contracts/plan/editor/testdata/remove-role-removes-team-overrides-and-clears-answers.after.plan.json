@@ -134,11 +134,6 @@
    "description": "tracker"
   },
   {
-   "name": "owner",
-   "description": "owner",
-   "type": "person"
-  },
-  {
    "name": "second_contact",
    "description": "second contact",
    "type": "contact"
@@ -177,7 +172,6 @@
     "it-contact"
    ],
    "tracker": "lee-park",
-   "owner": "lee-park",
    "second_contact": "Lee-Park",
    "hidden_contact": "lee-park",
    "retired_contact": "lee-park"

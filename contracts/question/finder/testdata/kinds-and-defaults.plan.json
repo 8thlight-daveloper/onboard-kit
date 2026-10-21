@@ -6,7 +6,7 @@
       {"name": "uses_ci", "type": "boolean", "description": "Uses CI"},
       {"name": "style", "type": "choice", "options": ["markdown", "html"], "description": "Style", "audience": "onboarder"},
       {"name": "setup_command", "type": "command", "description": "Setup command", "required": true},
-      {"name": "grantors", "type": "person", "multiple": true, "description": "Who grants access"},
+      {"name": "grantors", "type": "role", "multiple": true, "description": "Who grants access"},
       {"name": "typed_string", "type": "string", "pattern": "^[a-z]+$", "patternHint": "lowercase", "description": "Typed string"}
     ]}
   ]

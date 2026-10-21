@@ -2,9 +2,8 @@
  "problems": [
   {"code": "answer.not-an-option", "severity": "error", "question": "alpha.a_pick", "section": "alpha"},
   {"code": "answer.wrong-kind", "severity": "error", "question": "alpha.b_flag", "section": "alpha", "detail": {"expected": "flag", "found": "text"}},
-  {"code": "answer.thin-contact", "severity": "warning", "question": "alpha.crew", "section": "alpha", "detail": {"item": "0"}},
-  {"code": "answer.single-person", "severity": "warning", "question": "alpha.crew", "section": "alpha"},
-  {"code": "secret.token-prefix", "severity": "error", "question": "alpha.crew", "section": "alpha", "detail": {"item": "0"}},
+  {"code": "answer.not-an-option", "severity": "error", "question": "alpha.tok", "section": "alpha"},
+  {"code": "secret.token-prefix", "severity": "error", "question": "alpha.tok", "section": "alpha"},
   {"code": "answer.not-an-option", "severity": "error", "question": "plan.p_pick"},
   {"code": "answer.pattern-mismatch", "severity": "error", "question": "zeta.z_str", "section": "zeta"}
 ]}

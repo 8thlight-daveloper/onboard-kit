@@ -16,7 +16,7 @@
       "full.section.json"
     ],
     "canonical": "full.canonical.json",
-    "hash": "45683359053c0c7b8ba2d7f46ae0fbbe48338fcccb952fd4aaaad3fd3ce6cf87",
+    "hash": "b6222d20d4a4e7fb5353b8ce55014925d2b5a4b801cf3e564d7270156e1ba5b3",
     "source": "Hand-written. Every field of every type is set, with a source and a section switch that must be left out, an env entry with an empty value, repeats in the two sets, and a section clause in an includeIf and in an askIf. Contract rules: the key order tables, Fields, Sets, Conditions. 0030: it excludes source. 0050: it leaves the switch out and hashes a section clause."
   },
   {
@@ -86,7 +86,7 @@
       "example.section.json"
     ],
     "canonical": "example.canonical.json",
-    "hash": "028da8aca661b3ecc6d249f6a7a404c7254b189d787145ef6713a6d6c6231578",
+    "hash": "12379790c0669f2bae5be8c566405b212db54f2099c44bd940ac032b9367f714",
     "source": "Hand-written. Contract rules: the Variable key order, Prose. A variable's example sits right after description. One variable has a description, an example, and a pattern hint. One has an example and no description. One has none. The second example holds a quote and a newline."
   },
   {
@@ -166,7 +166,7 @@
       "example.section.json",
       "example-whitespace.sections.json"
     ],
-    "hash": "028da8aca661b3ecc6d249f6a7a404c7254b189d787145ef6713a6d6c6231578",
+    "hash": "12379790c0669f2bae5be8c566405b212db54f2099c44bd940ac032b9367f714",
     "source": "Contract rule: Prose. An example is normalized like a description: CRLF, a lone CR, trailing spaces and tabs, and blank edges. The inner quote and newline of the second example stay."
   },
   {

@@ -141,13 +141,13 @@
     "name": "suggestions-lists",
     "plan": "suggestions-lists.plan.json",
     "expected": "suggestions-lists.questions.json",
-    "source": "docs/reference/section-template-schema/variables.md, Types and Person: a command and a person with multiple hold a list, a person holds one text line, and same-name person variables group and offer an earlier entry"
+    "source": "docs/reference/section-template-schema/variables.md, Types and Directory: a command holds a list, a contact with multiple holds a list of ids, a contact holds one id, and same-name contact variables group and offer an earlier entry. contracts/plan/testdata/directory.plan.json for the shape of the directory"
   },
   {
     "name": "acme",
     "plan": "acme.plan.json",
     "expected": "acme.questions.json",
-    "source": "docs/reference/examples/acme, as contracts/plan/testdata/acme.plan.json. Expected questions written by hand from the plan: the software discipline leaves out review-design-system, account_name is an onboardee question and is asked in the full list, tracker_grantor is deferred"
+    "source": "docs/reference/examples/acme, as contracts/plan/testdata/acme.plan.json, with a directory that holds the two contacts that stuck-general names. Expected questions written by hand from the plan: the software discipline leaves out review-design-system, account_name is an onboardee question and is asked in the full list, tracker_grantor is deferred"
   },
   {
     "name": "audience-ask-if",

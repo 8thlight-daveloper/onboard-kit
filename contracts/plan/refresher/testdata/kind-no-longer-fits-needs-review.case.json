@@ -48,9 +48,9 @@
         ]
       },
       {
-        "name": "person_one",
+        "name": "contact_one",
         "audience": "onboardee",
-        "type": "person"
+        "type": "contact"
       }
     ],
     "answers": {
@@ -68,7 +68,7 @@
         "multi_choice_ok": [
           "a"
         ],
-        "person_one": "no"
+        "contact_one": "no"
       }
     }
   },
@@ -121,9 +121,9 @@
         ]
       },
       {
-        "name": "person_one",
+        "name": "contact_one",
         "audience": "onboardee",
-        "type": "person"
+        "type": "contact"
       }
     ],
     "answers": {
@@ -143,7 +143,7 @@
         "multi_choice_ok": [
           "a"
         ],
-        "person_one": "x"
+        "contact_one": "x"
       }
     }
   },
@@ -196,9 +196,9 @@
         ]
       },
       {
-        "name": "person_one",
+        "name": "contact_one",
         "audience": "onboardee",
-        "type": "person"
+        "type": "contact"
       }
     ],
     "answers": {
@@ -218,7 +218,7 @@
           "a",
           "b"
         ],
-        "person_one": [
+        "contact_one": [
           "Pat"
         ]
       }
@@ -285,9 +285,9 @@
           ]
         },
         {
-          "name": "person_one",
+          "name": "contact_one",
           "audience": "onboardee",
-          "type": "person"
+          "type": "contact"
         }
       ],
       "answers": {
@@ -305,11 +305,11 @@
       ],
       "answersToReview": [
         "plan.accepts_flag",
+        "plan.contact_one",
         "plan.flag_for_text",
         "plan.many_text",
         "plan.multi_choice",
         "plan.one_text",
-        "plan.person_one",
         "plan.takes_list"
       ]
     }
