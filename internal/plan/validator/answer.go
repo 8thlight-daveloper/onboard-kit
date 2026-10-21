@@ -18,8 +18,6 @@ func answerProblems(directory model.Directory, severity model.Severity, variable
 		return optionProblems(variable, value)
 	case model.VariableTypeString:
 		return patternProblems(variable, value)
-	case model.VariableTypePerson:
-		return personProblems(value)
 	case model.VariableTypeContact, model.VariableTypeRole, model.VariableTypeTeam:
 		return directoryIDProblems(directory, variable, value, severity)
 	default:

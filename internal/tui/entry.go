@@ -7,7 +7,7 @@ import (
 	"onboard-kit/internal/model"
 )
 
-const personSeparator = ";"
+const itemSeparator = ";"
 
 func parseEntry(question model.Question, text string) model.Value {
 	if strings.TrimSpace(text) == "" {
@@ -33,12 +33,12 @@ func entryText(question model.Question) string {
 	if question.Type == model.VariableTypeCommand {
 		return joinWords(value.List)
 	}
-	return strings.Join(value.List, personSeparator+" ")
+	return strings.Join(value.List, itemSeparator+" ")
 }
 
 func splitItems(text string) []string {
 	var items []string
-	for _, part := range strings.Split(text, personSeparator) {
+	for _, part := range strings.Split(text, itemSeparator) {
 		if item := strings.TrimSpace(part); item != "" {
 			items = append(items, item)
 		}
@@ -98,7 +98,7 @@ func describeValue(value model.Value) string {
 		}
 		return "no"
 	case model.ValueKindList:
-		return strings.Join(value.List, personSeparator+" ")
+		return strings.Join(value.List, itemSeparator+" ")
 	case model.ValueKindDeferred:
 		return "deferred"
 	}

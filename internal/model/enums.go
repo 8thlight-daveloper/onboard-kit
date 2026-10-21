@@ -7,7 +7,6 @@ const (
 	VariableTypeBoolean VariableType = "boolean"
 	VariableTypeChoice  VariableType = "choice"
 	VariableTypeCommand VariableType = "command"
-	VariableTypePerson  VariableType = "person"
 	VariableTypeContact VariableType = "contact"
 	VariableTypeRole    VariableType = "role"
 	VariableTypeTeam    VariableType = "team"
