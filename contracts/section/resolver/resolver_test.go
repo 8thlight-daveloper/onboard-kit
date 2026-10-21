@@ -19,12 +19,14 @@ type fixtureProblem struct {
 }
 
 type fixtureCase struct {
-	Name     string           `json:"name"`
-	Section  string           `json:"section"`
-	Answers  string           `json:"answers"`
-	Resolved string           `json:"resolved"`
-	Problems []fixtureProblem `json:"problems"`
-	Source   string           `json:"source"`
+	Name      string           `json:"name"`
+	Section   string           `json:"section"`
+	Answers   string           `json:"answers"`
+	Directory string           `json:"directory"`
+	Team      string           `json:"team"`
+	Resolved  string           `json:"resolved"`
+	Problems  []fixtureProblem `json:"problems"`
+	Source    string           `json:"source"`
 }
 
 func readFixture(t *testing.T, name string) []byte {
@@ -63,6 +65,18 @@ func loadAnswers(t *testing.T, name string) model.Answers {
 	return answers
 }
 
+func loadDirectory(t *testing.T, name string) model.Directory {
+	t.Helper()
+	if name == "" {
+		return model.Directory{}
+	}
+	plan, err := jsonform.Plan(readFixture(t, name))
+	if err != nil {
+		t.Fatalf("%s: %v", name, err)
+	}
+	return plan.Directory
+}
+
 func sectionText(t *testing.T, section model.Section) string {
 	t.Helper()
 	data, err := jsonform.SectionJSON(section)
@@ -87,7 +101,7 @@ func TestFillsTheSectionFromItsOwnAnswers(t *testing.T) {
 			section := loadSection(t, c.Section)
 			answers := loadAnswers(t, c.Answers)
 			want := sectionText(t, loadSection(t, c.Resolved))
-			got, _ := newResolver().Resolve(section, answers)
+			got, _ := newResolver().Resolve(section, answers, loadDirectory(t, c.Directory), c.Team)
 			if text := sectionText(t, got); text != want {
 				t.Errorf("section\ngot:\n%s\nwant:\n%s", text, want)
 			}
@@ -100,7 +114,7 @@ func TestReportsTheVariablesItCouldNotFill(t *testing.T) {
 		t.Run(c.Name, func(t *testing.T) {
 			t.Parallel()
 			section := loadSection(t, c.Section)
-			_, problems := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+			_, problems := newResolver().Resolve(section, loadAnswers(t, c.Answers), loadDirectory(t, c.Directory), c.Team)
 			if len(problems) != len(c.Problems) {
 				t.Fatalf("got %d problems, want %d: %+v", len(problems), len(c.Problems), problems)
 			}
@@ -125,6 +139,8 @@ func TestResultsDoNotDependOnEarlierCalls(t *testing.T) {
 	type call struct {
 		section model.Section
 		answers model.Answers
+		dir     model.Directory
+		team    string
 		text    string
 		codes   []string
 	}
@@ -134,7 +150,7 @@ func TestResultsDoNotDependOnEarlierCalls(t *testing.T) {
 		for _, problem := range c.Problems {
 			codes = append(codes, problem.Code+" "+problem.Question)
 		}
-		calls = append(calls, call{loadSection(t, c.Section), loadAnswers(t, c.Answers), sectionText(t, loadSection(t, c.Resolved)), codes})
+		calls = append(calls, call{loadSection(t, c.Section), loadAnswers(t, c.Answers), loadDirectory(t, c.Directory), c.Team, sectionText(t, loadSection(t, c.Resolved)), codes})
 	}
 	resolver := newResolver()
 	for pass := 0; pass < 2; pass++ {
@@ -143,7 +159,7 @@ func TestResultsDoNotDependOnEarlierCalls(t *testing.T) {
 			if pass == 1 {
 				index = len(calls) - 1 - i
 			}
-			got, problems := resolver.Resolve(calls[index].section, calls[index].answers)
+			got, problems := resolver.Resolve(calls[index].section, calls[index].answers, calls[index].dir, calls[index].team)
 			if text := sectionText(t, got); text != calls[index].text {
 				t.Fatalf("call %d on pass %d: section differs\ngot:\n%s\nwant:\n%s", index, pass, text, calls[index].text)
 			}
@@ -165,12 +181,17 @@ func TestInputsAreNotChanged(t *testing.T) {
 		answers := loadAnswers(t, c.Answers)
 		sectionSnapshot := loadSection(t, c.Section)
 		answersSnapshot := loadAnswers(t, c.Answers)
-		newResolver().Resolve(section, answers)
+		directory := loadDirectory(t, c.Directory)
+		directorySnapshot := loadDirectory(t, c.Directory)
+		newResolver().Resolve(section, answers, directory, c.Team)
 		if !reflect.DeepEqual(section, sectionSnapshot) {
 			t.Fatalf("%s: the section was changed", c.Name)
 		}
 		if !reflect.DeepEqual(answers, answersSnapshot) {
 			t.Fatalf("%s: the answers were changed", c.Name)
+		}
+		if !reflect.DeepEqual(directory, directorySnapshot) {
+			t.Fatalf("%s: the directory was changed", c.Name)
 		}
 	}
 }
@@ -180,7 +201,7 @@ func TestResultKeepsEveryVariableExample(t *testing.T) {
 	examples := 0
 	for _, c := range loadCases(t) {
 		section := loadSection(t, c.Section)
-		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers), loadDirectory(t, c.Directory), c.Team)
 		if len(got.Variables) != len(section.Variables) {
 			t.Fatalf("%s: got %d variables, want %d", c.Name, len(got.Variables), len(section.Variables))
 		}
@@ -203,7 +224,7 @@ func TestResultKeepsTheParentAsHeld(t *testing.T) {
 	parents := 0
 	for _, c := range loadCases(t) {
 		section := loadSection(t, c.Section)
-		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers), loadDirectory(t, c.Directory), c.Team)
 		if got.Parent != section.Parent {
 			t.Errorf("%s: got parent %q, want %q", c.Name, got.Parent, section.Parent)
 		}
@@ -221,7 +242,7 @@ func TestResultSharesNothingWithTheInput(t *testing.T) {
 	for _, c := range loadCases(t) {
 		section := loadSection(t, c.Section)
 		snapshot := loadSection(t, c.Section)
-		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers))
+		got, _ := newResolver().Resolve(section, loadAnswers(t, c.Answers), loadDirectory(t, c.Directory), c.Team)
 		for i, variable := range section.Variables {
 			if got.Variables[i].Example != variable.Example {
 				t.Fatalf("%s: variable %s: got example %q, want %q", c.Name, variable.Name, got.Variables[i].Example, variable.Example)
@@ -238,7 +259,7 @@ func TestConditionTestsAreNotSharedWithTheInput(t *testing.T) {
 	t.Parallel()
 	section := loadSection(t, "settled-conditions.section.json")
 	snapshot := loadSection(t, "settled-conditions.section.json")
-	got, _ := newResolver().Resolve(section, loadAnswers(t, "settled-conditions.answers.json"))
+	got, _ := newResolver().Resolve(section, loadAnswers(t, "settled-conditions.answers.json"), model.Directory{}, "")
 
 	var inputTests, resultTests []*bool
 	collect := func(tests *[]*bool, condition *model.Condition) {
@@ -276,7 +297,7 @@ func TestSwitchAndSectionClausesAreNotSharedWithTheInput(t *testing.T) {
 	t.Parallel()
 	section := loadSection(t, "switch-clauses.section.json")
 	snapshot := loadSection(t, "switch-clauses.section.json")
-	got, _ := newResolver().Resolve(section, loadAnswers(t, "switch-clauses.answers.json"))
+	got, _ := newResolver().Resolve(section, loadAnswers(t, "switch-clauses.answers.json"), model.Directory{}, "")
 
 	if section.Enabled == nil || *section.Enabled {
 		t.Fatal("the fixture section must hold enabled false")
@@ -383,7 +404,7 @@ func overwriteReference(v reflect.Value) {
 
 func TestZeroSectionAndAnswersGiveTheZeroSection(t *testing.T) {
 	t.Parallel()
-	got, problems := newResolver().Resolve(model.Section{}, model.Answers{})
+	got, problems := newResolver().Resolve(model.Section{}, model.Answers{}, model.Directory{}, "")
 	if text, want := sectionText(t, got), sectionText(t, model.Section{}); text != want {
 		t.Errorf("got %s, want %s", text, want)
 	}

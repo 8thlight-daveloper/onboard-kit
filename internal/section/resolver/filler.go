@@ -11,11 +11,11 @@ type filler struct {
 	used        map[string]bool
 }
 
-func newFiller(section model.Section, answers map[string]model.Value) *filler {
+func newFiller(section model.Section, answers map[string]model.Value, book book) *filler {
 	resolutions := make(map[string]resolution, len(section.Variables))
 	for _, variable := range section.Variables {
 		if _, declared := resolutions[variable.Name]; !declared {
-			resolutions[variable.Name] = resolveVariable(variable, answers[variable.Name])
+			resolutions[variable.Name] = resolveVariable(variable, answers[variable.Name], book)
 		}
 	}
 	return &filler{resolutions: resolutions, used: map[string]bool{}}

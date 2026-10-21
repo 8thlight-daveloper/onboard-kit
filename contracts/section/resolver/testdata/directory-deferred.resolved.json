@@ -1,0 +1,13 @@
+{
+  "id": "directory-deferred",
+  "title": "Deferred",
+  "summary": "A deferred directory answer",
+  "body": "a=[_deferred_] b=[_deferred_] c=[_deferred_] d=[_deferred_] e=[_deferred_]",
+  "variables": [
+    {"name": "a", "type": "contact", "description": "A contact"},
+    {"name": "b", "type": "role", "description": "A role"},
+    {"name": "c", "type": "team", "description": "A team"},
+    {"name": "d", "type": "contact", "default": "lee-park", "description": "A deferred answer beats the default"},
+    {"name": "e", "type": "contact", "multiple": true, "description": "Several contacts"}
+  ]
+}

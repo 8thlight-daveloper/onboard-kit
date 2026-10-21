@@ -1,0 +1,21 @@
+{
+  "id": "directory-run",
+  "title": "Run",
+  "summary": "Directory variables in run",
+  "variables": [
+    {"name": "sam", "type": "contact", "description": "A contact"},
+    {"name": "people", "type": "contact", "multiple": true, "description": "Several contacts"},
+    {"name": "managers", "type": "role", "multiple": true, "description": "Several roles"},
+    {"name": "champion", "type": "role", "description": "A vacant role"},
+    {"name": "team", "type": "team", "description": "A team"},
+    {"name": "late", "type": "contact", "description": "Answered later"},
+    {"name": "nobody", "type": "contact", "description": "Not answered"},
+    {"name": "stranger", "type": "contact", "description": "An id not in the directory"}
+  ],
+  "steps": [
+    {"id": "single", "name": "Single", "run": ["notify", "$sam", "$people", "$managers", "$champion", "$team"]},
+    {"id": "embedded", "name": "Embedded", "run": ["echo", "--to=$sam", "$sam $team"]},
+    {"id": "markers", "name": "Markers", "run": ["notify", "$late", "$nobody", "$stranger"]},
+    {"id": "check", "name": "Check", "checks": [{"run": ["mail", "$managers", "$sam"]}]}
+  ]
+}

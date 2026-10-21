@@ -16,13 +16,14 @@ type resolution struct {
 	gapCode  string
 }
 
-func resolveVariable(variable model.Variable, answer model.Value) resolution {
-	value, kind := chooseValue(variable, answer)
-	switch kind {
-	case valueSettled:
-		return settledResolution(variable, value)
-	case valueDeferred:
-		return resolution{text: deferredMarker, gapCode: codeDeferred}
+func resolveVariable(variable model.Variable, answer model.Value, book book) resolution {
+	for _, candidate := range []model.Value{answer, variable.Default} {
+		if result, settled := settledResolution(variable, candidate, book); settled {
+			return result
+		}
+		if candidate.Kind == model.ValueKindDeferred {
+			return resolution{text: deferredMarker, gapCode: codeDeferred}
+		}
 	}
 	if variable.Audience == model.AudienceOnboardee {
 		return resolution{text: "<" + variable.Name + ">"}
@@ -30,34 +31,25 @@ func resolveVariable(variable model.Variable, answer model.Value) resolution {
 	return resolution{text: unansweredMarker, gapCode: codeUnanswered}
 }
 
-func settledResolution(variable model.Variable, value model.Value) resolution {
+func settledResolution(variable model.Variable, value model.Value, book book) (resolution, bool) {
+	if isDirectoryType(variable.Type) {
+		text, found := book.written(variable.Type, value)
+		return resolution{text: text}, found
+	}
+	if !isSettled(value) {
+		return resolution{}, false
+	}
 	result := resolution{text: writtenValue(value, variable.Type)}
 	if variable.Type == model.VariableTypeCommand && value.Kind == model.ValueKindList {
 		result.commands = value.List
 	}
-	return result
+	return result, true
 }
 
-type valueKind int
-
-const (
-	valueMissing valueKind = iota
-	valueSettled
-	valueDeferred
-)
-
-func chooseValue(variable model.Variable, answer model.Value) (model.Value, valueKind) {
-	if isSettled(answer) {
-		return answer, valueSettled
+func isDirectoryType(variableType model.VariableType) bool {
+	switch variableType {
+	case model.VariableTypeContact, model.VariableTypeRole, model.VariableTypeTeam:
+		return true
 	}
-	if answer.Kind == model.ValueKindDeferred {
-		return answer, valueDeferred
-	}
-	if isSettled(variable.Default) {
-		return variable.Default, valueSettled
-	}
-	if variable.Default.Kind == model.ValueKindDeferred {
-		return variable.Default, valueDeferred
-	}
-	return model.Value{}, valueMissing
+	return false
 }
