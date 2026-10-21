@@ -1,0 +1,11 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},
+ "directory":{"contacts":[{"id":"sam-okafor","name":"Sam Okafor","slack":"@sam"}],
+  "roles":[{"id":"engineering-manager","name":"Engineering manager","holders":["sam-okafor"]},{"id":"design-lead","name":"Design lead"}]},
+ "answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"a-onboardee":{"note":"x","design":"design-lead"},"b-default":{"note":"x","design":"design-lead"}}},
+ "sections":[
+  {"id":"a-onboardee","title":"Onboardee role","summary":"A role with the audience onboardee that holds an answer.",
+   "body":"Ask $design.",
+   "variables":[{"name":"note","description":"A note"},{"name":"design","description":"Design lead for the onboardee","type":"role","audience":"onboardee"}]},
+  {"id":"b-default","title":"Role with a default","summary":"A role with a default that holds an answer.",
+   "body":"Ask $design.",
+   "variables":[{"name":"note","description":"A note"},{"name":"design","description":"Design lead with a default","type":"role","default":"engineering-manager"}]}]}

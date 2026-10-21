@@ -1,0 +1,5 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},"sections":{"tags":{"tag":"x"}}},
+ "sections":[
+  {"id":"tags","title":"Tags","summary":"A variable that is not for the onboardee.",
+   "body":"Keep <tag> as written. Value: $tag. Nick: $nick.",
+   "variables":[{"name":"tag","description":"Tag"},{"name":"nick","description":"Nick","audience":"onboardee"}]}]}
