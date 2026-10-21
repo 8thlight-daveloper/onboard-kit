@@ -36,13 +36,16 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 		fmt.Fprintln(stderr, "start: --org-plan is required")
 		return exitUsage
 	}
-	plan, ok := planfile.Open(*orgPlan, stderr)
-	if !ok {
-		return exitProblem
-	}
 	folder, err := stateHome(*home)
 	if err != nil {
 		fmt.Fprintln(stderr, err)
+		return exitProblem
+	}
+	if _, err := os.Stat(*orgPlan); err != nil {
+		return startFromCopy(*orgPlan, folder, *noWalk, stdin, stdout, stderr)
+	}
+	plan, ok := planfile.Open(*orgPlan, stderr)
+	if !ok {
 		return exitProblem
 	}
 	personal, ok := prepare(folder, *orgPlan, plan, *refreshedOn, stdout, stderr)
