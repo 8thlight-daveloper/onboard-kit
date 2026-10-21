@@ -24,7 +24,8 @@
       {"name": "c_prefix", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
       {"name": "c_extra", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
       {"name": "c_blank", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
-      {"name": "c_other", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"}
+      {"name": "c_other", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
+      {"name": "c_many", "type": "choice", "multiple": true, "options": ["alpha", "beta"], "description": "Choice that takes several answers"}
     ]}
   ]
 }
