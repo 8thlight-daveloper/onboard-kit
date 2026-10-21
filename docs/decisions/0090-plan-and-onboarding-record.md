@@ -98,11 +98,26 @@ The plan refresher of 0075 is retired and rebuilt as this smaller component.
 
 The onboarder must be able to send a newcomer something that works before the newcomer has any access. The plan's `planUrl` may be behind that access, so the invitation carries the plan itself.
 
-- An `invite` command makes one zip file for an account. It holds the plan as `plan.obk.yaml`, a record seeded with the account and the plan reference as `records/<account>/record.obk.yaml`, and optionally `first-steps.md`, the assembled document, for someone with nothing installed. Both files are in their own canonical shapes, so there is no joined form and nothing to split.
+- An `invite` command makes one zip file for an account. It holds the plan as `plan.obk.yaml`, a record seeded with the account and the plan reference as `records/<account>/record.obk.yaml`, and `first-steps.md`, a document for someone with nothing installed, see below. Both files are in their own canonical shapes, so there is no joined form and nothing to split.
 - `onboard-kit start --invitation <file>` reads the archive directly. The newcomer extracts nothing by hand. The tool puts the plan in the plan copy and the record at `resultsPath`.
-- The archive is untrusted input. The tool reads only those fixed entries, never a path taken from inside the archive, and enforces a size limit.
+- The archive is untrusted input. The tool reads only those fixed entries, never a path taken from inside the archive, and refuses an archive of more than a handful of entries or more than 1 MiB uncompressed in all. Video and other large help is linked, not embedded.
 - A record that already exists at that path is never overwritten. The tool reconciles it against the plan from the archive instead.
 - The newcomer sees "Is this you?" for the account and confirms, as 0085 says.
+
+### The first-steps document
+
+The archive always includes `first-steps.md`, for a newcomer who has nothing installed yet. It is assembled for the onboardee, deterministically, with no model.
+
+- It holds the bootstrap sections as the assembler writes them.
+- It ends with a block of standard help that the tool supplies and the plan fills in: what to do about a lost plan (ask the onboarding owner for a fresh invitation, or clone the repository and run `start` inside it), a lost record (it is in the repository at its path), a wrong account (the file can be moved), where to get the tool, and who to ask when stuck, from the plan's general contacts and the owner resolved from the directory.
+- The standard wording is part of the tool.
+
+### Several records on one machine
+
+A newcomer has several records when they have several plans: the consultancy case of one client after another, a return after leaving, or being a newcomer in one plan and an onboarder in another. A change of team does not need a second record, because the team is an answer in the same record. Inside one plan's repository there is one record per account.
+
+- `start` with nothing given lists the records known on this machine, by organization and team, with progress such as "4 of 7 verified" and the last activity, and the person picks one. They can also start a new one from an invitation.
+- Records live in different repositories, so the tool keeps a small local index in the per-user state folder: for each record the person has opened, the plan id and the path. The index is not in the plan or in any repository.
 
 ### The record's name and marker
 
@@ -134,5 +149,5 @@ A report reads records and the plan, and nothing else. It does not need each per
 
 ## Not decided
 
-- The size limit for an invitation, and whether `first-steps.md` is always included.
-- Whether a person with several records can pick which one `start` opens, and how.
+- The exact wording of the standard help in the first-steps document.
+- Whether the index is pruned of records whose file is gone, and when.
