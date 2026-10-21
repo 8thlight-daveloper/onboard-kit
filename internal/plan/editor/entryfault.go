@@ -40,6 +40,9 @@ func roleFaults(directory model.Directory, role model.Role) []model.Problem {
 func teamFaults(directory model.Directory, team model.Team) []model.Problem {
 	subject := entry{kind: model.VariableTypeTeam, id: team.ID, name: team.Name}
 	problems := entryFaults(subject)
+	if team.Contact != "" && !hasContact(directory, team.Contact) {
+		problems = append(problems, entryProblem(notContactCode, "This team has a contact that is not a contact in the directory.", subject, map[string]string{"contact": team.Contact}))
+	}
 	for _, role := range slices.Sorted(maps.Keys(team.Holders)) {
 		if !hasRole(directory, role) {
 			problems = append(problems, entryProblem(teamRoleUnknownCode, "This team overrides a role that is not in the directory.", subject, map[string]string{"role": role}))

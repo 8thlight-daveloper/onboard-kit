@@ -2649,5 +2649,436 @@
     "after": "a-stored-unknown-id-is-replaced-by-a-known-one.after.plan.json",
     "problems": [],
     "source": "docs/decisions/0080-directory.md, Integrity: an answer naming an unknown id counts as unanswered, so the onboarder fills it again"
+  },
+  {
+    "name": "set-team-with-a-contact-adds-the-team-at-the-end",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "kim-lee",
+      "holders": {
+        "it-contact": [
+          "it-help"
+        ]
+      }
+    },
+    "after": "set-team-with-a-contact-adds-the-team-at-the-end.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Consequences: a team may name a contact, the id of a directory contact. Set adds an entry at the end"
+  },
+  {
+    "name": "set-team-replaces-in-place-and-changes-the-contact",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "design",
+      "name": "Design group",
+      "contact": "sam-okafor",
+      "holders": {
+        "engineering-manager": [
+          "lee-park"
+        ]
+      }
+    },
+    "after": "set-team-replaces-in-place-and-changes-the-contact.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Editing: Set replaces the entry with the same id whole and in place. A team may name a contact"
+  },
+  {
+    "name": "set-team-with-no-contact-drops-the-old-contact",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "platform",
+      "name": "Platform team",
+      "holders": {
+        "ops": [
+          "ops"
+        ]
+      }
+    },
+    "after": "set-team-with-no-contact-drops-the-old-contact.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Editing: Set replaces the entry with the same id whole. A team's contact is optional, so a field the new entry leaves out is gone"
+  },
+  {
+    "name": "set-team-takes-a-contact-whose-id-is-also-a-role-and-a-team",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "support",
+      "name": "Support desk",
+      "contact": "ops"
+    },
+    "after": "set-team-takes-a-contact-whose-id-is-also-a-role-and-a-team.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, The directory: a contact, a role, and a team may share an id, because each list is separate. The team contact names a contact, and the contact ops is one"
+  },
+  {
+    "name": "set-team-with-a-contact-and-no-overrides-keeps-the-contact",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "it-help"
+    },
+    "after": "set-team-with-a-contact-and-no-overrides-keeps-the-contact.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, The directory: a team may name a contact and may also override who holds a role, and need not do the second"
+  },
+  {
+    "name": "set-team-refuses-a-contact-that-is-not-in-the-directory",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "nobody"
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "finance",
+          "contact": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Editing: Set is refused, with the plan unchanged, when the entry has a team contact that is not a contact"
+  },
+  {
+    "name": "set-team-refuses-a-contact-that-is-only-a-role",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "engineering-manager"
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "finance",
+          "contact": "engineering-manager"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: a team's contact names an id that is not a contact. The id of a role is not a contact"
+  },
+  {
+    "name": "set-team-refuses-a-contact-that-is-only-a-team",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "design"
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "finance",
+          "contact": "design"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: a team's contact names an id that is not a contact. The id of a team is not a contact"
+  },
+  {
+    "name": "set-team-refuses-a-contact-in-other-case",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team",
+      "contact": "Lee-Park"
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "finance",
+          "contact": "Lee-Park"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: ids are lowercase slugs and are compared as written, so Lee-Park is not the contact lee-park"
+  },
+  {
+    "name": "set-team-refuses-a-replacement-with-a-bad-contact-and-keeps-the-old-team",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "design",
+      "name": "Design team",
+      "contact": "nobody",
+      "holders": {
+        "engineering-manager": [
+          "lee-park"
+        ]
+      }
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "design",
+          "contact": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Editing: a refused Set leaves the plan unchanged, so the team that has the id is kept as it was"
+  },
+  {
+    "name": "set-team-reports-the-contact-after-the-name-and-before-the-overrides",
+    "operation": "set-team",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "Bad Team",
+      "name": "",
+      "contact": "nobody",
+      "holders": {
+        "zzz": [],
+        "engineering-manager": [
+          "it-contact"
+        ]
+      }
+    },
+    "after": "team-contacts.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Bad Team"
+        }
+      },
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Bad Team"
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Bad Team",
+          "contact": "nobody"
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Bad Team",
+          "role": "engineering-manager",
+          "holder": "it-contact"
+        }
+      },
+      {
+        "code": "directory.team-role-unknown",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Bad Team",
+          "role": "zzz"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: the faults of a team are an id, a name, a contact, and the overrides, in the order the file writes a team (id, name, contact, holders)"
+  },
+  {
+    "name": "set-contact-keeps-the-team-contacts-that-name-it",
+    "operation": "set-contact",
+    "before": "team-contacts.plan.json",
+    "entry": {
+      "id": "lee-park",
+      "name": "Lee Park",
+      "email": "lee@acme.example"
+    },
+    "after": "set-contact-keeps-the-team-contacts-that-name-it.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Editing: Set clears nothing. A team contact names the id, and the id does not change"
+  },
+  {
+    "name": "remove-contact-clears-the-contact-of-every-team-that-named-it",
+    "operation": "remove-contact",
+    "before": "team-contacts.plan.json",
+    "id": "lee-park",
+    "cleared": {
+      "answers": [
+        "access.approver",
+        "access.reviewers",
+        "facilities.manager",
+        "plan.escalation",
+        "plan.hidden_contact",
+        "plan.primary_contact"
+      ],
+      "holders": [
+        "role:engineering-manager",
+        "role:ops",
+        "team-contact:design",
+        "team-contact:security",
+        "team:design/engineering-manager",
+        "team:platform/engineering-manager"
+      ]
+    },
+    "after": "remove-contact-clears-the-contact-of-every-team-that-named-it.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: removing a contact clears a team's contact that named it, and the report lists team-contact:<team id>, each once, sorted. The sort puts team-contact:<id> before team:<id>/<role>. A team contact in other case stays"
+  },
+  {
+    "name": "remove-contact-clears-a-team-contact-and-a-role-holder-together",
+    "operation": "remove-contact",
+    "before": "team-contacts.plan.json",
+    "id": "it-help",
+    "cleared": {
+      "answers": [],
+      "holders": [
+        "role:it-contact",
+        "team-contact:platform"
+      ]
+    },
+    "after": "remove-contact-clears-a-team-contact-and-a-role-holder-together.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the holders of a role and the contact of a team are both places the removal reports"
+  },
+  {
+    "name": "remove-contact-keeps-the-contact-of-a-team-that-names-another-contact",
+    "operation": "remove-contact",
+    "before": "team-contacts.plan.json",
+    "id": "sam-okafor",
+    "cleared": {
+      "answers": [
+        "access-request.approver",
+        "plan.escalation"
+      ],
+      "holders": [
+        "role:engineering-manager",
+        "team:platform/engineering-manager",
+        "team:platform/it-contact"
+      ]
+    },
+    "after": "remove-contact-keeps-the-contact-of-a-team-that-names-another-contact.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: only a team's contact that named the removed contact is cleared"
+  },
+  {
+    "name": "remove-contact-clears-the-team-contact-and-leaves-the-role-and-team-with-the-same-id",
+    "operation": "remove-contact",
+    "before": "team-contacts.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [
+        "plan.escalation"
+      ],
+      "holders": [
+        "role:ops",
+        "team-contact:ops",
+        "team-contact:support",
+        "team:platform/ops"
+      ]
+    },
+    "after": "remove-contact-clears-the-team-contact-and-leaves-the-role-and-team-with-the-same-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: ids are per kind, so the contact ops is cleared from the team ops, and the role ops and the team ops stay"
+  },
+  {
+    "name": "remove-contact-that-no-team-names-leaves-the-team-contacts",
+    "operation": "remove-contact",
+    "before": "team-contacts.plan.json",
+    "id": "kim-lee",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-contact-that-no-team-names-leaves-the-team-contacts.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: nothing names the contact, so no team contact changes"
+  },
+  {
+    "name": "remove-role-leaves-a-team-contact-with-the-same-id",
+    "operation": "remove-role",
+    "before": "team-contacts.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [
+        "access.approver_role",
+        "plan.support_roles"
+      ],
+      "holders": [
+        "team:platform/ops"
+      ]
+    },
+    "after": "remove-role-leaves-a-team-contact-with-the-same-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: removing a role clears no team contact. The team contact ops names the contact ops, not the role"
+  },
+  {
+    "name": "remove-team-with-a-contact-removes-the-contact-with-the-team",
+    "operation": "remove-team",
+    "before": "team-contacts.plan.json",
+    "id": "platform",
+    "cleared": {
+      "answers": [
+        "plan.team"
+      ],
+      "holders": []
+    },
+    "after": "remove-team-with-a-contact-removes-the-contact-with-the-team.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: a removed team goes with its own contact and its overrides, and the report lists none of them"
+  },
+  {
+    "name": "remove-team-leaves-the-team-contacts-that-share-its-id",
+    "operation": "remove-team",
+    "before": "team-contacts.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-team-leaves-the-team-contacts-that-share-its-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: removing a team clears no team contact. The team contact ops of the support team names the contact ops, not the team"
+  },
+  {
+    "name": "remove-team-leaves-the-contact-it-named",
+    "operation": "remove-team",
+    "before": "team-contacts.plan.json",
+    "id": "design",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-team-leaves-the-contact-it-named.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: removing a team does not remove the contact it named"
   }
 ]
