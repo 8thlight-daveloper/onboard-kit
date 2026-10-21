@@ -12,7 +12,7 @@
         "empty_text": "",
         "repo_ok": "git@git.acme.example:platform/widget-service.git",
         "repo_bad": "ftp://git.acme.example/widget-service.git",
-        "who_pattern": "Jane Doe, jane@acme.example, @jane"
+        "pick_pattern": "alpha"
       }
     }
   },
@@ -27,7 +27,7 @@
       {"name": "empty_text", "pattern": "^[a-z]+$", "description": "Lower case"},
       {"name": "repo_ok", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://", "description": "Clone URL"},
       {"name": "repo_bad", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://", "description": "Clone URL"},
-      {"name": "who_pattern", "type": "person", "pattern": "^zzz$", "description": "Person"}
+      {"name": "pick_pattern", "type": "choice", "options": ["alpha", "beta"], "pattern": "^zzz$", "description": "A choice with a pattern"}
     ]}
   ]
 }

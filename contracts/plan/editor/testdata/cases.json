@@ -97,19 +97,6 @@
     "source": "docs/decisions/0035-settled-and-deferred-answers.md: a list with a non-empty item is settled. The editor stores what it is given"
   },
   {
-    "name": "list-of-people",
-    "operation": "submit",
-    "before": "empty.plan.json",
-    "question": "main.contacts",
-    "value": [
-      "Ann Lee, ann.lee@acme.example, @ann",
-      "Bo Ray, bo.ray@acme.example, @bo"
-    ],
-    "after": "list-of-people.after.plan.json",
-    "problems": [],
-    "source": "docs/reference/section-template-schema/variables.md, Person: a multiple variable is held as a list"
-  },
-  {
     "name": "deferred-is-applied",
     "operation": "submit",
     "before": "answered.plan.json",
@@ -525,68 +512,6 @@
       }
     ],
     "source": "docs/decisions/0010-plan-editor.md, Sequence: the editor asks whether the question is active before it applies anything. docs/decisions/0050-section-switch.md: a switched-off section keeps its answers"
-  },
-  {
-    "name": "an-error-and-a-warning-are-both-returned",
-    "operation": "submit",
-    "before": "answered.plan.json",
-    "question": "main.owner",
-    "value": "Jane Doe, ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE",
-    "after": "answered.plan.json",
-    "problems": [
-      {
-        "code": "answer.thin-contact",
-        "severity": "warning",
-        "question": "main.owner",
-        "section": "main"
-      },
-      {
-        "code": "secret.token-prefix",
-        "severity": "error",
-        "question": "main.owner",
-        "section": "main"
-      }
-    ],
-    "secretFragments": [
-      "FAKEFAKE"
-    ],
-    "source": "docs/decisions/0010-plan-editor.md, Plans are values: an answer with an error is not applied. Errors: warning or error problems are normal results"
-  },
-  {
-    "name": "warning-is-applied-and-returned",
-    "operation": "submit",
-    "before": "answered.plan.json",
-    "question": "main.owner",
-    "value": "Jane Doe",
-    "after": "warning-is-applied-and-returned.after.plan.json",
-    "problems": [
-      {
-        "code": "answer.thin-contact",
-        "severity": "warning",
-        "question": "main.owner",
-        "section": "main"
-      }
-    ],
-    "source": "docs/decisions/0010-plan-editor.md, Plans are values: a warning is returned with the new plan and never stops an answer"
-  },
-  {
-    "name": "single-person-warning-is-applied",
-    "operation": "submit",
-    "before": "answered.plan.json",
-    "question": "main.contacts",
-    "value": [
-      "Ann Lee, ann.lee@acme.example, @ann"
-    ],
-    "after": "single-person-warning-is-applied.after.plan.json",
-    "problems": [
-      {
-        "code": "answer.single-person",
-        "severity": "warning",
-        "question": "main.contacts",
-        "section": "main"
-      }
-    ],
-    "source": "docs/decisions/0010-plan-editor.md, Plans are values: a warning never stops an answer. variables.md, Person: a list with exactly one person gets a warning"
   },
   {
     "name": "switch-off",

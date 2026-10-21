@@ -7,7 +7,7 @@
   "variables": [
     {
       "name": "general_contacts",
-      "type": "person",
+      "type": "contact",
       "multiple": true,
       "description": "Who can anyone ask for help with anything?",
       "example": "Alex Rivera, alex.rivera@acme.example, @alex",

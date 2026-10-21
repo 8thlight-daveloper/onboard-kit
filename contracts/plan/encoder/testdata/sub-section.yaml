@@ -24,7 +24,7 @@ sections:
     variables:
       - name: backup
         description: Backup
-        type: person
+        type: contact
     steps:
       - id: st
         name: Step

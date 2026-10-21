@@ -7,7 +7,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "Engineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -33,7 +33,7 @@
    {
     "name": "role",
     "description": "Your job title",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -60,7 +60,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "Engineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -86,7 +86,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "Engineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -114,7 +114,7 @@
     "name": "role",
     "description": "Your job title",
     "example": "Platform \"core\"\nWest",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -140,7 +140,7 @@
    {
     "name": "role",
     "description": "Engineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -166,7 +166,7 @@
    {
     "name": "role",
     "description": "Your job title",
-    "type": "person",
+    "type": "contact",
     "patternHint": "Engineering manager"
    },
    {
@@ -193,7 +193,7 @@
     "name": "role",
     "description": "Engineering manager",
     "example": "Engineering manager",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {
@@ -220,7 +220,7 @@
     "name": "role",
     "description": "Engineering manager",
     "example": "Your job title",
-    "type": "person",
+    "type": "contact",
     "patternHint": "A title"
    },
    {

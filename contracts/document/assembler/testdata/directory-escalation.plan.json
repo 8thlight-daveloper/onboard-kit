@@ -108,9 +108,6 @@
     "backup": "it-help",
     "manager": "engineering-manager",
     "design": "design-lead",
-    "old": [
-     "Ana Ruiz, ana.ruiz@globex.example, @ana"
-    ],
     "many": [
      "sam-okafor",
      "kim-ng"
@@ -141,12 +138,6 @@
      "type": "role"
     },
     {
-     "name": "old",
-     "description": "An old person",
-     "type": "person",
-     "multiple": true
-    },
-    {
      "name": "many",
      "description": "Several",
      "type": "contact",
@@ -162,7 +153,6 @@
     "$backup",
     "$many",
     "$manager",
-    "$old",
     "$design"
    ],
    "steps": [

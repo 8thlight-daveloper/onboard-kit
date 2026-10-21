@@ -15,5 +15,5 @@
   {"id": "clone-and-run-tests.repo_dir", "declaredDefault": "project", "answer": "widget-service", "suggestions": [{"value": "project", "source": "default"}, {"value": "widget-service", "source": "given"}]},
   {"id": "clone-and-run-tests.setup_command", "type": "command", "required": true, "answer": ["make", "setup"], "suggestions": [{"value": ["make", "setup"], "source": "given"}]},
   {"id": "clone-and-run-tests.test_command", "type": "command", "required": true, "answer": ["make", "test"], "suggestions": [{"value": ["make", "test"], "source": "given"}]},
-  {"id": "stuck-general.general_contacts", "type": "person", "required": true, "answer": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"], "suggestions": [{"value": ["Alex Rivera, alex.rivera@acme.example, @alex", "Sam Okafor, sam.okafor@acme.example, @sam"], "source": "given"}]}
+  {"id": "stuck-general.general_contacts", "type": "contact", "required": true, "answer": ["alex-rivera", "sam-okafor"], "choices": [{"value": "alex-rivera", "label": "Alex Rivera"}, {"value": "sam-okafor", "label": "Sam Okafor"}], "suggestions": [{"value": ["alex-rivera", "sam-okafor"], "source": "given"}]}
 ], "blockers": []}

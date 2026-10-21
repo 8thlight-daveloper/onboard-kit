@@ -8,7 +8,7 @@
     {"name": "as_text", "type": "command", "description": "A command held as text"},
     {"name": "e2e_test", "type": "command", "description": "A name whose second character is a digit"},
     {"name": "v_1", "type": "command", "description": "A name whose second character is an underscore"},
-    {"name": "people", "type": "person", "multiple": true, "description": "Who can help"}
+    {"name": "people", "type": "string", "description": "Who can help"}
   ],
   "steps": [
     {"id": "text", "name": "Text", "run": ["$as_text"]},

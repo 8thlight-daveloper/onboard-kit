@@ -9,7 +9,7 @@
       {"id": "access", "hash": "0661566cb6eb7a0d131133bb75f42f339b79bcccfdf39e49f2028e19c0e70a5a", "canonical": "acme-access.canonical.json"},
       {"id": "clone-and-run-tests", "hash": "c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6", "canonical": "acme-clone-and-run-tests.canonical.json"},
       {"id": "review-design-system", "hash": "cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9", "canonical": "acme-review-design-system.canonical.json"},
-      {"id": "stuck-general", "hash": "b41dc482fe0a513d1474cb641d00f890914ee5722c24f6d04e61d6a0cc553829", "canonical": "acme-stuck-general.canonical.json"}
+      {"id": "stuck-general", "hash": "1f25261bebdfb94b6ac8640bea63c353c84cfb2b368657e0c34ca1bf6c192345", "canonical": "acme-stuck-general.canonical.json"}
     ],
     "source": "The four ACME templates, docs/reference/examples/acme/templates/, as the section loader contract's fixtures hold them (contracts/section/loader/testdata/acme-*.section.json), given out of order. The five plan variables are the plan variables of docs/reference/examples/acme/acme.obk.yaml, one with a default and one with options. 0030, The default plan: the axis variables and every template as a section, with no answers. Hashes: shasum -a 256 over a canonical text written by hand from the section hasher contract (Canonical form, Fields, Defaults, Prose, Strings), the four acme-*.canonical.json files. The ACME plan file records no real hash for them."
   },
@@ -20,7 +20,7 @@
     "templateSet": "7652e0e",
     "generatedOn": "2026-10-15",
     "sections": [
-      {"id": "access", "hash": "43cd3a85e1870c9f056d0d4cbf8240de3ad448a49ea5ecfa63123805eb72f05c", "canonical": "hasher-full.canonical.json"},
+      {"id": "access", "hash": "0f0b82476214f5915a533300a4fb4e93b68ce70b0e661676bd950d2b28d06ca9", "canonical": "hasher-full.canonical.json"},
       {"id": "basic", "hash": "da1c0ea668d16c41b2b139f93894bff02f9b421a06ec3d385be93a4c3e40c2d5", "canonical": "hasher-basic.canonical.json"},
       {"id": "prose", "hash": "3318ca853ba4f69e75de8865ff59ab46dcc2e1d7e338b6adef4d479cbdebce47", "canonical": "hasher-prose.canonical.json"},
       {"id": "sets", "hash": "df52f01608459f10e7aba68668ea35879e1cfa3fb8bde2c23179faa10f6361d7", "canonical": "hasher-sets.canonical.json"},

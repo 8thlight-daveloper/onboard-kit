@@ -15,7 +15,7 @@
       "title": "S",
       "summary": "S",
       "variables": [
-        {"name": "backup", "description": "Backup", "example": "Ann Lee", "type": "person", "multiple": true}
+        {"name": "backup", "description": "Backup", "example": "Ann Lee", "type": "contact", "multiple": true}
       ]
     }
   ]

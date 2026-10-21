@@ -16,7 +16,7 @@
       {"name": "s_flag", "type": "boolean", "default": true, "required": true, "description": "Default flag"},
       {"name": "s_deferred", "required": true, "description": "Deferred"},
       {"name": "s_empty_list", "type": "command", "required": true, "description": "Empty list"},
-      {"name": "s_blank_list", "type": "person", "multiple": true, "required": true, "description": "List of blank items"}
+      {"name": "s_blank_list", "multiple": true, "required": true, "description": "List of blank items"}
     ]}
   ]
 }

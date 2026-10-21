@@ -81,8 +81,7 @@ A variable that has a value is written as follows.
 | -- | -- |
 | Text | The text, as held, with its spaces and line breaks |
 | Flag | `true` or `false`, in lowercase |
-| List, for a variable of type `person` | The items in order, joined with `, then ` |
-| List, for any other variable | The items in order, joined with one space |
+| List | The items in order, joined with one space |
 
 A list is written as held, so an empty item takes its place in the join. The Deferred, unanswered, and onboarding results are these three markers, written exactly.
 
@@ -96,7 +95,7 @@ A variable with no `type` is a `string`.
 
 ## Directory variables
 
-A variable of type `contact`, `role`, or `team` holds ids. A `contact` or `role` answer is one id as Text, or a List of ids when the variable is `multiple`. A `team` answer is one id as Text. Ids are matched exactly, so `Sam-Okafor` and a contact's name are not the id `sam-okafor`. Contact, role, and team ids are separate, so a role id given to a `contact` variable names nothing. The type decides the lookup. A `string` or `person` variable that holds a contact id is written as held, and a `person` variable behaves as it did before the directory.
+A variable of type `contact`, `role`, or `team` holds ids. A `contact` or `role` answer is one id as Text, or a List of ids when the variable is `multiple`. A `team` answer is one id as Text. Ids are matched exactly, so `Sam-Okafor` and a contact's name are not the id `sam-okafor`. Contact, role, and team ids are separate, so a role id given to a `contact` variable names nothing. The type decides the lookup. A `string` variable that holds a contact id or a contact name is written as held.
 
 **Ids.** An id that is not in the directory counts as unanswered, as if it were not stored. In a List the unknown ids are skipped and the known ones keep their order. A List with no known id is unanswered. An unanswered directory variable follows the steps above: it takes a default that names something in the directory, else it is a gap, else `<name>` for an `onboardee` variable. A default is read as an answer is, so a default id that is not in the directory gives no value.
 
@@ -122,7 +121,7 @@ The `slackId` is never written. A vacant role is text and not a gap. It adds no 
 
 A `run` item that is exactly `$name`, for a declared variable of type `command` that has a list as its value, is replaced by the items of the list, in order, each as its own item of `run`. This holds in a step's `run` and in a check's `run`. The items are written as held and are not read again.
 
-In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string` or a `person`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
+In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
 
 ## Problems
 
@@ -178,7 +177,7 @@ D3. **A team entry replaces the role's holders and never merges.** An entry that
 D4. **A List keeps its known ids in order and skips unknown ones.** A List with no known id is unanswered. The same contact twice is written twice. Raised by: "A `multiple: true` contact or role question holds an ordered list". `hard`.
 D5. **Every list of directory values joins with `; `, a role's holders and a List of ids alike.** A role in a List of roles contributes its holders, so the semicolons run on across roles. Raised by: "The exact forms are not decided". `hard`.
 D6. **A directory value in `run` is one item.** An exact `$name` for a `contact`, `role`, or `team` variable is never split and never spliced, even for a List. Raised by: "A variable of type `command` is written `[$name]` and expands to its arguments", which names no other type. `hard`.
-D7. **The type decides the lookup.** A `string` or `person` variable that holds a contact id is written as held. The `person` type is unchanged. Raised by: "Three variable types replace `person`". `hard`.
+D7. **The type decides the lookup.** A `string` variable that holds a contact id or a contact name is written as held. Raised by: "An answer stores an id and nothing else" for the three directory types, which names no lookup for any other type. `hard`.
 D8. **The team parameter and a team variable are separate.** Roles resolve with the `team` parameter. A `team` variable is written from its own answer. An unknown or empty `team` is no team. Raised by: "The team of a plan is the answer to the plan variable of type `team`". `cheap`.
 D9. **Ids are matched exactly and by kind.** Case matters, a contact's name is not an id, and a role id given to a `contact` variable names nothing. Raised by: "Ids are lowercase slugs". `cheap`.
 D10. **Escalation stays as held.** Its items name variables and are not text, so a `contact` or `role` name in `escalation` is not filled here. Raised by: "`escalation` and `owner` references may name `contact` or `role` variables". `cheap`.
@@ -188,7 +187,7 @@ The choices below were made before the directory.
 1. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered variable with no default is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
 2. **Unanswered and no default is a visible marker and a gap.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
 3. **A deferred answer wins over a default.** The person chose to answer later, so the default does not fill it. Raised by: "A variable takes its own section's value, then that section's default" and "A deferred answer becomes a gap". `hard`.
-4. **People are joined in a sentence only.** A list of `person` answers is joined with `, then ` and written in one string. One person to a line is not offered, because the resolver returns text and the assembler could not split it again. Raised by: "one per line in a list, or joined with a comma and the word then in a sentence". `hard`.
+4. **A list is joined with one space.** A List of a `command` is written in one string, in a sentence, a field, or a `run` item that is not exactly `$name`. Raised by: "joins with spaces in prose" for `command` in variables.md. `cheap`.
 5. **An onboarding variable is a blank only when it has no value.** A settled answer, a default, and a deferred answer in the plan still follow the general rules, and only the unanswered case becomes `<name>` and is not a gap. Raised by: "The plan does not hold the value, because each person has their own." `hard`.
 6. **Which fields are filled.** Section and step text, `run`, and `env` values are filled. Ids, `timing`, `after`, `escalation`, `includeIf`, variable declarations, `source`, and unknown fields are not. A step's `name`, `open`, and `directory` are filled even though the docs name only `owner`, `run`, `env`, `notes`, and `body` as places for a variable. Raised by: "A variable ... is written `$name` where text uses it" and "`owner` ... May contain `$name`". `hard`.
 7. **An answer is not read again.** An answer that holds `$` comes out as typed. Raised by: "Variables fill at assembly." `hard`.
@@ -214,8 +213,8 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A name that ends at an underscore or a digit, the shortest match, upper case folded, or `${name}` read | `dollar-signs`, `every-field` |
 | A second pass over the filled text, or a default filled in place | `single-pass`, `dollar-signs` |
 | A flag written in capitals or as empty text, text trimmed | `value-kinds`, `defaults` |
-| A list joined with a comma, or a person list joined with a space, `and`, or a comma, or with `then` after a single person | `list-in-prose`, `command-in-run` |
-| A command not spliced, spliced from a string variable, spliced inside a longer item, spliced for a `person`, first item dropped, or not spliced in a check | `command-in-run`, `single-pass`, `defaults` |
+| A list joined with a comma, `and`, or `then` | `list-in-prose`, `command-in-run` |
+| A command not spliced, spliced from a string variable, spliced inside a longer item, spliced for a `string`, first item dropped, or not spliced in a check | `command-in-run`, `single-pass`, `defaults` |
 | A default ignored, preferred over an answer, or preferred over a deferred answer | `defaults`, `deferred`, `onboarding` |
 | Empty text, an empty list, or a list of empty items treated as settled, a Flag `false` treated as unanswered, or a `false` default | `defaults`, `value-kinds` |
 | An empty default used, or a deferred default ignored | `defaults`, `deferred` |
@@ -234,7 +233,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | After the first build: a read one character past a `$` that panics at the end of a field, for `$`, `$$`, and `$$$` | `dollar-at-end` |
 | After the first build: a name that stops before `0`, `9`, `a`, or `z`, takes a character just outside those ranges or an upper case letter, starts at a fixed place, or fails at the end of the text | `name-edges` |
 | After the first build: an exact `$name` test that stops at the second character when it is a digit or an underscore, so a command such as `$e2e_test` is not spliced | `command-values` |
-| After the first build: a command held as Text split on spaces, or a person list spliced, in a step or in a check | `command-values`, `command-in-run` |
+| After the first build: a command held as Text split on spaces, or a `string` with spaces split or spliced, in a step or in a check | `command-values`, `command-in-run` |
 | After the first build: a condition's `isSettled` pointer shared with the input or dropped, in `includeIf` or `askIf` | `settled-conditions`, and the tests that change the result's `isSettled` targets and check the input |
 | A section's switch dropped, turned on, or shared by pointer with the input | `switch-clauses`, and the shares-nothing tests |
 | A section clause dropped from `includeIf` or from `askIf`, or its section id lost | `switch-clauses`, and the switch-and-clauses test |
@@ -256,5 +255,5 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A contact id matched by name or without case, a role id read as a contact, a contact id read as a role | `directory-unknown-ids` |
 | A team variable written from the plan team or as its id | `directory-team-name`, `directory-defaults` |
 | A directory List spliced into several `run` items, or one item split on spaces | `directory-run`, `directory-fields` |
-| A `person` or a `string` variable looked up in the directory | `directory-person-unchanged`, `directory-empty` |
+| A `string` variable looked up in the directory | `directory-string-unchanged`, `directory-empty` |
 | A contact's name or handle read again, or its `$$` halved | `directory-contact-forms` |

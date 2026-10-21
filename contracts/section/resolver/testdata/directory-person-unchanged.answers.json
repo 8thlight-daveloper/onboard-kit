@@ -1,9 +1,0 @@
-{
-  "sections": {
-    "directory-person-unchanged": {
-      "people": ["sam-okafor", "lee-park"],
-      "plain": "sam-okafor",
-      "text": "Sam Okafor, sam@acme.example, @sam"
-    }
-  }
-}

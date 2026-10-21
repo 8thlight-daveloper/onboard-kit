@@ -5,7 +5,6 @@
   {"id": "plan.escalation", "type": "role", "choices": [{"value": "engineering-manager", "label": "Engineering manager"}, {"value": "it-contact", "label": "IT contact"}, {"value": "design-lead", "label": "Design lead"}]},
   {"id": "plan.discipline", "type": "choice", "answer": "software", "suggestions": [{"value": "software", "source": "given"}]},
   {"id": "plan.note", "answer": "a", "suggestions": [{"value": "a", "source": "given"}]},
-  {"id": "plan.legacy", "type": "person", "answer": "Pat Doe", "suggestions": [{"value": "Pat Doe", "source": "given"}]},
   {"id": "access.manager", "type": "role", "required": true, "answer": "engineering-manager", "choices": [{"value": "engineering-manager", "label": "Engineering manager"}, {"value": "it-contact", "label": "IT contact"}, {"value": "design-lead", "label": "Design lead"}], "suggestions": [{"value": "engineering-manager", "source": "given"}]},
   {"id": "access.mentor", "type": "contact", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]}
 ], "blockers": []}

@@ -166,7 +166,7 @@ Decided, and built. The answer is made on the Walk, under the question.
 - A contact, role, or team is picked from the organization's directory, see Pick lists. A person never types an id.
 - A string takes typed text, with the current answer filled in. Tab cycles through the question's suggestions. Enter on text equal to the current answer moves on without saving. Enter on an empty box clears the answer. Ctrl+d defers.
 - A command is words separated by spaces, with quotes keeping spaces together.
-- Several people of the `person` type are separated by `;`.
+- Several contacts or several roles in a `multiple` question are picked as a checklist, see Pick lists.
 - An answer that the validator refuses stays on the Walk with the problem message under the answer.
 - Every accepted answer is saved to the plan file at once. There is no unsaved state.
 - While a person types, letters are text, so the single-letter keys are off. Back, forward, defer, and help have control-key forms listed below.

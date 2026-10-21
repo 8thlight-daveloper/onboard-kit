@@ -67,17 +67,6 @@
      "type": "command"
     },
     {
-     "name": "owner",
-     "description": "owner",
-     "type": "person"
-    },
-    {
-     "name": "contacts",
-     "description": "contacts",
-     "type": "person",
-     "multiple": true
-    },
-    {
      "name": "note",
      "description": "note"
     },

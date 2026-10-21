@@ -21,7 +21,7 @@
       "verification": "It works.",
       "body": "Body text.",
       "variables": [
-        {"name": "backup", "description": "Backup", "example": "Ann Lee", "type": "person", "multiple": true, "required": true, "default": ["Ann"], "audience": "onboardee",
+        {"name": "backup", "description": "Backup", "example": "Ann Lee", "type": "contact", "multiple": true, "required": true, "default": ["Ann"], "audience": "onboardee",
          "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": true}}, {"section": "other", "enabled": false}]}}
       ],
       "steps": [

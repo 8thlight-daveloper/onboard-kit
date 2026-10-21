@@ -7,15 +7,14 @@
       {"name": "a clone URL that fits the pattern", "question": "access.repo_url", "value": "https://git.acme.example/platform/widget-service.git", "problems": []},
       {"name": "a clone URL that does not fit, with the hint", "question": "access.repo_url", "value": "ftp://git.acme.example/widget-service.git",
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "access.repo_url", "section": "access", "messageContains": "A clone URL, starting with git@ or https://"}]},
-      {"name": "a question shown by its condition", "question": "access.source_control_grantor", "value": "IT service desk", "problems": []},
+      {"name": "a question shown by its condition", "question": "access.source_control_grantor", "value": "it-contact", "problems": []},
       {"name": "an onboardee question", "question": "access.account_name", "value": "jdoe", "problems": []},
       {"name": "a question of a section left out by its includeIf", "question": "review-design-system.design_system_url", "value": "https://design.acme.example",
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "review-design-system.design_system_url", "section": "review-design-system"}]},
       {"name": "a command", "question": "clone-and-run-tests.setup_command", "value": ["make", "setup"], "problems": []},
-      {"name": "one person in a list of people", "question": "stuck-general.general_contacts", "value": ["Alex Rivera, alex.rivera@acme.example, @alex"],
-        "problems": [{"code": "answer.single-person", "severity": "warning", "question": "stuck-general.general_contacts", "section": "stuck-general"}]}
+      {"name": "one contact in a list of contacts", "question": "stuck-general.general_contacts", "value": ["alex-rivera"], "problems": []}
     ],
-    "source": "contracts/plan/testdata/acme.plan.json, copied from docs/reference/examples/acme. A plan that holds only fitting answers has no problems. 0010, Boundaries: the validator's fixtures are a plan and its expected problems. variables.md, Person: a list with exactly one person gets a warning"
+    "source": "contracts/plan/testdata/acme.plan.json, copied from docs/reference/examples/acme. A plan that holds only fitting answers has no problems. 0010, Boundaries: the validator's fixtures are a plan and its expected problems. 0080: a role question and a contact question hold ids that the directory has, and a list of one contact is a list like any other"
   },
   {
     "name": "empty-plan",
@@ -32,12 +31,10 @@
       {"name": "a flag for a boolean", "question": "main.s_flag", "value": false, "problems": []},
       {"name": "text for a choice", "question": "main.s_pick", "value": "beta", "problems": []},
       {"name": "a list for a command", "question": "main.s_cmd", "value": ["make", "test"], "problems": []},
-      {"name": "text for one person", "question": "main.s_who", "value": "Jane Doe, jane@acme.example, @jane", "problems": []},
-      {"name": "a list for several people", "question": "main.s_crew", "value": ["Ann Lee, ann@acme.example, @ann", "Bo Ray, bo@acme.example, @bo"], "problems": []},
       {"name": "a list for a string that takes several answers", "question": "main.s_many", "value": ["one"], "problems": []},
       {"name": "a plan variable", "question": "plan.p_pick", "value": "alpha", "problems": []}
     ],
-    "source": "variables.md, Types: string takes text, boolean true or false, choice one of its options, command an argument list, person a text line, and a list with multiple true. Fields: multiple holds the answers as a list"
+    "source": "variables.md, Types: string takes text, boolean true or false, choice one of its options, command an argument list, and a list with multiple true. Fields: multiple holds the answers as a list"
   },
   {
     "name": "wrong-kinds",
@@ -55,13 +52,12 @@
       {"name": "deferred for a boolean", "question": "main.d_flag", "value": {"deferred": true}, "problems": []},
       {"name": "deferred for a choice", "question": "main.d_pick", "value": {"deferred": true}, "problems": []},
       {"name": "deferred for a command", "question": "main.d_cmd", "value": {"deferred": true}, "problems": []},
-      {"name": "deferred for one person", "question": "main.d_who", "value": {"deferred": true}, "problems": []},
-      {"name": "deferred for several people", "question": "main.d_crew", "value": {"deferred": true}, "problems": []},
+      {"name": "deferred for several strings", "question": "main.d_many", "value": {"deferred": true}, "problems": []},
       {"name": "empty text for a boolean", "question": "main.e_flag", "value": "", "problems": []},
       {"name": "empty text for a pattern", "question": "main.e_num", "value": "", "problems": []},
       {"name": "empty text for a choice", "question": "main.e_pick", "value": "", "problems": []},
       {"name": "an empty list for a command", "question": "main.e_cmd", "value": [], "problems": []},
-      {"name": "a list of empty text for several people", "question": "main.e_crew_blank", "value": [""], "problems": []},
+      {"name": "a list of empty text for several strings", "question": "main.e_many_blank", "value": [""], "problems": []},
       {"name": "only spaces for a string", "question": "main.e_blank", "value": "   ", "problems": []},
       {"name": "a list of empty text for a string", "question": "main.e_str_list", "value": [""], "problems": []},
       {"name": "an empty list for a boolean", "question": "main.e_flag_list", "value": [], "problems": []},
@@ -116,23 +112,9 @@
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.repo_ok", "section": "main", "messageContains": "A clone URL, starting with git@ or https://"}]},
       {"name": "text that ends in a line break", "question": "main.anchored_ok", "value": "abc\n",
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.anchored_ok", "section": "main"}]},
-      {"name": "a person ignores a pattern", "question": "main.who_pattern", "value": "Jane Doe, jane@acme.example, @jane", "problems": []}
+      {"name": "a choice ignores a pattern", "question": "main.pick_pattern", "value": "alpha", "problems": []}
     ],
     "source": "variables.md, Types: pattern uses RE2 syntax, and a string must match it. Fields: patternHint is shown when a value does not match. finder contract, Suggestions: a pattern matches anywhere in the text, and RE2 has no match before a final line break. acme.plan.json: the repo_url pattern"
-  },
-  {
-    "name": "people",
-    "plan": "people.plan.json",
-    "expected": "people.problems.json",
-    "checks": [
-      {"name": "a person with a name only", "question": "main.one_ok", "value": "Jane Doe",
-        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.one_ok", "section": "main"}]},
-      {"name": "a person with two ways to reach them", "question": "main.one_ok", "value": "Jane Doe, jane@acme.example, @jane", "problems": []},
-      {"name": "two people, the second with no contact", "question": "main.many_ok", "value": ["Ann Lee, ann@acme.example, @ann", "Bo Ray"],
-        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.many_ok", "section": "main", "detail": {"item": "1"}}]},
-      {"name": "no people", "question": "main.many_ok", "value": [], "problems": []}
-    ],
-    "source": "variables.md, Person: the tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A multiple variable with exactly one person gets a warning. A warning never stops the answer"
   },
   {
     "name": "secrets",
@@ -204,14 +186,6 @@
       {"name": "text for a command", "question": "main.s_cmd", "value": "make test",
         "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_cmd", "section": "main", "detail": {"expected": "list", "found": "text"}}]},
       {"name": "a list for a command", "question": "main.s_cmd", "value": ["make", "test"], "problems": []},
-      {"name": "a list for one person", "question": "main.s_who", "value": ["Jane Doe, jane@acme.example, @jane"],
-        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_who", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
-      {"name": "text for several people", "question": "main.s_crew", "value": "Jane Doe, jane@acme.example, @jane",
-        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.s_crew", "section": "main", "detail": {"expected": "list", "found": "text"}}]},
-      {"name": "one person with no contact, in a list of one", "question": "main.s_crew", "value": ["Ann Lee"],
-        "problems": [
-          {"code": "answer.thin-contact", "severity": "warning", "question": "main.s_crew", "section": "main", "detail": {"item": "0"}},
-          {"code": "answer.single-person", "severity": "warning", "question": "main.s_crew", "section": "main"}]},
       {"name": "a question shown by its condition", "question": "main.shown", "value": "x", "problems": []},
       {"name": "a question hidden by its condition", "question": "main.hidden", "value": "x",
         "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
@@ -246,8 +220,6 @@
       {"name": "a flag for an onboardee boolean", "question": "main.ee_flag", "value": true, "problems": []},
       {"name": "an onboardee pattern that does not fit", "question": "main.ee_pat", "value": "abc",
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.ee_pat", "section": "main", "messageContains": "digits only"}]},
-      {"name": "an onboardee person with no contact", "question": "main.ee_who", "value": "Ann Lee",
-        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.ee_who", "section": "main"}]},
       {"name": "an onboardee plan variable with an option", "question": "plan.team", "value": "design", "problems": []},
       {"name": "an onboardee plan variable outside its options", "question": "plan.team", "value": "nope",
         "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "plan.team"}]},
@@ -375,9 +347,7 @@
       {"name": "a token for a contact, the unknown id first and then the secret", "question": "main.c", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
         "problems": [
           {"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}},
-          {"code": "secret.token-prefix", "severity": "error", "question": "main.c", "section": "main"}]},
-      {"name": "a person answer is judged as before", "question": "main.who", "value": "Jane Doe",
-        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.who", "section": "main"}]}
+          {"code": "secret.token-prefix", "severity": "error", "question": "main.c", "section": "main"}]}
     ],
     "source": "briefs/directory.md decisions 1 and 2, and the task for this contract: a value for a contact, role, or team that names an id not in the directory is an error in CheckValue, because the tool never creates such an answer, while Validate warns about a stored one. The directory of the plan holds integrity problems (a repeated contact id, a vacancy, an unreachable contact, a team override), and CheckValue reports none of them. Written by hand from the plan"
   }

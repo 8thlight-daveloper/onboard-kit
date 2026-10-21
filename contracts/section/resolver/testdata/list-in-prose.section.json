@@ -4,11 +4,11 @@
   "summary": "Lists in sentences",
   "owner": "$solo",
   "verification": "$test_command passes.",
-  "body": "Run $test_command. Ask $contacts. Or ask $solo.",
+  "body": "Run $test_command. Lint with $lint_command. Or ask $solo.",
   "variables": [
     {"name": "test_command", "type": "command", "description": "Runs the tests"},
-    {"name": "contacts", "type": "person", "multiple": true, "description": "Who can help"},
-    {"name": "solo", "type": "person", "multiple": true, "description": "One person"}
+    {"name": "lint_command", "type": "command", "description": "Runs the linter"},
+    {"name": "solo", "description": "One person"}
   ],
   "steps": [
     {

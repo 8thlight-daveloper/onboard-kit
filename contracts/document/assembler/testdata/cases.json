@@ -173,20 +173,6 @@
     "source": "Hand-written. Contract rule: Markdown. Docs: variables, phase onboarding shows a blank. The ACME document wraps the blank in backticks."
   },
   {
-    "name": "people-list",
-    "plan": "people-list.plan.json",
-    "document": "people-list.md",
-    "problems": [
-      {
-        "code": "gap.unanswered",
-        "question": "contacts.pending",
-        "section": "contacts",
-        "severity": "warning"
-      }
-    ],
-    "source": "Hand-written. Docs: variables, person. The ACME document shows a person list as a sentence. The addresses use the reserved example domain."
-  },
-  {
     "name": "steps-all-fields",
     "plan": "steps-all-fields.plan.json",
     "document": "steps-all-fields.md",
@@ -457,6 +443,6 @@
         "section": "stuck"
       }
     ],
-    "source": "Hand-written. docs/decisions/0080: an escalation lists every item in order, and a vacant role is shown as vacant and not skipped. 0080, Directory references and Team in the contract: an item may name a contact, a role, or a person variable. Contract rules: Escalation, Vacant roles."
+    "source": "Hand-written. docs/decisions/0080: an escalation lists every item in order, and a vacant role is shown as vacant and not skipped. 0080, Directory references and Team in the contract: an item may name a contact variable or a role variable. Contract rules: Escalation, Vacant roles."
   }
 ]

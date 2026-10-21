@@ -2,13 +2,13 @@
   "id": "list-in-prose",
   "title": "Run make test",
   "summary": "Lists in sentences",
-  "owner": "Jane Doe, jane@acme.example, @jane",
+  "owner": "Jane Doe",
   "verification": "make test passes.",
-  "body": "Run make test. Ask Alex Rivera, alex.rivera@acme.example, @alex, then Sam Okafor, sam.okafor@acme.example, @sam. Or ask Jane Doe, jane@acme.example, @jane.",
+  "body": "Run make test. Lint with make lint --strict. Or ask Jane Doe.",
   "variables": [
     {"name": "test_command", "type": "command", "description": "Runs the tests"},
-    {"name": "contacts", "type": "person", "multiple": true, "description": "Who can help"},
-    {"name": "solo", "type": "person", "multiple": true, "description": "One person"}
+    {"name": "lint_command", "type": "command", "description": "Runs the linter"},
+    {"name": "solo", "description": "One person"}
   ],
   "steps": [
     {

@@ -10,7 +10,7 @@
       "alpha": {
         "b_flag": "x",
         "a_pick": "zzz",
-        "crew": ["Dee Fox, ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE"]
+        "tok": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE"
       }
     }
   },
@@ -21,7 +21,7 @@
     {"id": "alpha", "variables": [
       {"name": "b_flag", "type": "boolean", "description": "Boolean"},
       {"name": "a_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Choice"},
-      {"name": "crew", "type": "person", "multiple": true, "description": "People"}
+      {"name": "tok", "type": "choice", "options": ["alpha", "beta"], "description": "Choice that holds a token"}
     ]}
   ]
 }

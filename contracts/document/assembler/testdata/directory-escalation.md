@@ -15,4 +15,4 @@ Who to ask next.
 - [ ] **Own list.** Escalation: _unanswered_, then Sam Okafor, @sam, then IT help desk, #it-help.
 - [ ] **No list.**
 
-Owner: Lee Park; Kim Ng, kim.ng@globex.example. Escalation: IT help desk, #it-help, then Sam Okafor, @sam; Kim Ng, kim.ng@globex.example, then Lee Park; Kim Ng, kim.ng@globex.example, then Ana Ruiz, ana.ruiz@globex.example, @ana, then Sam Okafor, @sam.
+Owner: Lee Park; Kim Ng, kim.ng@globex.example. Escalation: IT help desk, #it-help, then Sam Okafor, @sam; Kim Ng, kim.ng@globex.example, then Lee Park; Kim Ng, kim.ng@globex.example, then Sam Okafor, @sam.

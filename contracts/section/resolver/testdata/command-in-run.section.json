@@ -8,7 +8,7 @@
     {"name": "one_word", "type": "command", "description": "A command of one word"},
     {"name": "sentence", "description": "Text with a space"},
     {"name": "repo_dir", "description": "Directory of the clone"},
-    {"name": "contacts", "type": "person", "multiple": true, "description": "Who can help"}
+    {"name": "contacts", "type": "string", "description": "Who can help"}
   ],
   "steps": [
     {"id": "splice", "name": "Splice", "run": ["env", "$setup_command", "--", "$test_command", "$one_word"]},

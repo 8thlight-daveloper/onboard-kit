@@ -1,6 +1,0 @@
-{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"},
-  "sections":{"contacts":{"leads":["Ana Ruiz, ana.ruiz@globex.example, @ana","Bo Chen, bo.chen@globex.example, @bo"],"backup":"Cy Dean, cy.dean@globex.example, @cy"}}},
- "sections":[
-  {"id":"contacts","title":"Contacts","summary":"Who to ask.","timing":"week-one","owner":"$leads",
-   "body":"Ask $leads, or $backup. Pending: $pending.",
-   "variables":[{"name":"leads","description":"Who leads","type":"person","multiple":true},{"name":"backup","description":"Backup","type":"person"},{"name":"pending","description":"Pending contact","type":"person","multiple":true}]}]}

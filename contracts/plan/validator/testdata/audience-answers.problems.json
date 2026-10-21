@@ -1,10 +1,8 @@
 {"problems": [
   {"code": "answer.wrong-kind", "severity": "error", "question": "main.ee_cmd", "section": "main", "detail": {"expected": "list", "found": "text"}},
-  {"code": "answer.single-person", "severity": "warning", "question": "main.ee_crew", "section": "main"},
   {"code": "answer.wrong-kind", "severity": "error", "question": "main.ee_flag", "section": "main", "detail": {"expected": "flag", "found": "text"}},
   {"code": "answer.not-an-option", "severity": "error", "question": "main.ee_needs_mode", "section": "main"},
   {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.ee_pat", "section": "main", "messageContains": "digits only"},
-  {"code": "answer.thin-contact", "severity": "warning", "question": "main.ee_who", "section": "main"},
   {"code": "answer.not-an-option", "severity": "error", "question": "main.ob_needs_team", "section": "main"},
   {"code": "answer.not-an-option", "severity": "error", "question": "plan.team"}
 ]}

@@ -15,7 +15,7 @@
   "verification": "You can sign in.",
   "body": "Line one.\nLine two.",
   "variables": [
-    {"name": "manager", "description": "Who manages", "type": "person", "multiple": true, "options": ["ann", "bo"], "pattern": "^[a-z]+$", "patternHint": "A name", "required": true, "default": ["ann"], "audience": "onboardee", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": false}}, {"section": "legacy", "enabled": false}]}},
+    {"name": "manager", "description": "Who manages", "type": "contact", "multiple": true, "options": ["ann", "bo"], "pattern": "^[a-z]+$", "patternHint": "A name", "required": true, "default": ["ann"], "audience": "onboardee", "askIf": {"all": [{"question": "plan.team_state", "answer": {"isSettled": false}}, {"section": "legacy", "enabled": false}]}},
     {"name": "repo", "description": "Clone URL", "default": "git@example.test:a.git"}
   ],
   "steps": [
