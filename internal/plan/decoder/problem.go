@@ -22,6 +22,7 @@ const (
 	codeUnknownField      = "format.unknown-field"
 	codeEmptyAnswer       = "format.empty-answer"
 	codeEmptyItem         = "format.empty-item"
+	codeWrongKind         = "format.wrong-kind"
 )
 
 var codeOrder = []string{
@@ -34,6 +35,7 @@ var codeOrder = []string{
 	codeUnknownField,
 	codeEmptyAnswer,
 	codeEmptyItem,
+	codeWrongKind,
 }
 
 var messages = map[string]string{
@@ -66,11 +68,15 @@ type collector struct {
 }
 
 func (c *collector) report(code string, at location) {
+	c.reportProblem(pathProblem(code, at.path, nil), at)
+}
+
+func (c *collector) reportProblem(problem model.Problem, at location) {
 	c.findings = append(c.findings, finding{
-		problem: pathProblem(code, at.path, nil),
+		problem: problem,
 		line:    at.line,
 		column:  at.column,
-		rank:    rankOf(code),
+		rank:    rankOf(problem.Code),
 	})
 }
 

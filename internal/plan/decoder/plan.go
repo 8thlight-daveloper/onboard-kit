@@ -17,6 +17,12 @@ func (c *collector) planFrom(root *yaml.Node) model.Plan {
 			plan.ID = c.stringOf(found.value, found.at)
 		case "origin":
 			plan.Origin = c.originOf(found.value, found.at)
+		case "planUrl":
+			plan.URL = c.stringOf(found.value, found.at)
+		case "resultsPath":
+			plan.ResultsPath = c.stringOf(found.value, found.at)
+		case "kind":
+			c.checkKind(found.value, found.at)
 		case "directory":
 			plan.Directory = c.directoryOf(found.value, found.at)
 		case "provenance":

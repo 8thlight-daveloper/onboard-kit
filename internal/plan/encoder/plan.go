@@ -12,6 +12,8 @@ func (c *collector) planNode(plan model.Plan) node {
 	builder.add("id", stringField(plan.ID))
 	builder.add("provenance", provenanceNode(plan.Provenance))
 	builder.add("origin", originNode(plan.Origin))
+	builder.add("planUrl", stringField(plan.URL))
+	builder.add("resultsPath", stringField(plan.ResultsPath))
 	builder.add("directory", c.directoryNode(plan.Directory))
 	builder.add("variables", c.variableSequence(plan.Variables, "variables"))
 	builder.add("answers", c.answersNode(plan.Answers))
@@ -29,7 +31,7 @@ func provenanceNode(provenance model.Provenance) node {
 
 func isPlanKey(key string) bool {
 	switch key {
-	case "schemaVersion", "id", "provenance", "origin", "directory", "variables", "answers", "sections":
+	case "schemaVersion", "id", "provenance", "origin", "planUrl", "resultsPath", "kind", "directory", "variables", "answers", "sections":
 		return true
 	}
 	return false
