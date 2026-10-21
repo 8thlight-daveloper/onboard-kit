@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example"},
+      {"id": "it-help", "name": "IT help desk", "email": "help@acme.example"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor", "ghost-r"]}
+    ],
+    "teams": [
+      {"id": "zeta", "name": "Zeta team", "contact": "ghost-z"},
+      {"id": "platform", "name": "Platform team", "contact": "ghost-b", "holders": {"engineering-manager": ["ghost-h"]}},
+      {"id": "alpha", "name": "Alpha team", "contact": "ghost-z"},
+      {"id": "design", "name": "Design team", "contact": "engineering-manager"},
+      {"id": "ops", "name": "Ops team", "contact": "design"},
+      {"id": "legal", "name": "Legal team", "contact": "Sam-Okafor"},
+      {"id": "spaced", "name": "Spaced team", "contact": " "},
+      {"id": "dup", "name": "Dup team one", "contact": "b-two"},
+      {"id": "dup", "name": "Dup team two", "contact": "a-one"},
+      {"id": "reachable", "name": "Reachable team", "contact": "it-help"},
+      {"id": "also-reachable", "name": "Also reachable team", "contact": "sam-okafor", "holders": {"engineering-manager": ["it-help"]}},
+      {"id": "plain", "name": "Plain team"},
+      {"id": "blank", "name": "Blank team", "contact": ""}
+    ]
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "c", "type": "contact", "description": "Contact"}
+    ]}
+  ]
+}

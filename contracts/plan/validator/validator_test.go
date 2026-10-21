@@ -236,7 +236,7 @@ func TestEveryCaseCitesItsSourceAndTheCasesCoverEveryCode(t *testing.T) {
 			t.Errorf("no case expects a problem of severity %s", severity)
 		}
 	}
-	for _, key := range []string{"item", "expected", "found", "kind", "id", "contact", "role", "team", "holder", "variables"} {
+	for _, key := range []string{"item", "expected", "found", "kind", "id", "contact", "role", "team", "holder", "team-contact", "variables"} {
 		if !details[key] {
 			t.Errorf("no case expects the detail %s", key)
 		}

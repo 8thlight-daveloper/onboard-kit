@@ -11,7 +11,7 @@ var planWideSortKeys = map[string][]string{
 	"directory.contact-unreachable":  {"contact"},
 	"directory.email-malformed":      {"contact"},
 	"directory.duplicate-id":         {"kind", "id"},
-	"directory.holder-not-a-contact": {"role", "team", "holder"},
+	"directory.holder-not-a-contact": {"role", "team", "holder", "team-contact"},
 	"directory.role-vacant":          {"role"},
 	"directory.team-role-unknown":    {"team", "role"},
 	"plan.duplicate-section-id":      {"section"},
