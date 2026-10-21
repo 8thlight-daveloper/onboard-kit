@@ -1,0 +1,40 @@
+  Onboarding plan  Walk  Overview  Review  Sections  [Contacts]                                                          13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  New role
+  Id: release-lead, made from the name
+
+    Name      Release lead
+
+  Holders, in order
+    [ ] Alex Rivera
+    [1] Sam Okafor
+  > [2] IT service desk
+    [ ] Platform team channel
+    [ ] Pat Lee
+    [ ] Front desk
+
+  Space picks or unpicks. Enter saves. Pick order is kept.
+  Order: Sam Okafor, then IT service desk
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  space pick  enter save  esc cancel  f1 help

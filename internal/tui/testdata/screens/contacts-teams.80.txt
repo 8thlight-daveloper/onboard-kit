@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  [Contacts]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Contacts 6  Roles 4  [Teams 2]
+
+  > Platform team  no overrides
+    Design team    1 override
+
+  About this team
+
+  Id: platform
+  Contact: Platform team channel, #platform-team
+  No overrides. Every role uses its own holders.
+
+
+
+
+
+
+
+
+
+
+  a add  enter edit  x remove  tab next list  esc back  ? help

@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  [Contacts]                                                  13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Contacts 6  [Roles 4]  Teams 2                                                    │ About this role
+                                                                                    │
+  > Engineering manager  Sam Okafor                                                 │ Id: engineering-manager
+    IT contact           IT service desk                                            │ Holders, in order:
+    Platform team lead   Alex Rivera                                                │   1. Sam Okafor
+    Security lead        ! vacant                                                   │
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  a add  enter edit  x remove  tab next list  esc back  ? help

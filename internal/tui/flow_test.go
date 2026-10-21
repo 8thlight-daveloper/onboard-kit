@@ -301,7 +301,7 @@ func TestWordsAreSplitAndJoinedWithQuotes(t *testing.T) {
 	}
 }
 
-func TestPeopleAreSeparatedBySemicolons(t *testing.T) {
+func TestContactsAreSeparatedBySemicolons(t *testing.T) {
 	t.Parallel()
 	question := model.Question{Type: model.VariableTypePerson, Multiple: true}
 	value := parseEntry(question, "Ann Lee, ann@x.test, @ann; Bo Ray, bo@x.test, @bo ;")

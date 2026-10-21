@@ -1,0 +1,30 @@
+  Onboarding plan  Walk  Overview  Review  Sections  [Contacts]                                      13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  New contact
+  Id: dana-lee, made from the name
+
+    Name      Dana Lee
+  > Email     dana@acme.example
+    Slack     optional, such as @sam or #it-help
+    Slack id  optional, used for links
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter next  ctrl+s save  esc cancel  f1 help

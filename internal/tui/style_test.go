@@ -91,16 +91,16 @@ func TestTheAccentNeverColoursATitle(t *testing.T) {
 	}
 }
 
-func TestOnThePeopleScreenTheListIsBrightAndTheDetailIsFaint(t *testing.T) {
+func TestOnTheContactsScreenTheListIsBrightAndTheDetailIsFaint(t *testing.T) {
 	withColour(t)
-	app, _ := onPeople(t, peopleWithFlags(t))
+	app, _ := onContacts(t, contactsWithFlags(t))
 	view := resize(app, 140, 40).View()
 	expectBright(t, view, "Alex Rivera")
-	expectBright(t, view, "Contacts 5")
+	expectBright(t, view, "Contacts 6")
 	expectFaint(t, view, "Roles 4")
 	expectFaint(t, view, "About this contact")
 	expectFaint(t, view, "Id: alex-rivera")
-	if got := sgrBefore(t, view, "Contacts 5"); !strings.Contains(got, "1;") || !strings.Contains(got, "38;5;32") {
+	if got := sgrBefore(t, view, "Contacts 6"); !strings.Contains(got, "1;") || !strings.Contains(got, "38;5;32") {
 		t.Errorf("the current list is bold in the accent, got SGR %q", got)
 	}
 	flagged := resize(press(app, typed("G")), 140, 40).View()
@@ -113,11 +113,11 @@ func TestOnThePeopleScreenTheListIsBrightAndTheDetailIsFaint(t *testing.T) {
 	}
 }
 
-func TestWithNoColourThePeopleScreenKeepsItsMarks(t *testing.T) {
+func TestWithNoColourTheContactsScreenKeepsItsMarks(t *testing.T) {
 	withoutColour(t)
-	app, _ := onPeople(t, peopleWithFlags(t))
+	app, _ := onContacts(t, contactsWithFlags(t))
 	view := resize(app, 120, 30).View()
-	for _, want := range []string{"[Contacts 5]", "> Alex Rivera", "! email looks wrong", "! no way to reach", "[People]", "a add", "x remove"} {
+	for _, want := range []string{"[Contacts 6]", "> Alex Rivera", "! email looks wrong", "! no way to reach", "[Contacts]", "a add", "x remove"} {
 		if !strings.Contains(view, want) {
 			t.Errorf("lacks %q:\n%s", want, view)
 		}

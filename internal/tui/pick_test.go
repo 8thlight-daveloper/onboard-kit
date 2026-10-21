@@ -165,7 +165,7 @@ func TestAnEmptyDirectoryListSaysSoForTheOnboarder(t *testing.T) {
 		for _, many := range []bool{false, true} {
 			app, backend := pickingApp(directoryQuestion("plan.contact", "plan", "Who?", variableType, many), model.Value{})
 			view := strings.Join(strings.Fields(plainView(resize(app, 80, 30))), " ")
-			want := "No " + noun + " to pick from yet. Add them on the People screen, press P."
+			want := "No " + noun + " to pick from yet. Add them on the Contacts screen, press c."
 			if !strings.Contains(view, want) {
 				t.Errorf("%s: missing %q:\n%s", noun, want, view)
 			}
@@ -318,7 +318,7 @@ func TestAnEmptyRealDirectoryAsksTheOnboarderToAddEntriesFirst(t *testing.T) {
 	plan.Directory = model.Directory{}
 	app, _ := startWith(t, plan, model.AudienceOnboarder)
 	app = moveTo(t, app, "access.onboarding_owner_role")
-	if !strings.Contains(strings.Join(strings.Fields(plainView(resize(app, 80, 30))), " "), "No roles to pick from yet. Add them on the People screen, press P.") {
+	if !strings.Contains(strings.Join(strings.Fields(plainView(resize(app, 80, 30))), " "), "No roles to pick from yet. Add them on the Contacts screen, press c.") {
 		t.Fatalf("got:\n%s", plainView(app))
 	}
 }

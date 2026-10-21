@@ -74,6 +74,7 @@ func typed(text string) tea.KeyMsg {
 var (
 	enter    = tea.KeyMsg{Type: tea.KeyEnter}
 	down     = tea.KeyMsg{Type: tea.KeyDown}
+	up       = tea.KeyMsg{Type: tea.KeyUp}
 	space    = tea.KeyMsg{Type: tea.KeyRunes, Runes: []rune(" ")}
 	esc      = tea.KeyMsg{Type: tea.KeyEsc}
 	shiftTab = tea.KeyMsg{Type: tea.KeyShiftTab}

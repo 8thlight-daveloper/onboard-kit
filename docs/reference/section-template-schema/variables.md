@@ -83,7 +83,7 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
   required: true
 ```
 
-- **Pick, do not type.** The walkthrough offers the directory's entries. The onboarder adds a missing contact on the People screen. The `team` question's choices are the directory's teams.
+- **Pick, do not type.** The walkthrough offers the directory's entries. The onboarder adds a missing contact on the Contacts screen. The `team` question's choices are the directory's teams.
 - **An unknown id is unanswered.** An answer that names an id the directory no longer has counts as not answered, so a required question blocks until it is filled again.
 - **A role resolves to people.** A role gives the contacts who hold it. A team can name its own holders for a role, and those win for that team. The team is the answer to the plan's `team` variable. A role with no holder shows as vacant, and the document lists it as a gap.
 - **Order.** A `multiple` question keeps its order. An escalation list is read in that order.
