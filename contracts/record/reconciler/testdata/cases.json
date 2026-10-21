@@ -1,0 +1,167 @@
+[
+  {
+    "name": "refuse-a-plan-with-no-id",
+    "file": "refuse-a-plan-with-no-id.case.json",
+    "source": "Hand-written. 0090 'Refreshing becomes reconciling', and the lead's decision: reconcile.missing-plan-id when the plan has no id. The record, its answers, and its old reference come back unchanged, and nothing is listed."
+  },
+  {
+    "name": "refuse-a-different-plan",
+    "file": "refuse-a-different-plan.case.json",
+    "source": "Hand-written. 0090: a record belongs to one plan. The lead's decision: reconcile.different-plan when the record's plan id is not empty and differs, with detail expected (the record's id) and found (the plan's id). The answer that the plan would remove stays, and the reference is not updated."
+  },
+  {
+    "name": "missing-id-is-the-only-problem-when-both-apply",
+    "file": "missing-id-is-the-only-problem-when-both-apply.case.json",
+    "source": "Hand-written. The lead's decision on the order of the refusals: a plan with no id gives only reconcile.missing-plan-id, whatever the record holds."
+  },
+  {
+    "name": "first-reconcile-is-accepted",
+    "file": "first-reconcile-is-accepted.case.json",
+    "source": "Hand-written. The lead's decision: a record with an empty plan id has not been reconciled before, so it is accepted. The result's reference is the plan's id and the driver's hash and url. A first reconcile with no previous plan lists no new questions."
+  },
+  {
+    "name": "reference-is-replaced-as-given",
+    "file": "reference-is-replaced-as-given.case.json",
+    "source": "Hand-written. The lead's decision: the result's plan reference is {plan.id, reference.hash, reference.url}. An empty url from the driver is written as empty, and the old url is not kept."
+  },
+  {
+    "name": "kind-that-does-not-fit-needs-review",
+    "file": "kind-that-does-not-fit-needs-review.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher kind-no-longer-fits-needs-review. 0090: an answer the plan no longer accepts is removed and listed for review. The kind a variable takes: text for a non-multiple, a list for a command or a multiple, a flag for a boolean. A false flag is settled and fits a boolean."
+  },
+  {
+    "name": "choice-not-in-options-needs-review",
+    "file": "choice-not-in-options-needs-review.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher choice-no-longer-listed-needs-review. 0090: a removed choice option is removed from the record. The match is exact, with case. A choice with no options accepts no settled text."
+  },
+  {
+    "name": "multiple-choice-checks-every-item",
+    "file": "multiple-choice-checks-every-item.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher multiple-choice-checks-every-item. A multiple choice list is valid when every item that is not empty is an option. One bad item removes the whole answer, unlike a contact list. An empty item is left alone."
+  },
+  {
+    "name": "answers-that-are-not-settled-stay",
+    "file": "answers-that-are-not-settled-stay.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher answers-that-are-not-checked-stay. 0035: deferred, empty text, an empty list, and a list of only empty text are not settled. They are valid for every type and kind, so none is removed or listed."
+  },
+  {
+    "name": "nothing-else-is-checked",
+    "file": "nothing-else-is-checked.case.json",
+    "source": "Hand-written. Mirrors the refresher: only the kind, the options of a choice, and ids are checked. A pattern, options on a variable that is not a choice, required, and default are not checked here. The plan validator and the section walker handle them."
+  },
+  {
+    "name": "kind-fit-for-contact-role-and-team",
+    "file": "kind-fit-for-contact-role-and-team.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher kind-fit-for-contact-role-and-team. 0080: contact, role, and team answers store ids. A contact or role takes text, or a list when multiple. A team takes text and its multiple is ignored. A flag fits none of them."
+  },
+  {
+    "name": "id-must-be-in-the-list-for-its-type",
+    "file": "id-must-be-in-the-list-for-its-type.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher id-must-be-in-the-list-for-its-type. A contact answer must be a contact id, a role answer a role id, and a team answer a team id, exactly, with case. A name is not an id."
+  },
+  {
+    "name": "ids-are-checked-against-the-new-plan-directory",
+    "file": "ids-are-checked-against-the-new-plan-directory.case.json",
+    "source": "Hand-written. The lead's decision: the new plan owns the directory (0080, 0090). Ids are checked against the directory of the new plan only. The previous plan's directory is never read, so an id only the previous plan listed is missing and an id only the new plan lists is valid."
+  },
+  {
+    "name": "multiple-list-drops-only-the-missing-ids",
+    "file": "multiple-list-drops-only-the-missing-ids.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher multiple-list-drops-only-the-missing-ids. A multiple contact or role list loses the ids that are not in the directory and keeps the others in order, and the question is listed for review. An empty item is left alone. When no item that is not empty remains, the answer is removed and listed."
+  },
+  {
+    "name": "no-directory-in-the-plan-means-every-id-is-missing",
+    "file": "no-directory-in-the-plan-means-every-id-is-missing.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher no-directory-in-theirs-means-every-id-is-missing. A plan with no directory lists no ids, so every settled id answer is removed and listed. A list that loses all its ids is removed. Empty and deferred answers stay."
+  },
+  {
+    "name": "onboarder-questions-are-left-alone",
+    "file": "onboarder-questions-are-left-alone.case.json",
+    "source": "Hand-written. The lead's decision, 0055 and 0075: the joiner puts the plan's answer under an onboarder question, so the reconciler neither checks nor lists a record answer for one. An empty audience is onboarder. The values here would be invalid for an onboardee question and stay as they are. The same name in a section that has no such question is a hidden answer."
+  },
+  {
+    "name": "audience-is-read-from-the-new-plan",
+    "file": "audience-is-read-from-the-new-plan.case.json",
+    "source": "Hand-written. Mirrors contracts/plan/refresher audience-comes-from-theirs. Only the new plan's audience counts. A question that became onboarder is left alone, and one that became onboardee is checked."
+  },
+  {
+    "name": "answers-without-a-question-are-hidden-and-kept",
+    "file": "answers-without-a-question-are-hidden-and-kept.case.json",
+    "source": "Hand-written. 0090: an answer for a question the plan no longer declares stays as a hidden answer until the owner prunes it. That holds for a gone question, a gone section, a question no plan declared, and a name another section declares. Hidden answers are not checked or listed, and they keep their lists."
+  },
+  {
+    "name": "a-hidden-answer-is-checked-when-the-question-returns",
+    "file": "a-hidden-answer-is-checked-when-the-question-returns.case.json",
+    "source": "Hand-written. 0090: a hidden answer is an ordinary stored answer. When the plan declares its question as an onboardee question, it is checked like any answer. Both questions are new against the previous plan."
+  },
+  {
+    "name": "scopes-are-separate",
+    "file": "scopes-are-separate.case.json",
+    "source": "Hand-written. A question id is <scope>.<name>. An answer is checked against the variable of its own scope: access.team is free text although plan.team is a choice, other.team is a choice with other options, and an answer in another section for a name only access declares is hidden."
+  },
+  {
+    "name": "a-removed-answer-leaves-no-entry-and-no-empty-section",
+    "file": "a-removed-answer-leaves-no-entry-and-no-empty-section.case.json",
+    "source": "Hand-written. The lead's decision: removing an answer deletes its entry, and a section whose answers are all removed leaves no empty map."
+  },
+  {
+    "name": "a-removed-answer-leaves-the-other-answers-of-its-section",
+    "file": "a-removed-answer-leaves-the-other-answers-of-its-section.case.json",
+    "source": "Hand-written. Removing one answer leaves the others in its section, and the answers of the plan scope."
+  },
+  {
+    "name": "outcomes-are-kept-and-the-changed-ones-listed",
+    "file": "outcomes-are-kept-and-the-changed-ones-listed.case.json",
+    "source": "Hand-written. 0090: an outcome is flagged when its sectionHash differs from the section's current hash. Outcomes are never added, removed, or reordered. A section with no source, an outcome with no sectionHash, and an outcome for a section the plan no longer has are not listed. A section is listed once even when two of its outcomes differ. The comparison is exact, with case."
+  },
+  {
+    "name": "an-outcome-with-the-current-hash-is-not-listed",
+    "file": "an-outcome-with-the-current-hash-is-not-listed.case.json",
+    "source": "Hand-written. The hash comparison is exact. The section g now holds the hash its outcome was recorded against, so it is not listed, while the case of the letters is what separated it in the case before."
+  },
+  {
+    "name": "a-removed-section-keeps-its-outcome",
+    "file": "a-removed-section-keeps-its-outcome.case.json",
+    "source": "Hand-written. 0090: outcomes are kept as they are. An outcome of a section the plan no longer has is not listed as changed, and its section is in removedSections because the previous plan had it."
+  },
+  {
+    "name": "new-and-removed-questions-and-sections",
+    "file": "new-and-removed-questions-and-sections.case.json",
+    "source": "Hand-written. Docs, domain-model Reconciliation: newQuestions and removedQuestions compare the previous plan to the new plan, for every audience, and the lists are sorted by the whole id. a-b.z sorts before a.new_q because - comes before . in bytes, which scope-then-name order would reverse. A question in a new section is new and a question in a removed section is removed. A question that moves scope is removed and new. The answers of removed questions stay."
+  },
+  {
+    "name": "nothing-changed",
+    "file": "nothing-changed.case.json",
+    "source": "Hand-written. Reconciling against the plan it was last reconciled against changes only the reference and lists nothing."
+  },
+  {
+    "name": "answers-of-the-plan-never-enter-the-record",
+    "file": "answers-of-the-plan-never-enter-the-record.case.json",
+    "source": "Hand-written. 0090: new questions appear as unanswered, and the joiner, not the reconciler, puts the plan's answers under the questions. A pre-seeded onboardee answer and an onboarder answer in the plan do not reach the record."
+  },
+  {
+    "name": "a-previous-plan-with-no-variables-and-no-sections-compares-nothing",
+    "file": "a-previous-plan-with-no-variables-and-no-sections-compares-nothing.case.json",
+    "source": "Hand-written. The lead's decision: with the zero Plan (no variables and no sections) as previous, there is nothing to compare with, so the four lists are empty. The answers are still checked and the outcomes still flagged. Here the previous plan holds an id, a directory, and an answer, and is still the zero case."
+  },
+  {
+    "name": "a-previous-plan-with-only-the-zero-value-compares-nothing",
+    "file": "a-previous-plan-with-only-the-zero-value-compares-nothing.case.json",
+    "source": "Hand-written. The same as the case before with the very zero Plan, an empty object."
+  },
+  {
+    "name": "a-previous-plan-with-variables-but-no-sections-is-compared",
+    "file": "a-previous-plan-with-variables-but-no-sections-is-compared.case.json",
+    "source": "Hand-written. Only a plan with no variables and no sections is the zero case. A previous plan with one variable and no sections is compared, so every section of the new plan is new."
+  },
+  {
+    "name": "a-previous-plan-with-sections-but-no-variables-is-compared",
+    "file": "a-previous-plan-with-sections-but-no-variables-is-compared.case.json",
+    "source": "Hand-written. Only a plan with no variables and no sections is the zero case. A previous plan with a section and no variables is compared."
+  },
+  {
+    "name": "every-other-field-is-unchanged",
+    "file": "every-other-field-is-unchanged.case.json",
+    "source": "Hand-written. 0090: only the answers and the plan reference change. The account, start date, schema version, outcomes with their notes, and unknown fields, with their nested lists, maps, integers and decimals, come back as they were."
+  }
+]

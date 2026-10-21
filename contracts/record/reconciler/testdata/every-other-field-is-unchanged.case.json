@@ -1,0 +1,176 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "Ada.Lovelace",
+    "startDate": "2026-11-02",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "gone_soon": "zzz",
+        "stay": "x"
+      }
+    },
+    "outcomes": [
+      {
+        "section": "s",
+        "outcome": "failed",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "h",
+        "note": "did not work",
+        "differently": "used the wiki"
+      },
+      {
+        "section": "t",
+        "outcome": "deferred",
+        "on": "2026-10-24T08:00:00Z"
+      }
+    ],
+    "unknownFields": {
+      "note": "keep me",
+      "count": 3,
+      "ratio": 2.5,
+      "nested": {
+        "list": [
+          1,
+          "two",
+          {
+            "three": null,
+            "four": [
+              true,
+              false
+            ]
+          }
+        ],
+        "empty": {}
+      },
+      "tags": [
+        "x",
+        "y"
+      ]
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      },
+      {
+        "name": "gone_soon",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "stay",
+        "audience": "onboardee"
+      }
+    ],
+    "sections": [
+      {
+        "id": "s",
+        "title": "S",
+        "summary": "About s",
+        "source": {
+          "template": "s.section.yaml",
+          "hash": "h"
+        }
+      },
+      {
+        "id": "t",
+        "title": "T",
+        "summary": "About t"
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "Ada.Lovelace",
+      "startDate": "2026-11-02",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "stay": "x"
+        }
+      },
+      "outcomes": [
+        {
+          "section": "s",
+          "outcome": "failed",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "h",
+          "note": "did not work",
+          "differently": "used the wiki"
+        },
+        {
+          "section": "t",
+          "outcome": "deferred",
+          "on": "2026-10-24T08:00:00Z"
+        }
+      ],
+      "unknownFields": {
+        "note": "keep me",
+        "count": 3,
+        "ratio": 2.5,
+        "nested": {
+          "list": [
+            1,
+            "two",
+            {
+              "three": null,
+              "four": [
+                true,
+                false
+              ]
+            }
+          ],
+          "empty": {}
+        },
+        "tags": [
+          "x",
+          "y"
+        ]
+      }
+    },
+    "reconciliation": {
+      "newQuestions": [
+        "plan.gone_soon",
+        "plan.stay"
+      ],
+      "newSections": [
+        "s",
+        "t"
+      ],
+      "answersToReview": [
+        "plan.gone_soon"
+      ]
+    }
+  }
+}

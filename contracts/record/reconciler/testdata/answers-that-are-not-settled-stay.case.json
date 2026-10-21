@@ -1,0 +1,305 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "string_deferred": {
+          "deferred": true
+        },
+        "string_empty": "",
+        "string_empty_list": [],
+        "string_blank_list": [
+          ""
+        ],
+        "command_empty": "",
+        "boolean_empty": "",
+        "choice_empty": "",
+        "choice_deferred": {
+          "deferred": true
+        },
+        "choice_multiple_blank": [
+          ""
+        ],
+        "choice_multiple_empty": [],
+        "contact_empty": "",
+        "contact_deferred": {
+          "deferred": true
+        },
+        "role_empty_list": [],
+        "team_deferred": {
+          "deferred": true
+        },
+        "team_empty": "",
+        "command_deferred": {
+          "deferred": true
+        },
+        "boolean_deferred": {
+          "deferred": true
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "string_deferred",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_empty",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_empty_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_blank_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "command_empty",
+        "audience": "onboardee"
+      },
+      {
+        "name": "boolean_empty",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "choice_empty",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_deferred",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_multiple_blank",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "choice_multiple_empty",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "contact_empty",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_deferred",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_empty_list",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "team_deferred",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_empty",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "command_deferred",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "boolean_deferred",
+        "audience": "onboardee",
+        "type": "boolean"
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "string_deferred",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_empty",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_empty_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_blank_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "command_empty",
+        "audience": "onboardee"
+      },
+      {
+        "name": "boolean_empty",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "choice_empty",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_deferred",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_multiple_blank",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "choice_multiple_empty",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "contact_empty",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_deferred",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_empty_list",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "team_deferred",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_empty",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "command_deferred",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "boolean_deferred",
+        "audience": "onboardee",
+        "type": "boolean"
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "string_deferred": {
+            "deferred": true
+          },
+          "string_empty": "",
+          "string_empty_list": [],
+          "string_blank_list": [
+            ""
+          ],
+          "command_empty": "",
+          "boolean_empty": "",
+          "choice_empty": "",
+          "choice_deferred": {
+            "deferred": true
+          },
+          "choice_multiple_blank": [
+            ""
+          ],
+          "choice_multiple_empty": [],
+          "contact_empty": "",
+          "contact_deferred": {
+            "deferred": true
+          },
+          "role_empty_list": [],
+          "team_deferred": {
+            "deferred": true
+          },
+          "team_empty": "",
+          "command_deferred": {
+            "deferred": true
+          },
+          "boolean_deferred": {
+            "deferred": true
+          }
+        }
+      }
+    },
+    "reconciliation": {}
+  }
+}

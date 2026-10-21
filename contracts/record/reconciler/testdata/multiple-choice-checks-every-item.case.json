@@ -1,0 +1,186 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "bad_first": [
+          "bad",
+          "a"
+        ],
+        "bad_last": [
+          "a",
+          "bad"
+        ],
+        "empty_first": [
+          "",
+          "a"
+        ],
+        "empty_last": [
+          "a",
+          ""
+        ],
+        "all_good": [
+          "b",
+          "a"
+        ]
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "bad_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "bad_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "all_good",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "bad_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "bad_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_first",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "empty_last",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      },
+      {
+        "name": "all_good",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a",
+          "b"
+        ],
+        "multiple": true
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "empty_first": [
+            "",
+            "a"
+          ],
+          "empty_last": [
+            "a",
+            ""
+          ],
+          "all_good": [
+            "b",
+            "a"
+          ]
+        }
+      }
+    },
+    "reconciliation": {
+      "answersToReview": [
+        "plan.bad_first",
+        "plan.bad_last"
+      ]
+    }
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "outcomes": [
+      {
+        "section": "a",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "h-a"
+      },
+      {
+        "section": "b",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "old-b",
+        "note": "first try"
+      },
+      {
+        "section": "b",
+        "outcome": "failed",
+        "on": "2026-10-23T09:00:00Z",
+        "sectionHash": "old-b-again",
+        "differently": "Used the desk"
+      },
+      {
+        "section": "c",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "x"
+      },
+      {
+        "section": "d",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z"
+      },
+      {
+        "section": "gone",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "x"
+      },
+      {
+        "section": "f",
+        "outcome": "deferred",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "old-f"
+      },
+      {
+        "section": "g",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "H-G"
+      }
+    ]
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "sections": [
+      {
+        "id": "a",
+        "title": "A",
+        "summary": "About a",
+        "source": {
+          "template": "a.section.yaml",
+          "hash": "h-a"
+        }
+      },
+      {
+        "id": "b",
+        "title": "B",
+        "summary": "About b",
+        "source": {
+          "template": "b.section.yaml",
+          "hash": "h-b"
+        }
+      },
+      {
+        "id": "c",
+        "title": "C",
+        "summary": "About c"
+      },
+      {
+        "id": "d",
+        "title": "D",
+        "summary": "About d",
+        "source": {
+          "template": "d.section.yaml",
+          "hash": "h-d"
+        }
+      },
+      {
+        "id": "f",
+        "title": "F",
+        "summary": "About f",
+        "source": {
+          "template": "f.section.yaml",
+          "hash": "h-f"
+        }
+      },
+      {
+        "id": "g",
+        "title": "G",
+        "summary": "About g",
+        "source": {
+          "template": "g.section.yaml",
+          "hash": "h-g"
+        }
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "sections": [
+      {
+        "id": "a",
+        "title": "A",
+        "summary": "About a",
+        "source": {
+          "template": "a.section.yaml",
+          "hash": "h-a"
+        }
+      },
+      {
+        "id": "b",
+        "title": "B",
+        "summary": "About b",
+        "source": {
+          "template": "b.section.yaml",
+          "hash": "h-b"
+        }
+      },
+      {
+        "id": "c",
+        "title": "C",
+        "summary": "About c"
+      },
+      {
+        "id": "d",
+        "title": "D",
+        "summary": "About d",
+        "source": {
+          "template": "d.section.yaml",
+          "hash": "h-d"
+        }
+      },
+      {
+        "id": "f",
+        "title": "F",
+        "summary": "About f",
+        "source": {
+          "template": "f.section.yaml",
+          "hash": "h-f"
+        }
+      },
+      {
+        "id": "g",
+        "title": "G",
+        "summary": "About g",
+        "source": {
+          "template": "g.section.yaml",
+          "hash": "h-g"
+        }
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "outcomes": [
+        {
+          "section": "a",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "h-a"
+        },
+        {
+          "section": "b",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "old-b",
+          "note": "first try"
+        },
+        {
+          "section": "b",
+          "outcome": "failed",
+          "on": "2026-10-23T09:00:00Z",
+          "sectionHash": "old-b-again",
+          "differently": "Used the desk"
+        },
+        {
+          "section": "c",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "x"
+        },
+        {
+          "section": "d",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z"
+        },
+        {
+          "section": "gone",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "x"
+        },
+        {
+          "section": "f",
+          "outcome": "deferred",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "old-f"
+        },
+        {
+          "section": "g",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "H-G"
+        }
+      ]
+    },
+    "reconciliation": {
+      "changedOutcomes": [
+        "b",
+        "f",
+        "g"
+      ]
+    }
+  }
+}

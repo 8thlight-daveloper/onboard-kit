@@ -1,0 +1,334 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "contact_text": "sam-okafor",
+        "contact_list_single": [
+          "sam-okafor"
+        ],
+        "contact_text_multiple": "sam-okafor",
+        "contact_list_multiple": [
+          "sam-okafor",
+          "it-help"
+        ],
+        "contact_flag": true,
+        "role_text": "design-lead",
+        "role_list_single": [
+          "design-lead"
+        ],
+        "role_text_multiple": "design-lead",
+        "role_list_multiple": [
+          "design-lead"
+        ],
+        "role_flag": true,
+        "team_text": "design",
+        "team_list": [
+          "design"
+        ],
+        "team_flag": true,
+        "team_text_though_multiple": "design",
+        "team_list_though_multiple": [
+          "design"
+        ]
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design"
+        },
+        {
+          "id": "platform",
+          "name": "Platform",
+          "contact": "it-help"
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_text",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_list_single",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_text_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_list_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_flag",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_text",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_list_single",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_text_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_list_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_flag",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_text",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_list",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_flag",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_text_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      },
+      {
+        "name": "team_list_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design"
+        },
+        {
+          "id": "platform",
+          "name": "Platform",
+          "contact": "it-help"
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_text",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_list_single",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_text_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_list_multiple",
+        "audience": "onboardee",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "contact_flag",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_text",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_list_single",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_text_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_list_multiple",
+        "audience": "onboardee",
+        "type": "role",
+        "multiple": true
+      },
+      {
+        "name": "role_flag",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_text",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_list",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_flag",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_text_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      },
+      {
+        "name": "team_list_though_multiple",
+        "audience": "onboardee",
+        "type": "team",
+        "multiple": true
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "contact_text": "sam-okafor",
+          "contact_list_multiple": [
+            "sam-okafor",
+            "it-help"
+          ],
+          "role_text": "design-lead",
+          "role_list_multiple": [
+            "design-lead"
+          ],
+          "team_text": "design",
+          "team_text_though_multiple": "design"
+        }
+      }
+    },
+    "reconciliation": {
+      "answersToReview": [
+        "plan.contact_flag",
+        "plan.contact_list_single",
+        "plan.contact_text_multiple",
+        "plan.role_flag",
+        "plan.role_list_single",
+        "plan.role_text_multiple",
+        "plan.team_flag",
+        "plan.team_list",
+        "plan.team_list_though_multiple"
+      ]
+    }
+  }
+}

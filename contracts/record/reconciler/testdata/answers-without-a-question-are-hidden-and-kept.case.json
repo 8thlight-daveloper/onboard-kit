@@ -1,0 +1,176 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "kept": "a",
+        "gone_question": "zzz",
+        "never_declared": "x",
+        "list_hidden": [
+          "a",
+          "b"
+        ]
+      },
+      "sections": {
+        "gone_section": {
+          "q": "y",
+          "l": [
+            "1",
+            "2"
+          ]
+        },
+        "access": {
+          "undeclared": "z",
+          "kept": "a"
+        },
+        "other": {
+          "q": "w"
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "kept",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "gone_question",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "id": "gone_section",
+        "title": "Gone_Section",
+        "summary": "About gone_section",
+        "variables": [
+          {
+            "name": "q",
+            "audience": "onboardee"
+          },
+          {
+            "name": "l",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access"
+      },
+      {
+        "id": "other",
+        "title": "Other",
+        "summary": "About other"
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "kept",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access"
+      },
+      {
+        "id": "other",
+        "title": "Other",
+        "summary": "About other",
+        "variables": [
+          {
+            "name": "elsewhere",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "kept": "a",
+          "gone_question": "zzz",
+          "never_declared": "x",
+          "list_hidden": [
+            "a",
+            "b"
+          ]
+        },
+        "sections": {
+          "gone_section": {
+            "q": "y",
+            "l": [
+              "1",
+              "2"
+            ]
+          },
+          "access": {
+            "undeclared": "z",
+            "kept": "a"
+          },
+          "other": {
+            "q": "w"
+          }
+        }
+      }
+    },
+    "reconciliation": {
+      "removedQuestions": [
+        "gone_section.l",
+        "gone_section.q",
+        "plan.gone_question"
+      ],
+      "removedSections": [
+        "gone_section"
+      ],
+      "newQuestions": [
+        "other.elsewhere"
+      ]
+    }
+  }
+}

@@ -1,0 +1,236 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "string_text": "x",
+        "string_list": [
+          "a"
+        ],
+        "string_flag": true,
+        "string_false": false,
+        "string_multiple_text": "x",
+        "string_multiple_list": [
+          "a",
+          "b"
+        ],
+        "command_text": "ls",
+        "command_list": [
+          "ls",
+          "pwd"
+        ],
+        "boolean_flag": false,
+        "boolean_text": "true",
+        "choice_flag": true,
+        "choice_list_single": [
+          "a"
+        ],
+        "choice_text_multiple": "a"
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "string_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_flag",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_false",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_multiple_text",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "string_multiple_list",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "command_text",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "command_list",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "boolean_flag",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "boolean_text",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "choice_flag",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_list_single",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_text_multiple",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "string_text",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_list",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_flag",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_false",
+        "audience": "onboardee"
+      },
+      {
+        "name": "string_multiple_text",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "string_multiple_list",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "command_text",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "command_list",
+        "audience": "onboardee",
+        "type": "command"
+      },
+      {
+        "name": "boolean_flag",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "boolean_text",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "choice_flag",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_list_single",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      },
+      {
+        "name": "choice_text_multiple",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ],
+        "multiple": true
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "string_text": "x",
+          "string_multiple_list": [
+            "a",
+            "b"
+          ],
+          "command_list": [
+            "ls",
+            "pwd"
+          ],
+          "boolean_flag": false
+        }
+      }
+    },
+    "reconciliation": {
+      "answersToReview": [
+        "plan.boolean_text",
+        "plan.choice_flag",
+        "plan.choice_list_single",
+        "plan.choice_text_multiple",
+        "plan.command_text",
+        "plan.string_false",
+        "plan.string_flag",
+        "plan.string_list",
+        "plan.string_multiple_text"
+      ]
+    }
+  }
+}
