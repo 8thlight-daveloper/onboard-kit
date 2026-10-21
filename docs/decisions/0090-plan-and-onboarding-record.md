@@ -1,6 +1,6 @@
 # 0090. The plan and the onboarding record
 
-Status: proposed
+Status: accepted
 
 Builds on [0030](0030-self-contained-plan-file.md), [0055](0055-variable-audience.md), [0080](0080-directory.md), and [0085](0085-walking-sections-and-recording-outcomes.md). It replaces the personal plan of [0060](0060-personal-plan.md), and it replaces the part of [0075](0075-refreshing-a-personal-plan.md) that keeps the personal plan as a full copy of the org plan.
 

@@ -1,6 +1,6 @@
 # 0095. Reports
 
-Status: proposed
+Status: accepted
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md) and [0090](0090-plan-and-onboarding-record.md). It records what a report is and the questions that are still open. Nothing here is built.
 
