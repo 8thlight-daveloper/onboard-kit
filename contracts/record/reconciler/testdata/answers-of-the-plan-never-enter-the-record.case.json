@@ -1,0 +1,95 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      },
+      {
+        "name": "fresh",
+        "audience": "onboardee"
+      },
+      {
+        "name": "preseeded",
+        "audience": "onboardee"
+      },
+      {
+        "name": "for_onboarder",
+        "audience": "onboarder"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "preseeded": "hello",
+        "for_onboarder": "set"
+      },
+      "sections": {
+        "s": {
+          "x": "from the plan"
+        }
+      }
+    },
+    "sections": [
+      {
+        "id": "s",
+        "title": "S",
+        "summary": "About s",
+        "variables": [
+          {
+            "name": "x",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      }
+    },
+    "reconciliation": {
+      "newQuestions": [
+        "plan.for_onboarder",
+        "plan.fresh",
+        "plan.preseeded",
+        "s.x"
+      ],
+      "newSections": [
+        "s"
+      ]
+    }
+  }
+}

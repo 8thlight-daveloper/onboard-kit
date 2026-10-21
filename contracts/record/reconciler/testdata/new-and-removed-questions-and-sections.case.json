@@ -1,0 +1,195 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "kept": "x",
+        "gone_plan": "y"
+      },
+      "sections": {
+        "gone": {
+          "g1": "hidden"
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "kept",
+        "audience": "onboardee"
+      },
+      {
+        "name": "gone_plan",
+        "audience": "onboardee"
+      }
+    ],
+    "sections": [
+      {
+        "id": "a",
+        "title": "A",
+        "summary": "About a",
+        "variables": [
+          {
+            "name": "q",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "gone",
+        "title": "Gone",
+        "summary": "About gone",
+        "variables": [
+          {
+            "name": "g1",
+            "audience": "onboardee"
+          },
+          {
+            "name": "g2",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "keep",
+        "title": "Keep",
+        "summary": "About keep",
+        "variables": [
+          {
+            "name": "k1",
+            "audience": "onboardee"
+          },
+          {
+            "name": "moved",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "kept",
+        "audience": "onboardee"
+      },
+      {
+        "name": "new_plan",
+        "audience": "onboarder"
+      },
+      {
+        "name": "moved",
+        "audience": "onboardee"
+      }
+    ],
+    "sections": [
+      {
+        "id": "new-section",
+        "title": "New-Section",
+        "summary": "About new-section"
+      },
+      {
+        "id": "keep",
+        "title": "Keep",
+        "summary": "About keep",
+        "variables": [
+          {
+            "name": "k1",
+            "audience": "onboardee"
+          },
+          {
+            "name": "new_k",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "a-b",
+        "title": "A-B",
+        "summary": "About a-b",
+        "variables": [
+          {
+            "name": "z",
+            "audience": "onboardee"
+          }
+        ]
+      },
+      {
+        "id": "a",
+        "title": "A",
+        "summary": "About a",
+        "variables": [
+          {
+            "name": "q",
+            "audience": "onboardee"
+          },
+          {
+            "name": "new_q",
+            "audience": "onboardee"
+          }
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "kept": "x",
+          "gone_plan": "y"
+        },
+        "sections": {
+          "gone": {
+            "g1": "hidden"
+          }
+        }
+      }
+    },
+    "reconciliation": {
+      "newQuestions": [
+        "a-b.z",
+        "a.new_q",
+        "keep.new_k",
+        "plan.moved",
+        "plan.new_plan"
+      ],
+      "removedQuestions": [
+        "gone.g1",
+        "gone.g2",
+        "keep.moved",
+        "plan.gone_plan"
+      ],
+      "newSections": [
+        "a-b",
+        "new-section"
+      ],
+      "removedSections": [
+        "gone"
+      ]
+    }
+  }
+}

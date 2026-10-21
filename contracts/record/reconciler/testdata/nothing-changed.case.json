@@ -1,0 +1,137 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "one": "x",
+        "two": "a"
+      },
+      "sections": {
+        "s": {
+          "three": "y"
+        }
+      }
+    },
+    "outcomes": [
+      {
+        "section": "s",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "h"
+      }
+    ]
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "one",
+        "audience": "onboardee"
+      },
+      {
+        "name": "two",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "id": "s",
+        "title": "S",
+        "summary": "About s",
+        "variables": [
+          {
+            "name": "three",
+            "audience": "onboardee"
+          }
+        ],
+        "source": {
+          "template": "s.section.yaml",
+          "hash": "h"
+        }
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "one",
+        "audience": "onboardee"
+      },
+      {
+        "name": "two",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "id": "s",
+        "title": "S",
+        "summary": "About s",
+        "variables": [
+          {
+            "name": "three",
+            "audience": "onboardee"
+          }
+        ],
+        "source": {
+          "template": "s.section.yaml",
+          "hash": "h"
+        }
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "plan": {
+          "one": "x",
+          "two": "a"
+        },
+        "sections": {
+          "s": {
+            "three": "y"
+          }
+        }
+      },
+      "outcomes": [
+        {
+          "section": "s",
+          "outcome": "verified",
+          "on": "2026-10-22T14:05:00Z",
+          "sectionHash": "h"
+        }
+      ]
+    },
+    "reconciliation": {}
+  }
+}

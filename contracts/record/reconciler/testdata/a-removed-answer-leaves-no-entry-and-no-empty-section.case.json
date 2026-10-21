@@ -1,0 +1,96 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "bad": "zzz"
+      },
+      "sections": {
+        "access": {
+          "bad": "zzz"
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "seed",
+        "audience": "onboarder"
+      },
+      {
+        "name": "bad",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "a"
+        ]
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "bad",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      }
+    },
+    "reconciliation": {
+      "newQuestions": [
+        "access.bad",
+        "plan.bad"
+      ],
+      "newSections": [
+        "access"
+      ],
+      "answersToReview": [
+        "access.bad",
+        "plan.bad"
+      ]
+    }
+  }
+}
