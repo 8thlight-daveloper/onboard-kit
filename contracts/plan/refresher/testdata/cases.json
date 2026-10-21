@@ -163,5 +163,50 @@
     "name": "answers-removed-leave-no-entry-and-no-empty-section",
     "file": "answers-removed-leave-no-entry-and-no-empty-section.case.json",
     "source": "Hand-written. Contract rule: Where answers are written, an entry that is removed leaves no entry of no kind behind, and the result may hold no empty map for a section. Every answer of the section access is removed by theirs, so no entry and no map for access remains."
+  },
+  {
+    "name": "directory-comes-from-theirs",
+    "file": "directory-comes-from-theirs.case.json",
+    "source": "Hand-written. 0075 table row 'Content: sections, variables, the directory: taken from theirs'. 0080 'A directory in the org plan'. Ours holds an older directory and base another. The result holds theirs exactly, with no entry of ours or base merged in, and a team's holder map comes along."
+  },
+  {
+    "name": "directory-removed-by-theirs-is-removed",
+    "file": "directory-removed-by-theirs-is-removed.case.json",
+    "source": "Hand-written. 0075: the directory is content taken from theirs, so a theirs with no directory leaves the personal plan with none. A merge or a keep-ours rule would leave the old entries."
+  },
+  {
+    "name": "id-not-in-theirs-directory-needs-review",
+    "file": "id-not-in-theirs-directory-needs-review.case.json",
+    "source": "Hand-written. 0075 table row 'An answer that is no longer valid, such as ... a team that no longer exists: marked as needing review and asked again'. 0080 'An answer that names an id that is not in the directory counts as unanswered'. Kept answers are checked against the directory of theirs, not ours or base: lee-park is only in ours and is removed, it-help is only in theirs and stays. Covers the three types and a section question."
+  },
+  {
+    "name": "id-must-be-in-the-list-for-its-type",
+    "file": "id-must-be-in-the-list-for-its-type.case.json",
+    "source": "Hand-written. 0080: contact, role, and team ids are separate lists, and ids are lowercase slugs. A role id is not a contact, a contact id is not a role, and a team id is not a contact. The match is exact: Sam-Okafor and the name Sam Okafor are not the id sam-okafor."
+  },
+  {
+    "name": "no-directory-in-theirs-means-every-id-is-missing",
+    "file": "no-directory-in-theirs-means-every-id-is-missing.case.json",
+    "source": "Hand-written. 0075: the directory comes from theirs. 0080: an id that is not in the directory is unanswered. Ours has a directory that names all of them, and theirs has none, so every kept answer is removed and listed. A check that skips an empty directory keeps them."
+  },
+  {
+    "name": "multiple-list-drops-only-the-missing-ids",
+    "file": "multiple-list-drops-only-the-missing-ids.case.json",
+    "source": "Hand-written. 0080: a multiple contact or role question holds an ordered list, and an id that is not in the directory counts as unanswered. Only the missing ids go and the rest keep their order. The question is listed for review, not as kept. A list with nothing left to keep is removed. Empty items are not ids and are left alone, as for choice options. An empty list and a list of only blank text are not settled, so they stay (0035)."
+  },
+  {
+    "name": "kind-fit-for-contact-role-and-team",
+    "file": "kind-fit-for-contact-role-and-team.case.json",
+    "source": "Hand-written. Contract rule on valid answers, decision by the person for the directory types: contact and role take text, or a list when multiple. A team takes text only, so a multiple flag on a team does not make a list fit. A flag fits none. Deferred and empty text are not settled and stay (0035)."
+  },
+  {
+    "name": "only-a-kept-directory-answer-is-checked",
+    "file": "only-a-kept-directory-answer-is-checked.case.json",
+    "source": "Hand-written. Contract rule: an answer from theirs is not checked, only a kept onboardee answer is, and a hidden answer is left exactly as it is. 0075: onboarder answers and unchanged onboardee answers are taken from theirs. Taken answers name ids that theirs does not list and are still taken. An unchanged answer that names an id gone from the directory is replaced by theirs, so it is not reported for review. A hidden answer naming a missing id stays."
+  },
+  {
+    "name": "refusal-keeps-our-directory",
+    "file": "refusal-keeps-our-directory.case.json",
+    "source": "Hand-written. Contract rule: a refusal returns ours as it was. A refused refresh does not take the directory of theirs and does not clear an answer."
   }
 ]
