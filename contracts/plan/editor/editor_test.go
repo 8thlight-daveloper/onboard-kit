@@ -59,13 +59,14 @@ const (
 	operationRemoveContact = "remove-contact"
 	operationRemoveRole    = "remove-role"
 	operationRemoveTeam    = "remove-team"
+	operationPrune         = "prune"
 
 	codeFromValidator = "*"
 )
 
 var allOperations = []string{
 	operationSubmit, operationSwitch, operationSetContact, operationSetRole, operationSetTeam,
-	operationRemoveContact, operationRemoveRole, operationRemoveTeam,
+	operationRemoveContact, operationRemoveRole, operationRemoveTeam, operationPrune,
 }
 
 func isSet(c fixtureCase) bool {
@@ -74,6 +75,14 @@ func isSet(c fixtureCase) bool {
 
 func isRemove(c fixtureCase) bool {
 	return c.Operation == operationRemoveContact || c.Operation == operationRemoveRole || c.Operation == operationRemoveTeam
+}
+
+func isPrune(c fixtureCase) bool {
+	return c.Operation == operationPrune
+}
+
+func listsCleared(c fixtureCase) bool {
+	return isRemove(c) || isPrune(c)
 }
 
 func isDirectoryOperation(c fixtureCase) bool {
@@ -195,6 +204,8 @@ func perform(editor contract.Editor, c fixtureCase, plan model.Plan, value model
 		result.plan, result.cleared, result.problems = editor.RemoveRole(plan, c.ID)
 	case operationRemoveTeam:
 		result.plan, result.cleared, result.problems = editor.RemoveTeam(plan, c.ID)
+	case operationPrune:
+		result.plan, result.cleared, result.problems = editor.PruneHiddenAnswers(plan)
 	default:
 		result.plan, result.problems = editor.Submit(plan, c.Question, value)
 	}
@@ -392,11 +403,14 @@ func TestEveryCaseCitesItsSourceAndTheCasesCoverEveryCode(t *testing.T) {
 		if !slices.Contains(allOperations, c.Operation) {
 			t.Errorf("case %s has the operation %q", c.Name, c.Operation)
 		}
-		if isRemove(c) && c.Cleared == nil {
-			t.Errorf("case %s removes an entry and lists no cleared places", c.Name)
+		if listsCleared(c) && c.Cleared == nil {
+			t.Errorf("case %s removes or prunes and lists no cleared places", c.Name)
 		}
-		if !isRemove(c) && c.Cleared != nil {
-			t.Errorf("case %s lists cleared places and does not remove", c.Name)
+		if !listsCleared(c) && c.Cleared != nil {
+			t.Errorf("case %s lists cleared places and neither removes nor prunes", c.Name)
+		}
+		if isPrune(c) && c.Cleared != nil && len(c.Cleared.Holders) > 0 {
+			t.Errorf("case %s prunes and lists cleared holders", c.Name)
 		}
 		if c.Cleared != nil {
 			if !slices.IsSorted(c.Cleared.Answers) || !slices.IsSorted(c.Cleared.Holders) {
@@ -422,7 +436,7 @@ func TestEveryCaseCitesItsSourceAndTheCasesCoverEveryCode(t *testing.T) {
 				details[key] = true
 			}
 		}
-		if isDirectoryOperation(c) {
+		if isDirectoryOperation(c) || isPrune(c) {
 			continue
 		}
 		if c.Operation == operationSubmit {
@@ -834,6 +848,11 @@ func TestRepeatingAnEditChangesNothingMore(t *testing.T) {
 		first := run(t, editor, c, loadPlanFile(t, c.Before))
 		second := run(t, editor, c, first.plan)
 		assertSamePlan(t, c.Name+": repeated", second.plan, first.plan)
+		if isPrune(c) {
+			assertProblems(t, second.problems, nil, nil)
+			assertCleared(t, c.Name+": repeated", second.cleared, nil)
+			continue
+		}
 		if isRemove(c) {
 			assertProblems(t, second.problems, []expectedProblem{{Code: "directory.entry-not-found", Severity: "error", Detail: map[string]string{"kind": strings.TrimPrefix(c.Operation, "remove-"), "id": c.ID}}}, nil)
 			assertCleared(t, c.Name+": repeated", second.cleared, nil)
@@ -1020,12 +1039,13 @@ func TestDirectoryEditsChangeOnlyTheDirectoryAndTheAnswersTheyClear(t *testing.T
 func TestClearedAnswersLeaveNoEmptySectionMapAndNoEmptyEntry(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
-		if !isDirectoryOperation(c) {
+		if !isDirectoryOperation(c) && !isPrune(c) {
 			continue
 		}
-		got := run(t, newEditor(), c, loadPlanFile(t, c.Before)).plan
+		before := loadPlanFile(t, c.Before)
+		got := run(t, newEditor(), c, before).plan
 		for section, answers := range got.Answers.Sections {
-			if len(answers) == 0 {
+			if len(answers) == 0 && !(isPrune(c) && len(before.Answers.Sections[section]) == 0) {
 				t.Errorf("%s: the section %s holds an empty map of answers", c.Name, section)
 			}
 			for name, value := range answers {
@@ -1045,7 +1065,7 @@ func TestClearedAnswersLeaveNoEmptySectionMapAndNoEmptyEntry(t *testing.T) {
 func TestClearedPlacesAreSortedAndListedOnce(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
-		if !isRemove(c) {
+		if !listsCleared(c) {
 			continue
 		}
 		got := run(t, newEditor(), c, loadPlanFile(t, c.Before)).cleared
@@ -1209,6 +1229,10 @@ func TestARefusalOnAPlanWithNothingReturnsThatPlanExactly(t *testing.T) {
 	if !reflect.DeepEqual(got, model.Plan{}) {
 		t.Errorf("remove team gives %+v", got)
 	}
+	got, cleared, problems := editor.PruneHiddenAnswers(model.Plan{})
+	if !reflect.DeepEqual(got, model.Plan{}) || len(cleared.Answers) > 0 || len(cleared.Holders) > 0 || len(problems) > 0 {
+		t.Errorf("prune gives %+v, %+v, %v", got, cleared, problems)
+	}
 }
 
 func entriesOtherThan[Entry any](entries []Entry, idOf func(Entry) string, id string) []Entry {
@@ -1247,6 +1271,10 @@ func TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument(t *testing.T) 
 			if !reflect.DeepEqual(got.Directory, before.Directory) || !reflect.DeepEqual(got.Sections, before.Sections) {
 				t.Errorf("%s: the directory or the sections differ from the argument", c.Name)
 			}
+		case isPrune(c):
+			if !reflect.DeepEqual(got.Directory, before.Directory) || !reflect.DeepEqual(got.Sections, before.Sections) {
+				t.Errorf("%s: the directory or the sections differ from the argument", c.Name)
+			}
 		case c.Operation == operationSwitch:
 			if !reflect.DeepEqual(got.Directory, before.Directory) || !reflect.DeepEqual(got.Answers, before.Answers) {
 				t.Errorf("%s: the directory or the answers differ from the argument", c.Name)
@@ -1262,6 +1290,126 @@ func TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument(t *testing.T) 
 			if !reflect.DeepEqual(got.Sections, before.Sections) {
 				t.Errorf("%s: the sections differ from the argument", c.Name)
 			}
+		}
+	}
+}
+
+func hiddenAnswerIDs(plan model.Plan) []string {
+	hidden := []string{}
+	declared := func(variables []model.Variable, name string) bool {
+		return slices.ContainsFunc(variables, func(variable model.Variable) bool { return variable.Name == name })
+	}
+	for name := range plan.Answers.Plan {
+		if !declared(plan.Variables, name) {
+			hidden = append(hidden, "plan."+name)
+		}
+	}
+	for id, answers := range plan.Answers.Sections {
+		index := slices.IndexFunc(plan.Sections, func(section model.Section) bool { return section.ID == id })
+		for name := range answers {
+			if index < 0 || !declared(plan.Sections[index].Variables, name) {
+				hidden = append(hidden, id+"."+name)
+			}
+		}
+	}
+	slices.Sort(hidden)
+	return hidden
+}
+
+func withoutHiddenAnswers(plan model.Plan, hidden []string) map[string]string {
+	kept := answerLines(plan)
+	for _, id := range hidden {
+		delete(kept, id)
+	}
+	return kept
+}
+
+func TestPruneOnEveryFixturePlanRemovesExactlyTheHiddenAnswers(t *testing.T) {
+	t.Parallel()
+	seen := map[string]bool{}
+	pruned := 0
+	for _, c := range loadCases(t) {
+		if seen[c.Before] {
+			continue
+		}
+		seen[c.Before] = true
+		before := loadPlanFile(t, c.Before)
+		hidden := hiddenAnswerIDs(before)
+		editor := newEditor()
+		got, cleared, problems := editor.PruneHiddenAnswers(before)
+		if len(problems) != 0 {
+			t.Errorf("%s: prune gave problems %v", c.Before, describeProblems(problems))
+		}
+		if len(cleared.Holders) != 0 {
+			t.Errorf("%s: prune lists cleared holders %v", c.Before, cleared.Holders)
+		}
+		if len(cleared.Answers) != len(hidden) || (len(hidden) > 0 && !slices.Equal(cleared.Answers, hidden)) {
+			t.Errorf("%s: cleared answers %v, want %v", c.Before, cleared.Answers, hidden)
+		}
+		if len(hidden) > 0 {
+			pruned++
+		}
+		if !maps.Equal(answerLines(got), withoutHiddenAnswers(before, hidden)) {
+			t.Errorf("%s: the answers after prune are %v", c.Before, describeAnswers(got))
+		}
+		if planText(t, got) != planText(t, before) {
+			t.Errorf("%s: prune changed the plan outside its answers", c.Before)
+		}
+		for id, answers := range got.Answers.Sections {
+			if len(answers) == 0 && len(before.Answers.Sections[id]) > 0 {
+				t.Errorf("%s: prune left an empty map for %s", c.Before, id)
+			}
+		}
+		again, clearedAgain, problemsAgain := editor.PruneHiddenAnswers(got)
+		if len(clearedAgain.Answers) != 0 || len(problemsAgain) != 0 || !reflect.DeepEqual(again, got) {
+			t.Errorf("%s: a second prune changed something", c.Before)
+		}
+	}
+	if pruned < 3 {
+		t.Fatalf("only %d fixture plans hold hidden answers", pruned)
+	}
+}
+
+func TestPruneWithNothingHiddenReturnsAnEqualPlan(t *testing.T) {
+	t.Parallel()
+	checked := 0
+	for _, c := range loadCases(t) {
+		if !isPrune(c) || c.Cleared == nil || len(c.Cleared.Answers) > 0 {
+			continue
+		}
+		checked++
+		before := loadPlanFile(t, c.Before)
+		got, cleared, problems := newEditor().PruneHiddenAnswers(before)
+		if !reflect.DeepEqual(got, before) {
+			t.Errorf("%s: a plan with no hidden answers did not come back equal, with absent maps absent and empty maps empty", c.Name)
+		}
+		if len(cleared.Answers) != 0 || len(cleared.Holders) != 0 || len(problems) != 0 {
+			t.Errorf("%s: prune reports %+v and %v", c.Name, cleared, problems)
+		}
+	}
+	if checked < 4 {
+		t.Fatalf("only %d cases prune a plan with nothing hidden", checked)
+	}
+}
+
+func TestPruneOfAPlanWithOnlyHiddenAnswersLeavesNoEmptySectionMap(t *testing.T) {
+	t.Parallel()
+	plan := model.Plan{
+		Answers: model.Answers{
+			Plan:     map[string]model.Value{"old": {Kind: model.ValueKindText, Text: "x"}},
+			Sections: map[string]map[string]model.Value{"gone": {"old": {Kind: model.ValueKindFlag, Flag: true}}},
+		},
+	}
+	got, cleared, problems := newEditor().PruneHiddenAnswers(plan)
+	if len(describeAnswers(got)) != 0 {
+		t.Errorf("answers left: %v", describeAnswers(got))
+	}
+	if !slices.Equal(cleared.Answers, []string{"gone.old", "plan.old"}) || len(problems) != 0 {
+		t.Errorf("prune reports %+v and %v", cleared, problems)
+	}
+	for id, answers := range got.Answers.Sections {
+		if len(answers) == 0 {
+			t.Errorf("an empty map for %s", id)
 		}
 	}
 }

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+  "provenance": {
+    "templateSet": "example",
+    "generatedOn": "2026-10-15"
+  },
+  "unknownFields": {
+    "fromANewerTool": {
+      "count": 3,
+      "names": [
+        "x",
+        "y"
+      ]
+    }
+  },
+  "variables": [
+    {
+      "name": "team_state",
+      "description": "team state",
+      "example": "established",
+      "type": "choice",
+      "options": [
+        "established",
+        "first-consultants"
+      ],
+      "required": true
+    },
+    {
+      "name": "region",
+      "description": "region",
+      "example": "emea"
+    }
+  ],
+  "sections": [
+    {
+      "id": "main",
+      "title": "Main",
+      "summary": "The section with examples.",
+      "unknownFields": {
+        "futureSetting": {
+          "mode": 2
+        }
+      },
+      "variables": [
+        {
+          "name": "tracker",
+          "description": "tracker",
+          "example": "IT service desk",
+          "required": true
+        },
+        {
+          "name": "note",
+          "description": "note",
+          "example": "A short note"
+        }
+      ]
+    },
+    {
+      "id": "extra",
+      "title": "Extra",
+      "summary": "A section switched off.",
+      "enabled": false,
+      "variables": [
+        {
+          "name": "extra_note",
+          "description": "extra note",
+          "example": "Anything useful"
+        }
+      ]
+    }
+  ],
+  "answers": {
+    "plan": {
+      "team_state": "established"
+    },
+    "sections": {
+      "main": {
+        "note": "first"
+      }
+    }
+  }
+}

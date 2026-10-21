@@ -11,4 +11,5 @@ type Editor interface {
 	RemoveContact(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
 	RemoveRole(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
 	RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
+	PruneHiddenAnswers(plan model.Plan) (model.Plan, model.Cleared, []model.Problem)
 }
