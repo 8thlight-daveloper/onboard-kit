@@ -1,0 +1,6 @@
+schemaVersion: 1
+kind: record
+answers:
+  sections:
+    access:
+      a: b

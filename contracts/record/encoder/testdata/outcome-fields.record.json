@@ -1,0 +1,5 @@
+{"schemaVersion": 1, "outcomes": [
+ {"differently": "d", "note": "n1", "sectionHash": "abc123", "on": "2026-10-22T14:05:00Z", "outcome": "failed", "section": "s"},
+ {"section": "t", "outcome": "verified", "note": "worked"},
+ {"section": "u", "outcome": "deferred", "differently": "asked the desk"}
+]}

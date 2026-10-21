@@ -1,0 +1,9 @@
+{"schemaVersion": 1,
+ "answers": {
+  "plan": {"team": "Platform team", "Zeta": "z", "flag_on": true, "flag_off": false,
+           "commands": ["make", "test"], "deferred_one": {"deferred": true}, "deferred_text": "deferred",
+           "empty_list": [], "year": "2026"},
+  "sections": {
+   "clone-and-run-tests": {"setup_command": ["make", "setup"], "repo_dir": "widget-service"},
+   "access": {"tracker_grantor": {"deferred": true}, "repo_url": "git@git.acme.example:platform/widget-service.git"}
+  }}}
