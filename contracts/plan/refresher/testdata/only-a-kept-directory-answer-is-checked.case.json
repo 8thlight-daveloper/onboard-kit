@@ -1,0 +1,322 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "onboarder_contact",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "onboarder_removed",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_removed",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "onboarder_list",
+        "audience": "onboarder",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "hidden_contact",
+        "audience": "onboardee",
+        "type": "contact"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "unchanged_then_theirs": "lee-park",
+        "unchanged_then_removed": "old-role",
+        "hidden_contact": "ghost"
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk",
+          "email": "help@acme.example",
+          "slack": "#it-help"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor",
+          "email": "sam.okafor@acme.example",
+          "slack": "@sam",
+          "slackId": "U01ABC123"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design team"
+        },
+        {
+          "id": "platform",
+          "name": "Platform team",
+          "holders": {
+            "engineering-manager": [
+              "sam-okafor"
+            ]
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "onboarder_contact",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "onboarder_removed",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_removed",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "onboarder_list",
+        "audience": "onboarder",
+        "type": "contact",
+        "multiple": true
+      }
+    ],
+    "answers": {
+      "plan": {
+        "onboarder_contact": "ghost",
+        "unchanged_then_theirs": "phantom",
+        "onboarder_list": [
+          "ghost",
+          "sam-okafor"
+        ]
+      }
+    }
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "directory": {
+      "contacts": [
+        {
+          "id": "lee-park",
+          "name": "Lee Park"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor"
+        }
+      ],
+      "roles": [
+        {
+          "id": "old-role",
+          "name": "Old role",
+          "holders": [
+            "lee-park"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "old-team",
+          "name": "Old team"
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "onboarder_contact",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "onboarder_removed",
+        "audience": "onboarder",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "unchanged_then_removed",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "onboarder_list",
+        "audience": "onboarder",
+        "type": "contact",
+        "multiple": true
+      },
+      {
+        "name": "hidden_contact",
+        "audience": "onboardee",
+        "type": "contact"
+      }
+    ],
+    "answers": {
+      "plan": {
+        "onboarder_contact": "sam-okafor",
+        "onboarder_removed": "ghost",
+        "unchanged_then_theirs": "lee-park",
+        "unchanged_then_removed": "old-role",
+        "onboarder_list": [
+          "sam-okafor"
+        ],
+        "hidden_contact": "gone-too"
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "it-help",
+            "name": "IT help desk",
+            "email": "help@acme.example",
+            "slack": "#it-help"
+          },
+          {
+            "id": "sam-okafor",
+            "name": "Sam Okafor",
+            "email": "sam.okafor@acme.example",
+            "slack": "@sam",
+            "slackId": "U01ABC123"
+          }
+        ],
+        "roles": [
+          {
+            "id": "design-lead",
+            "name": "Design lead"
+          },
+          {
+            "id": "engineering-manager",
+            "name": "Engineering manager",
+            "holders": [
+              "sam-okafor"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "design",
+            "name": "Design team"
+          },
+          {
+            "id": "platform",
+            "name": "Platform team",
+            "holders": {
+              "engineering-manager": [
+                "sam-okafor"
+              ]
+            }
+          }
+        ]
+      },
+      "variables": [
+        {
+          "name": "onboarder_contact",
+          "audience": "onboarder",
+          "type": "contact"
+        },
+        {
+          "name": "onboarder_removed",
+          "audience": "onboarder",
+          "type": "contact"
+        },
+        {
+          "name": "unchanged_then_theirs",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "unchanged_then_removed",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "onboarder_list",
+          "audience": "onboarder",
+          "type": "contact",
+          "multiple": true
+        }
+      ],
+      "answers": {
+        "plan": {
+          "onboarder_contact": "ghost",
+          "unchanged_then_theirs": "phantom",
+          "onboarder_list": [
+            "ghost",
+            "sam-okafor"
+          ],
+          "hidden_contact": "gone-too"
+        }
+      }
+    },
+    "report": {
+      "answersTaken": [
+        "plan.onboarder_contact",
+        "plan.onboarder_list",
+        "plan.onboarder_removed",
+        "plan.unchanged_then_removed",
+        "plan.unchanged_then_theirs"
+      ],
+      "removedQuestions": [
+        "plan.hidden_contact"
+      ]
+    }
+  }
+}
