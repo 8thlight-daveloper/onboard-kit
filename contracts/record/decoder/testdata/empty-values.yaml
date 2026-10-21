@@ -1,0 +1,14 @@
+schemaVersion: 1
+kind: record
+answers:
+  plan:
+    a:
+    b: null
+    d: [x, null]
+  sections:
+    s:
+      c:
+outcomes:
+  - section: a
+  -
+  - null

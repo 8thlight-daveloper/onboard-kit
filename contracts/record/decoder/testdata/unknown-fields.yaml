@@ -1,0 +1,22 @@
+schemaVersion: 1
+kind: record
+account: ada
+answers:
+  plan:
+    team: platform
+x-note: kept
+id: 6f1c
+sections:
+  - id: s
+    title: T
+variables: []
+directory: {contacts: [{id: a}]}
+origin: {planId: p}
+provenance: {templateSet: abc}
+Account: other
+startdate: 2026-10-22
+x-list: [one, 2, 2.0, true, null, "3", [], {}]
+x-map:
+  k: v
+  empty: {}
+  nested: {a: [b]}

@@ -1,0 +1,7 @@
+schemaVersion: 1
+kind: record
+account: ~
+plan:
+  url: Null
+outcomes:
+  - note: NULL

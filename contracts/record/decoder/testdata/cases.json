@@ -1,0 +1,786 @@
+[
+  {
+    "name": "minimal",
+    "input": "minimal.yaml",
+    "output": "minimal.record.json",
+    "source": "Hand-written. ADR 0090, The record's shape. The two required keys alone give a Record with only its version."
+  },
+  {
+    "name": "ada",
+    "input": "ada.yaml",
+    "output": "../../testdata/ada.record.json",
+    "source": "The worked record of ADR 0090, in the form the encoder writes, with the shared fixture contracts/record/testdata/ada.record.json as the expected value. Contract rule: Reading the file."
+  },
+  {
+    "name": "key-order",
+    "input": "key-order.yaml",
+    "output": "key-order.record.json",
+    "source": "Hand-written. Plan decoder rule, Style is free: a comment, a leading ---, flow style, single quotes, any key order, a plain date in startDate, and no final newline. 0030: plans decode leniently, and a record is read the same way."
+  },
+  {
+    "name": "no-final-newline",
+    "input": "no-final-newline.yaml",
+    "output": "no-final-newline.record.json",
+    "source": "Hand-written. Plan decoder rule, Style is free: a file need not end in a newline."
+  },
+  {
+    "name": "kind-quoted",
+    "input": "kind-quoted.yaml",
+    "output": "kind-quoted.record.json",
+    "source": "Hand-written. Contract rule: Kind. A single-quoted record is the text record."
+  },
+  {
+    "name": "kind-double-quoted",
+    "input": "kind-double-quoted.yaml",
+    "output": "kind-quoted.record.json",
+    "source": "Hand-written. Contract rule: Kind. A double-quoted record is the text record, and kind may come first or last."
+  },
+  {
+    "name": "strings",
+    "input": "strings.yaml",
+    "output": "strings.record.json",
+    "source": "Hand-written. Plan decoder rule, Scalars and Known fields: quoted text stays text, a plain date and a plain timestamp are text, a plain deferred is text, block scalars are text. The outcome word is not validated, so Verified is kept as written."
+  },
+  {
+    "name": "answers",
+    "input": "answers.yaml",
+    "output": "answers.record.json",
+    "source": "Hand-written. Plan decoder rule, Values, read in the record's answers: a plain deferred is Deferred, a quoted one is text, true is a Flag, a list of strings is a List, an empty list is a List with no items, and a null scope is an empty map. ADR 0090: a record's answers have the shape of a plan's."
+  },
+  {
+    "name": "answers-null",
+    "input": "answers-null.yaml",
+    "output": "answers-null.record.json",
+    "source": "Hand-written. Plan decoder rule, Known fields: a null answers is the zero Answers."
+  },
+  {
+    "name": "answers-empty-map",
+    "input": "answers-empty-map.yaml",
+    "output": "answers-null.record.json",
+    "source": "Hand-written. Plan decoder rule, Known fields: an answers that is an empty map holds neither map, so it is the zero Answers."
+  },
+  {
+    "name": "answers-plan-only",
+    "input": "answers-plan-only.yaml",
+    "output": "answers-plan-only.record.json",
+    "source": "Hand-written. Plan decoder rule, Known fields: an absent sections map stays nil."
+  },
+  {
+    "name": "answers-sections-null",
+    "input": "answers-sections-null.yaml",
+    "output": "answers-sections-null.record.json",
+    "source": "Hand-written. Plan decoder rule, Known fields: a present empty plan map is not nil, and a null sections map is nil."
+  },
+  {
+    "name": "outcomes-edges",
+    "input": "outcomes-edges.yaml",
+    "output": "outcomes-edges.record.json",
+    "source": "Hand-written. Contract rule: Outcomes. The list keeps its order and its repeats, an empty map is a zero Outcome, and an outcome word is not validated. ADR 0085 sorts outcomes in the recorder, not in the decoder."
+  },
+  {
+    "name": "zero-and-null",
+    "input": "zero-and-null.yaml",
+    "output": "zero-and-null.record.json",
+    "source": "Hand-written. Contract rule: Known fields. A null or empty account, startDate, plan, answers, and outcomes are the zero values."
+  },
+  {
+    "name": "plan-partial",
+    "input": "plan-partial.yaml",
+    "output": "plan-partial.record.json",
+    "source": "Hand-written. Contract rule: Plan reference. Each key is read alone and none is filled in from another. An empty answers is the zero Answers, and an outcome with only a note is read as it stands."
+  },
+  {
+    "name": "plan-empty-map",
+    "input": "plan-empty-map.yaml",
+    "output": "minimal.record.json",
+    "source": "Hand-written. Contract rule: Plan reference. An empty plan map is the zero PlanReference."
+  },
+  {
+    "name": "unknown-fields",
+    "input": "unknown-fields.yaml",
+    "output": "unknown-fields.record.json",
+    "source": "Hand-written. ADR 0090: unknown fields are kept and written back, and a record has no sections, variables, directory, origin, or provenance, so those keys and a key such as id are kept as unknown fields and not refused. Keys are exact, so Account and startdate are unknown. Numbers keep their kind: 2 is int64 and 2.0 is float64."
+  },
+  {
+    "name": "invalid-utf8",
+    "input": "invalid-utf8.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: the bytes are not UTF-8."
+  },
+  {
+    "name": "empty-file",
+    "input": "empty-file.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-record"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: an empty file. The record decoder uses the code file.not-a-record."
+  },
+  {
+    "name": "comments-only",
+    "input": "comments-only.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-record"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a file of comments is empty."
+  },
+  {
+    "name": "lone-marker",
+    "input": "lone-marker.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-record"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a lone --- is empty."
+  },
+  {
+    "name": "top-level-list",
+    "input": "top-level-list.yaml",
+    "problems": [
+      {
+        "code": "file.not-a-record"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: the top level is not a map."
+  },
+  {
+    "name": "multiple-documents",
+    "input": "multiple-documents.yaml",
+    "problems": [
+      {
+        "code": "file.multiple-documents"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a second document."
+  },
+  {
+    "name": "syntax-error",
+    "input": "syntax-error.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a YAML syntax error."
+  },
+  {
+    "name": "syntax-error-in-second-document",
+    "input": "syntax-error-in-second-document.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a syntax error in any document wins over the second-document problem."
+  },
+  {
+    "name": "complex-key",
+    "input": "complex-key.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Style is free: a key that is not a scalar is a wrong type at the path of the map that holds it, here the top level."
+  },
+  {
+    "name": "version-absent",
+    "input": "version-absent.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version. The kind is not checked when the version is bad."
+  },
+  {
+    "name": "version-quoted",
+    "input": "version-quoted.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version: a quoted version is invalid."
+  },
+  {
+    "name": "version-zero",
+    "input": "version-zero.yaml",
+    "problems": [
+      {
+        "code": "version.too-old",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "0",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version: an integer below 1."
+  },
+  {
+    "name": "version-too-new",
+    "input": "version-too-new.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version: a newer file is the only problem. The file also has kind plan and a plain yes, and neither is reported."
+  },
+  {
+    "name": "version-duplicate",
+    "input": "version-duplicate.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version: two schemaVersion keys."
+  },
+  {
+    "name": "version-before-kind",
+    "input": "version-before-kind.yaml",
+    "problems": [
+      {
+        "code": "version.invalid",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Order of checks. The version is checked before the kind, so a bad version with kind plan reports only the version."
+  },
+  {
+    "name": "alias-on-version",
+    "input": "alias-on-version.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "schemaVersion"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Version: an anchor on a good version is an alias problem."
+  },
+  {
+    "name": "kind-absent",
+    "input": "kind-absent.yaml",
+    "problems": [
+      {
+        "code": "kind.missing",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. ADR 0090: the decoder requires kind. A file with no kind is a plan to a reader of plans, so it is refused here."
+  },
+  {
+    "name": "kind-null",
+    "input": "kind-null.yaml",
+    "problems": [
+      {
+        "code": "kind.missing",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A null kind is missing."
+  },
+  {
+    "name": "kind-empty",
+    "input": "kind-empty.yaml",
+    "problems": [
+      {
+        "code": "kind.missing",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A kind with nothing after the key is missing."
+  },
+  {
+    "name": "kind-plan",
+    "input": "kind-plan.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": "plan"
+        }
+      }
+    ],
+    "source": "Hand-written. ADR 0090, The record's name and marker: the decoder refuses a file of the wrong kind with a message that says which it is. A plan file is the only problem, and its sections and the plain yes are not read."
+  },
+  {
+    "name": "kind-wrong-case",
+    "input": "kind-wrong-case.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": "Record"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. The text must be exactly record."
+  },
+  {
+    "name": "kind-blank",
+    "input": "kind-blank.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": ""
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A quoted empty string is text, and it is not record."
+  },
+  {
+    "name": "kind-trailing-space",
+    "input": "kind-trailing-space.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": "record "
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. The text is not trimmed."
+  },
+  {
+    "name": "kind-spelling",
+    "input": "kind-spelling.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": "yes"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A kind is judged by its text, so a plain yes is the text yes and not a spelling problem."
+  },
+  {
+    "name": "kind-number",
+    "input": "kind-number.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A plain 1 is the text 1."
+  },
+  {
+    "name": "kind-list",
+    "input": "kind-list.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": ""
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A kind that is not a scalar has an empty found."
+  },
+  {
+    "name": "kind-alias",
+    "input": "kind-alias.yaml",
+    "problems": [
+      {
+        "code": "kind.not-a-record",
+        "path": "kind",
+        "detail": {
+          "found": ""
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. An alias in place of the kind is not followed, and the anchor elsewhere is not reported because the kind problem is the only problem."
+  },
+  {
+    "name": "kind-duplicate",
+    "input": "kind-duplicate.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. Two kind keys are a duplicate key, whatever their values, and it is the only problem."
+  },
+  {
+    "name": "kind-duplicate-values",
+    "input": "kind-duplicate-values.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. Two kind keys are judged as a duplicate and not by the value of the first or the last."
+  },
+  {
+    "name": "kind-anchor",
+    "input": "kind-anchor.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. An anchor on a good kind is an alias problem, and the file is read on."
+  },
+  {
+    "name": "boolean-spelling",
+    "input": "boolean-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "account"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "startDate"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "plan.id"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "outcomes[0].section"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "outcomes[0].outcome"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems and Scalars: a plain yes, ON, n, Off, TRUE, or y where a string or a Value is read. The record's string fields are account, startDate, the plan reference, and the outcome keys."
+  },
+  {
+    "name": "number-spelling",
+    "input": "number-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.number-spelling",
+        "path": "account"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "startDate"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "plan.hash"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "outcomes[0].sectionHash"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "outcomes[0].note"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Numbers: a canonical integer where a string is read is a number spelling, and so are 1e3 and 007. A hash or an account that looks like a number is quoted in a file."
+  },
+  {
+    "name": "null-spelling",
+    "input": "null-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "account"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "plan.url"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "outcomes[0].note"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Scalars: ~, Null, and NULL."
+  },
+  {
+    "name": "alias",
+    "input": "alias.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "account"
+      },
+      {
+        "code": "format.alias",
+        "path": "plan"
+      },
+      {
+        "code": "format.alias",
+        "path": "answers.plan.team"
+      },
+      {
+        "code": "format.alias",
+        "path": "answers.plan.<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "outcomes[0]"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: an anchor on a value, an anchor on a map, an alias, a merge key, and an anchor on a list item are each reported at their node, and the merge key at its key."
+  },
+  {
+    "name": "duplicate-key",
+    "input": "duplicate-key.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "account"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "plan.id"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "answers.plan.team"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "outcomes[0].section"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "x-k"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a repeated key in the top level, the plan reference, an answer map, an outcome, and an unknown field."
+  },
+  {
+    "name": "wrong-type",
+    "input": "wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "account"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "startDate"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "plan"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "outcomes[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "outcomes[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "outcomes[2].section"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "outcomes[2].outcome"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a list or a plain true where a string belongs, a list or text where a map belongs, and an outcome that is text or a list."
+  },
+  {
+    "name": "wrong-type-containers",
+    "input": "wrong-type-containers.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "answers.plan"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.access"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.other.q"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "answers.sections.other.r[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "outcomes"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Values and Known fields: an answers map that is a list, a scope that is text, an answer that is a map, a list holding a list, and an outcomes that is a map."
+  },
+  {
+    "name": "unknown-field",
+    "input": "unknown-field.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "plan.note"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "answers.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "outcomes[0].Section"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "outcomes[0].comment"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Unknown fields: the plan reference, the answers, and an outcome cannot keep unknown fields, and the value of an unknown key is not read, so the plain yes inside answers.extra is not reported. Keys are exact."
+  },
+  {
+    "name": "unknown-field-guards",
+    "input": "unknown-field-guards.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "x-a[0]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "x-b.k"
+      },
+      {
+        "code": "format.alias",
+        "path": "x-c"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Unknown fields: the format guards apply inside an unknown field of the record."
+  },
+  {
+    "name": "empty-values",
+    "input": "empty-values.yaml",
+    "problems": [
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.b"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "answers.plan.d[1]"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.sections.s.c"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "outcomes[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "outcomes[2]"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: a null answer is empty-answer, and a null item in a List Value or in the outcomes list is empty-item."
+  },
+  {
+    "name": "problem-order",
+    "input": "problem-order.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "outcomes[0].section"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "account"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "plan.extra"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: problems come in file order, so a file with its keys out of canonical order reports out of canonical order."
+  },
+  {
+    "name": "same-place",
+    "input": "same-place.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "account"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "account"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "startDate"
+      },
+      {
+        "code": "format.alias",
+        "path": "startDate"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "plan"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "plan"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "plan"
+      }
+    ],
+    "source": "Hand-written. Plan decoder rule, Problems: two problems at one place come in the order of the table, so a spelling comes before an alias and a duplicate key before a wrong type."
+  }
+]

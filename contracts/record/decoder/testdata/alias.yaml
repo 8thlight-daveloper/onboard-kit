@@ -1,0 +1,12 @@
+schemaVersion: 1
+kind: record
+account: &a ada
+plan: &p
+  id: x
+answers:
+  plan:
+    team: *a
+    <<: {other: x}
+outcomes:
+  - &o
+    section: s

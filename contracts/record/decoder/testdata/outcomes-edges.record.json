@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "outcomes": [
+    {
+      "section": "b",
+      "outcome": "maybe"
+    },
+    {},
+    {
+      "section": "a",
+      "outcome": "verified"
+    },
+    {
+      "section": "b",
+      "outcome": "maybe"
+    }
+  ]
+}

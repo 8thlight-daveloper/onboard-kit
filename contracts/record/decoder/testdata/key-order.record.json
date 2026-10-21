@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "account": "ada",
+  "startDate": "2026-10-22",
+  "plan": {
+    "id": "abc",
+    "hash": "5d3c",
+    "url": "../plan.obk.yaml"
+  },
+  "answers": {
+    "plan": {
+      "team": "platform"
+    },
+    "sections": {
+      "access": {
+        "account_name": "ada"
+      }
+    }
+  },
+  "outcomes": [
+    {
+      "section": "access",
+      "outcome": "verified",
+      "on": "2026-10-22T14:05:00Z",
+      "sectionHash": "5d3c",
+      "note": "noted",
+      "differently": "it's different"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+schemaVersion: 1
+kind: record
+account: yes
+startDate: ON
+plan:
+  id: n
+answers:
+  plan:
+    a: Off
+outcomes:
+  - section: TRUE
+    outcome: y

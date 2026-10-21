@@ -1,0 +1,10 @@
+outcomes:
+  - section: yes
+answers:
+  plan:
+    a: Off
+account: 42
+plan:
+  extra: x
+schemaVersion: 1
+kind: record

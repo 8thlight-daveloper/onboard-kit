@@ -1,0 +1,9 @@
+# written by hand
+---
+outcomes: [{on: "2026-10-22T14:05:00Z", differently: 'it''s different', note: noted, sectionHash: "5d3c", outcome: verified, section: access}]
+answers: {sections: {access: {account_name: ada}}, plan: {team: platform}}
+plan: {url: ../plan.obk.yaml, hash: "5d3c", id: abc}
+startDate: 2026-10-22
+account: ada
+kind: record
+schemaVersion: 1
