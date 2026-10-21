@@ -27,6 +27,8 @@ flowchart TB
         migrator["Plan migrator"]
         decoder["Plan decoder"]
         encoder["Plan encoder"]
+        recorddecoder["Record decoder"]
+        recordencoder["Record encoder"]
         loader["Section loader"]
         selector["Section selector"]
         evaluator["Condition evaluator"]
@@ -90,6 +92,8 @@ flowchart TB
 | Plan migrator | Deferred until the first breaking schema change. Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
 | Plan decoder | Turns plan file bytes into a Plan and problems. Refuses a version older than supported or newer than known, applies the migrator steps once any exist, decodes leniently so unknown fields survive, and reports format guard violations such as `yes` for a boolean, anchors, and aliases |
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
+| Record decoder | Turns onboarding record file bytes into a Record and problems, with the same format guards as the plan decoder. Refuses a file whose `kind` is not `record` |
+| Record encoder | Turns a Record into canonical bytes, so the same record always gives the same bytes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
@@ -108,7 +112,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 | Component | Side effects |
 | -- | -- |
-| `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator` | None. They take and return values, and a driver reads and writes the files |
+| `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator`, `record/decoder`, `record/encoder` | None. They take and return values, and a driver reads and writes the files |
 | `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |

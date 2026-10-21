@@ -87,10 +87,12 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `secrets` | `model` |
 | 1 | `plan/migrator`, deferred | Nothing from the project, and its own frozen copies of old versions |
 | 1 | `plan/encoder` | `model` |
+| 1 | `record/encoder` | `model` |
 | 2 | `section/selector` | `condition/evaluator`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
 | 2 | `plan/refresher` | `model` |
 | 2 | `plan/decoder` | `plan/migrator`, `model` |
+| 2 | `record/decoder` | `model` |
 | 3 | `question/finder` | `section/selector`, `condition/evaluator`, `model` |
 | 3 | `document/assembler` | `section/selector`, `section/resolver`, `model` |
 | 4 | `plan/validator` | `question/finder`, `section/validator`, `secrets`, `model` |

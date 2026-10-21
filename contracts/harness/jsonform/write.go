@@ -57,6 +57,15 @@ func JSON(plan model.Plan) ([]byte, error) {
 	return out.Bytes(), nil
 }
 
+func RecordJSON(record model.Record) ([]byte, error) {
+	var out bytes.Buffer
+	if err := write(&out, recordObject(record), 0); err != nil {
+		return nil, err
+	}
+	out.WriteByte('\n')
+	return out.Bytes(), nil
+}
+
 func SectionJSON(section model.Section) ([]byte, error) {
 	var out bytes.Buffer
 	if err := write(&out, sectionObject(section), 0); err != nil {
@@ -86,6 +95,8 @@ func planObject(plan model.Plan) object {
 		origin.addText("refreshedOn", string(plan.Origin.RefreshedOn))
 		o.add("origin", origin)
 	}
+	o.addText("planUrl", plan.URL)
+	o.addText("resultsPath", plan.ResultsPath)
 	if directory := directoryObject(plan.Directory); len(directory) > 0 {
 		o.add("directory", directory)
 	}
@@ -420,6 +431,41 @@ func directoryObject(directory model.Directory) object {
 			}
 			return t
 		}))
+	}
+	return o
+}
+
+func recordObject(record model.Record) object {
+	var o object
+	if record.SchemaVersion != 0 {
+		o.add("schemaVersion", record.SchemaVersion)
+	}
+	o.addText("account", record.Account)
+	o.addText("startDate", string(record.StartDate))
+	if record.Plan != (model.PlanReference{}) {
+		var p object
+		p.addText("id", record.Plan.ID)
+		p.addText("hash", record.Plan.Hash)
+		p.addText("url", record.Plan.URL)
+		o.add("plan", p)
+	}
+	if record.Answers.Plan != nil || record.Answers.Sections != nil {
+		o.add("answers", answersObject(record.Answers))
+	}
+	if len(record.Outcomes) > 0 {
+		o.add("outcomes", mapList(record.Outcomes, func(outcome model.Outcome) object {
+			var e object
+			e.addText("section", outcome.Section)
+			e.addText("outcome", string(outcome.Kind))
+			e.addText("on", string(outcome.On))
+			e.addText("sectionHash", outcome.SectionHash)
+			e.addText("note", outcome.Note)
+			e.addText("differently", outcome.Differently)
+			return e
+		}))
+	}
+	if record.UnknownFields != nil {
+		o.add("unknownFields", record.UnknownFields)
 	}
 	return o
 }

@@ -133,7 +133,9 @@ classDiagram
 | `schemaVersion` | Integer | See [0030](../decisions/0030-self-contained-plan-file.md#versioning) |
 | `id` | Text, optional | An org plan's identity, a UUID the driver makes when the plan is first created. See [0075](../decisions/0075-refreshing-a-personal-plan.md) |
 | `provenance` | Provenance |  |
-| `origin` | Origin, optional | Present in a personal plan only: the org plan it was refreshed from |
+| `origin` | Origin, optional | Present in a personal plan only: the org plan it was refreshed from. To be retired by [0090](../decisions/0090-plan-and-onboarding-record.md) |
+| `planUrl` | Text, optional | Where the plan's latest copy lives, a path or an HTTPS address. Set when the plan is created. See [0085](../decisions/0085-walking-sections-and-recording-outcomes.md) |
+| `resultsPath` | Text, optional | A template for where each newcomer's onboarding record is kept, such as `records/{account}/record.obk.yaml`. `{account}` is its only variable |
 | `directory` | Directory, optional | Contacts, roles, and teams, in the org plan. See [0080](../decisions/0080-directory.md) |
 | `variables` | List of Variable | Plan variables: the axis variables, document details, and settings |
 | `answers` | Answers | Every answer, by scope |
@@ -148,6 +150,25 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | -- | -- | -- |
 | `templateSet` | Text | The build's commit sha or tag |
 | `generatedOn` | Date | Text in ISO form, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
+
+## Onboarding record
+
+The newcomer's own file. See [0090](../decisions/0090-plan-and-onboarding-record.md). It holds only what the newcomer produced, and it is read and written apart from the plan.
+
+| Field | Type | Notes |
+| -- | -- | -- |
+| `schemaVersion` | Integer | As for a plan |
+| `kind` | Text | Always `record`. A decoder refuses a file of the wrong kind. It is part of the file and not of the Record type |
+| `account` | Text | The permanent key. It is in the path of the file |
+| `startDate` | Date | The day the newcomer starts. Due dates count from it |
+| `plan` | PlanReference | Which plan the record was last reconciled against |
+| `answers` | Answers | Only the answers the newcomer gave, to onboardee questions |
+| `outcomes` | List of Outcome | One entry for each section the newcomer tried, sorted by `section` |
+| `unknownFields` | Map of unknown fields | Kept on load and written back, as for a plan |
+
+A PlanReference has `id`, `hash`, and `url`: the plan's id, the hash of that plan, and where its latest copy lives.
+
+An Outcome has `section` (a section id), `outcome` (`verified`, `failed`, or `deferred`), `on` (a UTC time in RFC 3339 form, passed in by a driver), `sectionHash` (the section's content hash when the outcome was recorded), and optional `note` and `differently`. A section with no outcome has not been tried.
 
 ## Origin
 

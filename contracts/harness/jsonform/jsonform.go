@@ -22,6 +22,16 @@ func Plan(data []byte) (model.Plan, error) {
 	return plan, r.err
 }
 
+func Record(data []byte) (model.Record, error) {
+	raw, err := decodeJSON(data)
+	if err != nil {
+		return model.Record{}, err
+	}
+	r := &reader{}
+	record := r.record("record", raw)
+	return record, r.err
+}
+
 func Section(data []byte) (model.Section, error) {
 	raw, err := decodeJSON(data)
 	if err != nil {
@@ -210,12 +220,14 @@ func (r *reader) valueAt(path string, m map[string]any, key string) model.Value 
 }
 
 func (r *reader) plan(path string, v any) model.Plan {
-	m := r.object(path, v, "schemaVersion", "id", "provenance", "origin", "directory", "variables", "answers", "sections", "unknownFields")
+	m := r.object(path, v, "schemaVersion", "id", "provenance", "origin", "planUrl", "resultsPath", "directory", "variables", "answers", "sections", "unknownFields")
 	plan := model.Plan{
 		SchemaVersion: r.integer(path, m, "schemaVersion"),
 		ID:            r.str(path, m, "id"),
 		Provenance:    r.provenance(path+".provenance", m["provenance"]),
 		Origin:        r.origin(path+".origin", m["origin"]),
+		URL:           r.str(path, m, "planUrl"),
+		ResultsPath:   r.str(path, m, "resultsPath"),
 		Directory:     r.directory(path+".directory", m["directory"]),
 		Answers:       r.answers(path+".answers", m["answers"]),
 		UnknownFields: r.unknownFields(path+".unknownFields", m["unknownFields"]),
@@ -480,4 +492,34 @@ func (r *reader) generic(path string, v any) any {
 	}
 	r.fail(path, "unsupported kind %T", v)
 	return nil
+}
+
+func (r *reader) record(path string, v any) model.Record {
+	m := r.object(path, v, "schemaVersion", "account", "startDate", "plan", "answers", "outcomes", "unknownFields")
+	record := model.Record{
+		SchemaVersion: r.integer(path, m, "schemaVersion"),
+		Account:       r.str(path, m, "account"),
+		StartDate:     model.Date(r.str(path, m, "startDate")),
+		Plan:          r.planReference(path+".plan", m["plan"]),
+		Answers:       r.answers(path+".answers", m["answers"]),
+		UnknownFields: r.unknownFields(path+".unknownFields", m["unknownFields"]),
+	}
+	for i, item := range r.list(path, m, "outcomes") {
+		at := fmt.Sprintf("%s.outcomes[%d]", path, i)
+		o := r.object(at, item, "section", "outcome", "on", "sectionHash", "note", "differently")
+		record.Outcomes = append(record.Outcomes, model.Outcome{
+			Section:     r.str(at, o, "section"),
+			Kind:        model.OutcomeKind(r.str(at, o, "outcome")),
+			On:          model.Timestamp(r.str(at, o, "on")),
+			SectionHash: r.str(at, o, "sectionHash"),
+			Note:        r.str(at, o, "note"),
+			Differently: r.str(at, o, "differently"),
+		})
+	}
+	return record
+}
+
+func (r *reader) planReference(path string, v any) model.PlanReference {
+	m := r.object(path, v, "id", "hash", "url")
+	return model.PlanReference{ID: r.str(path, m, "id"), Hash: r.str(path, m, "hash"), URL: r.str(path, m, "url")}
 }

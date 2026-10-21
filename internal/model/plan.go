@@ -7,6 +7,8 @@ type Plan struct {
 	ID            string
 	Provenance    Provenance
 	Origin        Origin
+	URL           string
+	ResultsPath   string
 	Directory     Directory
 	Variables     []Variable
 	Answers       Answers

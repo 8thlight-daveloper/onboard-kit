@@ -72,3 +72,33 @@ func TestPartsReadAndWriteBack(t *testing.T) {
 		t.Errorf("answers not read: %v %+v", err, answers)
 	}
 }
+
+func TestRecordJSONReadsBackAsTheSameRecord(t *testing.T) {
+	paths, err := filepath.Glob("../../record/testdata/*.record.json")
+	if err != nil || len(paths) == 0 {
+		t.Fatalf("no record fixtures found: %v", err)
+	}
+	for _, path := range paths {
+		t.Run(filepath.Base(path), func(t *testing.T) {
+			data, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatal(err)
+			}
+			record, err := jsonform.Record(data)
+			if err != nil {
+				t.Fatal(err)
+			}
+			written, err := jsonform.RecordJSON(record)
+			if err != nil {
+				t.Fatal(err)
+			}
+			again, err := jsonform.Record(written)
+			if err != nil {
+				t.Fatalf("written JSON does not read back: %v\n%s", err, written)
+			}
+			if !reflect.DeepEqual(record, again) {
+				t.Fatalf("record changed on the way through\nfirst: %#v\nagain: %#v", record, again)
+			}
+		})
+	}
+}
