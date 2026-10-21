@@ -18,9 +18,9 @@ func (app App) helpEntries() []hint {
 	case screenReview:
 		return app.reviewHelp()
 	case screenSections:
-		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}, {"P", "people: contacts, roles, and teams"}}
-	case screenPeople:
-		return app.peopleHelp()
+		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}, {"c", "contacts, roles, and teams"}}
+	case screenContacts:
+		return app.contactsHelp()
 	}
 	return app.walkHelp()
 }
@@ -57,7 +57,7 @@ func (app App) walkHelp() []hint {
 	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
-	return app.withPeopleHelp(entries)
+	return app.withContactsHelp(entries)
 }
 
 func (app App) enterHelp() hint {
@@ -83,7 +83,7 @@ func (app App) overviewHelp() []hint {
 	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
-	return app.withPeopleHelp(entries)
+	return app.withContactsHelp(entries)
 }
 
 func (app App) reviewHelp() []hint {
@@ -99,21 +99,21 @@ func (app App) reviewHelp() []hint {
 	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
-	return app.withPeopleHelp(entries)
+	return app.withContactsHelp(entries)
 }
 
-func (app App) withPeopleHelp(entries []hint) []hint {
+func (app App) withContactsHelp(entries []hint) []hint {
 	if !app.canEditDirectory() {
 		return entries
 	}
-	return append(entries, hint{"P", "people: add, change, or remove contacts, roles, and teams"})
+	return append(entries, hint{"c", "contacts: add, change, or remove contacts, roles, and teams"})
 }
 
-func (app App) peopleHelp() []hint {
-	switch app.people.mode {
-	case peopleEditing:
+func (app App) contactsHelp() []hint {
+	switch app.contacts.mode {
+	case contactsEditing:
 		return app.formHelp()
-	case peopleRemoving:
+	case contactsRemoving:
 		return []hint{{"y", "remove it, and clear what the list above says"}, {"any other key", "keep it and go back"}}
 	}
 	return []hint{
@@ -128,10 +128,14 @@ func (app App) peopleHelp() []hint {
 }
 
 func (app App) formHelp() []hint {
-	form := app.people.form
+	form := app.contacts.form
 	switch {
+	case form.choosing && form.chooser.single:
+		return []hint{{"up, down, k, j", "move"}, {"enter, space", "choose the row"}, {"esc", "go back without changing it"}}
 	case form.choosing:
 		return []hint{{"up, down, k, j", "move"}, {"space", "pick or unpick, or choose the top two rows"}, {"enter", "confirm"}, {"esc", "go back without changing it"}}
+	case form.onContactRow():
+		return []hint{{"up, down, k, j", "choose a row"}, {"enter, space", "choose the team contact"}, {"ctrl+s", "save the team"}, {"esc", "cancel"}}
 	case form.onRows():
 		return []hint{{"up, down, k, j", "choose a role"}, {"enter, space", "change who holds it for this team"}, {"ctrl+s", "save the team"}, {"esc", "cancel"}}
 	case form.onHolders():

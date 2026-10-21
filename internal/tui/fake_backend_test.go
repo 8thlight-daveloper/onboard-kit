@@ -119,13 +119,13 @@ func longScreens() map[string]App {
 	}
 	picking := startFake(newFakeBackend(directoryQuestion("plan.crowd", "plan", long, model.VariableTypeContact, true, crowd...)))
 	return map[string]App{
-		"long people":   press(crowdedPeople(), typed("P")),
-		"long roles":    press(crowdedPeople(), typed("P"), tab),
-		"long teams":    press(crowdedPeople(), typed("P"), tab, tab),
-		"long holders":  press(crowdedPeople(), typed("P"), tab, enter, enter, down, space, down, space),
-		"long override": press(crowdedPeople(), typed("P"), tab, tab, enter, enter, enter, down, down, space),
-		"long contact":  press(crowdedPeople(), typed("P"), enter, typed("more text that goes on and on and on and on and on and on and on and on and on")),
-		"long removal":  press(crowdedPeople(), typed("P"), typed("x")),
+		"long contacts": press(crowdedContacts(), typed("c")),
+		"long roles":    press(crowdedContacts(), typed("c"), tab),
+		"long teams":    press(crowdedContacts(), typed("c"), tab, tab),
+		"long holders":  press(crowdedContacts(), typed("c"), tab, enter, enter, down, space, down, space),
+		"long override": press(crowdedContacts(), typed("c"), tab, tab, enter, enter, enter, down, down, space),
+		"long contact":  press(crowdedContacts(), typed("c"), enter, typed("more text that goes on and on and on and on and on and on and on and on and on")),
+		"long removal":  press(crowdedContacts(), typed("c"), typed("x")),
 		"long walk":     walking,
 		"long overview": press(walking, esc),
 		"long review":   press(walking, esc, typed("r")),
@@ -133,7 +133,7 @@ func longScreens() map[string]App {
 	}
 }
 
-func crowdedPeople() App {
+func crowdedContacts() App {
 	long := strings.Repeat("A very long name that keeps going ", 4)
 	var plan model.Plan
 	var ids []string

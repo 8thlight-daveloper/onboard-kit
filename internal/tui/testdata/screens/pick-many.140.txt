@@ -1,4 +1,4 @@
-  Onboarding plan  [Walk]  Overview o  Review r  Sections s  People P                                                      0 of 8 answered
+  Onboarding plan  [Walk]  Overview o  Review r  Sections s  Contacts c                                                    0 of 8 answered
   ··  ·····  ◆
 
   If you are stuck                                                                  │ About this question
@@ -9,10 +9,10 @@
   > [2] Alex Rivera                                                                 │
     [1] Sam Okafor                                                                  │
     [ ] IT service desk                                                             │
+    [ ] Platform team channel                                                       │
                                                                                     │
   Space picks or unpicks. Enter confirms. Pick order is kept.                       │
   Order: Sam Okafor, then Alex Rivera                                               │
-
 
 
 

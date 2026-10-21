@@ -82,5 +82,5 @@ func emptyDirectoryText(question model.Question, audience model.Audience) string
 	if audience == model.AudienceOnboardee {
 		return "No " + directoryNoun(question) + " to pick from yet. Ask your onboarder to add this."
 	}
-	return "No " + directoryNoun(question) + " to pick from yet. Add them on the People screen, press P."
+	return "No " + directoryNoun(question) + " to pick from yet. Add them on the Contacts screen, press c."
 }

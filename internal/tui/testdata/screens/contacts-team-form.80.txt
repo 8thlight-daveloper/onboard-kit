@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  [Contacts]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Edit team
+  Id: platform, which never changes
+
+  > Name      Platform team
+
+  Who to contact for this team
+    Platform team channel
+
+  Who holds each role for this team
+    Engineering manager  same as the role: Sam Okafor
+    IT contact           same as the role: IT service desk
+    Platform team lead   same as the role: Alex Rivera
+
+  Enter changes the chosen row. Ctrl+s saves the team.
+
+
+
+
+
+
+  enter next  ctrl+s save  esc cancel  f1 help

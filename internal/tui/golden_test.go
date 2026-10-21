@@ -42,27 +42,30 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		return func(app App) App { return moveTo(t, app, id) }
 	}
 	return map[string]func(goldenSize) App{
-		"walk":                 build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
-		"edit":                 build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
-		"overview":             build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
-		"review":               build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
-		"sections":             build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
-		"onboardee":            build(blankPlan(t), model.AudienceOnboardee),
-		"example":              buildFake(),
-		"pick":                 build(blankPlan(t), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
-		"pick-many":            build(blankPlan(t), model.AudienceOnboarder, goTo("stuck-general.general_contacts"), keys(typed("j"), space, typed("k"), space)),
-		"pick-empty":           build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
-		"pick-empty-onboardee": build(withoutDirectory(blankPlan(t)), model.AudienceOnboardee),
-		"subsections":          buildSubsections(),
-		"people":               build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"))),
-		"people-roles":         build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab)),
-		"people-teams":         build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, tab)),
-		"people-form":          build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), typed("a"), typed("Dana Lee"), enter, typed("dana@acme.example"))),
-		"people-holders":       build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, typed("a"), typed("Release lead"), enter, down, space, down, space)),
-		"people-override":      build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, tab, typed("a"), typed("Data team"), enter, enter, down, space)),
-		"people-remove":        build(acmePlan(t), model.AudienceOnboarder, keys(typed("P"), down, typed("x"))),
-		"people-remove-role":   build(acmePlan(t), model.AudienceOnboarder, keys(typed("P"), tab, typed("x"))),
-		"people-empty":         build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, keys(esc, typed("P"))),
+		"walk":                         build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
+		"edit":                         build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
+		"overview":                     build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
+		"review":                       build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
+		"sections":                     build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
+		"onboardee":                    build(blankPlan(t), model.AudienceOnboardee),
+		"example":                      buildFake(),
+		"pick":                         build(blankPlan(t), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
+		"pick-many":                    build(blankPlan(t), model.AudienceOnboarder, goTo("stuck-general.general_contacts"), keys(typed("j"), space, typed("k"), space)),
+		"pick-empty":                   build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
+		"pick-empty-onboardee":         build(withoutDirectory(blankPlan(t)), model.AudienceOnboardee),
+		"subsections":                  buildSubsections(),
+		"contacts-list":                build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"))),
+		"contacts-roles":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab)),
+		"contacts-teams":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, tab)),
+		"contacts-form":                build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), typed("a"), typed("Dana Lee"), enter, typed("dana@acme.example"))),
+		"contacts-holders":             build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, typed("a"), typed("Release lead"), enter, down, space, down, space)),
+		"contacts-override":            build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, typed("a"), typed("Data team"), enter, down, enter, down, space)),
+		"contacts-team-form":           build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, enter)),
+		"contacts-team-contact":        build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, enter, enter, enter)),
+		"contacts-remove-team-contact": build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), down, down, down, typed("x"))),
+		"contacts-remove":              build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), down, typed("x"))),
+		"contacts-remove-role":         build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, typed("x"))),
+		"contacts-empty":               build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, keys(esc, typed("c"))),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)
@@ -116,7 +119,7 @@ func wireframe(app App) string {
 	return strings.Join(rows, "\n") + "\n"
 }
 
-func peopleWithFlags(t *testing.T) model.Plan {
+func contactsWithFlags(t *testing.T) model.Plan {
 	t.Helper()
 	plan := acmePlan(t)
 	plan.Directory.Contacts = append(plan.Directory.Contacts, model.Contact{ID: "pat-lee", Name: "Pat Lee", Email: "pat.lee.acme.example"}, model.Contact{ID: "front-desk", Name: "Front desk"})
