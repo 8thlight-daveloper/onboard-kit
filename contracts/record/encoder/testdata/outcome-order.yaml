@@ -1,0 +1,13 @@
+schemaVersion: 1
+kind: record
+outcomes:
+  - section: zebra
+    outcome: failed
+  - section: access
+    outcome: verified
+  - section: access
+    outcome: Maybe
+  - section: middle
+    outcome: deferred
+  - section: zebra
+    outcome: failed

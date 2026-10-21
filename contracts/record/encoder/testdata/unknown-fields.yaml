@@ -1,0 +1,39 @@
+schemaVersion: 1
+kind: record
+account: ada
+Z-upper: 1
+directory:
+  contacts: 1
+id: rec-1
+"n": 2
+provenance:
+  a: null
+sections: kept
+variables: []
+x-doc:
+  - |
+    line one
+    line two
+  - plain
+x-empty-list: []
+x-empty-map: {}
+x-list:
+  - a
+  - b
+x-map:
+  a: 1
+  b: 1.5
+  c: null
+  d: true
+  k: v
+x-nested:
+  - - p
+    - q
+  - r: 1
+x-numbers:
+  big: 100
+  neg: -5
+  quarter: 0.25
+  ten: 10
+  whole: 2.0
+x-owner: team

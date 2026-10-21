@@ -1,0 +1,11 @@
+{"schemaVersion": 1, "account": "ada",
+ "unknownFields": {
+  "sections": "kept", "directory": {"contacts": 1}, "provenance": {"a": null}, "variables": [], "id": "rec-1",
+  "Z-upper": 1, "n": 2,
+  "x-owner": "team", "x-list": ["a", "b"],
+  "x-map": {"k": "v", "a": 1, "b": 1.5, "c": null, "d": true},
+  "x-nested": [["p", "q"], {"r": 1}],
+  "x-doc": ["line one\nline two\n", "plain"],
+  "x-empty-list": [], "x-empty-map": {},
+  "x-numbers": {"big": 100, "neg": -5, "quarter": 0.25, "ten": 10, "whole": 2.0}
+ }}
