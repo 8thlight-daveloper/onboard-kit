@@ -85,9 +85,18 @@ The newcomer's file holds their answers and notes. If the file sits in a git wor
 - The screen offers "Do not tell me again for this repository". The choice is kept per repository, in the person's own config folder, and never in the plan or in the repository. Silencing one repository does not silence another.
 - The header carries a "shared" marker for the whole walk, whether or not the notice was silenced. The note and `differently` fields say that their text is visible to people who can read the repository.
 
-### Sharing is by file
+### Where the results live
 
-Where the file lives is the newcomer's choice and the organization's convention. An organization that wants to see progress asks newcomers to keep their files in a shared checkout, and `start` can be pointed at it. A later `report` command would read a folder of plans and answer questions such as who has not verified a section. It is a pure function from plans to a table. It is not designed here, and a due date on a section would belong to it.
+Results are shared by file. The personal file is self-contained and does not care how it travels, so git is one transport, and a folder on a network share or a synced drive is another.
+
+- **The path comes from the org plan.** The org plan has a top-level field, `resultsPath`, a template such as `onboarding_sessions/{account}/session.obk.yaml`. `{account}` is the only variable. A personal file lives at the filled-in path under the root that `start` is given, or under the working tree it finds by looking for a `.git` folder above the current folder. Distinct paths per person mean the files never conflict.
+- **The tool places the file and does not run git.** It writes the file at the right path, then prints the exact commands to add, commit, and push it, and offers to copy them. The person runs them. Running git from the tool would be a confirmed action under the rules for running commands (#29), and it is not part of this stage. Protected branches, signed commits, credentials, and merge conflicts make it a product of its own.
+- **The onboarder seeds the account.** A principle, soft but real: the onboarder does what they can so the newcomer does less. An `invite` command makes a personalized copy of the org plan for one account, with the account answered and the results path filled in, for the onboarder to send. The newcomer sees "Is this you?" and confirms. The confirmation is the safety against a typo.
+- **The account is the key.** It is permanent in the path. A mistake is fixed by an explicit move: the tool offers to move the file to the new path and the answer changes with it. Git sees a delete and an add.
+- **Visibility is stated and accepted.** Anyone who can read the repository can read every file in it. The organizations this serves are developer teams where onboarding results are useful to everyone, so one shared repository is acceptable, with the notice above. An organization that wants more uses a repository per cohort or per team, so that readership is the people involved. Sparse checkout is not a control: it limits what the working tree shows and not what a person can fetch, so the tool does not offer it as privacy.
+- **A database is not needed yet.** It would add a service to host, with authentication, backups, and an outage that blocks newcomers, and the tool is one self-contained file. What it would buy is write-without-read, live dashboards, and queries. Revisit it when an organization needs write-without-read or outgrows a folder of files. The file format does not change if a later "submit" sends the same file to an endpoint.
+
+A later `report` command would read a folder of personal files and answer questions such as who has not verified a section. It is a pure function from plans to a table, and it is not designed here.
 
 ### The tool runs nothing in this stage
 
@@ -109,12 +118,12 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Consequences
 
-- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `progress` and `planUrl`. This needs `slow-change`.
+- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `progress`, `planUrl`, and `resultsPath`. This needs `slow-change`.
 - **Contracts**, each its own small increment: the decoder, encoder, loader, and hasher (`requires` and `bootstrap` are content), the section selector (ordering and the cascade), the section validator (cycles, unknown ids, the bootstrap rule), the refresher (outcomes survive), the plan validator (a duplicate or unknown outcome), and two new components: an outcome recorder, and a section walker that gives each active section its state, what it waits on, and its resolved text.
 - **The reference docs** for ordering, optional sections, and the schema change for `requires`.
 - **The TUI** gains a Process screen for the onboardee, the start notice for a shared repository, and the bootstrap offer to refresh.
-- **The drivers** find the working tree and keep the per-repository choice.
+- **The drivers** find the working tree, keep the per-repository choice, and write the file at its path. A new `invite` command makes a personalized copy.
 
 ## Not decided
 
-- The report: how the onboarder sees newcomers' outcomes. It raises who a file belongs to, whether it is read by person or by section, due dates, whether failed and changed outcomes and notes surface, and the form of the output. It is for a separate discussion.
+- The report: how the onboarder sees newcomers' outcomes. Where the files live and whose they are are settled above. Still open: whether the view is by person or by section, due dates, whether failed and changed outcomes and notes surface, and the form of the output.
