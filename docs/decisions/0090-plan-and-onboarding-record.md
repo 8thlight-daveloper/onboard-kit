@@ -111,6 +111,7 @@ The archive always includes `first-steps.md`, for a newcomer who has nothing ins
 - It holds the bootstrap sections as the assembler writes them.
 - It ends with a block of standard help that the tool supplies and the plan fills in: what to do about a lost plan (ask the onboarding owner for a fresh invitation, or clone the repository and run `start` inside it), a lost record (it is in the repository at its path), a wrong account (the file can be moved), where to get the tool, and who to ask when stuck, from the plan's general contacts and the owner resolved from the directory.
 - The standard wording is part of the tool.
+- The parts are listed in the [first-steps document](../reference/first-steps-document.md).
 
 ### Several records on one machine
 
@@ -150,4 +151,4 @@ A report reads records and the plan, and nothing else. It does not need each per
 ## Not decided
 
 - The exact wording of the standard help in the first-steps document.
-- Whether the index is pruned of records whose file is gone, and when.
+- Whether the index forgets a record whose file is missing. The picker shows it as missing and lets the person forget it. It never removes one on its own, because a missing file may be an unmounted drive or a repository not yet cloned.
