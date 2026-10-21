@@ -132,6 +132,12 @@ func TestReportsProblemsAndReturnsNoPlan(t *testing.T) {
 				if strings.TrimSpace(p.Message) == "" {
 					t.Errorf("problem %s at %q has no message", p.Code, p.Detail["path"])
 				}
+				if p.Code == "format.wrong-kind" {
+					found := p.Detail["found"]
+					if !strings.Contains(p.Message, found) || !strings.Contains(strings.ToLower(p.Message), "plan") {
+						t.Errorf("message %q must name the kind %q and say a plan is expected", p.Message, found)
+					}
+				}
 			}
 			if actual := actualProblems(problems); !reflect.DeepEqual(actual, c.Problems) {
 				t.Errorf("problems differ\n got: %+v\nwant: %+v", actual, c.Problems)

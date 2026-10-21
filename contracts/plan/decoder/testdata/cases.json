@@ -2680,5 +2680,446 @@
       }
     ],
     "source": "Hand-written. Contract rule: Version. A newer file may use anything, so a `directory` that is a list with a plain `yes` in it is not read, and the version problem is the only problem."
+  },
+  {
+    "name": "plan-links-values",
+    "input": "plan-links-values.yaml",
+    "output": "plan-links-values.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A plain URL and a plain path template with a brace inside are text, in any key order. The keys are exact: `planURL`, `PlanUrl`, `ResultsPath`, `results_path`, and `x-planUrl` are unknown fields of the plan and are kept. A variable, an answer, or a section field named `planUrl`, `resultsPath`, or `kind` is ordinary, and `kind` in a section is an unknown field of the section."
+  },
+  {
+    "name": "plan-links-plain-punctuation",
+    "input": "plan-links-plain-punctuation.yaml",
+    "output": "plan-links-plain-punctuation.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A colon not followed by a space and a `#` not preceded by a space are part of a plain scalar, so a URL with a port and a fragment is text."
+  },
+  {
+    "name": "plan-links-quoted",
+    "input": "plan-links-quoted.yaml",
+    "output": "plan-links-quoted.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A path template that starts with `{` is quoted in a file, because a plain `{` starts a flow map. A quoted `yes` is text, and case is kept."
+  },
+  {
+    "name": "plan-links-words",
+    "input": "plan-links-words.yaml",
+    "output": "plan-links-words.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A plain `deferred` is text, because a string is not a Value. Spaces are kept and nothing is trimmed."
+  },
+  {
+    "name": "plan-links-numbers-and-dates",
+    "input": "plan-links-numbers-and-dates.yaml",
+    "output": "plan-links-numbers-and-dates.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A quoted `'123'` is text, and a plain date is text in every place a string is read."
+  },
+  {
+    "name": "plan-links-blank",
+    "input": "plan-links-blank.yaml",
+    "output": "plan-links-blank.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. An empty, null, or quoted empty value is the empty string, the same as an absent key."
+  },
+  {
+    "name": "plan-links-blank-null",
+    "input": "plan-links-blank-null.yaml",
+    "output": "plan-links-blank-null.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. An explicit `null` is the empty string, and an empty `kind` is the same as an absent one."
+  },
+  {
+    "name": "plan-links-spelling",
+    "input": "plan-links-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Contract rules: Scalars and Numbers. A plain `yes` and `0x1F` where text belongs are spelling problems, at `planUrl` and `resultsPath`."
+  },
+  {
+    "name": "plan-links-spelling-null-and-number",
+    "input": "plan-links-spelling-null-and-number.yaml",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Contract rules: Scalars and Numbers. A plain `~` is the null spelling and a plain canonical number `12` is a number spelling where text belongs."
+  },
+  {
+    "name": "plan-links-wrong-type",
+    "input": "plan-links-wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Contract rule: Known fields. A plain `true` is not text, and an unquoted `{account}` is a flow map, so it is not text either. Nothing inside it is read."
+  },
+  {
+    "name": "plan-links-wrong-type-collections",
+    "input": "plan-links-wrong-type-collections.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Contract rule: Known fields. A list and a map are not text, and nothing inside them is read, so the plain `yes` in the map is not reported."
+  },
+  {
+    "name": "plan-links-anchor-and-duplicate",
+    "input": "plan-links-anchor-and-duplicate.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "planUrl"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "resultsPath"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Contract rule: Problems. An anchor on a value is `format.alias`. The second `planUrl` and the second `resultsPath` are duplicate keys, and the plain `~` of the second `resultsPath` is the null spelling, which comes before the duplicate at the same place."
+  },
+  {
+    "name": "plan-links-unquoted-brace",
+    "input": "plan-links-unquoted-brace.yaml",
+    "problems": [
+      {
+        "code": "file.not-yaml",
+        "path": ""
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. A plain value that starts with `{` is a flow map, and text after the closing brace is a YAML syntax error. This is why a template that starts with a brace is quoted."
+  },
+  {
+    "name": "plan-links-case-and-spaces",
+    "input": "plan-links-case-and-spaces.yaml",
+    "output": "plan-links-case-and-spaces.plan.json",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl`, the address its source of truth lives at, and an optional text `resultsPath`, a path template that says where records are kept. Contract rules: Known fields, read like `title`. Both values are kept as written: case and the spaces around them are not changed."
+  },
+  {
+    "name": "kind-plan",
+    "input": "kind-plan.yaml",
+    "output": "kind-plan.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. The `kind` key is not kept as an unknown field, and it sits first here to show that its place is free."
+  },
+  {
+    "name": "kind-plan-after-body",
+    "input": "kind-plan-after-body.yaml",
+    "output": "kind-plan-after-body.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. Here `kind` is the last key."
+  },
+  {
+    "name": "kind-plan-quoted",
+    "input": "kind-plan-quoted.yaml",
+    "output": "kind-plan-quoted.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. A quoted `'plan'` is the same text as a plain one."
+  },
+  {
+    "name": "kind-plan-double-quoted",
+    "input": "kind-plan-double-quoted.yaml",
+    "output": "kind-plan-double-quoted.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. A double-quoted `\"plan\"` is the same text."
+  },
+  {
+    "name": "kind-empty",
+    "input": "kind-empty.yaml",
+    "output": "kind-empty.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. An absent, empty, or null `kind` is a plan, like any empty text field, so an empty one is the same as none and is not kept."
+  },
+  {
+    "name": "kind-unknown-neighbours",
+    "input": "kind-unknown-neighbours.yaml",
+    "output": "kind-unknown-neighbours.plan.json",
+    "source": "Hand-written. ADR 0090 and the shared record decisions: a plan file may carry `kind: plan`, which the decoder accepts and drops. Contract rule: Kind. The key is exact, so `Kind`, `kinds`, and `x-kind` are unknown fields of the plan and are kept."
+  },
+  {
+    "name": "kind-record",
+    "input": "kind-record.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      }
+    ],
+    "source": "Hand-written. ADR 0090: a plan file and a record file are told apart by `kind`, and a plan decoder refuses a record. Contract rule: Kind. The problem names the kind found and says a plan is expected."
+  },
+  {
+    "name": "kind-record-file",
+    "input": "kind-record-file.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and the shared record decisions: the file form of a record. The record's other keys are unknown fields of a plan and are kept, so the kind is the only problem, and the record's shape is not judged."
+  },
+  {
+    "name": "kind-quoted-record",
+    "input": "kind-quoted-record.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A quoted `'record'` is the same text as a plain one."
+  },
+  {
+    "name": "kind-case",
+    "input": "kind-case.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "Plan"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. The text is compared exactly, so `Plan` is not `plan`."
+  },
+  {
+    "name": "kind-spaces",
+    "input": "kind-spaces.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "plan "
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. The text is compared as written, so `plan ` with a trailing space is another kind, and the problem names it as written."
+  },
+  {
+    "name": "kind-other-word",
+    "input": "kind-other-word.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "template"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. Any kind text other than `plan` is refused, not only `record`."
+  },
+  {
+    "name": "kind-deferred",
+    "input": "kind-deferred.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "deferred"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A plain `deferred` is text in a string field, so it is a kind named `deferred`."
+  },
+  {
+    "name": "kind-quoted-number",
+    "input": "kind-quoted-number.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "42"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. A quoted `\"42\"` is text and is another kind."
+  },
+  {
+    "name": "kind-spelling",
+    "input": "kind-spelling.yaml",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Kind and Scalars. A plain `yes` is not text, so it is the spelling problem at `kind`, and there is no kind to name."
+  },
+  {
+    "name": "kind-wrong-type",
+    "input": "kind-wrong-type.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Kind and Known fields. A list is not text, so it is `format.wrong-type` at `kind`, and nothing inside it is read."
+  },
+  {
+    "name": "kind-plain-true",
+    "input": "kind-plain-true.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Kind and Known fields. A plain `true` where text belongs is `format.wrong-type`."
+  },
+  {
+    "name": "kind-anchor",
+    "input": "kind-anchor.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "kind"
+      },
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems and Kind. An anchor is reported where it is written and then the node's own problem follows it."
+  },
+  {
+    "name": "kind-duplicate-plan-then-record",
+    "input": "kind-duplicate-plan-then-record.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "kind"
+      },
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems and Kind. The value of a repeated key is read like any other, so the second `kind` is a duplicate key and is also another kind. At one place the problems come in the order of the table."
+  },
+  {
+    "name": "kind-duplicate-record-then-plan",
+    "input": "kind-duplicate-record-then-plan.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems and Kind. Each `kind` value is judged, so the first one is another kind, and the second, which is `plan`, is only a duplicate key."
+  },
+  {
+    "name": "kind-with-other-problems",
+    "input": "kind-with-other-problems.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-kind",
+        "path": "kind",
+        "detail": {
+          "expected": "plan",
+          "found": "record"
+        }
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "id"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Kind. The kind problem is one problem among the others, in the order of its place in the file, so the rest of the file is still read."
+  },
+  {
+    "name": "kind-version-too-new",
+    "input": "kind-version-too-new.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rules: Version and Kind. A newer file may use anything, so the version problem is the only problem and the kind is not read."
+  },
+  {
+    "name": "kind-nested-unknown",
+    "input": "kind-nested-unknown.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "provenance.kind"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "origin.kind"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].kind"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Kind and Unknown fields. `kind` belongs to the plan only. In `provenance`, `origin`, and a directory item it is an unknown key like any other, and is reported at its path."
   }
 ]

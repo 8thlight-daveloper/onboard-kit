@@ -318,3 +318,93 @@ func TestWritesARoleWithNoHoldersInATeamEntry(t *testing.T) {
 		})
 	}
 }
+
+func TestWritesAPlanLinkByTheStringRules(t *testing.T) {
+	cases := map[string]string{
+		"https://git.example/plan.obk.yaml":    "https://git.example/plan.obk.yaml",
+		"records/{account}/record.obk.yaml":    "records/{account}/record.obk.yaml",
+		"{account}/record.obk.yaml":            `"{account}/record.obk.yaml"`,
+		"/records/{account}.yaml":              "/records/{account}.yaml",
+		"<records>/{account}.yaml":             "<records>/{account}.yaml",
+		"$HOME/records.yaml":                   "$HOME/records.yaml",
+		"./records.yaml":                       `"./records.yaml"`,
+		"~/records.yaml":                       `"~/records.yaml"`,
+		"@records":                             `"@records"`,
+		"#records":                             `"#records"`,
+		"2026-10-15":                           `"2026-10-15"`,
+		"records: all":                         `"records: all"`,
+		"records #1":                           `"records #1"`,
+		"records:":                             `"records:"`,
+		" records":                             `" records"`,
+		"records ":                             `"records "`,
+		"Yes":                                  `"Yes"`,
+		"NULL":                                 `"NULL"`,
+		"deferred":                             `"deferred"`,
+		"Ünal/records.yaml":                    `"Ünal/records.yaml"`,
+		"records\ttab":                         `"records\ttab"`,
+		"\"records":                            `"\"records"`,
+		"a\\b":                                 `a\b`,
+		"records/{account}/record.obk.yaml?#x": "records/{account}/record.obk.yaml?#x",
+	}
+	for text, want := range cases {
+		t.Run(text, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, URL: text, ResultsPath: text}
+			got, problems := newEncoder().Encode(plan)
+			expected := "schemaVersion: 1\nplanUrl: " + want + "\nresultsPath: " + want + "\n"
+			if len(problems) != 0 || string(got) != expected {
+				t.Errorf("got %q and %+v, want %q", got, problems, expected)
+			}
+		})
+	}
+}
+
+func TestWritesAPlanLinkWithANewlineAsABlock(t *testing.T) {
+	plan := model.Plan{SchemaVersion: 1, URL: "first\nsecond", ResultsPath: "first\nsecond\n"}
+	got, problems := newEncoder().Encode(plan)
+	want := "schemaVersion: 1\nplanUrl: |-\n  first\n  second\nresultsPath: |\n  first\n  second\n"
+	if len(problems) != 0 || string(got) != want {
+		t.Errorf("got %q and %+v, want %q", got, problems, want)
+	}
+}
+
+func TestPlanLinksAreNotChangedOnTheWayOut(t *testing.T) {
+	plan := model.Plan{SchemaVersion: 1, URL: "HTTPS://Git.Example/Plan.yaml", ResultsPath: "Records/{Account}/R.yaml"}
+	got, problems := newEncoder().Encode(plan)
+	want := "schemaVersion: 1\nplanUrl: HTTPS://Git.Example/Plan.yaml\nresultsPath: Records/{Account}/R.yaml\n"
+	if len(problems) != 0 || string(got) != want {
+		t.Errorf("got %q and %+v, want %q", got, problems, want)
+	}
+}
+
+func TestEachReservedPlanKeyCollidesOnItsOwn(t *testing.T) {
+	for _, key := range []string{"kind", "planUrl", "resultsPath"} {
+		t.Run(key, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, UnknownFields: map[string]any{key: make(chan int), "x-ok": "fine"}}
+			got, problems := newEncoder().Encode(plan)
+			if len(got) != 0 {
+				t.Errorf("want no bytes, got %q", got)
+			}
+			if len(problems) != 1 || problems[0].Code != "encode.unknown-field-collision" || problems[0].Detail["path"] != key {
+				t.Errorf("want one encode.unknown-field-collision at %s, got %+v", key, problems)
+			}
+		})
+	}
+}
+
+func TestNeverWritesAKind(t *testing.T) {
+	for _, c := range loadCases(t) {
+		if c.Output == "" {
+			continue
+		}
+		got, _ := newEncoder().Encode(loadPlan(t, c.Input))
+		for _, line := range strings.Split(string(got), "\n") {
+			if strings.HasPrefix(line, "kind:") || strings.HasPrefix(line, `"kind":`) {
+				t.Errorf("%s: wrote a kind line %q", c.Name, line)
+			}
+		}
+	}
+	got, _ := newEncoder().Encode(model.Plan{SchemaVersion: 1})
+	if string(got) != "schemaVersion: 1\n" {
+		t.Errorf("a plan with nothing else wrote %q", got)
+	}
+}

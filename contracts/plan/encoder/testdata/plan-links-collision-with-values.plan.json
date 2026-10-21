@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "planUrl": "https://git.example/plan.obk.yaml",
+  "resultsPath": "records",
+  "unknownFields": {
+    "planUrl": "other",
+    "resultsPath": "other"
+  }
+}

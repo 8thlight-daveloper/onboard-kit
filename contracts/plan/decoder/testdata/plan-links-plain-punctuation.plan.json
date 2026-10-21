@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "planUrl": "https://git.example:8080/plan.obk.yaml?ref=main#frag",
+  "resultsPath": "$HOME/records/{account}.yaml"
+}

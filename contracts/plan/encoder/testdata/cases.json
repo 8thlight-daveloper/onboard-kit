@@ -397,5 +397,99 @@
       }
     ],
     "source": "Hand-written. Contract rules: Problems come in the order of their places in the canonical file. The directory is written before `variables` and `sections`, so its problem comes first."
+  },
+  {
+    "name": "plan-links",
+    "input": "plan-links.plan.json",
+    "output": "plan-links.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. A URL that starts with a letter and a path template that starts with a letter and holds braces are plain, because the string rule quotes only a first character other than a letter, `$`, `/`, or `<`, and a `{` inside is allowed."
+  },
+  {
+    "name": "plan-links-url-only",
+    "input": "plan-links-url-only.plan.json",
+    "output": "plan-links-url-only.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. With no `resultsPath`, only `planUrl` is written, between `origin` and `directory`."
+  },
+  {
+    "name": "plan-links-path-only",
+    "input": "plan-links-path-only.plan.json",
+    "output": "plan-links-path-only.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. With no `planUrl`, only `resultsPath` is written, between `origin` and `directory`. A path that starts with `/` is plain."
+  },
+  {
+    "name": "plan-links-brace-first",
+    "input": "plan-links-brace-first.plan.json",
+    "output": "plan-links-brace-first.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. Contract rules: Scalars. A first character other than a letter, `$`, `/`, or `<` is quoted. A template that starts with `{` must be quoted, because a plain `{` starts a flow map. A host that starts with a digit is quoted."
+  },
+  {
+    "name": "plan-links-punctuation",
+    "input": "plan-links-punctuation.plan.json",
+    "output": "plan-links-punctuation.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. Contract rules: Scalars. ` #` makes a string quoted, and a path that starts with `.` is quoted."
+  },
+  {
+    "name": "plan-links-plain-punctuation",
+    "input": "plan-links-plain-punctuation.plan.json",
+    "output": "plan-links-plain-punctuation.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. Contract rules: Scalars. A `:` not followed by a space and a `#` not preceded by a space do not force quotes, and a first character `$` is plain."
+  },
+  {
+    "name": "plan-links-reserved-words",
+    "input": "plan-links-reserved-words.plan.json",
+    "output": "plan-links-reserved-words.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. Contract rules: Scalars. The reserved words and the Text value `deferred` are quoted, as for any string."
+  },
+  {
+    "name": "plan-links-blank",
+    "input": "plan-links-blank.plan.json",
+    "output": "plan-links-blank.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. Empty text is omitted, so a plan that holds neither writes neither key."
+  },
+  {
+    "name": "plan-links-section-unknown",
+    "input": "plan-links-section-unknown.plan.json",
+    "output": "plan-links-section-unknown.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. An unknown field collides only when its key is a known key of that type, and `planUrl`, `resultsPath`, and `kind` are keys of a Plan and not of a Section, so on a section they are written as any other, after the known keys."
+  },
+  {
+    "name": "plan-links-answers-named-alike",
+    "input": "plan-links-answers-named-alike.plan.json",
+    "output": "plan-links-answers-named-alike.yaml",
+    "source": "Hand-written. ADR 0090 and the domain model (Plan): a plan has an optional text `planUrl` and an optional text `resultsPath`. Contract rules: Keys, the Plan key order `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then unknown fields, and a zero value is omitted. A variable or an answer with these names is an ordinary name and a map key."
+  },
+  {
+    "name": "plan-links-collision",
+    "input": "plan-links-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "kind"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "planUrl"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. ADR 0090 and Contract rule: Problems, `encode.unknown-field-collision`. `planUrl` and `resultsPath` are known keys of a Plan, so an unknown field with either key collides, as `id`, `origin`, and `directory` do. A `kind` unknown field collides too, because the decoder reads `kind` as the file kind and never as an unknown field, so writing one could not be read back. Problems come in the key order, a value is not examined, and `x-ok` is fine."
+  },
+  {
+    "name": "plan-links-collision-with-values",
+    "input": "plan-links-collision-with-values.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "planUrl"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "resultsPath"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, `encode.unknown-field-collision`. The collision holds whether or not the plan holds a value for the known key, and the plan's own values are not what is reported."
   }
 ]

@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "planUrl": "  HTTPS://Git.Example/Plan.yaml  ",
+  "resultsPath": "Records/{Account}/R.yaml "
+}

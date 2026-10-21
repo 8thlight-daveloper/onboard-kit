@@ -1,0 +1,28 @@
+resultsPath: records/{account}/record.obk.yaml
+kind: plan
+schemaVersion: 1
+planUrl: https://git.example/plan.obk.yaml
+planURL: kept
+PlanUrl: kept
+ResultsPath: kept
+results_path: kept
+x-planUrl: kept
+variables:
+  - name: planUrl
+    description: A variable named planUrl
+  - name: kind
+    description: A variable named kind
+answers:
+  plan:
+    planUrl: kept too
+    kind: kept as an answer
+  sections:
+    s:
+      resultsPath: kept
+      kind: kept
+sections:
+  - id: s
+    title: S
+    planUrl: kept on the section
+    resultsPath: kept on the section
+    kind: kept on the section

@@ -1,0 +1,5 @@
+schemaVersion: 1
+planUrl: &anchor https://git.example/plan.obk.yaml
+resultsPath: records
+planUrl: other
+resultsPath: ~

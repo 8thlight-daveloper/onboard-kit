@@ -16,7 +16,8 @@ The decoder is the reverse of the [plan encoder](../encoder/contract.md) for eve
 ## What the decoder does
 
 - It reads version 1 and refuses every other version. There is no migration. See Version.
-- It reads every known field into the field of the same name in the domain model, including the plan's `directory` into its Directory.
+- It reads every known field into the field of the same name in the domain model, including the plan's `directory` into its Directory, and its `planUrl` and `resultsPath` into its URL and ResultsPath.
+- It accepts a `kind` of `plan` and drops it, and it refuses any other kind. See Kind.
 - It keeps unknown fields on a plan and on a section. It keeps them as plain data.
 - It reports the format guards of 0030: the spellings of booleans, numbers, and null, anchors and aliases, and duplicate keys.
 - It does not validate. A variable of type `colour`, a check with two of `run` and `ask`, two sections with one `id`, a `timing` that is not a timing, and an answer to a variable that does not exist all pass through unchanged. The plan validator judges them. It does not fill defaults: an absent `type` stays empty, and an absent `enabled` on a section stays none.
@@ -55,8 +56,9 @@ An anchor is reported wherever it is written, even on a node that is also null o
 | `format.unknown-field` | A map that cannot keep unknown fields has a key it does not know | The key |
 | `format.empty-answer` | An answer, or an item of `isOneOf` or `isNotOneOf`, is null | The answer or item |
 | `format.empty-item` | An item of any other list is null, including an item of a List Value. Dropping it would shift the list. An item that is an empty map is not null and is read as a zero value | The item |
+| `format.wrong-kind` | The plan has a `kind` whose text is not `plan`. See Kind. A repeated `kind` is judged at each key | The `kind` key |
 
-A value of the wrong type is not read, so nothing inside it is reported. The value of a duplicate key is read like any other. A value is checked for its spelling before its type, so a plain `yes` where a boolean belongs is `format.boolean-spelling`, not `format.wrong-type`. A canonical number where a boolean or a list belongs, and a plain `true` or `false` where a string belongs, is `format.wrong-type`. A string belongs in a list of strings and in the items of a List Value, so a plain `true` there is `format.wrong-type` too.
+`format.wrong-kind` has `detail.found`, the text of the kind as written, and `detail.expected`, which is `plan`. Its message names the kind found and says that a plan is expected. A value of the wrong type is not read, so nothing inside it is reported. The value of a duplicate key is read like any other. A value is checked for its spelling before its type, so a plain `yes` where a boolean belongs is `format.boolean-spelling`, not `format.wrong-type`. A canonical number where a boolean or a list belongs, and a plain `true` or `false` where a string belongs, is `format.wrong-type`. A string belongs in a list of strings and in the items of a List Value, so a plain `true` there is `format.wrong-type` too.
 
 ## Reading the file
 
@@ -129,6 +131,8 @@ A plan's `id` is a string field, read exactly like `title`: a quoted or plain st
 
 A plan's `directory` is a map of three lists: `contacts`, `roles`, and `teams`. It is read into the plan's Directory, and the lists keep the file's order. See [0080](../../../docs/decisions/0080-directory.md) and the Directory section below.
 
+A plan's `planUrl` and `resultsPath` are string fields, read exactly like `title`. A quoted or plain string is text, and absent, empty, or null is the empty string. They go into the plan's URL and ResultsPath, and sit in any key order. A plain `https://git.example/plan.obk.yaml`, a plain `records/{account}/record.obk.yaml`, a plain date, and a plain `deferred` are text. A quoted `"yes"`, `'123'`, and `"{account}/record.obk.yaml"` are text, and case and spaces are kept as written, so nothing is trimmed, lowercased, or changed. A plain `yes`, `~`, or number is a spelling problem and a plain `true`, a list, or a map is `format.wrong-type`, at `planUrl` or `resultsPath`. A template that starts with `{` is written in quotes, because a plain one is a flow map: `resultsPath: {account}` is a map, so it is `format.wrong-type` at `resultsPath`, and `{account}/record.obk.yaml` with text after the brace is a syntax error, `file.not-yaml`. The decoder does not check that a URL is a URL or that a template holds `{account}`. Their keys are exact: `planURL`, `PlanUrl`, `ResultsPath`, `results_path`, and `x-planUrl` are unknown fields of the plan and are kept. A variable, an answer, or a field of a section with one of these names is ordinary. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md).
+
 A plan's `origin` is a map of four string fields: `planId`, `source`, `contentHash`, and `refreshedOn`. Each is read like `title`, the date as the text written, with no check that it is a date. A plain `deferred` is text in each. An absent key is the empty string. An `origin` that is absent, null, empty, or holds only empty values is the zero Origin, because the model cannot tell them apart. An `origin` that is not a map is `format.wrong-type` at `origin`, and nothing inside it is read. Its keys are exact, in any order. An unknown key in it is `format.unknown-field`, as in `provenance`. The format guards apply the same: an anchor on `origin` or on a value, a repeated key, and a merge key are reported at their paths. A variable, an answer, a section, or an unknown field named `id` or `origin` is ordinary, and so is `origin` as a key of a section. The decoder does not check that `refreshedOn` is a date, that `planId` is a UUID, or that `source` is a path or a URL.
 
 A variable's `example` is a string field, read like its `description`: a quoted or plain string is text, and absent, empty, or null is the empty string. A plain `deferred` is text there, because a string is not a Value. It sits beside `description` and in any key order, in a variable of the plan and in a variable of a section. The decoder never copies it to or from another field. Its key is exact: `Example` and `examples` are unknown fields.
@@ -136,6 +140,17 @@ A variable's `example` is a string field, read like its `description`: a quoted 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
+
+### Kind
+
+A plan file may carry a top-level `kind`. A plan file and a record file are told apart by it, and this decoder reads plans only. The record decoder has its own rule for the same key. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md).
+
+- `kind` is a string field, read like `title`. Absent, null, empty, and `""` are the same as `plan`: a file with no kind is a plan.
+- The text `plan` is accepted and dropped. It is not kept as an unknown field, so it is not in the plan's `UnknownFields`, and the encoder does not write it back. A plain `plan`, `'plan'`, and `"plan"` are the same text.
+- Any other text is `format.wrong-kind` at `kind`, with `found` the text as written and `expected` `plan`. The text is compared exactly: `Plan` and a quoted `"plan "` with a trailing space are other kinds, and `record`, `template`, a plain `deferred`, and a quoted `"42"` are refused. The problem is one problem among the others, in the order of its place in the file. The rest of the file is still read, so a record file, whose other keys are unknown fields of a plan, gives the kind problem alone, and a file with a kind problem and a spelling problem elsewhere gives both. The plan returned with a problem is the zero Plan, as always.
+- A `kind` that is not text is the usual format problem and has no kind to name: a plain `yes` is `format.boolean-spelling`, a plain `123` is `format.number-spelling`, a plain `true`, a list, or a map is `format.wrong-type`, and an anchor is `format.alias` followed by the node's other problem, all at `kind`. A repeated `kind` is `format.duplicate-key` at the second key, and each value is judged on its own, so `kind: plan` then `kind: record` gives the duplicate and then the wrong kind at one place, and `kind: record` then `kind: plan` gives the wrong kind and then the duplicate.
+- Under a version problem the `kind` is not read, because a newer file may use anything. A file with `schemaVersion: 2` and `kind: record` gives the version problem alone.
+- The key is the plan's alone and is exact. `Kind`, `kinds`, and `x-kind` are unknown fields of the plan and are kept. `kind` on a section is an unknown field of the section and is kept. A variable, an answer, or a section named `kind` is ordinary. In `provenance`, `origin`, the `directory`, and the other maps that cannot keep unknown fields, `kind` is `format.unknown-field` like any other unknown key.
 
 ### Directory
 
@@ -211,6 +226,17 @@ These are the choices the directory change and the team contact change made wher
 8. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
 9. **cheap.** A team's `contact` is never read as a holder, and an empty or null one is the empty string, the same as an absent one. 0080 says it "never stands in for a role holder".
 10. **cheap.** `contact` in a contact or a role is `format.unknown-field`, by the exact-keys rule for the directory.
+
+These are the choices the plan link and kind change made where the docs were silent.
+
+1. **hard.** A kind that is not `plan` is `format.wrong-kind` at `kind`, with `found` and `expected` in the detail. It is an ordinary problem in file order and not a file problem, so the rest of the file is still read and a version problem still hides it. The task left the code open. A record file given to this decoder therefore says what it is, and its other keys, which are unknown fields of a plan, add no problems.
+2. **hard.** An absent, null, or empty `kind` is a plan, and the text is compared exactly, with no trim and no case folding. So `kind:` is the same as no kind, and `Plan` is refused. ADR 0090 says an absent kind is a plan. The record decoder requires the key, so the two decoders do not read the same empty key alike.
+3. **hard.** `kind: plan` is dropped and not kept as an unknown field. A hand-written `kind: plan` therefore disappears when a tool decodes and encodes the file, and the encoder never writes it.
+4. **hard.** `planUrl` and `resultsPath` are plain strings with no check. A URL that is not a URL, a template with no `{account}`, and a path that holds a `..` pass through. A template that starts with `{` has to be quoted in the file, and the decoder reports an unquoted one as a wrong type or as `file.not-yaml`.
+5. **cheap.** A `kind` that is not text is the ordinary spelling, wrong-type, or alias problem and gets no `format.wrong-kind`, because there is no text to name.
+6. **cheap.** A repeated `kind` is a duplicate key, and each value is judged, so the first of `kind: record` then `kind: plan` is still refused.
+7. **cheap.** `kind` in a section is an unknown field of the section and is kept, and `kind` in `provenance`, `origin`, or the directory is `format.unknown-field`. Only the plan owns the key.
+8. **cheap.** `format.wrong-kind` comes last in the order of codes at one place, after `format.alias` and `format.duplicate-key`, because it is judged on the value after the value is read.
 
 ## Wrong implementations tried
 
@@ -349,3 +375,26 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `contact` accepted or kept in a contact or in a role, or a value there read for more problems | `directory-team-contact-elsewhere` |
 | The directory read in a second pass, so its problems come out of file order | `directory-problem-order` |
 | A newer file reported with the problems of its directory | `directory-version-too-new` |
+| `planUrl` or `resultsPath` ignored, or kept as an unknown field | `plan-links-values`, `plan-links-quoted`, `plan-links-plain-punctuation` |
+| `planUrl` and `resultsPath` swapped | `plan-links-values`, `plan-links-quoted`, `plan-links-numbers-and-dates` |
+| `planUrl` or `resultsPath` lowercased, trimmed, or changed | `plan-links-case-and-spaces`, `plan-links-words` |
+| An empty or null link read as the text `null` | `plan-links-blank`, `plan-links-blank-null` |
+| A link read as an unknown value, so a plain `yes`, `~`, `0x1F`, `12`, a flow map, or a list is accepted | `plan-links-spelling`, `plan-links-spelling-null-and-number`, `plan-links-wrong-type`, `plan-links-wrong-type-collections` |
+| An anchor or a repeated key on a link not reported | `plan-links-anchor-and-duplicate` |
+| An unquoted `{account}/...` template accepted | `plan-links-unquoted-brace` |
+| `planURL`, `PlanUrl`, `ResultsPath`, or `x-planUrl` read as the link | `plan-links-values` |
+| `kind: plan` refused, kept as an unknown field, or dropped only when plain | `kind-plan`, `kind-plan-after-body`, `kind-plan-quoted`, `kind-plan-double-quoted`, `kind-unknown-neighbours` |
+| An absent, null, or empty `kind` refused, or kept | `kind-empty`, `plan-links-blank-null`, every case with no `kind` |
+| An absent `kind` refused as missing | every case with no `kind`, such as `minimal` |
+| Any kind accepted, or only `record` refused | `kind-other-word`, `kind-case`, `kind-deferred`, `kind-quoted-number`, `kind-spaces` |
+| The kind compared without case, or trimmed | `kind-case`, `kind-spaces` |
+| A wrong kind reported with another code, with no path, or with no `found` or `expected` in the detail | `kind-record`, and every `kind-` problem case |
+| A message that does not name the kind found, or does not say a plan is expected | the message check in the problem test |
+| A wrong kind reported as the only problem, so the others are hidden | `kind-with-other-problems`, `kind-anchor`, `kind-duplicate-plan-then-record` |
+| The kind checked before the version, so a newer file gives a kind problem | `kind-version-too-new` |
+| A repeated `kind` judged by the last or the first value only | `kind-duplicate-plan-then-record`, `kind-duplicate-record-then-plan` |
+| A `kind` that is not text named as a kind, or skipped without a problem | `kind-spelling`, `kind-wrong-type`, `kind-plain-true`, `kind-anchor` |
+| A kind problem ordered before the anchor at the same place | `kind-anchor`, `kind-duplicate-plan-then-record` |
+| `kind` accepted inside `provenance`, `origin`, or the directory, or refused in a section | `kind-nested-unknown`, `plan-links-values` |
+| `Kind`, `kinds`, or `x-kind` read as the kind | `kind-unknown-neighbours` |
+| A record file judged for its other keys, or its shape | `kind-record-file` |
