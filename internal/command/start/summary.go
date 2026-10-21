@@ -2,13 +2,13 @@ package start
 
 import (
 	"fmt"
-	"io"
+	"strings"
 
 	"onboard-kit/internal/plan/refresher"
 )
 
-func summarize(stdout io.Writer, changes refresher.Report) {
-	lines := []struct {
+func summarize(changes refresher.Report) string {
+	counts := []struct {
 		count int
 		text  string
 	}{
@@ -19,18 +19,14 @@ func summarize(stdout io.Writer, changes refresher.Report) {
 		{len(changes.NewSections), "new sections"},
 		{len(changes.RemovedSections), "sections removed"},
 	}
-	printed := false
-	for _, line := range lines {
-		if line.count == 0 {
-			continue
+	var parts []string
+	for _, entry := range counts {
+		if entry.count > 0 {
+			parts = append(parts, fmt.Sprintf("%d %s", entry.count, entry.text))
 		}
-		if !printed {
-			fmt.Fprintln(stdout, "Refreshed from the organization's plan:")
-			printed = true
-		}
-		fmt.Fprintf(stdout, "  %d %s\n", line.count, line.text)
 	}
-	if !printed {
-		fmt.Fprintln(stdout, "Your plan is up to date with the organization's plan")
+	if len(parts) == 0 {
+		return "Your plan is up to date with the organization's plan"
 	}
+	return "Refreshed from the organization's plan: " + strings.Join(parts, ", ")
 }

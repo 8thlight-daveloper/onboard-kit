@@ -22,12 +22,13 @@ func startFromCopy(orgPath string, folder string, noWalk bool, stdin io.Reader, 
 		fmt.Fprintf(stderr, "start: %s cannot be read, and there is no earlier copy of it in %s\n", orgPath, folder)
 		return exitProblem
 	}
-	fmt.Fprintf(stdout, "The organization's plan cannot be reached. Using your copy as of %s.\n", current.Origin.RefreshedOn)
+	notice := fmt.Sprintf("The organization's plan cannot be reached. Using your copy as of %s.", current.Origin.RefreshedOn)
 	if noWalk {
+		fmt.Fprintln(stdout, notice)
 		fmt.Fprintln(stdout, personal)
 		return exitSuccess
 	}
-	return walk.Walk(personal, current, model.AudienceOnboardee, stdin, stdout, stderr)
+	return walk.Walk(personal, current, model.AudienceOnboardee, notice, stdin, stdout, stderr)
 }
 
 func personalPlanFrom(source string, folder string) (string, model.Plan, bool) {

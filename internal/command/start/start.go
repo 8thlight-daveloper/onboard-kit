@@ -48,11 +48,14 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if !ok {
 		return exitProblem
 	}
-	personal, ok := prepare(folder, *orgPlan, plan, *refreshedOn, stdout, stderr)
+	personal, notice, ok := prepare(folder, *orgPlan, plan, *refreshedOn, stderr)
 	if !ok {
 		return exitProblem
 	}
 	if *noWalk {
+		if notice != "" {
+			fmt.Fprintln(stdout, notice)
+		}
 		fmt.Fprintln(stdout, personal)
 		return exitSuccess
 	}
@@ -60,29 +63,30 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if !ok {
 		return exitProblem
 	}
-	return walk.Walk(personal, current, model.AudienceOnboardee, stdin, stdout, stderr)
+	return walk.Walk(personal, current, model.AudienceOnboardee, notice, stdin, stdout, stderr)
 }
 
-func prepare(folder string, orgPath string, orgPlan model.Plan, refreshedOn string, stdout io.Writer, stderr io.Writer) (string, bool) {
+func prepare(folder string, orgPath string, orgPlan model.Plan, refreshedOn string, stderr io.Writer) (string, string, bool) {
 	if orgPlan.ID == "" {
 		fmt.Fprintf(stderr, "start: %s has no id. Make the plan again with onboard-kit new, or add an id line\n", orgPath)
-		return "", false
+		return "", "", false
 	}
 	if err := os.MkdirAll(folder, 0o755); err != nil {
 		fmt.Fprintln(stderr, err)
-		return "", false
+		return "", "", false
 	}
 	name := organizationName(orgPlan)
 	cached := filepath.Join(folder, name+".org.obk.yaml")
 	personal := filepath.Join(folder, name+".obk.yaml")
 	origin, ok := originOf(orgPath, orgPlan, refreshedOn, stderr)
 	if !ok {
-		return "", false
+		return "", "", false
 	}
 	if _, err := os.Stat(personal); err != nil {
-		return personal, firstPlan(personal, cached, orgPlan, origin, stderr)
+		return personal, "", firstPlan(personal, cached, orgPlan, origin, stderr)
 	}
-	return personal, refreshPlan(personal, cached, orgPlan, origin, stdout, stderr)
+	notice, ok := refreshPlan(personal, cached, orgPlan, origin, stderr)
+	return personal, notice, ok
 }
 
 func originOf(orgPath string, orgPlan model.Plan, refreshedOn string, stderr io.Writer) (model.Origin, bool) {
@@ -113,25 +117,24 @@ func firstPlan(personal string, cached string, orgPlan model.Plan, origin model.
 	return planfile.Save(cached, orgPlan, stderr) && planfile.Save(personal, first, stderr)
 }
 
-func refreshPlan(personal string, cached string, orgPlan model.Plan, origin model.Origin, stdout io.Writer, stderr io.Writer) bool {
+func refreshPlan(personal string, cached string, orgPlan model.Plan, origin model.Origin, stderr io.Writer) (string, bool) {
 	ours, ok := planfile.Open(personal, stderr)
 	if !ok {
-		return false
+		return "", false
 	}
 	var base model.Plan
 	if _, err := os.Stat(cached); err == nil {
 		if base, ok = planfile.Open(cached, stderr); !ok {
-			return false
+			return "", false
 		}
 	}
 	refreshed, changes, problems := refresher.New().Refresh(base, orgPlan, ours, origin)
 	if len(problems) > 0 {
 		report.Problems(stderr, personal, problems)
-		return false
+		return "", false
 	}
 	if !planfile.Save(personal, refreshed, stderr) || !planfile.Save(cached, orgPlan, stderr) {
-		return false
+		return "", false
 	}
-	summarize(stdout, changes)
-	return true
+	return summarize(changes), true
 }

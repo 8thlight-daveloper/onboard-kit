@@ -41,17 +41,17 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if !ok {
 		return exitProblem
 	}
-	return Walk(*planPath, plan, who, stdin, stdout, stderr)
+	return Walk(*planPath, plan, who, "", stdin, stdout, stderr)
 }
 
-func Walk(planPath string, plan model.Plan, audience model.Audience, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+func Walk(planPath string, plan model.Plan, audience model.Audience, notice string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
 	save := func(plan model.Plan) error {
 		if !planfile.Save(planPath, plan, io.Discard) {
 			return fmt.Errorf("the plan could not be written to %s", planPath)
 		}
 		return nil
 	}
-	if err := tui.Run(tui.NewBackend(), plan, save, audience, stdin, stdout); err != nil {
+	if err := tui.Run(tui.NewBackend(), plan, save, audience, notice, stdin, stdout); err != nil {
 		fmt.Fprintln(stderr, err)
 		return exitProblem
 	}

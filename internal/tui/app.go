@@ -40,6 +40,13 @@ func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audie
 	return app.refreshedContacts().opening()
 }
 
+func (app App) WithNotice(text string) App {
+	if text != "" {
+		app.status = line{text: text, tone: toneStrong}
+	}
+	return app
+}
+
 func (app App) opening() App {
 	if len(app.questions) == 0 || app.holdsAnswers() {
 		return app.openReview()
