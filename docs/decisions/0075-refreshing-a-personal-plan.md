@@ -2,6 +2,8 @@
 
 Status: accepted
 
+Partly replaced by [0090](0090-plan-and-onboarding-record.md): a record holds only what the newcomer produced, so a refresh reconciles the record against a new plan copy, and the three-way comparison here is not needed. Ownership, pruning, and the identity rules stay.
+
 Builds on [0030](0030-self-contained-plan-file.md), [0055](0055-variable-audience.md), and [0060](0060-personal-plan.md). It replaces the "running again" part of 0060.
 
 ## Context

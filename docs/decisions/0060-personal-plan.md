@@ -2,6 +2,8 @@
 
 Status: accepted
 
+Replaced by [0090](0090-plan-and-onboarding-record.md): the personal plan becomes the plan copy plus the onboarding record.
+
 Builds on [0030](0030-self-contained-plan-file.md), [0005](0005-self-contained-install.md), [0015](0015-functional-core-and-imperative-shell.md), and [0055](0055-variable-audience.md).
 
 ## Context

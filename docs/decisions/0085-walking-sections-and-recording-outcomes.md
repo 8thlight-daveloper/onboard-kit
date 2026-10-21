@@ -19,10 +19,10 @@ The newcomer's side of a process has four parts: what they need, what to do to g
 
 ### The outcome of a section
 
-A personal plan may hold a top-level `progress` list. The org plan never does. Each entry is the outcome of one section.
+The newcomer's onboarding record holds a top-level `outcomes` list, see [0090](0090-plan-and-onboarding-record.md). The plan never does. Each entry is the outcome of one section.
 
 ```yaml
-progress:
+outcomes:
   - section: access
     outcome: verified
     on: "2026-10-21T14:05:00Z"
@@ -48,7 +48,7 @@ A `failed` outcome shows the section's `escalation` list, resolved from the dire
 
 ### A refresh keeps outcomes and flags what changed
 
-A refresh takes section content from the org plan and leaves `progress` alone. An outcome is **changed since it was recorded** when its `sectionHash` differs from the section's current hash. That comparison is made when the progress is read, so the refresher needs no rule beyond keeping the list. An outcome for a section that no longer exists stays, and a prune may remove it.
+A refresh replaces the plan copy and leaves the record's `outcomes` alone. An outcome is **changed since it was recorded** when its `sectionHash` differs from the section's current hash. That comparison is made when the outcomes are read, so the reconciler of 0090 needs no rule beyond keeping the list. An outcome for a section that no longer exists stays, and a prune may remove it.
 
 ### `requires` replaces `after`: dependencies are a graph
 
@@ -73,7 +73,7 @@ A section may carry `bootstrap: true`. A bootstrap section can be done with only
 - A bootstrap section may not require a section that is not a bootstrap section. The section validator checks this.
 - The walk shows the bootstrap sections first, and says they can be done before the person has access.
 - When they are verified, the tool offers to check for the latest plan. That is the refresh of 0075, run on request from the location where the org plan lives.
-- The org plan has a top-level field, `planUrl`, where its latest copy lives, a path or an HTTPS address. It is set when the plan is created, the way the `id` is, and the onboarder can change it. A personal plan made from it keeps the same `planUrl`, so `start` can refresh from the file alone, with no `--org-plan` given. It is a field of the file, and not an answer to a question.
+- The org plan has a top-level field, `planUrl`, where its latest copy lives, a path or an HTTPS address. It is set when the plan is created, the way the `id` is, and the onboarder can change it. A record keeps the same `planUrl` in its plan reference, so `start` can refresh from the record alone, with no `--org-plan` given. It is a field of the file, and not an answer to a question.
 - The assembled document remains the way to send the first steps to someone who has nothing installed.
 
 ### A shared repository is stated, not hidden
@@ -122,7 +122,7 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Consequences
 
-- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `progress`, `planUrl`, and `resultsPath`. This needs `slow-change`.
+- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `planUrl` and `resultsPath`, and the new Record of 0090 holds the `outcomes`. This needs `slow-change`.
 - **Contracts**, each its own small increment: the decoder, encoder, loader, and hasher (`requires` and `bootstrap` are content), the section selector (ordering and the cascade), the section validator (cycles, unknown ids, the bootstrap rule), the refresher (outcomes survive), the plan validator (a duplicate or unknown outcome), and two new components: an outcome recorder, and a section walker that gives each active section its state, what it waits on, and its resolved text.
 - **The reference docs** for ordering, optional sections, and the schema change for `requires`.
 - **The TUI** gains a Process screen for the onboardee, the start notice for a shared repository, and the bootstrap offer to refresh.
