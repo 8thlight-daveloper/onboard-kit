@@ -1,0 +1,1 @@
+{"sections": {"list-in-run": {"tags": ["red", "blue"], "flags": ["-v", "-x"], "build": ["make", "build"]}}}

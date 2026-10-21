@@ -1,0 +1,12 @@
+{
+  "id": "run-without-dollar",
+  "title": "Run items that only look like names",
+  "summary": "A command variable and items that do not start with a dollar sign",
+  "variables": [
+    {"name": "test", "type": "command", "description": "Runs the tests"},
+    {"name": "b", "type": "command", "description": "A name of one letter"}
+  ],
+  "steps": [
+    {"id": "plain", "name": "Plain", "run": ["xtest", "ab", "", "test", "b", "$test"], "checks": [{"run": ["xtest", "ab", "", "$b"]}]}
+  ]
+}

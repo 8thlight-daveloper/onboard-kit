@@ -1,0 +1,1 @@
+{"sections": {"run-without-dollar": {"test": ["make", "test"], "b": ["make", "build"]}}}
