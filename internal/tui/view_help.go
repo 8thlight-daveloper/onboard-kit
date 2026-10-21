@@ -87,6 +87,9 @@ func (app App) overviewHelp() []hint {
 }
 
 func (app App) reviewHelp() []hint {
+	if app.review.pruning.asking {
+		return []hint{{"y", "remove the left over answers listed above"}, {"any other key", "keep them and go back"}}
+	}
 	entries := []hint{
 		{"up, down, k, j", "move between items, or scroll when the document has focus"},
 		{"tab", "switch focus between the items and the document"},
@@ -94,6 +97,7 @@ func (app App) reviewHelp() []hint {
 		{"enter", "open the question of the chosen item"},
 		{"esc, w", "walk, from the first unanswered question"},
 		{"o", "overview"},
+		{"h", "show the answers left over from questions the plan no longer asks, and remove them after you confirm"},
 		{"q", "quit"},
 	}
 	if app.canSwitchSections() {

@@ -30,6 +30,8 @@ type reviewState struct {
 	focusDocument bool
 	answered      int
 	total         int
+	leftOver      int
+	pruning       pruneState
 }
 
 func newReviewState(backend Backend, plan model.Plan, audience model.Audience, questions []model.Question, document string) reviewState {
@@ -39,6 +41,8 @@ func newReviewState(backend Backend, plan model.Plan, audience model.Audience, q
 			state.answered++
 		}
 	}
+	_, cleared, _ := backend.PruneHiddenAnswers(plan)
+	state.leftOver = len(cleared.Answers)
 	state.items = reviewItems(backend, plan, audience, questions)
 	return state
 }

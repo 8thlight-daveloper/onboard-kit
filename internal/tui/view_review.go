@@ -12,6 +12,10 @@ func (app App) reviewColumns(screenFrame frame) (int, int) {
 }
 
 func (app App) reviewBody(screenFrame frame, colors palette) []string {
+	if app.review.pruning.asking {
+		width, _ := screenFrame.columns(answerShareNumerator, answerShareDenominator)
+		return stackPane(pane{lines: clipLines(app.pruningLines(width), screenFrame.bodyHeight), focused: true}, width, screenFrame.bodyHeight, colors)
+	}
 	itemsWidth, documentWidth := app.reviewColumns(screenFrame)
 	itemsFocused := !app.review.focusDocument
 	rows, focus := app.reviewItemLines(itemsWidth, itemsFocused, colors)
@@ -51,6 +55,9 @@ func (app App) documentView(screenFrame frame) []line {
 func (app App) reviewItemLines(width int, focused bool, colors palette) ([]line, int) {
 	state := app.review
 	content := []line{bodyLine(fmt.Sprintf("Answered %d of %d.", state.answered, state.total))}
+	if state.leftOver > 0 {
+		content = append(content, lines(toneFaint, wrapText(leftOverNotice(state.leftOver), width))...)
+	}
 	if len(state.items) == 0 {
 		return append(content, bodyLine("Nothing is waiting.")), 0
 	}

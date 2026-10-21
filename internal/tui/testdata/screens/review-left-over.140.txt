@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s  Contacts c                                                   2 of 12 answered
+  ✓✓  ·····  ····  ·
+
+  > Items                                                │   Document, 0%
+  Answered 2 of 12.                                      │ # ACME Corp onboarding: Platform team
+  3 answers are left over from questions that are no     │
+  longer asked. Press h to review them.                  │ Generated 2026-10-15 from template set `example`. A person must review this
+                                                         │ before it is sent.
+  Blockers (9)                                           │
+  > required: Which role owns onboarding here? It        │ ## Gaps to fill
+    appears as the owner of the Access section.          │
+    required: Where do people request source control     │ | Gap | Who fills it | By when |
+    access?                                              │ | --- | --- | --- |
+    required: What is the clone URL of the main          │ | Where do people request source control access? | Sam Okafor, @sam | Before
+    repository?                                          │ day one |
+    required: Which role grants CI dashboard access?     │ | What is the clone URL of the main repository? | Sam Okafor, @sam | Before day
+    required: Which role grants work tracker access?     │ one |
+    required: What is the clone URL of the main          │ | Which role grants source control access? | Sam Okafor, @sam | Before day one
+    repository?                                          │ |
+    required: Which command installs the dependencies?   │ | Which role grants CI dashboard access? | Sam Okafor, @sam | Before day one |
+    required: Which command runs the test suite?         │ | Which role grants work tracker access? | Sam Okafor, @sam | Before day one |
+    required: Who can anyone ask for help with anything? │ | What is the clone URL of the main repository? | newcomer | Week one |
+                                                         │ | Which command installs the dependencies? | newcomer | Week one |
+  Problems (3)                                           │ | Which command runs the test suite? | newcomer | Week one |
+    warning: plan.old_token: No variable declares this   │ | Who can anyone ask for help with anything? | | Anytime |
+    question.                                            │
+    warning: plan.old_tool: No variable declares this    │ ## Access
+    question.                                            │
+    warning: retired.flag: No variable declares this     │ Request the accounts and permissions you need, and record who grants each.
+    question.                                            │
+                                                         │ - [ ] **Source control.** Owner: _unanswered_. Open: _unanswered_. Check: `git
+                                                         │ ls-remote _unanswered_` exits with code 0.
+                                                         │ - [ ] **CI dashboard.** Owner: _unanswered_. Sign in as `<account_name>`.
+                                                         │ Check: Can you open the CI dashboard?
+                                                         │ - [ ] **Work tracker.** Owner: _unanswered_. Check: Can you open the work
+                                                         │ tracker?
+                                                         │
+                                                         │ Request each system on day minus five if you can. Record who grants it and when
+
+  enter open  tab items/document  pgup/pgdn scroll  h left over  q quit  ? help

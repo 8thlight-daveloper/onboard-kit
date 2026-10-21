@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  Overview o  [Review]  Sections s  Contacts c
+  ✓✓  ·····  ····  ·
+
+  Remove 3 left over answers?
+
+  These belong to questions the plan no longer asks, so they are not part of
+  the current plan. They stay in the file until you remove them.
+
+    - plan.old_token
+        value: "sk-l…" (30 characters)
+    - plan.old_tool
+        value: "Trello"
+    - retired.flag
+        value: yes
+
+  Nothing is removed until you press y.
+
+
+
+
+
+
+
+  y remove  esc keep  ? help

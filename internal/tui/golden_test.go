@@ -46,6 +46,8 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"edit":                         build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
 		"overview":                     build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
 		"review":                       build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
+		"review-left-over":             build(leftOverPlan(t), model.AudienceOnboarder),
+		"review-prune":                 build(leftOverPlan(t), model.AudienceOnboarder, keys(typed("h"))),
 		"sections":                     build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
 		"onboardee":                    build(blankPlan(t), model.AudienceOnboardee),
 		"example":                      buildFake(),
@@ -71,6 +73,15 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 			return resize(app, size.width, 10)
 		},
 	}
+}
+
+func leftOverPlan(t *testing.T) model.Plan {
+	t.Helper()
+	plan := acmePlan(t)
+	plan.Answers.Plan["old_tool"] = model.Value{Kind: model.ValueKindText, Text: "Trello"}
+	plan.Answers.Plan["old_token"] = model.Value{Kind: model.ValueKindText, Text: "sk-live-4242424242424242424242"}
+	plan.Answers.Sections = map[string]map[string]model.Value{"retired": {"flag": {Kind: model.ValueKindFlag, Flag: true}}}
+	return plan
 }
 
 func buildFake() func(goldenSize) App {
