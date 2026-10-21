@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "directory-roles": {
+      "manager": "engineering-manager",
+      "design": "design-lead",
+      "it": "it-contact",
+      "mentor": "mentor",
+      "champion": "security-champion",
+      "several": ["it-contact", "design-lead", "engineering-manager"],
+      "mixed": ["security-champion", "it-contact"]
+    }
+  }
+}

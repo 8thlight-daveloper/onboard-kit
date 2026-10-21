@@ -1,0 +1,31 @@
+{
+  "id": "directory-fields",
+  "title": "Ask $sam",
+  "summary": "Ask $mgr",
+  "owner": "$sam",
+  "escalation": ["sam", "mgr"],
+  "verification": "$sam and $mgr agree",
+  "body": "Ask $sam or $mgr.",
+  "variables": [
+    {"name": "sam", "type": "contact", "description": "A contact"},
+    {"name": "mgr", "type": "role", "description": "A role"}
+  ],
+  "steps": [
+    {
+      "id": "ask",
+      "name": "Ask $sam",
+      "notes": "Or ask $mgr.",
+      "owner": "$mgr",
+      "escalation": ["sam", "mgr"],
+      "open": "$sam",
+      "directory": "$mgr",
+      "run": ["mail", "$sam", "--cc=$mgr"],
+      "env": {"WHO": "$sam", "SAM": "plain"},
+      "checks": [
+        {"run": ["check", "$mgr"]},
+        {"ask": "Did $sam answer?"},
+        {"env": "TOKEN"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "directory-team-name",
+  "title": "Team for Design team",
+  "summary": "A team variable and the plan team",
+  "body": "team=[Design team] other=[Platform team] manager=[Sam Okafor, @sam; Lee Park]",
+  "variables": [
+    {"name": "team", "type": "team", "description": "A team"},
+    {"name": "other", "type": "team", "description": "Another team"},
+    {"name": "manager", "type": "role", "description": "Resolved with the plan team"}
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "directory-no-team",
+  "title": "No team",
+  "summary": "A role without a team override",
+  "body": "manager=[Sam Okafor, @sam; Ada Lovelace, ada.lovelace@acme.example] design=[Design lead (vacant)] mentor=[Jo Chen, @jo; Lee Park]",
+  "variables": [
+    {"name": "manager", "type": "role", "description": "Has organization holders and a team entry elsewhere"},
+    {"name": "design", "type": "role", "description": "No organization holder"},
+    {"name": "mentor", "type": "role", "description": "Has organization holders"}
+  ]
+}

@@ -2,16 +2,18 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `section/resolver`. Issue: [#63](https://github.com/8thlight-daveloper/onboard-kit/issues/63).
 
-The section resolver fills the variables in a section's text from the answers. It takes a Section and the plan's answers, and returns a new Section with its text filled, and a list of the variables it could not fill. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its arguments. See [variables](../../../docs/reference/section-template-schema/variables.md), [steps](../../../docs/reference/section-template-schema/steps.md), [0030](../../../docs/decisions/0030-self-contained-plan-file.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), and the [domain model](../../../docs/reference/domain-model.md).
+The section resolver fills the variables in a section's text from the answers and the directory. It takes a Section, the plan's answers, the plan's directory, and the id of the plan's team, and returns a new Section with its text filled, and a list of the variables it could not fill. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its arguments. See [variables](../../../docs/reference/section-template-schema/variables.md), [steps](../../../docs/reference/section-template-schema/steps.md), [0030](../../../docs/decisions/0030-self-contained-plan-file.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0080](../../../docs/decisions/0080-directory.md), and the [domain model](../../../docs/reference/domain-model.md).
 
 The document assembler calls the resolver once for each active section, after the section selector. Nothing resolved is stored. The plan keeps `$name` in its sections.
 
 ## Interface
 
-`Resolve(section, answers) -> (section, problems)`.
+`Resolve(section, answers, directory, team) -> (section, problems)`.
 
 - `section` is a Section, as it is held in a plan.
 - `answers` is the plan's Answers value. The resolver reads only `answers.sections[section.id]`. It never reads `answers.plan` or another section's answers.
+- `directory` is the plan's Directory, with its contacts, roles, and teams. It may be empty.
+- `team` is the id of the plan's team, or the empty string when the plan has none. The caller finds it, as the answer to the plan variable of type `team`. The resolver does not look for it in the answers. The directory and `team` are read only for the variables of type `contact`, `role`, and `team`.
 - The first result is a Section with the same fields as the input. Only the text fields listed under What is filled can differ.
 - The second result is the variables the text used that had no value to fill, one Problem each. It is empty when there are none. A caller can build a gap table from it.
 
@@ -63,15 +65,15 @@ The resolver does not report a `$` that is not a variable. The section validator
 
 For a declared variable the resolver takes the answer stored for it in the section's own scope, then follows these steps.
 
-1. A settled answer is used.
+1. A settled answer is used. For a variable of type `contact`, `role`, or `team`, an answer is used only when it names something in the directory, see Directory variables.
 2. A deferred answer is a deferred value. A default does not replace it.
-3. An unanswered answer takes the section's default for the variable, when the default is settled. A default that is deferred gives a deferred value. A default that is not settled, or none, gives no value.
+3. An unanswered answer takes the section's default for the variable, when the default is settled and, for a directory variable, names something in the directory. A default that is deferred gives a deferred value. A default that is not settled, or none, gives no value.
 4. No value in a variable with `audience: onboardee` becomes `<name>`, with the variable's name. It is not a gap.
 5. No value in any other variable is an unanswered gap.
 
 Settled, deferred, and unanswered are as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) defines them. Text is settled when it has at least one character. A Flag is always settled. A List is settled when it has at least one item that is not empty. The Text `deferred` is a plain string, and it is settled. A value of no kind is unanswered. Nothing is checked against the variable's type, options, or pattern.
 
-An unanswered answer is nothing stored, empty text, an empty list, or a list of only empty items. The resolver does not evaluate `askIf`. A variable whose question is not asked is read like any other, so one that the text uses and that has no answer and no default is a gap.
+An unanswered answer is nothing stored, empty text, an empty list, or a list of only empty items. For a directory variable it is also an answer that names nothing in the directory. The resolver does not evaluate `askIf`. A variable whose question is not asked is read like any other, so one that the text uses and that has no answer and no default is a gap.
 
 A variable that has a value is written as follows.
 
@@ -92,11 +94,35 @@ A list is written as held, so an empty item takes its place in the join. The Def
 
 A variable with no `type` is a `string`.
 
+## Directory variables
+
+A variable of type `contact`, `role`, or `team` holds ids. A `contact` or `role` answer is one id as Text, or a List of ids when the variable is `multiple`. A `team` answer is one id as Text. Ids are matched exactly, so `Sam-Okafor` and a contact's name are not the id `sam-okafor`. Contact, role, and team ids are separate, so a role id given to a `contact` variable names nothing. The type decides the lookup. A `string` or `person` variable that holds a contact id is written as held, and a `person` variable behaves as it did before the directory.
+
+**Ids.** An id that is not in the directory counts as unanswered, as if it were not stored. In a List the unknown ids are skipped and the known ones keep their order. A List with no known id is unanswered. An unanswered directory variable follows the steps above: it takes a default that names something in the directory, else it is a gap, else `<name>` for an `onboardee` variable. A default is read as an answer is, so a default id that is not in the directory gives no value.
+
+**The team.** The team of the plan is the Team in `directory.teams` whose id is `team`. When `team` is empty or names no Team, the plan has no team. The `team` variable of a section is not the plan's team. It is looked up by its own answer.
+
+**Resolving a role.** A role has holders, which are contact ids in order. When the plan has a team and the team's `holders` has an entry for the role, the team's entry is the role's holders, even when the entry is an empty list. Otherwise the role's own `holders` are used. A holder that is not a contact in the directory is skipped, and the order of the rest is kept. A role with no holders left is vacant. A team's entry does not add to the role's holders and does not fall back to them, so an entry that is empty or holds only unknown ids makes the role vacant for that team.
+
+**Rendering a directory value.**
+
+| Value | Written as |
+| -- | -- |
+| A contact that has a `slack` | `Name, slack` |
+| A contact with no `slack` and an `email` | `Name, email` |
+| A contact with neither | `Name` |
+| A role with holders | Its holders as contacts, in order, joined with `; ` |
+| A vacant role | `Role name (vacant)`, with the `name` of the directory role |
+| A team | The `name` of the Team |
+| A List of ids | The id's texts in order, joined with `; ` |
+
+The `slackId` is never written. A vacant role is text and not a gap. It adds no Problem. The assembler reports it, see [0080](../../../docs/decisions/0080-directory.md). A vacant role keeps its place in a List of roles. Nothing written from the directory is read again, so a `$` in a contact's name or handle comes out as held. Deferred and `required` work as for other types.
+
 ## A command in `run`
 
 A `run` item that is exactly `$name`, for a declared variable of type `command` that has a list as its value, is replaced by the items of the list, in order, each as its own item of `run`. This holds in a step's `run` and in a check's `run`. The items are written as held and are not read again.
 
-In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string` or a `person`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker.
+In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string` or a `person`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
 
 ## Problems
 
@@ -105,15 +131,15 @@ A problem is reported for a declared variable when its marker is written, `_defe
 | Code | When |
 | -- | -- |
 | `gap.deferred` | A variable the text uses has a deferred value |
-| `gap.unanswered` | A variable the text uses has no value and is not an onboarding variable |
+| `gap.unanswered` | A variable the text uses has no value and is not an onboarding variable, including a directory variable whose answer names nothing in the directory |
 
-Each Problem has the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. A gap never blocks, because the plan validator blocks a required question that is unanswered. The `message` is for people and its wording is not specified. `detail` is not specified.
+Each Problem has the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. An id that names nothing in the directory gives `gap.unanswered`, as an unanswered variable does. A vacant role gives no Problem. A gap never blocks, because the plan validator blocks a required question that is unanswered. The `message` is for people and its wording is not specified. `detail` is not specified.
 
 ## Properties
 
 These hold for every input the contract tests use.
 
-- **Pure.** The section and the answers are the same after the call as before, including every list and map inside them.
+- **Pure.** The section, the answers, and the directory are the same after the call as before, including every list and map inside them. A holders list is not sorted or changed in place.
 - **Nothing shared.** The returned Section shares no list, map, or pointer with the input. Changing it changes nothing in the input.
 - **A copy of the switch and the clauses.** The returned Section holds the same `enabled` as the input, absent when absent, `false` when `false`, and `true` when `true`, and it is a new pointer. The resolver never turns a section on or off, and never reads the switch. A condition in `includeIf` or in a variable's `askIf` comes back as held: a question clause and a section clause, with the section id and the `enabled` of the section clause kept, `false` as well as `true`. Neither shares anything with the input. See [0050](../../../docs/decisions/0050-section-switch.md).
 - **No memory.** The same call gives the same result whatever calls came before, forward or in reverse order.
@@ -123,9 +149,15 @@ These hold for every input the contract tests use.
 
 ## Side effects and plan access
 
-None, and it reads section content and the section's own answers only. It writes nothing but the returned copy. This matches the row for `section/resolver` in [components](../../../docs/architecture/components.md).
+None, and it reads section content, the section's own answers, the directory, and the team id only. It writes nothing but the returned copy. This matches the row for `section/resolver` in [components](../../../docs/architecture/components.md).
 
 ## Not covered
+
+- Whether the directory is valid: a duplicate id, a holder that is not a contact, a team entry for a role that does not exist. Two entries with one id are not covered. Those are for the validator.
+- That the plan has at most one `team` variable, and how the caller finds the team.
+- An answer of the wrong shape for a directory variable, such as a List for a `team`, or a Flag. A contact with an empty name, and a role with an empty name.
+- The same contact written twice in a List, or held by two roles in one List.
+- Reporting a vacant role. The assembler does.
 
 - The format of the document, such as Markdown escaping of `<name>` and `_deferred_`, one person to a line, and the gap table. Those are the assembler's.
 - Whether the answers fit the types, options, or patterns, whether a required question is answered, and whether a `$` is valid. Those are for the validators.
@@ -138,7 +170,20 @@ None, and it reads section content and the section's own answers only. It writes
 
 ## Decisions to know
 
-These are choices the docs did not settle. Each says what the resolver does, what raised it, and how far a change would reach. `hard` means a change touches what template authors write, what a plan holds, or what a person sees. `cheap` means a change touches one fixture and nothing outside the component.
+These are choices the docs did not settle. Each says what the resolver does, what raised it, and how far a change would reach. `hard` means a change touches what template authors write, what a plan holds, or what a person sees. `cheap` means a change touches one fixture and nothing outside the component. The directory choices come first.
+
+D1. **An id that names nothing counts as unanswered in every way.** It takes a default, else it is `_unanswered_` with `gap.unanswered`, else `<name>` for an `onboardee` variable. A default that names nothing gives no value. Raised by: "An answer that names an id that is not in the directory counts as unanswered". `hard`.
+D2. **A vacant role is text and not a gap.** It is written `Role name (vacant)` and adds no Problem, because the assembler reports it as `directory.role-vacant`. A vacant role keeps its place in a List of roles. Raised by: "No holder is a gap, shown like any other gap and never as an empty name or a guess". `hard`.
+D3. **A team entry replaces the role's holders and never merges.** An entry that is empty, or holds only unknown ids, makes the role vacant for that team. Raised by: "the newcomer's team, if the team override names holders for it, otherwise the role's own holders". `hard`.
+D4. **A List keeps its known ids in order and skips unknown ones.** A List with no known id is unanswered. The same contact twice is written twice. Raised by: "A `multiple: true` contact or role question holds an ordered list". `hard`.
+D5. **Every list of directory values joins with `; `, a role's holders and a List of ids alike.** A role in a List of roles contributes its holders, so the semicolons run on across roles. Raised by: "The exact forms are not decided". `hard`.
+D6. **A directory value in `run` is one item.** An exact `$name` for a `contact`, `role`, or `team` variable is never split and never spliced, even for a List. Raised by: "A variable of type `command` is written `[$name]` and expands to its arguments", which names no other type. `hard`.
+D7. **The type decides the lookup.** A `string` or `person` variable that holds a contact id is written as held. The `person` type is unchanged. Raised by: "Three variable types replace `person`". `hard`.
+D8. **The team parameter and a team variable are separate.** Roles resolve with the `team` parameter. A `team` variable is written from its own answer. An unknown or empty `team` is no team. Raised by: "The team of a plan is the answer to the plan variable of type `team`". `cheap`.
+D9. **Ids are matched exactly and by kind.** Case matters, a contact's name is not an id, and a role id given to a `contact` variable names nothing. Raised by: "Ids are lowercase slugs". `cheap`.
+D10. **Escalation stays as held.** Its items name variables and are not text, so a `contact` or `role` name in `escalation` is not filled here. Raised by: "`escalation` and `owner` references may name `contact` or `role` variables". `cheap`.
+
+The choices below were made before the directory.
 
 1. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered variable with no default is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
 2. **Unanswered and no default is a visible marker and a gap.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
@@ -197,3 +242,19 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A section clause list shared with the input, so that changing the result changes the input | the switch-and-clauses test |
 | A `parent` dropped, emptied, filled like text, or taken from an answer | `sub-section`, `nothing-to-fill`, the parent test |
 | A variable named `enabled` left as written, written as a marker, or taken for the switch | `switch-clauses`, `value-kinds` |
+| A contact written with its slack id, with the email before the slack, or with both | `directory-contact-forms`, `directory-roles` |
+| A list of directory values joined with a comma or a space | `directory-roles`, `directory-run`, `directory-fields` |
+| A team entry ignored, an empty entry falling back to the role's holders, or an entry of unknown ids falling back | `directory-roles`, `directory-team-override` |
+| The team taken from the first team, from the name of the team, or no team giving no holders | `directory-roles`, `directory-no-team`, `directory-unknown-team`, `directory-team-override` |
+| An unknown team giving no holders, or a team with no entry giving no holders | `directory-unknown-team`, `directory-plain-team` |
+| An unknown holder written as its id, a vacant role written empty or without its name, or a vacant role dropped from a List | `directory-roles`, `directory-team-override`, `directory-run` |
+| A vacant role reported as a gap | `directory-roles`, `directory-team-override` |
+| Holders sorted, or sorted in place in the directory | `directory-roles`, `directory-fields`, the inputs-unchanged test |
+| An unknown id written as the id, an unknown id in a List voiding the list, or only the first id used | `directory-unknown-ids`, `directory-run`, `directory-roles` |
+| An unknown id ignoring the default, or a default ignored for a directory variable | `directory-unknown-ids`, `directory-defaults` |
+| A deferred answer replaced by the default | `directory-deferred` |
+| A contact id matched by name or without case, a role id read as a contact, a contact id read as a role | `directory-unknown-ids` |
+| A team variable written from the plan team or as its id | `directory-team-name`, `directory-defaults` |
+| A directory List spliced into several `run` items, or one item split on spaces | `directory-run`, `directory-fields` |
+| A `person` or a `string` variable looked up in the directory | `directory-person-unchanged`, `directory-empty` |
+| A contact's name or handle read again, or its `$$` halved | `directory-contact-forms` |

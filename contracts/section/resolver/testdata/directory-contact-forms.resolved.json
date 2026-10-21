@@ -1,0 +1,16 @@
+{
+  "id": "directory-contact-forms",
+  "title": "Contact forms",
+  "summary": "How a contact is written",
+  "body": "sam=[Sam Okafor, @sam] desk=[IT help desk, #it-help] ada=[Ada Lovelace, ada.lovelace@acme.example] lee=[Lee Park] joey=[Jo Chen, @jo] max=[Max Webb, max.webb@acme.example] pat=[Pat $budget, @pat$$] budget=[5 dollars]",
+  "variables": [
+    {"name": "sam", "type": "contact", "description": "Name, slack, and email"},
+    {"name": "desk", "type": "contact", "description": "A shared contact"},
+    {"name": "ada", "type": "contact", "description": "Name and email only"},
+    {"name": "lee", "type": "contact", "description": "Name only"},
+    {"name": "joey", "type": "contact", "description": "Name and slack only"},
+    {"name": "max", "type": "contact", "description": "Name, email, and a slack id"},
+    {"name": "pat", "type": "contact", "description": "Text that looks like a variable"},
+    {"name": "budget", "description": "A plain variable"}
+  ]
+}

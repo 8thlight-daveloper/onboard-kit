@@ -1,0 +1,22 @@
+{
+  "id": "directory-unknown-ids",
+  "title": "Unknown ids",
+  "summary": "An id the directory does not hold is unanswered",
+  "body": "c_unknown=[$c_unknown] c_default=[$c_default] c_both=[$c_both] c_list=[$c_list] c_all=[$c_all] r_unknown=[$r_unknown] r_list=[$r_list] t_unknown=[$t_unknown] c_blank=[$c_blank] r_blank=[$r_blank] c_case=[$c_case] c_name=[$c_name] c_wrongkind=[$c_wrongkind] r_wrongkind=[$r_wrongkind]",
+  "variables": [
+    {"name": "c_unknown", "type": "contact", "description": "An id not in the directory"},
+    {"name": "c_default", "type": "contact", "default": "lee-park", "description": "Unknown id, known default"},
+    {"name": "c_both", "type": "contact", "default": "ghost-contact", "description": "Unknown id, unknown default"},
+    {"name": "c_list", "type": "contact", "multiple": true, "description": "Some unknown ids"},
+    {"name": "c_all", "type": "contact", "multiple": true, "description": "Only unknown ids"},
+    {"name": "r_unknown", "type": "role", "description": "A role id not in the directory"},
+    {"name": "r_list", "type": "role", "multiple": true, "description": "Some unknown role ids"},
+    {"name": "t_unknown", "type": "team", "description": "A team id not in the directory"},
+    {"name": "c_blank", "type": "contact", "audience": "onboardee", "description": "Unknown id, for the newcomer"},
+    {"name": "r_blank", "type": "role", "audience": "onboardee", "description": "No answer, for the newcomer"},
+    {"name": "c_case", "type": "contact", "description": "Ids are case sensitive"},
+    {"name": "c_name", "type": "contact", "description": "A name and not an id"},
+    {"name": "c_wrongkind", "type": "contact", "description": "A role id"},
+    {"name": "r_wrongkind", "type": "role", "description": "A contact id"}
+  ]
+}

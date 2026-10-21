@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "directory-run": {
+      "sam": "sam-okafor",
+      "people": ["lee-park", "ghost-contact", "sam-okafor"],
+      "managers": ["it-contact", "engineering-manager"],
+      "champion": "security-champion",
+      "team": "platform",
+      "late": {"deferred": true},
+      "stranger": "no-such-contact"
+    }
+  }
+}
