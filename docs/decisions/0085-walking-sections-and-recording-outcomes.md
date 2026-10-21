@@ -60,7 +60,7 @@ A section may list other sections it requires, by id.
 ```
 
 - A section comes after the sections it requires, so `requires` also does what `after` did for ordering. The order is `timing`, then `requires`, then `id`.
-- A section's verification is out of reach until every section it requires is `verified`. A required section that is only `deferred` keeps the dependent waiting, and the walk says what it waits on.
+- A section's verification is out of reach until every section it requires is `verified`. A required section that is only `deferred` keeps the dependent waiting, and the walk says what it waits on. A requirement cannot be skipped. If it is not really required, the onboarder removes it from `requires`.
 - A section can be required by several others, so a shared prerequisite is written once. This is a graph and not a tree. `parent` stays for containment: grouping, and the switch cascade of 0070.
 - **A section that requires an inactive section is inactive too.** It cascades the way a sub-section follows its parent. If a person does not need AWS access, they do not do the deploy. Something that applies only to some people goes in its own section, as 0065 says. The review shows the reason, such as "Deploy is off because AWS access is off".
 - A cycle, and a required id that is not a section, are errors in the section validator.
@@ -73,7 +73,7 @@ A section may carry `bootstrap: true`. A bootstrap section can be done with only
 - A bootstrap section may not require a section that is not a bootstrap section. The section validator checks this.
 - The walk shows the bootstrap sections first, and says they can be done before the person has access.
 - When they are verified, the tool offers to check for the latest plan. That is the refresh of 0075, run on request from the location where the org plan lives.
-- The org plan records where its latest copy lives, a path or an HTTPS address, so that the copy sent by email knows where to refresh from. The field's name is not decided.
+- The org plan has a top-level field, `planUrl`, where its latest copy lives, a path or an HTTPS address. It is set when the plan is created, the way the `id` is, and the onboarder can change it. A personal plan made from it keeps the same `planUrl`, so `start` can refresh from the file alone, with no `--org-plan` given. It is a field of the file, and not an answer to a question.
 - The assembled document remains the way to send the first steps to someone who has nothing installed.
 
 ### A shared repository is stated, not hidden
@@ -109,7 +109,7 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Consequences
 
-- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `progress` and the location of its latest copy. This needs `slow-change`.
+- **The domain model changes.** A Section gains `requires` and `bootstrap`, and loses `after`. A Plan gains `progress` and `planUrl`. This needs `slow-change`.
 - **Contracts**, each its own small increment: the decoder, encoder, loader, and hasher (`requires` and `bootstrap` are content), the section selector (ordering and the cascade), the section validator (cycles, unknown ids, the bootstrap rule), the refresher (outcomes survive), the plan validator (a duplicate or unknown outcome), and two new components: an outcome recorder, and a section walker that gives each active section its state, what it waits on, and its resolved text.
 - **The reference docs** for ordering, optional sections, and the schema change for `requires`.
 - **The TUI** gains a Process screen for the onboardee, the start notice for a shared repository, and the bootstrap offer to refresh.
@@ -117,7 +117,4 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Not decided
 
-- The name of the field that records where the latest org plan lives, and whether it is an onboarder answer or a plan field.
-- Whether a person can verify a section early, with a warning, when it is only waiting on a deferred requirement.
-- Whether the report is a command or a screen, and how due dates are written.
-- The evidence patterns for Teams and email, which 0065 leaves open.
+- The report: how the onboarder sees newcomers' outcomes. It raises who a file belongs to, whether it is read by person or by section, due dates, whether failed and changed outcomes and notes surface, and the form of the output. It is for a separate discussion.
