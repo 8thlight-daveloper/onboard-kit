@@ -61,7 +61,7 @@ So a question that does not name a later question stays where it is in candidate
 **Directory questions.** A question whose type is `contact`, `role`, or `team` picks from the plan's directory, as [0080](../../../docs/decisions/0080-directory.md) says.
 
 - `Choices` holds the entries of the directory list for the type: `contacts` for a contact, `roles` for a role, `teams` for a team. There is one choice for each entry, in the order of the directory. Its `Value` is the entry's id and its `Label` is the entry's name. A plan with no directory, or an empty list for the type, gives no choices.
-- `Options` is empty, whatever the variable declares. A variable of any other type has no choices, including `choice`.
+- `Options` is empty, whatever the variable declares. A variable of any other type has no choices, including `choice`, and its `Choices` is nil, not an empty list.
 - The choices are the same for every question of a type, whatever its scope, audience, or answer.
 - An id is in the directory when an entry of the list for the question's type has exactly that id. Ids are compared as written, so case and spaces count. A contact id is not a role id, and a role id is not a team id.
 - An answer is a Text id, or a List of ids when the question is `multiple`. The answer is **found** when its id is in the directory. A List is found when at least one of its items is in the directory. A Deferred answer is found. Everything else is not found: an id that is not in the directory, empty text, an empty list, a list with no id in the directory, and nothing stored.
@@ -159,6 +159,7 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 29. **A directory question has choices and no options, and nothing else has choices.** A variable of type `contact`, `role`, or `team` that declares `options` has them dropped, since the directory is the list. A `choice` and a string with options keep their options and have no choices. 0080 says "the walkthrough offers the directory's entries" and the `team` question's "options are the directory's teams", and the model has a separate `Choices` field. Case: `directory-choices`. `cheap`
 30. **Ids are compared as written, and each type has its own list.** `Sam-Okafor` and ` sam-okafor` are not `sam-okafor`, and a role id is no answer to a contact question. 0080 gives ids as permanent and does not say how they are compared. Cases: `directory-unknown-answers`, `directory-contacts-only`. `cheap`
 31. **An optional directory question with an unknown id does not block, and empty text and a deferred answer behave as before.** Raised by "so a required question blocks until it is filled" in 0080. Case: `directory-unknown-answers`. `cheap`
+32. **A question that is not a directory question has a nil `Choices`, not an empty list.** The docs say only that it has no choices. A nil list and an empty list read the same by length, so a reader could take either. Nil says that the question has no choices at all, and an empty list is left for a directory question whose list is empty, where either is accepted. Every case that holds a question of another type checks it. `hard`
 
 ## Wrong implementations tried
 
@@ -181,6 +182,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | Activity and order decided in one pass, so a question waits for one that is never asked | `order-ignores-questions-not-asked` |
 | A cycle drops its questions, or breaks at the last question, or makes all of them asked | `ask-if-cycle` |
 | A question that names itself waits for itself | `ask-if-cycle` |
+| A section clause hides the question clauses after it from the order, or counts as naming a question with an empty name | `order-section-clause-then-question-clause`, `order-section-clause-names-no-question` |
 | A bare name read in the plan scope, in the condition or in the order | `ask-if-scope`, `order-condition-names-later-question` |
 | Default used as the answer, or as a condition's answer | `defaults-are-suggestions`, `acme`, `ask-if-tests` |
 | A default satisfies a required question | `defaults-are-suggestions` |
@@ -199,6 +201,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A value that is a default and a given answer listed once, or no distinct at all | `suggestions-default-and-given`, `suggestions-defaults`, `suggestions-given` |
 | Given answers before defaults, in map order, or in plan section order | `suggestions-default-and-given`, `suggestions-given` |
 | A choice offers values outside its options, a boolean offers text, a list offers text | `suggestions-valid-values`, `suggestions-lists` |
+| A `multiple` question of type string or choice offers Text, or a text default of a `multiple` question is offered | `suggestions-lists-and-flags` |
+| Empty text or a value of no kind offered for a choice that lists empty text or a pattern that matches empty text | `suggestions-empty-text-fits` |
+| Flags equal whatever their value, so a false Flag is dropped after a true one | `suggestions-lists-and-flags` |
 | A pattern ignored, or matched against the whole text | `suggestions-pattern` |
 | Deferred and empty answers offered | `suggestions-settled-only`, `answers-as-stored` |
 | Group key ignores the type, the options, `multiple`, or the name | `groups`, `suggestions-valid-values`, `suggestions-lists` |
@@ -238,6 +243,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The label is the id, or the value is the name | `directory-choices` |
 | Contacts offered for a role or a team, or one list for all three types | `directory-choices`, `directory-contacts-only` |
 | Choices for every question, or for a `choice` or a string with options | `directory-choices`, `directory-unknown-answers` |
+| An empty list of choices, not nil, on a question that is not a directory question | the choices test, on every case |
 | Choices left out for onboardee questions, or built only for onboarder questions | `directory-audience` |
 | Ids copied into `Options`, or the declared options of a directory question kept | `directory-choices` |
 | Choices missing when the directory has no entry of that type, or from a plan with no directory | `directory-contacts-only`, `directory-empty` |

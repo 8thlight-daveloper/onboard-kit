@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "mode", "type": "choice", "options": ["", "fast"], "description": "A choice that lists empty text as an option"},
+    {"name": "code", "pattern": "^.*$", "description": "A pattern that matches empty text"}
+  ],
+  "answers": {"plan": {"mode": "", "code": ""}}
+}

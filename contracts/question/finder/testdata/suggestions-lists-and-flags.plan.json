@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "tags", "multiple": true, "default": ["a", "b"], "description": "A list default on a multiple string"},
+    {"name": "flag", "type": "boolean", "default": true, "description": "A flag default of true"},
+    {"name": "picks", "type": "choice", "multiple": true, "options": ["x", "y"], "default": "x", "description": "A text default on a multiple choice"}
+  ],
+  "answers": {"sections": {"s": {"tags": "solo"}}},
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "tags", "multiple": true, "default": "solo", "description": "A text default on a multiple string"},
+      {"name": "flag", "type": "boolean", "default": false, "description": "A flag default of false"}
+    ]}
+  ]
+}

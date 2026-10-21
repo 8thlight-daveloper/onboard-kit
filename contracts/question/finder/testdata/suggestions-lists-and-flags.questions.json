@@ -1,0 +1,9 @@
+{"questions": [
+  {"id": "plan.tags", "group": "tags", "declaredDefault": ["a", "b"], "suggestions": [{"value": ["a", "b"], "source": "default"}]},
+  {"id": "plan.flag", "type": "boolean", "group": "flag", "declaredDefault": true, "suggestions": [
+    {"value": true, "source": "default"}, {"value": false, "source": "default"}]},
+  {"id": "plan.picks", "type": "choice", "group": "picks", "declaredDefault": "x"},
+  {"id": "s.tags", "group": "tags", "answer": "solo", "declaredDefault": "solo", "suggestions": [{"value": ["a", "b"], "source": "default"}]},
+  {"id": "s.flag", "type": "boolean", "group": "flag", "declaredDefault": false, "suggestions": [
+    {"value": true, "source": "default"}, {"value": false, "source": "default"}]}
+], "blockers": []}
