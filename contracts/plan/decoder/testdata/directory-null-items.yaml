@@ -1,0 +1,18 @@
+schemaVersion: 1
+directory:
+  contacts:
+    -
+    - id: a
+    - null
+  roles:
+    -
+    - id: q
+      holders: [null]
+  teams:
+    -
+    - id: t
+      holders:
+        r:
+          - a
+          -
+        s: [null]

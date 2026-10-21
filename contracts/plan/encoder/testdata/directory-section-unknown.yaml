@@ -1,0 +1,16 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: sam
+      name: Sam
+sections:
+  - id: s
+    title: S
+    steps:
+      - id: st
+        name: St
+        directory: $repo_dir
+    directory: on the section
+    x-directory:
+      contacts:
+        - a

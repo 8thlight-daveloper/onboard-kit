@@ -1,0 +1,15 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - sam
+    - 5
+    - true
+    - [a, b]
+    - "quoted"
+    - id: ok
+  roles:
+    - lead
+    - [x]
+  teams:
+    - platform
+    - - a

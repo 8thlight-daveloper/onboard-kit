@@ -1,0 +1,31 @@
+# The directory sits last, and every item lists its keys backwards.
+schemaVersion: 1
+variables:
+  - name: team
+    type: team
+sections:
+  - id: s
+    title: S
+directory:
+  teams:
+    - holders:
+        zeta-role: [c, a]
+        engineering-manager: [lee-park, sam-okafor]
+        a-role: [x]
+      name: Platform team
+      id: platform
+    - { name: Design team, id: design }
+    - id: bare-team
+  roles:
+    - holders: [sam-okafor]
+      name: Engineering manager
+      id: engineering-manager
+    - id: bare-role
+  contacts:
+    - slackId: U01ABC123
+      slack: "@sam"
+      email: sam.okafor@acme.example
+      name: Sam Okafor
+      id: sam-okafor
+    - {id: it-help, name: IT help desk, slack: "#it-help"}
+    - id: bare-contact

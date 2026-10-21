@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "zoe", "name": "Zoe"},
+      {"id": "amy", "name": "Amy"},
+      {"id": "zoe", "name": "Zoe again"},
+      {"id": "bob", "name": "Bob"}
+    ],
+    "roles": [
+      {"id": "lead", "holders": ["zoe", "amy", "zoe", "bob", "amy"]},
+      {"id": "buddy", "holders": ["bob", "amy"]},
+      {"id": "lead", "holders": ["amy"]}
+    ],
+    "teams": [
+      {"id": "t2", "holders": {"lead": ["zoe", "amy", "zoe", "bob"], "buddy": ["bob", "amy"]}},
+      {"id": "t1", "holders": {"lead": ["bob", "amy"]}},
+      {"id": "t2"}
+    ]
+  }
+}

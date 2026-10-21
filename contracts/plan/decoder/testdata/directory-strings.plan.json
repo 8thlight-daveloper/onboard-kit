@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "42", "name": "yes", "email": "null", "slack": "#it-help", "slackId": "007"},
+      {"id": "true", "name": "deferred", "email": "2026-10-15", "slack": "@sam", "slackId": "U01ABC123"},
+      {"id": "on", "name": "Line one\nLine two", "slack": "~sam@host"},
+      {"id": "a-b", "name": "Sam: Okafor", "email": "  padded  ", "slack": "@sam"}
+    ],
+    "roles": [
+      {"id": "1", "name": "123", "holders": ["42", "true", "deferred", "2026-10-15", "yes"]}
+    ],
+    "teams": [
+      {"id": "platform", "holders": {"on": ["42"], "y": ["deferred"], "1": ["a"], "yes": [], "null": ["b"], "Manager": ["m"]}}
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+schemaVersion: 1
+directory:
+  roles:
+    - id: manager
+      name: Manager
+      holders:
+        - sam
+  teams:
+    - id: platform
+      holders:
+        buddy: []
+        lead:
+          - lee
+        manager: []
+    - id: design
+      holders:
+        manager: []

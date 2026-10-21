@@ -287,3 +287,34 @@ func TestWritesTheSwitchOnlyWhenTheSectionHoldsOne(t *testing.T) {
 		})
 	}
 }
+
+func TestOmitsADirectoryThatHoldsNothing(t *testing.T) {
+	cases := map[string]model.Directory{
+		"zero":        {},
+		"empty lists": {Contacts: []model.Contact{}, Roles: []model.Role{}, Teams: []model.Team{}},
+	}
+	for name, directory := range cases {
+		t.Run(name, func(t *testing.T) {
+			got, problems := newEncoder().Encode(model.Plan{SchemaVersion: 1, Directory: directory})
+			if len(problems) != 0 || string(got) != "schemaVersion: 1\n" {
+				t.Errorf("got %q and %+v, want only the version", got, problems)
+			}
+		})
+	}
+}
+
+func TestWritesARoleWithNoHoldersInATeamEntry(t *testing.T) {
+	cases := map[string][]string{"nil": nil, "empty": {}}
+	for name, holders := range cases {
+		t.Run(name, func(t *testing.T) {
+			plan := model.Plan{SchemaVersion: 1, Directory: model.Directory{
+				Teams: []model.Team{{ID: "t", Holders: map[string][]string{"manager": holders}}},
+			}}
+			got, problems := newEncoder().Encode(plan)
+			want := "schemaVersion: 1\ndirectory:\n  teams:\n    - id: t\n      holders:\n        manager: []\n"
+			if len(problems) != 0 || string(got) != want {
+				t.Errorf("got %q and %+v, want %q", got, problems, want)
+			}
+		})
+	}
+}

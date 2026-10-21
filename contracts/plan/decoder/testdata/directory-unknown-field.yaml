@@ -1,0 +1,24 @@
+schemaVersion: 1
+directory:
+  extra:
+    - &a yes
+    - 0x1F
+  contacts:
+    - id: sam
+      phone: "555"
+      Email: a@b.example
+      slack_id: U1
+      slackid: U2
+      holders: [x]
+  roles:
+    - id: r
+      email: x
+      members: [a]
+  teams:
+    - id: t
+      members: [a]
+      slack: "@t"
+      holders:
+        r: [x]
+  Contacts: []
+  x-note: ok

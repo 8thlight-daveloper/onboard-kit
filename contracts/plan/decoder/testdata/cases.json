@@ -2102,5 +2102,479 @@
       }
     ],
     "source": "Hand-written. Contract rules: Problems, format.duplicate-key. The path of a duplicate key is the second and later keys, and the value of a duplicate key is read like any other, so the unknown key in the second `origin` is reported."
+  },
+  {
+    "name": "directory-shared",
+    "input": "directory-shared.yaml",
+    "output": "../../testdata/directory.plan.json",
+    "source": "Hand-written YAML for the shared plan in contracts/plan/testdata/directory.plan.json. ADR 0080 (Directory) and the domain model (Directory, Contact, Role, Team): the 0080 example, with a quoted `@sam` and `#it-help`, a plain `U01ABC123`, a contact with only an id and a name, a role with no holders, and a team with no holders. Contract rule: Directory."
+  },
+  {
+    "name": "directory-values",
+    "input": "directory-values.yaml",
+    "output": "directory-values.plan.json",
+    "source": "Hand-written. ADR 0080 (Directory) and the domain model (Directory, Contact, Role, Team). Contract rule: Directory. The directory comes after the sections, its three lists are in reverse order, every item lists its keys backwards, flow style and block style are mixed, and a team's `holders` keys are not in sorted order, so a version that depends on file order or on key order fails. A contact, a role, and a team may hold only an id. Nothing is filled in."
+  },
+  {
+    "name": "directory-strings",
+    "input": "directory-strings.yaml",
+    "output": "directory-strings.plan.json",
+    "source": "Hand-written. Contract rules: Scalars, Directory. Every directory field and every holder is a string read like a `title`: quoted `\"42\"`, `'true'`, `\"yes\"`, and `'null'` are text, a plain `deferred` is text, a plain date is text, `~sam@host` is text, `\"\\u0040sam\"` is `@sam`, spaces are kept, and a literal block is text with a newline. A team's `holders` keys `on`, `y`, `1`, `yes`, and `null` are the text as written. `\"yes\": []` is a vacant role."
+  },
+  {
+    "name": "directory-blank",
+    "input": "directory-blank.yaml",
+    "output": "directory-blank.plan.json",
+    "source": "Hand-written. Contract rule: Directory. A `directory` with nothing after it is null, and the plan holds the zero Directory, like an empty `origin`."
+  },
+  {
+    "name": "directory-empty-map",
+    "input": "directory-empty-map.yaml",
+    "output": "directory-blank.plan.json",
+    "source": "Hand-written. Contract rule: Directory. `directory: {}` is the zero Directory, the same plan as a null `directory`."
+  },
+  {
+    "name": "directory-empty-lists",
+    "input": "directory-empty-lists.yaml",
+    "output": "directory-empty-lists.plan.json",
+    "source": "Hand-written. ADR 0080 (Directory) and the domain model (Directory, Contact, Role, Team) and the resolution order in 0080: a team entry for a role, even an empty one, means the role is vacant for that team. Contract rule: Directory. A null or empty list is nil. A team's absent or null `holders` is nil, and `holders: {}` is an empty map that is not nil. A role entry that is `[]` or null stays in the map with no items, so the role stays vacant for that team."
+  },
+  {
+    "name": "directory-list-order",
+    "input": "directory-list-order.yaml",
+    "output": "directory-list-order.plan.json",
+    "source": "Hand-written. Contract rule: Directory, lists. 0080: holders are in order, and the first holder comes first. Every directory list and every list of holders is out of sorted order, and several hold repeats. Two contacts, two roles, and two teams share an id and are all kept."
+  },
+  {
+    "name": "directory-unvalidated",
+    "input": "directory-unvalidated.yaml",
+    "output": "directory-unvalidated.plan.json",
+    "source": "Hand-written. Contract rule: Directory, the decoder does not validate. The plan validator judges these: an id that is not a lowercase slug, an id with a space, an empty id, an email with no `@`, a holder that names no contact, and a team entry for a role that does not exist. 0080 Integrity lists them."
+  },
+  {
+    "name": "directory-and-step",
+    "input": "directory-and-step.yaml",
+    "output": "directory-and-step.plan.json",
+    "source": "Hand-written. Contract rule: Directory. A step's `directory` is its working directory and stays a string, and a section's `directory` and `x-directory` are ordinary unknown fields. Only a top-level `directory` is the plan's directory."
+  },
+  {
+    "name": "directory-unknown-field",
+    "input": "directory-unknown-field.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "directory.extra"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].phone"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].Email"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].slack_id"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].slackid"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.contacts[0].holders"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.roles[0].email"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.roles[0].members"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].members"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].slack"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.Contacts"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.x-note"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. The directory, a contact, a role, and a team cannot keep unknown fields, like `provenance` and `origin`. Keys are exact: `Email`, `slack_id`, `slackid`, `Contacts`, and `x-note` are unknown, and so is a key that belongs to another kind of item, such as `holders` in a contact or `email` in a role. The value of an unknown key is not read, so the `yes`, the anchor, and the `0x1F` in `extra` are not reported."
+  },
+  {
+    "name": "directory-scalar",
+    "input": "directory-scalar.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. A `directory` that is not a map is a wrong type at `directory`."
+  },
+  {
+    "name": "directory-list",
+    "input": "directory-list.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. A `directory` that is a list is a wrong type, and nothing inside it is read, so the `yes` and the `0x1F` are not reported."
+  },
+  {
+    "name": "directory-wrong-type-lists",
+    "input": "directory-wrong-type-lists.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. `contacts`, `roles`, and `teams` each take a list. A text, a map, and a canonical number are wrong types at the key."
+  },
+  {
+    "name": "directory-wrong-type-items",
+    "input": "directory-wrong-type-items.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[2]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[3]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[4]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[1]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. An item of `contacts`, `roles`, or `teams` that is a text, a number, a flag, or a list is a wrong type at the item, and the decoder goes on to the item that is a map."
+  },
+  {
+    "name": "directory-null-items",
+    "input": "directory-null-items.yaml",
+    "problems": [
+      {
+        "code": "format.empty-item",
+        "path": "directory.contacts[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.contacts[2]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.roles[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.roles[1].holders[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.teams[0]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.teams[1].holders.r[1]"
+      },
+      {
+        "code": "format.empty-item",
+        "path": "directory.teams[1].holders.s[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. A null item of a directory list, of a role's `holders`, or of a team's list of holders is `format.empty-item`, because dropping it would shift the list. The path of a team's holder is `directory.teams[1].holders.r[1]`."
+  },
+  {
+    "name": "directory-field-problems",
+    "input": "directory-field-problems.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0].id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0].name"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0].email"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0].slack"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.contacts[0].slackId"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.contacts[1].id"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "directory.contacts[1].name"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.contacts[1].email"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.contacts[1].slack"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.contacts[1].slackId"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.roles[0].id"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[0].name"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[0].holders"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[1].holders[0]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[1].holders[1]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.roles[1].holders[2]"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.roles[1].holders[3]"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.roles[1].holders[4]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[0].id"
+      },
+      {
+        "code": "format.null-spelling",
+        "path": "directory.teams[0].name"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[0].holders"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[1].holders.manager"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[1].holders.lead"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[1].holders.buddy[0]"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.teams[1].holders.buddy[1]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems, and Directory. Every directory field is a string read like a `title`, and every holder is a string. A list, a map, and a plain `true` or `false` are wrong types, a plain `yes`, `Off`, `~`, `0x1F`, `1e3`, `007`, and a canonical `42` or `123` are spelling problems, and an anchor is `format.alias`. A role's `holders` that is a text, and a team's `holders` that is a list, are wrong types at `holders`. A team's role entry that is a text or a map is a wrong type at `holders.<role id>`, and an item inside a role entry is read at `holders.<role id>[n]`."
+  },
+  {
+    "name": "directory-anchors",
+    "input": "directory-anchors.yaml",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "directory"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts[0]"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts[0].name"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts[0].email"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts[1]"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.contacts[2].<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.teams[0].holders"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.teams[0].holders.<<"
+      },
+      {
+        "code": "format.alias",
+        "path": "directory.teams[0].holders.q"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards, and the Problems rules for anchors, aliases, and merge keys. The guards apply inside the directory: an anchor on the directory, on a list, on an item, and on a value, an alias as an item and as a value, a merge key in an item and in a team's `holders`, and an anchor on a key, which is reported at the key's path."
+  },
+  {
+    "name": "directory-duplicate-keys",
+    "input": "directory-duplicate-keys.yaml",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "directory.contacts[0].name"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "directory.contacts"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "directory.teams[0].holders.r"
+      },
+      {
+        "code": "format.duplicate-key",
+        "path": "directory"
+      }
+    ],
+    "source": "Hand-written. 0030 format guards. A repeated key is reported at the second and later keys inside the directory: a contact field, a `contacts` key, a role id in a team's `holders`, and the `directory` key itself. A quoted key and a plain key with the same text are the same key."
+  },
+  {
+    "name": "directory-complex-key",
+    "input": "directory-complex-key.yaml",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[0].holders"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.teams[0].holders"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "directory.contacts[0]"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "directory.contacts[0].name"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Style is free, a key that is not a scalar is `format.wrong-type` at the map that holds it, and the entries after it are still read. A role id in a team's `holders` and a contact field are no exception."
+  },
+  {
+    "name": "directory-problem-order",
+    "input": "directory-problem-order.yaml",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "origin.extra"
+      },
+      {
+        "code": "format.boolean-spelling",
+        "path": "directory.contacts[0].id"
+      },
+      {
+        "code": "format.unknown-field",
+        "path": "directory.teams[0].nope"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "variables[0].name"
+      },
+      {
+        "code": "format.empty-answer",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "format.number-spelling",
+        "path": "sections[0].title"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems come in the order of their places in the file. The directory sits between `origin` and `variables`, and its problems come between theirs, so a version that reads the directory in a second pass fails."
+  },
+  {
+    "name": "directory-version-too-new",
+    "input": "directory-version-too-new.yaml",
+    "problems": [
+      {
+        "code": "version.too-new",
+        "path": "schemaVersion",
+        "detail": {
+          "found": "2",
+          "supported": "1"
+        }
+      }
+    ],
+    "source": "Hand-written. Contract rule: Version. A newer file may use anything, so a `directory` that is a list with a plain `yes` in it is not read, and the version problem is the only problem."
   }
 ]

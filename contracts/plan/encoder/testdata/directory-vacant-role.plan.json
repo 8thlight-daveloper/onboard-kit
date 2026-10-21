@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "roles": [{"id": "manager", "name": "Manager", "holders": ["sam"]}],
+    "teams": [
+      {"id": "platform", "holders": {"manager": [], "lead": ["lee"], "buddy": []}},
+      {"id": "design", "holders": {"manager": []}}
+    ]
+  }
+}
