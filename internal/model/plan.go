@@ -49,5 +49,6 @@ type Role struct {
 type Team struct {
 	ID      string
 	Name    string
+	Contact string
 	Holders map[string][]string
 }

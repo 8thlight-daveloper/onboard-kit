@@ -24,6 +24,7 @@ type roleEntry struct {
 type teamEntry struct {
 	ID      string              `json:"id"`
 	Name    string              `json:"name"`
+	Contact string              `json:"contact"`
 	Holders map[string][]string `json:"holders"`
 }
 

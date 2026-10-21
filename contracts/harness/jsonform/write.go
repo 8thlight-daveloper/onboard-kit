@@ -410,6 +410,7 @@ func directoryObject(directory model.Directory) object {
 			var t object
 			t.addText("id", team.ID)
 			t.addText("name", team.Name)
+			t.addText("contact", team.Contact)
 			if team.Holders != nil {
 				var held object
 				for _, role := range sortedKeys(team.Holders) {

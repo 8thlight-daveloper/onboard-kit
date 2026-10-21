@@ -169,6 +169,7 @@ Ids are permanent. An answer to a `contact`, `role`, or `team` variable stores a
 | Role | `id`, `name` | Text | A named job |
 | Role | `holders` | List of contact ids, optional | The organization-wide holders, in order |
 | Team | `id`, `name` | Text | Teams are a flat list |
+| Team | `contact` | Text, optional | The id of a contact for reaching the team, such as its channel or on-call alias |
 | Team | `holders` | Map of role id to a list of contact ids, optional | Who holds the role for this team, in order. It overrides the role's own holders |
 
 ## Answers and Value

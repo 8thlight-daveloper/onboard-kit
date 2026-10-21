@@ -267,8 +267,8 @@ func (r *reader) directory(path string, v any) model.Directory {
 	}
 	for i, item := range r.list(path, m, "teams") {
 		at := fmt.Sprintf("%s.teams[%d]", path, i)
-		c := r.object(at, item, "id", "name", "holders")
-		team := model.Team{ID: r.str(at, c, "id"), Name: r.str(at, c, "name")}
+		c := r.object(at, item, "id", "name", "contact", "holders")
+		team := model.Team{ID: r.str(at, c, "id"), Name: r.str(at, c, "name"), Contact: r.str(at, c, "contact")}
 		if held, present := c["holders"]; present {
 			byRole := r.object(at+".holders", held, allKeys(held)...)
 			team.Holders = map[string][]string{}
