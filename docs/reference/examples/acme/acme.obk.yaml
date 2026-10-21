@@ -1,7 +1,43 @@
 schemaVersion: 1
+id: "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5"
 provenance:
   templateSet: example
   generatedOn: "2026-10-15"
+directory:
+  contacts:
+    - id: alex-rivera
+      name: Alex Rivera
+      email: alex.rivera@acme.example
+      slack: "@alex"
+    - id: sam-okafor
+      name: Sam Okafor
+      email: sam.okafor@acme.example
+      slack: "@sam"
+    - id: it-help
+      name: IT service desk
+      email: help@acme.example
+      slack: "#it-help"
+  roles:
+    - id: engineering-manager
+      name: Engineering manager
+      holders:
+        - sam-okafor
+    - id: it-contact
+      name: IT contact
+      holders:
+        - it-help
+    - id: platform-team-lead
+      name: Platform team lead
+      holders:
+        - alex-rivera
+  teams:
+    - id: platform
+      name: Platform team
+    - id: design
+      name: Design team
+      holders:
+        engineering-manager:
+          - alex-rivera
 variables:
   - name: organization
     description: What is the organization's name?
@@ -9,7 +45,7 @@ variables:
     required: true
   - name: team
     description: Which team are you joining?
-    example: Platform team
+    type: team
     required: true
     audience: onboardee
   - name: team_state
@@ -31,15 +67,15 @@ answers:
   plan:
     discipline: software
     organization: ACME Corp
-    team: Platform team
+    team: platform
     team_state: established
   sections:
     access:
       access_request_url: https://access.acme.example/request
-      ci_grantor: Platform team lead
-      onboarding_owner_role: Engineering manager
+      ci_grantor: platform-team-lead
+      onboarding_owner_role: engineering-manager
       repo_url: git@git.acme.example:platform/widget-service.git
-      source_control_grantor: IT service desk
+      source_control_grantor: it-contact
       tracker_grantor: deferred
     clone-and-run-tests:
       repo_dir: widget-service
@@ -52,8 +88,8 @@ answers:
         - test
     stuck-general:
       general_contacts:
-        - Alex Rivera, alex.rivera@acme.example, @alex
-        - Sam Okafor, sam.okafor@acme.example, @sam
+        - alex-rivera
+        - sam-okafor
 sections:
   - id: access
     title: Access
@@ -66,10 +102,10 @@ sections:
       you asked.
     variables:
       - name: onboarding_owner_role
-        description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
-        example: Engineering manager
+        description: Which role owns onboarding here? It appears as the owner of the Access section.
+        type: role
         required: true
-        default: Engineering manager
+        default: engineering-manager
       - name: access_request_url
         description: Where do people request source control access?
         example: https://access.example.test/request
@@ -81,8 +117,8 @@ sections:
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: source_control_grantor
-        description: Who grants source control access?
-        example: IT service desk
+        description: Which role grants source control access?
+        type: role
         required: true
         askIf:
           all:
@@ -90,12 +126,12 @@ sections:
               answer:
                 isSettled: true
       - name: ci_grantor
-        description: Who grants CI dashboard access?
-        example: Platform team lead
+        description: Which role grants CI dashboard access?
+        type: role
         required: true
       - name: tracker_grantor
-        description: Who grants work tracker access?
-        example: Engineering manager
+        description: Which role grants work tracker access?
+        type: role
         required: true
       - name: account_name
         description: What is your account name at the organization?
@@ -124,7 +160,7 @@ sections:
           - ask: Can you open the work tracker?
     source:
       template: access
-      hash: example-not-computed
+      hash: "7d29acbae0bc0dfd7d9a7c4692a757fded62e6dace674b36ddf09d8e5c413d62"
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     summary: Get a working copy of the project and a passing test run on your machine.
@@ -185,7 +221,7 @@ sections:
         directory: $repo_dir
     source:
       template: clone-and-run-tests
-      hash: example-not-computed
+      hash: c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6
   - id: review-design-system
     title: Review the design system
     summary: Find the design system and the main design file, and note what you cannot open.
@@ -222,7 +258,7 @@ sections:
           - ask: Can you open the main design file?
     source:
       template: review-design-system
-      hash: example-not-computed
+      hash: cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9
   - id: stuck-general
     title: If you are stuck
     summary: Who to ask when something is blocked and nobody named in a section can help.
@@ -234,10 +270,9 @@ sections:
     variables:
       - name: general_contacts
         description: Who can anyone ask for help with anything?
-        example: Alex Rivera, alex.rivera@acme.example, @alex
-        type: person
+        type: contact
         multiple: true
         required: true
     source:
       template: stuck-general
-      hash: example-not-computed
+      hash: "0420947b44baa1c2f07cbacb3e0666cc54f79c7faf591aaa4d6f271e1bdfb79b"

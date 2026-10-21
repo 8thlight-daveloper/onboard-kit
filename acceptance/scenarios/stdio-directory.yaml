@@ -1,0 +1,30 @@
+name: stdio-directory
+description: An onboarder builds a directory, picks from it, and removing a contact clears every answer and holder that named it.
+source: docs/decisions/0080-directory.md
+steps:
+  - run: [onboard-kit, stdio, --templates, templates, --template-set, example, --generated-on, "2026-10-15"]
+    files:
+      templates/access.yaml: {from: docs/reference/examples/acme/templates/access.yaml}
+      templates/clone-and-run-tests.yaml: {from: docs/reference/examples/acme/templates/clone-and-run-tests.yaml}
+      templates/review-design-system.yaml: {from: docs/reference/examples/acme/templates/review-design-system.yaml}
+      templates/stuck-general.yaml: {from: docs/reference/examples/acme/templates/stuck-general.yaml}
+      templates/plan-variables.yaml: {from: docs/reference/examples/acme/templates/plan-variables.yaml}
+    talk:
+      - send: {command: set-contact, entry: {id: sam-okafor, name: Sam Okafor, slack: "@sam"}}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: set-role, entry: {id: engineering-manager, name: Engineering manager, holders: [sam-okafor]}}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: submit, question: access.onboarding_owner_role, value: ghost}
+        expect: {ok: true, applied: false}
+      - send: {command: submit, question: access.onboarding_owner_role, value: engineering-manager}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: submit, question: stuck-general.general_contacts, value: [sam-okafor]}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: remove, kind: contact, id: sam-okafor}
+        expect: {ok: true, applied: true, cleared: {answers: [stuck-general.general_contacts], holders: ["role:engineering-manager"]}}
+      - send: {command: blockers}
+        expect: {ok: true}
+      - send: {command: remove, kind: contact, id: sam-okafor}
+        expect: {ok: true, applied: false}
+    expect:
+      exit: 0

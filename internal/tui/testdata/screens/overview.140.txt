@@ -6,12 +6,12 @@
   > [x] * Is the team established, or are we the fir…  established                  │
                                                                                     │ Is the team established, or are we the first
   Access                                                                            │ consultants?
-    [x] * Who owns onboarding here? Give their role.…  Engineering manager          │
+    [x] * Which role owns onboarding here? It appear…  engineering-manager          │
     [x] * Where do people request source control acc…  https://access.acme.example… │ Answer: established
     [x] * What is the clone URL of the main reposito…  git@git.acme.example:platfo… │
-    [x] * Who grants source control access?            IT service desk              │ About this question
-    [x] * Who grants CI dashboard access?              Platform team lead           │
-    [~] * Who grants work tracker access?              deferred, answer later       │ Type: choice: established, first-consultants
+    [x] * Which role grants source control access?     it-contact                   │ About this question
+    [x] * Which role grants CI dashboard access?       platform-team-lead           │
+    [~] * Which role grants work tracker access?       deferred, answer later       │ Type: choice: established, first-consultants
                                                                                     │ Answered by: onboarder
   Clone the project and run the tests                                               │ Name: plan.team_state
     [x] * What is the clone URL of the main reposito…  git@git.acme.example:platfo… │ Suggestion (given): established
@@ -20,7 +20,7 @@
     [x] * Which command runs the test suite?           make; test                   │
                                                                                     │
   If you are stuck                                                                  │
-    [x] * Who can anyone ask for help with anything?   Alex Rivera, alex.rivera@ac… │
+    [x] * Who can anyone ask for help with anything?   alex-rivera; sam-okafor      │
 
 
 

@@ -4,20 +4,20 @@
   Access
   3 of 13, required, answered
 
-  Who owns onboarding here? Give their role. It appears as the owner of the
-  Access section.
+  Which role owns onboarding here? It appears as the owner of the Access
+  section.
 
-  > Engineering managerr
-  Tab tries a suggestion: Engineering manager, Engineering manager
+  > engineering-managerr
+  Tab tries a suggestion: engineering-manager, engineering-manager
 
   About this question
 
-  Example: Engineering manager
-  Type: string
+  Type: role
   Answered by: onboarder
   Name: access.onboarding_owner_role
-  Suggestion (default): Engineering manager
-  Suggestion (given): Engineering manager
+  Suggestion (default): engineering-manager
+  Suggestion (given): engineering-manager
+
 
 
 

@@ -8,14 +8,14 @@
 
   Which team are you joining?
 
-  > e.g. Platform team
+  >
 
   About this question
 
-  Example: Platform team
-  Type: string
+  Type: team
   Answered by: onboardee
   Name: plan.team
+
 
 
 

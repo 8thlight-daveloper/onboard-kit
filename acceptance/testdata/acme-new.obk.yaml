@@ -10,7 +10,7 @@ variables:
     required: true
   - name: team
     description: Which team are you joining?
-    example: Platform team
+    type: team
     required: true
     audience: onboardee
   - name: team_state
@@ -40,10 +40,10 @@ sections:
       you asked.
     variables:
       - name: onboarding_owner_role
-        description: Who owns onboarding here? Give their role. It appears as the owner of the Access section.
-        example: Engineering manager
+        description: Which role owns onboarding here? It appears as the owner of the Access section.
+        type: role
         required: true
-        default: Engineering manager
+        default: engineering-manager
       - name: access_request_url
         description: Where do people request source control access?
         example: https://access.example.test/request
@@ -55,8 +55,8 @@ sections:
         patternHint: A clone URL, starting with git@ or https://
         required: true
       - name: source_control_grantor
-        description: Who grants source control access?
-        example: IT service desk
+        description: Which role grants source control access?
+        type: role
         required: true
         askIf:
           all:
@@ -64,12 +64,12 @@ sections:
               answer:
                 isSettled: true
       - name: ci_grantor
-        description: Who grants CI dashboard access?
-        example: Platform team lead
+        description: Which role grants CI dashboard access?
+        type: role
         required: true
       - name: tracker_grantor
-        description: Who grants work tracker access?
-        example: Engineering manager
+        description: Which role grants work tracker access?
+        type: role
         required: true
       - name: account_name
         description: What is your account name at the organization?
@@ -98,7 +98,7 @@ sections:
           - ask: Can you open the work tracker?
     source:
       template: access
-      hash: "0661566cb6eb7a0d131133bb75f42f339b79bcccfdf39e49f2028e19c0e70a5a"
+      hash: "7d29acbae0bc0dfd7d9a7c4692a757fded62e6dace674b36ddf09d8e5c413d62"
   - id: clone-and-run-tests
     title: Clone the project and run the tests
     summary: Get a working copy of the project and a passing test run on your machine.
@@ -208,10 +208,9 @@ sections:
     variables:
       - name: general_contacts
         description: Who can anyone ask for help with anything?
-        example: Alex Rivera, alex.rivera@acme.example, @alex
-        type: person
+        type: contact
         multiple: true
         required: true
     source:
       template: stuck-general
-      hash: b41dc482fe0a513d1474cb641d00f890914ee5722c24f6d04e61d6a0cc553829
+      hash: "0420947b44baa1c2f07cbacb3e0666cc54f79c7faf591aaa4d6f271e1bdfb79b"

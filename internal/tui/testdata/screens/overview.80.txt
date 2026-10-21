@@ -6,12 +6,12 @@
   > [x] * Is the team established, or are we the …  established
 
   Access
-    [x] * Who owns onboarding here? Give their ro…  Engineering manager
+    [x] * Which role owns onboarding here? It app…  engineering-manager
     [x] * Where do people request source control …  https://access.acme.examp…
     [x] * What is the clone URL of the main repos…  git@git.acme.example:plat…
-    [x] * Who grants source control access?         IT service desk
-    [x] * Who grants CI dashboard access?           Platform team lead
-    [~] * Who grants work tracker access?           deferred, answer later
+    [x] * Which role grants source control access?  it-contact
+    [x] * Which role grants CI dashboard access?    platform-team-lead
+    [~] * Which role grants work tracker access?    deferred, answer later
 
   Clone the project and run the tests
     [x] * What is the clone URL of the main repos…  git@git.acme.example:plat…

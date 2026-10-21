@@ -3,12 +3,12 @@
 
   Access                                                                            │ About this question
   3 of 13, required, answered                                                       │
-                                                                                    │ Example: Engineering manager
-  Who owns onboarding here? Give their role. It appears as the owner of the Access  │ Type: string
-  section.                                                                          │ Answered by: onboarder
+                                                                                    │ Type: role
+  Which role owns onboarding here? It appears as the owner of the Access section.   │ Answered by: onboarder
                                                                                     │ Name: access.onboarding_owner_role
-  > Engineering managerr                                                            │ Suggestion (default): Engineering manager
-  Tab tries a suggestion: Engineering manager, Engineering manager                  │ Suggestion (given): Engineering manager
+  > engineering-managerr                                                            │ Suggestion (default): engineering-manager
+  Tab tries a suggestion: engineering-manager, engineering-manager                  │ Suggestion (given): engineering-manager
+
 
 
 

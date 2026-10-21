@@ -6,12 +6,12 @@
   > [x] * Is the team established, or are we …  established             │
                                                                         │ Is the team established, or are we the first
   Access                                                                │ consultants?
-    [x] * Who owns onboarding here? Give thei…  Engineering manager     │
+    [x] * Which role owns onboarding here? It…  engineering-manager     │
     [x] * Where do people request source cont…  https://access.acme.ex… │ Answer: established
     [x] * What is the clone URL of the main r…  git@git.acme.example:p… │
-    [x] * Who grants source control access?     IT service desk         │ About this question
-    [x] * Who grants CI dashboard access?       Platform team lead      │
-    [~] * Who grants work tracker access?       deferred, answer later  │ Type: choice: established, first-consultants
+    [x] * Which role grants source control ac…  it-contact              │ About this question
+    [x] * Which role grants CI dashboard acce…  platform-team-lead      │
+    [~] * Which role grants work tracker acce…  deferred, answer later  │ Type: choice: established, first-consultants
                                                                         │ Answered by: onboarder
   Clone the project and run the tests                                   │ Name: plan.team_state
     [x] * What is the clone URL of the main r…  git@git.acme.example:p… │ Suggestion (given): established
@@ -20,7 +20,7 @@
     [x] * Which command runs the test suite?    make; test              │
                                                                         │
   If you are stuck                                                      │
-    [x] * Who can anyone ask for help with an…  Alex Rivera, alex.rive… │
+    [x] * Who can anyone ask for help with an…  alex-rivera; sam-okafor │
 
 
 

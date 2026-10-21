@@ -33,6 +33,10 @@ type request struct {
 	Enabled  *bool  `json:"enabled"`
 	Path     string `json:"path"`
 	Value    any    `json:"value"`
+
+	Kind  string          `json:"kind"`
+	ID    string          `json:"id"`
+	Entry json.RawMessage `json:"entry"`
 }
 
 func (s *session) handle(line []byte) map[string]any {
@@ -53,6 +57,12 @@ func (s *session) handle(line []byte) map[string]any {
 		return s.submit(asked)
 	case "toggle":
 		return s.toggle(asked)
+	case "directory":
+		return success("directory", valuejson.EncodeDirectory(s.plan.Directory))
+	case "set-contact", "set-role", "set-team":
+		return s.setEntry(asked)
+	case "remove":
+		return s.remove(asked)
 	case "plan":
 		return s.encodedPlan()
 	case "assemble":

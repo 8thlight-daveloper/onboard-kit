@@ -15,6 +15,8 @@ steps:
     talk:
       - send: {command: submit, question: plan.organization, value: Globex Inc}
         expect: {ok: true, applied: true, problems: []}
+      - send: {command: set-team, entry: {id: platform, name: Platform team}}
+        expect: {ok: true, applied: true, problems: []}
       - send: {command: save, path: org.obk.yaml}
         expect: {ok: true}
     expect:
@@ -27,7 +29,7 @@ steps:
     talk:
       - send: {command: blockers, audience: onboardee}
         expect: {ok: true, blockers: [plan.team, plan.discipline]}
-      - send: {command: submit, question: plan.team, value: Platform}
+      - send: {command: submit, question: plan.team, value: platform}
         expect: {ok: true, applied: true, problems: []}
       - send: {command: submit, question: plan.discipline, value: design}
         expect: {ok: true, applied: true, problems: []}

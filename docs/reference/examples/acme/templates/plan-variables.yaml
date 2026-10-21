@@ -6,7 +6,7 @@ variables:
     required: true
   - name: team
     description: Which team are you joining?
-    example: Platform team
+    type: team
     required: true
     audience: onboardee
   - name: team_state

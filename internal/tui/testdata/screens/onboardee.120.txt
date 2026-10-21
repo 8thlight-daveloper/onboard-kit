@@ -3,13 +3,13 @@
 
   Welcome. A few questions about you, then your own onboarding          │ About this question
   document.                                                             │
-                                                                        │ Example: Platform team
-  Plan                                                                  │ Type: string
-  1 of 3, required, not answered yet                                    │ Answered by: onboardee
-                                                                        │ Name: plan.team
+                                                                        │ Type: team
+  Plan                                                                  │ Answered by: onboardee
+  1 of 3, required, not answered yet                                    │ Name: plan.team
+                                                                        │
   Which team are you joining?                                           │
                                                                         │
-  > e.g. Platform team                                                  │
+  >                                                                     │
 
 
 

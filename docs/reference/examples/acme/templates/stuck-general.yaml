@@ -5,10 +5,9 @@ summary: Who to ask when something is blocked and nobody named in a section can 
 timing: anytime
 variables:
   - name: general_contacts
-    type: person
+    type: contact
     multiple: true
     description: Who can anyone ask for help with anything?
-    example: Alex Rivera, alex.rivera@acme.example, @alex
     required: true
 body: |
   If a step is blocked and the people named in its section cannot help, ask these people

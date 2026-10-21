@@ -45,6 +45,10 @@ func encodeQuestion(question model.Question) map[string]any {
 	if options == nil {
 		options = []string{}
 	}
+	choices := make([]any, 0, len(question.Choices))
+	for _, choice := range question.Choices {
+		choices = append(choices, map[string]any{"value": choice.Value, "label": choice.Label})
+	}
 	return map[string]any{
 		"question":        question.ID,
 		"scope":           question.Scope,
@@ -52,6 +56,7 @@ func encodeQuestion(question model.Question) map[string]any {
 		"description":     question.Description,
 		"type":            string(question.Type),
 		"options":         options,
+		"choices":         choices,
 		"required":        question.Required,
 		"multiple":        question.Multiple,
 		"audience":        string(question.Audience),
