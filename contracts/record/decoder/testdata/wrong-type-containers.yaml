@@ -1,0 +1,10 @@
+schemaVersion: 1
+kind: record
+answers:
+  plan: [a]
+  sections:
+    access: text
+    other:
+      q: {a: b}
+      r: [[a]]
+outcomes: {section: a}

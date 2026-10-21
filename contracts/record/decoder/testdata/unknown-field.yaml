@@ -1,0 +1,12 @@
+schemaVersion: 1
+kind: record
+plan:
+  id: a
+  note: x
+answers:
+  plan: {}
+  extra: {a: [yes]}
+outcomes:
+  - section: a
+    Section: b
+    comment: x

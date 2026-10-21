@@ -1,0 +1,10 @@
+schemaVersion: 1
+kind: record
+outcomes:
+  - section: b
+    outcome: maybe
+  - {}
+  - section: a
+    outcome: verified
+  - section: b
+    outcome: maybe

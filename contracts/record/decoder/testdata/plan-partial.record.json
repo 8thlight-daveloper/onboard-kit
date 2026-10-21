@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "plan": {
+    "hash": "5d3c"
+  },
+  "outcomes": [
+    {
+      "note": "only a note"
+    }
+  ]
+}

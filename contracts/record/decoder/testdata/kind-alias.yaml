@@ -1,0 +1,3 @@
+schemaVersion: 1
+x-a: &a record
+kind: *a

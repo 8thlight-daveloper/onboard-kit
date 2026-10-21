@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "answers": {
+    "plan": {
+      "discipline": "software",
+      "remote": true,
+      "note": "true",
+      "state": {
+        "deferred": true
+      },
+      "quoted": "deferred",
+      "tools": [
+        "git",
+        "42"
+      ],
+      "none": [],
+      "on": "remote"
+    },
+    "sections": {
+      "access": {
+        "account_name": "ada",
+        "mfa": false
+      },
+      "empty-scope": {},
+      "blank-scope": {}
+    }
+  }
+}

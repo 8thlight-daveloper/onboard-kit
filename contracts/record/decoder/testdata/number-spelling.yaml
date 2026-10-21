@@ -1,0 +1,9 @@
+schemaVersion: 1
+kind: record
+account: 42
+startDate: 2026
+plan:
+  hash: 1e3
+outcomes:
+  - sectionHash: 123456
+    note: 007

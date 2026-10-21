@@ -1,0 +1,6 @@
+schemaVersion: 1
+kind: record
+account: &a [x]
+startDate: &d yes
+plan: x
+plan: [y]

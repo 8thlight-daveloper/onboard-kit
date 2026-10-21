@@ -1,0 +1,5 @@
+schemaVersion: 1
+kind: record
+x-a: [yes]
+x-b: {k: 0x1F}
+x-c: &c [1]

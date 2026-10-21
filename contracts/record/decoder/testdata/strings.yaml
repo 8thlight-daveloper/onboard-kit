@@ -1,0 +1,27 @@
+schemaVersion: 1
+kind: record
+account: "42"
+startDate: 2026-10-22
+plan:
+  id: "007"
+  hash: 'yes'
+  url: deferred
+outcomes:
+  - section: "null"
+    outcome: deferred
+    on: 2026-10-22T14:05:00Z
+    sectionHash: "1e3"
+    note: |
+      First line.
+      Second line.
+    differently: >-
+      folded text
+      here
+  - section: 12ab
+    outcome: "deferred"
+    on: "2026-10-22T14:05:00Z"
+    note: "true"
+  - section: v1.0
+    outcome: Verified
+    on: 12:30:45
+    note: "   "
