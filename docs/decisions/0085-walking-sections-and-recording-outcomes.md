@@ -100,7 +100,7 @@ Results are shared by file. The personal file is self-contained and does not car
 
 **Recorded option: encrypted results.** Not built now, because the organizations this serves are developer teams where results are useful to everyone, and encryption works against that. If an organization wants private notes, the first thing to try is encrypting only the sensitive text, `note` and `differently`, to a set of recipients: the onboarders, whose public keys the org plan would list, and the newcomer. Outcomes, times, and section ids stay plain, so everyone can still see who has verified what, and diffs of progress stay readable. A library such as age fits. The costs are key management: a newcomer's key can be lost, a new onboarder cannot read older notes until someone who can decrypt them re-encrypts, and removing a recipient does not revoke what was already pushed. The file loader should be able to read an encrypted wrapper later. A binary format on its own gives no privacy and loses the readable file of 0030, so it is not an option.
 
-A later `report` command would read a folder of personal files and answer questions such as who has not verified a section. It is a pure function from plans to a table, and it is not designed here.
+A later `report` command would read a folder of onboarding records and answer questions such as who has not verified a section. See [0095](0095-reports.md).
 
 ### The tool runs nothing in this stage
 
@@ -130,12 +130,4 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Not decided
 
-- The report, which is the onboarder's view of newcomers' outcomes. Where the files live and whose they are is settled above. These questions are open.
-  - **Axis.** By section answers "who has not verified AWS access yet", and by person answers "how is Jane doing". Both come from the same data. Which is the first view, and is the other a filter or a separate command?
-  - **Deadlines.** "Roll AWS access out by 11/26" needs a due date on a section, written by the onboarder in the org plan, and it is content, so it changes the section's hash. Is it an absolute date, or relative to each newcomer's start date, or both? Timing already has relative windows.
-  - **What needs attention.** Do `failed`, long-`deferred`, overdue, and changed-since-verified outcomes surface at the top? Does a newcomer who started and went quiet count, which the entries' `on` times would show?
-  - **Notes.** Do `note` and `differently` appear? `differently` is the most useful text, because it says where the plan is wrong, so sections could be ranked by how often it is recorded. Showing notes raises the privacy point above.
-  - **Form.** A terminal table, markdown, CSV, or a TUI screen. A command that prints a table is the least work and is testable. A stable plain form also lets people script it, for example to chase overdue people.
-  - **Who can run it.** Whoever can read the folder can run it. The tool should not enforce more, since the repository controls readership. It could offer a mode that leaves notes out.
-  - **Files with problems.** A folder holds files that fail to decode, come from an old plan version, or belong to another plan. The report should skip them and list what it skipped and why.
-  - **History.** An entry holds only the latest outcome. History comes from git, which the tool does not read, so the report has none for now.
+Nothing is left open here. How the onboarder sees newcomers' outcomes is a report, and its open questions are in [0095](0095-reports.md).

@@ -16,7 +16,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Account | The name that identifies a newcomer, such as `dnawara`. It is the permanent key in the path of the onboarding record. A mistake is fixed by moving the file. See [0085](decisions/0085-walking-sections-and-recording-outcomes.md). |
 | Outcome | The result of one section for one newcomer: `verified`, `failed`, or `deferred`, with a time, the section's hash, and optional `note` and `differently` text. A section with no outcome has not been tried. See [0085](decisions/0085-walking-sections-and-recording-outcomes.md). |
 | Differently | The optional text in an outcome that says what the newcomer had to do differently from the instructions. It is feedback for the onboarder, and it does not change the plan. |
-| Report | A derived, read-only view over one or more onboarding records, computed on demand and stored nowhere. It reads the records and the plan. It is not the assembled document and not a screen. Its design is open, see [0085](decisions/0085-walking-sections-and-recording-outcomes.md). |
+| Report | A derived, read-only view over one or more onboarding records, computed on demand and stored nowhere. It reads the records and the plan. It is not the assembled document and not a screen. Its design is open, see [0095](decisions/0095-reports.md). |
 | Output style | The target format of the document, such as Markdown for GitHub. |
 | Gap | A value not known yet. It shows in the document as a visible to-do with an owner and timing. |
 | Provenance | A record of where a plan came from: the template set version and when it was made. |
