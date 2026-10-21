@@ -1,0 +1,14 @@
+{"questions": [
+  {"id": "plan.owner", "type": "contact", "required": true, "answer": "ghost", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]},
+  {"id": "plan.lead", "type": "contact", "answer": "sam-okafor", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}], "suggestions": [{"value": "sam-okafor", "source": "given"}]},
+  {"id": "plan.helpers", "type": "contact", "answer": ["ghost", "lee-park"], "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]},
+  {"id": "plan.nobody", "type": "contact", "required": true, "answer": ["ghost"], "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]},
+  {"id": "plan.a_team", "type": "team", "required": true, "answer": "nowhere", "choices": [{"value": "platform", "label": "Platform team"}, {"value": "design", "label": "Design team"}]},
+  {"id": "followups.f_owner_unsettled", "required": true},
+  {"id": "followups.f_lead_is"},
+  {"id": "followups.f_helpers_settled"},
+  {"id": "followups.f_nobody_unsettled"},
+  {"id": "followups.f_team_unsettled"},
+  {"id": "followups.g_late", "type": "contact", "answer": "lee-park", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}], "suggestions": [{"value": "lee-park", "source": "given"}]},
+  {"id": "followups.g_early"}
+], "blockers": ["plan.owner", "plan.nobody", "plan.a_team", "followups.f_owner_unsettled"]}

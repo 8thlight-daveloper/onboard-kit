@@ -262,5 +262,53 @@
     "plan": "subsection-switch-clause.plan.json",
     "expected": "subsection-switch-clause.questions.json",
     "source": "A section clause tests the named section's own switch: a child whose parent is off still has its own switch on, and a section clause on a switched-off parent holds for off. The finder builds Switches from every section's own enabled field. docs/decisions/0070-sub-sections.md, Decision: switches cascade for activity; docs/decisions/0050-section-switch.md: a condition tests the switch the section holds"
+  },
+  {
+    "name": "directory-choices",
+    "plan": "directory-choices.plan.json",
+    "expected": "directory-choices.questions.json",
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: the walkthrough offers the directory's entries to pick from, and the team question's options are the directory's teams. contracts/plan/testdata/directory.plan.json for the directory. The order is the directory's order, a choice holds the id and the name. A choice question and a string with options keep their own shape"
+  },
+  {
+    "name": "directory-empty",
+    "plan": "directory-empty.plan.json",
+    "expected": "directory-empty.questions.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: an answer that names an id that is not in the directory counts as unanswered. Decisions of the directory wave: a plan with no directory has no entries to offer, so every id is unknown and a required question blocks"
+  },
+  {
+    "name": "directory-contacts-only",
+    "plan": "directory-contacts-only.plan.json",
+    "expected": "directory-contacts-only.questions.json",
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: each of the three types is offered its own list. A directory with contacts only offers none for a role or a team, and a contact id is not a role id"
+  },
+  {
+    "name": "directory-unknown-answers",
+    "plan": "directory-unknown-answers.plan.json",
+    "expected": "directory-unknown-answers.questions.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: an answer that names an id that is not in the directory counts as unanswered, so a required question blocks until it is filled. docs/decisions/0035-settled-and-deferred-answers.md: a deferred answer satisfies a required question. Decisions of the directory wave: ids are lowercase slugs, compared as written, and each type has its own list"
+  },
+  {
+    "name": "directory-multiple",
+    "plan": "directory-multiple.plan.json",
+    "expected": "directory-multiple.questions.json",
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: a multiple contact or role question holds an ordered list. Decisions to know 25: it is answered when at least one id of the list is in the directory. docs/decisions/0035-settled-and-deferred-answers.md: a list with no settled item is unanswered"
+  },
+  {
+    "name": "directory-ask-if",
+    "plan": "directory-ask-if.plan.json",
+    "expected": "directory-ask-if.questions.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: an answer that names an unknown id counts as unanswered. docs/reference/section-template-schema/conditions.md: every test except isSettled is false for an unanswered question, and an askIf reads the answers of active questions. Decisions to know 26: a condition reads an unknown id as unanswered. contracts/condition/evaluator/contract.md: only isSettled applies to a list"
+  },
+  {
+    "name": "directory-audience",
+    "plan": "directory-audience.plan.json",
+    "expected": "directory-audience.questions.json",
+    "source": "docs/decisions/0055-variable-audience.md, Rules: an audience only chooses what is returned and each audience has its own blockers, and a condition reads an answer whoever answers it. docs/decisions/0080-directory.md, Integrity: an unknown id counts as unanswered. Directory questions follow the same rules as any other question"
+  },
+  {
+    "name": "directory-suggestions",
+    "plan": "directory-suggestions.plan.json",
+    "expected": "directory-suggestions.questions.json",
+    "source": "docs/decisions/0045-defaults-are-suggestions.md: a choice offers only valid values. docs/decisions/0080-directory.md: the entries of the directory are the valid values of a directory question. Decisions to know 28: a default or a given answer is offered only when every id in it is in the directory for the question's type, and given answers are those stored for the question's name in any scope"
   }
 ]
