@@ -119,6 +119,7 @@ A newcomer has several records when they have several plans: the consultancy cas
 
 - `start` with nothing given lists the records known on this machine, by organization and team, with progress such as "4 of 7 verified" and the last activity, and the person picks one. They can also start a new one from an invitation.
 - Records live in different repositories, so the tool keeps a small local index in the per-user state folder: for each record the person has opened, the plan id and the path. The index is not in the plan or in any repository.
+- **A missing file is shown, not removed.** A record whose file is gone appears in the picker as missing, and the person can choose to forget it. The tool never removes an entry on its own, because a missing file may be an unmounted drive or a repository not yet cloned.
 
 ### The record's name and marker
 
@@ -154,5 +155,4 @@ A report reads records and the plan, and nothing else. It does not need each per
 
 ## Not decided
 
-- The exact wording of the standard help in the first-steps document.
-- Whether the index forgets a record whose file is missing. The picker shows it as missing and lets the person forget it. It never removes one on its own, because a missing file may be an unmounted drive or a repository not yet cloned.
+- The wording of the standard help in the first-steps document. The parts and their sources are decided, in the [first-steps document](../reference/first-steps-document.md).
