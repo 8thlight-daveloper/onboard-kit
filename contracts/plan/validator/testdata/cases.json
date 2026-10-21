@@ -320,6 +320,17 @@
     "source": "contracts/plan/validator/contract.md, Order: problems come by question id as bytes, and a problem with no question comes first. Written by hand from the plan"
   },
   {
+    "name": "team-contact",
+    "plan": "team-contact.plan.json",
+    "expected": "team-contact.problems.json",
+    "checks": [
+      {"name": "a known contact while a team contact is wrong", "question": "main.c", "value": "sam-okafor", "problems": []},
+      {"name": "an unknown contact is still the only problem", "question": "main.c", "value": "ghost-z", "secretFragments": ["ghost-z"],
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}}]}
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: directory.holder-not-a-contact when a team's contact names an id that is not a contact, and \"A team may name a contact\" with \"never stands in for a role holder\". briefs/teamcontact.md. Written by hand from the plan"
+  },
+  {
     "name": "directory-check-value",
     "plan": "directory-check-value.plan.json",
     "expected": "directory-check-value.problems.json",
