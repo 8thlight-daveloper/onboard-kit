@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "plan-one",
+  "variables": [
+    {"name": "team", "description": "Which team will you join?", "audience": "onboardee"},
+    {"name": "laptop", "description": "Which laptop do you use?", "audience": "onboardee"},
+    {"name": "tracker", "description": "Which tracker do you use?"}
+  ],
+  "answers": {
+    "plan": {"team": "platform", "laptop": "mac", "tracker": "jira", "start_note": "hello"},
+    "sections": {"access": {"account_name": "seed", "badge": "yes"}, "tools": {"editor": "vim", "shell": "zsh"}}
+  },
+  "sections": [
+    {"id": "access", "title": "Access", "summary": "Request the accounts you need.", "variables": [{"name": "account_name", "description": "Your account name", "audience": "onboardee"}, {"name": "badge", "description": "Do you have a badge?"}]},
+    {"id": "tools", "title": "Tools", "summary": "Install the tools.", "variables": [{"name": "editor", "description": "Your editor", "audience": "onboardee"}]}
+  ]
+}

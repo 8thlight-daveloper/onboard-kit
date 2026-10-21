@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "account": "ada",
+  "startDate": "2026-10-22",
+  "plan": {"id": "11111111-2222-4333-8444-555555555555", "hash": "a1b2c3", "url": "https://elsewhere.example/plan.obk.yaml"},
+  "answers": {"plan": {"laptop": "linux"}, "sections": {"access": {"account_name": "ada"}}},
+  "outcomes": [{"section": "access", "outcome": "verified", "on": "2026-10-22T14:05:00Z", "sectionHash": "5d3c1f", "note": "Done"}],
+  "unknownFields": {"x-owner": "record", "x-record-only": true}
+}
