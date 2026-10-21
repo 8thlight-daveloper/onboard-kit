@@ -1,0 +1,176 @@
+[
+  {
+    "name": "empty",
+    "input": "empty.record.json",
+    "output": "empty.yaml",
+    "source": "Hand-written. Contract rules: Document, Keys. A record that holds only a version writes the version and `kind`."
+  },
+  {
+    "name": "ada",
+    "input": "../../testdata/ada.record.json",
+    "output": "ada.yaml",
+    "source": "Hand-written. The harness example record. Contract rules: Keys, Scalars (UUID, hash, date, and timestamp start with a digit and are quoted), Outcomes. 0090: the file form."
+  },
+  {
+    "name": "identity",
+    "input": "identity.record.json",
+    "output": "identity.yaml",
+    "source": "Hand-written. Contract rules: Keys, Scalars. A hash that starts with a letter and a URL are plain, a digit-led account is quoted."
+  },
+  {
+    "name": "quoting",
+    "input": "quoting.record.json",
+    "output": "quoting.yaml",
+    "source": "Hand-written. Contract rule: Scalars, applied to every text field of a record. The word `deferred` is quoted in every field except `outcome`. Reserved words come from 0030's format guards."
+  },
+  {
+    "name": "multiline",
+    "input": "multiline.record.json",
+    "output": "multiline.yaml",
+    "source": "Hand-written. Contract rule: Multi-line strings, inside an answer and inside an outcome list item."
+  },
+  {
+    "name": "answers",
+    "input": "answers.record.json",
+    "output": "answers.yaml",
+    "source": "Hand-written. Contract rule: Answers, shared with the plan encoder. Names come from the plan encoder's `answers` fixture."
+  },
+  {
+    "name": "sections-only",
+    "input": "sections-only.record.json",
+    "output": "sections-only.yaml",
+    "source": "Hand-written. Contract rule: Keys. An empty plan map and a section with no answers are omitted."
+  },
+  {
+    "name": "omit-zero",
+    "input": "omit-zero.record.json",
+    "output": "omit-zero.yaml",
+    "source": "Hand-written. Contract rule: Keys, zero values are omitted. An outcome that holds only a section is not empty."
+  },
+  {
+    "name": "partial-items",
+    "input": "partial-items.record.json",
+    "output": "partial-items.yaml",
+    "source": "Hand-written. Contract rules: Keys. Each field of an outcome alone keeps the outcome from being empty, and a plan reference writes each field on its own."
+  },
+  {
+    "name": "plan-url-only",
+    "input": "plan-url-only.record.json",
+    "output": "plan-url-only.yaml",
+    "source": "Hand-written. Contract rule: Keys. The plan reference is written when any of its fields is set."
+  },
+  {
+    "name": "outcome-fields",
+    "input": "outcome-fields.record.json",
+    "output": "outcome-fields.yaml",
+    "source": "Hand-written. Contract rule: Outcomes. Key order `section`, `outcome`, `on`, `sectionHash`, `note`, `differently`, with the optional ones."
+  },
+  {
+    "name": "outcome-order",
+    "input": "outcome-order.record.json",
+    "output": "outcome-order.yaml",
+    "source": "Hand-written. Contract rule: Outcomes are written in the order the record holds them, repeats and unknown words included. 0090: the recorder sorts them, the encoder does not."
+  },
+  {
+    "name": "unknown-fields",
+    "input": "unknown-fields.record.json",
+    "output": "unknown-fields.yaml",
+    "source": "Hand-written. Contract rules: Keys, Unknown field values. `id`, `sections`, `directory`, `provenance`, and `variables` are unknown fields of a record. Same value shapes as the plan encoder's `unknown-fields` fixture."
+  },
+  {
+    "name": "empty-answer",
+    "input": "empty-answer.record.json",
+    "problems": [
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.plan.b"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.sections.r.q"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.sections.s.y"
+      },
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.sections.s.z"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. Paths in the order of the canonical file, which sorts the keys of the maps."
+  },
+  {
+    "name": "empty-item",
+    "input": "empty-item.record.json",
+    "problems": [
+      {
+        "code": "encode.empty-item",
+        "path": "outcomes[1]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "outcomes[3]"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. An outcome that would write no keys is reported. An outcome with a section and nothing else is not."
+  },
+  {
+    "name": "collision",
+    "input": "collision.record.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "account"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "answers"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "kind"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "outcomes"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "plan"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "schemaVersion"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "startDate"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems. The seven keys of a record collide, `id` and `sections` do not. Reported in ascending key order."
+  },
+  {
+    "name": "problem-order",
+    "input": "problem-order.record.json",
+    "problems": [
+      {
+        "code": "encode.empty-answer",
+        "path": "answers.plan.a"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "outcomes[0]"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "kind"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Problems come in the order of the places in the canonical file: answers, outcomes, then unknown fields."
+  }
+]

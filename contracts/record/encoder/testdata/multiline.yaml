@@ -1,0 +1,19 @@
+schemaVersion: 1
+kind: record
+answers:
+  plan:
+    notes: |-
+      one
+      two
+outcomes:
+  - section: s
+    note: |-
+      line one
+      line two
+    differently: |
+      first
+
+      third
+  - section: t
+    note: "trailing \nspace"
+    differently: "x\n\n"

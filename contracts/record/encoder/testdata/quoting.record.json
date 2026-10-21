@@ -1,0 +1,7 @@
+{"schemaVersion": 1, "account": "On", "startDate": "soon",
+ "plan": {"id": "null", "hash": "deferred", "url": "@home/plan.yaml"},
+ "outcomes": [
+  {"section": "n", "outcome": "verified", "on": "2026-10-22T14:05:00Z", "sectionHash": "e3b0c4", "note": "Fixed #2: retried", "differently": "ü"},
+  {"section": "deferred", "outcome": "deferred", "note": "yes"},
+  {"section": " padded", "outcome": "Deferred", "note": "a #b", "differently": "ends with:"}
+ ]}

@@ -1,0 +1,8 @@
+schemaVersion: 1
+kind: record
+account: "007"
+startDate: "2026-10-22"
+plan:
+  id: plan-1
+  hash: a1b2c3
+  url: https://plans.example.test/team.obk.yaml
