@@ -23,6 +23,11 @@ type Choice struct {
 	Label string
 }
 
+type Cleared struct {
+	Answers []string
+	Holders []string
+}
+
 type Suggestion struct {
 	Value  Value
 	Source SuggestionSource

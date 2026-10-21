@@ -1,0 +1,157 @@
+{
+ "schemaVersion": 1,
+ "provenance": {
+  "templateSet": "example",
+  "generatedOn": "2026-10-15"
+ },
+ "variables": [
+  {
+   "name": "team_state",
+   "description": "team state",
+   "type": "choice",
+   "options": [
+    "established",
+    "first-consultants"
+   ],
+   "required": true
+  },
+  {
+   "name": "nickname",
+   "description": "nickname",
+   "pattern": "^[a-z]+$",
+   "patternHint": "Lower case letters only"
+  },
+  {
+   "name": "ready",
+   "description": "ready",
+   "type": "boolean"
+  },
+  {
+   "name": "region",
+   "description": "region"
+  }
+ ],
+ "sections": [
+  {
+   "id": "main",
+   "title": "Main",
+   "summary": "The section most cases use.",
+   "unknownFields": {
+    "futureSetting": {
+     "mode": 2,
+     "tags": [
+      "a",
+      "b"
+     ]
+    }
+   },
+   "variables": [
+    {
+     "name": "repo_url",
+     "description": "repo url",
+     "pattern": "^(git@|https://)\\S+$",
+     "patternHint": "A clone URL, starting with git@ or https://"
+    },
+    {
+     "name": "tracker",
+     "description": "tracker",
+     "required": true
+    },
+    {
+     "name": "region",
+     "description": "region"
+    },
+    {
+     "name": "setup_command",
+     "description": "setup command",
+     "type": "command"
+    },
+    {
+     "name": "owner",
+     "description": "owner",
+     "type": "person"
+    },
+    {
+     "name": "contacts",
+     "description": "contacts",
+     "type": "person",
+     "multiple": true
+    },
+    {
+     "name": "note",
+     "description": "note"
+    },
+    {
+     "name": "follow_up",
+     "description": "follow up",
+     "askIf": {
+      "all": [
+       {
+        "question": "note",
+        "answer": {
+         "isSettled": true
+        }
+       }
+      ]
+     }
+    },
+    {
+     "name": "account",
+     "description": "account",
+     "audience": "onboardee"
+    }
+   ]
+  },
+  {
+   "id": "extra",
+   "title": "Extra",
+   "summary": "A section that starts switched off.",
+   "enabled": false,
+   "variables": [
+    {
+     "name": "extra_note",
+     "description": "extra note"
+    }
+   ]
+  },
+  {
+   "id": "later",
+   "title": "Later",
+   "summary": "A section for new teams.",
+   "includeIf": {
+    "all": [
+     {
+      "question": "plan.team_state",
+      "answer": {
+       "is": "first-consultants"
+      }
+     }
+    ]
+   },
+   "variables": [
+    {
+     "name": "later_note",
+     "description": "later note"
+    }
+   ]
+  }
+ ],
+ "unknownFields": {
+  "fromANewerTool": {
+   "count": 3,
+   "ratio": 1.5,
+   "names": [
+    "x",
+    "y"
+   ]
+  }
+ },
+ "directory": {
+  "contacts": [
+   {
+    "id": "jo-ng",
+    "name": "Jo Ng"
+   }
+  ]
+ }
+}

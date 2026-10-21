@@ -997,5 +997,1657 @@
       }
     ],
     "source": "0070 and the finder contract: a sub-section is active only if its parent is active, so the questions of a sub-section of a switched-off section are not active, whatever its own switch says. The stored answers stay. Kills an editor that applies the answer, and a switch that lets the sub-section's own true count."
+  },
+  {
+    "name": "set-contact-adds-a-new-contact-at-the-end",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo-ng",
+      "name": "Jo Ng",
+      "email": "jo.ng@acme.example",
+      "slack": "@jo",
+      "slackId": "U02XYZ789"
+    },
+    "after": "set-contact-adds-a-new-contact-at-the-end.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Consequences: the editor gets operations to add, change, and remove a contact, a role, and a team. A contact with a new id is added"
+  },
+  {
+    "name": "set-contact-replaces-the-entry-with-the-same-id-in-place",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "sam-okafor",
+      "name": "Samuel Okafor",
+      "slack": "@samuel"
+    },
+    "after": "set-contact-replaces-the-entry-with-the-same-id-in-place.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Resolve when read: ids are permanent and a changed contact reaches every reference. The entry is replaced whole, so a field left out is gone, and it keeps its place. Answers and holders name the id and are untouched"
+  },
+  {
+    "name": "set-contact-takes-a-digit-first-id-and-a-trailing-hyphen",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "2nd-line-",
+      "name": "Second line"
+    },
+    "after": "set-contact-takes-a-digit-first-id-and-a-trailing-hyphen.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. A trailing hyphen and a leading digit match the pattern"
+  },
+  {
+    "name": "set-contact-takes-a-one-character-id",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "x",
+      "name": "One letter"
+    },
+    "after": "set-contact-takes-a-one-character-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. One character matches the pattern"
+  },
+  {
+    "name": "set-contact-refuses-an-empty-id",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": ""
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-capitals",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "Jo-Ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "Jo-Ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-leading-hyphen",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "-jo",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "-jo"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-an-underscore",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo_ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo_ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-space",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-trailing-line-break",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo-ng\n",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo-ng\n"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. An id that is empty or does not match the pattern is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-empty-name",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo-ng",
+      "name": ""
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo-ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. The task fixes an empty name as an error"
+  },
+  {
+    "name": "set-contact-reports-the-id-before-the-name",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "",
+      "name": ""
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": ""
+        }
+      },
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": ""
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. Both faults are reported, the id first"
+  },
+  {
+    "name": "set-contact-refuses-a-malformed-id-over-an-existing-contact",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "Sam-Okafor",
+      "name": "Samuel"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "Sam-Okafor"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The malformed id of a replacement is refused like one of a new entry, and the existing entry stays"
+  },
+  {
+    "name": "set-contact-stores-the-entry-as-given",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo-ng",
+      "name": " Jo  Ng ",
+      "email": "Jo.NG@Acme.example"
+    },
+    "after": "set-contact-stores-the-entry-as-given.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Integrity: an email check stays minimal, since valid addresses are varied. The editor does not clean an entry"
+  },
+  {
+    "name": "set-role-stores-the-holders-as-given",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security-lead",
+      "name": "Security lead",
+      "holders": [
+        "sam-okafor",
+        "lee-park",
+        "sam-okafor"
+      ]
+    },
+    "after": "set-role-stores-the-holders-as-given.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: a role's holders are in order, and the order of an escalation is meaningful"
+  },
+  {
+    "name": "set-role-adds-a-new-role-at-the-end",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security-lead",
+      "name": "Security lead",
+      "holders": [
+        "sam-okafor",
+        "it-help"
+      ]
+    },
+    "after": "set-role-adds-a-new-role-at-the-end.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Consequences: the editor gets operations to add, change, and remove a contact, a role, and a team. Holders are contacts, in order"
+  },
+  {
+    "name": "set-role-with-no-holders-is-a-vacant-role",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "scribe",
+      "name": "Scribe"
+    },
+    "after": "set-role-with-no-holders-is-a-vacant-role.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Integrity: a role with no holder is a warning of the validator, not an error, so the editor stores it"
+  },
+  {
+    "name": "set-role-replaces-in-place-and-leaves-team-overrides",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "engineering-manager",
+      "name": "Engineering lead",
+      "holders": [
+        "lee-park"
+      ]
+    },
+    "after": "set-role-replaces-in-place-and-leaves-team-overrides.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: a team override is the team's own entry and a role's own holders are the organization-wide ones. Replacing a role replaces its own holders only"
+  },
+  {
+    "name": "set-role-with-no-holders-empties-an-existing-role",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "it-contact",
+      "name": "IT contact"
+    },
+    "after": "set-role-with-no-holders-empties-an-existing-role.after.plan.json",
+    "problems": [],
+    "source": "Replacement is whole: the holders given are all the holders. docs/decisions/0080-directory.md, A role is a named job. Its holders are the organization-wide holders, in order"
+  },
+  {
+    "name": "set-role-refuses-unknown-holders-in-order",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security-lead",
+      "name": "Security lead",
+      "holders": [
+        "ghost",
+        "lee-park",
+        "nobody"
+      ]
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "security-lead",
+          "holder": "ghost"
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "security-lead",
+          "holder": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. Each holder that is not a contact is one problem, in the order given"
+  },
+  {
+    "name": "set-role-refuses-holders-that-are-a-role-or-a-team",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security-lead",
+      "name": "Security lead",
+      "holders": [
+        "design",
+        "engineering-manager"
+      ]
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "security-lead",
+          "holder": "design"
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "security-lead",
+          "holder": "engineering-manager"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. The holder must be a contact. A team id and a role id are not"
+  },
+  {
+    "name": "set-role-refuses-a-malformed-id",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "Security Lead",
+      "name": "Security lead"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "Security Lead"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*"
+  },
+  {
+    "name": "set-role-refuses-an-empty-name",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security-lead",
+      "name": ""
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "security-lead"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist"
+  },
+  {
+    "name": "set-role-reports-id-name-and-holders-in-that-order",
+    "operation": "set-role",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "",
+      "name": "",
+      "holders": [
+        "ghost"
+      ]
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": ""
+        }
+      },
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": ""
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "",
+          "holder": "ghost"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist"
+  },
+  {
+    "name": "set-team-adds-a-new-team-at-the-end",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security",
+      "name": "Security team",
+      "holders": {
+        "engineering-manager": [
+          "sam-okafor"
+        ]
+      }
+    },
+    "after": "set-team-adds-a-new-team-at-the-end.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Consequences: the editor gets operations to add, change, and remove a contact, a role, and a team. A team may override who holds a role"
+  },
+  {
+    "name": "set-team-with-no-overrides-adds-a-plain-team",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "finance",
+      "name": "Finance team"
+    },
+    "after": "set-team-with-no-overrides-adds-a-plain-team.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A team may override who holds a role"
+  },
+  {
+    "name": "set-team-replaces-in-place-and-drops-the-old-overrides",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "design",
+      "name": "Design group",
+      "holders": {
+        "it-contact": [
+          "it-help"
+        ]
+      }
+    },
+    "after": "set-team-replaces-in-place-and-drops-the-old-overrides.after.plan.json",
+    "problems": [],
+    "source": "Replacement is whole. docs/decisions/0080-directory.md, A team may override who holds a role for that team, also in order"
+  },
+  {
+    "name": "set-team-keeps-an-empty-override-as-a-vacancy",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "support",
+      "name": "Support",
+      "holders": {
+        "it-contact": []
+      }
+    },
+    "after": "set-team-keeps-an-empty-override-as-a-vacancy.after.plan.json",
+    "problems": [],
+    "source": "contracts shared decision 4: a team entry for a role with an empty list means vacant for that team, which differs from no entry"
+  },
+  {
+    "name": "set-team-with-no-overrides-clears-the-old-ones",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "platform",
+      "name": "Platform team"
+    },
+    "after": "set-team-with-no-overrides-clears-the-old-ones.after.plan.json",
+    "problems": [],
+    "source": "Replacement is whole. docs/decisions/0080-directory.md, A team may override who holds a role"
+  },
+  {
+    "name": "set-team-refuses-an-override-for-an-unknown-role",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security",
+      "name": "Security team",
+      "holders": {
+        "nobody-role": [
+          "sam-okafor"
+        ]
+      }
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.team-role-unknown",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "nobody-role"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. A team override for a role that does not exist"
+  },
+  {
+    "name": "set-team-refuses-an-override-holder-that-is-not-a-contact",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security",
+      "name": "Security team",
+      "holders": {
+        "engineering-manager": [
+          "it-contact"
+        ]
+      }
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "engineering-manager",
+          "holder": "it-contact"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist"
+  },
+  {
+    "name": "set-team-reports-overrides-by-role-id-and-the-role-before-its-holders",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security",
+      "name": "Security team",
+      "holders": {
+        "zeta": [
+          "ghost"
+        ],
+        "engineering-manager": [
+          "ghost2"
+        ]
+      }
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "engineering-manager",
+          "holder": "ghost2"
+        }
+      },
+      {
+        "code": "directory.team-role-unknown",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "zeta"
+        }
+      },
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "zeta",
+          "holder": "ghost"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. The order of the report is fixed by this contract"
+  },
+  {
+    "name": "set-team-refuses-a-malformed-id",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "Security",
+      "name": "Security team"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "Security"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*"
+  },
+  {
+    "name": "set-team-refuses-an-empty-name",
+    "operation": "set-team",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "security",
+      "name": ""
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.name-empty",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist"
+  },
+  {
+    "name": "set-contact-on-a-plan-with-no-directory",
+    "operation": "set-contact",
+    "before": "empty.plan.json",
+    "entry": {
+      "id": "jo-ng",
+      "name": "Jo Ng"
+    },
+    "after": "set-contact-on-a-plan-with-no-directory.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Consequences: a new plan starts with an empty directory"
+  },
+  {
+    "name": "set-role-with-a-holder-on-a-plan-with-no-contacts",
+    "operation": "set-role",
+    "before": "empty.plan.json",
+    "entry": {
+      "id": "scribe",
+      "name": "Scribe",
+      "holders": [
+        "jo-ng"
+      ]
+    },
+    "after": "empty.plan.json",
+    "problems": [
+      {
+        "code": "directory.holder-not-a-contact",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "scribe",
+          "holder": "jo-ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist. There is no contact to hold the role"
+  },
+  {
+    "name": "set-team-with-an-override-on-a-plan-with-no-roles",
+    "operation": "set-team",
+    "before": "empty.plan.json",
+    "entry": {
+      "id": "security",
+      "name": "Security team",
+      "holders": {
+        "scribe": []
+      }
+    },
+    "after": "empty.plan.json",
+    "problems": [
+      {
+        "code": "directory.team-role-unknown",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "security",
+          "role": "scribe"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Integrity: errors are a duplicate id, a holder that is not a contact, and a team override for a role that does not exist"
+  },
+  {
+    "name": "remove-contact-clears-every-holder-and-answer-that-names-it",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "lee-park",
+    "cleared": {
+      "answers": [
+        "access.approver",
+        "access.reviewers",
+        "facilities.manager",
+        "plan.escalation",
+        "plan.hidden_contact",
+        "plan.primary_contact"
+      ],
+      "holders": [
+        "role:engineering-manager",
+        "role:ops",
+        "team:design/engineering-manager",
+        "team:platform/engineering-manager"
+      ]
+    },
+    "after": "remove-contact-clears-every-holder-and-answer-that-names-it.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. A list answer loses the id, an emptied list is removed, an answer of a section that is off or of a question that is hidden is cleared too, an answer with no declared variable and an answer in other case stay, a vacated override stays as an empty list because an empty list is a vacancy and a missing entry is not"
+  },
+  {
+    "name": "remove-contact-leaves-no-empty-section-map",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "sam-okafor",
+    "cleared": {
+      "answers": [
+        "access-request.approver",
+        "plan.escalation"
+      ],
+      "holders": [
+        "role:engineering-manager",
+        "team:platform/engineering-manager",
+        "team:platform/it-contact"
+      ]
+    },
+    "after": "remove-contact-leaves-no-empty-section-map.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Cleared answers leave no empty map for the section"
+  },
+  {
+    "name": "remove-contact-leaves-the-role-and-team-with-the-same-id",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [
+        "plan.escalation"
+      ],
+      "holders": [
+        "role:ops",
+        "team:platform/ops"
+      ]
+    },
+    "after": "remove-contact-leaves-the-role-and-team-with-the-same-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Ids are per kind, and an answer of a role question that holds the text ops names the role, not the contact"
+  },
+  {
+    "name": "remove-contact-with-no-answers-clears-only-holders",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "it-help",
+    "cleared": {
+      "answers": [],
+      "holders": [
+        "role:it-contact"
+      ]
+    },
+    "after": "remove-contact-with-no-answers-clears-only-holders.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it"
+  },
+  {
+    "name": "remove-contact-with-no-reference-changes-only-its-entry",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "kim-lee",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-contact-with-no-reference-changes-only-its-entry.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Nothing names the contact, so nothing is cleared"
+  },
+  {
+    "name": "remove-contact-refuses-an-unknown-id",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "nobody",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. An id the directory does not hold is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-an-empty-id",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": ""
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. An empty id is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-an-id-in-other-case",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "LEE-PARK",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "LEE-PARK"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Ids are exact is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-the-id-of-a-role",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "engineering-manager",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "engineering-manager"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Ids are per kind is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-the-id-of-a-team",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "platform",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "platform"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Ids are per kind is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-the-id-of-a-role-or-team-only",
+    "operation": "remove-contact",
+    "before": "people.plan.json",
+    "id": "design-lead",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "design-lead"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Ids are per kind is not a contact, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-refuses-a-plan-with-no-directory",
+    "operation": "remove-contact",
+    "before": "empty.plan.json",
+    "id": "sam-okafor",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "empty.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "sam-okafor"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Nothing to remove"
+  },
+  {
+    "name": "remove-role-removes-team-overrides-and-clears-answers",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "engineering-manager",
+    "cleared": {
+      "answers": [
+        "plan.manager_role"
+      ],
+      "holders": [
+        "team:design/engineering-manager",
+        "team:platform/engineering-manager"
+      ]
+    },
+    "after": "remove-role-removes-team-overrides-and-clears-answers.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Removing a role removes the team overrides for it, and an override is a holder place that is reported"
+  },
+  {
+    "name": "remove-role-leaves-the-contact-and-team-with-the-same-id",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [
+        "access.approver_role",
+        "plan.support_roles"
+      ],
+      "holders": [
+        "team:platform/ops"
+      ]
+    },
+    "after": "remove-role-leaves-the-contact-and-team-with-the-same-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Ids are per kind. The contact ops stays in the escalation list and the team ops stays"
+  },
+  {
+    "name": "remove-role-loses-one-id-from-a-list-answer",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "it-contact",
+    "cleared": {
+      "answers": [
+        "plan.support_roles"
+      ],
+      "holders": [
+        "team:platform/it-contact"
+      ]
+    },
+    "after": "remove-role-loses-one-id-from-a-list-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. A list answer loses only that id"
+  },
+  {
+    "name": "remove-role-with-no-reference-changes-only-its-entry",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "design-lead",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-role-with-no-reference-changes-only-its-entry.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it"
+  },
+  {
+    "name": "remove-role-refuses-an-unknown-id",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "nobody",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a role, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-role-refuses-the-id-of-a-contact",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "sam-okafor",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "sam-okafor"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a role, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-role-refuses-the-id-of-a-team",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "platform",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": "platform"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a role, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-role-refuses-an-empty-id",
+    "operation": "remove-role",
+    "before": "people.plan.json",
+    "id": "",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "role",
+          "id": ""
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a role, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-team-clears-the-team-answer",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "platform",
+    "cleared": {
+      "answers": [
+        "plan.team"
+      ],
+      "holders": []
+    },
+    "after": "remove-team-clears-the-team-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. The team entry goes with its overrides, and those are not reported as holder places"
+  },
+  {
+    "name": "remove-team-with-no-answer-changes-only-its-entry",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "design",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-team-with-no-answer-changes-only-its-entry.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. The team answer names platform, so it stays"
+  },
+  {
+    "name": "remove-team-leaves-the-contact-and-role-with-the-same-id",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "ops",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "remove-team-leaves-the-contact-and-role-with-the-same-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. Ids are per kind"
+  },
+  {
+    "name": "remove-team-refuses-an-unknown-id",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "nobody",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "nobody"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a team, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-team-refuses-the-id-of-a-contact",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "sam-okafor",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "sam-okafor"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a team, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-team-refuses-the-id-of-a-role",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "engineering-manager",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": "engineering-manager"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a team, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-team-refuses-an-empty-id",
+    "operation": "remove-team",
+    "before": "people.plan.json",
+    "id": "",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.entry-not-found",
+        "severity": "error",
+        "detail": {
+          "kind": "team",
+          "id": ""
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Removing an entry clears its references. Not a team, so removing it is a problem and nothing changes"
+  },
+  {
+    "name": "remove-contact-removes-a-list-that-holds-only-empty-text",
+    "operation": "remove-contact",
+    "before": "list-with-empty-items.plan.json",
+    "id": "lee-park",
+    "cleared": {
+      "answers": [
+        "plan.backups",
+        "plan.others"
+      ],
+      "holders": []
+    },
+    "after": "remove-contact-removes-a-list-that-holds-only-empty-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md, Plans hold no empty answer, and docs/decisions/0080-directory.md, Removing an entry clears its references: the same edit clears every answer and every holder entry that named it. An emptied list is removed, and the empty items of a list that still holds an id stay as stored"
+  },
+  {
+    "name": "contact-answer-takes-a-known-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": "sam-okafor",
+    "after": "contact-answer-takes-a-known-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "contact-list-answer-takes-known-ids",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.escalation",
+    "value": [
+      "it-help",
+      "sam-okafor"
+    ],
+    "after": "contact-list-answer-takes-known-ids.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "role-answer-takes-a-known-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.manager_role",
+    "value": "it-contact",
+    "after": "role-answer-takes-a-known-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "role-list-answer-takes-known-ids",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.support_roles",
+    "value": [
+      "design-lead",
+      "it-contact"
+    ],
+    "after": "role-list-answer-takes-known-ids.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "team-answer-takes-a-known-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.team",
+    "value": "design",
+    "after": "team-answer-takes-a-known-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "section-contact-answer-takes-a-known-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "access.approver",
+    "value": "kim-lee",
+    "after": "section-contact-answer-takes-a-known-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "sub-section-contact-answer-takes-a-known-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "access-request.approver",
+    "value": "lee-park",
+    "after": "sub-section-contact-answer-takes-a-known-id.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "role-answer-takes-an-id-that-is-also-a-contact-and-a-team",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.manager_role",
+    "value": "ops",
+    "after": "role-answer-takes-an-id-that-is-also-a-contact-and-a-team.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. The id is checked against the kind of the question"
+  },
+  {
+    "name": "contact-question-takes-deferred",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": {
+      "deferred": true
+    },
+    "after": "contact-question-takes-deferred.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md and contracts shared decision 1: deferred is allowed for every type"
+  },
+  {
+    "name": "contact-question-is-cleared-by-empty-text",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": "",
+    "after": "contact-question-is-cleared-by-empty-text.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0035-settled-and-deferred-answers.md: empty text is unanswered. contracts shared decision 1: blank text works as for other types"
+  },
+  {
+    "name": "string-question-takes-text-that-names-no-contact",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.tracker",
+    "value": "nobody",
+    "after": "string-question-takes-text-that-names-no-contact.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Only the types contact, role, and team are checked against the directory"
+  },
+  {
+    "name": "hidden-contact-question-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.hidden_contact",
+    "value": "sam-okafor",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "answer.inactive-question",
+        "severity": "error",
+        "question": "plan.hidden_contact"
+      }
+    ],
+    "source": "docs/decisions/0010-plan-editor.md, Is team state an active question: a question that its condition hides cannot be answered"
+  },
+  {
+    "name": "unknown-contact-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": "nobody",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.primary_contact"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "a-list-with-one-unknown-contact-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.escalation",
+    "value": [
+      "sam-okafor",
+      "nobody"
+    ],
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.escalation"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Every id of the list is checked"
+  },
+  {
+    "name": "unknown-role-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.manager_role",
+    "value": "nobody",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.manager_role"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "a-list-with-one-unknown-role-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.support_roles",
+    "value": [
+      "it-contact",
+      "nobody"
+    ],
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.support_roles"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "unknown-team-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.team",
+    "value": "nobody",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.team"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "unknown-section-contact-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "access.approver",
+    "value": "nobody",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "access.approver",
+        "section": "access"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "unknown-sub-section-contact-is-refused",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "access-request.approver",
+    "value": "nobody",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "access-request.approver",
+        "section": "access-request"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one"
+  },
+  {
+    "name": "contact-question-refuses-a-team-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": "design",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.primary_contact"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Ids are per kind: design is a team and not a contact"
+  },
+  {
+    "name": "contact-question-refuses-a-role-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.primary_contact",
+    "value": "engineering-manager",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.primary_contact"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Ids are per kind"
+  },
+  {
+    "name": "team-question-refuses-a-contact-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.team",
+    "value": "sam-okafor",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.team"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Ids are per kind"
+  },
+  {
+    "name": "role-question-refuses-a-contact-id",
+    "operation": "submit",
+    "before": "people.plan.json",
+    "question": "plan.manager_role",
+    "value": "lee-park",
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "*",
+        "severity": "error",
+        "question": "plan.manager_role"
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id. An answer naming an id not in the directory counts as unanswered and the tool never creates one. Ids are per kind"
+  },
+  {
+    "name": "a-stored-unknown-id-does-not-stop-another-answer",
+    "operation": "submit",
+    "before": "stale-contact.plan.json",
+    "question": "plan.tracker",
+    "value": "x",
+    "after": "a-stored-unknown-id-does-not-stop-another-answer.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0010-plan-editor.md: Submit judges the value it is given. 0080: an unknown id in the plan counts as unanswered and is reported by the validator"
+  },
+  {
+    "name": "a-stored-unknown-id-is-replaced-by-a-known-one",
+    "operation": "submit",
+    "before": "stale-contact.plan.json",
+    "question": "plan.primary_contact",
+    "value": "lee-park",
+    "after": "a-stored-unknown-id-is-replaced-by-a-known-one.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, Integrity: an answer naming an unknown id counts as unanswered, so the onboarder fills it again"
   }
 ]

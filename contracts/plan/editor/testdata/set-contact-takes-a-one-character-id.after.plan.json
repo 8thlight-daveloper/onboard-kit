@@ -1,0 +1,287 @@
+{
+ "schemaVersion": 1,
+ "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+ "provenance": {
+  "templateSet": "example",
+  "generatedOn": "2026-10-15"
+ },
+ "origin": {
+  "planId": "0b9a7c1e-2d3f-4a5b-8c6d-7e8f90a1b2c3",
+  "source": "org-plan",
+  "contentHash": "abc123",
+  "refreshedOn": "2026-10-16"
+ },
+ "unknownFields": {
+  "fromANewerTool": {
+   "count": 3,
+   "names": [
+    "x",
+    "y"
+   ]
+  }
+ },
+ "directory": {
+  "contacts": [
+   {
+    "id": "sam-okafor",
+    "name": "Sam Okafor",
+    "email": "sam.okafor@acme.example",
+    "slack": "@sam",
+    "slackId": "U01ABC123"
+   },
+   {
+    "id": "lee-park",
+    "name": "Lee Park"
+   },
+   {
+    "id": "it-help",
+    "name": "IT help desk",
+    "email": "help@acme.example",
+    "slack": "#it-help"
+   },
+   {
+    "id": "ops",
+    "name": "Ops mailbox",
+    "email": "ops@acme.example"
+   },
+   {
+    "id": "kim-lee",
+    "name": "Kim Lee"
+   },
+   {
+    "id": "x",
+    "name": "One letter"
+   }
+  ],
+  "roles": [
+   {
+    "id": "engineering-manager",
+    "name": "Engineering manager",
+    "holders": [
+     "sam-okafor",
+     "lee-park"
+    ]
+   },
+   {
+    "id": "it-contact",
+    "name": "IT contact",
+    "holders": [
+     "it-help"
+    ]
+   },
+   {
+    "id": "ops",
+    "name": "Operations",
+    "holders": [
+     "ops",
+     "lee-park",
+     "ops"
+    ]
+   },
+   {
+    "id": "design-lead",
+    "name": "Design lead"
+   }
+  ],
+  "teams": [
+   {
+    "id": "platform",
+    "name": "Platform team",
+    "holders": {
+     "engineering-manager": [
+      "lee-park",
+      "sam-okafor"
+     ],
+     "it-contact": [
+      "sam-okafor"
+     ],
+     "ops": [
+      "ops"
+     ]
+    }
+   },
+   {
+    "id": "design",
+    "name": "Design team",
+    "holders": {
+     "engineering-manager": [
+      "lee-park"
+     ]
+    }
+   },
+   {
+    "id": "ops",
+    "name": "Ops team"
+   }
+  ]
+ },
+ "variables": [
+  {
+   "name": "team",
+   "description": "team",
+   "type": "team"
+  },
+  {
+   "name": "primary_contact",
+   "description": "primary contact",
+   "type": "contact",
+   "example": "Sam Okafor"
+  },
+  {
+   "name": "escalation",
+   "description": "escalation",
+   "type": "contact",
+   "multiple": true
+  },
+  {
+   "name": "backup_contact",
+   "description": "backup contact",
+   "type": "contact"
+  },
+  {
+   "name": "manager_role",
+   "description": "manager role",
+   "type": "role"
+  },
+  {
+   "name": "support_roles",
+   "description": "support roles",
+   "type": "role",
+   "multiple": true
+  },
+  {
+   "name": "tracker",
+   "description": "tracker"
+  },
+  {
+   "name": "owner",
+   "description": "owner",
+   "type": "person"
+  },
+  {
+   "name": "second_contact",
+   "description": "second contact",
+   "type": "contact"
+  },
+  {
+   "name": "hidden_contact",
+   "description": "hidden contact",
+   "type": "contact",
+   "askIf": {
+    "all": [
+     {
+      "question": "plan.tracker",
+      "answer": {
+       "is": "never"
+      }
+     }
+    ]
+   }
+  }
+ ],
+ "answers": {
+  "plan": {
+   "team": "platform",
+   "primary_contact": "lee-park",
+   "escalation": [
+    "sam-okafor",
+    "lee-park",
+    "ops",
+    "lee-park"
+   ],
+   "backup_contact": {
+    "deferred": true
+   },
+   "manager_role": "engineering-manager",
+   "support_roles": [
+    "ops",
+    "it-contact"
+   ],
+   "tracker": "lee-park",
+   "owner": "lee-park",
+   "second_contact": "Lee-Park",
+   "hidden_contact": "lee-park",
+   "retired_contact": "lee-park"
+  },
+  "sections": {
+   "access": {
+    "approver": "lee-park",
+    "reviewers": [
+     "lee-park"
+    ],
+    "approver_role": "ops",
+    "primary_contact": "lee-park"
+   },
+   "access-request": {
+    "approver": "sam-okafor"
+   },
+   "facilities": {
+    "manager": "lee-park"
+   },
+   "retired": {
+    "approver": "lee-park"
+   }
+  }
+ },
+ "sections": [
+  {
+   "id": "access",
+   "title": "Access",
+   "summary": "Accounts for the team.",
+   "unknownFields": {
+    "futureSetting": {
+     "mode": 2
+    }
+   },
+   "variables": [
+    {
+     "name": "approver",
+     "description": "approver",
+     "type": "contact",
+     "example": "Lee Park"
+    },
+    {
+     "name": "reviewers",
+     "description": "reviewers",
+     "type": "contact",
+     "multiple": true
+    },
+    {
+     "name": "approver_role",
+     "description": "approver role",
+     "type": "role"
+    },
+    {
+     "name": "primary_contact",
+     "description": "primary contact"
+    }
+   ]
+  },
+  {
+   "id": "access-request",
+   "title": "Request access",
+   "summary": "Ask for each account.",
+   "parent": "access",
+   "variables": [
+    {
+     "name": "approver",
+     "description": "approver",
+     "type": "contact"
+    }
+   ]
+  },
+  {
+   "id": "facilities",
+   "title": "Facilities",
+   "summary": "A section switched off.",
+   "enabled": false,
+   "variables": [
+    {
+     "name": "manager",
+     "description": "manager",
+     "type": "contact"
+    }
+   ]
+  }
+ ]
+}
