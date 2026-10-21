@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "unknownFields": {
+    "kind": "plan",
+    "planUrl": {
+      "a": "b"
+    },
+    "resultsPath": "x",
+    "x-ok": "fine"
+  }
+}

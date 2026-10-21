@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "planUrl": "https://git.example/plan.obk.yaml",
+  "sections": [
+    {
+      "id": "s",
+      "title": "S",
+      "summary": "S",
+      "unknownFields": {
+        "planUrl": "kept",
+        "resultsPath": "kept",
+        "kind": "kept"
+      }
+    }
+  ]
+}

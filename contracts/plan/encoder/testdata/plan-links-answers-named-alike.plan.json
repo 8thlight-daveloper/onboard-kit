@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {
+      "name": "planUrl",
+      "description": "A variable"
+    },
+    {
+      "name": "kind",
+      "description": "A variable"
+    }
+  ],
+  "answers": {
+    "plan": {
+      "kind": "kept",
+      "planUrl": "kept",
+      "resultsPath": "kept"
+    }
+  }
+}

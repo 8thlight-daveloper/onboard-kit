@@ -28,7 +28,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 
 | Type | Key order |
 | -- | -- |
-| Plan | `schemaVersion`, `id`, `provenance`, `origin`, `directory`, `variables`, `answers`, `sections`, then the unknown fields |
+| Plan | `schemaVersion`, `id`, `provenance`, `origin`, `planUrl`, `resultsPath`, `directory`, `variables`, `answers`, `sections`, then the unknown fields |
 | Provenance | `templateSet`, `generatedOn` |
 | Origin | `planId`, `source`, `contentHash`, `refreshedOn` |
 | Directory | `contacts`, `roles`, `teams` |
@@ -47,6 +47,10 @@ A key is written in the order the tables below give. A key with a zero value is 
 
 A plan's `id` is a plain text field. It is written right after `schemaVersion`, by the same rules as a string, and omitted when empty. So a UUID, which starts with a digit, is quoted. The four fields of an `origin` are plain text, written by the same rules. A `refreshedOn` date and a `contentHash` that starts with a digit are quoted, and a `source` such as a URL or a path that starts with a letter or `/` is plain. A plan holds an `origin` in a personal plan only, and the encoder writes whatever the plan holds. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md).
 
+A plan's `planUrl` and `resultsPath` are plain text fields. `planUrl` is written right after `origin`, `resultsPath` right after `planUrl`, and both before `directory`. Each is written by the same rules as a string and omitted when empty, and each is written on its own, so a plan with only one of them writes only that one. They are written as held, with no check that one is a URL or that the other is a template, and nothing is changed on the way out. A URL that starts with a letter, such as `https://git.example/plan.obk.yaml`, is plain, and so is a template that starts with a letter and holds braces, such as `records/{account}/record.obk.yaml`. A value that starts with a character other than a letter, `$`, `/`, or `<` is quoted, so a template such as `{account}/record.obk.yaml` is quoted, which a file needs because a plain `{` starts a flow map, and so are `./records/{account}.yaml`, `~/records.yaml`, and a host that starts with a digit. A value with ` #` or `: ` in it, one that ends in `:`, and a reserved word such as `null` are quoted, and a value with a newline follows Multi-line strings. A `:` not followed by a space, a `#` not preceded by a space, and a `?` do not force quotes. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md).
+
+The encoder never writes a `kind`. A plan file has no `kind` key on the way out, and the decoder reads a missing kind as a plan.
+
 A plan's `directory` is written right after `origin` and before `variables`. See [0080](../../../docs/decisions/0080-directory.md).
 
 - It holds `contacts`, `roles`, and `teams`, each a list. Each item is a map written with the keys of its table, in that order. List items stay in the order the plan holds them, repeats and shared ids included. The encoder never sorts a list or removes an item.
@@ -55,7 +59,7 @@ A plan's `directory` is written right after `origin` and before `variables`. See
 - A team's `holders` is a map of role id to a list of contact ids. Its role ids are written in ascending byte order, like every other map, whatever the map's own order. Each role id is written as a key by the string rules, and each holder is written as a string by the string rules. An entry whose list is empty is the exception to the empty-list rule: it is written `role: []`, because a map entry is always written and the entry says the role has no holder for that team. Dropping it would give the role back to its organization-wide holders.
 - Every directory field, holder, and role id is a plain text field written by the string rules in Scalars. That includes the values a person is likely to type: `sam-okafor`, `U01ABC123`, an email that starts with a letter, and `$HOME` are plain, and `@sam`, `#it-help`, an id or a holder that starts with a digit such as `42` or `2fa-team`, an email that starts with a digit, `true`, `on`, `null`, `y`, `n`, `no`, `yes`, and `deferred`, are quoted. A name with a newline follows Multi-line strings. A directory string is never changed on the way out.
 
-An unknown field on a plan whose key is `id`, `origin`, or `directory` collides, and on a section it does not. The keys of an Origin are not keys of a Plan, so `planId` or `source` as an unknown field of a plan is written as any other.
+An unknown field on a plan whose key is `id`, `origin`, `planUrl`, `resultsPath`, `kind`, or `directory` collides, and on a section it does not. `kind` is in the list although the encoder never writes one, because the decoder reads that key as the file kind and never keeps it as an unknown field, so a file written with one could not be read back as the plan it came from. The collision holds whether or not the plan holds a URL or a path, it is reported once, and the value is not examined. A section's own `planUrl`, `resultsPath`, and `kind` unknown fields are written as any other, and so are a variable or an answer with these names. The keys of an Origin are not keys of a Plan, so `planId` or `source` as an unknown field of a plan is written as any other.
 
 A section's `parent` is a plain text field, the id of another section. It is written right after `includeIf`, by the same rules as `title`, and omitted when empty. An unknown field whose key is `parent` collides on a section and not on the plan. See [0070](../../../docs/decisions/0070-sub-sections.md).
 
@@ -117,7 +121,7 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
 | `encode.empty-item` | A variable, section, step, contact, role, team, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem. A team whose `holders` map is empty and whose `contact` is empty writes no keys. A team with a `contact`, or whose map has an entry with no holder, does write a key, so it is not empty. The path is such as `directory.contacts[1]`. |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id`, `origin`, and `directory` collide, and the same keys on a section do not, so a section's own `directory` unknown field is written as any other, and a step's `directory` stays its working directory. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id`, `origin`, `planUrl`, `resultsPath`, `kind`, and `directory` collide, and the same keys on a section do not, so a section's own `directory` unknown field is written as any other, and a step's `directory` stays its working directory. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -147,6 +151,14 @@ These are the choices the directory change made where the docs were silent.
 4. **cheap.** An unknown field named `directory` on the plan collides, and on a section it does not, as for `origin`.
 5. **cheap.** A team's `holders` with only an empty map is omitted, so a team with only that is an empty item. A team with only an entry that has no holder writes that entry.
 6. **cheap.** A team's `contact` is written after `name` and before `holders`, the order the shared decisions gave, and an empty one is omitted like any empty text. A team with only a `contact` is not an empty item.
+
+These are the choices the plan link and kind change made where the docs were silent.
+
+1. **hard.** An unknown field named `kind` on a plan collides, although the encoder never writes a kind. The task named only `planUrl` and `resultsPath`. The decoder drops `kind: plan` and refuses any other kind, so a plan could never come back from a file that holds an unknown `kind`. Writing one would make a file the decoder refuses or silently changes. A section's `kind` does not collide.
+2. **hard.** The two links follow the existing string rule with no special case. A URL is plain when it starts with a letter, a template such as `records/{account}/record.obk.yaml` is plain, and a template that starts with `{`, `.`, `~`, or a digit is quoted. A file therefore holds a quoted template in the common case that an account placeholder comes first.
+3. **cheap.** The order is `origin`, `planUrl`, `resultsPath`, `directory`, as the task gave it, and each key is omitted on its own when empty.
+4. **cheap.** The collision holds whether or not the plan holds a link, as for `id` and `origin`, and a plan's own link is not what is reported.
+5. **cheap.** A link with a newline follows the multi-line rule like any string. The task did not ask for it, and it is unlikely in practice.
 
 ## Wrong implementations tried
 
@@ -234,3 +246,17 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A team with an empty `holders` map taken for a team with content, or a team with only a vacant entry reported | `directory-empty-items` |
 | A plan's `directory` unknown field written, or not reported | `directory-collision` |
 | A section's `directory` unknown field reported, or a step's `directory` changed | `directory-section-unknown` |
+| `planUrl` or `resultsPath` never written, or written only when the other is set | `plan-links`, `plan-links-url-only`, `plan-links-path-only` |
+| The links written before `origin`, after `directory`, or in the order `resultsPath`, `planUrl` | `plan-links`, `plan-links-url-only`, `plan-links-path-only` |
+| An empty link written as `planUrl: ""` or `resultsPath: null` | every case with no link, and `plan-links-blank` |
+| A link always plain, or always quoted | `plan-links-brace-first`, `plan-links-punctuation`, `plan-links-reserved-words`, `plan-links`, the plan link string test |
+| A template that starts with `{` written plain | `plan-links-brace-first`, the plan link string test |
+| A link that holds `: ` or ` #` written plain, or one with `:` or `#` and no space written in quotes | `plan-links-punctuation`, `plan-links-plain-punctuation`, the plan link string test |
+| A link lowercased, trimmed, or otherwise changed | the plan link string test, `plan-links` |
+| A link with a newline written in quotes, or as the wrong block | the plan link block test |
+| A `kind` written, such as `kind: plan` | every golden case, and the no-kind test |
+| `planUrl`, `resultsPath`, or `kind` as an unknown field of the plan accepted, or written | `plan-links-collision`, `plan-links-collision-with-values`, the reserved key test |
+| One of the three keys reported and not the others | the reserved key test |
+| The collision value examined | the reserved key test |
+| `planUrl`, `resultsPath`, or `kind` as an unknown field of a section reported, or dropped | `plan-links-section-unknown` |
+| A variable or an answer named `planUrl`, `resultsPath`, or `kind` treated as a collision or changed | `plan-links-answers-named-alike` |

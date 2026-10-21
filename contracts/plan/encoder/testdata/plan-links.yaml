@@ -1,0 +1,27 @@
+schemaVersion: 1
+id: plan-one
+provenance:
+  templateSet: abc123
+  generatedOn: "2026-10-15"
+origin:
+  planId: "123e4567-e89b-12d3-a456-426614174000"
+  source: https://plans.example.org/org/acme.yaml
+  contentHash: "3fa9c2"
+  refreshedOn: "2026-10-20"
+planUrl: https://git.example/plan.obk.yaml
+resultsPath: records/{account}/record.obk.yaml
+directory:
+  contacts:
+    - id: sam
+      name: Sam
+variables:
+  - name: role
+    description: Role
+answers:
+  plan:
+    role: Developer
+sections:
+  - id: s
+    title: S
+    summary: S
+x-note: kept

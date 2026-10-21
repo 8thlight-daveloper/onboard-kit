@@ -1,0 +1,5 @@
+schemaVersion: 1
+kind: 'plan'
+provenance:
+  templateSet: abc1234
+  generatedOn: 2026-10-15

@@ -1,0 +1,12 @@
+schemaVersion: 1
+kind: plan
+provenance:
+  templateSet: abc
+  kind: plan
+origin:
+  planId: abc
+  kind: plan
+directory:
+  contacts:
+    - id: sam
+      kind: plan
