@@ -8,6 +8,7 @@ type Question struct {
 	Example         string
 	Type            VariableType
 	Options         []string
+	Choices         []Choice
 	Required        bool
 	Multiple        bool
 	Audience        Audience
@@ -15,6 +16,11 @@ type Question struct {
 	DeclaredDefault Value
 	Group           string
 	Suggestions     []Suggestion
+}
+
+type Choice struct {
+	Value string
+	Label string
 }
 
 type Suggestion struct {

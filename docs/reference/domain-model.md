@@ -288,6 +288,7 @@ What the finder returns for one active question.
 | `description` | Text |  |
 | `example` | Text, optional |  |
 | `type` | VariableType |  |
+| `choices` | List of Choice, optional | For `contact`, `role`, and `team` questions: each directory entry as a `value` (the id) and a `label` (the name), in directory order. `options` stays for `choice` questions |
 | `options` | List of text, optional |  |
 | `required` | Boolean |  |
 | `multiple` | Boolean |  |
