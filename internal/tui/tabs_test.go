@@ -77,8 +77,12 @@ func TestTheHeaderDropsTheProgressThenTheKeysBeforeItOverflows(t *testing.T) {
 			}
 		}
 	}
-	if !strings.Contains(headerOf(resize(app, 80, 30)), "answered") {
-		t.Error("80 columns fits the progress")
+	if !strings.Contains(headerOf(resize(app, 100, 30)), "answered") {
+		t.Error("100 columns fits the progress")
+	}
+	eighty := headerOf(resize(app, 80, 30))
+	if strings.Contains(eighty, "answered") || !strings.Contains(eighty, "People P") {
+		t.Errorf("80 columns drops the progress and keeps the keys: %q", eighty)
 	}
 	narrow := headerOf(resize(app, 60, 30))
 	if strings.Contains(narrow, "answered") || strings.Contains(narrow, "Review r") {

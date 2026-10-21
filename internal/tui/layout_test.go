@@ -37,17 +37,30 @@ func everyScreen(t *testing.T) map[string]App {
 	emptyOnboardee, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboardee)
 	subsectionFake, subsectionPlan := subsectionBackend()
 	subsections := startFakeIn(subsectionFake, subsectionPlan, model.AudienceOnboarder).openOverview()
+	flagged := press(reviewing.openOverview(), typed("P"))
+	emptyPeople := press(emptyPlan.openOverview(), typed("P"))
 	screens := map[string]App{
-		"walk typing":   walking,
-		"walk choosing": choosing,
-		"walk problem":  secret,
-		"overview":      press(walking, esc),
-		"review":        reviewing,
-		"review blocks": blocked,
-		"review doc":    press(reviewing, tab),
-		"sections":      press(choosing, typed("s")),
-		"help":          press(choosing, typed("?")),
-		"onboardee":     onboardee,
+		"people contacts": flagged,
+		"people roles":    press(flagged, tab),
+		"people teams":    press(flagged, tab, tab),
+		"people form":     press(flagged, typed("a"), typed("Pat Lee")),
+		"people problem":  press(flagged, typed("a"), ctrlS),
+		"people holders":  press(flagged, tab, typed("a"), typed("Lead"), enter, down, space),
+		"people rows":     press(flagged, tab, tab, typed("a"), typed("Team"), enter),
+		"people override": press(flagged, tab, tab, typed("a"), typed("Team"), enter, enter, down, space),
+		"people remove":   press(flagged, down, typed("x")),
+		"people empty":    emptyPeople,
+		"people help":     press(flagged, typed("?")),
+		"walk typing":     walking,
+		"walk choosing":   choosing,
+		"walk problem":    secret,
+		"overview":        press(walking, esc),
+		"review":          reviewing,
+		"review blocks":   blocked,
+		"review doc":      press(reviewing, tab),
+		"sections":        press(choosing, typed("s")),
+		"help":            press(choosing, typed("?")),
+		"onboardee":       onboardee,
 
 		"pick one":             owner,
 		"pick many":            press(contacts, typed("j"), space, typed("j"), space),

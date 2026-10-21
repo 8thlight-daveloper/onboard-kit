@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"onboard-kit/internal/model"
+	"onboard-kit/internal/plan/editor"
 )
 
 type fakeBackend struct {
@@ -35,6 +36,30 @@ func (backend *fakeBackend) Submit(plan model.Plan, question string, value model
 
 func (backend *fakeBackend) SetSectionEnabled(plan model.Plan, _ string, _ bool) (model.Plan, []model.Problem) {
 	return plan, nil
+}
+
+func (backend *fakeBackend) SetContact(plan model.Plan, contact model.Contact) (model.Plan, []model.Problem) {
+	return editor.New().SetContact(plan, contact)
+}
+
+func (backend *fakeBackend) SetRole(plan model.Plan, role model.Role) (model.Plan, []model.Problem) {
+	return editor.New().SetRole(plan, role)
+}
+
+func (backend *fakeBackend) SetTeam(plan model.Plan, team model.Team) (model.Plan, []model.Problem) {
+	return editor.New().SetTeam(plan, team)
+}
+
+func (backend *fakeBackend) RemoveContact(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return editor.New().RemoveContact(plan, id)
+}
+
+func (backend *fakeBackend) RemoveRole(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return editor.New().RemoveRole(plan, id)
+}
+
+func (backend *fakeBackend) RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return editor.New().RemoveTeam(plan, id)
 }
 
 func (backend *fakeBackend) Validate(model.Plan) []model.Problem { return nil }
@@ -94,9 +119,33 @@ func longScreens() map[string]App {
 	}
 	picking := startFake(newFakeBackend(directoryQuestion("plan.crowd", "plan", long, model.VariableTypeContact, true, crowd...)))
 	return map[string]App{
+		"long people":   press(crowdedPeople(), typed("P")),
+		"long roles":    press(crowdedPeople(), typed("P"), tab),
+		"long teams":    press(crowdedPeople(), typed("P"), tab, tab),
+		"long holders":  press(crowdedPeople(), typed("P"), tab, enter, enter, down, space, down, space),
+		"long override": press(crowdedPeople(), typed("P"), tab, tab, enter, enter, enter, down, down, space),
+		"long contact":  press(crowdedPeople(), typed("P"), enter, typed("more text that goes on and on and on and on and on and on and on and on and on")),
+		"long removal":  press(crowdedPeople(), typed("P"), typed("x")),
 		"long walk":     walking,
 		"long overview": press(walking, esc),
 		"long review":   press(walking, esc, typed("r")),
 		"long picks":    press(picking, typed("j"), space, typed("j"), space),
 	}
+}
+
+func crowdedPeople() App {
+	long := strings.Repeat("A very long name that keeps going ", 4)
+	var plan model.Plan
+	var ids []string
+	for index := 0; index < 40; index++ {
+		id := "contact" + strings.Repeat("x", index)
+		ids = append(ids, id)
+		plan.Directory.Contacts = append(plan.Directory.Contacts, model.Contact{ID: id, Name: long[:20+index], Email: "someone" + strings.Repeat("long", index) + "@example.test", Slack: "@" + id, SlackID: "U" + id})
+	}
+	plan.Directory.Roles = []model.Role{{ID: "lead", Name: long, Holders: ids}, {ID: "second-role-with-a-long-id", Name: long[:30]}}
+	plan.Directory.Teams = []model.Team{{ID: "crowd", Name: long, Holders: map[string][]string{"lead": ids, "second-role-with-a-long-id": {}}}}
+	plan.Variables = []model.Variable{{Name: "who", Description: long, Type: model.VariableTypeContact, Multiple: true}}
+	plan.Answers = model.Answers{Plan: map[string]model.Value{"who": {Kind: model.ValueKindList, List: ids}}}
+	backend := newFakeBackend(textQuestion("plan.who", "plan", long, ""))
+	return resize(startFakeIn(backend, plan, model.AudienceOnboarder).openOverview(), 120, 30)
 }
