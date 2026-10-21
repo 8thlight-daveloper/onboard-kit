@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+  "provenance": {"templateSet": "acme-onboarding", "generatedOn": "2026-10-01"},
+  "origin": {"planId": "0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d", "source": "https://git.acme.example/onboarding/plan.obk.yaml", "contentHash": "5d3c1f", "refreshedOn": "2026-10-02"},
+  "planUrl": "https://git.acme.example/onboarding/plan.obk.yaml",
+  "resultsPath": "records/{account}/record.obk.yaml",
+  "directory": {
+    "contacts": [{"id": "it-help", "name": "IT help desk", "slack": "#it-help"}],
+    "roles": [{"id": "it-contact", "name": "IT contact", "holders": ["it-help"]}],
+    "teams": [{"id": "platform", "name": "Platform team", "contact": "it-help", "holders": {"it-contact": ["it-help"]}}]
+  },
+  "variables": [
+    {"name": "discipline", "description": "Which discipline is this plan for?", "type": "choice", "options": ["software", "design"], "required": true},
+    {"name": "team", "description": "Which team will you join?", "type": "team", "audience": "onboardee"},
+    {"name": "laptop", "description": "Which laptop do you use?", "type": "choice", "options": ["mac", "linux"], "audience": "onboardee", "default": "mac"}
+  ],
+  "answers": {
+    "plan": {"discipline": "software", "team": "platform", "laptop": "linux"},
+    "sections": {"access": {"account_name": "ada"}, "retired": {"note": "kept"}}
+  },
+  "sections": [
+    {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request the accounts you need.",
+      "timing": "before-day-one",
+      "owner": "it-contact",
+      "includeIf": {"all": [{"question": "plan.discipline", "answer": {"is": "software"}}]},
+      "after": ["welcome"],
+      "escalation": ["it-contact"],
+      "variables": [
+        {"name": "account_name", "description": "Your account name", "audience": "onboardee", "askIf": {"all": [{"section": "access", "enabled": true}]}}
+      ],
+      "steps": [
+        {"id": "request", "name": "Request access", "run": ["acme", "request"], "env": {"TEAM": "platform"}, "checks": [{"run": ["acme", "whoami"], "ask": "Did it print your name?"}]}
+      ],
+      "source": {"template": "access", "hash": "5d3c1f"},
+      "unknownFields": {"x-review": ["a", "b"]}
+    },
+    {"id": "tools", "title": "Tools", "summary": "Install the tools.", "enabled": false}
+  ],
+  "unknownFields": {"x-owner": {"count": 3, "ratio": 1.5, "tags": ["a", "b"], "none": null}}
+}

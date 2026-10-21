@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+  "planUrl": "plan.obk.yaml",
+  "resultsPath": "records/{account}/record.obk.yaml",
+  "variables": [
+    {"name": "discipline", "description": "Which discipline is this plan for?", "type": "choice", "options": ["software", "design"], "audience": "onboardee"},
+    {"name": "team", "description": "Which team will you join?", "type": "team", "audience": "onboardee"},
+    {"name": "organization", "description": "Which organization is this?"}
+  ],
+  "answers": {"plan": {"team": "design", "organization": "Acme"}, "sections": {"access": {"account_name": "new-hire"}}},
+  "sections": [
+    {"id": "access", "title": "Access", "summary": "Request the accounts you need.", "variables": [{"name": "account_name", "description": "Your account name", "audience": "onboardee"}]},
+    {"id": "environment", "title": "Environment", "summary": "Set up your machine."}
+  ]
+}

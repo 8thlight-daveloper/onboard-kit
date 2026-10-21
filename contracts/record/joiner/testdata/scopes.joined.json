@@ -1,0 +1,4 @@
+{
+  "schemaVersion": 1, "id": "plan-kinds",
+  "answers": {"plan": {"name": "plan-new"}, "sections": {"s": {"name": "s-old"}, "t": {"name": "t-new"}}}
+}

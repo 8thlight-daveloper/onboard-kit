@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1, "id": "plan-kinds",
+  "answers": {
+    "plan": {"text_to_flag": false, "flag_to_deferred": {"deferred": true}, "list_to_text": "z", "deferred_to_text": "settled", "text_to_empty": "", "list_to_other_list": ["new"], "list_to_empty_list": [], "flag_true_to_false": false, "deferred_to_word": "deferred", "new_text": "t", "new_flag": false, "new_list": ["p", "q"], "new_deferred": {"deferred": true}},
+    "sections": {"s": {"text_to_list": ["x"], "kept": "kept", "new_in_section": {"deferred": true}}}
+  }
+}
