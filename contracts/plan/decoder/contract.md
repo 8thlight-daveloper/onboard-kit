@@ -16,7 +16,7 @@ The decoder is the reverse of the [plan encoder](../encoder/contract.md) for eve
 ## What the decoder does
 
 - It reads version 1 and refuses every other version. There is no migration. See Version.
-- It reads every known field into the field of the same name in the domain model.
+- It reads every known field into the field of the same name in the domain model, including the plan's `directory` into its Directory.
 - It keeps unknown fields on a plan and on a section. It keeps them as plain data.
 - It reports the format guards of 0030: the spellings of booleans, numbers, and null, anchors and aliases, and duplicate keys.
 - It does not validate. A variable of type `colour`, a check with two of `run` and `ask`, two sections with one `id`, a `timing` that is not a timing, and an answer to a variable that does not exist all pass through unchanged. The plan validator judges them. It does not fill defaults: an absent `type` stays empty, and an absent `enabled` on a section stays none.
@@ -127,6 +127,8 @@ A section's `parent` is a string field, read exactly like `title`: a quoted or p
 
 A plan's `id` is a string field, read exactly like `title`: a quoted or plain string is text, and absent, empty, or null is the empty string. It sits in any key order. Its key is exact: `ID` and `x-id` are unknown fields. A plain UUID is text. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md).
 
+A plan's `directory` is a map of three lists: `contacts`, `roles`, and `teams`. It is read into the plan's Directory, and the lists keep the file's order. See [0080](../../../docs/decisions/0080-directory.md) and the Directory section below.
+
 A plan's `origin` is a map of four string fields: `planId`, `source`, `contentHash`, and `refreshedOn`. Each is read like `title`, the date as the text written, with no check that it is a date. A plain `deferred` is text in each. An absent key is the empty string. An `origin` that is absent, null, empty, or holds only empty values is the zero Origin, because the model cannot tell them apart. An `origin` that is not a map is `format.wrong-type` at `origin`, and nothing inside it is read. Its keys are exact, in any order. An unknown key in it is `format.unknown-field`, as in `provenance`. The format guards apply the same: an anchor on `origin` or on a value, a repeated key, and a merge key are reported at their paths. A variable, an answer, a section, or an unknown field named `id` or `origin` is ordinary, and so is `origin` as a key of a section. The decoder does not check that `refreshedOn` is a date, that `planId` is a UUID, or that `source` is a path or a URL.
 
 A variable's `example` is a string field, read like its `description`: a quoted or plain string is text, and absent, empty, or null is the empty string. A plain `deferred` is text there, because a string is not a Value. It sits beside `description` and in any key order, in a variable of the plan and in a variable of a section. The decoder never copies it to or from another field. Its key is exact: `Example` and `examples` are unknown fields.
@@ -134,6 +136,25 @@ A variable's `example` is a string field, read like its `description`: a quoted 
 A null value in a step's `env` is the empty string. A map that is present is not nil even when it is empty, and a map that is absent or null is nil. This holds for `answers.plan`, `answers.sections`, a step's `env`, and an unknown field's map. A scope under `answers.sections` is always a map: when it is null or empty, it is kept as an empty map. A `source` that is present is a Source, even when it holds nothing but null. An `includeIf` or `askIf` that is null is none, and one that is present is a Condition, even when it holds no clauses. An `isSettled` that is null is unset.
 
 An empty list or map inside an unknown field is kept as `[]` and `{}`. A null there is kept: as a null under its key, or as a null item of a list.
+
+### Directory
+
+A plan's `directory` is optional and sits in any key order, like `origin`. Each of its three keys takes a list of maps, and each item is read as follows. Every field is a string, read exactly like `title`, so a quoted `"42"`, `"yes"`, and `'@sam'` are text, a plain `deferred`, a plain date, and `U01ABC123` are text, and nothing is trimmed, lowercased, or changed. A plain `@sam` or `#it-help` is not valid YAML as a plain scalar, so a file quotes them.
+
+| Item | Keys | Read as |
+| -- | -- | -- |
+| Contact | `id`, `name`, `email`, `slack`, `slackId` | `ID`, `Name`, `Email`, `Slack`, `SlackID`, all text |
+| Role | `id`, `name`, `holders` | `ID`, `Name`, and `Holders`, a list of text |
+| Team | `id`, `name`, `holders` | `ID`, `Name`, and `Holders`, a map of role id to a list of text |
+
+- An absent, empty, or null `directory`, and a `directory` with no items, is the zero Directory, because the model cannot tell them apart. A null or empty `contacts`, `roles`, or `holders` is nil. A contact, role, or team that is an empty map is read as a zero item. Nothing is filled in: a contact with only an `id` has no name.
+- A team's `holders` that is absent or null is nil, and one that is `{}` is an empty map that is not nil. A role id in it is a key like any other, written as text whatever it says, so `on`, `y`, `1`, `yes`, and `null` are the text as written, and a role id keeps its case. Its value is a list of text, and an entry that is `[]` or null stays in the map with no items. That entry means the role has no holder for that team, and a version that drops it changes who holds the role. The order of the keys in the file is not kept, because a Go map has none.
+- A list of holders, in a role or in a team entry, a list of contacts, a list of roles, and a list of teams keep their order and their repeats. The decoder never sorts, reverses, or removes an item.
+- Unknown keys are not kept. An unknown key in `directory`, in a contact, in a role, or in a team is `format.unknown-field` at the key, and the value of that key is not read. Keys are exact: `Email`, `slack_id`, and `Contacts` are unknown, and so is a key that belongs to another kind of item, such as `holders` in a contact. There is no `x-` exemption. The format guards apply: an anchor, an alias, a merge key, and a repeated key are reported at their paths, and a key that is not a scalar is `format.wrong-type` at the map that holds it.
+- A `directory` that is not a map is `format.wrong-type` at `directory`. A `contacts`, `roles`, or `teams` that is not a list is `format.wrong-type` at that key. An item that is not a map, such as a text, a number, a flag, or a list, is `format.wrong-type` at the item, such as `directory.contacts[2]`, and a null item is `format.empty-item`. A field of the wrong kind is `format.wrong-type` at the field, such as `directory.contacts[0].email`, and a spelling problem is reported at the field. A team's `holders` that is not a map is `format.wrong-type` at `directory.teams[0].holders`, and a role entry that is not a list is `format.wrong-type` at `directory.teams[0].holders.<role id>`. A holder is a string at `directory.roles[0].holders[1]` or `directory.teams[0].holders.<role id>[1]`, and a null holder is `format.empty-item` there. Nothing inside a value of the wrong type is read.
+- A step's `directory` is its working directory, a string, and is unchanged. A `directory` or `x-directory` on a section is an unknown field of that section, as before. Only a top-level `directory` is the plan's.
+- The decoder does not validate the directory. A duplicate id, an id that is not a lowercase slug, an empty id, an email with no `@`, a holder that names no contact, and a team entry for a role that does not exist all pass through unchanged. The plan validator judges them. See [0080](../../../docs/decisions/0080-directory.md), Integrity.
+- A newer file may use anything, so under a version problem the `directory` is not read.
 
 ### Section clauses
 
@@ -152,7 +173,7 @@ A clause is a map in the `all` list of an `includeIf` or an `askIf`. It has one 
 
 ### Unknown fields
 
-A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. The value of such a key is not read, so nothing inside it is reported. Every such key is reported, a repeated one each time, together with `format.duplicate-key` for the repeat. Those maps are `provenance`, `origin`, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
+A key that is not in the model's field list for a plan or a section is an unknown field. It is kept, with its value, under that plan's or section's `UnknownFields`. Its value is a map, a list, a string, a boolean, a null, an `int64`, or a `float64`, and the format guards apply inside it. In a map that cannot keep them, an unknown key is `format.unknown-field`. The value of such a key is not read, so nothing inside it is reported. Every such key is reported, a repeated one each time, together with `format.duplicate-key` for the repeat. Those maps are `provenance`, `origin`, `directory`, a contact, a role, a team, `source`, a variable, a condition, a clause, an answer test, `answers`, a step, and a check.
 
 ## Properties
 
@@ -174,6 +195,18 @@ These hold for every file the contract tests use.
 - Escaping in a path. A key that holds a `.` or a `[` makes an ambiguous path.
 - A plain scalar that ends in `?` inside a flow list or map, such as `{ask: Done?}`. One YAML library cannot read it. Quote it.
 - Whether `Encode(Decode(file))` equals the file. The encoder contract and this one share their canonical fixtures in `contracts/plan/testdata/`, so each half is tested on its own against the same data, and neither test imports the other component.
+
+## Decisions to know
+
+These are the choices the directory change made where the docs were silent.
+
+1. **hard.** A team's `holders` entry that is `[]` or null is kept in the map with no items, and the role is vacant for that team. 0080 says a team "may override who holds a role". Dropping the entry would hand the role back to the organization-wide holders, so a file that says "nobody" would read as "the usual people".
+2. **hard.** An unknown key inside `directory`, a contact, a role, or a team is `format.unknown-field`, with no `x-` exemption and no kept data. The task said to treat them like `provenance` and `origin`. A directory a person extends by hand therefore fails loudly.
+3. **hard.** A plain `42`, `007`, `yes`, or `true` as an id, a name, or a holder is a spelling or type problem, as for any string. A file quotes them. 0080 says ids are slugs, and a slug such as `42` starts with a digit.
+4. **cheap.** A team's `holders: {}` is an empty map that is not nil, and an absent or null one is nil. The model tells them apart and the encoder writes neither.
+5. **cheap.** A null item of a directory list is `format.empty-item`, and an item that is not a map is `format.wrong-type` at the item. This matches the other lists.
+6. **cheap.** A contact, role, or team that is an empty map is a zero item and not a problem. This matches an empty section or step.
+7. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
 
 ## Wrong implementations tried
 
@@ -281,3 +314,25 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An `origin` that is not a map accepted, or its inside read for more problems | `origin-wrong-type`, `origin-scalar` |
 | An anchor on `origin` not reported | `origin-anchor` |
 | A repeated `id`, `origin`, or origin key accepted | `origin-duplicate`, `origin-problems` |
+| The plan's `directory` dropped, or kept as an unknown field, or kept in both places | `directory-shared`, `directory-values`, `directory-strings`, `directory-and-step` |
+| An unknown key in the directory, a contact, a role, or a team accepted, dropped, or kept, or an `x-` key exempted | `directory-unknown-field`, `directory-problem-order` |
+| The value of an unknown directory key read for more problems | `directory-unknown-field` |
+| A team's role entry that is `[]` or null dropped, so the role is no longer vacant for that team | `directory-empty-lists`, `directory-strings` |
+| A team's `holders: {}` read as nil, or an absent or null one read as an empty map | `directory-empty-lists` |
+| A role's holders, a team's holders, or a directory list sorted, reversed, or stripped of repeats | `directory-list-order`, `directory-values`, `directory-shared`, `directory-strings` |
+| Two items that share an id merged, or the second refused | `directory-list-order` |
+| `slack` and `slackId` swapped, or `slackId` dropped | `directory-shared`, `directory-values`, `directory-strings` |
+| A directory string trimmed, lowercased, stripped of `@`, or filled from another field | `directory-strings`, `directory-unvalidated`, `directory-values` |
+| A role id in a team's `holders` lowercased, or read as a boolean or a number | `directory-strings` |
+| A quoted `"42"`, `'true'`, `"yes"`, `'null'`, or a plain date or `deferred` in a directory field read as a number, a flag, null, or Deferred | `directory-strings` |
+| A directory that is validated: a duplicate id, a bad slug, a bad email, a holder naming no contact, or a team entry for no role refused or cleaned | `directory-unvalidated`, `directory-list-order` |
+| A step's `directory`, or a section's `directory`, read as the plan's directory or dropped | `directory-and-step` |
+| A directory that is not a map, or a list that is not a list, accepted without a problem, or its inside scanned | `directory-scalar`, `directory-list`, `directory-wrong-type-lists` |
+| An item that is not a map accepted without a problem, or crashing the decoder | `directory-wrong-type-items` |
+| A null item of a directory list or of a list of holders dropped | `directory-null-items` |
+| A directory field or a holder of the wrong kind, or in a spelling, accepted | `directory-field-problems` |
+| An anchor, an alias, or a merge key accepted inside the directory, or not reported at a team's `holders` | `directory-anchors` |
+| A repeated key accepted inside the directory, including a role id in a team's `holders` | `directory-duplicate-keys` |
+| A key that is not a scalar skipped in a team's `holders` or in a contact | `directory-complex-key` |
+| The directory read in a second pass, so its problems come out of file order | `directory-problem-order` |
+| A newer file reported with the problems of its directory | `directory-version-too-new` |

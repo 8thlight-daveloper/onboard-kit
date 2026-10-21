@@ -1,0 +1,14 @@
+schemaVersion: 1
+directory:
+  teams:
+    - id: t
+      holders:
+        ? [a, b]
+        : [x]
+        r: [z]
+        ? {k: v}
+        : z
+  contacts:
+    - ? [id]
+      : a
+      name: 5

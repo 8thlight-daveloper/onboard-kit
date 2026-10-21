@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "teams": [
+      {"id": "no-holders"},
+      {"id": "null-holders"},
+      {"id": "empty-holders", "holders": {}},
+      {"id": "vacant", "name": "Vacant", "holders": {"manager": [], "lead": [], "buddy": ["sam"]}}
+    ]
+  }
+}

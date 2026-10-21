@@ -1,0 +1,20 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: only-id
+    - name: Only Name
+    - email: only@acme.example
+    - slack: "#only-slack"
+    - slackId: U01ONLY
+  roles:
+    - id: no-holders
+    - holders:
+        - only-holders
+    - name: Only name
+  teams:
+    - id: nil-holders
+    - id: empty-holders
+    - name: Only name
+    - holders:
+        only-holders:
+          - a

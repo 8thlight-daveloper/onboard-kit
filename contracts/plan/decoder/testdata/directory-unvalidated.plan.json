@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "Sam_Okafor", "name": "Sam", "email": "not an email", "slack": "sam"},
+      {"id": "sam okafor"},
+      {"name": ""}
+    ],
+    "roles": [{"id": "lead", "holders": ["nobody", "Sam_Okafor"]}],
+    "teams": [{"id": "platform", "holders": {"no-such-role": ["ghost"]}}]
+  }
+}

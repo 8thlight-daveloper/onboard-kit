@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example", "slack": "@sam", "slackId": "U01ABC123"},
+      {"id": "it-help", "name": "IT help desk", "email": "help@acme.example", "slack": "#it-help"},
+      {"id": "42", "name": "yes", "email": "1password@acme.example", "slack": "@42", "slackId": "007"},
+      {"id": "true", "name": "deferred", "email": "null", "slack": "on"},
+      {"id": "on", "name": "Sam: Okafor", "email": "Ünal@acme.example", "slack": "Sam #1"},
+      {"id": "2fa-team", "name": "$HOME", "email": "<noreply@acme.example>", "slack": "/it"},
+      {"id": "null", "name": " padded", "email": "", "slack": "ends:"},
+      {"id": "y", "name": "Line one\nLine two"},
+      {"id": "n", "name": "Line one\n"}
+    ],
+    "roles": [
+      {"id": "1", "name": "123", "holders": ["42", "true", "deferred", "2026-10-15", "yes", "@sam", "sam-okafor", "it-help"]}
+    ],
+    "teams": [
+      {"id": "no", "holders": {"on": ["42"], "n": ["x"], "2fa": ["y"], "engineering-manager": ["sam-okafor"], "deferred": ["z"], "Z": ["a"], "@it": ["b"], "it help": ["c"]}}
+    ]
+  }
+}

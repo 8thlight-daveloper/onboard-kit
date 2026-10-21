@@ -1,0 +1,16 @@
+schemaVersion: 1
+directory:
+  contacts:
+  roles: []
+  teams:
+    - id: no-holders
+    - id: null-holders
+      holders:
+    - id: empty-holders
+      holders: {}
+    - id: vacant
+      name: Vacant
+      holders:
+        manager: []
+        lead:
+        buddy: [sam]

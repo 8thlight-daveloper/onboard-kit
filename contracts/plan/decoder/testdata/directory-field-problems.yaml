@@ -1,0 +1,35 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: [a]
+      name: {a: b}
+      email: true
+      slack: false
+      slackId: yes
+    - id: 42
+      name: ~
+      email: 0x1F
+      slack: Off
+      slackId: 1e3
+  roles:
+    - id: 007
+      name: [x]
+      holders: sam
+    - id: r
+      holders:
+        - [a]
+        - true
+        - 123
+        - &h sam
+        - {a: b}
+  teams:
+    - id: no
+      name: NULL
+      holders: [a]
+    - id: t
+      holders:
+        manager: sam
+        lead: {a: b}
+        buddy:
+          - [x]
+          - yes

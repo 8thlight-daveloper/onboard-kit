@@ -1,0 +1,35 @@
+schemaVersion: 1
+id: 6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5
+directory:
+  contacts:
+    - id: sam-okafor
+      name: Sam Okafor
+      email: sam.okafor@acme.example
+      slack: "@sam"
+      slackId: U01ABC123
+    - id: it-help
+      name: IT help desk
+      email: help@acme.example
+      slack: "#it-help"
+    - id: lee-park
+      name: Lee Park
+  roles:
+    - id: engineering-manager
+      name: Engineering manager
+      holders:
+        - sam-okafor
+    - id: it-contact
+      name: IT contact
+      holders:
+        - it-help
+    - id: design-lead
+      name: Design lead
+  teams:
+    - id: platform
+      name: Platform team
+      holders:
+        engineering-manager:
+          - lee-park
+          - sam-okafor
+    - id: design
+      name: Design team
