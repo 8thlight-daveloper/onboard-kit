@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example", "slack": "@sam", "slackId": "U01ABC123"},
+      {"id": "it-help", "name": "IT help desk", "email": "help@acme.example", "slack": "#it-help"},
+      {"id": "lee-park", "name": "Lee Park"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor"]},
+      {"id": "it-contact", "name": "IT contact", "holders": ["it-help"]},
+      {"id": "design-lead", "name": "Design lead"}
+    ],
+    "teams": [
+      {"id": "platform", "name": "Platform team", "holders": {"engineering-manager": ["lee-park", "sam-okafor"]}},
+      {"id": "design", "name": "Design team"}
+    ]
+  },
+  "variables": [
+    {"name": "u_contact", "type": "contact", "description": "A contact id that is not in the directory", "required": true},
+    {"name": "u_role", "type": "role", "description": "A contact id given to a role question", "required": true},
+    {"name": "u_team", "type": "team", "description": "A role id given to a team question", "required": true},
+    {"name": "u_case", "type": "contact", "description": "An id that differs by case", "required": true},
+    {"name": "u_space", "type": "contact", "description": "An id with a leading space", "required": true},
+    {"name": "u_blank", "type": "contact", "description": "Empty text", "required": true},
+    {"name": "u_optional", "type": "contact", "description": "Not required, unknown id"},
+    {"name": "u_deferred", "type": "contact", "description": "Deferred", "required": true},
+    {"name": "u_known", "type": "contact", "description": "A known id", "required": true},
+    {"name": "u_plain", "description": "A plain string that looks like an id", "required": true},
+    {"name": "u_none", "type": "role", "description": "Nothing stored", "required": true},
+    {"name": "u_role_ok", "type": "role", "description": "A role with no holders, which the finder does not mind", "required": true}
+  ],
+  "answers": {"plan": {
+    "u_contact": "ghost", "u_role": "sam-okafor", "u_team": "engineering-manager", "u_case": "Sam-Okafor", "u_space": " sam-okafor",
+    "u_blank": "", "u_optional": "ghost", "u_deferred": {"deferred": true}, "u_known": "sam-okafor", "u_plain": "ghost", "u_role_ok": "design-lead"
+  }},
+  "sections": []
+}
