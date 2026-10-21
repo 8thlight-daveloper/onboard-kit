@@ -1,0 +1,24 @@
+schemaVersion: 1
+kind: record
+answers:
+  plan:
+    Zeta: z
+    commands:
+      - make
+      - test
+    deferred_one: deferred
+    deferred_text: "deferred"
+    empty_list: []
+    flag_off: false
+    flag_on: true
+    team: Platform team
+    year: "2026"
+  sections:
+    access:
+      repo_url: git@git.acme.example:platform/widget-service.git
+      tracker_grantor: deferred
+    clone-and-run-tests:
+      repo_dir: widget-service
+      setup_command:
+        - make
+        - setup

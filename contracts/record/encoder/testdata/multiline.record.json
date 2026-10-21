@@ -1,0 +1,6 @@
+{"schemaVersion": 1,
+ "answers": {"plan": {"notes": "one\ntwo"}},
+ "outcomes": [
+  {"section": "s", "note": "line one\nline two", "differently": "first\n\nthird\n"},
+  {"section": "t", "note": "trailing \nspace", "differently": "x\n\n"}
+ ]}

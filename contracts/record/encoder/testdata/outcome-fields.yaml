@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: record
+outcomes:
+  - section: s
+    outcome: failed
+    on: "2026-10-22T14:05:00Z"
+    sectionHash: abc123
+    note: n1
+    differently: d
+  - section: t
+    outcome: verified
+    note: worked
+  - section: u
+    outcome: deferred
+    differently: asked the desk
