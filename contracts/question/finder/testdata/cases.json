@@ -310,5 +310,29 @@
     "plan": "directory-suggestions.plan.json",
     "expected": "directory-suggestions.questions.json",
     "source": "docs/decisions/0045-defaults-are-suggestions.md: a choice offers only valid values. docs/decisions/0080-directory.md: the entries of the directory are the valid values of a directory question. Decisions to know 28: a default or a given answer is offered only when every id in it is in the directory for the question's type, and given answers are those stored for the question's name in any scope"
+  },
+  {
+    "name": "order-section-clause-then-question-clause",
+    "plan": "order-section-clause-then-question-clause.plan.json",
+    "expected": "order-section-clause-then-question-clause.questions.json",
+    "source": "contract.md, Order of deciding: a question names another question when a question clause of its askIf has that question's id, and a section clause names no question. A section clause before a question clause does not hide the question clause from the order, so the named question is decided first"
+  },
+  {
+    "name": "order-section-clause-names-no-question",
+    "plan": "order-section-clause-names-no-question.plan.json",
+    "expected": "order-section-clause-names-no-question.questions.json",
+    "source": "contract.md, Order of deciding: a section clause names no question. A question with only a section clause waits for nothing, even when a candidate of the section has an empty name"
+  },
+  {
+    "name": "suggestions-lists-and-flags",
+    "plan": "suggestions-lists-and-flags.plan.json",
+    "expected": "suggestions-lists-and-flags.questions.json",
+    "source": "docs/decisions/0045-defaults-are-suggestions.md and contract.md, Suggestions: any question with multiple true offers a List and never Text, whatever its type. Two values are equal only when their content is equal, so a true Flag and a false Flag are two suggestions"
+  },
+  {
+    "name": "suggestions-empty-text-fits",
+    "plan": "suggestions-empty-text-fits.plan.json",
+    "expected": "suggestions-empty-text-fits.questions.json",
+    "source": "contract.md, Suggestions: empty text and a value of no kind are never offered, even when a choice lists empty text as an option or a pattern matches empty text"
   }
 ]

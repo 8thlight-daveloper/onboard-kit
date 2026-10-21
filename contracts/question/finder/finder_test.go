@@ -426,6 +426,9 @@ func TestOffersTheDirectoryEntriesAsChoicesInDirectoryOrder(t *testing.T) {
 						}
 						continue
 					}
+					if !isDirectoryType(question.Type) && question.Choices != nil {
+						t.Errorf("%s: choices are %v, want none at all", want.ID, question.Choices)
+					}
 					wantChoices := []model.Choice{}
 					for _, choice := range want.Choices {
 						wantChoices = append(wantChoices, model.Choice{Value: choice.Value, Label: choice.Label})

@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "gated", "description": "Only a section clause", "askIf": {"all": [{"section": "s", "enabled": true}]}},
+      {"name": "", "description": "A question with an empty name, declared after"}
+    ]}
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"s": {"needed": "x"}}},
+  "sections": [
+    {"id": "s", "variables": [
+      {"name": "dep", "description": "A section clause first, then a clause that names a later question", "askIf": {"all": [
+        {"section": "s", "enabled": true},
+        {"question": "needed", "answer": {"isSettled": true}}]}},
+      {"name": "needed", "description": "Named by the clause after the section clause"},
+      {"name": "other", "description": "Needs nothing"}
+    ]}
+  ]
+}
