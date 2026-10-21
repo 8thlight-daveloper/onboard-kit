@@ -52,3 +52,13 @@ func (s *session) remove(asked request) map[string]any {
 	result["cleared"] = valuejson.EncodeCleared(cleared)
 	return result
 }
+
+func (s *session) prune(asked request) map[string]any {
+	next, cleared, problems := s.editor.PruneHiddenAnswers(s.plan)
+	if !asked.Apply {
+		return map[string]any{"ok": true, "applied": false, "problems": valuejson.EncodeProblems(problems), "cleared": valuejson.EncodeCleared(cleared)}
+	}
+	result := s.applied(next, problems)
+	result["cleared"] = valuejson.EncodeCleared(cleared)
+	return result
+}

@@ -1,0 +1,19 @@
+schemaVersion: 1
+provenance:
+  templateSet: example
+  generatedOn: "2026-10-15"
+variables:
+  - name: organization
+    description: What is the organization's name?
+    required: true
+answers:
+  plan:
+    gone: left over
+    organization: Globex
+  sections:
+    old-section:
+      note: left over
+sections:
+  - id: main
+    title: Main
+    summary: The only section.

@@ -1,0 +1,20 @@
+name: stdio-prune
+description: Hidden answers stay until the owner prunes them. A dry run lists them, and only an applied prune removes them.
+source: docs/decisions/0075-refreshing-a-personal-plan.md
+steps:
+  - run: [onboard-kit, stdio, --plan, plan.obk.yaml]
+    files:
+      plan.obk.yaml: {from: acceptance/testdata/hidden-answers.obk.yaml}
+    talk:
+      - send: {command: prune}
+        expect: {ok: true, applied: false, problems: [], cleared: {answers: [old-section.note, plan.gone], holders: []}}
+      - send: {command: prune}
+        expect: {ok: true, applied: false, cleared: {answers: [old-section.note, plan.gone]}}
+      - send: {command: prune, apply: true}
+        expect: {ok: true, applied: true, problems: [], cleared: {answers: [old-section.note, plan.gone]}}
+      - send: {command: prune, apply: true}
+        expect: {ok: true, applied: true, problems: [], cleared: {answers: [], holders: []}}
+      - send: {command: save, path: pruned.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0

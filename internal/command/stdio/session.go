@@ -34,6 +34,7 @@ type request struct {
 	Path     string `json:"path"`
 	Value    any    `json:"value"`
 
+	Apply bool            `json:"apply"`
 	Kind  string          `json:"kind"`
 	ID    string          `json:"id"`
 	Entry json.RawMessage `json:"entry"`
@@ -63,6 +64,8 @@ func (s *session) handle(line []byte) map[string]any {
 		return s.setEntry(asked)
 	case "remove":
 		return s.remove(asked)
+	case "prune":
+		return s.prune(asked)
 	case "plan":
 		return s.encodedPlan()
 	case "assemble":
