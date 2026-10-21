@@ -90,6 +90,14 @@ Several onboarders may edit the org plan, so the file must merge cleanly. Lists 
 
 A refresh never deletes an answer on its own. Hidden answers would collect over time, so each file's owner can prune them whenever they choose. A prune action lists the hidden answers first and deletes only after a yes. The onboarder prunes the org plan, and a newcomer prunes their own file. A newcomer's hidden answers are not in the org plan, so the onboarder's prune cannot touch them.
 
+Decided, and pinned by the plan editor's contract.
+
+- **Hidden means not declared.** An answer is hidden when its question is no longer declared: no plan variable of that name for a plan answer, or no such section or variable for a section answer. Names and section ids match exactly, and a name declared in another scope does not count.
+- **Inactive is not hidden.** An answer to a question that is only inactive, because of an unmet `askIf` or `includeIf` or a section that is off, is kept. It may become active again.
+- **Every kind goes.** A hidden answer is removed whatever its kind, a deferred one and a `false` flag included.
+- **A dry run comes first.** The editor changes no argument, so a driver runs the prune, shows the question ids it would remove, and keeps the result only after a yes. Over stdio, `prune` is a dry run and `prune` with `apply: true` keeps the result.
+- **Nothing else changes.** An answer map that the prune empties is removed.
+
 ### What is not locked
 
 The personal plan holds a copy of org content, and a person could edit it by hand. The next refresh replaces that content from the org plan, so a hand edit does not last. The tool does not try to stop an edit, and it does not trust one. This replaces the answers-hash lock in 0060.
