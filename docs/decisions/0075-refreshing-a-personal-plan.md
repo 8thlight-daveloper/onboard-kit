@@ -49,6 +49,27 @@ A personal plan holds a full copy of the org plan's content, plus the newcomer's
 
 The three-way comparison is what tells a newcomer's own change from an old pre-seed. Without `base`, a pre-seed the organization later corrected could not be told from a choice the newcomer made.
 
+### What the refresh does, exactly
+
+Decided, and pinned by the plan refresher's contract.
+
+- **Content from `theirs`.** Sections with their `source` and `enabled` switch, the variables, the directory, and the plan's unknown fields. The personal plan keeps its own `id`, `schemaVersion`, and `provenance`. Its `origin` is set from the new origin the driver passes in, with the `planId` taken from `theirs`.
+- **Each question's audience is read from `theirs`.** A question with no audience is an onboarder question.
+- **Onboarder answers** are taken from `theirs`. An answer `theirs` does not hold clears ours.
+- **Onboardee answers** are taken from `theirs` when ours equals `base`, and kept otherwise. Equal means the same kind and content. List order counts, and `""`, `[]`, and `false` each differ from absent. An empty `base` makes every answer the newcomer has count as changed, so a missing cache never overwrites a newcomer.
+- **A kept onboardee answer that is no longer valid** is removed and listed for review. Invalid means the wrong kind for the variable, a `choice` value no longer in its options (matched exactly), or a `contact`, `role`, or `team` id that is not in `theirs`' directory. For a `multiple` list only the missing ids are dropped, and the question is still listed for review. Deferred and empty answers are always valid. An answer taken from `theirs` is not checked.
+- **Hidden answers** are answers for a question `theirs` does not declare. They stay untouched, and come back if the question returns. A question that moves to another scope is a removed question and a new one.
+- **Refusal.** The refresh returns the personal plan unchanged, with problems, when `theirs` has no `id` (`refresh.missing-plan-id`) or its `id` differs from `ours.origin.planId` (`refresh.different-plan`). A first refresh has no `planId` yet and is accepted.
+- **The report** lists new questions, removed questions, answers taken from `theirs`, answers kept, answers to review, new sections, and removed sections, as sorted ids with no repeats. A list that lost some ids names the question and not the ids.
+- **Refreshing again** with the same `theirs` changes only the origin.
+
+### How `start` runs it
+
+- The content hash in `origin` is the hash of the org plan as the encoder writes it. The source is the absolute path or the URL.
+- `start` refuses an org plan with no `id`. `new` makes one, a random UUID by default, and takes `--id` for a fixed one.
+- The first run makes the personal plan from the org plan, with no `id` of its own, and saves the org plan beside it as the cache. Later runs refresh and then print a short summary of what changed.
+- A missing cache counts as an empty `base`.
+
 ### Identity and origin
 
 - An org plan has an `id`, a UUID made when the plan is first created. The driver generates it, since the core makes no random values.

@@ -113,6 +113,8 @@ The stdio protocol is line-delimited JSON, one request per line and one response
 <- {"ok":false,"error":{"code":"unknown_command","message":"unknown command: nonsense"}}
 ```
 
+The directory has its own commands: `directory`, `set-contact`, `set-role`, `set-team`, and `remove` with a `kind` and an `id`. See [0080](0080-directory.md).
+
 The adapter holds no logic of its own. Each command maps to one editor function, and each response is that function's serializable result. Each test starts its own process, so tests stay independent. No ports, sockets, or auth are involved.
 
 ### State

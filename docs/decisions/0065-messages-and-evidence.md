@@ -26,7 +26,7 @@ A step may carry a `message`, next to `run` and `open`. A message has:
 | Field | Meaning |
 | -- | -- |
 | `via` | `slack`, `teams`, `email`, or `other` |
-| `to` | A `person` variable, a channel or address, or text for the person to read |
+| `to` | A `contact` or `role` variable, a channel or address, or text for the person to read |
 | `text` | The message, a template that uses `$variables` |
 | `subject` | For email only |
 
