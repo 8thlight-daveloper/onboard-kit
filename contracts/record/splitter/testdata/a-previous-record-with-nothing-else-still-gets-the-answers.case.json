@@ -1,0 +1,166 @@
+{
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform",
+          "data",
+          "design"
+        ]
+      },
+      {
+        "name": "remote",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "tools",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      {
+        "name": "langs",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "organization",
+        "audience": "onboarder"
+      },
+      {
+        "name": "notes_url"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "variables": [
+          {
+            "name": "account_name",
+            "audience": "onboardee"
+          },
+          {
+            "name": "grantor",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "setup",
+        "title": "Setup",
+        "variables": [
+          {
+            "name": "editor",
+            "audience": "onboardee"
+          },
+          {
+            "name": "team",
+            "audience": "onboarder"
+          }
+        ]
+      }
+    ]
+  },
+  "joined": {
+    "schemaVersion": 1,
+    "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform",
+          "data",
+          "design"
+        ]
+      },
+      {
+        "name": "remote",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "tools",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      {
+        "name": "langs",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "organization",
+        "audience": "onboarder"
+      },
+      {
+        "name": "notes_url"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "variables": [
+          {
+            "name": "account_name",
+            "audience": "onboardee"
+          },
+          {
+            "name": "grantor",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "setup",
+        "title": "Setup",
+        "variables": [
+          {
+            "name": "editor",
+            "audience": "onboardee"
+          },
+          {
+            "name": "team",
+            "audience": "onboarder"
+          }
+        ]
+      }
+    ],
+    "answers": {
+      "plan": {
+        "team": "data"
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1
+  },
+  "expected": {
+    "schemaVersion": 1,
+    "answers": {
+      "plan": {
+        "team": "data"
+      }
+    }
+  }
+}

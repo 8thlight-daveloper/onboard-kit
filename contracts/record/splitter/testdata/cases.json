@@ -1,0 +1,142 @@
+[
+  {
+    "name": "answer-that-differs-from-the-plan-is-stored",
+    "file": "answer-that-differs-from-the-plan-is-stored.case.json",
+    "source": "Hand-written. 0090: the record holds the answers the newcomer gave. Contract rule: Which answers are kept, (a), differs from the plan's pre-seed."
+  },
+  {
+    "name": "answer-equal-to-the-plan-is-not-stored",
+    "file": "answer-equal-to-the-plan-is-not-stored.case.json",
+    "source": "Hand-written. 0090: an onboardee answer the newcomer never gave follows the plan, so a pre-seed is not copied into the record. Contract rule (a)."
+  },
+  {
+    "name": "no-pre-seed-means-the-answer-differs",
+    "file": "no-pre-seed-means-the-answer-differs.case.json",
+    "source": "Hand-written. Shared decision: a plan with no answer for the question means the answer differs. Contract rule (a). Text, flag false, and list."
+  },
+  {
+    "name": "held-key-stays-when-now-equal-to-the-plan",
+    "file": "held-key-stays-when-now-equal-to-the-plan.case.json",
+    "source": "Hand-written. Shared decision: a key the previous record held stays explicit even if now equal to the plan's. Contract rule (a), second part. A plan answer and a section answer."
+  },
+  {
+    "name": "held-key-takes-the-new-value",
+    "file": "held-key-takes-the-new-value.case.json",
+    "source": "Hand-written. Contract rule: the value written is the joined plan's value, not the previous record's."
+  },
+  {
+    "name": "cleared-answer-leaves-the-record",
+    "file": "cleared-answer-leaves-the-record.case.json",
+    "source": "Hand-written. Contract rule: an answer absent from the joined plan is absent from the record. The other held answer stays."
+  },
+  {
+    "name": "cleared-pre-seeded-answer-leaves-the-record-and-the-plan-returns",
+    "file": "cleared-pre-seeded-answer-leaves-the-record-and-the-plan-returns.case.json",
+    "source": "Hand-written. Contract Decisions to know 1, the known limitation: a newcomer cannot clear an answer the plan pre-seeds. The record drops it and the next load reads the pre-seed again."
+  },
+  {
+    "name": "onboarder-answers-are-never-stored",
+    "file": "onboarder-answers-are-never-stored.case.json",
+    "source": "Hand-written. 0090: the record never holds an onboarder answer. 0055: an empty audience means onboarder. Contract rule: onboarder questions. The previous record held onboarder answers and they are dropped."
+  },
+  {
+    "name": "audience-is-read-from-the-joined-plan",
+    "file": "audience-is-read-from-the-joined-plan.case.json",
+    "source": "Hand-written. Contract rule: a question is declared with the audience it has in the joined plan, and the plan argument supplies only answers. team is onboarder in the joined plan and organization is onboardee."
+  },
+  {
+    "name": "hidden-answer-held-by-the-previous-record-is-kept",
+    "file": "hidden-answer-held-by-the-previous-record-is-kept.case.json",
+    "source": "Hand-written. 0075 and 0090: an answer for a question the plan does not declare stays as a hidden answer. Contract rule (b). A plan answer, a section that is gone, and a variable gone from an existing section."
+  },
+  {
+    "name": "hidden-answer-the-previous-record-did-not-hold-is-dropped",
+    "file": "hidden-answer-the-previous-record-did-not-hold-is-dropped.case.json",
+    "source": "Hand-written. Contract rule (b): a hidden answer is kept only when the previous record held that key."
+  },
+  {
+    "name": "hidden-answer-takes-the-joined-value",
+    "file": "hidden-answer-takes-the-joined-value.case.json",
+    "source": "Hand-written. Contract rule (b): the value written is the joined plan's value."
+  },
+  {
+    "name": "cleared-hidden-answer-leaves-the-record",
+    "file": "cleared-hidden-answer-leaves-the-record.case.json",
+    "source": "Hand-written. Contract rule: an answer absent from the joined plan is absent from the record, hidden or not."
+  },
+  {
+    "name": "scopes-are-separate",
+    "file": "scopes-are-separate.case.json",
+    "source": "Hand-written. Shared decision: a question id is scope and name. team is onboardee in the plan and onboarder in setup. editor is declared only in setup, so a plan answer named editor is hidden. organization is declared only in the plan, so a setup answer named organization is hidden."
+  },
+  {
+    "name": "kind-decides-equality-of-the-text-deferred-and-deferred",
+    "file": "kind-decides-equality-of-the-text-deferred-and-deferred.case.json",
+    "source": "Hand-written. 0035: the text deferred and the value Deferred differ. Contract rule: equal means the same kind and content. Both directions."
+  },
+  {
+    "name": "kind-decides-equality-of-empty-values",
+    "file": "kind-decides-equality-of-empty-values.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content. An empty text, a flag false, an empty list, and Deferred all have empty content and are four different values."
+  },
+  {
+    "name": "deferred-equal-to-deferred-is-not-stored",
+    "file": "deferred-equal-to-deferred-is-not-stored.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content. Deferred has no content."
+  },
+  {
+    "name": "kind-decides-equality-of-flag-text-and-list",
+    "file": "kind-decides-equality-of-flag-text-and-list.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content. A flag false against the text false, and a one item list against the text."
+  },
+  {
+    "name": "list-equality-counts-order-and-items",
+    "file": "list-equality-counts-order-and-items.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content, and list order counts. tools differs by order and langs by length. A list that is equal is not stored."
+  },
+  {
+    "name": "equal-lists-are-not-stored",
+    "file": "equal-lists-are-not-stored.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content. An empty list equals an empty list."
+  },
+  {
+    "name": "flag-compares-by-value",
+    "file": "flag-compares-by-value.case.json",
+    "source": "Hand-written. Contract rule: equal means the same kind and content. true against false differs, and false against false is equal."
+  },
+  {
+    "name": "empty-text-and-false-are-answers-and-differ-from-no-answer",
+    "file": "empty-text-and-false-are-answers-and-differ-from-no-answer.case.json",
+    "source": "Hand-written. Shared decision: a plan with no answer for it means it differs. 0035: an empty text is unanswered for a condition, but it is still a held answer here, so the record keeps it."
+  },
+  {
+    "name": "every-other-field-is-copied-from-the-previous-record",
+    "file": "every-other-field-is-copied-from-the-previous-record.case.json",
+    "source": "Hand-written. Contract rule: the result is the previous record with its answers recomputed. The joined plan has another id, url, and results path, and these never reach the record. Nested unknown fields and outcomes are copied."
+  },
+  {
+    "name": "no-answers-gives-no-answers",
+    "file": "no-answers-gives-no-answers.case.json",
+    "source": "Hand-written. Contract rule: absent stays absent. Nothing is left, so the record has no answers, not empty maps."
+  },
+  {
+    "name": "a-section-whose-answers-all-leave-is-omitted",
+    "file": "a-section-whose-answers-all-leave-is-omitted.case.json",
+    "source": "Hand-written. Contract rule: a section map that becomes empty is omitted. access has a cleared answer and an onboarder answer. setup keeps one."
+  },
+  {
+    "name": "a-plan-with-no-questions-keeps-only-held-hidden-answers",
+    "file": "a-plan-with-no-questions-keeps-only-held-hidden-answers.case.json",
+    "source": "Hand-written. Contract rule (b) when nothing is declared."
+  },
+  {
+    "name": "a-previous-record-with-nothing-else-still-gets-the-answers",
+    "file": "a-previous-record-with-nothing-else-still-gets-the-answers.case.json",
+    "source": "Hand-written. Contract rule: only answers are recomputed. A record that holds only a schema version."
+  },
+  {
+    "name": "a-plan-answer-and-a-section-answer-with-one-name-are-two-questions",
+    "file": "a-plan-answer-and-a-section-answer-with-one-name-are-two-questions.case.json",
+    "source": "Hand-written. Shared decision: a question id is scope and name. A plan answer and a section answer with one name are two questions."
+  }
+]

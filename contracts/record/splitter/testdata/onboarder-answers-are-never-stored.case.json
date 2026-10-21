@@ -1,0 +1,274 @@
+{
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform",
+          "data",
+          "design"
+        ]
+      },
+      {
+        "name": "remote",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "tools",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      {
+        "name": "langs",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "organization",
+        "audience": "onboarder"
+      },
+      {
+        "name": "notes_url"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "variables": [
+          {
+            "name": "account_name",
+            "audience": "onboardee"
+          },
+          {
+            "name": "grantor",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "setup",
+        "title": "Setup",
+        "variables": [
+          {
+            "name": "editor",
+            "audience": "onboardee"
+          },
+          {
+            "name": "team",
+            "audience": "onboarder"
+          }
+        ]
+      }
+    ],
+    "answers": {
+      "plan": {
+        "organization": "Acme"
+      },
+      "sections": {
+        "access": {
+          "grantor": "it-desk"
+        }
+      }
+    }
+  },
+  "joined": {
+    "schemaVersion": 1,
+    "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform",
+          "data",
+          "design"
+        ]
+      },
+      {
+        "name": "remote",
+        "audience": "onboardee",
+        "type": "boolean"
+      },
+      {
+        "name": "tools",
+        "audience": "onboardee",
+        "type": "choice",
+        "multiple": true,
+        "options": [
+          "a",
+          "b",
+          "c"
+        ]
+      },
+      {
+        "name": "langs",
+        "audience": "onboardee",
+        "multiple": true
+      },
+      {
+        "name": "organization",
+        "audience": "onboarder"
+      },
+      {
+        "name": "notes_url"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "variables": [
+          {
+            "name": "account_name",
+            "audience": "onboardee"
+          },
+          {
+            "name": "grantor",
+            "audience": "onboarder"
+          }
+        ]
+      },
+      {
+        "id": "setup",
+        "title": "Setup",
+        "variables": [
+          {
+            "name": "editor",
+            "audience": "onboardee"
+          },
+          {
+            "name": "team",
+            "audience": "onboarder"
+          }
+        ]
+      }
+    ],
+    "answers": {
+      "plan": {
+        "organization": "Other",
+        "notes_url": "x",
+        "team": "data"
+      },
+      "sections": {
+        "access": {
+          "grantor": "someone"
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+      "hash": "5d3c1f",
+      "url": "records/../plan.obk.yaml"
+    },
+    "outcomes": [
+      {
+        "section": "access",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "5d3c1f",
+        "differently": "The desk wanted the request in their channel"
+      },
+      {
+        "section": "setup",
+        "outcome": "failed",
+        "on": "2026-10-22T15:30:00Z",
+        "sectionHash": "91ab20",
+        "note": "The tests fail on a fresh clone"
+      }
+    ],
+    "unknownFields": {
+      "x-notes": {
+        "mood": [
+          "calm",
+          {
+            "deep": [
+              1,
+              2.5,
+              null,
+              true
+            ]
+          }
+        ],
+        "count": 3
+      },
+      "x-flag": false
+    },
+    "answers": {
+      "plan": {
+        "organization": "Other",
+        "notes_url": "x"
+      },
+      "sections": {
+        "access": {
+          "grantor": "someone"
+        }
+      }
+    }
+  },
+  "expected": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5",
+      "hash": "5d3c1f",
+      "url": "records/../plan.obk.yaml"
+    },
+    "outcomes": [
+      {
+        "section": "access",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "5d3c1f",
+        "differently": "The desk wanted the request in their channel"
+      },
+      {
+        "section": "setup",
+        "outcome": "failed",
+        "on": "2026-10-22T15:30:00Z",
+        "sectionHash": "91ab20",
+        "note": "The tests fail on a fresh clone"
+      }
+    ],
+    "unknownFields": {
+      "x-notes": {
+        "mood": [
+          "calm",
+          {
+            "deep": [
+              1,
+              2.5,
+              null,
+              true
+            ]
+          }
+        ],
+        "count": 3
+      },
+      "x-flag": false
+    },
+    "answers": {
+      "plan": {
+        "team": "data"
+      }
+    }
+  }
+}
