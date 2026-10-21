@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "templateSet": "example",
+    "generatedOn": "2026-10-15"
+  },
+  "variables": [
+    {
+      "name": "region",
+      "description": "region"
+    }
+  ],
+  "sections": [
+    {
+      "id": "main",
+      "title": "Main",
+      "summary": "The section with no answers.",
+      "variables": [
+        {
+          "name": "tracker",
+          "description": "tracker"
+        }
+      ]
+    }
+  ],
+  "answers": {
+    "plan": {},
+    "sections": {
+      "a-empty": {}
+    }
+  }
+}

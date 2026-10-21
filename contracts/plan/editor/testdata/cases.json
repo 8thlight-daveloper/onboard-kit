@@ -3309,6 +3309,20 @@
     "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: a plan with no hidden answers comes back equal. A map with no answer holds no hidden answer, so prune does not remove it, whether or not its section exists"
   },
   {
+    "name": "prune-goes-on-past-an-empty-answer-map",
+    "operation": "prune",
+    "before": "prune-empty-map-before-hidden.plan.json",
+    "cleared": {
+      "answers": [
+        "z-gone.old"
+      ],
+      "holders": []
+    },
+    "after": "prune-empty-map-before-hidden.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: every hidden answer is removed. An empty answer map that sorts before a map with a hidden answer does not stop the prune, and stays as given"
+  },
+  {
     "name": "examples-kept-by-a-prune",
     "operation": "prune",
     "before": "hidden-examples.plan.json",
