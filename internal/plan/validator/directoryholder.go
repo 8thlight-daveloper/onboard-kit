@@ -17,9 +17,22 @@ func holderProblems(directory model.Directory) []model.Problem {
 		}
 	}
 	for _, team := range directory.Teams {
+		problems = append(problems, teamContactProblems(contacts, team)...)
 		problems = append(problems, teamOverrideProblems(contacts, roles, team)...)
 	}
 	return problems
+}
+
+func teamContactProblems(contacts []string, team model.Team) []model.Problem {
+	if team.Contact == "" || slices.Contains(contacts, team.Contact) {
+		return []model.Problem{}
+	}
+	return []model.Problem{{
+		Code:     "directory.holder-not-a-contact",
+		Severity: model.SeverityError,
+		Message:  "A team contact is not a contact.",
+		Detail:   map[string]string{"team": team.ID, "team-contact": team.Contact},
+	}}
 }
 
 func teamOverrideProblems(contacts []string, roles []string, team model.Team) []model.Problem {
