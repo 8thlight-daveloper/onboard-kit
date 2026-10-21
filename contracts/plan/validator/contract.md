@@ -11,7 +11,7 @@ This contract covers the answer checks, the integrity of the plan's directory, a
 `Validate(plan) -> list of Problem` and `CheckValue(plan, question, value) -> list of Problem`.
 
 - `plan` is a Plan, as stored. The validator reads `plan.Directory`, `plan.Variables`, `plan.Answers`, and `plan.Sections` (each section's `id`, `enabled`, `includeIf`, `timing`, `after`, and `variables`). It reads no other field.
-- `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. It is split at the first dot. Any text is accepted, and an id that names nothing gives a problem.
+- `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. It is split at the first dot. Any text is accepted, and an id that names nothing gives a problem. A name may be empty, so `main.` names a variable with an empty name. An id with no dot names nothing, even when its text is the scope of a variable with an empty name. The scope `plan` always means the plan's own variables, even when a section has the id `plan`, and such a question has no `section`.
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed and is treated as unanswered.
 - `CheckValue` reads the directory only to look up the ids a value names. It never reports a problem about the directory itself or about the plan as a whole.
 - Both results are empty when nothing is wrong. There is no error return.
@@ -61,7 +61,7 @@ For a given active question and a given value, `CheckValue` gives the same probl
 | Pattern | A `string` with a `pattern` takes text that the pattern matches anywhere in it. The pattern is RE2, so `$` is the end of the text, and `.` does not match a line break. No match is `answer.pattern-mismatch`. The message holds the variable's `patternHint` when it has one |
 | Directory id | A `contact`, `role`, or `team` answer is an id, and it is looked up among the directory's contacts, roles, or teams, by exact comparison with case and with no trimming. A list is one id for each item, and an empty item is skipped. An id that is not found, including the text `deferred` and a text of only spaces, is `directory.unknown-id`. A list gets one for each such item, with the item's position in `item`. A wrong kind stops this check |
 
-`options` limit only a `choice`, and `pattern` applies only to a `string`. The directory id check applies to the three directory types only. A string that lists options takes any text, and a `choice` is not matched against a pattern. A pattern that does not compile is skipped here, because the section validator reports it.
+`options` limit only a `choice`, and `pattern` applies only to a `string`. The directory id check applies to the three directory types only. A string that lists options takes any text, and a `choice` is not matched against a pattern. A pattern that does not compile is skipped here, because the section validator reports it. The options and the pattern judge text only. A variable with `multiple` that holds a list gets neither check, whatever its type, and each item of the list is left unjudged. The section validator rejects `multiple` on a `choice` and on a `string`.
 
 **Secrets.** The secrets check runs on the stored or submitted value, whatever the question's type and whatever the answer checks said, unless the value is of no kind. It runs on text and on each list item, as the [secrets contract](../../secrets/contract.md) says. Its problems come through with its `code`, `severity`, `message`, and `detail` as they are, and the validator fills in `question` and `section`. A secrets problem is an `error`. No problem repeats the secret or a part of it.
 
@@ -174,6 +174,8 @@ None. It reads the plan's directory, variables, answers, and the content of the 
 29. **An email is malformed when it is not empty and has no `@` or a space (U+0020), and a contact is unreachable when email, slack, and slackId are all empty.** A malformed email still makes a contact reachable. Raised by "an email with no `@` or with a space" and "a contact with no way to reach them" in 0080. Case: `directory-warnings`. `cheap`
 30. **A role whose holders all name no contact is not vacant, and a holder id is compared exactly.** The holders are an error already, so a second problem would repeat it. Holders under a team key for a role that does not exist are still checked. Raised by "a holder that is not a contact" in 0080. Case: `directory-holders`. `cheap`
 31. **A duplicated section id gives one `plan.duplicate-section-id` for the id, with the id in `section`.** Raised by "ids are unique within the plan" in 0075. Case: `duplicate-sections`. `cheap`
+32. **A list for a `multiple` string or `choice` is not judged against the options or the pattern.** The code reads text only there, and the contract never said what a list does. Raised by "The allowed values of a `choice`" and "A regular expression a `string` must match" in variables.md, which speak of one value, and by lint rejecting `multiple` on these types. Cases: `choice-options`, `patterns`. `hard`
+33. **The scope `plan` is the plan's own variables, and an id with no dot is unknown.** The id is read as written. Raised by "It is split at the first dot" in the Interface. Case: `question-ids`. `cheap`
 
 ## Wrong implementations tried
 
@@ -185,6 +187,8 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | A wrong kind reported as a warning, or `expected` and `found` swapped | `wrong-kinds` |
 | A choice is not checked, is compared without case, or accepts the text `deferred` | `choice-options`, `deferred-word`, `check-value` |
 | Options enforced on a string, or on a variable with no type | `options-limit-only-choice` |
+| A list for a `multiple` choice is flagged as not an option, or a list for a `multiple` string is matched against the pattern as empty text | `choice-options`, `patterns` |
+| An id with no dot is read as scope with an empty name, or a section with the id `plan` takes over the plan's questions | `question-ids` |
 | A pattern must match the whole text, is read with `(?s)` or `(?m)`, is ignored, or is applied to a `choice` | `patterns`, `check-value` |
 | The `patternHint` is left out of the message, or a pattern mismatch is a warning | `patterns`, `check-value` |
 | A Deferred value is checked, or the text `deferred` is skipped as if it were Deferred | `deferred-and-empty`, `deferred-word` |

@@ -27,7 +27,8 @@
       {"name": "empty_text", "pattern": "^[a-z]+$", "description": "Lower case"},
       {"name": "repo_ok", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://", "description": "Clone URL"},
       {"name": "repo_bad", "pattern": "^(git@|https://)\\S+$", "patternHint": "A clone URL, starting with git@ or https://", "description": "Clone URL"},
-      {"name": "pick_pattern", "type": "choice", "options": ["alpha", "beta"], "pattern": "^zzz$", "description": "A choice with a pattern"}
+      {"name": "pick_pattern", "type": "choice", "options": ["alpha", "beta"], "pattern": "^zzz$", "description": "A choice with a pattern"},
+      {"name": "many_pattern", "multiple": true, "pattern": "^[0-9]+$", "description": "Several answers with a pattern"}
     ]}
   ]
 }

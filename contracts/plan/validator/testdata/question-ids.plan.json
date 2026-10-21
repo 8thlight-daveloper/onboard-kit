@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "", "description": "A plan variable with an empty name"},
+    {"name": "p_pick", "type": "choice", "options": ["alpha", "beta"], "description": "Plan choice"}
+  ],
+  "answers": {"plan": {"p_pick": "zeta"}},
+  "sections": [
+    {"id": "plan", "variables": [
+      {"name": "s_note", "description": "A variable of a section whose id is plan"}
+    ]},
+    {"id": "main", "variables": [
+      {"name": "", "description": "A section variable with an empty name"}
+    ]}
+  ]
+}

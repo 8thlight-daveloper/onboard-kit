@@ -85,9 +85,10 @@
       {"name": "a value outside the options on a plan variable", "question": "plan.p_bad", "value": "gamma",
         "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "plan.p_bad"}]},
       {"name": "only spaces", "question": "main.c_ok", "value": " ",
-        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.c_ok", "section": "main"}]}
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "main.c_ok", "section": "main"}]},
+      {"name": "a list for a choice that takes several answers, outside its options", "question": "main.c_many", "value": ["alpha", "zeta"], "problems": []}
     ],
-    "source": "variables.md, Types: a choice takes one of options. 0010, Entry rules: a boolean or choice accepts only its options. 0035: whitespace is a settled text answer, see 0040"
+    "source": "Contract, Answer checks: a list for a `multiple` variable is not judged against options. variables.md, Types: a choice takes one of options. 0010, Entry rules: a boolean or choice accepts only its options. 0035: whitespace is a settled text answer, see 0040"
   },
   {
     "name": "options-limit-only-choice",
@@ -112,9 +113,23 @@
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.repo_ok", "section": "main", "messageContains": "A clone URL, starting with git@ or https://"}]},
       {"name": "text that ends in a line break", "question": "main.anchored_ok", "value": "abc\n",
         "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.anchored_ok", "section": "main"}]},
-      {"name": "a choice ignores a pattern", "question": "main.pick_pattern", "value": "alpha", "problems": []}
+      {"name": "a choice ignores a pattern", "question": "main.pick_pattern", "value": "alpha", "problems": []},
+      {"name": "a list for a string that takes several answers, outside its pattern", "question": "main.many_pattern", "value": ["abc"], "problems": []}
     ],
-    "source": "variables.md, Types: pattern uses RE2 syntax, and a string must match it. Fields: patternHint is shown when a value does not match. finder contract, Suggestions: a pattern matches anywhere in the text, and RE2 has no match before a final line break. acme.plan.json: the repo_url pattern"
+    "source": "Contract, Answer checks: a list for a `multiple` variable is not judged against its pattern. variables.md, Types: pattern uses RE2 syntax, and a string must match it. Fields: patternHint is shown when a value does not match. finder contract, Suggestions: a pattern matches anywhere in the text, and RE2 has no match before a final line break. acme.plan.json: the repo_url pattern"
+  },
+  {
+    "name": "question-ids",
+    "plan": "question-ids.plan.json",
+    "expected": "question-ids.problems.json",
+    "checks": [
+      {"name": "an id with no dot that equals the scope of a variable with an empty name", "question": "plan", "value": "x",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "plan"}]},
+      {"name": "an id that ends in a dot names the variable with an empty name", "question": "main.", "value": "x", "problems": []},
+      {"name": "a plan variable when a section has the id plan", "question": "plan.p_pick", "value": "zeta",
+        "problems": [{"code": "answer.not-an-option", "severity": "error", "question": "plan.p_pick"}]}
+    ],
+    "source": "Interface: the id is read as written and split at the first dot, and an id with no dot is unknown. Problems, section: empty for a plan variable. A scope of plan is the plan's own variables"
   },
   {
     "name": "secrets",
