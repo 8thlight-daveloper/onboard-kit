@@ -109,6 +109,8 @@ func (c *collector) teamOf(node *yaml.Node, at location) model.Team {
 			team.ID = c.stringOf(found.value, found.at)
 		case "name":
 			team.Name = c.stringOf(found.value, found.at)
+		case "contact":
+			team.Contact = c.stringOf(found.value, found.at)
 		case "holders":
 			team.Holders = c.holdersByRoleOf(found.value, found.at)
 		default:

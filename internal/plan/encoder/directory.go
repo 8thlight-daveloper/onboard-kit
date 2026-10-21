@@ -37,6 +37,7 @@ func (c *collector) teamSequence(teams []model.Team) node {
 		builder := &mappingBuilder{}
 		builder.add("id", stringField(team.ID))
 		builder.add("name", stringField(team.Name))
+		builder.add("contact", stringField(team.Contact))
 		builder.add("holders", holdersByRoleNode(team.Holders))
 		return c.requireKeys(builder.build(), indexed("directory.teams", index))
 	})
