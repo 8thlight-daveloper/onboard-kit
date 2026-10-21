@@ -88,6 +88,9 @@ Each component has a place in a dependency order and may depend only on componen
 | 1 | `plan/migrator`, deferred | Nothing from the project, and its own frozen copies of old versions |
 | 1 | `plan/encoder` | `model` |
 | 1 | `record/encoder` | `model` |
+| 1 | `record/joiner` | `model` |
+| 1 | `record/splitter` | `model` |
+| 1 | `record/reconciler` | `model` |
 | 2 | `section/selector` | `condition/evaluator`, `model` |
 | 2 | `plan/instantiator` | `section/hasher`, `model` |
 | 2 | `plan/refresher` | `model` |

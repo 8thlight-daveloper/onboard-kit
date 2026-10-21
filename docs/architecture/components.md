@@ -29,6 +29,9 @@ flowchart TB
         encoder["Plan encoder"]
         recorddecoder["Record decoder"]
         recordencoder["Record encoder"]
+        joiner["Record joiner"]
+        splitter["Record splitter"]
+        reconciler["Record reconciler"]
         loader["Section loader"]
         selector["Section selector"]
         evaluator["Condition evaluator"]
@@ -94,6 +97,9 @@ flowchart TB
 | Plan encoder | Turns a Plan into canonical bytes: fixed key order, lowercase booleans, no anchors, so the same plan always gives the same bytes |
 | Record decoder | Turns onboarding record file bytes into a Record and problems, with the same format guards as the plan decoder. Refuses a file whose `kind` is not `record` |
 | Record encoder | Turns a Record into canonical bytes, so the same record always gives the same bytes |
+| Record joiner | Puts a newcomer's onboarding record over the plan, giving the one plan value that every other component takes |
+| Record splitter | Takes the onboardee answers back out of the joined plan, giving the record to save. The plan is left alone |
+| Record reconciler | Checks a record against a new plan. Removes answers the plan no longer accepts, lists hidden answers, new questions, and new and removed sections, and flags outcomes whose section changed. Replaces the plan refresher |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
@@ -112,7 +118,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 | Component | Side effects |
 | -- | -- |
-| `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator`, `record/decoder`, `record/encoder` | None. They take and return values, and a driver reads and writes the files |
+| `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator`, `record/decoder`, `record/encoder`, `record/joiner`, `record/splitter`, `record/reconciler` | None. They take and return values, and a driver reads and writes the files |
 | `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `document/assembler` | None. It returns the document |
