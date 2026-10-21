@@ -130,4 +130,12 @@ A check is advice that the person confirms, and the outcome is the person's own 
 
 ## Not decided
 
-- The report: how the onboarder sees newcomers' outcomes. Where the files live and whose they are are settled above. Still open: whether the view is by person or by section, due dates, whether failed and changed outcomes and notes surface, and the form of the output.
+- The report, which is the onboarder's view of newcomers' outcomes. Where the files live and whose they are is settled above. These questions are open.
+  - **Axis.** By section answers "who has not verified AWS access yet", and by person answers "how is Jane doing". Both come from the same data. Which is the first view, and is the other a filter or a separate command?
+  - **Deadlines.** "Roll AWS access out by 11/26" needs a due date on a section, written by the onboarder in the org plan, and it is content, so it changes the section's hash. Is it an absolute date, or relative to each newcomer's start date, or both? Timing already has relative windows.
+  - **What needs attention.** Do `failed`, long-`deferred`, overdue, and changed-since-verified outcomes surface at the top? Does a newcomer who started and went quiet count, which the entries' `on` times would show?
+  - **Notes.** Do `note` and `differently` appear? `differently` is the most useful text, because it says where the plan is wrong, so sections could be ranked by how often it is recorded. Showing notes raises the privacy point above.
+  - **Form.** A terminal table, markdown, CSV, or a TUI screen. A command that prints a table is the least work and is testable. A stable plain form also lets people script it, for example to chase overdue people.
+  - **Who can run it.** Whoever can read the folder can run it. The tool should not enforce more, since the repository controls readership. It could offer a mode that leaves notes out.
+  - **Files with problems.** A folder holds files that fail to decode, come from an old plan version, or belong to another plan. The report should skip them and list what it skipped and why.
+  - **History.** An entry holds only the latest outcome. History comes from git, which the tool does not read, so the report has none for now.
