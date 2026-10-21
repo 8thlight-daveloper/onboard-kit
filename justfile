@@ -58,33 +58,17 @@ ide:
     nix build .#go --out-link .direnv/go
     @echo "GOROOT for the IDE: $(pwd)/.direnv/go/share/go"
 
-# Mutation-test one component against its contract, for example `just mutate plan/encoder`. Survivors are gaps in the contract, except those a person accepted in tools/mutation/accepted/.
-mutate component:
+# Mutation-test one component against its contract, for example `just mutate plan/encoder`. It runs gomu over an overlay, so it never changes a source file and can run beside `just check`. One mutant at a time by default, with Go limited to two parallel jobs, so it is gentle on the machine. Survivors are gaps in the contract, except those a person accepted in tools/mutation/accepted/. Pass `--workers 2` to go faster.
+mutate component *flags:
+    mkdir -p .direnv/bin
+    test -x .direnv/bin/gomu || GOBIN="$(pwd)/.direnv/bin" go install github.com/sivchari/gomu/cmd/gomu@v0.3.0
+    go run ./tools/mutation/gomurun {{ flags }} {{ component }}
+
+# The earlier mutation recipe, on go-mutesting. It rewrites source files in place and skips mutants that assign to a struct, slice, or map field, so it understates survivors. Kept for a while as a fallback. Do not run it beside `just check`.
+mutate-old component:
     mkdir -p .direnv/bin
     GOBIN="$(pwd)/.direnv/bin" go install github.com/avito-tech/go-mutesting/cmd/go-mutesting@v0.0.0-20261002081621-9ce5f731e321
     accepted="$(mktemp)"; if [ -f tools/mutation/accepted/{{ component }}.txt ]; then awk '!/^#/ && NF { print $1 }' tools/mutation/accepted/{{ component }}.txt > "$accepted"; fi; COMPONENT={{ component }} .direnv/bin/go-mutesting --blacklist="$accepted" --exec="$(pwd)/tools/mutation/exec.sh" --exec-timeout=120 ./internal/{{ component }}/; rm -f "$accepted" report.json
-
-# Try the onboarder walk on a new ACME plan with an empty directory, in output/try. Reuses the plan if it exists, so your answers stay. `just try-reset` starts over.
-try-onboarder:
-    mkdir -p output/try
-    test -f output/try/new.obk.yaml || go run ./binary new --templates docs/reference/examples/acme/templates --template-set example --out output/try/new.obk.yaml
-    go run ./binary walk --plan output/try/new.obk.yaml
-
-# Try the onboarder walk on a copy of the finished ACME example, with its directory, in output/try. The example in docs is never changed.
-try-acme:
-    mkdir -p output/try
-    test -f output/try/acme.obk.yaml || cp docs/reference/examples/acme/acme.obk.yaml output/try/acme.obk.yaml
-    go run ./binary walk --plan output/try/acme.obk.yaml
-
-# Try the newcomer's side: start from the ACME copy in output/try, with the newcomer's files in output/try/home.
-try-onboardee:
-    mkdir -p output/try
-    test -f output/try/acme.obk.yaml || cp docs/reference/examples/acme/acme.obk.yaml output/try/acme.obk.yaml
-    go run ./binary start --org-plan output/try/acme.obk.yaml --home output/try/home
-
-# Delete everything `try-*` made.
-try-reset:
-    rm -rf output/try
 
 # Install the git hook that runs check before every commit.
 hook:

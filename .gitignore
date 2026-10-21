@@ -12,3 +12,7 @@ output/*
 
 # Throwaway notes, for people and agents.
 .scratch/
+
+# Reports that gomu writes while `just mutate` runs.
+mutation-report.json
+.gomu_history.json
