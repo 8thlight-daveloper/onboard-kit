@@ -42,13 +42,18 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		return func(app App) App { return moveTo(t, app, id) }
 	}
 	return map[string]func(goldenSize) App{
-		"walk":      build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
-		"edit":      build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
-		"overview":  build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
-		"review":    build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
-		"sections":  build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
-		"onboardee": build(blankPlan(t), model.AudienceOnboardee),
-		"example":   buildFake(),
+		"walk":                 build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
+		"edit":                 build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
+		"overview":             build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
+		"review":               build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),
+		"sections":             build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
+		"onboardee":            build(blankPlan(t), model.AudienceOnboardee),
+		"example":              buildFake(),
+		"pick":                 build(blankPlan(t), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
+		"pick-many":            build(blankPlan(t), model.AudienceOnboarder, goTo("stuck-general.general_contacts"), keys(typed("j"), space, typed("k"), space)),
+		"pick-empty":           build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
+		"pick-empty-onboardee": build(withoutDirectory(blankPlan(t)), model.AudienceOnboardee),
+		"subsections":          buildSubsections(),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)
@@ -100,4 +105,30 @@ func wireframe(app App) string {
 		rows[index] = strings.TrimRight(row, " ")
 	}
 	return strings.Join(rows, "\n") + "\n"
+}
+
+func withoutDirectory(plan model.Plan) model.Plan {
+	plan.Directory = model.Directory{}
+	return plan
+}
+
+func subsectionBackend() (*fakeBackend, model.Plan) {
+	backend := newFakeBackend(
+		textQuestion("plan.organization", "plan", "Name of the organization", ""),
+		textQuestion("access.owner", "access", "Who owns access?", ""),
+		textQuestion("access-request.url", "access-request", "Where do people request access?", ""),
+		textQuestion("access-tokens.rotation", "access-tokens", "How often are tokens rotated?", ""),
+		textQuestion("tools.editor", "tools", "Which editor is standard?", ""),
+	)
+	plan := sectionsWithParents("access", "", "access-request", "access", "access-tokens", "access-request", "tools", "")
+	return backend, plan
+}
+
+func buildSubsections() func(goldenSize) App {
+	return func(size goldenSize) App {
+		backend, plan := subsectionBackend()
+		backend.answers["access-request.url"] = model.Value{Kind: model.ValueKindText, Text: "https://access.example.test"}
+		app := resize(startFakeIn(backend, plan, model.AudienceOnboarder), size.width, size.height)
+		return app.openQuestion(2).openOverview()
+	}
 }

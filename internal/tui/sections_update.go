@@ -6,6 +6,12 @@ func (app App) updateSections(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "esc", "q":
 		return app.closeSections(), nil
+	case "w":
+		return app.returnToWalk(), nil
+	case "o":
+		return app.openOverview(), nil
+	case "r":
+		return app.openReview(), nil
 	case "up", "k":
 		app.sectionCursor = max(app.sectionCursor-1, 0)
 	case "down", "j":

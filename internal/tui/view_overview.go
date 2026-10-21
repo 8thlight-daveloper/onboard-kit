@@ -11,6 +11,7 @@ const (
 	answerColumnMinimum = 36
 	rowTextShare        = 3
 	rowTextOutOf        = 5
+	sectionIndent       = 2
 )
 
 func (app App) overviewBody(screenFrame frame, colors palette) []string {
@@ -35,55 +36,56 @@ func (app App) outlineLines(width int, colors palette) ([]line, int) {
 	focus := 0
 	heading := "\x00"
 	for index, question := range app.questions {
-		if title := app.sectionTitle(question.Scope); title != heading {
+		indent := spaces(sectionIndent * app.sectionDepth(question.Scope))
+		if question.Scope != heading {
 			if heading != "\x00" {
 				content = append(content, blankLine())
 			}
-			heading = title
-			content = append(content, strongLine(title))
+			heading = question.Scope
+			content = append(content, strongLine(indent+app.sectionTitle(question.Scope)))
 		}
 		if index == app.overviewCursor {
 			focus = len(content)
 		}
-		content = append(content, outlineRow(question, index == app.overviewCursor, width, colors))
+		content = append(content, outlineRow(question, indent, index == app.overviewCursor, width, colors))
 	}
 	return content, focus
 }
 
-func outlineRow(question model.Question, selected bool, width int, colors palette) line {
-	available := width - rowPrefixWidth
+func outlineRow(question model.Question, indent string, selected bool, width int, colors palette) line {
+	available := width - rowPrefixWidth - len(indent)
 	text := truncateCells(singleLine(question.Description), available)
-	if available >= answerColumnMinimum && stateOf(question.Answer) != "unanswered" {
+	if available >= answerColumnMinimum && answerState(question) != "unanswered" {
 		descriptionWidth := available * rowTextShare / rowTextOutOf
 		answerWidth := available - descriptionWidth - 2
 		description := truncateCells(singleLine(question.Description), descriptionWidth)
-		answer := truncateCells(singleLine(answerText(question.Answer)), answerWidth)
+		answer := truncateCells(singleLine(answerText(question)), answerWidth)
 		text = description + spaces(descriptionWidth-cellWidth(description)) + "  " + answer
 	}
-	body := stateMark(question.Answer) + " " + requiredMark(question) + " " + text
+	body := indent + stateMark(question) + " " + requiredMark(question) + " " + text
 	return hereLine(body, selected, true, width, colors)
 }
 
-func answerText(value model.Value) string {
-	switch stateOf(value) {
+func answerText(question model.Question) string {
+	switch answerState(question) {
 	case "unanswered":
 		return "none yet"
 	case "deferred":
 		return "deferred, answer later"
 	}
-	return describeValue(value)
+	return describeAnswer(question, question.Answer)
 }
 
 func (app App) previewLines(question model.Question, width int) []line {
 	index := app.indexOf(question.ID)
 	content := []line{
 		faintLine(app.sectionTitle(question.Scope)),
-		faintLine(fmt.Sprintf("%d of %d, %s, %s", index+1, len(app.questions), requiredWords(question), stateWords(question.Answer))),
+		faintLine(fmt.Sprintf("%d of %d, %s, %s", index+1, len(app.questions), requiredWords(question), stateWords(question))),
 		blankLine(),
 	}
 	content = append(content, lines(toneFaint, wrapText(question.Description, width))...)
 	content = append(content, blankLine())
-	content = append(content, lines(toneFaint, hanging("", "Answer: "+answerText(question.Answer), width))...)
+	content = append(content, lines(toneFaint, hanging("", "Answer: "+answerText(question), width))...)
 	content = append(content, blankLine())
 	return append(content, app.noteLines(question, width)...)
 }

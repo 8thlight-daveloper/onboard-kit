@@ -34,7 +34,7 @@ Decided: the onboardee does not get a separate list of the organization's answer
 
 ## Screens
 
-Decided. There are four screens and a help page. Every screen has a header line, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
+Decided. There are four screens and a help page. Every screen has a header line with the tab strip, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
 
 | Screen | Holds | Opened by |
 | -- | -- | -- |
@@ -49,10 +49,11 @@ How a person moves:
 - Start: if the plan holds an answer to any question of this audience, open Review. Otherwise open Walk at the first question. A plan with no active questions opens Review.
 - Enter accepts the answer on the screen and moves to the next question in order. This was a choice between the next question and the next unanswered one. The next in order is predictable, and a person who wants an unanswered one opens Review, where the blockers are listed.
 - Past the last question, the person lands on Review.
+- `w`, `o`, `r`, and `s` open the Walk, Overview, Review, and Sections from any screen while the person is not typing. The tab strip names them, see Screen tabs.
 - `p`, left arrow, or shift+tab goes back one question. `n` or right arrow skips forward without changing anything.
 - `d` defers the question and moves on. `x` clears the answer and stays, so the person can answer again.
 - Escape on the Walk returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Walk.
-- From Overview or Review, enter opens the chosen question in the Walk. `w` on Review returns to the Walk at the first unanswered question.
+- From Overview or Review, enter opens the chosen question in the Walk. `w` on Review returns to the Walk at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
 - `q` quits from the Overview, Review, and Walk, except while typing. The Sections screen takes `q` as back. Ctrl+c always quits.
 
 ## Layout
@@ -110,7 +111,7 @@ Decided. The part of the screen where the person is acting is drawn bright, and 
 | Review | The pane with focus, items or document | The other pane |
 | Sections, Help | The whole body |  |
 
-- The accent marks "you are here" and nothing else: the `>` before the chosen row or the focused pane, the diamond in the rail, and the prompt of the answer box. Titles, headings, and key names are never in the accent. A title is bold, and a key name is bold.
+- The accent marks "you are here" and nothing else: the `>` before the chosen row or the focused pane, the diamond in the rail, the prompt of the answer box, and the current tab. Titles, headings, and key names are never in the accent. A title is bold, and a key name is bold.
 - Bold and faint are enough to carry the hierarchy, so it holds on a light or dark background and with no colour.
 
 ## Wireframes
@@ -122,10 +123,15 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 | Walk, choosing | [walk](../../internal/tui/testdata/screens/walk.80.txt) | [walk](../../internal/tui/testdata/screens/walk.120.txt) | [walk](../../internal/tui/testdata/screens/walk.140.txt) |
 | Walk, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
 | Walk, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
+| Walk, picking one | [pick](../../internal/tui/testdata/screens/pick.80.txt) | [pick](../../internal/tui/testdata/screens/pick.120.txt) | [pick](../../internal/tui/testdata/screens/pick.140.txt) |
+| Walk, picking several | [pick many](../../internal/tui/testdata/screens/pick-many.80.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.120.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.140.txt) |
+| Walk, nothing to pick | [pick empty](../../internal/tui/testdata/screens/pick-empty.80.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.120.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.140.txt) |
 | Overview | [overview](../../internal/tui/testdata/screens/overview.80.txt) | [overview](../../internal/tui/testdata/screens/overview.120.txt) | [overview](../../internal/tui/testdata/screens/overview.140.txt) |
+| Overview with sub-sections | [subsections](../../internal/tui/testdata/screens/subsections.80.txt) | [subsections](../../internal/tui/testdata/screens/subsections.120.txt) | [subsections](../../internal/tui/testdata/screens/subsections.140.txt) |
 | Review | [review](../../internal/tui/testdata/screens/review.80.txt) | [review](../../internal/tui/testdata/screens/review.120.txt) | [review](../../internal/tui/testdata/screens/review.140.txt) |
 | Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.120.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
 | The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
+| The onboardee, nothing to pick | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.80.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.120.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.140.txt) |
 | Window too small | [too small](../../internal/tui/testdata/screens/too-small.80.txt) | [too small](../../internal/tui/testdata/screens/too-small.120.txt) | [too small](../../internal/tui/testdata/screens/too-small.140.txt) |
 
 ## Colour
@@ -133,7 +139,7 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 Decided. One accent, the Branded Blue `0071CE`, marks "you are here", see Emphasis. Two other brand colours mean status and nothing else: Orange `FF8300` for a warning, Red `F32735` for a problem. Everything quiet is drawn with the terminal's faint style, so it works on a light or a dark background and the tool never asks the terminal for its background colour. The styles are built when a screen is drawn, never at package level.
 
 - A terminal that reports true colour gets the hex values. One with 256 colours or 16 colours gets the nearest ANSI value. `NO_COLOR` and a terminal with no colour get plain text.
-- Colour never carries meaning alone. The chosen row starts with `>`. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required, and in the rail `x`, `~`, `.`, and a diamond for the current question. The position and state are also words under the section title. Problems start with `! problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
+- Colour never carries meaning alone. The chosen row starts with `>`, and the current tab is in brackets. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required, and in the rail `x`, `~`, `.`, and a diamond for the current question. The position and state are also words under the section title. Problems start with `! problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
 - Tests render every screen with no colour and check that these marks and the key hints are still there. Other tests check, with colour on, that the focused pane is bright, the other is faint, and the accent is not on a title.
 
 ## The example
@@ -145,12 +151,49 @@ Decided. A question may carry one `Example`, an illustration of a good answer. I
 Decided, and built. The answer is made on the Walk, under the question.
 
 - A boolean or choice is picked from a list, with "deferred, answer later" and "clear the answer" at the end. The cursor starts on the current answer. Up and down move, enter picks.
+- A contact, role, or team is picked from the organization's directory, see Pick lists. A person never types an id.
 - A string takes typed text, with the current answer filled in. Tab cycles through the question's suggestions. Enter on text equal to the current answer moves on without saving. Enter on an empty box clears the answer. Ctrl+d defers.
 - A command is words separated by spaces, with quotes keeping spaces together.
-- Several people are separated by `;`.
+- Several people of the `person` type are separated by `;`.
 - An answer that the validator refuses stays on the Walk with the problem message under the answer.
 - Every accepted answer is saved to the plan file at once. There is no unsaved state.
 - While a person types, letters are text, so the single-letter keys are off. Back, forward, defer, and help have control-key forms listed below.
+
+## Pick lists
+
+Decided, and built. A `contact`, `role`, or `team` question carries the directory's entries as `Question.Choices`, each with an id and a name, in directory order, see [0080](../decisions/0080-directory.md). The Walk shows the names and stores the id. The id stays out of sight.
+
+```text
+  Which role owns onboarding here? It appears as the owner of the Access
+  section.
+
+  > Engineering manager
+    IT contact
+    Platform team lead
+    deferred, answer later
+    clear the answer
+```
+
+- **One answer.** A single question looks and works like a choice question: up and down move, enter picks, and the cursor starts on the current answer, marked `(current)`. The list ends with "deferred, answer later" and "clear the answer".
+- **Several answers.** A `multiple` question is a checklist. Space picks or unpicks the row under the cursor, and each picked row shows the number it was picked in. Enter confirms the picks as one ordered list. The cursor starts on the first current pick.
+
+```text
+  > [2] Alex Rivera
+    [1] Sam Okafor
+    [ ] IT service desk
+
+  Space picks or unpicks. Enter confirms. Pick order is kept.
+  Order: Sam Okafor, then Alex Rivera
+```
+
+- **Order.** The order of the picks is the order stored, because an escalation list is read in order. The numbers and the "Order:" line show it. There is no key to move a pick, and that was rejected: unpick and pick again costs two keys for a list of two or three, and a move key is one more key to learn and to show. Revisit it if lists grow.
+- **Enter on no picks.** With nothing picked and nothing answered, enter moves on without saving, as on an empty text box. With nothing picked and an answer saved, enter clears it.
+- **Same names.** Two entries with the same name show their ids in brackets, `Sam Okafor (sam-1)` and `Sam Okafor (sam-2)`, and only those two. A name that is unique shows no id.
+- **Defer and move on.** `d` defers, `x` clears, `n` and `p` move, as for every other question. A several-answers list has no rows for defer and clear, because enter confirms the picks.
+- **Long lists.** The list scrolls around the cursor to fit the window. A cut list adds a faint "Showing 12 to 19 of 40" line. The help lines under a several-answers list go first when there is no room.
+- **Nothing to pick.** When the directory has no entry of the kind, a message takes the list's place and every other key still works, so a person can defer and come back. The onboarder reads "No contacts to pick from yet. Add them to the organization's directory first." with "roles" or "teams" for those types. The onboardee reads "No teams to pick from yet. Ask your onboarder to add this." The People screen will replace the first wording with a pointer to it.
+- **Names everywhere.** The Overview, its preview, and the suggestion lines in the notes show the name, and several names are separated by `;` in the order stored. The Review lists blockers, deferred questions, and validator problems, which are about questions and not about answers, so it needs no name. The document preview shows the names the assembler resolves.
+- **Stale answers.** An answer that names an id the directory no longer holds counts as not answered, as the finder counts it. The Walk, Overview, rail, and counts show it as not answered, and no id is shown. A faint "was sam-okafor" was rejected: the validator already warns about the stale id on the Review, and the person's task is to pick again. A list with at least one known id counts as answered and shows only the known names. Confirming the picks drops the unknown ids.
 
 ## Keys
 
@@ -158,21 +201,21 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 
 | Key | Walk, choosing | Walk, typing | Overview | Review | Sections |
 | -- | -- | -- | -- | -- | -- |
-| enter | Pick, move on | Accept, move on | Open the question | Open the question | Switch on or off |
+| enter | Pick, move on. On a several-answers list, confirm the picks | Accept, move on | Open the question | Open the question | Switch on or off |
 | up, down, `k`, `j` | Move the choice |  | Move | Move | Move |
+| space | Pick or unpick on a several-answers list |  |  |  | Switch on or off |
 | `p`, left, shift+tab | Back | shift+tab, ctrl+p |  |  |  |
 | `n`, right | Skip forward | ctrl+n |  |  |  |
 | `d` | Defer, move on | ctrl+d |  |  |  |
 | `x` | Clear | Empty the box and enter |  |  |  |
 | tab |  | Try a suggestion |  | Items or document |  |
-| `o`, `r`, `s` | Overview, review, sections |  | `r`, `s` | `o`, `s` |  |
-| `w` |  |  |  | Walk |  |
+| `w`, `o`, `r`, `s` | `o`, `r`, `s` | Letters are text | `w`, `r`, `s` | `w`, `o`, `s` | `w`, `o`, `r` |
 | pgup, pgdn, `g`, `G` |  |  | `g`, `G` | Scroll the document |  |
 | esc | Back to overview or review | Same | Walk | Walk | Back |
 | `?` | Help | f1 | Help | Help | Help |
 | `q` | Quit |  | Quit | Quit | Back |
 
-`s` and the sections screen do not exist in the onboardee mode.
+`s` and the sections screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
 
 ## Accessibility
 
@@ -189,18 +232,39 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. Style tests check the bright and faint panes in each state. A scripted pseudo-terminal run covers start and quit. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
-## Direction: screen tabs and sub-sections
+## Screen tabs
 
-Direction, from using the redesigned walk.
+Decided, and built. A designer asked for it after using the redesigned Walk: a bare title does not show which screen a person is on.
 
-- **A tab strip names the screens.** The header lists the screens a person can move between, with the current one highlighted, such as `Walk  [Overview]  Review  Sections`. The current tab is bold in the accent colour, which is "you are here". The others are faint, each with its key beside it. With no colour the current tab is in brackets. A screen the audience cannot use, such as Sections for the onboardee, is left out. A bare title does not show which screen a person is on.
-- **A sub-section is indented.** Under [0070](../decisions/0070-sub-sections.md) a section can have a parent. The overview shows it one indent level for each level of depth, under its own section title. The progress rail keeps its cells next to its parent's, and the document preview nests it by heading level.
+The header line holds the title, the tab strip, and the progress count at the right.
+
+```text
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s          13 of 13 answered
+```
+
+- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections. A screen the audience cannot use, such as Sections for the onboardee, is left out.
+- The current tab is bold in the accent colour, which is "you are here". With no colour it is in brackets. The other tabs are faint, each with its key.
+- The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Walk while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
+- While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` leaves.
+- When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. At 60 columns the strip shows names only.
+
+Rejected: the screen name beside the title, as before (`Onboarding plan  Overview`), because it shows one screen and hides that there are others. Also rejected: a tab for Help, because help is a page over the current screen and the current tab stays marked while it is open.
+
+## Sub-sections
+
+Decided, and built. Under [0070](../decisions/0070-sub-sections.md) a section can have a parent.
+
+- The Overview shows a sub-section under its parent, indented two columns for each level of depth. The indent applies to the section title and to its question rows.
+- The progress rail keeps the cells of a section and its sub-sections together, with the usual gap only between families of sections.
+- The Walk shows the sub-section's own title. The document preview nests it by heading level.
 
 ## Open
 
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
+- A key to move a pick up or down in a several-answers list.
+- Adding a contact, role, or team from the pick list. Under 0080 the onboarder adds one inline, and the People screen is where that arrives.
 - Whether the Walk goes to the next unanswered question when the person is revisiting from Review. Today it goes to the next in order.
 - How the tool reminds a person of deferred questions after they quit.
 - Whether the rail should show the section titles when the window is wide and the plan is small.

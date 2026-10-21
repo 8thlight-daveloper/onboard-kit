@@ -47,3 +47,7 @@ func (colors palette) render(weight tone, focused bool, text string) string {
 	}
 	return style.Render(text)
 }
+
+func (colors palette) styled() bool {
+	return colors.styles[toneStrong].Render("x") != "x"
+}

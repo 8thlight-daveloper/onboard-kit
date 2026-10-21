@@ -1,4 +1,4 @@
-  Your onboarding  Walk                                                                               3 of 3 to answer
+  Your onboarding  [Walk]  Overview o  Review r                                                       3 of 3 to answer
   ◆·  ·
 
   Welcome. A few questions about you, then your own onboarding          │ About this question
@@ -9,7 +9,10 @@
                                                                         │
   Which team are you joining?                                           │
                                                                         │
-  >                                                                     │
+  > Platform team                                                       │
+    Design team                                                         │
+    deferred, answer later                                              │
+    clear the answer                                                    │
 
 
 
@@ -24,7 +27,4 @@
 
 
 
-
-
-
-  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+  enter choose  p back  d defer  x clear  n skip  q quit  ? help

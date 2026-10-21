@@ -1,4 +1,4 @@
-  Onboarding plan  Overview                                                                          13 of 13 answered
+  Onboarding plan  Walk w  [Overview]  Review r  Sections s                                          13 of 13 answered
   ✓◆  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Plan                                                                  │ Plan
@@ -6,11 +6,11 @@
   > [x] * Is the team established, or are we …  established             │
                                                                         │ Is the team established, or are we the first
   Access                                                                │ consultants?
-    [x] * Which role owns onboarding here? It…  engineering-manager     │
+    [x] * Which role owns onboarding here? It…  Engineering manager     │
     [x] * Where do people request source cont…  https://access.acme.ex… │ Answer: established
     [x] * What is the clone URL of the main r…  git@git.acme.example:p… │
-    [x] * Which role grants source control ac…  it-contact              │ About this question
-    [x] * Which role grants CI dashboard acce…  platform-team-lead      │
+    [x] * Which role grants source control ac…  IT contact              │ About this question
+    [x] * Which role grants CI dashboard acce…  Platform team lead      │
     [~] * Which role grants work tracker acce…  deferred, answer later  │ Type: choice: established, first-consultants
                                                                         │ Answered by: onboarder
   Clone the project and run the tests                                   │ Name: plan.team_state
@@ -20,11 +20,11 @@
     [x] * Which command runs the test suite?    make; test              │
                                                                         │
   If you are stuck                                                      │
-    [x] * Who can anyone ask for help with an…  alex-rivera; sam-okafor │
+    [x] * Who can anyone ask for help with an…  Alex Rivera; Sam Okafor │
 
 
 
 
 
 
-  enter open  esc walk  r review  s sections  q quit  ? help
+  enter open  esc walk  q quit  ? help

@@ -16,6 +16,13 @@ func withColour(t *testing.T) {
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
 }
 
+func withoutColour(t *testing.T) {
+	t.Helper()
+	previous := lipgloss.ColorProfile()
+	lipgloss.SetColorProfile(profileAscii)
+	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
+}
+
 func expectBright(t *testing.T, view string, text string) {
 	t.Helper()
 	if isFaint(t, view, text) {
@@ -73,7 +80,7 @@ func TestTheAccentNeverColoursATitle(t *testing.T) {
 	app, _ := startWalking(t)
 	for name, shown := range map[string]App{"walk": app, "overview": press(app, esc), "review": press(app, esc, typed("r"))} {
 		view := resize(shown, 140, 40).View()
-		for _, title := range []string{"Onboarding plan", "Blockers", "Overview"} {
+		for _, title := range []string{"Onboarding plan", "Blockers"} {
 			if !strings.Contains(view, title) {
 				continue
 			}

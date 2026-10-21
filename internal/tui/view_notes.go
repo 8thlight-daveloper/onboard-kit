@@ -39,7 +39,9 @@ func (app App) noteFacts(question model.Question) []string {
 		"Name: "+question.ID,
 	)
 	for _, suggestion := range question.Suggestions {
-		facts = append(facts, "Suggestion ("+string(suggestion.Source)+"): "+describeValue(suggestion.Value))
+		if text := describeAnswer(question, suggestion.Value); text != "" {
+			facts = append(facts, "Suggestion ("+string(suggestion.Source)+"): "+text)
+		}
 	}
 	return facts
 }

@@ -16,11 +16,13 @@ func (app App) updateWalk(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "up", "k":
-		app.entry.choice = max(app.entry.choice-1, 0)
+		app.entry = app.entry.moved(-1)
 	case "down", "j":
-		app.entry.choice = min(app.entry.choice+1, len(app.entry.choices)-1)
+		app.entry = app.entry.moved(1)
+	case " ":
+		app.entry = app.entry.toggled()
 	case "enter":
-		return app.accept(app.entry.choices[app.entry.choice].value), nil
+		return app.confirmChoice(), nil
 	case "d":
 		return app.accept(model.Value{Kind: model.ValueKindDeferred}), nil
 	case "x":
@@ -43,6 +45,19 @@ func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		app.helpOpen = true
 	}
 	return app, nil
+}
+
+func (app App) confirmChoice() App {
+	switch {
+	case app.entry.pickingMany():
+		if len(app.entry.picked) == 0 && answerState(app.entry.question) != "settled" {
+			return app.moveTo(app.cursor + 1)
+		}
+		return app.accept(app.entry.pickedValue())
+	case len(app.entry.choices) == 0:
+		return app.moveTo(app.cursor + 1)
+	}
+	return app.accept(app.entry.choices[app.entry.choice].value)
 }
 
 func (app App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
@@ -100,7 +115,7 @@ func (app App) acceptText() App {
 		return app
 	}
 	value := parseEntry(question, app.entry.input.Value())
-	if value.Kind == model.ValueKindNone && stateOf(question.Answer) != "settled" {
+	if value.Kind == model.ValueKindNone && answerState(question) != "settled" {
 		return app.moveTo(app.cursor + 1)
 	}
 	return app.accept(value)
@@ -108,7 +123,7 @@ func (app App) acceptText() App {
 
 func (app App) clear() App {
 	question, ok := app.current()
-	if !ok || stateOf(question.Answer) == "unanswered" {
+	if !ok || answerState(question) == "unanswered" {
 		return app
 	}
 	next, saved := app.submit(model.Value{})

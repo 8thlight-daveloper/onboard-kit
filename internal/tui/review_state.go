@@ -35,7 +35,7 @@ type reviewState struct {
 func newReviewState(backend Backend, plan model.Plan, audience model.Audience, questions []model.Question, document string) reviewState {
 	state := reviewState{document: strings.Split(document, "\n"), total: len(questions)}
 	for _, question := range questions {
-		if stateOf(question.Answer) != "unanswered" {
+		if answerState(question) != "unanswered" {
 			state.answered++
 		}
 	}
@@ -54,13 +54,13 @@ func reviewItems(backend Backend, plan model.Plan, audience model.Audience, ques
 		blocked[blocker.Question] = true
 		question := byID[blocker.Question]
 		label := "required"
-		if stateOf(question.Answer) == "deferred" {
+		if answerState(question) == "deferred" {
 			label = "required, deferred"
 		}
 		items = append(items, reviewItem{kind: reviewBlocker, label: label, text: questionTitle(question, blocker.Question), questionID: blocker.Question})
 	}
 	for _, question := range questions {
-		if stateOf(question.Answer) == "deferred" && !blocked[question.ID] {
+		if answerState(question) == "deferred" && !blocked[question.ID] {
 			items = append(items, reviewItem{kind: reviewDeferred, label: "deferred", text: questionTitle(question, question.ID), questionID: question.ID})
 		}
 	}
