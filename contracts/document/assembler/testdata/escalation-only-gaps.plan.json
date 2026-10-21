@@ -1,0 +1,8 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"a-section","title":"Section list","summary":"The gap is only in the escalation of the section.","timing":"week-one","owner":"Dana",
+   "variables":[{"name":"boss","description":"Boss"}],
+   "escalation":["$boss"]},
+  {"id":"b-step","title":"Step list","summary":"The gap is only in the escalation of a step.","timing":"week-one",
+   "variables":[{"name":"lead","description":"Lead"}],
+   "steps":[{"id":"go","name":"Go","escalation":["$lead"]}]}]}

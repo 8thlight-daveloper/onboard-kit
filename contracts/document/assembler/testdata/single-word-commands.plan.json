@@ -1,0 +1,5 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"build","title":"Build","summary":"Build it.",
+   "steps":[
+    {"id":"compile","name":"Compile","run":["make"],"checks":[{"run":["true"]}]}]}]}

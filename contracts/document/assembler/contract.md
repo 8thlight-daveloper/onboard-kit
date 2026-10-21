@@ -55,7 +55,7 @@ The text is written as held, except the team. When the plan has a team, see Team
 The heading `## Gaps to fill`, a blank line, and a table.
 
 - The header row is `| Gap | Who fills it | By when |` and the second row is `| --- | --- | --- |`. The table is always there, and it has no other row when there are no gaps.
-- There is one row for each problem of the document, in this order: the sections in the selector's order, and within a section the order of the section's `variables`, by the variable each problem names. A deferred, an unanswered, and a vacant variable look alike. There is one row for each question, whatever the number of places the variable is written in.
+- There is one row for each problem of the document, in this order: the sections in the selector's order, and within a section the order of the section's `variables`, by the variable each problem names. A deferred, an unanswered, and a vacant variable look alike. There is one row for each question, whatever the number of places the variable is written in and the number of times the section declares it.
 - A row is `| ` and the three cells joined by ` | ` and then ` |`. A cell may be empty.
 - **Gap** is the `description` of the variable the problem names, from the variables of the section. A problem's `question` is `<section id>.<name>`. A variable with a blank `description`, or one that is not found, gives the name.
 - **Who fills it** is the section's `owner`, after the resolver has filled it. It is empty when the section has no owner.
@@ -117,7 +117,7 @@ A `contact`, `role`, or `team` variable is filled by the resolver, with the dire
 
 A vacant role that the document writes is a gap. The assembler reports it for each `role` variable of an active section that has a settled answer naming a vacant role of the directory, when the section uses the variable. A section uses a variable when `$name` is read in a field the resolver fills, as the resolver reads it, or in an `escalation`, see Escalation. A variable that no text uses, a name only in `$$name` or only as the start of a longer name, and a variable that is not of type `role` give no gap.
 
-The problem has the code `directory.role-vacant`, the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. It is reported once for each question, however many places write it. When the resolver reports the same code for the same question, the assembler keeps one. The gap row has the description of the variable, and the section's owner and timing, as for any gap. An unknown role id is not vacant, it is unanswered.
+The problem has the code `directory.role-vacant`, the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. The answer decides, whatever the `audience` or the `default` of the variable. It is reported once for each question, however many places write it. When the resolver reports the same code for the same question, the assembler keeps one. The gap row has the description of the variable, and the section's owner and timing, as for any gap. An unknown role id is not vacant, it is unanswered.
 
 ### Escalation
 
@@ -135,7 +135,7 @@ The name of the timing with each `-` written as a space: `before day one`, `week
 
 The assembler escapes very little. A person writes Markdown in the plan and the document is Markdown. These are the whole of it.
 
-- **A blank for an onboarding variable.** The resolver writes an onboarding variable that has no value as its name between `<` and `>`, and Markdown reads that as a tag and hides it. In the text fields `title`, `summary`, `owner`, `verification`, `body`, a step's `name`, `owner`, `notes`, `open`, and a check's `ask`, the assembler writes every occurrence of that blank, for each onboarding variable the section declares, between backticks. It does not do this in a code span the assembler writes, such as `run`, `directory`, and `env`, where the blank shows as it is. Other text between `<` and `>` is not touched. The assembler finds the blank by the name of the variable and does not look at the wording of any other marker. The resolver's markers for a deferred and an unanswered variable are written as they are.
+- **A blank for an onboarding variable.** The resolver writes an onboarding variable that has no value as its name between `<` and `>`, and Markdown reads that as a tag and hides it. In the text fields `title`, `summary`, `owner`, `verification`, `body`, a step's `name`, `owner`, `notes`, `open`, and a check's `ask`, the assembler writes every occurrence of that blank, for each onboarding variable the section declares, between backticks. It does not do this in a code span the assembler writes, such as `run`, `directory`, and `env`, where the blank shows as it is. A name the section declares twice counts once. Other text between `<` and `>` is not touched, and that includes the name of a variable that is not for the onboardee. The assembler finds the blank by the name of the variable and does not look at the wording of any other marker. The resolver's markers for a deferred and an unanswered variable are written as they are.
 - **The table.** A cell escapes `|` and line breaks, as above.
 - **Code spans.** The template set, a command, a directory, and an environment variable are each written between single backticks, with the text as held. Text that holds a backtick is not covered.
 
@@ -166,7 +166,7 @@ None. It reads `provenance`, `answers`, the `directory`, the plan's `variables`,
 - What the selector and the resolver do. Their contracts cover it, and the assembler tests rely on it. That includes how a variable with a `default` is filled, see [0045](../../../docs/decisions/0045-defaults-are-suggestions.md). The fixtures here declare no default.
 - That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them. The selector leaves out a section whose parent is not in the plan or whose chain of parents loops, so the assembler never writes one.
 - A list of ids with some that are in the directory and some that are not, and a `multiple` role variable that holds both a vacant role and one with holders.
-- A role or contact variable that has a `default`, and an `escalation` item for a variable with the audience `onboardee`.
+- A contact variable that has a `default`, a role variable that has a `default` and no answer, and an `escalation` item for a variable with the audience `onboardee`.
 - Who holds a role beyond the rules above: that a role with no holder is a warning to the validator, and that a team is marked as not yet known. The document does not mark a role as not specific to a team.
 - The directory's own validity: duplicate ids, a holder that is not a contact, and a contact with no way to be reached.
 - A team answer that is not a known id: the title shows the answer `team` as held, so an unknown id shows as the id.
@@ -262,6 +262,11 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | A vacant role not found when it is only in a section's or a step's escalation | `directory-vacant` |
 | A holder that is not a contact counted as a holder, or an unknown role id counted as vacant | `directory-vacant`, `directory-unknown-ids` |
 | A variable that is not of type `role` reported as vacant | `directory-vacant` |
+| A vacant role missed when its variable has the audience `onboardee` or a `default` | `directory-vacant-answered` |
+| A gap only in the escalation of a section or of a step left out of the table and the problems | `escalation-only-gaps` |
+| A command or a check with a `run` of one item left out | `single-word-commands` |
+| A variable declared twice gets two rows, or its blank written twice | `variable-declared-twice` |
+| The blank written for a variable that is not for the onboardee | `blank-plain-variable` |
 | The vacant gaps after the resolver's, and not in the order of the variables | `directory-vacant`, `directory-vacant-order` |
 | The code or the severity of the vacancy changed | `directory-vacant`, `directory-team-unanswered` |
 | Escalation left out of the footer or the step, or written as the names held | `directory-escalation`, `directory-vacant` |

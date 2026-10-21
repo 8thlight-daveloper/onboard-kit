@@ -1,0 +1,5 @@
+{"schemaVersion":1,"provenance":{"templateSet":"example","generatedOn":"2026-10-15"},"answers":{"plan":{"organization":"Globex","team":"Core"}},
+ "sections":[
+  {"id":"dup","title":"Twice","summary":"Each variable is declared twice.",
+   "body":"Later: $later. Nick: $nick, and $nick again.",
+   "variables":[{"name":"later","description":"Later"},{"name":"later","description":"Later"},{"name":"nick","description":"Nick","audience":"onboardee"},{"name":"nick","description":"Nick","audience":"onboardee"}]}]}
