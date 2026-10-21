@@ -28,8 +28,10 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 | Question group | Questions with the same name, type, and options, which a user interface can ask once and apply to every member. |
 | Question condition | An optional `askIf` on a variable. The question is asked only when other answers match. When it is false the question is skipped, keeps any stored answer, and does not block. See [conditions](reference/section-template-schema/conditions.md). |
 | Section condition | An optional `includeIf` on a section or template, with the same syntax as `askIf`. The section is in the plan's document only when it holds, and it may name only plan variables. See [conditions](reference/section-template-schema/conditions.md#section-conditions). |
-| Person variable | A variable of type `person`: one person written `Name, email, chat handle`. With `multiple: true` it holds a list of people. It names who can help with something. See [person](reference/section-template-schema/variables.md#person). |
-| Escalation | An ordered list of person variables on a section or step, naming who to ask when it is blocked. The general path is its own section, "If you are stuck". See [escalation](reference/section-template-schema/escalation.md). |
+| Directory | The org plan's lists of contacts, roles, and teams. Answers to `contact`, `role`, and `team` questions are ids from it. See [0080](decisions/0080-directory.md). |
+| Contact | A person or a shared contact, such as a help channel, in the directory. |
+| Role | A named job in the directory. Its holders are contacts, and a team can name its own holders. A role with no holder is vacant. |
+| Escalation | An ordered list of contact or role variables on a section or step, naming who to ask when it is blocked. The general path is its own section, "If you are stuck". See [escalation](reference/section-template-schema/escalation.md). |
 | Severity | Whether a problem is an `error`, which stops an answer and blocks assembly, or a `warning`, which is advice and never blocks. |
 | Section switch | The `enabled` setting on a plan section, true by default. A person turns a section off. It is not a variable or a question. |
 | Reserved name | A variable name or template id that lint rejects, because it has a special meaning or YAML reads it as another type. See [section template schema](reference/section-template-schema/reserved-names.md). |

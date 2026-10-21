@@ -83,7 +83,7 @@ flowchart TB
 | Plan validator | Checks whether a plan's answers are acceptable: type, options, pattern, and the secrets check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, check shapes, and `escalation` references, with warnings for thin contacts and single points of failure. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
-| Plan editor | Returns a copy of a plan with one answer applied, or one section's switch changed. An answer changes only `answers`, and a switch changes only that section's `enabled`. The plan it was given is not altered |
+| Plan editor | Returns a copy of a plan with one answer applied, one section's switch changed, or one directory entry added, changed, or removed. An answer changes only `answers`, a switch only that section's `enabled`, and a directory edit only the directory. Removing an entry also clears the answers and holder entries that named it, and reports them. The plan it was given is not altered |
 | Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker |
 | Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
 | Plan refresher | Brings a personal plan up to date with a newer org plan, by a three-way comparison of the cached org plan, the new org plan, and the personal plan. Returns the new personal plan and a report of what changed |
@@ -93,7 +93,7 @@ flowchart TB
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
-| Section resolver | Fills a section's variables from the plan's answers |
+| Section resolver | Fills a section's variables from the plan's answers, and fills `contact`, `role`, and `team` variables from the directory and the answered team |
 | Section hasher | Computes the content hash recorded in a section's `source` |
 | Secrets check | Decides whether a value looks like a token |
 
@@ -118,21 +118,21 @@ Two declarations for every component, stated in its contract and checked by a pr
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
-| Component | `schemaVersion` | `id` | `provenance` | `origin` | `variables` | `answers` | section content | `source` |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- |
-| `plan/instantiator` | C |  | C |  | C | C | C | C |
-| `plan/decoder` | C | C | C | C | C | C | C | C |
-| `plan/encoder` | R | R | R | R | R | R | R | R |
-| `plan/editor` |  |  |  |  |  | W | W |  |
-| `plan/refresher` |  |  |  | W | W | W | W | W |
-| `question/finder` |  |  |  |  | R | R | R |  |
-| `plan/validator` |  |  |  |  | R | R | R |  |
-| `section/selector` |  |  |  |  |  | R | R |  |
-| `section/resolver` |  |  |  |  |  | R | R |  |
-| `section/hasher` |  |  |  |  |  |  | R |  |
-| `section/validator` |  |  |  |  |  |  | R |  |
-| `document/assembler` | R | R | R | R | R | R | R |  |
-| Update action, deferred |  |  | W |  |  |  | W | W |
+| Component | `schemaVersion` | `id` | `provenance` | `origin` | `directory` | `variables` | `answers` | section content | `source` |
+| -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
+| `plan/instantiator` | C |  | C |  |  | C | C | C | C |
+| `plan/decoder` | C | C | C | C | C | C | C | C | C |
+| `plan/encoder` | R | R | R | R | R | R | R | R | R |
+| `plan/editor` |  |  |  |  | W |  | W | W |  |
+| `plan/refresher` |  |  |  | W | W | W | W | W | W |
+| `question/finder` |  |  |  |  | R | R | R | R |  |
+| `plan/validator` |  |  |  |  | R | R | R | R |  |
+| `section/selector` |  |  |  |  |  |  | R | R |  |
+| `section/resolver` |  |  |  |  | R |  | R | R |  |
+| `section/hasher` |  |  |  |  |  |  |  | R |  |
+| `section/validator` |  |  |  |  |  |  |  | R |  |
+| `document/assembler` | R | R | R | R | R | R | R | R |  |
+| Update action, deferred |  |  | W |  |  |  |  | W | W |
 
 A person editing a plan by hand can change anything, and the plan validator checks the result on load. The template linter takes templates and not plans, so it has no row in the plan access table.
 

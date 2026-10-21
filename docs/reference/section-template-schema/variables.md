@@ -42,12 +42,12 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `name` | The `$name` the section uses |
 | `description` | What the question asks, in words. Write it as a question the answerer can respond to, and say where the answer appears when that is not obvious |
 | `example` | One illustration of a good answer, such as `Engineering manager`. It shows as placeholder text and in the detail of the question. It is never an answer or a default, and nothing fills it in. Part of the template, so a change to it changes the content hash |
-| `type` | `string` (the default), `boolean`, `choice`, `command`, or `person` |
+| `type` | `string` (the default), `boolean`, `choice`, `command`, `contact`, `role`, or `team` |
 | `options` | The allowed values of a `choice` |
 | `pattern` | A regular expression a `string` must match |
 | `patternHint` | The expected format in words, shown when a value does not match |
 | `required` | Whether the question must have an answer. Defaults to false |
-| `multiple` | Whether the variable takes several answers, held as a list. Defaults to false. Only `person` allows it for now, and lint rejects the rest |
+| `multiple` | Whether the variable takes several answers, held as a list. Defaults to false. Only `contact` and `role` allow it, and lint rejects the rest |
 | `default` | A suggestion offered when the question is asked. It is never an answer and nothing fills it in, see [0045](../../decisions/0045-defaults-are-suggestions.md). It must satisfy the type, options, and pattern |
 | `audience` | `onboarder` (the default) or `onboardee`. See below |
 | `askIf` | A [question condition](conditions.md): ask this question only when other answers match |
@@ -60,29 +60,35 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 | `boolean` | `true` or `false`, lowercase | No |
 | `choice` | One of `options` | No |
 | `command` | An argument list. It expands as a list inside `run`, and joins with spaces in prose | Yes, as a list |
-| `person` | One person, written as a text line. See [person](#person) | Yes, as a line |
+| `contact` | An id from the directory's contacts. See [directory types](#directory-types) | No |
+| `role` | An id from the directory's roles | No |
+| `team` | An id from the directory's teams. Single only | No |
 
 - `pattern` uses RE2 syntax, a portable subset with no backreferences or lookaround, so every language can run it.
 - A URL check belongs in `pattern`. A clone address such as `git@host:org/repo.git` is not a standard URL, so a built-in `url` type would reject it. The secrets check also looks inside a URL for an embedded credential.
 
-## Person
+## Directory types
 
-A `person` variable names someone who can help with something. One answer is one text line, written `Name, email, chat handle`, such as `Jane Doe, jane@acme.example, @jane`. With `multiple: true` the answer is a list of those lines, one person each.
+`contact`, `role`, and `team` variables are picked from the organization's directory, which holds contacts, roles, and teams. See [0080](../../decisions/0080-directory.md). An answer is the id of an entry and never a name, so a changed name or a new holder reaches every plan without anyone editing an answer.
 
 ```yaml
 - name: source_control_grantor
-  type: person
+  type: role
+  description: Which role grants source control access?
+  required: true
+- name: general_contacts
+  type: contact
   multiple: true
-  description: Who grants source control access
+  description: Who can anyone ask for help with anything?
   required: true
 ```
 
-- **Two ways to reach each person.** The prompt suggests an email and a chat handle. The tool counts the comma-separated parts after the name, and a person with fewer than two gets a warning. A warning never stops the answer.
-- **A backup.** A required `multiple` variable needs at least one person, or `deferred`. A `multiple` variable with exactly one person gets a warning, because that person may be out of office.
-- **Ask once.** Same-name `person` variables across sections group, and an earlier entry is offered as a suggestion, so a person is typed once.
-- **Rendering.** In the document the people appear in order, joined with a comma and the word then in a sentence, such as `ann, then bo`.
-- **Privacy.** A plan holds real contact details, and it stays in `output/`, which git ignores. Examples and tests use `.example` addresses.
-- **Direction.** Text lines are the MVP. The intended end state is a structured record per person, with named fields, so the tool can check an email address, the onboarding helper can link or message someone, and a person is edited in one place. A form to add a person and a list of people already entered would replace the lines. The declaration stays `type: person` with `multiple: true`, and only the stored answer changes, through a schema version bump and a migration. The open questions and a toolkit spike are in [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
+- **Pick, do not type.** The walkthrough offers the directory's entries. The onboarder adds a missing contact on the People screen. The `team` question's choices are the directory's teams.
+- **An unknown id is unanswered.** An answer that names an id the directory no longer has counts as not answered, so a required question blocks until it is filled again.
+- **A role resolves to people.** A role gives the contacts who hold it. A team can name its own holders for a role, and those win for that team. The team is the answer to the plan's `team` variable. A role with no holder shows as vacant, and the document lists it as a gap.
+- **Order.** A `multiple` question keeps its order. An escalation list is read in that order.
+- **Rendering.** A contact shows as `Name, @slack`, or `Name, email` when there is no Slack handle, or just `Name`. Several are joined with a semicolon. A vacant role shows as `Role name (vacant)`.
+- **Privacy.** The directory holds real contact details, so the org plan's location must require authentication. Examples and tests use `.example` addresses.
 
 ## Audience
 

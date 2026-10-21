@@ -204,7 +204,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `parent` | Text, optional | The id of another section. A section with a parent is a sub-section: it is active only if its parent is. See [0070](../decisions/0070-sub-sections.md) |
 | `includeIf` | Condition, optional | Names plan variables and the questions of its ancestors |
 | `after` | List of section ids, optional |  |
-| `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `person` variables the section declares. See [escalation](section-template-schema/escalation.md) |
+| `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `contact` or `role` variables the section declares. See [escalation](section-template-schema/escalation.md) |
 | `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
 | `source` | Source, optional | Absent on a template and on a section added by hand |
@@ -228,7 +228,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `options` | List of text, optional | For a `choice` |
 | `pattern`, `patternHint` | Text, optional | RE2 syntax, for a `string` |
 | `required` | Boolean, optional |  |
-| `multiple` | Boolean, optional | Takes several answers, held as a list. Only `person` allows it for now |
+| `multiple` | Boolean, optional | Takes several answers, held as a list. Only `contact` and `role` allow it |
 | `default` | Value, optional | Must satisfy the type, options, and pattern |
 | `audience` | Audience, optional | `onboarder` by default |
 | `askIf` | Condition, optional |  |
@@ -269,7 +269,7 @@ A Check has exactly one of `run` (a list of text), `ask` (text, a yes or no ques
 
 | Name | Values |
 | -- | -- |
-| VariableType | `string`, `boolean`, `choice`, `command`, `person`, `contact`, `role`, `team` |
+| VariableType | `string`, `boolean`, `choice`, `command`, `contact`, `role`, `team` |
 | Audience | `onboarder`, `onboardee` |
 | Timing | `before-day-one`, `week-one`, `days-8-to-30`, `days-31-to-90`, `anytime`. Each has a fixed day window, see [ordering](section-template-schema/ordering.md#timing) |
 | Severity | `error`, `warning` |
