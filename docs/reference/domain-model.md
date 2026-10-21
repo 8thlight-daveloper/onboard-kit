@@ -329,6 +329,19 @@ A group is the set of questions that share a `group` key, so a user interface ca
 | `value` | Value |  |
 | `source` | `default` or `given` |  |
 
+### Reconciliation
+
+What the record reconciler returns beside the record.
+
+| Field | Type | Notes |
+| -- | -- | -- |
+| `newQuestions` | List of text | Question ids the new plan declares and the previous plan did not, sorted |
+| `removedQuestions` | List of text | Question ids the previous plan declared and the new plan does not, sorted. Their answers stay as hidden answers |
+| `answersToReview` | List of text | Question ids whose answer the new plan no longer accepts. The answer is removed, sorted |
+| `newSections` | List of text | Section ids that are new, sorted |
+| `removedSections` | List of text | Section ids that are gone, sorted |
+| `changedOutcomes` | List of text | Section ids whose outcome was recorded against content that has since changed, sorted |
+
 ### Cleared
 
 What the editor returns when it removes a directory entry.

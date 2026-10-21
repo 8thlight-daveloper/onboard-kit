@@ -34,3 +34,12 @@ type Outcome struct {
 	Note        string
 	Differently string
 }
+
+type Reconciliation struct {
+	NewQuestions     []string
+	RemovedQuestions []string
+	AnswersToReview  []string
+	NewSections      []string
+	RemovedSections  []string
+	ChangedOutcomes  []string
+}
