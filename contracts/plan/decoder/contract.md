@@ -145,15 +145,16 @@ A plan's `directory` is optional and sits in any key order, like `origin`. Each 
 | -- | -- | -- |
 | Contact | `id`, `name`, `email`, `slack`, `slackId` | `ID`, `Name`, `Email`, `Slack`, `SlackID`, all text |
 | Role | `id`, `name`, `holders` | `ID`, `Name`, and `Holders`, a list of text |
-| Team | `id`, `name`, `holders` | `ID`, `Name`, and `Holders`, a map of role id to a list of text |
+| Team | `id`, `name`, `contact`, `holders` | `ID`, `Name`, `Contact`, all text, and `Holders`, a map of role id to a list of text |
 
 - An absent, empty, or null `directory`, and a `directory` with no items, is the zero Directory, because the model cannot tell them apart. A null or empty `contacts`, `roles`, or `holders` is nil. A contact, role, or team that is an empty map is read as a zero item. Nothing is filled in: a contact with only an `id` has no name.
 - A team's `holders` that is absent or null is nil, and one that is `{}` is an empty map that is not nil. A role id in it is a key like any other, written as text whatever it says, so `on`, `y`, `1`, `yes`, and `null` are the text as written, and a role id keeps its case. Its value is a list of text, and an entry that is `[]` or null stays in the map with no items. That entry means the role has no holder for that team, and a version that drops it changes who holds the role. The order of the keys in the file is not kept, because a Go map has none.
+- A team's `contact` is the id of a directory contact that reaches the team, such as a channel or an on-call alias. It is text, read like `title`, and sits in any key order. Absent, null, empty, and `""` are the empty string. It is kept as written, and a quoted `"42"`, `'true'`, and `"yes"` are text, so is a plain `deferred`, and case and spaces are kept. It is never copied into the team's `holders`, and a team's `holders` never changes because of it, so a team with a `contact` and no `holders`, or with `holders: {}`, or with a vacant entry, is read as written. The key belongs to a team only: `contact` in a contact or in a role is an unknown field.
 - A list of holders, in a role or in a team entry, a list of contacts, a list of roles, and a list of teams keep their order and their repeats. The decoder never sorts, reverses, or removes an item.
 - Unknown keys are not kept. An unknown key in `directory`, in a contact, in a role, or in a team is `format.unknown-field` at the key, and the value of that key is not read. Keys are exact: `Email`, `slack_id`, and `Contacts` are unknown, and so is a key that belongs to another kind of item, such as `holders` in a contact. There is no `x-` exemption. The format guards apply: an anchor, an alias, a merge key, and a repeated key are reported at their paths, and a key that is not a scalar is `format.wrong-type` at the map that holds it.
-- A `directory` that is not a map is `format.wrong-type` at `directory`. A `contacts`, `roles`, or `teams` that is not a list is `format.wrong-type` at that key. An item that is not a map, such as a text, a number, a flag, or a list, is `format.wrong-type` at the item, such as `directory.contacts[2]`, and a null item is `format.empty-item`. A field of the wrong kind is `format.wrong-type` at the field, such as `directory.contacts[0].email`, and a spelling problem is reported at the field. A team's `holders` that is not a map is `format.wrong-type` at `directory.teams[0].holders`, and a role entry that is not a list is `format.wrong-type` at `directory.teams[0].holders.<role id>`. A holder is a string at `directory.roles[0].holders[1]` or `directory.teams[0].holders.<role id>[1]`, and a null holder is `format.empty-item` there. Nothing inside a value of the wrong type is read.
+- A `directory` that is not a map is `format.wrong-type` at `directory`. A `contacts`, `roles`, or `teams` that is not a list is `format.wrong-type` at that key. An item that is not a map, such as a text, a number, a flag, or a list, is `format.wrong-type` at the item, such as `directory.contacts[2]`, and a null item is `format.empty-item`. A field of the wrong kind is `format.wrong-type` at the field, such as `directory.contacts[0].email`, and a spelling problem is reported at the field. A team's `contact` of the wrong kind is `format.wrong-type` at `directory.teams[0].contact`, and a spelling problem, an anchor, and a repeated key are reported there. A team's `holders` that is not a map is `format.wrong-type` at `directory.teams[0].holders`, and a role entry that is not a list is `format.wrong-type` at `directory.teams[0].holders.<role id>`. A holder is a string at `directory.roles[0].holders[1]` or `directory.teams[0].holders.<role id>[1]`, and a null holder is `format.empty-item` there. Nothing inside a value of the wrong type is read.
 - A step's `directory` is its working directory, a string, and is unchanged. A `directory` or `x-directory` on a section is an unknown field of that section, as before. Only a top-level `directory` is the plan's.
-- The decoder does not validate the directory. A duplicate id, an id that is not a lowercase slug, an empty id, an email with no `@`, a holder that names no contact, and a team entry for a role that does not exist all pass through unchanged. The plan validator judges them. See [0080](../../../docs/decisions/0080-directory.md), Integrity.
+- The decoder does not validate the directory. A duplicate id, an id that is not a lowercase slug, an empty id, an email with no `@`, a holder that names no contact, a team `contact` that names no contact, and a team entry for a role that does not exist all pass through unchanged. The plan validator judges them. See [0080](../../../docs/decisions/0080-directory.md), Integrity.
 - A newer file may use anything, so under a version problem the `directory` is not read.
 
 ### Section clauses
@@ -198,15 +199,18 @@ These hold for every file the contract tests use.
 
 ## Decisions to know
 
-These are the choices the directory change made where the docs were silent.
+These are the choices the directory change and the team contact change made where the docs were silent.
 
 1. **hard.** A team's `holders` entry that is `[]` or null is kept in the map with no items, and the role is vacant for that team. 0080 says a team "may override who holds a role". Dropping the entry would hand the role back to the organization-wide holders, so a file that says "nobody" would read as "the usual people".
 2. **hard.** An unknown key inside `directory`, a contact, a role, or a team is `format.unknown-field`, with no `x-` exemption and no kept data. The task said to treat them like `provenance` and `origin`. A directory a person extends by hand therefore fails loudly.
 3. **hard.** A plain `42`, `007`, `yes`, or `true` as an id, a name, or a holder is a spelling or type problem, as for any string. A file quotes them. 0080 says ids are slugs, and a slug such as `42` starts with a digit.
-4. **cheap.** A team's `holders: {}` is an empty map that is not nil, and an absent or null one is nil. The model tells them apart and the encoder writes neither.
-5. **cheap.** A null item of a directory list is `format.empty-item`, and an item that is not a map is `format.wrong-type` at the item. This matches the other lists.
-6. **cheap.** A contact, role, or team that is an empty map is a zero item and not a problem. This matches an empty section or step.
-7. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
+4. **hard.** A team's `contact` is read like any string: a plain `42`, `yes`, or `true` is a spelling or type problem, and a file quotes them. The decoder never checks that it names a contact or is a slug, so `design-oncall` with no such contact passes through. 0080 says a team "may name a `contact`, the id of a directory contact", and puts the check in the validator and the editor.
+5. **cheap.** A team's `holders: {}` is an empty map that is not nil, and an absent or null one is nil. The model tells them apart and the encoder writes neither.
+6. **cheap.** A null item of a directory list is `format.empty-item`, and an item that is not a map is `format.wrong-type` at the item. This matches the other lists.
+7. **cheap.** A contact, role, or team that is an empty map is a zero item and not a problem. This matches an empty section or step.
+8. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
+9. **cheap.** A team's `contact` is never read as a holder, and an empty or null one is the empty string, the same as an absent one. 0080 says it "never stands in for a role holder".
+10. **cheap.** `contact` in a contact or a role is `format.unknown-field`, by the exact-keys rule for the directory.
 
 ## Wrong implementations tried
 
@@ -334,5 +338,14 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An anchor, an alias, or a merge key accepted inside the directory, or not reported at a team's `holders` | `directory-anchors` |
 | A repeated key accepted inside the directory, including a role id in a team's `holders` | `directory-duplicate-keys` |
 | A key that is not a scalar skipped in a team's `holders` or in a contact | `directory-complex-key` |
+| A team's `contact` dropped, or kept as an unknown field | `directory-team-contact` |
+| A team's `contact` swapped with the `name` or the `id`, or read from `Contact`, `contacts`, `team-contact`, `x-contact`, or `contactId` | `directory-team-contact`, `directory-team-contact-elsewhere` |
+| A team's `contact` added to its `holders`, or put in as a holder of a role, or a team's `holders` filled when it has none | `directory-team-contact` |
+| A team's `contact` checked against the contacts, or filled, lowercased, trimmed, or cleared when it names none | `directory-team-contact` |
+| A quoted `"42"`, `'true'`, `"yes"`, `'null'`, a plain date, or a plain `deferred` in a team's `contact` read as a number, a flag, null, a date, or Deferred | `directory-team-contact` |
+| A null, empty, or bare `contact` read as the text `null` or `~`, or refused | `directory-team-contact` |
+| A team's `contact` of the wrong kind, a plain `yes`, `Off`, `42`, `0x1F`, or `1e3`, accepted, or reported at the team and not at the `contact` | `directory-team-contact-problems` |
+| An anchor or a repeated key on a team's `contact` not reported | `directory-team-contact-problems` |
+| `contact` accepted or kept in a contact or in a role, or a value there read for more problems | `directory-team-contact-elsewhere` |
 | The directory read in a second pass, so its problems come out of file order | `directory-problem-order` |
 | A newer file reported with the problems of its directory | `directory-version-too-new` |

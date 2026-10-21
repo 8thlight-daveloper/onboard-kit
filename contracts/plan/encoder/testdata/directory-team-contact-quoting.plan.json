@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "teams": [
+      {"id": "a", "contact": "platform-team"},
+      {"id": "b", "contact": "42"},
+      {"id": "c", "contact": "2fa-team"},
+      {"id": "d", "contact": "true"},
+      {"id": "e", "contact": "on"},
+      {"id": "f", "contact": "null"},
+      {"id": "g", "contact": "deferred"},
+      {"id": "h", "contact": "y"},
+      {"id": "i", "contact": "no"},
+      {"id": "j", "contact": "@oncall"},
+      {"id": "k", "contact": "#platform"},
+      {"id": "l", "contact": "2026-10-15"},
+      {"id": "m", "contact": "$HOME"},
+      {"id": "n", "contact": "/oncall"},
+      {"id": "o", "contact": "<noreply@acme.example>"},
+      {"id": "p", "contact": "oncall@acme.example"},
+      {"id": "q", "contact": "1password@acme.example"},
+      {"id": "r", "contact": "Sam: Okafor"},
+      {"id": "s", "contact": " padded"},
+      {"id": "t", "contact": "ends:"},
+      {"id": "u", "contact": "line one\nline two"},
+      {"id": "v", "contact": "line one\n"},
+      {"id": "w", "contact": "Ünal@acme.example"},
+      {"id": "x", "contact": "a #b"}
+    ]
+  }
+}
