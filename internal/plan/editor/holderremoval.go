@@ -23,6 +23,18 @@ func removeHolder(directory *model.Directory, contact string) []string {
 			}
 		}
 	}
+	return append(places, clearTeamContacts(directory, contact)...)
+}
+
+func clearTeamContacts(directory *model.Directory, contact string) []string {
+	places := []string{}
+	for index := range directory.Teams {
+		team := &directory.Teams[index]
+		if team.Contact == contact {
+			team.Contact = ""
+			places = append(places, "team-contact:"+team.ID)
+		}
+	}
 	return places
 }
 
