@@ -16,6 +16,17 @@ Part of the [stack](README.md). The tools that format, lint, and check this repo
 
 Both actions are pinned by commit SHA.
 
+## Trying the tool by hand
+
+The walk saves every answer to the plan file it opens, so never point it at a file under `docs/`. These recipes work on copies in `output/try`, which git ignores.
+
+| Recipe | Does |
+| -- | -- |
+| `just try-onboarder` | Walks a new ACME plan with an empty directory. Reuses the plan on later runs |
+| `just try-acme` | Walks a copy of the finished ACME example, with its directory |
+| `just try-onboardee` | Starts as a newcomer from the ACME copy, with the newcomer's files in `output/try/home` |
+| `just try-reset` | Deletes `output/try` |
+
 ## Retired
 
 | Choice | Was | Since | Until | Replaced by | Why it changed |
