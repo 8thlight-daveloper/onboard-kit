@@ -3005,5 +3005,201 @@
     "after": "remove-team-leaves-the-contact-it-named.after.plan.json",
     "problems": [],
     "source": "docs/decisions/0080-directory.md, Removing an entry clears its references: removing a team does not remove the contact it named"
+  },
+  {
+    "name": "set-contact-takes-an-id-that-uses-the-ends-of-both-ranges",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "a-z-0-9",
+      "name": "Range ends"
+    },
+    "after": "set-contact-takes-an-id-that-uses-the-ends-of-both-ranges.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The letters a and z and the digits 0 and 9 are the ends of the two ranges, and each matches"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-left-brace",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo{ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo{ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-backtick",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo`ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo`ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-slash",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo/ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo/ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-colon",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo:ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo:ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-an-at-sign",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo@ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo@ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-tilde",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "jo~ng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "jo~ng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-capital-z",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "joZng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "joZng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "set-contact-refuses-an-id-with-a-non-ascii-letter",
+    "operation": "set-contact",
+    "before": "people.plan.json",
+    "entry": {
+      "id": "joñng",
+      "name": "Jo Ng"
+    },
+    "after": "people.plan.json",
+    "problems": [
+      {
+        "code": "directory.id-malformed",
+        "severity": "error",
+        "detail": {
+          "kind": "contact",
+          "id": "joñng"
+        }
+      }
+    ],
+    "source": "docs/decisions/0080-directory.md, A directory in the org plan: each entry has a permanent id. contracts shared decision 2: ids are lowercase slugs [a-z0-9][a-z0-9-]*. The character next to an end of a range, or outside both ranges, does not match, so the id is an integrity error"
+  },
+  {
+    "name": "switch-of-a-section-named-plan-is-refused",
+    "operation": "switch",
+    "before": "plan-named-section.plan.json",
+    "section": "plan",
+    "enabled": false,
+    "after": "plan-named-section.plan.json",
+    "problems": [
+      {
+        "code": "switch.unknown-section",
+        "severity": "error",
+        "section": "plan"
+      }
+    ],
+    "source": "docs/reference/domain-model.md, Section: the id is a lowercase slug, never plan. The id plan names the plan scope, and the contract refuses it even when a malformed plan holds a section with that id"
   }
 ]
