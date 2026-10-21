@@ -269,5 +269,194 @@
     "document": "depth-cap.md",
     "problems": [],
     "source": "Hand-written. 0070 and the brief: the heading is 2 plus the depth of the section in the plan, and never deeper than six. Contract rule: Sections. The chain runs from depth zero to depth seven."
+  },
+  {
+    "name": "directory-contacts",
+    "plan": "directory-contacts.plan.json",
+    "document": "directory-contacts.md",
+    "problems": [],
+    "source": "Hand-written. docs/decisions/0080, Directory references in the contract: a contact renders as Name, slack, else Name, email, else Name. A list joins with a semicolon and a space. A command run item takes the same text as one item. Contract rule: Directory references."
+  },
+  {
+    "name": "directory-roles-team",
+    "plan": "directory-roles-team.plan.json",
+    "document": "directory-roles-team.md",
+    "problems": [],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: the team is the answer to the plan variable of type team. A team override replaces the role's holders. An unknown holder is skipped. A role list lists the contacts of each role in order. A team variable renders the team name. The title shows the team name."
+  },
+  {
+    "name": "directory-team-unanswered",
+    "plan": "directory-team-unanswered.plan.json",
+    "document": "directory-team-unanswered.md",
+    "problems": [
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "roles.design",
+        "section": "roles"
+      }
+    ],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: a plan with a team variable and no answer has no team, so a role resolves to its own holders, and a role with none is vacant."
+  },
+  {
+    "name": "directory-team-unknown",
+    "plan": "directory-team-unknown.plan.json",
+    "document": "directory-team-unknown.md",
+    "problems": [],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: a team answer that names an id not in the directory is unanswered, so the plan has no team."
+  },
+  {
+    "name": "directory-team-not-declared",
+    "plan": "directory-team-not-declared.plan.json",
+    "document": "directory-team-not-declared.md",
+    "problems": [],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: only the plan variable of type team gives the team. A plan variable named team of type string does not."
+  },
+  {
+    "name": "directory-team-named-squad",
+    "plan": "directory-team-named-squad.plan.json",
+    "document": "directory-team-named-squad.md",
+    "problems": [],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: the team variable is found by its type and not by its name."
+  },
+  {
+    "name": "directory-vacant",
+    "plan": "directory-vacant.plan.json",
+    "document": "directory-vacant.md",
+    "problems": [
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "a-owner.design",
+        "section": "a-owner"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "a-owner.later",
+        "section": "a-owner"
+      },
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "a-owner.manager",
+        "section": "a-owner"
+      },
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "b-escalation.design",
+        "section": "b-escalation"
+      },
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "c-step-escalation.design",
+        "section": "c-step-escalation"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "d-unused.designer",
+        "section": "d-unused"
+      },
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "f-ghost-holder.release",
+        "section": "f-ghost-holder"
+      }
+    ],
+    "source": "Hand-written. 0080, Directory references and Team in the contract: a role with no holder, for the plan's team or for the organization, is vacant. A vacant role is one row of the gap table for each question, whatever the number of places it is written in, including an escalation. A role that no text uses, a role named only through $$, and a variable that is not of type role give no row. Contract rule: Vacant roles."
+  },
+  {
+    "name": "directory-vacant-order",
+    "plan": "directory-vacant-order.plan.json",
+    "document": "directory-vacant-order.md",
+    "problems": [
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "first.design",
+        "section": "first"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "first.missing",
+        "section": "first"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Vacant roles. The rows of a section follow the order of its variables, a vacant role first and then another gap."
+  },
+  {
+    "name": "directory-unknown-ids",
+    "plan": "directory-unknown-ids.plan.json",
+    "document": "directory-unknown-ids.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.lead",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.backup",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.role",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.squad",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.blank",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "mixed.empty",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.deferred",
+        "severity": "warning",
+        "question": "mixed.later",
+        "section": "mixed"
+      },
+      {
+        "code": "gap.deferred",
+        "severity": "warning",
+        "question": "mixed.laterrole",
+        "section": "mixed"
+      }
+    ],
+    "source": "Hand-written. 0080 and 0035, Directory references in the contract: an answer that names an id not in the directory, a list of only such ids, empty text, and an empty list are unanswered, and a deferred answer is deferred, for contact, role, and team questions. A vacant role is not reported for an unknown id."
+  },
+  {
+    "name": "directory-escalation",
+    "plan": "directory-escalation.plan.json",
+    "document": "directory-escalation.md",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "stuck.unfilled",
+        "section": "stuck"
+      }
+    ],
+    "source": "Hand-written. docs/decisions/0080: an escalation lists every item in order, and a vacant role is shown as vacant and not skipped. 0080, Directory references and Team in the contract: an item may name a contact, a role, or a person variable. Contract rules: Escalation, Vacant roles."
   }
 ]

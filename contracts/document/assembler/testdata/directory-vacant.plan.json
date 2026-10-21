@@ -1,0 +1,252 @@
+{
+ "schemaVersion": 1,
+ "provenance": {
+  "templateSet": "example",
+  "generatedOn": "2026-10-15"
+ },
+ "directory": {
+  "contacts": [
+   {
+    "id": "sam-okafor",
+    "name": "Sam Okafor",
+    "email": "sam.okafor@globex.example",
+    "slack": "@sam",
+    "slackId": "U01ABC123"
+   },
+   {
+    "id": "it-help",
+    "name": "IT help desk",
+    "email": "help@globex.example",
+    "slack": "#it-help"
+   },
+   {
+    "id": "kim-ng",
+    "name": "Kim Ng",
+    "email": "kim.ng@globex.example"
+   },
+   {
+    "id": "lee-park",
+    "name": "Lee Park"
+   }
+  ],
+  "roles": [
+   {
+    "id": "engineering-manager",
+    "name": "Engineering manager",
+    "holders": [
+     "sam-okafor"
+    ]
+   },
+   {
+    "id": "it-contact",
+    "name": "IT contact",
+    "holders": [
+     "it-help"
+    ]
+   },
+   {
+    "id": "build-captain",
+    "name": "Build captain",
+    "holders": [
+     "ghost-contact",
+     "kim-ng"
+    ]
+   },
+   {
+    "id": "release-owner",
+    "name": "Release owner",
+    "holders": [
+     "ghost-contact"
+    ]
+   },
+   {
+    "id": "design-lead",
+    "name": "Design lead"
+   }
+  ],
+  "teams": [
+   {
+    "id": "platform",
+    "name": "Platform team",
+    "holders": {
+     "engineering-manager": [
+      "lee-park",
+      "kim-ng"
+     ],
+     "design-lead": [
+      "sam-okafor"
+     ]
+    }
+   },
+   {
+    "id": "design",
+    "name": "Design team"
+   },
+   {
+    "id": "quiet",
+    "name": "Quiet team",
+    "holders": {
+     "engineering-manager": []
+    }
+   }
+  ]
+ },
+ "variables": [
+  {
+   "name": "team",
+   "type": "team",
+   "description": "Which team"
+  }
+ ],
+ "answers": {
+  "plan": {
+   "organization": "Globex",
+   "team": "quiet"
+  },
+  "sections": {
+   "a-owner": {
+    "design": "design-lead",
+    "note": "x",
+    "manager": "engineering-manager"
+   },
+   "b-escalation": {
+    "design": "design-lead"
+   },
+   "c-step-escalation": {
+    "design": "design-lead"
+   },
+   "d-unused": {
+    "design": "design-lead"
+   },
+   "e-text": {
+    "design": "design-lead"
+   },
+   "f-ghost-holder": {
+    "release": "release-owner"
+   }
+  }
+ },
+ "sections": [
+  {
+   "id": "a-owner",
+   "title": "Owner",
+   "summary": "A vacant role in four places.",
+   "timing": "week-one",
+   "owner": "$design",
+   "body": "Ask $design, or $design again. Manager: $manager.",
+   "variables": [
+    {
+     "name": "design",
+     "description": "Design lead",
+     "type": "role"
+    },
+    {
+     "name": "note",
+     "description": "A note",
+     "type": "string"
+    },
+    {
+     "name": "later",
+     "description": "Later",
+     "type": "string"
+    },
+    {
+     "name": "manager",
+     "description": "Manager",
+     "type": "role"
+    }
+   ],
+   "escalation": [
+    "$design"
+   ],
+   "steps": [
+    {
+     "id": "ask",
+     "name": "Ask",
+     "owner": "$design",
+     "notes": "$later"
+    }
+   ]
+  },
+  {
+   "id": "b-escalation",
+   "title": "Escalation",
+   "summary": "A vacant role only in escalation.",
+   "variables": [
+    {
+     "name": "design",
+     "description": "Design lead",
+     "type": "role"
+    }
+   ],
+   "escalation": [
+    "$design"
+   ]
+  },
+  {
+   "id": "c-step-escalation",
+   "title": "Step escalation",
+   "summary": "A vacant role only in a step escalation.",
+   "variables": [
+    {
+     "name": "design",
+     "description": "Design lead",
+     "type": "role"
+    }
+   ],
+   "steps": [
+    {
+     "id": "go",
+     "name": "Go",
+     "escalation": [
+      "$design"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "d-unused",
+   "title": "Unused",
+   "summary": "A vacant role that no text uses.",
+   "body": "Not used: $$design and $designer.",
+   "variables": [
+    {
+     "name": "design",
+     "description": "Design lead",
+     "type": "role"
+    },
+    {
+     "name": "designer",
+     "description": "Designer",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "id": "e-text",
+   "title": "Plain text",
+   "summary": "A vacant role in the summary and not declared as a role.",
+   "body": "$design",
+   "variables": [
+    {
+     "name": "design",
+     "description": "Design lead as text",
+     "type": "string"
+    }
+   ]
+  },
+  {
+   "id": "f-ghost-holder",
+   "title": "Ghost holder",
+   "summary": "A role whose only holder is not a contact.",
+   "body": "Release: $release.",
+   "variables": [
+    {
+     "name": "release",
+     "description": "Release owner",
+     "type": "role"
+    }
+   ]
+  }
+ ]
+}

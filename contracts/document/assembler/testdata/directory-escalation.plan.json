@@ -1,0 +1,185 @@
+{
+ "schemaVersion": 1,
+ "provenance": {
+  "templateSet": "example",
+  "generatedOn": "2026-10-15"
+ },
+ "directory": {
+  "contacts": [
+   {
+    "id": "sam-okafor",
+    "name": "Sam Okafor",
+    "email": "sam.okafor@globex.example",
+    "slack": "@sam",
+    "slackId": "U01ABC123"
+   },
+   {
+    "id": "it-help",
+    "name": "IT help desk",
+    "email": "help@globex.example",
+    "slack": "#it-help"
+   },
+   {
+    "id": "kim-ng",
+    "name": "Kim Ng",
+    "email": "kim.ng@globex.example"
+   },
+   {
+    "id": "lee-park",
+    "name": "Lee Park"
+   }
+  ],
+  "roles": [
+   {
+    "id": "engineering-manager",
+    "name": "Engineering manager",
+    "holders": [
+     "sam-okafor"
+    ]
+   },
+   {
+    "id": "it-contact",
+    "name": "IT contact",
+    "holders": [
+     "it-help"
+    ]
+   },
+   {
+    "id": "build-captain",
+    "name": "Build captain",
+    "holders": [
+     "ghost-contact",
+     "kim-ng"
+    ]
+   },
+   {
+    "id": "release-owner",
+    "name": "Release owner",
+    "holders": [
+     "ghost-contact"
+    ]
+   },
+   {
+    "id": "design-lead",
+    "name": "Design lead"
+   }
+  ],
+  "teams": [
+   {
+    "id": "platform",
+    "name": "Platform team",
+    "holders": {
+     "engineering-manager": [
+      "lee-park",
+      "kim-ng"
+     ],
+     "design-lead": [
+      "sam-okafor"
+     ]
+    }
+   },
+   {
+    "id": "design",
+    "name": "Design team"
+   },
+   {
+    "id": "quiet",
+    "name": "Quiet team",
+    "holders": {
+     "engineering-manager": []
+    }
+   }
+  ]
+ },
+ "variables": [
+  {
+   "name": "team",
+   "type": "team",
+   "description": "Which team"
+  }
+ ],
+ "answers": {
+  "plan": {
+   "organization": "Globex",
+   "team": "platform"
+  },
+  "sections": {
+   "stuck": {
+    "backup": "it-help",
+    "manager": "engineering-manager",
+    "design": "design-lead",
+    "old": [
+     "Ana Ruiz, ana.ruiz@globex.example, @ana"
+    ],
+    "many": [
+     "sam-okafor",
+     "kim-ng"
+    ]
+   }
+  }
+ },
+ "sections": [
+  {
+   "id": "stuck",
+   "title": "If you are stuck",
+   "summary": "Who to ask next.",
+   "owner": "$manager",
+   "variables": [
+    {
+     "name": "backup",
+     "description": "Backup",
+     "type": "contact"
+    },
+    {
+     "name": "manager",
+     "description": "Manager",
+     "type": "role"
+    },
+    {
+     "name": "design",
+     "description": "Design lead",
+     "type": "role"
+    },
+    {
+     "name": "old",
+     "description": "An old person",
+     "type": "person",
+     "multiple": true
+    },
+    {
+     "name": "many",
+     "description": "Several",
+     "type": "contact",
+     "multiple": true
+    },
+    {
+     "name": "unfilled",
+     "description": "Unfilled",
+     "type": "contact"
+    }
+   ],
+   "escalation": [
+    "$backup",
+    "$many",
+    "$manager",
+    "$old",
+    "$design"
+   ],
+   "steps": [
+    {
+     "id": "a",
+     "name": "Own list",
+     "escalation": [
+      "$unfilled",
+      "$design",
+      "$backup"
+     ]
+    },
+    {
+     "id": "b",
+     "name": "No list"
+    }
+   ]
+  }
+ ]
+}
