@@ -307,6 +307,15 @@ A group is the set of questions that share a `group` key, so a user interface ca
 | `value` | Value |  |
 | `source` | `default` or `given` |  |
 
+### Cleared
+
+What the editor returns when it removes a directory entry.
+
+| Field | Type | Notes |
+| -- | -- | -- |
+| `answers` | List of text | The question ids whose answers were removed or changed, sorted |
+| `holders` | List of text | The holder places changed, such as `role:ops` or `team:platform/ops`, sorted |
+
 ### Blocker
 
 | Field | Type | Notes |

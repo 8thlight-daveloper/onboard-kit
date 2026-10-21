@@ -176,7 +176,7 @@ func loadEntry(t *testing.T, c fixtureCase) entry {
 
 type outcome struct {
 	plan     model.Plan
-	cleared  contract.Cleared
+	cleared  model.Cleared
 	problems []model.Problem
 }
 
@@ -343,7 +343,7 @@ func assertProblems(t *testing.T, got []model.Problem, want []expectedProblem, f
 	}
 }
 
-func assertCleared(t *testing.T, label string, got contract.Cleared, want *expectedCleared) {
+func assertCleared(t *testing.T, label string, got model.Cleared, want *expectedCleared) {
 	t.Helper()
 	if want == nil {
 		want = &expectedCleared{}
@@ -1139,15 +1139,15 @@ func TestDirectoryOperationsOnAPlanWithNothing(t *testing.T) {
 	}
 	for _, removal := range []struct {
 		kind   string
-		remove func() (model.Plan, contract.Cleared, []model.Problem)
+		remove func() (model.Plan, model.Cleared, []model.Problem)
 	}{
-		{"contact", func() (model.Plan, contract.Cleared, []model.Problem) {
+		{"contact", func() (model.Plan, model.Cleared, []model.Problem) {
 			return editor.RemoveContact(model.Plan{}, "sam-okafor")
 		}},
-		{"role", func() (model.Plan, contract.Cleared, []model.Problem) {
+		{"role", func() (model.Plan, model.Cleared, []model.Problem) {
 			return editor.RemoveRole(model.Plan{}, "sam-okafor")
 		}},
-		{"team", func() (model.Plan, contract.Cleared, []model.Problem) {
+		{"team", func() (model.Plan, model.Cleared, []model.Problem) {
 			return editor.RemoveTeam(model.Plan{}, "sam-okafor")
 		}},
 	} {

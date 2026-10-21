@@ -8,7 +8,7 @@ The finder says which questions are active, and the plan validator says whether 
 
 ## Interface
 
-`Submit(plan, question, value) -> (plan, list of Problem)`, `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`, `SetContact(plan, contact)`, `SetRole(plan, role)`, and `SetTeam(plan, team)`, each `-> (plan, list of Problem)`, and `RemoveContact(plan, id)`, `RemoveRole(plan, id)`, and `RemoveTeam(plan, id)`, each `-> (plan, Cleared, list of Problem)`. The signatures are in `api.go`, with the type `Cleared`.
+`Submit(plan, question, value) -> (plan, list of Problem)`, `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`, `SetContact(plan, contact)`, `SetRole(plan, role)`, and `SetTeam(plan, team)`, each `-> (plan, list of Problem)`, and `RemoveContact(plan, id)`, `RemoveRole(plan, id)`, and `RemoveTeam(plan, id)`, each `-> (plan, Cleared, list of Problem)`. The signatures are in `api.go`, with `Cleared`, which the model holds.
 
 - `plan` is a Plan, as stored. `Submit` reads `plan.Variables`, `plan.Answers`, `plan.Sections`, and, through the validator, `plan.Directory`. `SetSectionEnabled` reads `plan.Sections`. The directory operations read `plan.Directory`, and the removals also read `plan.Variables`, `plan.Sections` (for each section's variables), and `plan.Answers`. No operation reads another field, and each returns the other fields as they are.
 - `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. The scope `plan` means the plan's own variables. Any other scope is a section id. The id is split at the first dot. Any text is accepted. An id that names nothing gives a problem.
