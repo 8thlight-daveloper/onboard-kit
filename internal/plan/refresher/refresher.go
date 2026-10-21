@@ -18,6 +18,7 @@ func (Refresher) Refresh(base, theirs, ours model.Plan, origin model.Origin) (mo
 	decisions := decideAll(base, theirs, ours, theirQuestions)
 
 	refreshed := ours
+	refreshed.Directory = theirs.Directory
 	refreshed.Variables = theirs.Variables
 	refreshed.Sections = theirs.Sections
 	refreshed.UnknownFields = theirs.UnknownFields

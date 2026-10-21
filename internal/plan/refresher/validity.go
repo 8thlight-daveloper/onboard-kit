@@ -6,10 +6,18 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func isValidAnswer(value model.Value, variable model.Variable) bool {
-	if !isSettled(value) {
-		return true
+func checkedAnswer(value model.Value, variable model.Variable, directory model.Directory) (model.Value, listing) {
+	switch {
+	case !isSettled(value):
+		return value, listingKept
+	case isDirectoryType(variable.Type):
+		return checkedDirectoryAnswer(value, variable, directory)
+	default:
+		return keptIfListed(value, isValidAnswer(value, variable))
 	}
+}
+
+func isValidAnswer(value model.Value, variable model.Variable) bool {
 	if value.Kind != expectedKind(variable) {
 		return false
 	}
