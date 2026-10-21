@@ -102,7 +102,7 @@ The onboarder must be able to send a newcomer something that works before the ne
 - `onboard-kit start --invitation <file>` reads the archive directly. The newcomer extracts nothing by hand. The tool puts the plan in the plan copy and the record at `resultsPath`.
 - The archive is untrusted input. The tool reads only those fixed entries, never a path taken from inside the archive, and refuses an archive of more than a handful of entries or more than 1 MiB uncompressed in all. Video and other large help is linked, not embedded.
 - A record that already exists at that path is never overwritten. The tool reconciles it against the plan from the archive instead.
-- The newcomer sees "Is this you?" for the account and confirms, as 0085 says.
+- **The account is confirmed first.** "Is this you?" is the first thing `start --invitation` does, before it writes anything. It shows the account and the path where the files would go. A wrong account may mean the onboarder already provisioned access or told others the name, so on no the tool writes nothing and says to ask the onboarder for a corrected invitation, naming the owner from the directory. A move of the file, see 0085, fixes a mistake found later.
 
 ### The first-steps document
 
@@ -147,6 +147,10 @@ A report reads records and the plan, and nothing else. It does not need each per
 - **Drivers.** `start` reads the plan copy and the record, joins them, saves the record on every change, and creates the files on first run, from the plan copy or an invitation. A new `invite` command writes the invitation archive, and `start` reads it with `--invitation`.
 - **The existing refresher** and its tests are retired. Nothing is released, so there is no migration.
 - **The decisions** 0060 and 0075 carry a note that this replaces them in part.
+
+## Later
+
+- **Offboarding.** Consultants leave every engagement, so ending matters. A newcomer's verified outcomes say what access they were given, so a reversed pass over those sections is a revocation checklist. A report could then say who still holds access to a system. A record could also be closed, so a finished engagement is kept and marked. Nothing here is designed.
 
 ## Not decided
 

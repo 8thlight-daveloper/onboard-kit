@@ -7,9 +7,9 @@ Each part has a source. **Tool** means fixed wording that the tool supplies. **P
 | # | Part | What it says | Source |
 | -- | -- | -- | -- |
 | 1 | Welcome | Who sent this, what onboarding the organization expects, and what the newcomer will end up with. Names the onboarding owner | Plan |
-| 2 | What is in the invitation | The plan, the newcomer's record, and this document, and what each is for | Tool |
+| 2 | What is in the invitation | The plan, the newcomer's record, and this document, and what each is for. It says that the first question is whether the account is theirs, and what to do if it is not | Tool |
 | 3 | Get the tool | Where to download `onboard-kit` and how to check that it runs. The address is part of the tool | Tool |
-| 4 | Start | The command that opens the invitation, what it asks first (the account, to confirm it is theirs), and where it saves their files | Tool |
+| 4 | Start | The command that opens the invitation. It asks first whether the account is theirs, and writes nothing until they say yes. Then where it saves their files | Tool |
 | 5 | Do these first | The bootstrap sections of the plan, as the assembler writes them, in order | Plan |
 | 6 | Connect to the shared repository | After access works: where to clone, that the record goes at the plan's results path, and that running `start` inside the checkout finds it. The git commands the tool prints for adding, committing, and pushing the record | Tool and plan |
 | 7 | Get the latest plan | How to ask the tool to check for the latest plan once the repository can be reached | Tool |
