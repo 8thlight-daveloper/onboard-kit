@@ -1,0 +1,11 @@
+{"problems": [
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "engineering-manager", "holder": "ghost-z"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "engineering-manager", "team": "platform", "holder": "ghost-b"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "it-contact", "holder": "engineering-manager"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "it-contact", "team": "platform", "holder": "ghost-a"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "other-role", "team": "design", "holder": "nobody"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "holder": "Sam-Okafor"}},
+  {"code": "directory.team-role-unknown", "severity": "error", "detail": {"team": "design", "role": "other-role"}},
+  {"code": "directory.team-role-unknown", "severity": "error", "detail": {"team": "design", "role": "unknown-role"}},
+  {"code": "directory.team-role-unknown", "severity": "error", "detail": {"team": "ops", "role": "sam-okafor"}}
+]}

@@ -1,0 +1,9 @@
+{"questions": [
+  {"id": "plan.o_contact", "type": "contact", "required": true, "answer": "ghost", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]},
+  {"id": "plan.e_contact", "type": "contact", "audience": "onboardee", "required": true, "answer": "ghost", "choices": [{"value": "sam-okafor", "label": "Sam Okafor"}, {"value": "it-help", "label": "IT help desk"}, {"value": "lee-park", "label": "Lee Park"}]},
+  {"id": "plan.e_role", "type": "role", "audience": "onboardee", "required": true, "answer": "it-contact", "choices": [{"value": "engineering-manager", "label": "Engineering manager"}, {"value": "it-contact", "label": "IT contact"}, {"value": "design-lead", "label": "Design lead"}], "suggestions": [{"value": "it-contact", "source": "given"}]},
+  {"id": "plan.e_team", "type": "team", "audience": "onboardee", "required": true, "choices": [{"value": "platform", "label": "Platform team"}, {"value": "design", "label": "Design team"}]},
+  {"id": "plan.o_dep"},
+  {"id": "plan.o_dep_ghost"},
+  {"id": "plan.e_open_dep", "audience": "onboardee", "required": true}
+], "blockers": ["plan.o_contact", "plan.e_contact", "plan.e_team", "plan.e_open_dep"]}

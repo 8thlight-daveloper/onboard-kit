@@ -2,19 +2,20 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `plan/editor`. Issue: [#70](https://github.com/8thlight-daveloper/onboard-kit/issues/70).
 
-The plan editor changes a plan. It is the only component that returns a changed copy of one. `Submit` applies one answer. `SetSectionEnabled` turns one section on or off. Each returns a new plan and a list of problems, and neither alters the plan it is given. Both are pure functions. They read no file, read no clock, and keep no state between calls. See [0010](../../../docs/decisions/0010-plan-editor.md), [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), and the [domain model](../../../docs/reference/domain-model.md).
+The plan editor changes a plan. It is the only component that returns a changed copy of one. `Submit` applies one answer. `SetSectionEnabled` turns one section on or off. `SetContact`, `SetRole`, and `SetTeam` add or replace an entry of the directory. `RemoveContact`, `RemoveRole`, and `RemoveTeam` remove one and clear every reference to it. Each returns a new plan and a list of problems, and none alters the plan it is given. All are pure functions. They read no file, read no clock, and keep no state between calls. See [0010](../../../docs/decisions/0010-plan-editor.md), [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0080](../../../docs/decisions/0080-directory.md), and the [domain model](../../../docs/reference/domain-model.md).
 
 The finder says which questions are active, and the plan validator says whether a value is acceptable ([question finder contract](../../question/finder/contract.md), [plan validator contract](../validator/contract.md)). The editor decides what to do with their answer.
 
 ## Interface
 
-`Submit(plan, question, value) -> (plan, list of Problem)` and `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`.
+`Submit(plan, question, value) -> (plan, list of Problem)`, `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`, `SetContact(plan, contact)`, `SetRole(plan, role)`, and `SetTeam(plan, team)`, each `-> (plan, list of Problem)`, and `RemoveContact(plan, id)`, `RemoveRole(plan, id)`, and `RemoveTeam(plan, id)`, each `-> (plan, Cleared, list of Problem)`. The signatures are in `api.go`, with `Cleared`, which the model holds.
 
-- `plan` is a Plan, as stored. `Submit` reads `plan.Variables`, `plan.Answers`, and `plan.Sections`. `SetSectionEnabled` reads `plan.Sections`. Neither reads another field, and both return the other fields as they are.
+- `plan` is a Plan, as stored. `Submit` reads `plan.Variables`, `plan.Answers`, `plan.Sections`, and, through the validator, `plan.Directory`. `SetSectionEnabled` reads `plan.Sections`. The directory operations read `plan.Directory`, and the removals also read `plan.Variables`, `plan.Sections` (for each section's variables), and `plan.Answers`. No operation reads another field, and each returns the other fields as they are.
 - `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. The scope `plan` means the plan's own variables. Any other scope is a section id. The id is split at the first dot. Any text is accepted. An id that names nothing gives a problem.
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed. It means unanswered.
 - `section` is a section id. `enabled` is true or false.
-- Both results are a plan and a list of problems. The list is empty when there is nothing to report. There is no error return.
+- `contact`, `role`, and `team` are directory entries as the model holds them. `id` is the id of an entry. `Cleared` has two lists of text, `Answers` and `Holders`, described under the removals.
+- Every result is a plan and a list of problems, and the removals add a `Cleared`. The list is empty when there is nothing to report. There is no error return.
 - The editor takes the finder and the validator through `New()` with no argument, as the validator contract does. The contract tests therefore run the real components, and the expected problems rest on the finder and validator contracts and use only what those fix.
 
 ## Rules for Submit
@@ -46,12 +47,57 @@ The section switch is a field of the plan section and not an answer ([0050](../.
 - A section id that the plan does not hold, an empty id, and the id `plan` give one problem, `switch.unknown-section`, with severity `error`, and the returned plan equals the plan given. The problem's `section` is the id as given, and its `question` is empty.
 - The editor does not report sections that depend on the switch. A question of a section that is off is not active, so a later `Submit` for it is refused with `answer.inactive-question`.
 
+## Rules for the directory operations
+
+The directory has contacts, roles, and teams ([0080](../../../docs/decisions/0080-directory.md)). An id is unique within its kind and not across kinds, so a contact, a role, and a team can share an id. Every operation names its kind and looks only at that kind.
+
+**The three Set operations.** `SetContact`, `SetRole`, and `SetTeam` store the entry they are given.
+
+- An entry whose id no entry of that kind has is added at the end of that kind's list. An entry whose id an entry of that kind has replaces that entry whole and in the same place. A field the new entry leaves out is gone, so a replaced contact with no `email` has none, and a replaced role or team keeps none of its old holders.
+- The entry is stored as given: the editor does not trim, sort, or deduplicate it, and a holder named twice stays twice. A team override with an empty list is stored as an empty list. It means the role is vacant for that team, and it differs from no override, where the role's own holders apply, as [0080](../../../docs/decisions/0080-directory.md) says in "A role resolves in this order".
+- Nothing else changes. Every answer, every section, and every other directory entry stays, and so do the holders and overrides that name the replaced entry's id, because the id does not change. A Set never clears an answer and never reports a warning.
+- The editor judges the entry alone, against the directory as given. It reports the faults below. An error of this kind refuses the edit: the returned plan equals the plan given and the problems come back. Faults the validator reports as warnings, such as an email with no `@` or a contact with no way to reach them, are not the editor's.
+  - An id that is empty or does not match `[a-z0-9][a-z0-9-]*` from its first to its last character gives `directory.id-malformed`. The pattern is whole, so an id with a trailing line break does not match. A single character matches, a digit may come first, and a hyphen may come last.
+  - An empty name gives `directory.name-empty`. A name of only spaces is not covered.
+  - Each holder of a role that is not the id of a contact of the plan gives `directory.holder-not-a-contact`. The id of a role or a team is not a contact. A contact added by the same edit does not count, since an edit holds one entry.
+  - Each key of a team's holders that is not the id of a role of the plan gives `directory.team-role-unknown`, and each holder in the list under a key that is not the id of a contact gives `directory.holder-not-a-contact`, whether or not the key names a role.
+- The problems come in a fixed order. The id comes first, then the name, then the holders of a role in the order given. For a team the keys come in ascending byte order. For one key, `directory.team-role-unknown` comes before the problems of its holders, and the holders come in the order given.
+- Every problem has `severity` `error`, no `question`, and no `section`. The detail is in the table below.
+- Two entries with one id cannot come from a Set. A directory that already has two is not covered.
+
+**The three Remove operations.** `RemoveContact`, `RemoveRole`, and `RemoveTeam` take an id and remove the entry of that kind with it.
+
+- An id that no entry of that kind has, including an empty id, gives one problem, `directory.entry-not-found`, with severity `error`, and the returned plan equals the plan given. The id of a different kind is not found, and ids are compared as written, so `LEE-PARK` is not `lee-park`. `Cleared` is empty.
+- Otherwise the entry is removed and there is no problem. The edit also clears what named it. It changes nothing else.
+- **A contact** is removed from every role's `holders` and from every list in every team's `holders`, every occurrence, with the other holders left in their order. A list that is left empty stays as an empty list, which for a team means the role is now vacant for the team. The editor does not delete the override, because that would hand the role to its own holders.
+- **A role** is removed with every override for it in every team's `holders`, the key and its list. The role's own holders go with the role.
+- **A team** is removed with its overrides.
+- **Answers.** An answer is cleared when the variable it answers has the type of the removed kind (`contact`, `role`, or `team`) and the answer names the id. This covers the plan's answers and the answers of every section, a section that is off or a sub-section included, and a question that is hidden or not active. The variable is the one the plan or the section declares under that name. An answer in a scope with no such variable is left alone. Only the type counts. A string, person, or command answer that holds the same text, an answer of a variable of another directory type that holds the same text, and a Deferred answer are left alone.
+  - A Text answer equal to the id is removed. Text is compared as stored, exactly.
+  - A List answer loses every item equal to the id and keeps the other items in their order. When the list then has no item of non-empty text, the answer is removed.
+  - The editor never leaves an unanswered value behind. A cleared answer leaves no entry of no kind, and a section whose last answer is cleared leaves no empty map in `answers.sections`.
+- **`Cleared.Answers`** lists the id of each question whose stored answer was removed or changed, as `<scope>.<name>`, such as `plan.escalation` or `access.approver`. A list that lost an item counts. The list is in ascending byte order, each id once. It is empty when nothing was cleared.
+- **`Cleared.Holders`** lists each holder place that the edit changed, in ascending byte order, each once. `role:<role id>` is a role whose own holders lost the contact. `team:<team id>/<role id>` is a team override that lost the contact, or that was removed with its role. The places that go with the removed entry itself are not listed: the removed role's own holders and the removed team's overrides. It is empty when nothing was changed.
+- A refused removal returns the plan as given and an empty `Cleared`.
+
+**Submit and the directory.** A question whose variable has the type `contact`, `role`, or `team` holds an id ([0080](../../../docs/decisions/0080-directory.md)).
+
+- A value that names an id that is not an entry of that kind in the plan as given is refused, and the plan comes back as given. For a list, one unknown item refuses the whole list. The id of another kind does not count: a team's id is not a contact.
+- The validator makes this check and the editor returns its problems as they are, as for every other check of `Submit`. The code and the detail are the validator's, and the cases here compare only the severity, the question, and the section. The editor adds nothing of its own.
+- A known id is stored. A Deferred value, and a value that clears the answer, are applied as for any type.
+- Only the value is judged. An answer already stored that names an id the directory lacks does not stop another `Submit`. A question of any other type is not checked against the directory, so a `string` or `person` answer that names no contact is applied.
+
 ## The problems
 
 | Code | Severity | From | When | Detail |
 | -- | -- | -- | -- | -- |
-| `answer.*` and `secret.*` | As the validator reports them | `Submit`, from the validator | The value or the question is not acceptable | As the validator reports them |
+| `answer.*` and `secret.*` | As the validator reports them | `Submit`, from the validator | The value or the question is not acceptable, an unknown directory id included | As the validator reports them |
 | `switch.unknown-section` | `error` | `SetSectionEnabled` | The plan holds no section with that id | none |
+| `directory.id-malformed` | `error` | The Set operations | The id is empty or is not `[a-z0-9][a-z0-9-]*` | `kind` (`contact`, `role`, or `team`), `id` as given |
+| `directory.name-empty` | `error` | The Set operations | The name is empty | `kind`, `id` |
+| `directory.holder-not-a-contact` | `error` | `SetRole`, `SetTeam` | A holder is not the id of a contact | `kind`, `id`, `holder`, and for a team also `role`, the key it was under |
+| `directory.team-role-unknown` | `error` | `SetTeam` | A key of the team's holders is not the id of a role | `kind`, `id`, `role` |
+| `directory.entry-not-found` | `error` | The Remove operations | No entry of that kind has the id | `kind`, `id` as given |
 
 Every problem has a non-empty `message` for a person. The wording is not specified, and a problem never repeats a secret or a part of it.
 
@@ -59,25 +105,30 @@ Every problem has a non-empty `message` for a person. The wording is not specifi
 
 These hold for every plan the contract tests use.
 
-- **Arguments unchanged.** The plan and the value are the same after the calls as before.
+- **Arguments unchanged.** The plan, the value, and the entry are the same after the calls as before.
 - **Same input, same output.** The same call gives the same result on a shared editor, whatever calls came before, forward or in reverse order, however often it is repeated, and when calls run at the same time.
-- **Nothing shared that an edit changes.** The returned plan holds its own `answers`, with their maps and their lists, and its own `sections` list and each section's `enabled`. Changing any of them in the result changes neither the argument nor a later result, and changing the same parts of the argument after the call does not change the result. This holds when the answer is refused too. A list in a submitted value is copied when it is stored. Other parts of the plan, such as a section's variables and steps, may be shared.
+- **Nothing shared that an edit changes.** The returned plan holds its own `answers`, with their maps and their lists, and its own `sections` list and each section's `enabled`. The result of a directory operation also holds its own directory: the lists of contacts, roles, and teams, each role's holders, and each team's holders map with its lists. The entry that a Set stores is a copy of the one it was given. The lists of a `Cleared` and the problems belong to the caller. Changing any of them in the result changes neither the argument nor a later result, and changing the same parts of the argument after the call does not change the result. This holds when the answer is refused too. A list in a submitted value is copied when it is stored. Other parts of the plan, such as a section's variables and steps, may be shared.
 - **Sections keep their `parent`.** Every section of the returned plan has the `parent` it had in the argument, when the call applies and when it refuses, for `Submit` and for `SetSectionEnabled`. The editor does not read `parent`, check that it names a section, or move a section for it. The order of the sections is the argument's.
-- **Only the named change.** A `Submit` that applies changes one entry of `answers` and nothing else. `SetSectionEnabled` changes the `enabled` field of one section and nothing else. In both, every field outside the change, `unknownFields` included, comes back as it was.
-- **Examples stay.** Every variable of the returned plan, in `variables` and in each section, keeps its `example` as held, whether the call applies, refuses, clears, or switches. An `example` is an illustration for the person answering. It is not an answer and not a default, and no call changes it.
+- **Only the named change.** A `Submit` that applies changes one entry of `answers` and nothing else. `SetSectionEnabled` changes the `enabled` field of one section and nothing else. A Set changes the directory and nothing else. A removal changes the directory and the answers it clears, and `Cleared.Answers` names exactly the answers that changed. In all of them, every field outside the change, `unknownFields`, `id`, `provenance`, and `origin` included, comes back as it was.
+- **Examples stay.** Every variable of the returned plan, in `variables` and in each section, keeps its `example` as held, whether the call applies, refuses, clears, switches, sets an entry, or removes one. An `example` is an illustration for the person answering. It is not an answer and not a default, and no call changes it.
 - **Section order.** The sections of the result are in the order of the argument's sections. Rotating or reversing the argument's sections does not change the answers or the problems.
-- **Repeating changes nothing more.** The same call on the result gives a plan equal to the result.
-- **Take back.** Clearing an answer that a `Submit` added gives the plan from before. Turning off a section that has no `enabled` field and turning it on again gives the plan from before.
+- **Repeating changes nothing more.** The same call on the result gives a plan equal to the result. For a removal the repeat gives `directory.entry-not-found` and the same plan.
+- **Sorted and plain lists.** A `Cleared` holds each place once, in ascending byte order, whatever the order of the sections, the maps, or the lists in the plan.
+- **No empty leftovers.** After a directory operation, `answers.sections` holds no empty map and no answer has no kind.
+- **Take back.** Clearing an answer that a `Submit` added gives the plan from before. Turning off a section that has no `enabled` field and turning it on again gives the plan from before. Removing an entry that a Set added, when nothing else names it, gives the plan from before.
 - **New lists.** Changing the result's problems, including a problem's `detail`, changes no later result.
-- **Nothing to edit.** On a plan with nothing in it, `Submit` gives `answer.unknown-question`, `SetSectionEnabled` gives `switch.unknown-section`, and the plan stays empty.
+- **Nothing to edit.** On a plan with nothing in it, `Submit` gives `answer.unknown-question`, `SetSectionEnabled` gives `switch.unknown-section`, each removal gives `directory.entry-not-found`, and the plan stays empty. `SetContact` adds the first contact.
 
 ## Side effects and plan access
 
-None. `Submit` returns a changed copy that differs only in `answers`, and `SetSectionEnabled` returns a changed copy that differs only in the `enabled` field of one section. Neither alters the plan it was given. The row for `plan/editor` in [components](../../../docs/architecture/components.md) lists `answers` only, and 0010 says the copy "differs only in `answers`", so both need the switch added. The editor imports the finder, the validator, and the model, and nothing else, as [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) says.
+None. `Submit` returns a changed copy that differs only in `answers`, `SetSectionEnabled` returns a changed copy that differs only in the `enabled` field of one section, a Set returns a copy that differs only in `directory`, and a removal returns a copy that differs only in `directory` and `answers`. None alters the plan it was given. The row for `plan/editor` in [components](../../../docs/architecture/components.md) lists `answers` only, and 0010 says the copy "differs only in `answers`", so the row needs the switch and the directory added. The editor imports the finder, the validator, and the model, and nothing else, as [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) says.
 
 ## Not covered
 
-- Whether a section's map stays in `answers.sections` after its last answer is removed.
+- Whether a section's map stays in `answers.sections` after `Submit` removes its last answer. A removal from the directory never leaves one.
+- A directory that already holds two entries of one kind with one id, and a name of only spaces. Whether an emptied `holders` map of a team is empty or absent.
+- Whether the plan's own `answers.plan` map stays when a removal clears its last answer.
+- Warnings about the directory: an email, a role with no holder, an answer that names an unknown id already stored. The validator reports them.
 - That a `parent` names a section, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them, and the editor copies a section as held.
 - Duplicate section ids, and duplicate variable names in one scope.
 - A section that holds `enabled: true` and is turned off, and a plan that holds both a `plan` section and plan variables.
@@ -105,9 +156,28 @@ None. `Submit` returns a changed copy that differs only in `answers`, and `SetSe
 14. **A switch does not cascade in the plan.** Turning a parent off writes its own `enabled: false` and nothing on a sub-section, and turning it on leaves the explicit `true` of a sub-section in place. The selector applies the cascade when it is read, as 0070 says, so a plan file records only the switches a person made. The other choice was to write the switch on every descendant. Raised by 0070 "Switches cascade" and 0050 "the plan records only the sections turned off". Cases: `switch-off-a-parent-leaves-its-sub-sections-alone`, `switch-on-a-parent-leaves-its-sub-sections-alone`, `switch-off-a-sub-section-alone`. `hard`
 15. **A question of a sub-section of a section that is off cannot be answered.** The editor relies on the finder, which treats a sub-section as active only when its parent is. Raised by 0070 and the finder's new rule. Case: `question-of-a-sub-section-of-a-switched-off-section-is-refused`. `cheap`
 
+### Decisions for the directory operations
+
+The `hard` ones come first.
+
+16. **A vacated team override stays as an empty list.** Removing a contact that is the only holder in a team's override leaves the override with an empty list, which means the role is vacant for that team. Deleting the override would hand the role to its organization-wide holders, which is a different answer to "who holds it". Raised by "A team may override who holds a role for that team" and "No holder is a gap" in 0080. Cases: `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-no-empty-section-map`, `remove-contact-leaves-the-role-and-team-with-the-same-id`. `hard`
+17. **Answers are cleared by the type of the variable and not by the text.** A `string`, `person`, or `command` answer that holds `lee-park` stays when the contact `lee-park` is removed, and a role answer `ops` stays when the contact `ops` is removed. Raised by "An answer stores an id and nothing else" and "clears every answer ... that named it" in 0080. Cases: the three `remove-contact` cases above, `remove-role-leaves-the-contact-and-team-with-the-same-id`, `remove-team-leaves-the-contact-and-role-with-the-same-id`. `hard`
+18. **A removal reports the places it cleared as lists, not as a count.** `Cleared.Answers` holds question ids and `Cleared.Holders` holds places such as `role:ops` and `team:platform/ops`, sorted. A driver can show them and count them. Raised by "reports how many places it cleared" in 0080. Cases: every `remove-*` case. `hard`
+19. **Answers in sections that are off, hidden, or sub-sections are cleared too.** A reference is a dangling reference whether or not its question is active. Raised by "The tool never leaves a dangling reference behind" in 0080 and "Turning a section off keeps its answers" in 0050. Case: `remove-contact-clears-every-holder-and-answer-that-names-it`, where the answer is in a section that is switched off, and `remove-contact-leaves-no-empty-section-map`, where it is in a sub-section. `hard`
+20. **Removing an id that is not there is the error `directory.entry-not-found`, and nothing changes.** The id of another kind is not there either. Raised by "Removing a contact, a role, or a team is allowed" in 0080, which says nothing of an unknown id. Cases: the `remove-*-refuses-*` cases. `hard`
+21. **A Set replaces the entry whole and in place, and adds a new one at the end.** A field or holder the new entry leaves out is gone. The other choice was to merge. Raised by "operations to add, change, and remove" in 0080. Cases: `set-contact-replaces-the-entry-with-the-same-id-in-place`, `set-role-with-no-holders-empties-an-existing-role`, `set-team-replaces-in-place-and-drops-the-old-overrides`, `set-team-with-no-overrides-clears-the-old-ones`. `hard`
+22. **A Set that would break integrity is refused as a whole.** An empty or malformed id, an empty name, a holder that is not a contact, and a team override for an unknown role are errors, so the plan never holds them through the editor. Raised by the "Errors" of "Integrity" in 0080, which lists them for the validator. Cases: the `set-*-refuses-*` cases. `hard`
+23. **An emptied list answer is removed, and so is a list left with only empty text.** A list that loses the id and still holds others stays a list, and empty items that were already in it stay. Raised by "The plan holds only answers" in 0045 and "A `multiple: true` contact or role question holds an ordered list" in 0080. Cases: `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-removes-a-list-that-holds-only-empty-text`. `hard`
+24. **The id pattern is `[a-z0-9][a-z0-9-]*` from end to end.** A digit may come first and a hyphen may come last. The pattern comes from the decisions of the directory work and not from 0080, which says only that an entry has a permanent id. Cases: the `set-contact-refuses-an-id-*` cases, `set-contact-takes-a-digit-first-id-and-a-trailing-hyphen`, `set-contact-takes-a-one-character-id`. `cheap`
+25. **A Set judges the entry against the directory as given.** A role cannot hold a contact that the same edit adds, because an edit holds one entry. Raised by "a holder that is not a contact" in 0080. Cases: `set-role-with-a-holder-on-a-plan-with-no-contacts`. `cheap`
+26. **The editor fixes the order and detail of the directory problems.** The order is id, name, then holders, and for a team the keys in byte order with the role check before its holders. The detail keys are `kind`, `id`, `holder`, and `role`. 0080 names the faults and not the report. Cases: `set-contact-reports-the-id-before-the-name`, `set-role-reports-id-name-and-holders-in-that-order`, `set-team-reports-overrides-by-role-id-and-the-role-before-its-holders`. `cheap`
+27. **A Set reports no warning.** An email with no `@`, a role with no holder, and a contact with no way to reach them are the validator's warnings, and a Set stores such an entry. Raised by "Warnings" in "Integrity" in 0080. Cases: `set-role-with-no-holders-is-a-vacant-role`. `cheap`
+28. **A role's removal reports its team overrides as cleared places and not its own holders, and a team's removal reports none.** The removed entry's own contents are not a place that was cleared. Raised by "clears every answer and every holder entry that named it" in 0080. Cases: `remove-role-removes-team-overrides-and-clears-answers`, `remove-role-with-no-reference-changes-only-its-entry`, `remove-team-clears-the-team-answer`. `cheap`
+29. **The unknown-id refusal in `Submit` is the validator's, and these cases do not fix its code.** The cases compare the severity, the question, and the section. Raised by "An answer that names an id that is not in the directory counts as unanswered" and "The tool never creates such an answer" in 0080. Cases: the `unknown-*-is-refused` and `*-refuses-a-*-id` cases of `Submit`. `cheap`
+
 ## Wrong implementations tried
 
-Each row names a plausible wrong implementation and the cases or tests that fail it. Forty variants were run against the tests. Each one with a defect in the editor's output fails at least one named test. One variant survives on purpose: it leaves an empty map for a section whose last answer was removed, which the contract leaves open.
+Each row names a plausible wrong implementation and the cases or tests that fail it. Forty variants were run against the tests for `Submit` and the switch, and seventy-nine more for the directory operations. Each one with a defect in the editor's output fails at least one named test. One variant of `Submit` survives on purpose: it leaves an empty map for a section whose last answer was removed, which the contract leaves open for `Submit`.
 
 | Wrong implementation | Caught by |
 | -- | -- |
@@ -141,3 +211,30 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | A switch on that removes the explicit `enabled` of a sub-section | `switch-on-a-parent-leaves-its-sub-sections-alone` |
 | An answer of a sub-section of a switched-off section applied | `question-of-a-sub-section-of-a-switched-off-section-is-refused` |
 | An earlier result returned on a later call | The same-input test, and most cases |
+| A Set adds a duplicate instead of replacing, or moves the replaced entry to the end | `set-contact-replaces-the-entry-with-the-same-id-in-place`, `set-role-replaces-in-place-and-leaves-team-overrides` |
+| A Set merges with the old entry, for a contact, a role's holders, or a team's overrides | `set-contact-replaces-the-entry-with-the-same-id-in-place`, `set-role-with-no-holders-empties-an-existing-role`, `set-team-with-no-overrides-clears-the-old-ones` |
+| A Set cleans the entry: it trims the name, lowercases the email, sorts or deduplicates the holders, or drops an empty override | `set-contact-stores-the-entry-as-given`, `set-role-stores-the-holders-as-given`, `set-role-adds-a-new-role-at-the-end`, `set-team-keeps-an-empty-override-as-a-vacancy` |
+| A Set clears answers that name the id | `set-contact-replaces-the-entry-with-the-same-id-in-place` |
+| The id check allows capitals, an underscore, a space, a leading hyphen, or a trailing line break, or is not anchored at the start or the end | `set-contact-refuses-an-id-with-capitals`, `set-contact-refuses-an-id-with-an-underscore`, `set-contact-refuses-an-id-with-a-space`, `set-contact-refuses-an-id-with-a-leading-hyphen`, `set-contact-refuses-an-id-with-a-trailing-line-break` |
+| The id check refuses a digit first, a trailing hyphen, or a single character, or accepts an empty id | `set-contact-takes-a-digit-first-id-and-a-trailing-hyphen`, `set-contact-takes-a-one-character-id`, `set-contact-refuses-an-empty-id` |
+| An empty name is accepted | `set-contact-refuses-an-empty-name`, `set-role-refuses-an-empty-name`, `set-team-refuses-an-empty-name` |
+| A role's holders are not checked, or are checked against the ids of every kind | `set-role-refuses-unknown-holders-in-order`, `set-role-refuses-holders-that-are-a-role-or-a-team` |
+| A team's override for an unknown role, or its holders, are not checked | `set-team-refuses-an-override-for-an-unknown-role`, `set-team-refuses-an-override-holder-that-is-not-a-contact` |
+| The problems are in another order: the name before the id, holders before the id, the keys in map order, holders before the role check | `set-contact-reports-the-id-before-the-name`, `set-role-reports-id-name-and-holders-in-that-order`, `set-team-reports-overrides-by-role-id-and-the-role-before-its-holders` |
+| A refused Set is applied anyway | every `set-*-refuses-*` case |
+| A Set stores the list or map it was given | `TestStoredEntryIsNotTheEntryThatWasSubmitted` |
+| A removal ignores the team overrides, or the role holders | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-the-role-and-team-with-the-same-id` |
+| A vacated override is deleted instead of left empty | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-no-empty-section-map` |
+| Answers are cleared by text and not by the type of the variable, or answers with no declared variable are cleared | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-the-role-and-team-with-the-same-id`, `remove-role-leaves-the-contact-and-team-with-the-same-id` |
+| The text match ignores case, or a Deferred answer is cleared | `remove-contact-clears-every-holder-and-answer-that-names-it` |
+| A list answer is removed whole, loses only its first occurrence, is kept when emptied, or is kept when only empty text is left | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-removes-a-list-that-holds-only-empty-text` |
+| An empty map is left for a section whose last answer was cleared | `TestClearedAnswersLeaveNoEmptySectionMapAndNoEmptyEntry` |
+| Section answers, answers of a switched-off section, sub-section answers, or answers of a hidden question are skipped | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-no-empty-section-map` |
+| `Cleared` is in map order, repeats a place, names the question by its name only, leaves out list answers, or spells a place differently | `remove-contact-clears-every-holder-and-answer-that-names-it`, `remove-contact-leaves-no-empty-section-map`, `TestClearedPlacesAreSortedAndListedOnce` |
+| A role's removal keeps its overrides, does not report them, or reports the role's own holders | `remove-role-removes-team-overrides-and-clears-answers`, `remove-role-leaves-the-contact-and-team-with-the-same-id` |
+| A team's removal keeps the answer, or reports its overrides | `remove-team-clears-the-team-answer`, `remove-team-with-no-answer-changes-only-its-entry` |
+| An entry is not removed | every applied `remove-*` case |
+| A removal of an unknown id gives no problem, a warning, or accepts the id of another kind | the `remove-*-refuses-*` cases |
+| A removal drops `unknownFields`, `provenance`, `origin`, `id`, or a variable's `example`, or reorders the sections | every applied `remove-*` case |
+| A directory operation shares the directory or the answers with the argument, or edits the argument | `TestArgumentsAreNotChanged`, `TestResultSharesNothingWithTheArgumentThatAnEditCouldChange` |
+| `Submit` does not check the items of a list, checks ids of every kind, checks every text question, skips section questions, or reports a warning | `a-list-with-one-unknown-contact-is-refused`, `contact-question-refuses-a-team-id`, `string-question-takes-text-that-names-no-contact`, `unknown-section-contact-is-refused`, `unknown-contact-is-refused` |

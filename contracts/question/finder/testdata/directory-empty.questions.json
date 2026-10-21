@@ -1,0 +1,6 @@
+{"questions": [
+  {"id": "plan.owner", "type": "contact", "required": true, "answer": "sam-okafor"},
+  {"id": "plan.manager", "type": "role", "required": true},
+  {"id": "plan.team", "type": "team", "required": true, "answer": "platform"},
+  {"id": "plan.reviewers", "type": "contact", "answer": ["sam-okafor"]}
+], "blockers": ["plan.owner", "plan.manager", "plan.team"]}

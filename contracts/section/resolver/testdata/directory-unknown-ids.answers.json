@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "directory-unknown-ids": {
+      "c_unknown": "ghost-contact",
+      "c_default": "ghost-contact",
+      "c_both": "ghost-contact",
+      "c_list": ["ghost-contact", "sam-okafor", "ghost-two", "lee-park"],
+      "c_all": ["ghost-contact", "ghost-two"],
+      "r_unknown": "no-such-role",
+      "r_list": ["no-such-role", "it-contact"],
+      "t_unknown": "no-such-team",
+      "c_blank": "ghost-contact",
+      "c_case": "Sam-Okafor",
+      "c_name": "Sam Okafor",
+      "c_wrongkind": "engineering-manager",
+      "r_wrongkind": "sam-okafor"
+    }
+  }
+}

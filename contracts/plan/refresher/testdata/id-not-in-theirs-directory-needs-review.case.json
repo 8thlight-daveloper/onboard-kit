@@ -1,0 +1,473 @@
+{
+  "base": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "contact_gone",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_ok",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_ours",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_gone",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_ok",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_gone",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_ok",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "owner",
+            "audience": "onboardee",
+            "type": "contact"
+          },
+          {
+            "name": "backup",
+            "audience": "onboardee",
+            "type": "contact"
+          }
+        ],
+        "source": {
+          "template": "access",
+          "hash": "h1"
+        }
+      }
+    ],
+    "answers": {
+      "plan": {
+        "contact_gone": "sam-okafor",
+        "contact_ok": "sam-okafor",
+        "contact_only_ours": "sam-okafor",
+        "contact_only_theirs": "sam-okafor",
+        "role_gone": "design-lead",
+        "role_ok": "design-lead",
+        "team_gone": "design",
+        "team_ok": "design"
+      },
+      "sections": {
+        "access": {
+          "owner": "sam-okafor",
+          "backup": "sam-okafor"
+        }
+      }
+    }
+  },
+  "theirs": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "directory": {
+      "contacts": [
+        {
+          "id": "it-help",
+          "name": "IT help desk",
+          "email": "help@acme.example",
+          "slack": "#it-help"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor",
+          "email": "sam.okafor@acme.example",
+          "slack": "@sam",
+          "slackId": "U01ABC123"
+        }
+      ],
+      "roles": [
+        {
+          "id": "design-lead",
+          "name": "Design lead"
+        },
+        {
+          "id": "engineering-manager",
+          "name": "Engineering manager",
+          "holders": [
+            "sam-okafor"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "design",
+          "name": "Design team"
+        },
+        {
+          "id": "platform",
+          "name": "Platform team",
+          "holders": {
+            "engineering-manager": [
+              "sam-okafor"
+            ]
+          }
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_gone",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_ok",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_ours",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_gone",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_ok",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_gone",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_ok",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "owner",
+            "audience": "onboardee",
+            "type": "contact"
+          },
+          {
+            "name": "backup",
+            "audience": "onboardee",
+            "type": "contact"
+          }
+        ],
+        "source": {
+          "template": "access",
+          "hash": "h1"
+        }
+      }
+    ]
+  },
+  "ours": {
+    "schemaVersion": 1,
+    "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+    "directory": {
+      "contacts": [
+        {
+          "id": "lee-park",
+          "name": "Lee Park"
+        },
+        {
+          "id": "sam-okafor",
+          "name": "Sam Okafor"
+        }
+      ],
+      "roles": [
+        {
+          "id": "old-role",
+          "name": "Old role",
+          "holders": [
+            "lee-park"
+          ]
+        }
+      ],
+      "teams": [
+        {
+          "id": "old-team",
+          "name": "Old team"
+        }
+      ]
+    },
+    "variables": [
+      {
+        "name": "contact_gone",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_ok",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_ours",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "contact_only_theirs",
+        "audience": "onboardee",
+        "type": "contact"
+      },
+      {
+        "name": "role_gone",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "role_ok",
+        "audience": "onboardee",
+        "type": "role"
+      },
+      {
+        "name": "team_gone",
+        "audience": "onboardee",
+        "type": "team"
+      },
+      {
+        "name": "team_ok",
+        "audience": "onboardee",
+        "type": "team"
+      }
+    ],
+    "sections": [
+      {
+        "id": "access",
+        "title": "Access",
+        "summary": "About access",
+        "variables": [
+          {
+            "name": "owner",
+            "audience": "onboardee",
+            "type": "contact"
+          },
+          {
+            "name": "backup",
+            "audience": "onboardee",
+            "type": "contact"
+          }
+        ],
+        "source": {
+          "template": "access",
+          "hash": "h1"
+        }
+      }
+    ],
+    "answers": {
+      "plan": {
+        "contact_gone": "ghost",
+        "contact_ok": "it-help",
+        "contact_only_ours": "lee-park",
+        "contact_only_theirs": "it-help",
+        "role_gone": "old-role",
+        "role_ok": "engineering-manager",
+        "team_gone": "old-team",
+        "team_ok": "platform"
+      },
+      "sections": {
+        "access": {
+          "owner": "ghost",
+          "backup": "it-help"
+        }
+      }
+    }
+  },
+  "origin": {
+    "source": "https://plans.example.test/acme.org.obk.yaml",
+    "contentHash": "hash-new",
+    "refreshedOn": "2026-10-20"
+  },
+  "expected": {
+    "plan": {
+      "schemaVersion": 1,
+      "id": "c3a9e5d0-7f21-4b8e-a1c4-90d8e7f6a5b4",
+      "origin": {
+        "planId": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "source": "https://plans.example.test/acme.org.obk.yaml",
+        "contentHash": "hash-new",
+        "refreshedOn": "2026-10-20"
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "it-help",
+            "name": "IT help desk",
+            "email": "help@acme.example",
+            "slack": "#it-help"
+          },
+          {
+            "id": "sam-okafor",
+            "name": "Sam Okafor",
+            "email": "sam.okafor@acme.example",
+            "slack": "@sam",
+            "slackId": "U01ABC123"
+          }
+        ],
+        "roles": [
+          {
+            "id": "design-lead",
+            "name": "Design lead"
+          },
+          {
+            "id": "engineering-manager",
+            "name": "Engineering manager",
+            "holders": [
+              "sam-okafor"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "design",
+            "name": "Design team"
+          },
+          {
+            "id": "platform",
+            "name": "Platform team",
+            "holders": {
+              "engineering-manager": [
+                "sam-okafor"
+              ]
+            }
+          }
+        ]
+      },
+      "variables": [
+        {
+          "name": "contact_gone",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_ok",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_only_ours",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "contact_only_theirs",
+          "audience": "onboardee",
+          "type": "contact"
+        },
+        {
+          "name": "role_gone",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "role_ok",
+          "audience": "onboardee",
+          "type": "role"
+        },
+        {
+          "name": "team_gone",
+          "audience": "onboardee",
+          "type": "team"
+        },
+        {
+          "name": "team_ok",
+          "audience": "onboardee",
+          "type": "team"
+        }
+      ],
+      "sections": [
+        {
+          "id": "access",
+          "title": "Access",
+          "summary": "About access",
+          "variables": [
+            {
+              "name": "owner",
+              "audience": "onboardee",
+              "type": "contact"
+            },
+            {
+              "name": "backup",
+              "audience": "onboardee",
+              "type": "contact"
+            }
+          ],
+          "source": {
+            "template": "access",
+            "hash": "h1"
+          }
+        }
+      ],
+      "answers": {
+        "plan": {
+          "contact_ok": "it-help",
+          "contact_only_theirs": "it-help",
+          "role_ok": "engineering-manager",
+          "team_ok": "platform"
+        },
+        "sections": {
+          "access": {
+            "backup": "it-help"
+          }
+        }
+      }
+    },
+    "report": {
+      "answersKept": [
+        "access.backup",
+        "plan.contact_ok",
+        "plan.contact_only_theirs",
+        "plan.role_ok",
+        "plan.team_ok"
+      ],
+      "answersToReview": [
+        "access.owner",
+        "plan.contact_gone",
+        "plan.contact_only_ours",
+        "plan.role_gone",
+        "plan.team_gone"
+      ]
+    }
+  }
+}

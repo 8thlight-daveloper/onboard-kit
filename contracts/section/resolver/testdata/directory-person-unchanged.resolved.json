@@ -1,0 +1,11 @@
+{
+  "id": "directory-person-unchanged",
+  "title": "Person unchanged",
+  "summary": "A person and a string are not looked up",
+  "body": "people=[sam-okafor, then lee-park] plain=[sam-okafor] text=[Sam Okafor, sam@acme.example, @sam]",
+  "variables": [
+    {"name": "people", "type": "person", "multiple": true, "description": "People held as text"},
+    {"name": "plain", "description": "A string that holds a contact id"},
+    {"name": "text", "type": "person", "description": "A person held as a line"}
+  ]
+}

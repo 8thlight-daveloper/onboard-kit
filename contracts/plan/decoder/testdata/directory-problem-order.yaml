@@ -1,0 +1,17 @@
+schemaVersion: 1
+origin:
+  extra: 1
+directory:
+  contacts:
+    - id: yes
+  teams:
+    - id: t
+      nope: 1
+variables:
+  - name: 5
+answers:
+  plan:
+    a:
+sections:
+  - id: s
+    title: 0x1F

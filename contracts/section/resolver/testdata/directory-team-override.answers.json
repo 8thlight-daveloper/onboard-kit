@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "directory-team-override": {
+      "manager": "engineering-manager",
+      "mentor": "mentor",
+      "it": "it-contact",
+      "design": "design-lead",
+      "champion": "security-champion"
+    }
+  }
+}

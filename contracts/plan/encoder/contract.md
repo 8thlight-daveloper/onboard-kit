@@ -28,9 +28,13 @@ A key is written in the order the tables below give. A key with a zero value is 
 
 | Type | Key order |
 | -- | -- |
-| Plan | `schemaVersion`, `id`, `provenance`, `origin`, `variables`, `answers`, `sections`, then the unknown fields |
+| Plan | `schemaVersion`, `id`, `provenance`, `origin`, `directory`, `variables`, `answers`, `sections`, then the unknown fields |
 | Provenance | `templateSet`, `generatedOn` |
 | Origin | `planId`, `source`, `contentHash`, `refreshedOn` |
+| Directory | `contacts`, `roles`, `teams` |
+| Contact | `id`, `name`, `email`, `slack`, `slackId` |
+| Role | `id`, `name`, `holders` |
+| Team | `id`, `name`, `holders` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
@@ -43,7 +47,14 @@ A key is written in the order the tables below give. A key with a zero value is 
 
 A plan's `id` is a plain text field. It is written right after `schemaVersion`, by the same rules as a string, and omitted when empty. So a UUID, which starts with a digit, is quoted. The four fields of an `origin` are plain text, written by the same rules. A `refreshedOn` date and a `contentHash` that starts with a digit are quoted, and a `source` such as a URL or a path that starts with a letter or `/` is plain. A plan holds an `origin` in a personal plan only, and the encoder writes whatever the plan holds. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md).
 
-An unknown field on a plan whose key is `id` or `origin` collides, and on a section it does not. The keys of an Origin are not keys of a Plan, so `planId` or `source` as an unknown field of a plan is written as any other.
+A plan's `directory` is written right after `origin` and before `variables`. See [0080](../../../docs/decisions/0080-directory.md).
+
+- It holds `contacts`, `roles`, and `teams`, each a list. Each item is a map written with the keys of its table, in that order. List items stay in the order the plan holds them, repeats and shared ids included. The encoder never sorts a list or removes an item.
+- A key with a zero value is omitted, as everywhere. So an empty `contacts`, `roles`, or `teams`, an empty `holders` list on a role, and an empty or absent `holders` map on a team are omitted, and a contact that holds only an `id` writes only that key. The `directory` itself is omitted when it holds nothing, so a plan with no contacts, roles, or teams writes no `directory` key, whether its lists are nil or empty.
+- A team's `holders` is a map of role id to a list of contact ids. Its role ids are written in ascending byte order, like every other map, whatever the map's own order. Each role id is written as a key by the string rules, and each holder is written as a string by the string rules. An entry whose list is empty is the exception to the empty-list rule: it is written `role: []`, because a map entry is always written and the entry says the role has no holder for that team. Dropping it would give the role back to its organization-wide holders.
+- Every directory field, holder, and role id is a plain text field written by the string rules in Scalars. That includes the values a person is likely to type: `sam-okafor`, `U01ABC123`, an email that starts with a letter, and `$HOME` are plain, and `@sam`, `#it-help`, an id or a holder that starts with a digit such as `42` or `2fa-team`, an email that starts with a digit, `true`, `on`, `null`, `y`, `n`, `no`, `yes`, and `deferred`, are quoted. A name with a newline follows Multi-line strings. A directory string is never changed on the way out.
+
+An unknown field on a plan whose key is `id`, `origin`, or `directory` collides, and on a section it does not. The keys of an Origin are not keys of a Plan, so `planId` or `source` as an unknown field of a plan is written as any other.
 
 A section's `parent` is a plain text field, the id of another section. It is written right after `includeIf`, by the same rules as `title`, and omitted when empty. An unknown field whose key is `parent` collides on a section and not on the plan. See [0070](../../../docs/decisions/0070-sub-sections.md).
 
@@ -103,9 +114,9 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 | Code | When |
 | -- | -- |
 | `encode.empty-answer` | A Value of kind none is an answer, or is an item of `isOneOf` or `isNotOneOf` |
-| `encode.empty-item` | A variable, section, step, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem |
+| `encode.empty-item` | A variable, section, step, contact, role, team, or condition clause in a list would write no keys. A clause that names no section and holds no question or answer writes no keys, whatever its `enabled` holds. Dropping it would shift the list, so it is a problem. A team whose `holders` map is empty writes no keys. A team whose map has an entry with no holder does write a key, so it is not empty. The path is such as `directory.contacts[1]`. |
 | `encode.ambiguous-check` | A Check has none of `run`, `ask`, `env`, or more than one |
-| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id` and `origin` collide, and the same keys on a section do not. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has the key of a known field, so `enabled` or `parent` on a section collides, and the same keys on the plan do not. On the plan, `id`, `origin`, and `directory` collide, and the same keys on a section do not, so a section's own `directory` unknown field is written as any other, and a step's `directory` stays its working directory. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
@@ -124,6 +135,16 @@ These hold for every plan the contract tests use.
 - Writing the bytes to a file, which a driver does.
 - Checking that a plan is valid. An encoder writes any plan it can, and the plan validator judges it. That includes whether a `parent` names a section of the plan and whether the parents form a cycle: the encoder writes the text as held, and the plan validator's structure check judges it.
 - Decimal numbers written in exponent form, and decimals too large or small for plain notation.
+
+## Decisions to know
+
+These are the choices the directory change made where the docs were silent.
+
+1. **hard.** A team's `holders` entry with no holder is written `role: []`, and is not omitted. The task said an empty list is omitted. The reason for the exception is the decoder contract: `[]` is how a file says a role is vacant for a team, and omitting it would give the role back to its organization-wide holders. A Go `nil` list and an empty list both write `[]`.
+2. **hard.** Strings follow the existing quoting rule with no directory special case. So `U01ABC123`, emails, `sam-okafor`, `$HOME`, and `<noreply@acme.example>` are plain, and `@sam`, `#it-help`, `42`, `2fa-team`, `007`, `1password@acme.example`, `true`, `on`, `null`, and `deferred` are quoted, because the rule quotes anything that does not start with a letter, `$`, `/`, or `<`. The first-letter rule quotes some strings YAML would read as plain text, such as `Ünal@acme.example`. A file therefore holds more quotes than a hand-written one.
+3. **cheap.** A contact, role, or team that would write no keys is `encode.empty-item` at its path, such as `directory.teams[0]`. The task did not name it. Writing `- {}` or dropping the item are the other choices, and dropping shifts the list.
+4. **cheap.** An unknown field named `directory` on the plan collides, and on a section it does not, as for `origin`.
+5. **cheap.** A team's `holders` with only an empty map is omitted, so a team with only that is an empty item. A team with only an entry that has no holder writes that entry.
 
 ## Wrong implementations tried
 
@@ -187,3 +208,19 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | `refreshedOn` or `contentHash` written plain when it starts with a digit | `id-origin`, `origin-quoting`, `origin-planid-refreshed` |
 | `id` or `origin` as an unknown field of the plan not reported | `id-origin-collision` |
 | The keys of an Origin reported as collisions on the plan, or `origin` reported on a section | `origin-unknown` |
+| `directory` never written, or written after `variables`, `answers`, or `sections`, or before `id`, `provenance`, or `origin` | `directory-order`, `directory-shared`, `directory-problem-order` |
+| `contacts`, `roles`, and `teams` written in another order, or a field of an item written out of order, such as `slackId` before `slack` or `holders` before `name` | `directory-order`, `directory-shared`, `directory-quoting` |
+| A contact, role, team, or holder list sorted, reversed, deduplicated, or stripped of an item that shares an id | `directory-order` |
+| A list sorted in place, so the plan the caller holds changes | `directory-order`, the inputs-unchanged test |
+| A team's role ids in map order, or sorted without regard to case | `directory-order`, `directory-quoting`, `directory-vacant-role`, the determinism test |
+| A team's entry with no holder dropped, written as `null`, or written as an empty block | `directory-vacant-role`, the vacant role test |
+| An empty `holders`, an empty `contacts`, or a directory that holds nothing written, as `holders: {}`, `contacts: []`, or `directory: {}` | `directory-omit-zero`, `directory-only-teams`, `directory-blank`, the empty directory test |
+| A zero field written, such as `slack: ""` | `directory-order`, `directory-omit-zero` |
+| A field dropped, such as `slackId` | `directory-order`, `directory-shared`, `directory-quoting` |
+| `@sam`, `#it-help`, `U01ABC123`-like ids, an id that starts with a digit, a number-like id, `true`, `on`, `null`, or `deferred` written plain, or text that is plain written in quotes | `directory-quoting`, `directory-shared` |
+| A role id in a team's `holders` written without the key quoting, such as `2fa`, `@it`, `n`, `on`, or `deferred` | `directory-quoting` |
+| A name with a newline written in quotes, or as the wrong block | `directory-quoting` |
+| An empty contact, role, or team dropped without a problem, or written as `{}` | `directory-empty-items`, `directory-problem-order` |
+| A team with an empty `holders` map taken for a team with content, or a team with only a vacant entry reported | `directory-empty-items` |
+| A plan's `directory` unknown field written, or not reported | `directory-collision` |
+| A section's `directory` unknown field reported, or a step's `directory` changed | `directory-section-unknown` |

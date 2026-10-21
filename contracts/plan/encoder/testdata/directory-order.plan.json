@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "plan-1",
+  "provenance": {"templateSet": "abc123", "generatedOn": "2026-10-15"},
+  "origin": {"planId": "org-plan"},
+  "directory": {
+    "contacts": [
+      {"id": "zoe", "name": "Zoe Zed", "email": "zoe@acme.example", "slack": "@zoe", "slackId": "U02ZZZ"},
+      {"id": "amy", "name": "Amy Ash", "email": "amy@acme.example", "slack": "@amy", "slackId": "U01AAA"},
+      {"id": "zoe", "name": "Zoe again"},
+      {"id": "bob", "name": "Bob Birch"}
+    ],
+    "roles": [
+      {"id": "lead", "name": "Lead", "holders": ["zoe", "amy", "zoe", "bob", "amy"]},
+      {"id": "buddy", "name": "Buddy", "holders": ["bob", "amy"]},
+      {"id": "lead", "name": "Lead again", "holders": ["amy"]}
+    ],
+    "teams": [
+      {"id": "t2", "name": "Team two", "holders": {"qa": ["bob"], "lead": ["zoe", "amy", "zoe", "bob"], "Zed": ["amy"], "2fa-owner": ["bob", "amy"], "buddy": ["bob", "amy"]}},
+      {"id": "t1", "name": "Team one", "holders": {"lead": ["bob", "amy"]}},
+      {"id": "t2", "name": "Team two again"}
+    ]
+  },
+  "variables": [{"name": "team", "type": "team"}],
+  "answers": {"plan": {"team": "t1"}},
+  "sections": [{"id": "s", "title": "S"}],
+  "unknownFields": {"x-note": "n"}
+}

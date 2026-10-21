@@ -255,5 +255,110 @@
       }
     ],
     "source": "Hand-written. Contract rule: Problems, unknown-field-collision. `id` and `origin` are known keys of a Plan (ADR 0075), so an unknown field with either key collides, whether or not the plan holds an id. Problems come in key order, and the other unknown field, `x-ok`, is fine."
+  },
+  {
+    "name": "directory-shared",
+    "input": "../../testdata/directory.plan.json",
+    "output": "directory-shared.yaml",
+    "source": "Hand-written YAML for the shared plan in contracts/plan/testdata/directory.plan.json. ADR 0080 (Directory) and the domain model (Directory, Contact, Role, Team): the 0080 example. Contract rules: Keys, the directory tables. `@sam` and `#it-help` are quoted because they start with `@` and `#`, `U01ABC123` and the emails are plain because they start with a letter, and the plan id is quoted because it starts with a digit."
+  },
+  {
+    "name": "directory-order",
+    "input": "directory-order.plan.json",
+    "output": "directory-order.yaml",
+    "source": "Hand-written. Contract rules: Keys. The directory is written after `origin` and before `variables`, its keys are `contacts`, `roles`, `teams`, and each item writes its fields in the order of the tables. Contacts, roles, teams, and holders are out of sorted order, with repeats and two items that share an id, and are written as held. A team's `holders` role ids, which the Go map holds with no order, are written in ascending byte order: `2fa-owner`, `Zed`, `buddy`, `lead`, `qa`. A role's own `holders` keep their order."
+  },
+  {
+    "name": "directory-omit-zero",
+    "input": "directory-omit-zero.plan.json",
+    "output": "directory-omit-zero.yaml",
+    "source": "Hand-written. Contract rules: Keys, a key with a zero value is omitted. A contact with one field writes that one key, so five contacts write five different keys. An empty list of holders and an empty or absent team `holders` map are omitted, and a role or team that holds only its holders or only a name is not an empty item."
+  },
+  {
+    "name": "directory-only-teams",
+    "input": "directory-only-teams.plan.json",
+    "output": "directory-only-teams.yaml",
+    "source": "Hand-written. Contract rules: Keys. An empty `contacts` and an empty `roles` are omitted, so `directory` holds `teams` alone."
+  },
+  {
+    "name": "directory-vacant-role",
+    "input": "directory-vacant-role.plan.json",
+    "output": "directory-vacant-role.yaml",
+    "source": "Hand-written. 0080: a team's entry for a role replaces the role's own holders, and an empty entry makes the role vacant for that team. Contract rules: Keys, a map entry is always written. A team's `holders` entry with no holder is written `manager: []`, so reading the file back keeps the role vacant. The entries are in byte order."
+  },
+  {
+    "name": "directory-quoting",
+    "input": "directory-quoting.plan.json",
+    "output": "directory-quoting.yaml",
+    "source": "Hand-written. Contract rules: Scalars, Multi-line strings. Every directory field, holder, and role id key is written by the string rules. Plain: `sam-okafor`, `U01ABC123`, an email that starts with a letter, `$HOME`, `<noreply@acme.example>`, `/it`. Quoted: `@sam`, `#it-help`, `@42`, an id, a slack id, an email, or a holder that starts with a digit such as `42`, `007`, `1password@acme.example`, and `2026-10-15`, the reserved words `true`, `on`, `null`, `y`, `n`, `no`, `yes`, and `deferred`, `Sam: Okafor`, `Sam #1`, `ends:`, a leading space, and `Ünal@acme.example`. As keys of a team's `holders`: `2fa`, `@it`, `deferred`, `n`, and `on` are quoted, and `Z`, `engineering-manager`, and `it help` are plain. A name with a newline is a literal block, `|-` with no final newline and `|` with one. An empty email is omitted."
+  },
+  {
+    "name": "directory-section-unknown",
+    "input": "directory-section-unknown.plan.json",
+    "output": "directory-section-unknown.yaml",
+    "source": "Hand-written. Contract rules: Keys, an unknown field collides only when its key is a known key of that type. A section's `directory` and `x-directory` unknown fields are written as any other, after `steps`, and a step's `directory` stays a string."
+  },
+  {
+    "name": "directory-blank",
+    "input": "directory-blank.plan.json",
+    "output": "directory-blank.yaml",
+    "source": "Hand-written. Contract rules: Keys. A `directory` that holds nothing is omitted, so the file holds only `schemaVersion`."
+  },
+  {
+    "name": "directory-collision",
+    "input": "directory-collision.plan.json",
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "directory"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Keys, and Problems, `encode.unknown-field-collision`. `directory` is a known key of a plan, so an unknown field of the plan with that key collides, as `id` and `origin` do. It is reported once, its value is not examined, and `x-ok` is written no problem."
+  },
+  {
+    "name": "directory-empty-items",
+    "input": "directory-empty-items.plan.json",
+    "problems": [
+      {
+        "code": "encode.empty-item",
+        "path": "directory.contacts[1]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.contacts[3]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.roles[0]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.roles[1]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "directory.teams[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems, `encode.empty-item`. A contact, a role, or a team that would write no keys cannot be dropped without shifting the list. A role with an empty `holders` and a team with an empty `holders` map are empty. A team whose map has an entry with no holder is not empty, and a contact, role, or team with an id is not."
+  },
+  {
+    "name": "directory-problem-order",
+    "input": "directory-problem-order.plan.json",
+    "problems": [
+      {
+        "code": "encode.empty-item",
+        "path": "directory.contacts[0]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "variables[0]"
+      },
+      {
+        "code": "encode.empty-item",
+        "path": "sections[0].steps[0]"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Problems come in the order of their places in the canonical file. The directory is written before `variables` and `sections`, so its problem comes first."
   }
 ]

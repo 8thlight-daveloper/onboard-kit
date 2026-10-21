@@ -1,0 +1,31 @@
+{
+  "id": "directory-fields",
+  "title": "Ask Sam Okafor, @sam",
+  "summary": "Ask Sam Okafor, @sam; Lee Park",
+  "owner": "Sam Okafor, @sam",
+  "escalation": ["sam", "mgr"],
+  "verification": "Sam Okafor, @sam and Sam Okafor, @sam; Lee Park agree",
+  "body": "Ask Sam Okafor, @sam or Sam Okafor, @sam; Lee Park.",
+  "variables": [
+    {"name": "sam", "type": "contact", "description": "A contact"},
+    {"name": "mgr", "type": "role", "description": "A role"}
+  ],
+  "steps": [
+    {
+      "id": "ask",
+      "name": "Ask Sam Okafor, @sam",
+      "notes": "Or ask Sam Okafor, @sam; Lee Park.",
+      "owner": "Sam Okafor, @sam; Lee Park",
+      "escalation": ["sam", "mgr"],
+      "open": "Sam Okafor, @sam",
+      "directory": "Sam Okafor, @sam; Lee Park",
+      "run": ["mail", "Sam Okafor, @sam", "--cc=Sam Okafor, @sam; Lee Park"],
+      "env": {"WHO": "Sam Okafor, @sam", "SAM": "plain"},
+      "checks": [
+        {"run": ["check", "Sam Okafor, @sam; Lee Park"]},
+        {"ask": "Did Sam Okafor, @sam answer?"},
+        {"env": "TOKEN"}
+      ]
+    }
+  ]
+}

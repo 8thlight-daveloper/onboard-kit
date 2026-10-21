@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "variables": [
+    {"name": "owner", "type": "contact", "description": "Owner", "required": true},
+    {"name": "manager", "type": "role", "description": "Manager", "required": true},
+    {"name": "team", "type": "team", "description": "Team", "required": true},
+    {"name": "reviewers", "type": "contact", "multiple": true, "description": "Reviewers"}
+  ],
+  "answers": {"plan": {"owner": "sam-okafor", "team": "platform", "reviewers": ["sam-okafor"]}},
+  "sections": []
+}

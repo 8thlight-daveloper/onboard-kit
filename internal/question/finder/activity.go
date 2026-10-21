@@ -16,7 +16,7 @@ func findActive(plan model.Plan, candidates []candidate) []candidate {
 			continue
 		}
 		isActive[position] = true
-		if value, found := storedAnswer(plan.Answers, asked.scope, asked.variable.Name); found {
+		if value, found := decidedAnswer(plan, asked); found {
 			record(decided, asked, value)
 		}
 	}
@@ -61,4 +61,12 @@ func orderActive(active []candidate) []candidate {
 		ordered = append(ordered, active[position])
 	}
 	return ordered
+}
+
+func decidedAnswer(plan model.Plan, asked candidate) (model.Value, bool) {
+	value, found := storedAnswer(plan.Answers, asked.scope, asked.variable.Name)
+	if !found || !isDirectoryType(asked.variable.Type) {
+		return value, found
+	}
+	return foundAnswer(directoryChoices(plan.Directory, asked.variable.Type), value)
 }

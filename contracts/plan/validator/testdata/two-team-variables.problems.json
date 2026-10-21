@@ -1,0 +1,3 @@
+{"problems": [
+  {"code": "plan.duplicate-team-variable", "severity": "error", "detail": {"variables": "team,second_team,third_team"}}
+]}

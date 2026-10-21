@@ -1,0 +1,4 @@
+schemaVersion: 1
+directory:
+  - contacts: [yes]
+  - 0x1F

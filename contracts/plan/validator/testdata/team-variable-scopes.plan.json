@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "directory": {"teams": [{"id": "platform", "name": "Platform team"}]},
+  "variables": [
+    {"name": "team", "type": "team", "description": "Team"},
+    {"name": "owner", "type": "contact", "description": "Owner"}
+  ],
+  "answers": {"plan": {"team": "platform"}},
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "section_team", "type": "team", "description": "A team variable in a section"},
+      {"name": "section_team_two", "type": "team", "description": "Another team variable in the same section"}
+    ]},
+    {"id": "other", "variables": [
+      {"name": "section_team", "type": "team", "description": "A team variable in another section"}
+    ]}
+  ]
+}

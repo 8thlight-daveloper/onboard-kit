@@ -17,6 +17,8 @@ func (c *collector) planFrom(root *yaml.Node) model.Plan {
 			plan.ID = c.stringOf(found.value, found.at)
 		case "origin":
 			plan.Origin = c.originOf(found.value, found.at)
+		case "directory":
+			plan.Directory = c.directoryOf(found.value, found.at)
 		case "provenance":
 			plan.Provenance = c.provenanceOf(found.value, found.at)
 		case "variables":

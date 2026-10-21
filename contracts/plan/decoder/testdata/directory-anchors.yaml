@@ -1,0 +1,16 @@
+schemaVersion: 1
+directory: &d
+  contacts: &c
+    - &p
+      id: a
+      name: &n Sam
+      email: *n
+    - *p
+    - <<: {id: z}
+      name: M
+  teams:
+    - id: t
+      holders: &h
+        r: [a]
+        <<: {s: [b]}
+        &k q: [c]

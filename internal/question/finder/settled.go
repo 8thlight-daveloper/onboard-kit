@@ -25,3 +25,10 @@ func isAnswered(value model.Value) bool {
 func sameValue(left model.Value, right model.Value) bool {
 	return left.Kind == right.Kind && left.Text == right.Text && left.Flag == right.Flag && slices.Equal(left.List, right.List)
 }
+
+func hasAnswer(question model.Question) bool {
+	if isDirectoryType(question.Type) && !isFound(question.Choices, question.Answer) {
+		return false
+	}
+	return isAnswered(question.Answer)
+}

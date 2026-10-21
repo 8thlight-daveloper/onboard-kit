@@ -1,0 +1,14 @@
+schemaVersion: 1
+directory:
+  contacts:
+    - id: a
+      name: A
+      "name": B
+  contacts: []
+  teams:
+    - id: t
+      holders:
+        r: [a]
+        "r": [b]
+directory:
+  roles: []

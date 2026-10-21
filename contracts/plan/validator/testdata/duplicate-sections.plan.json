@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sections": [
+    {"id": "setup"},
+    {"id": "access"},
+    {"id": "setup"},
+    {"id": "setup"},
+    {"id": "access"},
+    {"id": "unique"}
+  ]
+}

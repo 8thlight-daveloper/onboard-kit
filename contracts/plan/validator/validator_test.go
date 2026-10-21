@@ -59,7 +59,18 @@ var answerCodes = []string{
 	"secret.token-prefix",
 	"secret.url-credential",
 	"secret.private-key",
+	"directory.duplicate-id",
+	"directory.holder-not-a-contact",
+	"directory.team-role-unknown",
+	"directory.unknown-id",
+	"directory.role-vacant",
+	"directory.email-malformed",
+	"directory.contact-unreachable",
+	"plan.duplicate-section-id",
+	"plan.duplicate-team-variable",
 }
+
+var judgedPlanCodes = []string{"plan.duplicate-section-id", "plan.duplicate-team-variable"}
 
 func readFixture(t *testing.T, name string) []byte {
 	t.Helper()
@@ -115,10 +126,11 @@ func casesWithExpectedProblems(cases []fixtureCase) []fixtureCase {
 	return slices.DeleteFunc(slices.Clone(cases), func(c fixtureCase) bool { return c.Expected == "" })
 }
 
-func answerProblems(problems []model.Problem) []model.Problem {
+func judgedProblems(problems []model.Problem) []model.Problem {
 	kept := []model.Problem{}
 	for _, problem := range problems {
-		if strings.HasPrefix(problem.Code, "answer.") || strings.HasPrefix(problem.Code, "secret.") {
+		if strings.HasPrefix(problem.Code, "answer.") || strings.HasPrefix(problem.Code, "secret.") ||
+			strings.HasPrefix(problem.Code, "directory.") || slices.Contains(judgedPlanCodes, problem.Code) {
 			kept = append(kept, problem)
 		}
 	}
@@ -155,7 +167,7 @@ func sameProblemsIgnoringMessages(left, right []model.Problem) bool {
 
 func assertProblems(t *testing.T, got []model.Problem, want []expectedProblem, fragments []string) {
 	t.Helper()
-	got = answerProblems(got)
+	got = judgedProblems(got)
 	if !slices.Equal(describe(got), describeExpected(want)) {
 		t.Errorf("got\n  %s\nwant\n  %s", strings.Join(describe(got), "\n  "), strings.Join(describeExpected(want), "\n  "))
 		return
@@ -224,7 +236,7 @@ func TestEveryCaseCitesItsSourceAndTheCasesCoverEveryCode(t *testing.T) {
 			t.Errorf("no case expects a problem of severity %s", severity)
 		}
 	}
-	for _, key := range []string{"item", "expected", "found"} {
+	for _, key := range []string{"item", "expected", "found", "kind", "id", "contact", "role", "team", "holder", "variables"} {
 		if !details[key] {
 			t.Errorf("no case expects the detail %s", key)
 		}
@@ -276,14 +288,24 @@ func problemsOfQuestion(problems []model.Problem, question string) []model.Probl
 	return found
 }
 
+func asStored(problems []model.Problem) []model.Problem {
+	converted := slices.Clone(problems)
+	for i := range converted {
+		if converted[i].Code == "directory.unknown-id" {
+			converted[i].Severity = model.SeverityWarning
+		}
+	}
+	return converted
+}
+
 func TestCheckValueAgreesWithValidateAboutEachStoredAnswer(t *testing.T) {
 	t.Parallel()
 	for _, c := range loadCases(t) {
 		plan := loadPlan(t, c)
 		validator := newValidator()
-		reported := answerProblems(validator.Validate(plan))
+		reported := judgedProblems(validator.Validate(plan))
 		for question, value := range storedAnswers(plan) {
-			checked := answerProblems(validator.CheckValue(plan, question, value))
+			checked := judgedProblems(validator.CheckValue(plan, question, value))
 			inReport := problemsOfQuestion(reported, question)
 			if len(checked) == 1 && (checked[0].Code == "answer.inactive-question" || checked[0].Code == "answer.unknown-question") {
 				for _, problem := range inReport {
@@ -293,7 +315,17 @@ func TestCheckValueAgreesWithValidateAboutEachStoredAnswer(t *testing.T) {
 				}
 				continue
 			}
-			if !sameProblemsIgnoringMessages(checked, inReport) {
+			for _, problem := range checked {
+				if problem.Code == "directory.unknown-id" && problem.Severity != model.SeverityError {
+					t.Errorf("%s, %s: CheckValue gives %s with severity %s, want error", c.Name, question, problem.Code, problem.Severity)
+				}
+			}
+			for _, problem := range inReport {
+				if problem.Code == "directory.unknown-id" && problem.Severity != model.SeverityWarning {
+					t.Errorf("%s, %s: Validate gives %s with severity %s, want warning", c.Name, question, problem.Code, problem.Severity)
+				}
+			}
+			if !sameProblemsIgnoringMessages(asStored(checked), inReport) {
 				t.Errorf("%s, %s: CheckValue gives\n  %s\nValidate gives\n  %s", c.Name, question,
 					strings.Join(describe(checked), "\n  "), strings.Join(describe(inReport), "\n  "))
 			}
@@ -423,6 +455,33 @@ func TestResultDoesNotDependOnTheOrderOfTheSections(t *testing.T) {
 				if got := newValidator().CheckValue(changed, check.Question, loadValue(t, check)); !reflect.DeepEqual(got, want.checked[i]) {
 					t.Errorf("%s, %s: sections reordered, the result changed", c.Name, check.Name)
 				}
+			}
+		}
+	}
+}
+
+func TestResultDoesNotDependOnTheOrderOfTheDirectory(t *testing.T) {
+	t.Parallel()
+	for _, c := range loadCases(t) {
+		want := resultsOf(t, newValidator(), c)
+		changed := loadPlan(t, c)
+		slices.Reverse(changed.Directory.Contacts)
+		slices.Reverse(changed.Directory.Roles)
+		slices.Reverse(changed.Directory.Teams)
+		for _, role := range changed.Directory.Roles {
+			slices.Reverse(role.Holders)
+		}
+		for _, team := range changed.Directory.Teams {
+			for _, holders := range team.Holders {
+				slices.Reverse(holders)
+			}
+		}
+		if got := newValidator().Validate(changed); !reflect.DeepEqual(got, want.validated) {
+			t.Errorf("%s: directory reversed, got\n  %s\nwant\n  %s", c.Name, strings.Join(describe(got), "\n  "), strings.Join(describe(want.validated), "\n  "))
+		}
+		for i, check := range c.Checks {
+			if got := newValidator().CheckValue(changed, check.Question, loadValue(t, check)); !reflect.DeepEqual(got, want.checked[i]) {
+				t.Errorf("%s, %s: directory reversed, the result changed", c.Name, check.Name)
 			}
 		}
 	}

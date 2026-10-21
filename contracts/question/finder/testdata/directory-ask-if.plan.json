@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example", "slack": "@sam", "slackId": "U01ABC123"},
+      {"id": "it-help", "name": "IT help desk", "email": "help@acme.example", "slack": "#it-help"},
+      {"id": "lee-park", "name": "Lee Park"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor"]},
+      {"id": "it-contact", "name": "IT contact", "holders": ["it-help"]},
+      {"id": "design-lead", "name": "Design lead"}
+    ],
+    "teams": [
+      {"id": "platform", "name": "Platform team", "holders": {"engineering-manager": ["lee-park", "sam-okafor"]}},
+      {"id": "design", "name": "Design team"}
+    ]
+  },
+  "variables": [
+    {"name": "owner", "type": "contact", "required": true, "description": "Unknown id"},
+    {"name": "lead", "type": "contact", "description": "Known id"},
+    {"name": "helpers", "type": "contact", "multiple": true, "description": "One known id, one unknown"},
+    {"name": "nobody", "type": "contact", "multiple": true, "required": true, "description": "Only unknown ids"},
+    {"name": "a_team", "type": "team", "required": true, "description": "Unknown team"}
+  ],
+  "answers": {
+    "plan": {"owner": "ghost", "lead": "sam-okafor", "helpers": ["ghost", "lee-park"], "nobody": ["ghost"], "a_team": "nowhere"},
+    "sections": {"followups": {"g_late": "lee-park"}}
+  },
+  "sections": [
+    {"id": "followups", "variables": [
+      {"name": "f_owner_settled", "description": "Asks if the unknown owner is settled", "askIf": {"all": [{"question": "plan.owner", "answer": {"isSettled": true}}]}},
+      {"name": "f_owner_unsettled", "description": "Asks if the unknown owner is unsettled", "required": true, "askIf": {"all": [{"question": "plan.owner", "answer": {"isSettled": false}}]}},
+      {"name": "f_owner_is", "description": "Asks if the owner is the stored unknown id", "askIf": {"all": [{"question": "plan.owner", "answer": {"is": "ghost"}}]}},
+      {"name": "f_owner_isnot", "description": "Asks if the owner is settled and not sam-okafor", "askIf": {"all": [{"question": "plan.owner", "answer": {"isNot": "sam-okafor"}}]}},
+      {"name": "f_lead_is", "description": "Asks if the lead is sam-okafor", "askIf": {"all": [{"question": "plan.lead", "answer": {"is": "sam-okafor"}}]}},
+      {"name": "f_helpers_settled", "description": "Asks if helpers is settled", "askIf": {"all": [{"question": "plan.helpers", "answer": {"isSettled": true}}]}},
+      {"name": "f_nobody_settled", "description": "Asks if nobody is settled", "askIf": {"all": [{"question": "plan.nobody", "answer": {"isSettled": true}}]}},
+      {"name": "f_nobody_unsettled", "description": "Asks if nobody is unsettled", "askIf": {"all": [{"question": "plan.nobody", "answer": {"isSettled": false}}]}},
+      {"name": "f_team_is_one_of", "description": "Asks if the team is one of two ids", "askIf": {"all": [{"question": "plan.a_team", "answer": {"isOneOf": ["nowhere", "platform"]}}]}},
+      {"name": "f_team_unsettled", "description": "Asks if the team is unsettled", "askIf": {"all": [{"question": "plan.a_team", "answer": {"isSettled": false}}]}},
+      {"name": "g_early", "description": "Waits for the contact question after it", "askIf": {"all": [{"question": "g_late", "answer": {"is": "lee-park"}}]}},
+      {"name": "g_late", "type": "contact", "description": "A contact asked after the question that names it"}
+    ]}
+  ]
+}

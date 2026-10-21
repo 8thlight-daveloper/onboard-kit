@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example"},
+      {"id": "sam-okafor", "name": "Sam Okafor Again", "email": "sam.again@acme.example"},
+      {"id": "ghost-contact", "name": "No way to reach"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor"]},
+      {"id": "vacant-role", "name": "Vacant role"}
+    ],
+    "teams": [
+      {"id": "platform", "name": "Platform team", "holders": {"missing-role": ["nobody"]}}
+    ]
+  },
+  "variables": [
+    {"name": "mode", "type": "choice", "options": ["show", "hide"], "description": "Mode"}
+  ],
+  "answers": {"plan": {"mode": "show"}},
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "c", "type": "contact", "description": "Contact"},
+      {"name": "cm", "type": "contact", "multiple": true, "description": "Contacts"},
+      {"name": "r", "type": "role", "description": "Role"},
+      {"name": "rm", "type": "role", "multiple": true, "description": "Roles"},
+      {"name": "t", "type": "team", "description": "Team"},
+      {"name": "tm", "type": "team", "multiple": true, "description": "Team"},
+      {"name": "who", "type": "person", "description": "A person, the old type"},
+      {"name": "hidden", "type": "contact", "description": "Hidden by a condition",
+        "askIf": {"all": [{"question": "plan.mode", "answer": {"is": "hide"}}]}}
+    ]}
+  ]
+}

@@ -1,0 +1,42 @@
+{
+ "schemaVersion": 1,
+ "directory": {
+  "contacts": [
+   {
+    "id": "lee-park",
+    "name": "Lee Park"
+   },
+   {
+    "id": "sam-okafor",
+    "name": "Sam Okafor"
+   }
+  ]
+ },
+ "variables": [
+  {
+   "name": "backups",
+   "description": "backups",
+   "type": "contact",
+   "multiple": true
+  },
+  {
+   "name": "others",
+   "description": "others",
+   "type": "contact",
+   "multiple": true
+  }
+ ],
+ "answers": {
+  "plan": {
+   "backups": [
+    "",
+    "lee-park"
+   ],
+   "others": [
+    "",
+    "sam-okafor",
+    "lee-park"
+   ]
+  }
+ }
+}
