@@ -14,7 +14,7 @@ func (a Assembler) fillActiveSections(plan model.Plan) ([]filledSection, []model
 	var problems []model.Problem
 	parents := parentsByID(plan.Sections)
 	for _, active := range a.selector.Select(plan) {
-		filled, sectionProblems := a.resolver.Resolve(active, plan.Answers)
+		filled, sectionProblems := a.resolver.Resolve(active, plan.Answers, plan.Directory, "")
 		sections = append(sections, filledSection{filled: filled, declared: active.Variables, depth: depthOf(active, parents), problems: sectionProblems})
 		problems = append(problems, sectionProblems...)
 	}
