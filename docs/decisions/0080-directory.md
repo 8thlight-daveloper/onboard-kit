@@ -167,7 +167,7 @@ The org plan then holds contact details for the people named. The org plan's loc
   - Editor: operations to add, change, and remove a contact, a role, and a team.
   - Instantiator: a new plan starts with an empty directory.
 - **ACME** gains a directory. `general_contacts`, the grantors, and the owner role become references.
-- **The walkthrough** gets a People screen for the onboarder. The onboardee sees only results.
+- **The walkthrough** gets a Contacts screen for the onboarder. The onboardee sees only results.
 
 ## Not decided
 
