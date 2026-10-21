@@ -1,0 +1,14 @@
+{"problems": [
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "team", "id": "dup"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "alpha", "team-contact": "ghost-z"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "design", "team-contact": "engineering-manager"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "dup", "team-contact": "a-one"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "dup", "team-contact": "b-two"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "legal", "team-contact": "Sam-Okafor"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "ops", "team-contact": "design"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "platform", "team-contact": "ghost-b"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "spaced", "team-contact": " "}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"team": "zeta", "team-contact": "ghost-z"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "engineering-manager", "holder": "ghost-r"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "engineering-manager", "team": "platform", "holder": "ghost-h"}}
+]}
