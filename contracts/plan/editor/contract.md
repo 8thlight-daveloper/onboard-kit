@@ -2,15 +2,15 @@
 
 Status: draft by an agent. Not reviewed by a person. Component: `plan/editor`. Issue: [#70](https://github.com/8thlight-daveloper/onboard-kit/issues/70).
 
-The plan editor changes a plan. It is the only component that returns a changed copy of one. `Submit` applies one answer. `SetSectionEnabled` turns one section on or off. `SetContact`, `SetRole`, and `SetTeam` add or replace an entry of the directory. `RemoveContact`, `RemoveRole`, and `RemoveTeam` remove one and clear every reference to it. Each returns a new plan and a list of problems, and none alters the plan it is given. All are pure functions. They read no file, read no clock, and keep no state between calls. See [0010](../../../docs/decisions/0010-plan-editor.md), [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0080](../../../docs/decisions/0080-directory.md), and the [domain model](../../../docs/reference/domain-model.md).
+The plan editor changes a plan. It is the only component that returns a changed copy of one. `Submit` applies one answer. `SetSectionEnabled` turns one section on or off. `SetContact`, `SetRole`, and `SetTeam` add or replace an entry of the directory. `RemoveContact`, `RemoveRole`, and `RemoveTeam` remove one and clear every reference to it. `PruneHiddenAnswers` removes the answers whose question the plan no longer declares. Each returns a new plan and a list of problems, and none alters the plan it is given. All are pure functions. They read no file, read no clock, and keep no state between calls. See [0010](../../../docs/decisions/0010-plan-editor.md), [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0080](../../../docs/decisions/0080-directory.md), and the [domain model](../../../docs/reference/domain-model.md).
 
 The finder says which questions are active, and the plan validator says whether a value is acceptable ([question finder contract](../../question/finder/contract.md), [plan validator contract](../validator/contract.md)). The editor decides what to do with their answer.
 
 ## Interface
 
-`Submit(plan, question, value) -> (plan, list of Problem)`, `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`, `SetContact(plan, contact)`, `SetRole(plan, role)`, and `SetTeam(plan, team)`, each `-> (plan, list of Problem)`, and `RemoveContact(plan, id)`, `RemoveRole(plan, id)`, and `RemoveTeam(plan, id)`, each `-> (plan, Cleared, list of Problem)`. The signatures are in `api.go`, with `Cleared`, which the model holds.
+`Submit(plan, question, value) -> (plan, list of Problem)`, `SetSectionEnabled(plan, section, enabled) -> (plan, list of Problem)`, `SetContact(plan, contact)`, `SetRole(plan, role)`, and `SetTeam(plan, team)`, each `-> (plan, list of Problem)`, and `RemoveContact(plan, id)`, `RemoveRole(plan, id)`, and `RemoveTeam(plan, id)`, each `-> (plan, Cleared, list of Problem)`, and `PruneHiddenAnswers(plan) -> (plan, Cleared, list of Problem)`. The signatures are in `api.go`, with `Cleared`, which the model holds.
 
-- `plan` is a Plan, as stored. `Submit` reads `plan.Variables`, `plan.Answers`, `plan.Sections`, and, through the validator, `plan.Directory`. `SetSectionEnabled` reads `plan.Sections`. The directory operations read `plan.Directory`, and the removals also read `plan.Variables`, `plan.Sections` (for each section's variables), and `plan.Answers`. No operation reads another field, and each returns the other fields as they are.
+- `plan` is a Plan, as stored. `Submit` reads `plan.Variables`, `plan.Answers`, `plan.Sections`, and, through the validator, `plan.Directory`. `SetSectionEnabled` reads `plan.Sections`. The directory operations read `plan.Directory`, and the removals also read `plan.Variables`, `plan.Sections` (for each section's variables), and `plan.Answers`. `PruneHiddenAnswers` reads `plan.Variables`, the id and variables of each of `plan.Sections`, and `plan.Answers`. No operation reads another field, and each returns the other fields as they are.
 - `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. The scope `plan` means the plan's own variables. Any other scope is a section id. The id is split at the first dot. Any text is accepted. An id that names nothing gives a problem.
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed. It means unanswered.
 - `section` is a section id. `enabled` is true or false.
@@ -46,6 +46,18 @@ The section switch is a field of the plan section and not an answer ([0050](../.
 - Only the named section changes. A switch is the section's own field, so turning a section off stores `enabled: false` on that section and writes nothing on its sub-sections, and turning a section on removes that section's own field and nothing on its sub-sections. A sub-section keeps its own `enabled`, a hand-written `true` included, and it keeps its `parent`. That a sub-section is inactive while its parent is off is the selector's rule and not stored, see [0070](../../../docs/decisions/0070-sub-sections.md). A sub-section can be turned off alone.
 - A section id that the plan does not hold, an empty id, and the id `plan` give one problem, `switch.unknown-section`, with severity `error`, and the returned plan equals the plan given. The id `plan` is refused even when a malformed plan holds a section with that id. The problem's `section` is the id as given, and its `question` is empty.
 - The editor does not report sections that depend on the switch. A question of a section that is off is not active, so a later `Submit` for it is refused with `answer.inactive-question`.
+
+## Rules for PruneHiddenAnswers
+
+A **hidden answer** is a stored answer whose question the plan no longer declares ([0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), "Hidden answers stay until the owner prunes them"). The answer `answers.plan.<name>` is hidden when no variable of the plan has that name. The answer `answers.sections.<id>.<name>` is hidden when the plan holds no section with the id `<id>`, or the section holds no variable with that name. Only the declaration decides. An answer to a question that is declared and not active is **not** hidden: a question whose `askIf` is unmet, a question of a section that is off or that no `includeIf` selects, and a question of a sub-section of a section that is off may become active again, and the answer stays. A refresh never removes hidden answers. The owner prunes them, and a driver first runs this operation on the current plan as a dry run to show what would go, then applies the result after a yes.
+
+- The result is the plan without its hidden answers. The kind of an answer does not matter: text, a flag of either value, a list, and a Deferred answer are removed when hidden, and kept when declared.
+- A name is declared only in its own scope. A plan answer whose name only a section declares is hidden, and so is a section answer whose name only the plan or another section declares. Names are compared exactly, so `Region` is not `region`. A section id is compared exactly too.
+- `Cleared.Answers` lists the id of each removed answer as `<scope>.<name>`, where the scope is `plan` or the section id as stored, also for a section the plan no longer holds. The list is in ascending byte order of the whole text, so `a-b.x` comes before `a.x` and `main.Tracker` before `main.region`, and each id appears once. `Cleared.Holders` is empty.
+- Nothing else changes. Every other field comes back as it was: variables, sections and their order, the directory, ids, provenance, origin, unknown fields, and each variable's `example`. Every answer that is not hidden stays as stored.
+- A section whose last answer is removed leaves no map in `answers.sections`. A map that holds no answer when the call starts is not emptied by it and stays, whether or not its section exists. A plan with no hidden answers comes back equal to the argument: a map or list the argument leaves absent stays absent, an empty one stays empty, and `Cleared` is empty.
+- No problem is ever returned, for any plan, however malformed. There is no refusal.
+- The result holds its own answers, with their maps and lists, and its own `sections` list and each section's `enabled`, even when nothing is removed. Repeating the call on the result changes nothing and reports nothing.
 
 ## Rules for the directory operations
 
@@ -100,6 +112,8 @@ The directory has contacts, roles, and teams ([0080](../../../docs/decisions/008
 | `directory.team-role-unknown` | `error` | `SetTeam` | A key of the team's holders is not the id of a role | `kind`, `id`, `role` |
 | `directory.entry-not-found` | `error` | The Remove operations | No entry of that kind has the id | `kind`, `id` as given |
 
+`PruneHiddenAnswers` has no code. It returns no problem.
+
 Every problem has a non-empty `message` for a person. The wording is not specified, and a problem never repeats a secret or a part of it.
 
 ## Properties
@@ -118,17 +132,20 @@ These hold for every plan the contract tests use.
 - **No empty leftovers.** After a directory operation, `answers.sections` holds no empty map and no answer has no kind.
 - **Take back.** Clearing an answer that a `Submit` added gives the plan from before. Turning off a section that has no `enabled` field and turning it on again gives the plan from before. Removing an entry that a Set added, when nothing else names it, gives the plan from before.
 - **New lists.** Changing the result's problems, including a problem's `detail`, changes no later result.
-- **Nothing to edit.** On a plan with nothing in it, `Submit` gives `answer.unknown-question`, `SetSectionEnabled` gives `switch.unknown-section`, each removal gives `directory.entry-not-found`, and the plan stays empty, with no map or list made out of an absent one. `SetContact` adds the first contact.
+- **Prune removes exactly the hidden answers.** For every plan the contract tests use, the answers left are the answers of the argument less those the declaration rule makes hidden, and `Cleared.Answers` names exactly those, the plan outside its answers is unchanged, and a second call removes nothing.
+- **Nothing to edit.** On a plan with nothing in it, `PruneHiddenAnswers` returns that plan and an empty `Cleared`, `Submit` gives `answer.unknown-question`, `SetSectionEnabled` gives `switch.unknown-section`, each removal gives `directory.entry-not-found`, and the plan stays empty, with no map or list made out of an absent one. `SetContact` adds the first contact.
 
 ## Side effects and plan access
 
-None. `Submit` returns a changed copy that differs only in `answers`, `SetSectionEnabled` returns a changed copy that differs only in the `enabled` field of one section, a Set returns a copy that differs only in `directory`, and a removal returns a copy that differs only in `directory` and `answers`. None alters the plan it was given. The row for `plan/editor` in [components](../../../docs/architecture/components.md) lists `answers` only, and 0010 says the copy "differs only in `answers`", so the row needs the switch and the directory added. The editor imports the finder, the validator, and the model, and nothing else, as [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) says.
+None. `Submit` returns a changed copy that differs only in `answers`, `SetSectionEnabled` returns a changed copy that differs only in the `enabled` field of one section, a Set returns a copy that differs only in `directory`, and a removal returns a copy that differs only in `directory` and `answers`, and `PruneHiddenAnswers` returns a copy that differs only in `answers`. None alters the plan it was given. The row for `plan/editor` in [components](../../../docs/architecture/components.md) lists `answers` only, and 0010 says the copy "differs only in `answers`", so the row needs the switch, the directory, and the prune added. The editor imports the finder, the validator, and the model, and nothing else, as [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) says.
 
 ## Not covered
 
 - Whether a section's map stays in `answers.sections` after `Submit` removes its last answer. A removal from the directory never leaves one.
 - A directory that already holds two entries of one kind with one id, and a name of only spaces. Whether an emptied `holders` map of a team is empty or absent.
-- Whether the plan's own `answers.plan` map stays when a removal clears its last answer.
+- Whether the plan's own `answers.plan` map, or the `answers.sections` map itself, stays when a removal or a prune takes its last answer.
+- A plan that holds a section with the id `plan`, which makes `plan.<name>` mean two things, a section or a variable that appears twice under one name, and a stored answer of no kind. Prune does not look for them.
+- Whether a driver shows the dry run or asks for a yes, and the `prune` command. The driver decides.
 - Warnings about the directory: an email, a role with no holder, an answer that names an unknown id already stored. The validator reports them. So is a team `contact` that already names no contact in a plan as given: a Set of another entry and a removal of a different kind do not look at it.
 - That a `parent` names a section, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them, and the editor copies a section as held.
 - Duplicate section ids, and duplicate variable names in one scope.
@@ -191,6 +208,16 @@ The `hard` ones come first.
 ### Decision for the switch of a malformed plan
 
 37. **The id `plan` is refused by a switch even when the plan holds a section with it.** The domain model says a section id is never `plan`, so such a plan is malformed, and the editor still answers `switch.unknown-section` and does not store a switch. The other choice was to switch the section the plan holds. Raised by "the id is a lowercase slug, never plan" in the domain model. Cases: `switch-of-a-section-named-plan-is-refused`. `hard`
+
+### Decisions for pruning hidden answers
+
+38. **A hidden answer is judged by the declaration alone, never by whether the question is active.** An answer to a question with an unmet `askIf`, in a section that is off or unselected, or in a sub-section of a section that is off, stays. Raised by the rule that an answer to a question that is merely inactive is not hidden, and by "A question that disappeared: the answer is kept but hidden" in 0075. Cases: `prune-keeps-the-answers-of-questions-that-are-not-active`, `prune-keeps-the-answers-of-a-switched-off-section-and-its-sub-sections`, `prune-removes-the-hidden-answers-of-a-plan-with-people-and-keeps-the-rest`. `hard`
+39. **A name is declared only in its own scope.** A question that moved to another scope is a removed question and a new one, so its old answer is hidden. Raised by "A question that moves to another scope is a removed question and a new one" in 0075. Case: `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id`. `hard`
+40. **Every kind of answer is removed when hidden, a Deferred answer and a flag of false included.** Raised by "A question that disappeared" in 0075, which keeps the answer whatever it holds. Case: `prune-removes-a-hidden-answer-of-every-kind`. `hard`
+41. **`Cleared.Answers` names each removed answer as `<scope>.<name>` in byte order of the whole text, `Cleared.Holders` is empty, and no problem is returned.** The ids of a section the plan no longer holds are listed too. Raised by 0075 naming a prune that lists first and deletes after a yes, and by the form `Cleared` already has for the removals. Cases: `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id`, every prune case. `hard`
+42. **A map that holds no answer when prune starts stays.** Only a section map that prune itself empties is removed. This follows "a plan with no hidden answers comes back equal". Cases: `prune-leaves-empty-answer-maps-as-given`, `prune-keeps-the-answers-of-a-switched-off-section-and-its-sub-sections`. `cheap`
+43. **Names and section ids are compared exactly.** Raised by 0080 comparing ids as written, applied here to names. Case: `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id`. `cheap`
+44. **The result shares no answers or sections list with the argument, even when nothing is removed.** The same strict reading as decision 9. Test: the shared-parts test. `cheap`
 
 ## Wrong implementations tried
 
@@ -269,3 +296,13 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | A removal of a role or a team clears the team `contact` that has the same text | `remove-role-leaves-a-team-contact-with-the-same-id`, `remove-team-leaves-the-team-contacts-that-share-its-id` |
 | A removal of a team reports its own `contact` | `remove-team-with-a-contact-removes-the-contact-with-the-team`, `remove-team-leaves-the-contact-it-named` |
 | A Set of a contact clears the team contacts that name it | `set-contact-keeps-the-team-contacts-that-name-it` |
+| Prune removes only text answers, or keeps a Deferred, a flag, or a list answer | `prune-removes-a-hidden-answer-of-every-kind` |
+| Prune skips the answers of a section the plan no longer holds | `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id`, `prune-removes-the-hidden-answers-of-a-plan-with-people-and-keeps-the-rest` |
+| Prune counts a name declared in any scope, or in other case, as declared | `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id` |
+| Prune removes the answers of a section that is off, of a sub-section of one, or of a question whose `askIf` or `includeIf` is unmet | `prune-keeps-the-answers-of-a-switched-off-section-and-its-sub-sections`, `prune-keeps-the-answers-of-questions-that-are-not-active`, `prune-removes-the-hidden-answers-of-a-plan-with-people-and-keeps-the-rest` |
+| Prune leaves an empty map for a section it emptied, or removes an empty map it did not empty | `TestClearedAnswersLeaveNoEmptySectionMapAndNoEmptyEntry`, `prune-leaves-empty-answer-maps-as-given` |
+| `Cleared` is unsorted, sorted by scope then name or without regard to case, names only the variable, or lists holders | `prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id`, `TestClearedPlacesAreSortedAndListedOnce` |
+| Prune returns a problem or a warning | every prune case |
+| Prune shares the answers or the sections list with the argument, or removes from the argument in place | `TestResultSharesNothingWithTheArgumentThatAnEditCouldChange`, `TestArgumentsAreNotChanged` |
+| Prune returns an absent map as an empty one | `prune-a-plan-with-no-answers-comes-back-equal`, `TestPruneWithNothingHiddenReturnsAnEqualPlan`, `TestARefusalOnAPlanWithNothingReturnsThatPlanExactly` |
+| Prune reorders the sections or drops an `example` | `examples-kept-by-a-prune`, `TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument` |

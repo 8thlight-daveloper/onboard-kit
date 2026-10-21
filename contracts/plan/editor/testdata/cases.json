@@ -3201,5 +3201,126 @@
       }
     ],
     "source": "docs/reference/domain-model.md, Section: the id is a lowercase slug, never plan. The id plan names the plan scope, and the contract refuses it even when a malformed plan holds a section with that id"
+  },
+  {
+    "name": "prune-removes-a-hidden-answer-of-every-kind",
+    "operation": "prune",
+    "before": "hidden-kinds.plan.json",
+    "cleared": {
+      "answers": [
+        "main.old_deferred",
+        "main.old_flag",
+        "main.old_list",
+        "main.old_note",
+        "plan.old_deferred",
+        "plan.old_flag",
+        "plan.old_list",
+        "plan.old_text"
+      ],
+      "holders": []
+    },
+    "after": "prune-hidden-kinds.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: a hidden answer is a stored answer whose question the plan no longer declares. Text, a flag (false included), a list, and a Deferred answer are all answers, so the kind does not matter"
+  },
+  {
+    "name": "prune-removes-answers-by-scope-and-exact-name-and-lists-them-by-whole-id",
+    "operation": "prune",
+    "before": "hidden-scopes.plan.json",
+    "cleared": {
+      "answers": [
+        "a-b.x",
+        "a.x",
+        "gone.x",
+        "gone.y",
+        "main.Tracker",
+        "main.region",
+        "main.y",
+        "plan.Region",
+        "plan.tracker"
+      ],
+      "holders": []
+    },
+    "after": "prune-hidden-scopes.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: an answer is hidden when no variable of that name is declared in its own scope (answers.plan.<name> against the plan variables, answers.sections.<id>.<name> against that section), when the section does not exist, and a name declared only in another scope or in other case is not declared. Question ids are <scope>.<name>, and the list is in byte order of the whole id"
+  },
+  {
+    "name": "prune-removes-the-hidden-answers-of-a-plan-with-people-and-keeps-the-rest",
+    "operation": "prune",
+    "before": "people.plan.json",
+    "cleared": {
+      "answers": [
+        "plan.retired_contact",
+        "retired.approver"
+      ],
+      "holders": []
+    },
+    "after": "prune-people.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: an answer to a question that is merely inactive (askIf unmet, a section off, a sub-section) or Deferred is not hidden and stays. Only plan.retired_contact has no variable and only retired.approver has no section. Every other field of the plan, the directory, ids, provenance, origin, and unknown fields stay"
+  },
+  {
+    "name": "prune-keeps-the-answers-of-questions-that-are-not-active",
+    "operation": "prune",
+    "before": "inactive.plan.json",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "inactive.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: an answer to a question that is merely inactive, because of askIf or an unselected section, is not hidden: it may become active again and is kept, a Deferred one too"
+  },
+  {
+    "name": "prune-keeps-the-answers-of-a-switched-off-section-and-its-sub-sections",
+    "operation": "prune",
+    "before": "parents-off.plan.json",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "parents-off.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: an answer to a question of a section that is off, and of its sub-section, is not hidden: it may become active again and is kept. An answers.plan map that is already empty stays as given"
+  },
+  {
+    "name": "prune-a-plan-with-no-answers-comes-back-equal",
+    "operation": "prune",
+    "before": "empty.plan.json",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "empty.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: a plan with no hidden answers comes back equal, and a map or list the plan leaves absent stays absent"
+  },
+  {
+    "name": "prune-leaves-empty-answer-maps-as-given",
+    "operation": "prune",
+    "before": "empty-section-map.plan.json",
+    "cleared": {
+      "answers": [],
+      "holders": []
+    },
+    "after": "empty-section-map.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: a plan with no hidden answers comes back equal. A map with no answer holds no hidden answer, so prune does not remove it, whether or not its section exists"
+  },
+  {
+    "name": "examples-kept-by-a-prune",
+    "operation": "prune",
+    "before": "hidden-examples.plan.json",
+    "cleared": {
+      "answers": [
+        "main.gone_note",
+        "plan.old_name"
+      ],
+      "holders": []
+    },
+    "after": "prune-hidden-examples.after.plan.json",
+    "problems": [],
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Hidden answers stay until the owner prunes them: prune changes nothing but the hidden answers. A variable's example is an illustration and not an answer (0045), so every example stays"
   }
 ]

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "provenance": {"templateSet": "example", "generatedOn": "2026-10-15"},
+  "variables": [
+    {"name": "team_state", "description": "team state", "type": "choice", "options": ["established", "first-consultants"], "required": true},
+    {"name": "region", "description": "region"}
+  ],
+  "sections": [
+    {"id": "main", "title": "Main", "summary": "The section with answers.", "variables": [
+      {"name": "tracker", "description": "tracker", "required": true}
+    ]}
+  ],
+  "answers": {
+    "plan": {
+      "team_state": "established",
+      "region": "emea",
+      "old_text": "x",
+      "old_flag": true,
+      "old_list": ["a", "b"],
+      "old_deferred": {"deferred": true}
+    },
+    "sections": {
+      "main": {
+        "tracker": "IT service desk",
+        "old_note": "n",
+        "old_flag": false,
+        "old_list": ["", "z"],
+        "old_deferred": {"deferred": true}
+      }
+    }
+  }
+}

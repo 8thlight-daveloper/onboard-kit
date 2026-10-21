@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "provenance": {"templateSet": "example", "generatedOn": "2026-10-15"},
+  "variables": [
+    {"name": "gate", "description": "gate", "type": "boolean"},
+    {"name": "later_note", "description": "later note", "askIf": {"all": [{"question": "plan.gate", "answer": {"is": true}}]}},
+    {"name": "parked", "description": "parked", "askIf": {"all": [{"question": "plan.gate", "answer": {"is": true}}]}}
+  ],
+  "sections": [
+    {"id": "later", "title": "Later", "summary": "A section the gate brings in.", "includeIf": {"all": [{"question": "plan.gate", "answer": {"is": true}}]}, "variables": [
+      {"name": "note", "description": "note"},
+      {"name": "deferred_note", "description": "deferred note"}
+    ]}
+  ],
+  "answers": {
+    "plan": {"gate": false, "later_note": "kept", "parked": {"deferred": true}},
+    "sections": {
+      "later": {"note": "kept", "deferred_note": {"deferred": true}}
+    }
+  }
+}
