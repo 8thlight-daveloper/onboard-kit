@@ -48,7 +48,14 @@ A folder holds files that fail to decode, come from an old plan version, belong 
 
 A tool may show different things for different data, if it stays predictable. The view is a pure function of the records it can read. It says what it saw, such as "3 unfinished onboardings in `records/`". It adds a notice and a screen to open and does not replace the screen a person expected, as the prune notice does on the Review. The same view can also be asked for on purpose.
 
-So when an onboarder opens a plan and unfinished records exist at the results path, the tool shows a quiet notice and an Onboardings screen. It lists accounts with their progress, unfinished ones first, then by account. That is the person view of the report, and the by-section view answers "who has not verified AWS access yet" from the same data.
+So when an onboarder opens a plan and unfinished records exist at the results path, the tool shows a quiet notice and an Onboardings screen. It lists accounts with their progress, unfinished ones first, then by account.
+
+### Two views of the same data
+
+- **The person view** answers "who is still onboarding and might need help?" The action is to help one person. It is the first view, and the first iteration.
+- **The section view** answers "how is the plan doing?" The action is to fix the plan. It counts, for each section, how many newcomers verified it, failed it, deferred it, and recorded something different. A section where everyone recorded something different needs its instructions fixed. It also answers "who has not verified AWS access yet", by listing the names behind a count.
+- The section view shows counts and not percentages. With a handful of newcomers, "3 of 3" is honest and "100%" invites over-reading.
+- A one-line notice on the plan, such as "3 unfinished onboardings, 1 needs attention", points to the screen. The numbers need a screen and not a status line. The section view is a second tab on the same screen, and a second iteration, once there is real data to judge it by.
 
 ## Not decided
 
