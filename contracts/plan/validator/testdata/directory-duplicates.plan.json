@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor@acme.example"},
+      {"id": "dup3", "name": "Dup One", "email": "one@acme.example"},
+      {"id": "it-help", "name": "IT help desk", "email": "help@acme.example"},
+      {"id": "sam-okafor", "name": "Sam Okafor Again", "email": "sam.again@acme.example"},
+      {"id": "platform", "name": "A contact with a team's id", "slack": "#platform"},
+      {"id": "dup3", "name": "Dup Two", "email": "two@acme.example"},
+      {"id": "dup3", "name": "Dup Three", "email": "three@acme.example"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor"]},
+      {"id": "it-help", "name": "A role with a contact's id", "holders": ["it-help"]},
+      {"id": "engineering-manager", "name": "Engineering manager again", "holders": ["it-help"]}
+    ],
+    "teams": [
+      {"id": "platform", "name": "Platform team"},
+      {"id": "design", "name": "Design team"},
+      {"id": "platform", "name": "Platform team again"}
+    ]
+  }
+}

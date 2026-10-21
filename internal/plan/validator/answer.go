@@ -6,7 +6,7 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func answerProblems(variable model.Variable, value model.Value) []model.Problem {
+func answerProblems(directory model.Directory, severity model.Severity, variable model.Variable, value model.Value) []model.Problem {
 	if isUnanswered(value) {
 		return nil
 	}
@@ -20,6 +20,8 @@ func answerProblems(variable model.Variable, value model.Value) []model.Problem 
 		return patternProblems(variable, value)
 	case model.VariableTypePerson:
 		return personProblems(value)
+	case model.VariableTypeContact, model.VariableTypeRole, model.VariableTypeTeam:
+		return directoryIDProblems(directory, variable, value, severity)
 	default:
 		return nil
 	}
