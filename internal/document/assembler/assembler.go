@@ -18,9 +18,10 @@ func New() Assembler {
 }
 
 func (a Assembler) Assemble(plan model.Plan) (string, []model.Problem) {
-	filled, problems := a.fillActiveSections(plan)
+	context := planContext{answers: plan.Answers, directory: plan.Directory, team: teamIdentifier(plan)}
+	filled, problems := a.fillActiveSections(plan, context)
 	blocks := []string{
-		titleLine(plan.Answers),
+		titleLine(plan, context.team),
 		reviewLine(plan.Provenance),
 		gapTable(filled),
 	}

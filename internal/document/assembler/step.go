@@ -19,6 +19,9 @@ func stepDetails(step model.Step, sectionTiming model.Timing, text prose) []stri
 	if text.present(step.Owner) {
 		parts = append(parts, "Owner: "+text.of(step.Owner)+".")
 	}
+	if escalation := escalationPart(step.Escalation); escalation != "" {
+		parts = append(parts, escalation)
+	}
 	if step.Timing != "" && effectiveTiming(step.Timing) != effectiveTiming(sectionTiming) {
 		parts = append(parts, "When: "+timingInWords(step.Timing)+".")
 	}

@@ -10,15 +10,15 @@ This contract is transitional and kept thin, as [0025](../../../docs/decisions/0
 
 `Assemble(plan) -> (document, problems)`.
 
-- `plan` is a Plan, as stored. The assembler reads `provenance`, `answers`, and `sections`, and the `variables` a section declares. It reads no other field.
+- `plan` is a Plan, as stored. The assembler reads `provenance`, `answers`, `sections`, and the `variables` a section declares. It reads the plan's `directory`, and the plan's own `variables` to find the team. It reads no other field.
 - `document` is text, in Markdown.
-- `problems` is the gaps of the document, as the section resolver reported them. They are listed in the gap table and returned unchanged, in the same order. It is empty when there are none.
+- `problems` is the gaps of the document. They are the ones the section resolver reported, and the vacant roles, see Vacant roles. They are listed in the gap table and returned in the same order. It is empty when there are none.
 
 The assembler does not fail. Any plan gives a document. It does not check that the plan is valid or that its required questions are answered. A driver does that first, with the plan validator and the question finder, as [0010](../../../docs/decisions/0010-plan-editor.md) says.
 
 ## How the component gets the selector and the resolver
 
-The assembler may depend on the section selector, the section resolver, and the model, and on nothing else in the project ([0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md)). A contract folder may import only the model, the shared test code, and its own component, in its wiring test. So the constructor takes nothing, `New()`, and the component calls the real selector and the real resolver itself. The contract tests run against them and not against stand-ins. What the two do is as their own contracts say: [section selector](../../section/selector/contract.md) and [section resolver](../../section/resolver/contract.md). The assembler does not redo their work. It does not decide which sections are active, in which order, or how a `$name` is filled.
+The assembler may depend on the section selector, the section resolver, and the model, and on nothing else in the project ([0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md)). A contract folder may import only the model, the shared test code, and its own component, in its wiring test. So the constructor takes nothing, `New()`, and the component calls the real selector and the real resolver itself. The contract tests run against them and not against stand-ins. The assembler gives the resolver each section, the plan's answers, the plan's `directory`, and the id of the plan's team, see Team. What the two do is as their own contracts say: [section selector](../../section/selector/contract.md) and [section resolver](../../section/resolver/contract.md). The assembler does not redo their work. It does not decide which sections are active, in which order, or how a `$name` is filled. It does not look up a contact, a role, or a team for a `$name` in text: the resolver does, and the assembler writes what the resolver returns.
 
 ## Rules
 
@@ -42,7 +42,7 @@ Lines are not wrapped. A paragraph, a list item, and a table row is each one lin
 | absent | present | `Onboarding: <team>` |
 | absent | absent | `Onboarding` |
 
-The text is written as held.
+The text is written as held, except the team. When the plan has a team, see Team, the `team` part is the `name` of that team in the directory, whatever `answers.plan.team` holds. With no team, the part is the answer `team` as held, as before.
 
 ### Review line
 
@@ -55,7 +55,7 @@ The text is written as held.
 The heading `## Gaps to fill`, a blank line, and a table.
 
 - The header row is `| Gap | Who fills it | By when |` and the second row is `| --- | --- | --- |`. The table is always there, and it has no other row when there are no gaps.
-- There is one row for each problem the section resolver returned, in this order: the sections in the selector's order, and within a section the resolver's order. A deferred and an unanswered variable look alike.
+- There is one row for each problem of the document, in this order: the sections in the selector's order, and within a section the order of the section's `variables`, by the variable each problem names. A deferred, an unanswered, and a vacant variable look alike. There is one row for each question, whatever the number of places the variable is written in.
 - A row is `| ` and the three cells joined by ` | ` and then ` |`. A cell may be empty.
 - **Gap** is the `description` of the variable the problem names, from the variables of the section. A problem's `question` is `<section id>.<name>`. A variable with a blank `description`, or one that is not found, gives the name.
 - **Who fills it** is the section's `owner`, after the resolver has filled it. It is empty when the section has no owner.
@@ -77,7 +77,7 @@ A section that is not active is not in the document, and its gaps are not in the
 
 A section with `enabled` false is not active, so it is left out of the document and its gaps are left out of the table, whatever else it holds. A section with `enabled` true, or with no `enabled`, is on. A section whose `includeIf` holds a section clause that does not hold, for example `enabled: true` for a section that has been switched off, is left out in the same way, and so are its gaps. A section clause reads the switch of the section it names and nothing else, so a section that is left out by its own `includeIf` is still on for a clause that asks for it to be on. The selector decides all of this, see [0050](../../../docs/decisions/0050-section-switch.md) and the [section selector contract](../../section/selector/contract.md). The assembler does not read `enabled` or a section clause itself. A variable named `enabled` is an ordinary variable: its answer is written as text and its gap is a gap, and it does not switch the section.
 
-**Footer.** The footer is up to two parts joined by one space: `Owner: <owner>.` when the section has an owner, and `When: <timing in words>.` when the section has a `timing` that is not `anytime`. With neither part, there is no footer.
+**Footer.** The footer is up to three parts joined by one space, in this order: `Owner: <owner>.` when the section has an owner, `When: <timing in words>.` when the section has a `timing` that is not `anytime`, and the section's escalation, see Escalation. With no part, there is no footer.
 
 ### Steps
 
@@ -86,6 +86,7 @@ A step is one list item: `- [ ] **<name>.**` and then these parts, in this order
 | Part | Written as |
 | -- | -- |
 | `owner` | `Owner: <owner>.` |
+| `escalation` | `Escalation: <items joined by `, then `>.`, see Escalation |
 | `timing` | `When: <timing in words>.`, only when the step has a `timing` and it is not the section's. A step with no `timing` has its section's. A section with no `timing` has `anytime` |
 | `notes` | The notes, as held, with no full stop added |
 | `open` | `Open: <open>.` |
@@ -96,7 +97,31 @@ A step is one list item: `- [ ] **<name>.**` and then these parts, in this order
 | each check with `ask` | `Check: <ask>` |
 | each check with `env` | ``Check: `<name>` is set and not empty.`` |
 
-A step with `run` and no checks gets no check line. The checks follow each other in the step's order. A step with no part has only its name. Every line of an item after the first starts with two spaces, and a blank line in an item stays empty, so a multi-line `notes` stays in its item. `escalation` and the `after` of a section are not written.
+A step with `run` and no checks gets no check line. The checks follow each other in the step's order. A step with no part has only its name. Every line of an item after the first starts with two spaces, and a blank line in an item stays empty, so a multi-line `notes` stays in its item. The `after` of a section is not written.
+
+### Team
+
+The team of the plan is the answer to the plan variable of type `team`, the one in `plan.variables`. The assembler finds it by the type and not by the name. The team is that answer, an id, when the answer is a Text and the id is in `directory.teams`. A plan that declares no such variable, a variable with no answer, a deferred answer, an id that is not in the directory, and an answer that is not a Text, have no team: the id passed on is empty. A plan variable of another type, such as a `string` named `team`, never gives the team. The title uses the team's name, see Title.
+
+### Directory references
+
+A `contact`, `role`, or `team` variable is filled by the resolver, with the directory and the team the assembler gives it. The document shows what the resolver returns, so these hold for `title`, `summary`, `owner`, `verification`, `body`, a step's text fields, a check, the gap table, and the footers.
+
+- A `contact` is written `Name, slack` when it has a `slack`, else `Name, email` when it has an `email`, else `Name`. A list of contacts is written in order and joined with `; `.
+- A `role` is written as its contacts, in this form, joined with `; ` in the order of the role's holders. The holders are those of the plan's team when the team has an entry for the role, even an empty one. Otherwise they are the role's own. A holder that is not a contact of the directory is skipped. A role with no holder is vacant and is written `<Role name> (vacant)`, with the `name` of the directory's role. A plan with no team gives the role's own holders. A `multiple` role variable writes the contacts of each of its roles in order.
+- A `team` is written as the `name` of the team.
+- An answer that names an id that is not in the directory is unanswered, and a list of only such ids is unanswered. It is written and reported as any unanswered variable is. Deferred, empty text, and an empty list are as for any other type.
+- In a command's `run` list, a variable of these types is one item with the same text, and is never split.
+
+### Vacant roles
+
+A vacant role that the document writes is a gap. The assembler reports it for each `role` variable of an active section that has a settled answer naming a vacant role of the directory, when the section uses the variable. A section uses a variable when `$name` is read in a field the resolver fills, as the resolver reads it, or in an `escalation`, see Escalation. A variable that no text uses, a name only in `$$name` or only as the start of a longer name, and a variable that is not of type `role` give no gap.
+
+The problem has the code `directory.role-vacant`, the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. It is reported once for each question, however many places write it. When the resolver reports the same code for the same question, the assembler keeps one. The gap row has the description of the variable, and the section's owner and timing, as for any gap. An unknown role id is not vacant, it is unanswered.
+
+### Escalation
+
+A section's `escalation` and a step's `escalation` are lists of `$name` references. The assembler writes each as the resolver fills the same `$name` in text, in the order of the list. Nothing is sorted, joined into another item, or skipped, and a vacant role is written as vacant. A reference to a variable the section declares and that has no value is written and reported as an unanswered or deferred gap, as in text. An item that is not a declared `$name` is written as held. The items are joined with `, then ` and the whole is `Escalation: ` and then the items, and a full stop. A section's is a part of its footer. A step's is a part of its item. A step with no `escalation` of its own writes none, whatever its section holds.
 
 ### Timing in words
 
@@ -127,7 +152,7 @@ These hold for every plan the contract tests use.
 
 ## Side effects and plan access
 
-None. It reads `provenance`, `answers`, and section content. It writes nothing but the returned text and problems. This matches the row for `document/assembler` in [components](../../../docs/architecture/components.md).
+None. It reads `provenance`, `answers`, the `directory`, the plan's `variables`, and section content. It writes nothing but the returned text and problems. This matches the row for `document/assembler` in [components](../../../docs/architecture/components.md).
 
 ## Not covered
 
@@ -140,7 +165,11 @@ None. It reads `provenance`, `answers`, and section content. It writes nothing b
 - An onboarding blank that sits inside a code span a template author wrote.
 - What the selector and the resolver do. Their contracts cover it, and the assembler tests rely on it. That includes how a variable with a `default` is filled, see [0045](../../../docs/decisions/0045-defaults-are-suggestions.md). The fixtures here declare no default.
 - That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them. The selector leaves out a section whose parent is not in the plan or whose chain of parents loops, so the assembler never writes one.
-- Escalation. It is not written, because it names people by variable and no document rule says how to show them.
+- A list of ids with some that are in the directory and some that are not, and a `multiple` role variable that holds both a vacant role and one with holders.
+- A role or contact variable that has a `default`, and an `escalation` item for a variable with the audience `onboardee`.
+- Who holds a role beyond the rules above: that a role with no holder is a warning to the validator, and that a team is marked as not yet known. The document does not mark a role as not specific to a team.
+- The directory's own validity: duplicate ids, a holder that is not a contact, and a contact with no way to be reached.
+- A team answer that is not a known id: the title shows the answer `team` as held, so an unknown id shows as the id.
 - Output styles other than Markdown, and wrapping lines at a width.
 - The format of the plan file, and the file the document is written to. Drivers do both.
 
@@ -161,10 +190,18 @@ The docs were silent, or could be read two ways, in these places. A choice marke
 11. **A step shows `When:` only when its timing differs from its section's.** Raised by "A step inherits `timing` from its section, when assembling". Case: `steps-all-fields`. `cheap`
 12. **A step with `run` and no checks gets no check line.** The steps reference says it passes on exit code 0, and the document does not say so. Raised by the unequal treatment of two like steps in the ACME document. Cases: `acme`. `cheap`
 13. **The assembler gets the selector and resolver itself, with `New()` and no arguments.** The contract tests run against the real ones. Raised by the dependency table in 0020, which lets the assembler use both, and by the rule that a contract may import only the model, the shared test code, and its own component. `cheap`
-14. **The problems returned are the resolver's, unchanged and in table order.** The assembler adds none, and no type is added to the model. A document is a string. Raised by "document text + problems", with no list of problems given. Case: all. `cheap`
+14. **The problems returned are the resolver's and the vacant roles, in table order.** The assembler adds only the vacant roles, and no type is added to the model. A document is a string. Raised by "document text + problems", with no list of problems given. Case: all. `cheap`
 
 15. **A sub-section is written as held, with no timing taken from its parent.** The selector orders it by its parent's timing when it has none. The footer and the gap row show the section's own `timing`, so a sub-section with no `timing` has no `When:` part and the `Anytime` of a gap row. Raised by 0070, which lets a sub-section take its parent's timing for order only. Case: `sub-sections`. `cheap`
 16. **The heading level counts the ancestors in the plan, and stops at six.** The document does not show how deep a sub-section is in any other way. Raised by 0070 "The document nests it" and the brief. Cases: `sub-sections`, `depth-cap`. `hard`
+
+17. **Escalation is written, as a footer part and a step part.** `Escalation: ` and the items joined with `, then `, in the order of the list. It was not written before, because no rule said how to show people by variable. 0080 says an escalation lists every step in order and shows a vacant role as vacant, and the document is the only place it can be seen. A step with no list of its own writes none, so a step does not repeat its section's list. Raised by "Escalation lists every step in order. A vacant role is shown as vacant and not skipped." Cases: `directory-escalation`, `directory-vacant`. `hard`
+18. **The assembler reports a vacant role and the resolver may too.** The assembler reports `directory.role-vacant` for a role variable the section uses, in text or in an escalation, and keeps one when the resolver reports the same question. The rows of a section follow the order of its variables whoever reports them. Raised by "A vacant role ... is shown like any other gap" and by the escalation, which the resolver does not fill. Cases: `directory-vacant`, `directory-vacant-order`. `hard`
+19. **A gap in an escalation is a gap of the section.** An item with no value is written as `_unanswered_` or `_deferred_` and has a row, as a variable in text has. Raised by 0035, where an unanswered question is a gap wherever it shows. Case: `directory-escalation`. `hard`
+20. **The title shows the team's name when the plan has a team.** `Globex onboarding: Platform team`, from the directory, even when the answer `team` holds another text. With no team or an unknown id the title is as before. Raised by the request that a person sees the team's name. Cases: `directory-roles-team`, `directory-team-named-squad`, `directory-vacant`, `directory-team-unknown`, `directory-team-not-declared`, `directory-team-unanswered`. `hard`
+21. **The team is found by type, and an unknown id is no team.** A plan variable of type `team` gives it, whatever its name. A `string` variable named `team` does not. Raised by 0080, which says the `team` question has the directory's teams as its options and names no variable. Cases: `directory-team-named-squad`, `directory-team-not-declared`, `directory-team-unknown`, `directory-team-unanswered`. `cheap`
+22. **The document does not mark a role that is not yet specific to a team.** 0080 says a role resolves to the organization-wide holders "and is marked as not yet specific to a team". The forms are fixed without that marker, so none is written. Raised by that sentence. Case: `directory-team-unanswered`. `hard`
+23. **A role question with several roles lists the contacts of each in order.** The roles are not named. Mixed lists, with unknown ids or with a vacant role among others, are left open. Raised by "A `role` variable's `$name` renders the resolved contacts". Case: `directory-roles-team`. `cheap`
 
 ## Wrong implementations tried
 
@@ -216,3 +253,23 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | Sub-sections placed by their own timing across the root's place, or grouped away from their parent | `sub-sections` |
 | A sub-section's timing taken from its parent in the footer or the gap row | `sub-sections` |
 | The order of sub-sections that follows the plan and not the selector | `sub-sections`, the order test |
+| The team read from the plan variable named `team`, or from any plan variable whatever its type | `directory-team-not-declared`, `directory-team-named-squad` |
+| The team not passed on, or the directory not passed on | `directory-roles-team`, `directory-team-named-squad`, `directory-contacts` |
+| A team override that is empty read as no override | `directory-vacant` |
+| A team override ignored in the vacancy test, or the role's own holders ignored when no team is known | `directory-vacant`, `directory-roles-team`, `directory-team-unanswered` |
+| A vacant role not reported, or reported for each place that writes it | `directory-vacant`, `directory-team-unanswered` |
+| A vacant role reported for a variable the text does not use, or for `$$name`, or for a longer name that starts with it | `directory-vacant` |
+| A vacant role not found when it is only in a section's or a step's escalation | `directory-vacant` |
+| A holder that is not a contact counted as a holder, or an unknown role id counted as vacant | `directory-vacant`, `directory-unknown-ids` |
+| A variable that is not of type `role` reported as vacant | `directory-vacant` |
+| The vacant gaps after the resolver's, and not in the order of the variables | `directory-vacant`, `directory-vacant-order` |
+| The code or the severity of the vacancy changed | `directory-vacant`, `directory-team-unanswered` |
+| Escalation left out of the footer or the step, or written as the names held | `directory-escalation`, `directory-vacant` |
+| Escalation sorted, reversed, or joined with another separator | `directory-escalation` |
+| A vacant role left out of an escalation | `directory-vacant` |
+| A step that repeats its section's escalation, or an escalation part before the footer's timing | `directory-escalation`, `directory-vacant` |
+| An unanswered escalation item written with no row | `directory-escalation` |
+| A contact written with the email before the slack handle, or with the name only, or lists joined with a comma | `directory-contacts`, `directory-escalation` |
+| An unknown id written as the id, or a list of unknown ids treated as settled | `directory-unknown-ids` |
+| The title shows the team id, or the answer `team` as held, when the plan has a team | `directory-roles-team`, `directory-team-named-squad` |
+| The team's name used when the team is unknown or not a team question | `directory-team-unknown`, `directory-team-not-declared` |
