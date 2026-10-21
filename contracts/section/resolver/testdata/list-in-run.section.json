@@ -1,0 +1,13 @@
+{
+  "id": "list-in-run",
+  "title": "A list in run",
+  "summary": "A list answer for a variable that is not a command",
+  "variables": [
+    {"name": "tags", "description": "Labels"},
+    {"name": "flags", "type": "string", "description": "Options"},
+    {"name": "build", "type": "command", "description": "Builds"}
+  ],
+  "steps": [
+    {"id": "run", "name": "Run", "run": ["$tags", "$flags", "$build"], "checks": [{"run": ["$tags"]}]}
+  ]
+}
