@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [
+      {"id": "sam-okafor", "name": "Sam Okafor", "email": "sam.okafor.acme.example"},
+      {"id": "sam-okafor", "name": "Sam Okafor Again", "slack": "@sam"},
+      {"id": "ghost-contact", "name": "No way to reach"}
+    ],
+    "roles": [
+      {"id": "engineering-manager", "name": "Engineering manager", "holders": ["sam-okafor", "ghost-holder"]},
+      {"id": "vacant-role", "name": "Vacant role"}
+    ],
+    "teams": [
+      {"id": "platform", "name": "Platform team", "holders": {"missing-role": ["sam-okafor"]}}
+    ]
+  },
+  "variables": [
+    {"name": "team", "type": "team", "description": "Team"},
+    {"name": "second_team", "type": "team", "description": "A second team"}
+  ],
+  "answers": {
+    "plan": {"team": "ghost-team"},
+    "sections": {
+      "main": {
+        "c_unknown": "nobody",
+        "c_wrong": ["sam-okafor"],
+        "secret_c": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE"
+      },
+      "ghost": {"name": "x"}
+    }
+  },
+  "sections": [
+    {"id": "main", "variables": [
+      {"name": "c_unknown", "type": "contact", "description": "Contact"},
+      {"name": "c_wrong", "type": "contact", "description": "Contact"},
+      {"name": "secret_c", "type": "contact", "description": "Contact"}
+    ]},
+    {"id": "dup"},
+    {"id": "dup"}
+  ]
+}

@@ -1,0 +1,4 @@
+{"problems": [
+  {"code": "plan.duplicate-section-id", "severity": "error", "section": "access"},
+  {"code": "plan.duplicate-section-id", "severity": "error", "section": "setup"}
+]}

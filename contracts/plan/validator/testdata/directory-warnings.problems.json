@@ -1,0 +1,10 @@
+{"problems": [
+  {"code": "directory.contact-unreachable", "severity": "warning", "detail": {"contact": "unreachable-a"}},
+  {"code": "directory.contact-unreachable", "severity": "warning", "detail": {"contact": "unreachable-b"}},
+  {"code": "directory.email-malformed", "severity": "warning", "detail": {"contact": "bad-only"}},
+  {"code": "directory.email-malformed", "severity": "warning", "detail": {"contact": "no-at"}},
+  {"code": "directory.email-malformed", "severity": "warning", "detail": {"contact": "spaced"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "empty-role"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "no-holders-key"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "overridden-role"}}
+]}

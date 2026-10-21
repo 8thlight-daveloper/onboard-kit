@@ -264,4 +264,110 @@
     ],
     "source": "docs/decisions/0055-variable-audience.md, Rules: scope and audience are separate, a question is active by its own condition whoever answers it, and an onboarder question may depend on an onboardee answer. contracts/question/finder/contract.md, Audience: an empty audience lists both. docs/decisions/0010-plan-editor.md and 0050: a hidden, switched off, or left out question keeps its answer unchecked. Written by hand from the plan"
   }
+  ,
+  {
+    "name": "directory-answers",
+    "plan": "directory-answers.plan.json",
+    "expected": "directory-answers.problems.json",
+    "checks": [
+      {"name": "a plan variable of type contact, known", "question": "plan.owner", "value": "sam-okafor", "problems": []},
+      {"name": "an onboardee contact question, unknown", "question": "main.ee_c", "value": "nobody", "secretFragments": ["nobody"],
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.ee_c", "section": "main", "detail": {"kind": "contact"}}]},
+      {"name": "a team variable declared in a section, known", "question": "main.t_ok", "value": "design", "problems": []}
+    ],
+    "source": "docs/decisions/0080-directory.md, Questions pick from the directory: an answer stores an id, a multiple contact or role question holds an ordered list, and Integrity: an answer that names an id that is not in the directory is a warning. briefs/directory.md decisions 1 and 2: Text id or List when multiple, a team is one Text id, an unknown id counts as unanswered. contracts/plan/validator/contract.md, Stored answers of questions that are not active are not checked (the hidden question and the switched off section). Written by hand from the plan"
+  },
+  {
+    "name": "directory-duplicates",
+    "plan": "directory-duplicates.plan.json",
+    "expected": "directory-duplicates.problems.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: a duplicate id is an error. briefs/directory.md decision 8: directory.duplicate-id. An id may repeat across contacts, roles, and teams, because each list is its own namespace and a holder or an answer is read against one list. Written by hand from the plan"
+  },
+  {
+    "name": "directory-holders",
+    "plan": "directory-holders.plan.json",
+    "expected": "directory-holders.problems.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: a holder that is not a contact and a team override for a role that does not exist are errors. briefs/directory.md decision 2: a holder id naming a contact that does not exist is an error, and decision 8: directory.holder-not-a-contact and directory.team-role-unknown. Written by hand from the plan"
+  },
+  {
+    "name": "directory-warnings",
+    "plan": "directory-warnings.plan.json",
+    "expected": "directory-warnings.problems.json",
+    "source": "docs/decisions/0080-directory.md, Integrity: a role with no holder, an email with no @ or with a space, and a contact with no way to reach them are warnings, and An email check stays minimal. briefs/directory.md decision 8: directory.role-vacant, directory.email-malformed, directory.contact-unreachable, and decision 4: a team's empty list for a role is a vacancy for that team. Written by hand from the plan"
+  },
+  {
+    "name": "two-team-variables",
+    "plan": "two-team-variables.plan.json",
+    "expected": "two-team-variables.problems.json",
+    "source": "briefs/directory.md decision 3: the team of a plan is the answer to the plan variable of type team, and plans have at most one such variable. Written by hand from the plan"
+  },
+  {
+    "name": "team-variable-scopes",
+    "plan": "team-variable-scopes.plan.json",
+    "expected": "team-variable-scopes.problems.json",
+    "source": "briefs/directory.md decision 3: the team variable is declared in plan.variables, so team variables in sections are answers of their own and do not count. Written by hand from the plan"
+  },
+  {
+    "name": "duplicate-sections",
+    "plan": "duplicate-sections.plan.json",
+    "expected": "duplicate-sections.problems.json",
+    "source": "docs/decisions/0075-refreshing-a-personal-plan.md, Consequences: the plan validator gains a check that ids are unique within the plan. Written by hand from the plan"
+  },
+  {
+    "name": "directory-order",
+    "plan": "directory-order.plan.json",
+    "expected": "directory-order.problems.json",
+    "source": "contracts/plan/validator/contract.md, Order: problems come by question id as bytes, and a problem with no question comes first. Written by hand from the plan"
+  },
+  {
+    "name": "directory-check-value",
+    "plan": "directory-check-value.plan.json",
+    "expected": "directory-check-value.problems.json",
+    "checks": [
+      {"name": "a known contact", "question": "main.c", "value": "sam-okafor", "problems": []},
+      {"name": "an unknown contact is an error", "question": "main.c", "value": "nobody", "secretFragments": ["nobody"],
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}}]},
+      {"name": "a role id in a contact question", "question": "main.c", "value": "engineering-manager",
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}}]},
+      {"name": "a contact id in a role question", "question": "main.r", "value": "sam-okafor",
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.r", "section": "main", "detail": {"kind": "role"}}]},
+      {"name": "a vacant role is a role", "question": "main.r", "value": "vacant-role", "problems": []},
+      {"name": "a contact that has no way to be reached is a contact", "question": "main.c", "value": "ghost-contact", "problems": []},
+      {"name": "Deferred", "question": "main.c", "value": {"deferred": true}, "problems": []},
+      {"name": "no kind", "question": "main.c", "problems": []},
+      {"name": "empty text", "question": "main.c", "value": "", "problems": []},
+      {"name": "only spaces", "question": "main.c", "value": "  ",
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}}]},
+      {"name": "a list with two unknown items", "question": "main.cm", "value": ["sam-okafor", "x", "", "y"],
+        "problems": [
+          {"code": "directory.unknown-id", "severity": "error", "question": "main.cm", "section": "main", "detail": {"item": "1", "kind": "contact"}},
+          {"code": "directory.unknown-id", "severity": "error", "question": "main.cm", "section": "main", "detail": {"item": "3", "kind": "contact"}}]},
+      {"name": "a list of known roles", "question": "main.rm", "value": ["engineering-manager", "vacant-role"], "problems": []},
+      {"name": "a list for a single contact", "question": "main.c", "value": ["sam-okafor"],
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.c", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
+      {"name": "text for a multiple role", "question": "main.rm", "value": "engineering-manager",
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.rm", "section": "main", "detail": {"expected": "list", "found": "text"}}]},
+      {"name": "a flag for a role", "question": "main.r", "value": true,
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.r", "section": "main", "detail": {"expected": "text", "found": "flag"}}]},
+      {"name": "a known team", "question": "main.t", "value": "platform", "problems": []},
+      {"name": "an unknown team", "question": "main.t", "value": "ghost-team",
+        "problems": [{"code": "directory.unknown-id", "severity": "error", "question": "main.t", "section": "main", "detail": {"kind": "team"}}]},
+      {"name": "a list for a team", "question": "main.t", "value": ["platform"],
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.t", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
+      {"name": "a list for a team that says multiple", "question": "main.tm", "value": ["platform"],
+        "problems": [{"code": "answer.wrong-kind", "severity": "error", "question": "main.tm", "section": "main", "detail": {"expected": "text", "found": "list"}}]},
+      {"name": "text for a team that says multiple", "question": "main.tm", "value": "platform", "problems": []},
+      {"name": "a hidden contact question is inactive, not unknown", "question": "main.hidden", "value": "nobody",
+        "problems": [{"code": "answer.inactive-question", "severity": "error", "question": "main.hidden", "section": "main"}]},
+      {"name": "an unknown question", "question": "main.missing", "value": "nobody",
+        "problems": [{"code": "answer.unknown-question", "severity": "error", "question": "main.missing", "section": "main"}]},
+      {"name": "a token for a contact, the unknown id first and then the secret", "question": "main.c", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"],
+        "problems": [
+          {"code": "directory.unknown-id", "severity": "error", "question": "main.c", "section": "main", "detail": {"kind": "contact"}},
+          {"code": "secret.token-prefix", "severity": "error", "question": "main.c", "section": "main"}]},
+      {"name": "a person answer is judged as before", "question": "main.who", "value": "Jane Doe",
+        "problems": [{"code": "answer.thin-contact", "severity": "warning", "question": "main.who", "section": "main"}]}
+    ],
+    "source": "briefs/directory.md decisions 1 and 2, and the task for this contract: a value for a contact, role, or team that names an id not in the directory is an error in CheckValue, because the tool never creates such an answer, while Validate warns about a stored one. The directory of the plan holds integrity problems (a repeated contact id, a vacancy, an unreachable contact, a team override), and CheckValue reports none of them. Written by hand from the plan"
+  }
 ]

@@ -1,0 +1,17 @@
+{"secretFragments": ["FAKEFAKE"],
+ "problems": [
+  {"code": "directory.contact-unreachable", "severity": "warning", "detail": {"contact": "ghost-contact"}},
+  {"code": "directory.duplicate-id", "severity": "error", "detail": {"kind": "contact", "id": "sam-okafor"}},
+  {"code": "directory.email-malformed", "severity": "warning", "detail": {"contact": "sam-okafor"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "engineering-manager", "holder": "ghost-holder"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "vacant-role"}},
+  {"code": "directory.team-role-unknown", "severity": "error", "detail": {"team": "platform", "role": "missing-role"}},
+  {"code": "plan.duplicate-section-id", "severity": "error", "section": "dup"},
+  {"code": "plan.duplicate-team-variable", "severity": "error", "detail": {"variables": "team,second_team"}},
+  {"code": "answer.unknown-question", "severity": "warning", "question": "ghost.name"},
+  {"code": "directory.unknown-id", "severity": "warning", "question": "main.c_unknown", "section": "main", "detail": {"kind": "contact"}},
+  {"code": "answer.wrong-kind", "severity": "error", "question": "main.c_wrong", "section": "main", "detail": {"expected": "text", "found": "list"}},
+  {"code": "directory.unknown-id", "severity": "warning", "question": "main.secret_c", "section": "main", "detail": {"kind": "contact"}},
+  {"code": "secret.token-prefix", "severity": "error", "question": "main.secret_c", "section": "main"},
+  {"code": "directory.unknown-id", "severity": "warning", "question": "plan.team", "detail": {"kind": "team"}}
+]}
