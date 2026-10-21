@@ -2,9 +2,9 @@ package assembler
 
 import "onboard-kit/internal/model"
 
-func titleLine(answers model.Answers) string {
-	organization, hasOrganization := settledText(answers.Plan["organization"])
-	team, hasTeam := settledText(answers.Plan["team"])
+func titleLine(plan model.Plan, teamIdentifier string) string {
+	organization, hasOrganization := settledText(plan.Answers.Plan["organization"])
+	team, hasTeam := teamTitle(plan, teamIdentifier)
 	switch {
 	case hasOrganization && hasTeam:
 		return "# " + organization + " onboarding: " + team
