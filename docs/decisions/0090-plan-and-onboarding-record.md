@@ -41,6 +41,7 @@ The words in older documents change as follows.
 schemaVersion: 1
 kind: record
 account: dnawara
+startDate: "2026-10-22"
 plan:
   id: 6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5
   hash: 5d3c...
@@ -61,6 +62,7 @@ outcomes:
 ```
 
 - `kind` says this is a record and not a plan.
+- `startDate` is the day the newcomer starts. The onboarder gives it when they make the invitation, and the due dates of 0095 count from it.
 - `account` is the permanent key. It is in the path, and a fix is an explicit move, see 0085.
 - `plan` says which plan the record was last reconciled against: its `id`, the hash of that plan, and where the latest copy lives.
 - `answers` holds only the answers the newcomer gave, to onboardee questions. It never holds an onboarder answer, and the plan never needs the newcomer's.
@@ -98,7 +100,7 @@ The plan refresher of 0075 is retired and rebuilt as this smaller component.
 
 The onboarder must be able to send a newcomer something that works before the newcomer has any access. The plan's `planUrl` may be behind that access, so the invitation carries the plan itself.
 
-- An `invite` command makes one zip file for an account. It holds the plan as `plan.obk.yaml`, a record seeded with the account and the plan reference as `records/<account>/record.obk.yaml`, and `first-steps.md`, a document for someone with nothing installed, see below. Both files are in their own canonical shapes, so there is no joined form and nothing to split.
+- An `invite` command makes one zip file for an account. It takes `--start`, defaults it to today, and prints the date it used. It holds the plan as `plan.obk.yaml`, a record seeded with the account and the plan reference as `records/<account>/record.obk.yaml`, and `first-steps.md`, a document for someone with nothing installed, see below. Both files are in their own canonical shapes, so there is no joined form and nothing to split.
 - `onboard-kit start --invitation <file>` reads the archive directly. The newcomer extracts nothing by hand. The tool puts the plan in the plan copy and the record at `resultsPath`.
 - The archive is untrusted input. The tool reads only those fixed entries, never a path taken from inside the archive, and refuses an archive of more than a handful of entries or more than 1 MiB uncompressed in all. Video and other large help is linked, not embedded.
 - A record that already exists at that path is never overwritten. The tool reconciles it against the plan from the archive instead.

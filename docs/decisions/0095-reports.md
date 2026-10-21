@@ -24,15 +24,35 @@ A report is a **derived, read-only view over one or more onboarding records**. I
 
 Whoever can read the folder of records can run it. The repository controls readership, and the tool enforces nothing more. A report is only as private as the repository, which the shared repository notice of 0085 already says to newcomers.
 
+### Due dates come from timing and a start date
+
+A record holds a `startDate`. A section's due date is the start date plus the last day of its timing window: day 0 for `before-day-one`, day 7 for `week-one`, day 30 for `days-8-to-30`, and day 90 for `days-31-to-90`. A section with `anytime` has no due date. Nothing is added to a section.
+
+- The onboarder gives the start date when they make the invitation. `invite` takes `--start`, defaults it to today, and prints the date it used and the due dates that follow from it, so the onboarder is told and can correct it.
+- A section is **overdue** when its due date has passed and its outcome is not `verified`. It is **coming due** when its due date is near. The driver passes today's date in, as always.
+- An absolute deadline that is the same for everyone, such as a rollout by a fixed date, is not covered. See Not decided.
+
+### What needs attention
+
+The report puts one group above the rest: sections that are `failed`, overdue, coming due, long `deferred`, changed since they were verified, or whose newcomer has gone quiet. The outcomes' times show a newcomer who has gone quiet.
+
+### Notes
+
+The report shows `note` and `differently`, and can leave them out for a report that will be shared more widely. `differently` is the most useful text, because it says where the plan is wrong, so sections can be ranked by how often it is recorded.
+
+### Files with problems, and history
+
+A folder holds files that fail to decode, come from an old plan version, belong to another plan, or point at a plan hash the plan no longer has. The report skips them and lists what it skipped and why. A record holds only the latest outcome, and history comes from git, which the tool does not read, so the report has none.
+
+### A view that depends on the data
+
+A tool may show different things for different data, if it stays predictable. The view is a pure function of the records it can read. It says what it saw, such as "3 unfinished onboardings in `records/`". It adds a notice and a screen to open and does not replace the screen a person expected, as the prune notice does on the Review. The same view can also be asked for on purpose.
+
+So when an onboarder opens a plan and unfinished records exist at the results path, the tool shows a quiet notice and an Onboardings screen. It lists accounts with their progress, unfinished ones first, then by account. That is the person view of the report, and the by-section view answers "who has not verified AWS access yet" from the same data.
+
 ## Not decided
 
-Each question has a leaning, which is a suggestion and not a decision.
-
-1. **Axis.** By section answers "who has not verified AWS access yet", and by person answers "how is Jane doing". Both come from the same data. Which is the first view, and is the other a filter or a separate command? *Leaning:* section first, because the example that started this was a rollout. The person view is a filter on the same output.
-2. **Deadlines.** "By 11/26" needs a due date on a section, written by the onboarder in the plan. It is content, so it changes the section's hash. Is it an absolute date, or relative to each newcomer's start date, or both? Timing already has relative windows, and an org-wide rollout is absolute. *Leaning:* both, as two fields, since they answer different questions.
-3. **What needs attention.** Do `failed`, long-`deferred`, overdue, and changed-since-verified outcomes surface at the top? Does a newcomer who started and went quiet count, which the outcomes' `on` times would show? *Leaning:* yes to all, in one "needs attention" group above the rest.
-4. **Notes.** Do `note` and `differently` appear? `differently` is the most useful text, because it says where the plan is wrong, so sections could be ranked by how often it is recorded. *Leaning:* show them, with a mode that leaves notes out for a report that will be shared more widely.
-5. **Form.** A terminal table, markdown, CSV, or a TUI screen. A command that prints a table is the least work and is testable. A stable plain form also lets people script it, for example to chase overdue people. *Leaning:* a command with a table and a machine-readable form first, and a screen only if onboarders ask to drill in.
-6. **Files with problems.** A folder holds files that fail to decode, come from an old plan version, belong to another plan, or point at a plan hash the plan no longer has. *Leaning:* skip them, and list what was skipped and why.
-7. **History.** A record holds only the latest outcome. History comes from git, which the tool does not read. *Leaning:* none for now. People can use `git log`.
-8. **Offboarding.** A report of who still holds access to a system is the other half of "who has not done it". See the Later item in 0090.
+- **Form.** A terminal table, markdown, CSV, or a screen. The first iteration will be a command that prints a table, with a machine-readable form, and the Onboardings screen above. Everything else waits to be seen.
+- **Coming due.** How near counts as coming due.
+- **Absolute deadlines.** A date that is the same for everyone, such as a rollout by a fixed date, is not expressible, because every due date is relative to a person's start date. A later field on a section could carry one.
+- **Offboarding.** A report of who was given access is possible now, because verified outcomes say it. Checking that access is still in place, or revoking it, needs the plan to say how. A section could later carry instructions to revoke and to verify the revocation. See the Later item in 0090.
