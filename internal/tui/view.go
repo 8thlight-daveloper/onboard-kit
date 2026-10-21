@@ -41,6 +41,8 @@ func (app App) body(screenFrame frame, colors palette) []string {
 		return app.reviewBody(screenFrame, colors)
 	case screenSections:
 		return stackPane(pane{lines: app.sectionLines(screenFrame, colors), focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
+	case screenPeople:
+		return app.peopleBody(screenFrame, colors)
 	}
 	return app.walkBody(screenFrame, colors)
 }

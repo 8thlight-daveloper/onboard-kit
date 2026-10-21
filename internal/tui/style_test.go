@@ -90,3 +90,43 @@ func TestTheAccentNeverColoursATitle(t *testing.T) {
 		}
 	}
 }
+
+func TestOnThePeopleScreenTheListIsBrightAndTheDetailIsFaint(t *testing.T) {
+	withColour(t)
+	app, _ := onPeople(t, peopleWithFlags(t))
+	view := resize(app, 140, 40).View()
+	expectBright(t, view, "Alex Rivera")
+	expectBright(t, view, "Contacts 5")
+	expectFaint(t, view, "Roles 4")
+	expectFaint(t, view, "About this contact")
+	expectFaint(t, view, "Id: alex-rivera")
+	if got := sgrBefore(t, view, "Contacts 5"); !strings.Contains(got, "1;") || !strings.Contains(got, "38;5;32") {
+		t.Errorf("the current list is bold in the accent, got SGR %q", got)
+	}
+	flagged := resize(press(app, typed("G")), 140, 40).View()
+	if got := sgrBefore(t, flagged, "warning:"); !strings.Contains(got, "38;5;208") {
+		t.Errorf("a warning is orange, got SGR %q", got)
+	}
+	unselected := resize(press(app, typed("g")), 140, 40).View()
+	if got := sgrBefore(t, unselected, "! no way to reach"); !strings.Contains(got, "38;5;208") {
+		t.Errorf("a flagged row is orange, got SGR %q", got)
+	}
+}
+
+func TestWithNoColourThePeopleScreenKeepsItsMarks(t *testing.T) {
+	withoutColour(t)
+	app, _ := onPeople(t, peopleWithFlags(t))
+	view := resize(app, 120, 30).View()
+	for _, want := range []string{"[Contacts 5]", "> Alex Rivera", "! email looks wrong", "! no way to reach", "[People]", "a add", "x remove"} {
+		if !strings.Contains(view, want) {
+			t.Errorf("lacks %q:\n%s", want, view)
+		}
+	}
+	if !strings.Contains(resize(press(app, tab), 120, 30).View(), "! vacant") {
+		t.Error("a vacant role keeps its text mark")
+	}
+	problem := resize(press(app, typed("a"), ctrlS), 120, 30).View()
+	if !strings.Contains(problem, "! problem: A name is needed.") || !strings.Contains(problem, "> Name") {
+		t.Errorf("a form keeps its focus mark and problem mark:\n%s", problem)
+	}
+}

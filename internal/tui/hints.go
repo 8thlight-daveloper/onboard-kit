@@ -18,6 +18,8 @@ func (app App) hints(tabKeysShown bool) []hint {
 		return app.reviewHints(tabKeysShown)
 	case screenSections:
 		return app.sectionHints(tabKeysShown)
+	case screenPeople:
+		return app.peopleHints(tabKeysShown)
 	}
 	return app.walkHints(tabKeysShown)
 }
@@ -57,6 +59,31 @@ func (app App) sectionHints(tabKeysShown bool) []hint {
 	hints := []hint{{"space", "switch"}, {"up/down", "move"}, {"esc", "back"}}
 	hints = append(hints, app.jumpHints(tabKeysShown)...)
 	return append(hints, hint{"?", "help"})
+}
+
+func (app App) peopleHints(tabKeysShown bool) []hint {
+	switch app.people.mode {
+	case peopleEditing:
+		return app.formHints()
+	case peopleRemoving:
+		return []hint{{"y", "remove"}, {"esc", "keep"}, {"?", "help"}}
+	}
+	hints := []hint{{"a", "add"}, {"enter", "edit"}, {"x", "remove"}, {"tab", "next list"}}
+	hints = append(hints, app.jumpHints(tabKeysShown)...)
+	return append(hints, hint{"esc", "back"}, hint{"?", "help"})
+}
+
+func (app App) formHints() []hint {
+	form := app.people.form
+	switch {
+	case form.choosing:
+		return []hint{{"space", "pick"}, {"enter", "confirm"}, {"esc", "back"}, {"f1", "help"}}
+	case form.onRows():
+		return []hint{{"enter", "change"}, {"ctrl+s", "save"}, {"esc", "cancel"}, {"f1", "help"}}
+	case form.onHolders():
+		return []hint{{"space", "pick"}, {"enter", "save"}, {"esc", "cancel"}, {"f1", "help"}}
+	}
+	return []hint{{"enter", "next"}, {"ctrl+s", "save"}, {"esc", "cancel"}, {"f1", "help"}}
 }
 
 func (app App) overviewHints(tabKeysShown bool) []hint {

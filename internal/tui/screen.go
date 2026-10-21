@@ -7,4 +7,5 @@ const (
 	screenOverview
 	screenReview
 	screenSections
+	screenPeople
 )

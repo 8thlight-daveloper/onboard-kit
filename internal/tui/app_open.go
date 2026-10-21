@@ -28,12 +28,34 @@ func (app App) openSections() App {
 	if !app.canSwitchSections() {
 		return app
 	}
-	app.cameFrom = app.screen
+	app = app.leavingForSideScreen()
 	app.screen = screenSections
 	return app
 }
 
-func (app App) closeSections() App {
+func (app App) openPeople() App {
+	if !app.canEditDirectory() {
+		return app
+	}
+	if question, ok := app.current(); ok && app.screen == screenWalk {
+		if kind, found := kindOfQuestion(question); found {
+			app.people.kind = kind
+		}
+	}
+	app = app.leavingForSideScreen()
+	app.people.mode = peopleBrowsing
+	app.screen = screenPeople
+	return app.refreshedPeople()
+}
+
+func (app App) leavingForSideScreen() App {
+	if app.screen != screenSections && app.screen != screenPeople {
+		app.cameFrom = app.screen
+	}
+	return app
+}
+
+func (app App) closeSideScreen() App {
 	switch app.cameFrom {
 	case screenOverview:
 		app.screen = screenOverview

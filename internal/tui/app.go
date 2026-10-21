@@ -28,6 +28,7 @@ type App struct {
 	status         line
 	entry          entryState
 	review         reviewState
+	people         peopleState
 	width          int
 	height         int
 	finished       bool
@@ -36,7 +37,7 @@ type App struct {
 func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audience model.Audience) App {
 	app := App{rail: railGlyphsForTerminal(), backend: backend, save: save, plan: plan, audience: audience, width: startWidth, height: startHeight}
 	app.questions = backend.Questions(plan, audience)
-	return app.opening()
+	return app.refreshedPeople().opening()
 }
 
 func (app App) opening() App {
@@ -69,6 +70,9 @@ func (app App) frame() frame { return newFrame(app.width, app.height) }
 func (app App) resized() App {
 	app.entry = app.entry.withWidth(app.inputWidth())
 	app.review = app.review.scrolled(app.documentOffsetLimit(), 0)
+	if app.people.mode == peopleEditing {
+		app.people.form = app.people.form.withWidth(app.formWidth())
+	}
 	return app
 }
 
@@ -88,6 +92,8 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.updateReview(key)
 	case screenSections:
 		return app.updateSections(key)
+	case screenPeople:
+		return app.updatePeople(key)
 	}
 	return app.updateWalk(key)
 }

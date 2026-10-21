@@ -27,6 +27,8 @@ func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openOverview(), nil
 	case "s":
 		return app.openSections(), nil
+	case "P":
+		return app.openPeople(), nil
 	case "q":
 		return app.quit()
 	case "?":

@@ -13,6 +13,12 @@ type Backend interface {
 	Blockers(plan model.Plan, audience model.Audience) []model.Blocker
 	Submit(plan model.Plan, question string, value model.Value) (model.Plan, []model.Problem)
 	SetSectionEnabled(plan model.Plan, section string, enabled bool) (model.Plan, []model.Problem)
+	SetContact(plan model.Plan, contact model.Contact) (model.Plan, []model.Problem)
+	SetRole(plan model.Plan, role model.Role) (model.Plan, []model.Problem)
+	SetTeam(plan model.Plan, team model.Team) (model.Plan, []model.Problem)
+	RemoveContact(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
+	RemoveRole(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
+	RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem)
 	Validate(plan model.Plan) []model.Problem
 	Assemble(plan model.Plan) (string, []model.Problem)
 }
@@ -50,4 +56,28 @@ func (parts components) SetSectionEnabled(plan model.Plan, section string, enabl
 
 func (parts components) Assemble(plan model.Plan) (string, []model.Problem) {
 	return parts.assembler.Assemble(plan)
+}
+
+func (parts components) SetContact(plan model.Plan, contact model.Contact) (model.Plan, []model.Problem) {
+	return parts.editor.SetContact(plan, contact)
+}
+
+func (parts components) SetRole(plan model.Plan, role model.Role) (model.Plan, []model.Problem) {
+	return parts.editor.SetRole(plan, role)
+}
+
+func (parts components) SetTeam(plan model.Plan, team model.Team) (model.Plan, []model.Problem) {
+	return parts.editor.SetTeam(plan, team)
+}
+
+func (parts components) RemoveContact(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return parts.editor.RemoveContact(plan, id)
+}
+
+func (parts components) RemoveRole(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return parts.editor.RemoveRole(plan, id)
+}
+
+func (parts components) RemoveTeam(plan model.Plan, id string) (model.Plan, model.Cleared, []model.Problem) {
+	return parts.editor.RemoveTeam(plan, id)
 }

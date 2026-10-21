@@ -54,6 +54,15 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"pick-empty":           build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
 		"pick-empty-onboardee": build(withoutDirectory(blankPlan(t)), model.AudienceOnboardee),
 		"subsections":          buildSubsections(),
+		"people":               build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"))),
+		"people-roles":         build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab)),
+		"people-teams":         build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, tab)),
+		"people-form":          build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), typed("a"), typed("Dana Lee"), enter, typed("dana@acme.example"))),
+		"people-holders":       build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, typed("a"), typed("Release lead"), enter, down, space, down, space)),
+		"people-override":      build(peopleWithFlags(t), model.AudienceOnboarder, keys(typed("P"), tab, tab, typed("a"), typed("Data team"), enter, enter, down, space)),
+		"people-remove":        build(acmePlan(t), model.AudienceOnboarder, keys(typed("P"), down, typed("x"))),
+		"people-remove-role":   build(acmePlan(t), model.AudienceOnboarder, keys(typed("P"), tab, typed("x"))),
+		"people-empty":         build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, keys(esc, typed("P"))),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)
@@ -105,6 +114,14 @@ func wireframe(app App) string {
 		rows[index] = strings.TrimRight(row, " ")
 	}
 	return strings.Join(rows, "\n") + "\n"
+}
+
+func peopleWithFlags(t *testing.T) model.Plan {
+	t.Helper()
+	plan := acmePlan(t)
+	plan.Directory.Contacts = append(plan.Directory.Contacts, model.Contact{ID: "pat-lee", Name: "Pat Lee", Email: "pat.lee.acme.example"}, model.Contact{ID: "front-desk", Name: "Front desk"})
+	plan.Directory.Roles = append(plan.Directory.Roles, model.Role{ID: "security-lead", Name: "Security lead"})
+	return plan
 }
 
 func withoutDirectory(plan model.Plan) model.Plan {

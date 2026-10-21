@@ -1,0 +1,24 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  [People]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  [Contacts 5]  Roles 4  Teams 2
+
+  > Alex Rivera      alex.rivera@acme.example  @alex
+    Sam Okafor       sam.okafor@acme.example   @sam
+    IT service desk  help@acme.example         #it-help
+    Pat Lee          ! email looks wrong  pat.lee.acme.example
+    Front desk       ! no way to reach
+
+  About this contact
+
+  Id: alex-rivera
+  Email: alex.rivera@acme.example
+  Slack: @alex
+  Holds: Platform team lead
+
+
+
+
+
+
+  a add  enter edit  x remove  tab next list  esc back  ? help
