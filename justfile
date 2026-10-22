@@ -49,6 +49,9 @@ build:
 acceptance:
     if [ -f go.mod ]; then go test -race -count=1 -v ./acceptance/; else echo "no Go module yet"; fi
 
+release-check *flags:
+    go run ./tools/release/verify {{ flags }}
+
 # Run the binary. A no-op until the Go module exists.
 run *args:
     if [ -f go.mod ]; then go run ./binary {{ args }}; else echo "no Go module yet"; fi

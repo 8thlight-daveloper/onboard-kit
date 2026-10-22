@@ -52,7 +52,13 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 | `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
 | `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |
 
-`just acceptance` runs the scenarios under `acceptance/scenarios/` against the built binary.
+`just acceptance` builds a development binary and runs the scenarios under
+`acceptance/scenarios/` against it.
+
+On macOS arm64, `just release-check` builds one release artifact and
+runs those scenarios against that exact file without development tools on PATH.
+It also checks the signature and linked libraries. See
+[local release verification](docs/stack/release.md#local-verification).
 
 Variable names must be unique within their scope, and nonempty step IDs within
 their section. Validation reports ambiguous declarations instead of choosing a
