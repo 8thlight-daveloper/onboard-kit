@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "directory": {
+    "contacts": [{"id": "known", "slack": "@known"}],
+    "roles": [
+      {"id": "support", "holders": ["missing-z", "known", "missing-a"]},
+      {"id": "vacant", "holders": []}
+    ],
+    "teams": [
+      {"id": "team-z", "holders": {"support": ["missing-z", "missing-a"]}},
+      {"id": "team-a", "holders": {"support": ["missing-z", "known", "missing-a"], "vacant": []}}
+    ]
+  }
+}

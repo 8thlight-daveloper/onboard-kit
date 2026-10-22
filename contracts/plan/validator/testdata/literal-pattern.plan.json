@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "answers": {"sections": {"main": {"hint": "no digits", "literal": "other"}}},
+  "sections": [{"id": "main", "variables": [
+    {"name": "literal", "pattern": "mutated", "description": "Text containing the literal pattern"},
+    {"name": "hint", "pattern": "^[0-9]+$", "patternHint": "mutated", "description": "Digits with a literal hint"}
+  ]}]
+}

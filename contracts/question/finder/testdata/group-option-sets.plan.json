@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "mode", "type": "choice", "options": ["a", "b"], "default": "a", "description": "Two options"}],
+  "sections": [
+    {"id": "a", "variables": [{"name": "mode", "type": "choice", "options": ["b", "a", "a"], "default": "b", "description": "Repeated and reversed options"}]},
+    {"id": "b", "variables": [{"name": "mode", "type": "choice", "options": ["a", "b"], "default": "a", "description": "Repeated default in the same group"}]},
+    {"id": "c", "variables": [{"name": "mode", "type": "choice", "options": ["a,b"], "default": "a,b", "description": "One option containing a comma"}]},
+    {"id": "d", "variables": [{"name": "mode", "type": "choice", "options": ["a", "b,c"], "default": "a", "description": "Comma in the second option"}]},
+    {"id": "e", "variables": [{"name": "mode", "type": "choice", "options": ["a,b", "c"], "default": "c", "description": "Comma in the first option"}]},
+    {"id": "f", "variables": [{"name": "mode", "type": "choice", "description": "Absent options"}]},
+    {"id": "g", "variables": [{"name": "mode", "type": "choice", "options": [], "description": "Empty options"}]}
+  ]
+}

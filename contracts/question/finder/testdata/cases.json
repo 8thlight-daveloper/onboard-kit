@@ -334,5 +334,17 @@
     "plan": "suggestions-empty-text-fits.plan.json",
     "expected": "suggestions-empty-text-fits.questions.json",
     "source": "contract.md, Suggestions: empty text and a value of no kind are never offered, even when a choice lists empty text as an option or a pattern matches empty text"
+  },
+  {
+    "name": "group-option-sets",
+    "plan": "group-option-sets.plan.json",
+    "expected": "group-option-sets.questions.json",
+    "source": "Hand-written from contract.md, Groups: options are compared as a set, so order and repeats do not matter; two groups are equal exactly when name, type, option set, and multiple agree. Empty and absent options both represent the empty set. Commas are ordinary option content, not group boundaries. What a question holds preserves the original options list. docs/decisions/0010-plan-editor.md, Groups."
+  },
+  {
+    "name": "list-suggestion-content",
+    "plan": "list-suggestion-content.plan.json",
+    "expected": "list-suggestion-content.questions.json",
+    "source": "Hand-written from contract.md, Suggestions: a List is settled when it has at least one non-empty item; equal lists have the same items in the same order; distinct defaults come before distinct given answers. Blockers: a default is not an answer, and a list of only empty text is unanswered. docs/decisions/0035-settled-and-deferred-answers.md and docs/decisions/0045-defaults-are-suggestions.md."
   }
 ]

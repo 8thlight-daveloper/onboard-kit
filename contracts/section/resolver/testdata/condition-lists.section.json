@@ -1,0 +1,20 @@
+{
+  "id": "condition-lists",
+  "title": "Conditions that hold lists",
+  "summary": "Every kind of answer test, with list values",
+  "includeIf": {"all": [
+    {"question": "plan.stack", "answer": {"is": ["go", "nix"]}},
+    {"question": "plan.region", "answer": {"isNot": ["emea", "apac"]}},
+    {"question": "plan.team", "answer": {"isOneOf": [["a", "b"], "c"]}},
+    {"question": "plan.level", "answer": {"isNotOneOf": [["d", "e"], "f"]}}
+  ]},
+  "body": "Plain text",
+  "variables": [
+    {"name": "tool", "description": "A tool", "askIf": {"all": [
+      {"question": "stack", "answer": {"is": ["x", "y"]}},
+      {"question": "region", "answer": {"isNot": ["z"]}},
+      {"question": "team", "answer": {"isOneOf": [["g", "h"], ["i"]]}},
+      {"question": "level", "answer": {"isNotOneOf": [["j", "k"], ["l"]]}}
+    ]}}
+  ]
+}

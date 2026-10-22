@@ -1,0 +1,13 @@
+{
+  "questions": [
+    {"id": "plan.mode", "type": "choice", "group": "a b", "declaredDefault": "a", "suggestions": [{"value": "a", "source": "default"}, {"value": "b", "source": "default"}]},
+    {"id": "a.mode", "type": "choice", "group": "a b", "declaredDefault": "b", "suggestions": [{"value": "a", "source": "default"}, {"value": "b", "source": "default"}]},
+    {"id": "b.mode", "type": "choice", "group": "a b", "declaredDefault": "a", "suggestions": [{"value": "a", "source": "default"}, {"value": "b", "source": "default"}]},
+    {"id": "c.mode", "type": "choice", "group": "a-comma-b", "declaredDefault": "a,b", "suggestions": [{"value": "a,b", "source": "default"}]},
+    {"id": "d.mode", "type": "choice", "group": "a b-comma-c", "declaredDefault": "a", "suggestions": [{"value": "a", "source": "default"}]},
+    {"id": "e.mode", "type": "choice", "group": "a-comma-b c", "declaredDefault": "c", "suggestions": [{"value": "c", "source": "default"}]},
+    {"id": "f.mode", "type": "choice", "group": "empty"},
+    {"id": "g.mode", "type": "choice", "group": "empty"}
+  ],
+  "blockers": []
+}

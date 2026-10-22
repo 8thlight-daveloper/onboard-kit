@@ -69,7 +69,7 @@ For a declared variable the resolver takes the answer stored for it in the secti
 2. A deferred answer is a deferred value. A default does not replace it.
 3. An unanswered answer takes the section's default for the variable, when the default is settled and, for a directory variable, names something in the directory. A default that is deferred gives a deferred value. A default that is not settled, or none, gives no value.
 4. No value in a variable with `audience: onboardee` becomes `<name>`, with the variable's name. It is not a gap.
-5. No value in any other variable is an unanswered gap.
+5. No value in any other variable is an unanswered gap. A variable with `audience: onboarder` is such a variable, as is one with no `audience`.
 
 Settled, deferred, and unanswered are as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) defines them. Text is settled when it has at least one character. A Flag is always settled. A List is settled when it has at least one item that is not empty. The Text `deferred` is a plain string, and it is settled. A value of no kind is unanswered. Nothing is checked against the variable's type, options, or pattern.
 
@@ -121,7 +121,7 @@ The `slackId` is never written. A vacant role is text and not a gap. It adds no 
 
 A `run` item that is exactly `$name`, for a declared variable of type `command` that has a list as its value, is replaced by the items of the list, in order, each as its own item of `run`. This holds in a step's `run` and in a check's `run`. The items are written as held and are not read again.
 
-In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string`, gives one item and never splits on spaces. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
+In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string`, a `choice`, or a `boolean`, gives one item and never splits on spaces, even when its value is a List, which is then joined with one space. An item is exactly `$name` only when it is a `$` and a name and nothing else, so `#name`, `!name`, and ` name` are prose and come back as written. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
 
 ## Problems
 
@@ -161,7 +161,7 @@ None, and it reads section content, the section's own answers, the directory, an
 - The format of the document, such as Markdown escaping of `<name>` and `_deferred_`, one person to a line, and the gap table. Those are the assembler's.
 - Whether the answers fit the types, options, or patterns, whether a required question is answered, and whether a `$` is valid. Those are for the validators.
 - Two variables with the same name in one section.
-- A Flag for a `string`, a Flag for a `command`, or another mismatch of type and value, except Text for a `command`, which A command in `run` covers. The value is written by its kind, as the table says.
+- A Flag for a `string`, a Flag for a `command`, or another mismatch of type and value, except Text for a `command` and the Lists that A command in `run` covers. The value is written by its kind, as the table says.
 - Text of only whitespace.
 - A name that does not follow the schema's name rule, in a declaration.
 - Which sections are active. The caller passes the section it wants filled.
@@ -257,3 +257,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A directory List spliced into several `run` items, or one item split on spaces | `directory-run`, `directory-fields` |
 | A `string` variable looked up in the directory | `directory-string-unchanged`, `directory-empty` |
 | A contact's name or handle read again, or its `$$` halved | `directory-contact-forms` |
+| A command spliced for a `string`, `choice`, or `boolean` variable that holds a List | `types-and-audience`, `list-in-run` |
+| An item taken for an exact name when a character before the name sorts below `$` | `types-and-audience` |
+| A variable with `audience: onboarder` written as an onboarding blank | `types-and-audience` |
+| A condition's `is`, `isNot`, or `isNotOneOf` value sharing its list with the input | `condition-lists`, and the shares-nothing tests |

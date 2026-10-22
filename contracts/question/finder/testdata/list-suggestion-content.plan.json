@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "variables": [{"name": "setup", "type": "command", "required": true, "default": ["", "make", "test"], "description": "Default with a leading empty argument"}],
+  "answers": {"sections": {
+    "a": {"setup": ["make", "test"]},
+    "b": {"setup": ["test", "make"]},
+    "c": {"setup": ["make", "test"]},
+    "d": {"setup": [""]}
+  }},
+  "sections": [
+    {"id": "a", "variables": [{"name": "setup", "type": "command", "default": ["make", "test", ""], "description": "Default with a trailing empty argument"}]},
+    {"id": "b", "variables": [{"name": "setup", "type": "command", "default": ["", "make", "test"], "description": "Repeated default"}]},
+    {"id": "c", "variables": [{"name": "setup", "type": "command", "description": "Repeated given answer"}]},
+    {"id": "d", "variables": [{"name": "setup", "type": "command", "required": true, "description": "An unsettled list"}]}
+  ]
+}

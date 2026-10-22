@@ -237,3 +237,5 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | A duplicated section id is reported for every extra use, has no `section`, or sorts in another order | `duplicate-sections`, `directory-order` |
 | The directory problems keep the order of the directory, come after the answer problems, or sort by severity or by other keys | `directory-order`, `directory-holders`, `directory-warnings`, the directory order test |
 | `CheckValue` also reports the directory problems | `directory-check-value`, the agreement test |
+| Unknown holders of one role or team keep their input order instead of sorting by holder id | `directory-holder-order`, the directory order test |
+| A particular literal pattern is skipped, or a particular literal hint is omitted | `literal-pattern` |

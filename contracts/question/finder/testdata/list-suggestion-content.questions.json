@@ -1,0 +1,25 @@
+{
+  "questions": [
+    {"id": "plan.setup", "type": "command", "required": true, "group": "setup", "declaredDefault": ["", "make", "test"], "suggestions": [
+      {"value": ["", "make", "test"], "source": "default"}, {"value": ["make", "test", ""], "source": "default"},
+      {"value": ["make", "test"], "source": "given"}, {"value": ["test", "make"], "source": "given"}
+    ]},
+    {"id": "a.setup", "type": "command", "group": "setup", "answer": ["make", "test"], "declaredDefault": ["make", "test", ""], "suggestions": [
+      {"value": ["", "make", "test"], "source": "default"}, {"value": ["make", "test", ""], "source": "default"},
+      {"value": ["make", "test"], "source": "given"}, {"value": ["test", "make"], "source": "given"}
+    ]},
+    {"id": "b.setup", "type": "command", "group": "setup", "answer": ["test", "make"], "declaredDefault": ["", "make", "test"], "suggestions": [
+      {"value": ["", "make", "test"], "source": "default"}, {"value": ["make", "test", ""], "source": "default"},
+      {"value": ["make", "test"], "source": "given"}, {"value": ["test", "make"], "source": "given"}
+    ]},
+    {"id": "c.setup", "type": "command", "group": "setup", "answer": ["make", "test"], "suggestions": [
+      {"value": ["", "make", "test"], "source": "default"}, {"value": ["make", "test", ""], "source": "default"},
+      {"value": ["make", "test"], "source": "given"}, {"value": ["test", "make"], "source": "given"}
+    ]},
+    {"id": "d.setup", "type": "command", "required": true, "group": "setup", "answer": [""], "suggestions": [
+      {"value": ["", "make", "test"], "source": "default"}, {"value": ["make", "test", ""], "source": "default"},
+      {"value": ["make", "test"], "source": "given"}, {"value": ["test", "make"], "source": "given"}
+    ]}
+  ],
+  "blockers": ["plan.setup", "d.setup"]
+}

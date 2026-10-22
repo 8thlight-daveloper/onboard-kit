@@ -306,3 +306,4 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | Prune shares the answers or the sections list with the argument, or removes from the argument in place | `TestResultSharesNothingWithTheArgumentThatAnEditCouldChange`, `TestArgumentsAreNotChanged` |
 | Prune returns an absent map as an empty one | `prune-a-plan-with-no-answers-comes-back-equal`, `TestPruneWithNothingHiddenReturnsAnEqualPlan`, `TestARefusalOnAPlanWithNothingReturnsThatPlanExactly` |
 | Prune reorders the sections or drops an `example` | `examples-kept-by-a-prune`, `TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument` |
+| Prune removes a pre-existing nil or empty scope map, or fills absent editable fields while removing a hidden answer | `TestPrunePreservesNilAndEmptyScopeMapsWhileRemovingOtherAnswers` |

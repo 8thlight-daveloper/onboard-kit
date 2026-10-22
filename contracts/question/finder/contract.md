@@ -261,3 +261,6 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A suggestion checked against the ids of every list and not of the question's type | `directory-suggestions` |
 | The group key split by scope for a directory question | `directory-suggestions` |
 | The choices of one question changed by editing the plan's directory in place | the plan-unchanged test, the named-audience test |
+| Repeated options split a group, or empty and absent options split it | `group-option-sets` |
+| Options containing commas collide with other option sets in the group key | `group-option-sets` |
+| Suggestions sort list items or drop empty items before comparing them | `list-suggestion-content` |

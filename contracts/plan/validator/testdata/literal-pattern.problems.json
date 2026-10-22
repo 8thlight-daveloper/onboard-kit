@@ -1,0 +1,4 @@
+{"problems": [
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.hint", "section": "main", "messageContains": "mutated"},
+  {"code": "answer.pattern-mismatch", "severity": "error", "question": "main.literal", "section": "main"}
+]}

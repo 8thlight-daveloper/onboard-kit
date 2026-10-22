@@ -1,0 +1,17 @@
+{
+  "id": "types-and-audience",
+  "title": "Types and audience",
+  "summary": "Only a command variable splices, and an onboarder variable is a gap",
+  "body": "Own: _unanswered_",
+  "variables": [
+    {"name": "own", "audience": "onboarder", "description": "An onboarder question with no answer"},
+    {"name": "tags", "type": "string", "description": "A string that holds a list"},
+    {"name": "pick", "type": "choice", "description": "A choice that holds a list"},
+    {"name": "flags", "type": "boolean", "description": "A boolean that holds a list"},
+    {"name": "gate", "type": "command", "description": "A command"}
+  ],
+  "steps": [
+    {"id": "lists", "name": "Lists", "run": ["a b", "c d", "e f"]},
+    {"id": "lookalikes", "name": "Lookalikes", "run": ["#gate", "!gate", " gate", "\"gate", "make", "gate"], "checks": [{"run": ["#gate", "a b"]}]}
+  ]
+}

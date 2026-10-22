@@ -318,6 +318,25 @@
     "source": "docs/decisions/0080-directory.md, Integrity: directory.holder-not-a-contact when a team's contact names an id that is not a contact, and \"A team may name a contact\" with \"never stands in for a role holder\". briefs/teamcontact.md. Written by hand from the plan"
   },
   {
+    "name": "literal-pattern",
+    "plan": "literal-pattern.plan.json",
+    "expected": "literal-pattern.problems.json",
+    "checks": [
+      {"name": "a literal pattern rejects different text", "question": "main.literal", "value": "other",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.literal", "section": "main"}]},
+      {"name": "a literal pattern matches inside text", "question": "main.literal", "value": "before mutated after", "problems": []},
+      {"name": "a literal hint appears in the problem", "question": "main.hint", "value": "no digits",
+        "problems": [{"code": "answer.pattern-mismatch", "severity": "error", "question": "main.hint", "section": "main", "messageContains": "mutated"}]}
+    ],
+    "source": "contracts/plan/validator/contract.md, Answer checks: a string pattern matches anywhere, and the mismatch message holds patternHint when present. Literal text has no reserved pattern or hint value. docs/reference/section-template-schema/variables.md, pattern and patternHint. Written by hand from these rules"
+  },
+  {
+    "name": "directory-holder-order",
+    "plan": "directory-holder-order.plan.json",
+    "expected": "directory-holder-order.problems.json",
+    "source": "contracts/plan/validator/contract.md, Order: directory.holder-not-a-contact sorts by role, team, holder, team-contact; the result does not depend on the holders list order. docs/decisions/0080-directory.md, Integrity: unknown holder ids are errors and a role with no holders is vacant. Written by hand from these rules"
+  },
+  {
     "name": "directory-check-value",
     "plan": "directory-check-value.plan.json",
     "expected": "directory-check-value.problems.json",

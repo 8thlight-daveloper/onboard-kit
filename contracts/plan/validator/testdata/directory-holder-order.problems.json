@@ -1,0 +1,9 @@
+{"problems": [
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "holder": "missing-a"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "holder": "missing-z"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "team": "team-a", "holder": "missing-a"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "team": "team-a", "holder": "missing-z"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "team": "team-z", "holder": "missing-a"}},
+  {"code": "directory.holder-not-a-contact", "severity": "error", "detail": {"role": "support", "team": "team-z", "holder": "missing-z"}},
+  {"code": "directory.role-vacant", "severity": "warning", "detail": {"role": "vacant"}}
+]}
