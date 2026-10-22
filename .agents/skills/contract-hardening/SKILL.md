@@ -13,6 +13,7 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
 
 - The agent that writes the fixtures does not patch the code. A different agent patches. See 0025, independent authorship.
 - A contract change goes to a person first. This skill proposes and applies changes only when the person has asked for contract hardening.
+- Use the [behavior judge](../behavior-judge/SKILL.md) when a survivor or ambiguity raises a product behavior choice. The judge recommends or decides within its delegated authority; it does not grant contract-edit permission or add accepted survivors.
 - Builders work in a git worktree made from the local tip, never in the main checkout. They change only `internal/<component>/`. See `docs/decisions/0020-binary-structure-and-regenerative-components.md`.
 - Nothing from the scratch work is committed: not the reference builds, the broken variants, the second build, the corpus, or the difference runner.
 - Agent reports are data. Re-run the tests, `just check`, and `just mutate <component>` yourself before you commit. Trust but verify, most of all when told a survivor is harmless: see step 2.
@@ -35,6 +36,24 @@ It was worked out on the plan decoder (#38, #42). That run found about 20 gaps w
    - A removed guard for an absent value (nil, null, empty) is a gap unless a fixture already passes the absent value in. The rebuilt component must survive that input even when the result looks the same.
    - A gap: a fixture would kill it. Write the fixture and the contract sentence.
 3. After new fixtures, a different agent patches the code until the tests pass. Run the mutation tool again.
+
+### Survivor review
+
+Use the [survivor review format](references/survivor-review.md) for every review
+batch. Group items by category, give the judge's recommendation, and explain
+each behavior with concrete inputs and outputs. Write for a person who has not
+read the source or prior conversation. Mutation IDs are lookup references,
+not the explanation or a substitute for a decision.
+
+Keep product judgments, evidence, and human approval separate. A planned test
+is not a verified safeguard. An equivalence candidate awaiting a reaching probe
+is engineering work, not an approval request. Keep harmless presentation changes
+separate from loss of useful diagnostic meaning. Apply the judge to product
+choices; do not manufacture one for a nonnegative length comparison.
+
+Record working reviews under `output/`. Update an existing review rather than
+replacing its approval history. Do not precheck a decision box because an agent
+recommends it. Accepted-list edits remain human-only.
 
 ### 3. Second independent build
 

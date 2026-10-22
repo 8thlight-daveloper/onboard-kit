@@ -2,6 +2,17 @@
 
 Read first: `README.md`, `docs/architecture/README.md`, `docs/stack/README.md`, and the ADRs in `docs/decisions/`.
 
+## Shared skills
+
+Repository skills live in `.agents/skills/`. Keep their instructions independent
+of an agent vendor. `.claude/skills/<name>` links to the matching shared skill;
+edit the canonical files, not a second copy. `CLAUDE.md` imports this file.
+
+Use the [behavior judge](.agents/skills/behavior-judge/SKILL.md) for open product
+behavior choices in the assigned task. Its principles and bounded authority
+are in [0100](docs/decisions/0100-behavior-judgment.md). It does not waive the
+human approval or independent authorship rules below.
+
 ## Where docs go
 
 | Folder | Holds | Pace |
