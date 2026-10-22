@@ -8,6 +8,9 @@ func nameEnd(text string, start int) int {
 	for end < len(text) && isNameCharacter(text[end]) {
 		end++
 	}
+	if end-start < 3 {
+		return start
+	}
 	return end
 }
 

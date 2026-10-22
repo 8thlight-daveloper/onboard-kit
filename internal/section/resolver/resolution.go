@@ -17,16 +17,14 @@ type resolution struct {
 }
 
 func resolveVariable(variable model.Variable, answer model.Value, book book) resolution {
-	for _, candidate := range []model.Value{answer, variable.Default} {
-		if result, settled := settledResolution(variable, candidate, book); settled {
-			return result
-		}
-		if candidate.Kind == model.ValueKindDeferred {
-			return resolution{text: deferredMarker, gapCode: codeDeferred}
-		}
+	if result, settled := settledResolution(variable, answer, book); settled {
+		return result
+	}
+	if answer.Kind == model.ValueKindDeferred {
+		return resolution{text: deferredMarker, gapCode: codeDeferred}
 	}
 	if variable.Audience == model.AudienceOnboardee {
-		return resolution{text: "<" + variable.Name + ">"}
+		return resolution{text: "<" + variable.Name + ">", gapCode: codeUnanswered}
 	}
 	return resolution{text: unansweredMarker, gapCode: codeUnanswered}
 }

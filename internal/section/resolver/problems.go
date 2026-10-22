@@ -10,17 +10,22 @@ func (f *filler) problems(section model.Section) []model.Problem {
 			continue
 		}
 		reported[variable.Name] = true
-		problems = append(problems, gapProblem(section.ID, variable.Name, f.resolutions[variable.Name].gapCode))
+		problems = append(problems, gapProblem(section.ID, variable, f.resolutions[variable.Name].gapCode))
 	}
 	return problems
 }
 
-func gapProblem(sectionID string, name string, code string) model.Problem {
+func gapProblem(sectionID string, variable model.Variable, code string) model.Problem {
+	audience := variable.Audience
+	if audience == "" {
+		audience = model.AudienceOnboarder
+	}
 	return model.Problem{
 		Code:     code,
 		Severity: model.SeverityWarning,
-		Message:  "variable " + name + " has no value: " + code,
-		Question: sectionID + "." + name,
+		Message:  "variable " + variable.Name + " has no value: " + code,
+		Question: sectionID + "." + variable.Name,
 		Section:  sectionID,
+		Detail:   map[string]string{"audience": string(audience)},
 	}
 }
