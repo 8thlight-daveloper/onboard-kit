@@ -95,7 +95,7 @@ No side effects. It was not given a plan, so it creates one: every field of the 
 The hashes in `testdata/cases.json` come from the section hasher contract, in one of two ways, and each case cites which.
 
 - Five sections and their hashes are copied from the golden cases of [the hasher contract](../../section/hasher/testdata/cases.json), with their canonical texts.
-- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, three sections with a `parent` (`sub-sections`), six small sections for the order case, one section with section clauses, and one section whose variable has an `example`. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
+- More sections have a canonical text written by hand from the rules of the hasher contract. Their hashes are `shasum -a 256` over those texts. They are the four ACME templates, three sections with a `parent` (`sub-sections`), six small sections for the order case, one section with section clauses, one section whose answer tests `is` and `isNot` hold lists, and one section whose variable has an `example`. The ACME `review-design-system` template has no variable named `enabled`, as in [the ACME example](../../../docs/reference/examples/acme/README.md) after 0050, and its canonical text and hash were recomputed without it.
 
 A test checks that each hash in the manifest is the SHA-256 of its canonical text. No hash was computed by a component.
 
@@ -159,6 +159,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The template set dropped when there are no templates | `no-templates`, `nothing-given` |
 | The axis variables, the sections, or the unknown fields shared with the arguments | the nothing-shared test |
 | A shallow copy that shares a list such as `after` | the nothing-shared test |
+| An answer test's `is`, `isNot`, `isOneOf`, or `isNotOneOf` list shared with the argument, in `includeIf` or `askIf` | the nothing-shared test on `answer-test-lists` and `hasher-goldens` |
 | The argument sorted in place, or its `source` set | the inputs-unchanged test |
 | An axis variable changed while the result is built | every plan case that has axis variables |
 | State kept between calls | the no-memory test |

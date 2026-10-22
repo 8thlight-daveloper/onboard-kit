@@ -194,5 +194,16 @@
       {"id": "access-request", "hash": "68e4194ffa64a8122dcd294371d0403b148ac7feeed30eb861a1deca35c00215", "canonical": "sub-sections-access-request.canonical.json"}
     ],
     "source": "0070: a template may name a parent, the section is its template copied with the parent as held, and the hash covers the parent, written like any text identifier, omitted when empty, right after includeIf. Three templates given out of order: a root, a sub-section of it with an includeIf on the root's question and a timing, and a sub-section of that one. The canonical texts are written by hand from the hasher rules with parent after includeIf, and each hash is shasum -a 256 over its file. A section that loses the parent in the copy, or a hash that leaves it out or writes it in another place, differs from this one."
+  },
+  {
+    "name": "answer-test-lists",
+    "templates": ["answer-test-lists.section.json"],
+    "axisVariables": "axis.plan.json",
+    "templateSet": "7652e0e",
+    "generatedOn": "2026-10-15",
+    "sections": [
+      {"id": "gate", "hash": "dd5c5cecdebf64bc915c35bdd8f716fa3f9e502a677ebd66505eed240e347dcc", "canonical": "answer-test-lists.canonical.json"}
+    ],
+    "source": "Contract rule: Nothing shared. A condition's answer tests are copied at every depth, so an `is` and an `isNot` that hold lists, in includeIf and in a variable's askIf, share nothing with the template. The canonical text is written by hand from the hasher rules (Values: a list is written in the order held, `is` and `isNot` are not sets), and its hash is shasum -a 256 over that file. A copy that leaves the `is` or `isNot` list shared with the argument fails the nothing-shared test on this case."
   }
 ]

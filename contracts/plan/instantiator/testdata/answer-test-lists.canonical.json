@@ -1,0 +1,1 @@
+{"id":"gate","title":"Gate","summary":"Answer tests that hold lists.","includeIf":{"all":[{"question":"plan.tools","answer":{"is":["git","ssh"],"isNot":["vpn","mfa"]}}]},"timing":"anytime","variables":[{"name":"note","description":"A note","type":"string","audience":"onboarder","askIf":{"all":[{"question":"plan.tools","answer":{"is":["b","a"],"isNot":["c"],"isSettled":true}}]}}]}
