@@ -173,6 +173,7 @@ None, and it reads the section content only. It reads no plan field, no answer, 
 - Comparing a hash with a recorded one, and deciding what a difference means. That is the update action.
 - Writing the hash into `source`. That is the plan instantiator.
 - The values of an unknown field that are not in the table under Unknown fields, such as NaN, infinity, other integer widths, `float32`, and a value that is not data. The result for them is not specified.
+- A Value whose kind is not one of the five kinds, such as a negative number. The result for it is not specified.
 - A string that is not valid UTF-8, and Unicode normal forms. Two strings that look alike but are not the same code points hash differently.
 - Whether a section is valid, including whether its `parent` names a section of the plan or names an ancestor and not a cycle. The hasher writes any section. The plan validator's structure check does that, in a later contract.
 - Whether two different texts mean the same to Markdown. Only the whitespace rule above is applied.
