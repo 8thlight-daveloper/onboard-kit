@@ -69,12 +69,21 @@ func (s *session) handle(line []byte) map[string]any {
 	case "plan":
 		return s.encodedPlan()
 	case "assemble":
-		document, gaps := assembler.New().Assemble(s.plan)
-		return map[string]any{"ok": true, "document": document, "gaps": valuejson.EncodeProblems(gaps)}
+		return s.assemble()
 	case "save":
 		return s.save(asked)
 	}
 	return failure("unknown_command", "unknown command: "+asked.Command)
+}
+
+func (s *session) assemble() map[string]any {
+	if problems := planfile.Ambiguities(s.plan); len(problems) > 0 {
+		result := failure("ambiguous_plan", "the plan has duplicate identities; fix the reported declarations before assembly")
+		result["problems"] = valuejson.EncodeProblems(problems)
+		return result
+	}
+	document, gaps := assembler.New().Assemble(s.plan)
+	return map[string]any{"ok": true, "document": document, "gaps": valuejson.EncodeProblems(gaps)}
 }
 
 func (s *session) submit(asked request) map[string]any {

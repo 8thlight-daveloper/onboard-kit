@@ -33,6 +33,10 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if !ok {
 		return exitProblem
 	}
+	if problems := planfile.Ambiguities(plan); len(problems) > 0 {
+		report.Problems(stderr, *planPath, problems)
+		return exitProblem
+	}
 	document, gaps := assembler.New().Assemble(plan)
 	report.Gaps(stderr, *planPath, gaps)
 	return write(*output, document, stdout, stderr)
