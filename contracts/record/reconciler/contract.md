@@ -66,7 +66,7 @@ An answer the record has for a question the plan declares again after it was gon
 - A list of ids is checked item by item. An empty item is left alone. Each non-empty item that is not an id of the list is dropped, and the others keep their order. When some remain, the shortened list replaces the answer, and the question is listed in `AnswersToReview`. When no non-empty item remains, the answer is removed and listed.
 - Nothing else is checked. A pattern, `required`, a `default`, and `options` on a variable that is not a choice are not checked.
 
-**Where answers are written.** The result holds no entry for a removed answer. A section whose answers are all removed leaves no empty map. The result shares no map or list with an argument, including when the reconcile is refused.
+**Where answers are written.** The result holds no entry for a removed answer. A section whose answers are all removed leaves no empty map. The result shares no map or list with an argument, including when the reconcile is refused. A record with no plan answer map gives a result with no plan answer map. A refusal returns a record equal to the argument in every part, and a map that is absent stays absent.
 
 ### Comparing the plans
 
@@ -124,6 +124,7 @@ The docs left these open. Each is a choice a person can reverse.
 1. **`cheap`. New and removed questions follow every audience.** Raised by the domain model: "Question ids the new plan declares and the previous plan did not".
 1. **`cheap`. A moved question is removed and new.** Its answer stays hidden. Raised by 0075: "Ids ... are permanent. Renaming means a new id."
 1. **`cheap`. An empty `url` in the reference is written as empty.** Raised by the brief: the reference comes from the driver.
+1. **`cheap`. A record with no plan answer map gives a result with none.** Raised by the pure function rule: nothing is added that the record did not hold.
 1. **`cheap`. A variable with no type is a string.** Raised by the domain model's default variable type.
 
 ## Wrong implementations tried
@@ -135,7 +136,8 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | The old url kept when the driver's url is empty, the old hash kept, or the plan id taken from the record | `reference-is-replaced-as-given`, `first-reconcile-is-accepted`, the reconcile-again test |
 | A first reconcile refused, or a missing id accepted | `first-reconcile-is-accepted`, `refuse-a-plan-with-no-id` |
 | Both problems reported, or the different-plan problem reported first | `missing-id-is-the-only-problem-when-both-apply` |
-| A refusal that updates the reference, or returns the record itself | `refuse-a-different-plan`, the refusal test, the changing-the-result test |
+| A refusal that updates the reference, returns the record itself, or turns an absent map into an empty one | `refuse-a-different-plan`, the refusal test, the changing-the-result test |
+| A different plan refused only when the record's id sorts after the plan's | `refuse-a-different-plan`, `refuse-a-different-plan-whose-id-sorts-before` |
 | An onboarder answer checked, or an empty audience treated as onboardee | `onboarder-questions-are-left-alone`, `audience-is-read-from-the-new-plan` |
 | The audience read from the previous plan | `audience-is-read-from-the-new-plan` |
 | Hidden answers deleted, or an undeclared answer listed for review | `answers-without-a-question-are-hidden-and-kept` |
@@ -152,6 +154,8 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | A list of blanks kept after the drop | `multiple-list-drops-only-the-missing-ids`, `no-directory-in-the-plan-means-every-id-is-missing` |
 | An answer checked against the variable of another scope | `scopes-are-separate` |
 | A removed answer left as an entry of no kind, or a section left with an empty map | the no-empty-entries test, `a-removed-answer-leaves-no-entry-and-no-empty-section` |
+| The sections after one that lost every answer skipped, or a result that depends on the order sections are read in | `many-sections-lose-all-their-answers`, the map-order test |
+| A plan answer map made for a record that has none | the no-plan-answers test |
 | The plan's answers copied into the record | `answers-of-the-plan-never-enter-the-record` |
 | New questions only in the plan scope, or removed questions only when answered | `new-and-removed-questions-and-sections`, `answers-without-a-question-are-hidden-and-kept` |
 | Lists sorted by scope then name, or not sorted | `new-and-removed-questions-and-sections`, the sorted-lists test |
