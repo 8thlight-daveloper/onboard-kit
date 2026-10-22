@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -96,6 +97,39 @@ func TestOnlySurvivorsGetAKey(t *testing.T) {
 	}
 	if len(found) != 0 {
 		t.Fatalf("a killed mutant got a key: %+v", found)
+	}
+}
+
+func TestAKeyDoesNotChangeWhenAnEarlierDuplicateStopsSurviving(t *testing.T) {
+	for _, sameLine := range []bool{false, true} {
+		t.Run(fmt.Sprint(sameLine), func(t *testing.T) {
+			root := t.TempDir()
+			path := writeSource(t, root, "a.go", "package a\nfunc f(x int) bool {\n\tif x == 1 || x == 1 {\n\t}\n\tif x == 1 || x == 1 {\n\t}\n\treturn false\n}\n")
+			first := survivorAt(path, 3, "==", "<=")
+			second := survivorAt(path, 5, "==", "<=")
+			if sameLine {
+				second.Mutant.Line = first.Mutant.Line
+				second.Mutant.Column = first.Mutant.Column + 10
+			}
+			both, err := survivorsOf([]result{second, first}, root)
+			if err != nil || len(both) != 2 {
+				t.Fatalf("both survivors: %+v, %v", both, err)
+			}
+			for _, status := range []string{statusKilled, statusNotViable, statusTimedOut, statusError} {
+				first.Status = status
+				remaining, err := survivorsOf([]result{first, second}, root)
+				if err != nil || len(remaining) != 1 {
+					t.Fatalf("remaining survivor: %+v, %v", remaining, err)
+				}
+				if remaining[0].key != both[1].key {
+					t.Errorf("after earlier duplicate became %s, key changed from %s to %s", status, both[1].key, remaining[0].key)
+				}
+				_, unreviewed := tallyOf([]result{first, second}, remaining, map[string]bool{both[0].key: true})
+				if len(unreviewed) != 1 {
+					t.Errorf("an exception for the earlier duplicate hid the remaining survivor after %s", status)
+				}
+			}
+		})
 	}
 }
 

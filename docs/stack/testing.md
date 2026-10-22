@@ -22,6 +22,8 @@ A mutant that survives is either a gap in the contract or a change that alters n
 
 The accepted lists that existed before 2026-10-21 hold the earlier tool's checksums, which no longer match anything. Each one needs a person to review it again against a gomu run, and to replace its lines with the new keys.
 
+Identical mutations are numbered in source order across the full report, including killed mutants. Killing an earlier identical mutant must not change a later survivor's key or give it an exception meant for the earlier one. Keys from a run before this rule need a fresh match when identical mutations occur in the same file.
+
 The `contract-hardening` skill, at [`.claude/skills/contract-hardening`](../../.claude/skills/contract-hardening/SKILL.md), is the procedure for finding the ambiguity in a contract: broken variants, the mutation tool, a second independent build, and a differential run. It carries out the contract checks in [0025](../decisions/0025-contracts-and-tests.md) and is worth its cost for a component with a large input format.
 
 Mutation tools tried:

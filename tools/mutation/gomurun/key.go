@@ -23,12 +23,7 @@ type survivor struct {
 }
 
 func survivorsOf(results []result, root string) ([]survivor, error) {
-	ordered := make([]result, 0, len(results))
-	for _, each := range results {
-		if each.Status == statusSurvived {
-			ordered = append(ordered, each)
-		}
-	}
+	ordered := append([]result(nil), results...)
 	sort.SliceStable(ordered, func(left, right int) bool {
 		a, b := ordered[left].Mutant, ordered[right].Mutant
 		if a.FilePath != b.FilePath {
@@ -62,6 +57,9 @@ func survivorsOf(results []result, root string) ([]survivor, error) {
 		}
 		base := strings.Join([]string{filepath.ToSlash(relative), each.Mutant.Type, each.Mutant.Original, each.Mutant.Mutated, source}, "\x00")
 		seen[base]++
+		if each.Status != statusSurvived {
+			continue
+		}
 		survivors = append(survivors, survivor{
 			key:      keyOf(base, seen[base]),
 			file:     filepath.ToSlash(relative),
