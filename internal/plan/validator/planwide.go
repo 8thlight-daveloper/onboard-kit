@@ -15,6 +15,8 @@ var planWideSortKeys = map[string][]string{
 	"directory.role-vacant":          {"role"},
 	"directory.team-role-unknown":    {"team", "role"},
 	"plan.duplicate-section-id":      {"section"},
+	"plan.duplicate-variable-name":   {"scope", "name"},
+	"plan.duplicate-step-id":         {"section", "step"},
 }
 
 func planWideProblems(plan model.Plan) []model.Problem {
@@ -23,6 +25,11 @@ func planWideProblems(plan model.Plan) []model.Problem {
 	problems = append(problems, contactProblems(plan.Directory)...)
 	problems = append(problems, duplicateSectionProblems(plan)...)
 	problems = append(problems, duplicateTeamVariableProblems(plan)...)
+	problems = append(problems, duplicateVariableProblems(planScope, "", plan.Variables)...)
+	for _, section := range plan.Sections {
+		problems = append(problems, duplicateVariableProblems(section.ID, section.ID, section.Variables)...)
+		problems = append(problems, duplicateStepProblems(section)...)
+	}
 	slices.SortStableFunc(problems, comparePlanWide)
 	return problems
 }

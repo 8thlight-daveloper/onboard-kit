@@ -23,9 +23,12 @@ func (Validator) Validate(plan model.Plan) []model.Problem {
 
 func (Validator) CheckValue(plan model.Plan, question string, value model.Value) []model.Problem {
 	target := parseQuestion(question)
-	variable, declared := declaredVariable(plan, target)
-	if !declared {
+	variable, declarations := declaredVariable(plan, target)
+	if declarations == 0 {
 		return []model.Problem{unknownQuestion(plan, target, model.SeverityError)}
+	}
+	if declarations > 1 {
+		return []model.Problem{ambiguousQuestion(plan, target)}
 	}
 	if !activeQuestions(plan)[target.id] {
 		return []model.Problem{inactiveQuestion(plan, target)}
@@ -34,11 +37,13 @@ func (Validator) CheckValue(plan model.Plan, question string, value model.Value)
 }
 
 func validateStored(plan model.Plan, active map[string]bool, stored storedAnswer) []model.Problem {
-	variable, declared := declaredVariable(plan, stored.question)
+	variable, declarations := declaredVariable(plan, stored.question)
 	switch {
-	case !declared:
+	case declarations == 0:
 		unknown := unknownQuestion(plan, stored.question, model.SeverityWarning)
 		return append([]model.Problem{unknown}, secretProblems(plan, stored.question, stored.value)...)
+	case declarations > 1:
+		return secretProblems(plan, stored.question, stored.value)
 	case active[stored.question.id]:
 		return checkActive(plan, stored.question, variable, stored.value, model.SeverityWarning)
 	default:

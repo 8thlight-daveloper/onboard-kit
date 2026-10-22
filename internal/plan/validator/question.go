@@ -19,24 +19,27 @@ func parseQuestion(id string) question {
 	return question{id: id, scope: scope, name: name}
 }
 
-func declaredVariable(plan model.Plan, target question) (model.Variable, bool) {
+func declaredVariable(plan model.Plan, target question) (model.Variable, int) {
 	if !strings.Contains(target.id, ".") {
-		return model.Variable{}, false
+		return model.Variable{}, 0
 	}
 	variables := plan.Variables
 	if target.scope != planScope {
 		section, held := heldSection(plan, target.scope)
 		if !held {
-			return model.Variable{}, false
+			return model.Variable{}, 0
 		}
 		variables = section.Variables
 	}
+	var declared model.Variable
+	count := 0
 	for _, variable := range variables {
 		if variable.Name == target.name {
-			return variable, true
+			declared = variable
+			count++
 		}
 	}
-	return model.Variable{}, false
+	return declared, count
 }
 
 func heldSection(plan model.Plan, id string) (model.Section, bool) {
