@@ -19,7 +19,7 @@ The result is `previous` with its `answers` recomputed. Every other field is cop
 
 ## Which answers the record holds
 
-Take each answer in `joined`, as a question id (scope and name, such as `plan.team` or `access.account_name`) and a value. The id is **declared** when the joined plan's variables name it: the plan's variables for scope `plan`, and the variables of the section with that id for a section scope. A name declared in another scope does not count. An answer to a question that is not declared is a **hidden answer**.
+Take each answer in `joined`, as a question id (scope and name, such as `plan.team` or `access.account_name`) and a value. The id is **declared** when the joined plan's variables name it: the plan's variables for scope `plan`, and the variables of the section with that id for a section scope. A name declared in another scope does not count. When a scope names one question more than once, the first declaration decides its audience, and the variables after the repeat are still read. A section id is any text, including empty text, and it names a section scope apart from the plan scope. An answer to a question that is not declared is a **hidden answer**.
 
 The record holds the answer when one of these holds.
 
@@ -50,7 +50,7 @@ The answer differs from the plan's answer when the plan has no answer for that q
 
 - When no answer is kept, `answers` has no `plan` map and no `sections` map. The result never holds an empty map that the answers did not need.
 - A section whose answers are all left out is not in `sections`. When no section is left, `sections` is nil.
-- `outcomes` and the unknown fields that `previous` holds as nil stay nil.
+- `outcomes` and the unknown fields that `previous` holds as nil stay nil. So does a nil list or map inside the unknown fields, at any depth.
 
 ### Shares nothing
 
@@ -83,7 +83,8 @@ These hold for every case the contract tests use.
 - Writing the record as bytes, which the record encoder does, and reading one, which the record decoder does.
 - Joining, which the record joiner does. The round trip above uses its rule.
 - Checking that an answer is valid for its question, and listing hidden answers for review. The reconciler does those.
-- A question declared twice in one scope. The contract does not say which declaration counts.
+- A section whose id is `plan`. The contract does not say whether its answers are kept apart from the plan's own.
+- Two sections with one id. The contract does not say which section's variables count.
 - An audience that is neither `onboarder`, `onboardee`, nor empty.
 - A Value of kind none in `previous`. The decoder never makes one.
 - Whether an empty but non-nil list or map in `previous` stays empty or becomes nil.
@@ -98,6 +99,7 @@ These hold for every case the contract tests use.
 6. **cheap.** A Value of kind none is treated as no answer. Raised by the model, where an empty Value has kind none and the encoder reports it.
 7. **cheap.** `""`, `false`, and `[]` are answers, and equal to a plan answer only when the kinds and content match. 0035 calls `""` unanswered for a condition, but the record keeps what the newcomer typed.
 8. **cheap.** Any three values give a record and no problems are reported. Mismatched plan ids and the like are the reconciler's concern.
+9. **hard.** When a scope names one question twice, the first declaration decides the audience. The alternatives are that the last one decides, or that a repeat is an error. A plan author who repeats a name with two audiences sees the first one obeyed. The rules in 0090 say nothing about repeats.
 
 ## Wrong implementations tried
 
@@ -129,3 +131,6 @@ Each row is a plausible wrong implementation and the cases that fail it.
 | Drops the outcomes or the unknown fields | `every-other-field-is-copied-from-the-previous-record` |
 | Shares the outcomes, a nested unknown field, or a list answer with an argument | `TestChangingTheResultDoesNotChangeTheArguments`, `TestChangingTheArgumentsDoesNotChangeTheResult` |
 | Removes answers from `joined` in place | `TestArgumentsAreNotChanged`, `TestChangingTheResultDoesNotChangeTheArguments` |
+| The last declaration of a repeated question decides, or a repeat stops the reading of later variables | `the-first-declaration-of-a-repeated-question-decides-the-audience` |
+| A nil list or map inside the unknown fields becomes empty | `TestAbsentPartsInsideTheUnknownFieldsStayAbsent` |
+| The plan scope read as the empty section id | `a-section-with-an-empty-id-is-a-section-scope` |

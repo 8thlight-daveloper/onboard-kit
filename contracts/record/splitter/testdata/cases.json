@@ -138,5 +138,15 @@
     "name": "a-plan-answer-and-a-section-answer-with-one-name-are-two-questions",
     "file": "a-plan-answer-and-a-section-answer-with-one-name-are-two-questions.case.json",
     "source": "Hand-written. Shared decision: a question id is scope and name. A plan answer and a section answer with one name are two questions."
+  },
+  {
+    "name": "the-first-declaration-of-a-repeated-question-decides-the-audience",
+    "file": "the-first-declaration-of-a-repeated-question-decides-the-audience.case.json",
+    "source": "Hand-written. Contract rule: when a scope names a question more than once, the first declaration decides the audience and later variables are still read. Plan scope and a section scope, repeats in both orders, and a variable after the repeats."
+  },
+  {
+    "name": "a-section-with-an-empty-id-is-a-section-scope",
+    "file": "a-section-with-an-empty-id-is-a-section-scope.case.json",
+    "source": "Hand-written. Contract rule: Any three values give a record, and a section id is any text. A section with an empty id is a section scope apart from the plan scope, and its answer is stored with the sections."
   }
 ]

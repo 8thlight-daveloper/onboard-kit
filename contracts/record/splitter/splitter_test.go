@@ -271,6 +271,23 @@ func TestAbsentStaysAbsent(t *testing.T) {
 	}
 }
 
+func unknownFieldsWithAbsentParts() map[string]any {
+	return map[string]any{
+		"absent-list": []any(nil),
+		"absent-map":  map[string]any(nil),
+		"nested":      map[string]any{"inner": []any(nil), "other": map[string]any(nil)},
+		"items":       []any{[]any(nil), map[string]any(nil), []any{[]any(nil)}},
+	}
+}
+
+func TestAbsentPartsInsideTheUnknownFieldsStayAbsent(t *testing.T) {
+	previous := model.Record{SchemaVersion: 1, UnknownFields: unknownFieldsWithAbsentParts()}
+	got := newSplitter().Split(model.Plan{}, model.Plan{}, previous)
+	if !reflect.DeepEqual(got.UnknownFields, unknownFieldsWithAbsentParts()) {
+		t.Errorf("a nil list or map inside the unknown fields must stay nil, got %#v", got.UnknownFields)
+	}
+}
+
 func TestAnEmptyValueIsNoAnswer(t *testing.T) {
 	plan := model.Plan{Variables: []model.Variable{{Name: "team", Audience: model.AudienceOnboardee}}}
 	joined := plan
