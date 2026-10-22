@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "plan-nested",
+  "variables": [
+    {
+      "name": "tools", "description": "Which tools?", "type": "choice", "options": ["editor", "shell"], "multiple": true,
+      "default": ["editor", "shell"],
+      "askIf": {"all": [
+        {"question": "plan.discipline", "answer": {"is": ["a", "b"]}},
+        {"question": "plan.team", "answer": {"isNot": ["c"]}},
+        {"question": "plan.os", "answer": {"isOneOf": ["mac", ["x", "y"], true]}},
+        {"question": "plan.os", "answer": {"isNotOneOf": ["linux", ["z"]]}},
+        {"question": "plan.tools", "answer": {"isSettled": true}},
+        {"section": "access", "enabled": true}
+      ]}
+    }
+  ],
+  "answers": {
+    "plan": {"tools": ["editor"], "discipline": ["a", "b"]},
+    "sections": {"access": {"keys": ["k1", "k2"]}}
+  },
+  "sections": [
+    {
+      "id": "access", "title": "Access", "enabled": true,
+      "includeIf": {"all": [
+        {"question": "plan.discipline", "answer": {"is": ["a"]}},
+        {"question": "plan.discipline", "answer": {"isNot": ["b"]}},
+        {"question": "plan.discipline", "answer": {"isOneOf": [["a"], ["b", "c"]]}},
+        {"question": "plan.discipline", "answer": {"isNotOneOf": [["d"], ["e", "f"]]}},
+        {"question": "plan.discipline", "answer": {"isSettled": false}}
+      ]},
+      "after": ["welcome", "intro"],
+      "escalation": ["it-contact", "manager"],
+      "variables": [
+        {
+          "name": "keys", "description": "Your keys", "type": "choice", "options": ["k1", "k2", "k3"], "multiple": true, "default": ["k1"],
+          "askIf": {"all": [{"question": "plan.discipline", "answer": {"is": ["a", "b"], "isNot": ["c", "d"], "isOneOf": [["e"], ["f"]], "isNotOneOf": [["g"], ["h"]], "isSettled": true}}]}
+        }
+      ],
+      "steps": [
+        {
+          "id": "request", "name": "Request", "run": ["acme", "request"], "env": {"A": "1", "B": "2"},
+          "escalation": ["it-contact", "security"],
+          "checks": [{"run": ["acme", "whoami"], "ask": "Did it print your name?"}, {"run": ["acme", "status"]}]
+        }
+      ],
+      "source": {"template": "access", "hash": "abc123"},
+      "unknownFields": {"x-nested": {"list": ["a", {"deep": ["b", "c"]}], "map": {"k": ["v"]}}}
+    }
+  ],
+  "unknownFields": {"x-top": [["a", "b"], {"k": ["v"]}]}
+}
