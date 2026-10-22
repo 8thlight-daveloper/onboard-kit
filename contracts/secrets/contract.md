@@ -44,7 +44,7 @@ The text contains a match for `-----BEGIN (?:[A-Z]+ )*PRIVATE KEY( BLOCK)?-----`
 
 The text contains a scheme, `://`, and then a user part, a colon, and a password, followed by `@`, with no space, `/`, `?`, or `#` between `://` and the `@`. In RE2 syntax: `[A-Za-z][A-Za-z0-9+.-]*://[^\s/?#@:]*:([^\s/?#@]+)@`, and the group is the password.
 
-- A match counts unless the password is exactly one `$name` variable reference, `\$[a-z][a-z0-9_]*`. Templates write `https://$user:$token@host`, and a variable reference is not a secret. A password that only starts with a variable, or a reference with an upper case letter, counts.
+- Every match in the text is tested, not only the first, so a template in one URL does not hide a password in another. A match counts unless the password is exactly one `$name` variable reference, `\$[a-z][a-z0-9_]*`. Templates write `https://$user:$token@host`, and a variable reference is not a secret. A password that only starts with a variable, or a reference with an upper case letter, counts.
 - The user part may be empty.
 - A user with no password does not count: `ssh://git@github.com/org/repo.git` and `https://deploy@host/repo.git`. An empty password does not count either.
 - A Git SSH address such as `git@github.com:org/repo.git` has no `://`, so it never counts.
@@ -52,7 +52,7 @@ The text contains a scheme, `://`, and then a user part, a colon, and a password
 
 ### Well-known token prefix
 
-The text contains a prefix from the table, followed by a run of body characters at least as long as the minimum. A longer run counts. The prefix is case sensitive, and it counts only when it is at the start of the text or the character before it is not an ASCII letter or digit. A body is the longest run of its characters that follows the prefix. A first character outside the set leaves a body of length 0, whatever follows it. A prefix after a letter or digit is not a token, but the text may still report `secret.random-string`: `0ghp_` followed by 36 upper case letters does.
+The text contains a prefix from the table, followed by a run of body characters at least as long as the minimum. A longer run counts. The prefix is case sensitive, and it counts only when it is at the start of the text or the character before it is not an ASCII letter or digit. A body is the longest run of its characters that follows the prefix. A first character outside the set leaves a body of length 0, whatever follows it. Only the listed characters belong to a body. A character that sorts after `_` in ASCII, such as a backtick, `{`, `|`, `}`, or `~`, and any non-ASCII character, ends it. A prefix after a letter or digit is not a token, but the text may still report `secret.random-string`: `0ghp_` followed by 36 upper case letters does.
 
 | Token | Prefix | Body characters | Minimum body |
 | -- | -- | -- | -- |
@@ -136,6 +136,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | Private key needs the body or the `END` line, accepts only one header, ignores case, or counts a public key | `private-keys` |
 | URL rule: a user with no password counts, an empty password counts, a port counts, the URL must start the text, only `http` and `https` count, the scheme has no digit or plus | `url-credentials` |
 | A `$name` password counts, or any password that starts with `$` does not | `variable-references` |
+| Only the first one or two URLs in a text are tested, so a template ahead of a real password hides it | `variable-references` |
 | Token boundary ignored, or too wide, or only white space | `token-boundaries` |
 | Token body minimum too small, or a body that must end the run | `token-boundaries`, `token-prefixes` |
 | A token family left out or cut short: GitHub kinds, AWS, Slack, Stripe, Google, GitLab, npm, `sk-`, web tokens | `token-prefixes` |
@@ -148,6 +149,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A range runs one too far: `@`, `[`, a backtick, `{`, `/`, or `:` accepted in a body or in a random string | `token-body-boundary-characters`, `random-string-characters` |
 | The AWS body takes letters only, or digits do not count toward its 16 | `aws-body-digits` |
 | A family takes the wrong extra characters: no `-` in a Slack body, no `_` in a `github_pat_` body, no `_` or `-` in a Google, GitLab, or `sk-` body, or an `_`, `-`, or `+` where the table gives none | `token-body-special-characters` |
+| A body accepts a character that sorts after `_` in ASCII, or a non-ASCII character, in a `github_pat_`, Google, GitLab, or `sk-` body | `token-body-characters-above-underscore` |
 | The first body character is not read, so a prefix, one character outside the family's set, and a full-length body counts | `token-first-body-character` |
 | A minimum body is one too large or one too small: GitHub 36, fine-grained 22, GitLab 20, npm 36, `sk-` 40, Slack 10, Stripe 16 | `token-minimum-lengths` |
 | Random string: the first or last character is not read, so a word with one bad edge character counts, or one good edge character is the only upper case letter, lower case letter, or digit and is missed | `random-string-characters` |
