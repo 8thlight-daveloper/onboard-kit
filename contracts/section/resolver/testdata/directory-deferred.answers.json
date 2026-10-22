@@ -1,11 +1,11 @@
 {
   "sections": {
     "directory-deferred": {
-      "a": {"deferred": true},
-      "b": {"deferred": true},
-      "c": {"deferred": true},
-      "d": {"deferred": true},
-      "e": {"deferred": true}
+      "value_a": {"deferred": true},
+      "value_b": {"deferred": true},
+      "value_c": {"deferred": true},
+      "value_d": {"deferred": true},
+      "value_e": {"deferred": true}
     }
   }
 }

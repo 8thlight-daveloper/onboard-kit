@@ -1,8 +1,8 @@
 {
   "id": "directory-defaults",
   "title": "Defaults",
-  "summary": "A default id fills an unanswered directory variable",
-  "body": "contact=[Sam Okafor, @sam] role=[Engineering manager (vacant)] team=[Design team] several=[Lee Park; Jo Chen, @jo] answered=[Lee Park]",
+  "summary": "A suggested id does not answer a directory question",
+  "body": "contact=[_unanswered_] role=[_unanswered_] team=[_unanswered_] several=[_unanswered_] answered=[Lee Park]",
   "variables": [
     {"name": "contact", "type": "contact", "default": "sam-okafor", "description": "A contact"},
     {"name": "role", "type": "role", "default": "engineering-manager", "description": "A role, resolved for the plan team"},

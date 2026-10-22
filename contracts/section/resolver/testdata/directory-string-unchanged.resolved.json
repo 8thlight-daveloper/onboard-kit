@@ -4,7 +4,7 @@
   "summary": "A string is not looked up",
   "body": "id=[sam-okafor] name=[Sam Okafor]",
   "variables": [
-    {"name": "id", "description": "A string that holds a contact id"},
+    {"name": "value_id", "description": "A string that holds a contact id"},
     {"name": "name", "type": "string", "description": "A string that holds a contact name"}
   ]
 }

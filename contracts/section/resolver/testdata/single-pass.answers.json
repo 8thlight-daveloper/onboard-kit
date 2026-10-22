@@ -1,10 +1,10 @@
 {
   "sections": {
     "single-pass": {
-      "a": "cost $$5 and $b",
-      "b": "B",
-      "c": "$$b",
-      "e": ["$b", "$$b"]
+      "value_a": "cost $$5 and $value_b",
+      "value_b": "B",
+      "value_c": "$$value_b",
+      "value_e": ["$value_b", "$$value_b"]
     }
   }
 }

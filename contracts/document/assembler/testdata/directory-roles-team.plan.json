@@ -106,7 +106,7 @@
   "sections": {
    "roles": {
     "manager": "engineering-manager",
-    "it": "it-contact",
+    "it_contact": "it-contact",
     "captain": "build-captain",
     "design": "design-lead",
     "both": [
@@ -123,7 +123,7 @@
    "title": "Roles",
    "summary": "Who holds what.",
    "owner": "$manager",
-   "body": "Manager: $manager. IT: $it. Captain: $captain. Design lead: $design. Both: $both. Squad: $squad.",
+   "body": "Manager: $manager. IT: $it_contact. Captain: $captain. Design lead: $design. Both: $both. Squad: $squad.",
    "variables": [
     {
      "name": "manager",
@@ -131,7 +131,7 @@
      "type": "role"
     },
     {
-     "name": "it",
+     "name": "it_contact",
      "description": "it",
      "type": "role"
     },

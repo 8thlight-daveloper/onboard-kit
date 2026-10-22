@@ -7,6 +7,7 @@ Generated 2026-10-15 from template set `example`. A person must review this befo
 | Gap | Who fills it | By when |
 | --- | --- | --- |
 | Which role grants work tracker access? | Sam Okafor, @sam | Before day one |
+| What is your account name at the organization? | Sam Okafor, @sam | Before day one |
 
 ## Access
 

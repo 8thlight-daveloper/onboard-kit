@@ -1,21 +1,21 @@
 {
   "id": "defaults",
   "title": "Defaults",
-  "summary": "When a default is used",
-  "body": "a=[$a] b=[$b] c=[$c] d=[$d] e=[$e] f=[$f] g=[$g] h=[$h] i=[$i] j=[$j]",
+  "summary": "Suggestions do not answer questions",
+  "body": "a=[$value_a] b=[$value_b] c=[$value_c] d=[$value_d] e=[$value_e] f=[$value_f] g=[$value_g] h=[$value_h] i=[$value_i] j=[$value_j]",
   "variables": [
-    {"name": "a", "description": "No entry", "default": "A-default"},
-    {"name": "b", "description": "Empty text", "default": "B-default"},
-    {"name": "c", "description": "Empty list", "default": "C-default"},
-    {"name": "d", "description": "List of empty items", "default": "D-default"},
-    {"name": "e", "description": "Settled answer", "default": "E-default"},
-    {"name": "f", "type": "boolean", "description": "Flag default", "default": false},
-    {"name": "g", "type": "command", "description": "Command default", "default": ["make", "test"]},
-    {"name": "h", "type": "boolean", "description": "Settled false", "default": true},
-    {"name": "i", "description": "Default with no text", "default": ""},
-    {"name": "j", "description": "Answer of no kind", "default": "J-default"}
+    {"name": "value_a", "description": "No entry", "default": "A-default"},
+    {"name": "value_b", "description": "Empty text", "default": "B-default"},
+    {"name": "value_c", "description": "Empty list", "default": "C-default"},
+    {"name": "value_d", "description": "List of empty items", "default": "D-default"},
+    {"name": "value_e", "description": "Settled answer", "default": "E-default"},
+    {"name": "value_f", "type": "boolean", "description": "Flag default", "default": false},
+    {"name": "value_g", "type": "command", "description": "Command default", "default": ["make", "test"]},
+    {"name": "value_h", "type": "boolean", "description": "Settled false", "default": true},
+    {"name": "value_i", "description": "Default with no text", "default": ""},
+    {"name": "value_j", "description": "Answer of no kind", "default": "J-default"}
   ],
   "steps": [
-    {"id": "run", "name": "Run", "run": ["go", "$g", "-v"]}
+    {"id": "run", "name": "Run", "run": ["go", "$value_g", "-v"]}
   ]
 }

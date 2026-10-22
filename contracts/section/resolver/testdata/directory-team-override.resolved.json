@@ -6,7 +6,7 @@
   "variables": [
     {"name": "manager", "type": "role", "description": "An empty team entry"},
     {"name": "mentor", "type": "role", "description": "A team entry of an unknown holder"},
-    {"name": "it", "type": "role", "description": "No team entry"},
+    {"name": "value_it", "type": "role", "description": "No team entry"},
     {"name": "design", "type": "role", "description": "No holder anywhere"},
     {"name": "champion", "type": "role", "description": "Only an unknown organization holder"}
   ]

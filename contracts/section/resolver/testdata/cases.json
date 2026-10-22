@@ -45,7 +45,7 @@
     "answers": "dollar-signs.answers.json",
     "resolved": "dollar-signs.resolved.json",
     "problems": [],
-    "source": "Hand-written. variables.md, Dollar signs: $$5 renders $5 and $$STAGING_API_TOKEN renders $STAGING_API_TOKEN. A name is [a-z][a-z0-9_]* and ends at the first other character. A $ followed by anything else is left to the validators. The rest follows from reading left to right."
+    "source": "Hand-written. variables.md, Dollar signs: $$5 renders $5 and $$STAGING_API_TOKEN renders $STAGING_API_TOKEN. ADR 0040: a name is [a-z][a-z0-9_]{2,} and ends at the first other character. A $ followed by anything else is left to the validators. The rest follows from reading left to right."
   },
   {
     "name": "undeclared",
@@ -63,10 +63,11 @@
     "problems": [
       {
         "code": "gap.unanswered",
-        "question": "access.dir"
+        "question": "access.dir",
+        "audience": "onboarder"
       }
     ],
-    "source": "Hand-written. 0030, Answers are scoped: filling reads one scope, a variable takes its own section's value, then that section's default. The plan's answers and another section's are not read."
+    "source": "Hand-written. 0045 and 0120: only stored answers from the section scope resolve content; plan and other-section answers never supply a fallback."
   },
   {
     "name": "defaults",
@@ -76,10 +77,46 @@
     "problems": [
       {
         "code": "gap.unanswered",
-        "question": "defaults.i"
+        "question": "defaults.value_a",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_b",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_c",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_d",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_f",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_g",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_i",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "defaults.value_j",
+        "audience": "onboarder"
       }
     ],
-    "source": "Hand-written. 0030: a variable takes its own section's value, then that section's default. 0035: unanswered is nothing, empty text, or an empty list, and a settled answer has at least one character or non-empty item. A flag is always settled."
+    "source": "Hand-written. 0035: empty text, empty lists, lists of empty items and no-kind answers are unanswered, but false is settled. 0045 and 0120: suggestions never supply answers, including boolean and command suggestions."
   },
   {
     "name": "deferred",
@@ -89,26 +126,31 @@
     "problems": [
       {
         "code": "gap.deferred",
-        "question": "deferred.a"
+        "question": "deferred.value_a",
+        "audience": "onboarder"
       },
       {
         "code": "gap.deferred",
-        "question": "deferred.b"
+        "question": "deferred.value_b",
+        "audience": "onboarder"
       },
       {
         "code": "gap.deferred",
-        "question": "deferred.c"
+        "question": "deferred.value_c",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "deferred.value_d",
+        "audience": "onboarder"
       },
       {
         "code": "gap.deferred",
-        "question": "deferred.d"
-      },
-      {
-        "code": "gap.deferred",
-        "question": "deferred.f"
+        "question": "deferred.value_f",
+        "audience": "onboarder"
       }
     ],
-    "source": "Hand-written. 0035: a deferred answer becomes a gap when the document is assembled, and the Text word deferred is a plain string. variables.md, Deferred answers: renders as a visible gap. Decided by the contract: a deferred answer is not replaced by a default, and a deferred default is a gap."
+    "source": "Hand-written. 0035: a stored deferral reports a deferred gap, while Text deferred is settled. 0045 and 0120: a default, including a deferred default, is not an answer. 0055: every gap identifies its audience."
   },
   {
     "name": "unanswered",
@@ -118,23 +160,28 @@
     "problems": [
       {
         "code": "gap.unanswered",
-        "question": "unanswered.a"
+        "question": "unanswered.value_a",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "unanswered.b"
+        "question": "unanswered.value_b",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "unanswered.c"
+        "question": "unanswered.value_c",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "unanswered.d"
+        "question": "unanswered.value_d",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "unanswered.e"
+        "question": "unanswered.value_e",
+        "audience": "onboarder"
       }
     ],
     "source": "Hand-written. 0025, properties: every variable is resolved or reported as a gap. 0035: an unanswered question has nothing stored, empty text, or an empty list. The zero Answers value."
@@ -146,15 +193,32 @@
     "resolved": "onboarding.resolved.json",
     "problems": [
       {
-        "code": "gap.deferred",
-        "question": "onboarding.laptop"
+        "code": "gap.unanswered",
+        "question": "onboarding.account_name",
+        "audience": "onboardee"
       },
       {
         "code": "gap.unanswered",
-        "question": "onboarding.team"
+        "question": "onboarding.badge",
+        "audience": "onboardee"
+      },
+      {
+        "code": "gap.deferred",
+        "question": "onboarding.laptop",
+        "audience": "onboardee"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "onboarding.team",
+        "audience": "onboarder"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "onboarding.login",
+        "audience": "onboardee"
       }
     ],
-    "source": "Hand-written. variables.md, Phase: the plan does not hold an onboarding answer, and the assembled document shows a blank, <name>. ACME example: account_name shows as <account_name>. Decided by the contract: a stored answer, a default, and a deferred answer still follow the general rules."
+    "source": "Hand-written. 0055 requires gaps for both audiences; omitted audience means onboarder. 0045 and 0120: newcomer suggestions are not answers. The contract preserves <name> for unanswered onboardee variables, with gap.unanswered."
   },
   {
     "name": "gap-report",
@@ -164,15 +228,18 @@
     "problems": [
       {
         "code": "gap.deferred",
-        "question": "gap-report.z_last"
+        "question": "gap-report.z_last",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "gap-report.a_first"
+        "question": "gap-report.a_first",
+        "audience": "onboarder"
       },
       {
         "code": "gap.unanswered",
-        "question": "gap-report.mid"
+        "question": "gap-report.mid",
+        "audience": "onboarder"
       }
     ],
     "source": "Hand-written. glossary, Gap: a value not known yet. Decided by the contract: a variable is reported once, when its marker is written, in the order of the section's variables."
@@ -182,8 +249,14 @@
     "section": "single-pass.section.json",
     "answers": "single-pass.answers.json",
     "resolved": "single-pass.resolved.json",
-    "problems": [],
-    "source": "Hand-written. variables.md: $$ renders $. Decided by the contract: filling is one pass over the section, so an answer or default that holds $b or $$b is written as held."
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "single-pass.value_d",
+        "audience": "onboarder"
+      }
+    ],
+    "source": "Hand-written. variables.md: $$ renders $. The contract requires one-pass filling of stored answers: inserted $value_b and $$value_b are not read again. 0045 and 0120: an unaccepted default holding a placeholder is not inserted."
   },
   {
     "name": "nothing-to-fill",
@@ -207,7 +280,7 @@
     "answers": "name-edges.answers.json",
     "resolved": "name-edges.resolved.json",
     "problems": [],
-    "source": "Hand-written. variables.md: a name is [a-z][a-z0-9_]* and ends at the first other character. Kills a name that stops before 0, 9, a, or z, one that takes characters just outside those ranges or upper case, one that is not read from the $ it follows, and one that fails at the end of the text."
+    "source": "Hand-written. ADR 0040 and variables.md: a name is [a-z][a-z0-9_]{2,} and ends at the first other character. Kills a name that stops before 0, 9, a, or z, one that takes characters just outside those ranges or upper case, one that is not read from the $ it follows, and one that fails at the end of the text."
   },
   {
     "name": "command-values",
@@ -238,7 +311,13 @@
     "section": "variable-examples.section.json",
     "answers": "variable-examples.answers.json",
     "resolved": "variable-examples.resolved.json",
-    "problems": [],
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "variable-examples.team",
+        "audience": "onboarder"
+      }
+    ],
     "source": "Hand-written. Contract rule: What is filled, the returned Section keeps every declared variable, and a variable's example is part of its declaration, so it is not resolved and is not an answer or a default. The role example is the Engineering manager illustration of the change brief. Kills an example dropped when the variables are copied, an example filled from the answers or the default, and an example read for $name."
   },
   {
@@ -257,14 +336,14 @@
   {"name": "directory-plain-team", "section": "directory-no-team.section.json", "answers": "directory-no-team.answers.json", "resolved": "directory-no-team.resolved.json", "directory": "directory.plan.json", "team": "plain", "problems": [], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Resolving a role: a team with no entry for the role leaves the role's own holders. Same section as directory-no-team."},
   {"name": "directory-unknown-team", "section": "directory-no-team.section.json", "answers": "directory-no-team.answers.json", "resolved": "directory-no-team.resolved.json", "directory": "directory.plan.json", "team": "no-such-team", "problems": [], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Ids: an id not in the directory counts as unanswered, so a team id with no team is no team. Same section as directory-no-team."},
   {"name": "directory-team-name", "section": "directory-team-name.section.json", "answers": "directory-team-name.answers.json", "resolved": "directory-team-name.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Rendering a directory value: a team variable renders the team's name from its own answer. Contract rule, Interface: the team parameter is what roles resolve with."},
-  {"name": "directory-run", "section": "directory-run.section.json", "answers": "directory-run.answers.json", "resolved": "directory-run.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.deferred", "question": "directory-run.late"}, {"code": "gap.unanswered", "question": "directory-run.nobody"}, {"code": "gap.unanswered", "question": "directory-run.stranger"}], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Rendering a directory value: inside a command run list a directory variable expands the same text as one item. Contract rule: A command in run. Markers as for any variable."},
-  {"name": "directory-unknown-ids", "section": "directory-unknown-ids.section.json", "answers": "directory-unknown-ids.answers.json", "resolved": "directory-unknown-ids.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.unanswered", "question": "directory-unknown-ids.c_unknown"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_both"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_all"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.r_unknown"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.t_unknown"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_case"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_name"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_wrongkind"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.r_wrongkind"}], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Ids: an answer naming an id not in the directory counts as unanswered. Contract rules: unanswered takes the default, an onboarding variable is a blank and not a gap."},
-  {"name": "directory-deferred", "section": "directory-deferred.section.json", "answers": "directory-deferred.answers.json", "resolved": "directory-deferred.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.deferred", "question": "directory-deferred.a"}, {"code": "gap.deferred", "question": "directory-deferred.b"}, {"code": "gap.deferred", "question": "directory-deferred.c"}, {"code": "gap.deferred", "question": "directory-deferred.d"}, {"code": "gap.deferred", "question": "directory-deferred.e"}], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Directory variables: deferred is allowed for every type. Contract rule: a deferred answer is a deferred value and a default does not replace it."},
-  {"name": "directory-defaults", "section": "directory-defaults.section.json", "answers": "directory-defaults.answers.json", "resolved": "directory-defaults.resolved.json", "directory": "directory.plan.json", "team": "design", "problems": [], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule: an unanswered variable takes a settled default. The default is an id, read as an answer is. Contract rule, Interface: roles resolve with the team parameter."},
-  {"name": "directory-empty", "section": "directory-empty.section.json", "answers": "directory-empty.answers.json", "resolved": "directory-empty.resolved.json", "team": "platform", "problems": [{"code": "gap.unanswered", "question": "directory-empty.contact"}, {"code": "gap.unanswered", "question": "directory-empty.role"}, {"code": "gap.unanswered", "question": "directory-empty.team"}], "source": "Hand-written. Contract rule, Ids: with no directory entries every id is unknown. The `one` variable is a string that holds a contact id, and a string is never looked up, so its text is written as held."},
+  {"name": "directory-run", "section": "directory-run.section.json", "answers": "directory-run.answers.json", "resolved": "directory-run.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.deferred", "question": "directory-run.late", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-run.nobody", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-run.stranger", "audience": "onboarder"}], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Rendering a directory value: inside a command run list a directory variable expands the same text as one item. Contract rule: A command in run. Markers as for any variable."},
+  {"name": "directory-unknown-ids", "section": "directory-unknown-ids.section.json", "answers": "directory-unknown-ids.answers.json", "resolved": "directory-unknown-ids.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.unanswered", "question": "directory-unknown-ids.c_unknown", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_default", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_both", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_all", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.r_unknown", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.t_unknown", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_blank", "audience": "onboardee"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.r_blank", "audience": "onboardee"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_case", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_name", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.c_wrongkind", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-unknown-ids.r_wrongkind", "audience": "onboarder"}], "source": "Hand-written. 0080: unknown directory ids are unanswered; known list entries preserve order. 0120 supersedes directory-default fallback: an unknown id never selects a suggested id. 0055 requires gaps for both audiences."},
+  {"name": "directory-deferred", "section": "directory-deferred.section.json", "answers": "directory-deferred.answers.json", "resolved": "directory-deferred.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [{"code": "gap.deferred", "question": "directory-deferred.value_a", "audience": "onboarder"}, {"code": "gap.deferred", "question": "directory-deferred.value_b", "audience": "onboarder"}, {"code": "gap.deferred", "question": "directory-deferred.value_c", "audience": "onboarder"}, {"code": "gap.deferred", "question": "directory-deferred.value_d", "audience": "onboarder"}, {"code": "gap.deferred", "question": "directory-deferred.value_e", "audience": "onboarder"}], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Directory variables: deferred is allowed for every type. Contract rule: a deferred answer is a deferred value and a default does not replace it."},
+  {"name": "directory-defaults", "section": "directory-defaults.section.json", "answers": "directory-defaults.answers.json", "resolved": "directory-defaults.resolved.json", "directory": "directory.plan.json", "team": "design", "problems": [{"code": "gap.unanswered", "question": "directory-defaults.contact", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-defaults.role", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-defaults.team", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-defaults.several", "audience": "onboarder"}], "source": "Hand-written. 0045 and 0120: no directory suggestion is an answer, for contact, role, team or multiple contacts. A stored answer is used instead of a suggested id. Directory data follows 0080."},
+  {"name": "directory-empty", "section": "directory-empty.section.json", "answers": "directory-empty.answers.json", "resolved": "directory-empty.resolved.json", "team": "platform", "problems": [{"code": "gap.unanswered", "question": "directory-empty.contact", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-empty.role", "audience": "onboarder"}, {"code": "gap.unanswered", "question": "directory-empty.team", "audience": "onboarder"}], "source": "Hand-written. Contract rule, Ids: with no directory entries every id is unknown. The `one` variable is a string that holds a contact id, and a string is never looked up, so its text is written as held."},
   {"name": "directory-string-unchanged", "section": "directory-string-unchanged.section.json", "answers": "directory-string-unchanged.answers.json", "resolved": "directory-string-unchanged.resolved.json", "directory": "directory.plan.json", "team": "platform", "problems": [], "source": "Hand-written. Directory fixture directory.plan.json is built from docs/decisions/0080-directory.md and the shape of contracts/plan/testdata/directory.plan.json. Contract rule, Directory variables: the type decides the lookup. A string holds text and is never looked up, even when the text is a contact id or a contact name."},
   {"name": "run-without-dollar", "section": "run-without-dollar.section.json", "answers": "run-without-dollar.answers.json", "resolved": "run-without-dollar.resolved.json", "problems": [], "source": "Hand-written. Contract rule: A command in run, only an item that is exactly $name is replaced, and What is filled, each item of run. An item with no dollar sign is text and comes back as held, an empty item included. Kills an exact name test that does not require the leading dollar sign, so that xtest takes the items of test, and one that reads the first character of an empty item."},
   {"name": "list-in-run", "section": "list-in-run.section.json", "answers": "list-in-run.answers.json", "resolved": "list-in-run.resolved.json", "problems": [], "source": "Hand-written. Contract rules: A command in run, an exact $name for a variable that is not a command gives one item and never splits, and What a variable becomes, a List is written with its items joined with one space. Kills a list that is spliced into run for a variable whose type is not command."},
   {"name": "condition-lists", "section": "condition-lists.section.json", "answers": "condition-lists.answers.json", "resolved": "condition-lists.resolved.json", "problems": [], "source": "Hand-written. Contract rule, Properties: a condition in includeIf or in a variable's askIf comes back as held and shares nothing with the input. conditions.md: is and isNot take a Value, isOneOf and isNotOneOf take a list of Values, and a Value may be a list."},
-  {"name": "types-and-audience", "section": "types-and-audience.section.json", "answers": "types-and-audience.answers.json", "resolved": "types-and-audience.resolved.json", "problems": [{"code": "gap.unanswered", "question": "types-and-audience.own"}], "source": "Hand-written. Contract rules: A command in run, where only a command variable splices, any other type gives one item joined with spaces, and an item is an exact name only when it starts with a dollar sign; What a variable becomes, where an onboarder variable with no value is an unanswered gap. variables.md: audience defaults to onboarder."}
+  {"name": "types-and-audience", "section": "types-and-audience.section.json", "answers": "types-and-audience.answers.json", "resolved": "types-and-audience.resolved.json", "problems": [{"code": "gap.unanswered", "question": "types-and-audience.own", "audience": "onboarder"}], "source": "Hand-written. Contract rules: A command in run, where only a command variable splices, any other type gives one item joined with spaces, and an item is an exact name only when it starts with a dollar sign; What a variable becomes, where an onboarder variable with no value is an unanswered gap. variables.md: audience defaults to onboarder."}
 ]

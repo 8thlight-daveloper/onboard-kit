@@ -4,9 +4,9 @@
   "summary": "A command variable and items that do not start with a dollar sign",
   "variables": [
     {"name": "test", "type": "command", "description": "Runs the tests"},
-    {"name": "b", "type": "command", "description": "A name of one letter"}
+    {"name": "value_b", "type": "command", "description": "Another command"}
   ],
   "steps": [
-    {"id": "plain", "name": "Plain", "run": ["xtest", "ab", "", "test", "b", "$test"], "checks": [{"run": ["xtest", "ab", "", "$b"]}]}
+    {"id": "plain", "name": "Plain", "run": ["xtest", "avalue_b", "", "test", "value_b", "$test"], "checks": [{"run": ["xtest", "avalue_b", "", "$value_b"]}]}
   ]
 }

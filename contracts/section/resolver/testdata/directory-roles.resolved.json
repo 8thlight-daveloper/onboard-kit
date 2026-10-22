@@ -6,7 +6,7 @@
   "variables": [
     {"name": "manager", "type": "role", "description": "Team override beats the organization holders"},
     {"name": "design", "type": "role", "description": "No organization holder, a team override"},
-    {"name": "it", "type": "role", "description": "No override for this team"},
+    {"name": "value_it", "type": "role", "description": "No override for this team"},
     {"name": "mentor", "type": "role", "description": "Holders in a set order"},
     {"name": "champion", "type": "role", "description": "Only an unknown holder"},
     {"name": "several", "type": "role", "multiple": true, "description": "Several roles"},

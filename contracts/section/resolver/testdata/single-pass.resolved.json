@@ -2,15 +2,15 @@
   "id": "single-pass",
   "title": "Single pass",
   "summary": "A filled value is not read again",
-  "body": "cost $$5 and $b|$$b|B|$b",
+  "body": "cost $$5 and $value_b|$$value_b|B|_unanswered_",
   "variables": [
-    {"name": "a", "description": "Holds a dollar sign and a name"},
-    {"name": "b", "description": "Plain"},
-    {"name": "c", "description": "Holds an escape"},
-    {"name": "d", "description": "A default that holds a name", "default": "$b"},
-    {"name": "e", "type": "command", "description": "A list that holds names"}
+    {"name": "value_a", "description": "Holds a dollar sign and a name"},
+    {"name": "value_b", "description": "Plain"},
+    {"name": "value_c", "description": "Holds an escape"},
+    {"name": "value_d", "description": "A default that holds a name", "default": "$value_b"},
+    {"name": "value_e", "type": "command", "description": "A list that holds names"}
   ],
   "steps": [
-    {"id": "run", "name": "Run", "run": ["echo", "cost $$5 and $b", "$b", "$$b"]}
+    {"id": "run", "name": "Run", "run": ["echo", "cost $$5 and $value_b", "$value_b", "$$value_b"]}
   ]
 }

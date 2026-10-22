@@ -99,4 +99,4 @@ Environment variables are the common case. A shell variable such as `$HOME` or `
 
 The onboarder writes the question and its options, and the onboardee gives the answer. Three questions decide the audience: who knows the answer, whether it varies per person, and whether the onboardee should be able to change it. If not, it is an onboarder variable. Every onboardee question must change what some section says or shows.
 
-Scope and audience are separate: a plan variable or a section variable can have either audience. The assembled document shows an onboardee variable with no value as a blank, `<name>`.
+Scope and audience are separate: a plan variable or a section variable can have either audience. The assembled document shows an onboardee variable with no value as a blank, `<name>`. Every unanswered or deferred variable the text uses is also reported as a gap with its audience, including onboardee variables. A default remains a suggestion and never removes that gap until a person accepts it. See [0055](../../decisions/0055-variable-audience.md) and [0120](../../decisions/0120-defaults-require-acceptance.md).

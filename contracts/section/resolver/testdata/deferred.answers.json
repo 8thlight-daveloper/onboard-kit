@@ -1,11 +1,11 @@
 {
   "sections": {
     "deferred": {
-      "a": {"deferred": true},
-      "b": {"deferred": true},
-      "c": {"deferred": true},
-      "e": "deferred",
-      "f": {"deferred": true}
+      "value_a": {"deferred": true},
+      "value_b": {"deferred": true},
+      "value_c": {"deferred": true},
+      "value_e": "deferred",
+      "value_f": {"deferred": true}
     }
   }
 }

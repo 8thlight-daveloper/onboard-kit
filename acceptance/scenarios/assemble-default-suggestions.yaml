@@ -1,0 +1,51 @@
+name: assemble-default-suggestions
+description: Assembly leaves suggestions unanswered until a person explicitly supplies the values.
+source: docs/decisions/0120-defaults-require-acceptance.md
+steps:
+  - run: [onboard-kit, assemble, --plan, plan.obk.yaml]
+    files:
+      plan.obk.yaml: |
+        schemaVersion: 1
+        provenance:
+          templateSet: example
+          generatedOn: "2026-10-15"
+        directory:
+          contacts:
+            - id: help-desk
+              name: Help desk
+              slack: "#help"
+        sections:
+          - id: setup
+            title: Setup
+            summary: Prepare your workspace.
+            body: "Repository: $repo_dir. Contact: $owner_contact."
+            variables:
+              - name: repo_dir
+                description: Repository directory
+                default: workspace
+              - name: owner_contact
+                description: Workspace contact
+                type: contact
+                default: help-desk
+    expect:
+      exit: 0
+      stdout: {contains: "Repository: _unanswered_. Contact: _unanswered_."}
+      stderr: {contains: setup.owner_contact}
+      unchanged: [plan.obk.yaml]
+  - run: [onboard-kit, stdio, --plan, plan.obk.yaml]
+    talk:
+      - send: {command: submit, question: setup.repo_dir, value: workspace}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: submit, question: setup.owner_contact, value: help-desk}
+        expect: {ok: true, applied: true, problems: []}
+      - send: {command: save, path: accepted.obk.yaml}
+        expect: {ok: true}
+    expect:
+      exit: 0
+      unchanged: [plan.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, accepted.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "Repository: workspace. Contact: Help desk, #help."}
+      stderr: {equals: ""}
+      unchanged: [accepted.obk.yaml]

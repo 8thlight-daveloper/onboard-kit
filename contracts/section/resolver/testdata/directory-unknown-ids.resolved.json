@@ -2,7 +2,7 @@
   "id": "directory-unknown-ids",
   "title": "Unknown ids",
   "summary": "An id the directory does not hold is unanswered",
-  "body": "c_unknown=[_unanswered_] c_default=[Lee Park] c_both=[_unanswered_] c_list=[Sam Okafor, @sam; Lee Park] c_all=[_unanswered_] r_unknown=[_unanswered_] r_list=[IT help desk, #it-help] t_unknown=[_unanswered_] c_blank=[<c_blank>] r_blank=[<r_blank>] c_case=[_unanswered_] c_name=[_unanswered_] c_wrongkind=[_unanswered_] r_wrongkind=[_unanswered_]",
+  "body": "c_unknown=[_unanswered_] c_default=[_unanswered_] c_both=[_unanswered_] c_list=[Sam Okafor, @sam; Lee Park] c_all=[_unanswered_] r_unknown=[_unanswered_] r_list=[IT help desk, #it-help] t_unknown=[_unanswered_] c_blank=[<c_blank>] r_blank=[<r_blank>] c_case=[_unanswered_] c_name=[_unanswered_] c_wrongkind=[_unanswered_] r_wrongkind=[_unanswered_]",
   "variables": [
     {"name": "c_unknown", "type": "contact", "description": "An id not in the directory"},
     {"name": "c_default", "type": "contact", "default": "lee-park", "description": "Unknown id, known default"},

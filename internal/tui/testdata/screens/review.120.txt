@@ -13,6 +13,8 @@
                                                  │ | --- | --- | --- |
                                                  │ | Which role grants work tracker access? | Sam Okafor, @sam |
                                                  │ Before day one |
+                                                 │ | What is your account name at the organization? | Sam Okafor, @sam
+                                                 │ | Before day one |
                                                  │
                                                  │ ## Access
                                                  │
@@ -24,7 +26,5 @@
                                                  │ git@git.acme.example:platform/widget-service.git` exits with code
                                                  │ 0.
                                                  │ - [ ] **CI dashboard.** Owner: Alex Rivera, @alex. Sign in as
-                                                 │ `<account_name>`. Check: Can you open the CI dashboard?
-                                                 │ - [ ] **Work tracker.** Owner: _deferred_. Check: Can you open the
 
   enter open  tab items/document  pgup/pgdn scroll  q quit  ? help

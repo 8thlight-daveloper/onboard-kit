@@ -1,7 +1,7 @@
 {
   "id": "directory-defaults",
   "title": "Defaults",
-  "summary": "A default id fills an unanswered directory variable",
+  "summary": "A suggested id does not answer a directory question",
   "body": "contact=[$contact] role=[$role] team=[$team] several=[$several] answered=[$answered]",
   "variables": [
     {"name": "contact", "type": "contact", "default": "sam-okafor", "description": "A contact"},

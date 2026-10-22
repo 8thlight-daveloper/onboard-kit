@@ -9,9 +9,15 @@
         "question": "access.tracker_grantor",
         "section": "access",
         "severity": "warning"
+      },
+      {
+        "code": "gap.unanswered",
+        "question": "access.account_name",
+        "section": "access",
+        "severity": "warning"
       }
     ],
-    "source": "The ACME example, docs/reference/examples/acme. The plan is the JSON form of acme.obk.yaml that the plan decoder and encoder contracts check against it. The document is acme.md in this folder, written by hand from the rules in this contract, because the document in the docs folder cannot be produced by one set of rules. Decisions to know, first item, lists the differences."
+    "source": "The ACME example, docs/reference/examples/acme. The plan is the JSON form of acme.obk.yaml that the plan decoder and encoder contracts check against it. ADR 0055 and the resolver contract require gaps for used unanswered onboardee variables as well as deferred onboarder variables. The document is written by hand from the assembler contract."
   },
   {
     "name": "empty-plan",
@@ -169,8 +175,15 @@
     "name": "onboarding-blank",
     "plan": "onboarding-blank.plan.json",
     "document": "onboarding-blank.md",
-    "problems": [],
-    "source": "Hand-written. Contract rule: Markdown. Docs: variables, phase onboarding shows a blank. The ACME document wraps the blank in backticks."
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "question": "setup.account_name",
+        "section": "setup",
+        "severity": "warning"
+      }
+    ],
+    "source": "Hand-written. Contract rules: Markdown and Gap table. ADR 0055 and the resolver contract report a used unanswered onboardee variable as a gap while preserving its visible blank."
   },
   {
     "name": "steps-all-fields",
@@ -502,15 +515,28 @@
         "severity": "warning",
         "question": "dup.later",
         "section": "dup"
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "dup.nick",
+        "section": "dup"
       }
     ],
-    "source": "Hand-written. Contract rules: Gap table, one row for each question, and Markdown, every occurrence of the blank of an onboarding variable is written between backticks. A variable declared twice in a section is one question and one blank."
+    "source": "Hand-written. Contract rules: Gap table, one row for each question, and Markdown, every occurrence of the blank of an onboardee variable is written between backticks. ADR 0055 reports the onboardee gap too. Defensive rendering of unchecked duplicate declarations is not endorsement of their validity under ADR 0110."
   },
   {
     "name": "blank-plain-variable",
     "plan": "blank-plain-variable.plan.json",
     "document": "blank-plain-variable.md",
-    "problems": [],
-    "source": "Hand-written. Contract rule: Markdown, the blank is written for each onboarding variable the section declares and other text between `<` and `>` is not touched. A variable that is not for the onboardee has no blank, so `<tag>` stays as written."
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "tags.nick",
+        "section": "tags"
+      }
+    ],
+    "source": "Hand-written. Contract rule: Markdown, the blank is written for each onboardee variable the section declares and other text between `<` and `>` is not touched. ADR 0055 reports the used unanswered nick as a gap; the answered onboarder tag has no blank."
   }
 ]

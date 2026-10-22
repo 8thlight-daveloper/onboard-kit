@@ -2,14 +2,14 @@
   "id": "deferred",
   "title": "Deferred",
   "summary": "Answers put off until later",
-  "body": "a=[_deferred_] b=[_deferred_] d=[_deferred_] e=[deferred]",
+  "body": "a=[_deferred_] b=[_deferred_] d=[_unanswered_] e=[deferred]",
   "variables": [
-    {"name": "a", "description": "Deferred, with a default", "default": "A-default"},
-    {"name": "b", "description": "Deferred, no default"},
-    {"name": "c", "type": "command", "description": "A deferred command"},
-    {"name": "d", "description": "Unanswered, default is deferred", "default": {"deferred": true}},
-    {"name": "e", "description": "The word as text"},
-    {"name": "f", "description": "Deferred in an environment value and a question"}
+    {"name": "value_a", "description": "Deferred, with a default", "default": "A-default"},
+    {"name": "value_b", "description": "Deferred, no default"},
+    {"name": "value_c", "type": "command", "description": "A deferred command"},
+    {"name": "value_d", "description": "Unanswered, default is deferred", "default": {"deferred": true}},
+    {"name": "value_e", "description": "The word as text"},
+    {"name": "value_f", "description": "Deferred in an environment value and a question"}
   ],
   "steps": [
     {

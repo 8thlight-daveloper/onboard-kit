@@ -6,6 +6,8 @@ The section resolver fills the variables in a section's text from the answers an
 
 The document assembler calls the resolver once for each active section, after the section selector. Nothing resolved is stored. The plan keeps `$name` in its sections.
 
+The name boundary follows [0040](../../../docs/decisions/0040-blank-text-and-variable-name-length.md). Defaults are suggestions under [0045](../../../docs/decisions/0045-defaults-are-suggestions.md) and [0120](../../../docs/decisions/0120-defaults-require-acceptance.md), which supersedes the directory-default fallback in 0080. Gap audience follows [0055](../../../docs/decisions/0055-variable-audience.md). This increment preserves the existing marker text and warning severity; context-dependent caller severity remains separate work.
+
 ## Interface
 
 `Resolve(section, answers, directory, team) -> (section, problems)`.
@@ -51,11 +53,11 @@ A string is read from left to right, once.
 | `$` and a name that the section does not declare | Left as written, with no problem |
 | Any other `$`, such as `$5`, `$Repo_url`, `${name}`, `$ `, and a `$` at the end | Left as written, with no problem |
 
-A name is a lowercase letter followed by any number of lowercase letters, digits, and underscores, as the schema defines it. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A name can hold `0` and `9`, so `$item0` and `$item9` are names, and a declared `item` does not fill them. An upper case letter ends a name, so `$itemA` is the variable `item` and then `A`. So do `/`, `:`, `` ` ``, `{`, `@`, and `[`. A name that ends at the end of the text is a name. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared. A variable named `enabled` is an ordinary variable, because the switch of a section is the field `enabled` of the section and not a variable.
+A name is a lowercase letter followed by at least two lowercase letters, digits, or underscores: `[a-z][a-z0-9_]{2,}`. A one or two character run such as `$x` or `$ab` stays literal, with no problem, in prose and in `run`. A name ends at the first other character, and it takes every character it can, so `$repo_url.git` is the variable `repo_url` and then `.git`, and `$repo_urlx` is the name `repo_urlx`. A name can hold `0` and `9`, so `$item0` and `$item9` are names, and a declared `item` does not fill them. An upper case letter ends a name, so `$itemA` is the variable `item` and then `A`. So do `/`, `:`, `` ` ``, `{`, `@`, and `[`. A name that ends at the end of the text is a name. A declared name is one in the `name` of a variable in `section.variables`. A name that only the answers hold, or only the plan holds, is not declared. A variable named `enabled` is an ordinary variable, because the switch of a section is the field `enabled` of the section and not a variable.
 
 `$$` is read first at each place, so `$$name` is `$name` as text and is not filled, `$$$name` is `$` and then the variable, and `$$$` is `$` and then a lone `$`, which reads as `$$`.
 
-Filling is one pass. What a variable becomes is written as it is and is not read again. An answer or a default that holds `$other` or `$$` comes out as held.
+Filling is one pass. What a variable becomes is written as it is and is not read again. A stored answer that holds `$other` or `$$` comes out as held.
 
 A `$` or `$$` at the very end of a field is read by the same rules, so `cost $` stays `cost $` and `price $$` becomes `price $`. A field that is only `$` or `$$` is read the same way.
 
@@ -67,13 +69,14 @@ For a declared variable the resolver takes the answer stored for it in the secti
 
 1. A settled answer is used. For a variable of type `contact`, `role`, or `team`, an answer is used only when it names something in the directory, see Directory variables.
 2. A deferred answer is a deferred value. A default does not replace it.
-3. An unanswered answer takes the section's default for the variable, when the default is settled and, for a directory variable, names something in the directory. A default that is deferred gives a deferred value. A default that is not settled, or none, gives no value.
-4. No value in a variable with `audience: onboardee` becomes `<name>`, with the variable's name. It is not a gap.
-5. No value in any other variable is an unanswered gap. A variable with `audience: onboarder` is such a variable, as is one with no `audience`.
+3. An unanswered answer gives no value. A default is never read for resolution, regardless of its kind, the variable type, or the audience. A deferred default does not make an unanswered variable deferred.
+4. Explicitly accepting a suggestion stores an answer. The resolver uses that stored answer, even if it equals the default; later changes to the default cannot change the resolved content.
+5. No value in a variable with `audience: onboardee` becomes `<name>`, with the variable's name, and reports an unanswered gap.
+6. No value in any other variable becomes `_unanswered_` and reports an unanswered gap. A variable with `audience: onboarder` is such a variable, as is one with no `audience`.
 
 Settled, deferred, and unanswered are as [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md) defines them. Text is settled when it has at least one character. A Flag is always settled. A List is settled when it has at least one item that is not empty. The Text `deferred` is a plain string, and it is settled. A value of no kind is unanswered. Nothing is checked against the variable's type, options, or pattern.
 
-An unanswered answer is nothing stored, empty text, an empty list, or a list of only empty items. For a directory variable it is also an answer that names nothing in the directory. The resolver does not evaluate `askIf`. A variable whose question is not asked is read like any other, so one that the text uses and that has no answer and no default is a gap.
+An unanswered answer is nothing stored, empty text, an empty list, or a list of only empty items. For a directory variable it is also an answer that names nothing in the directory. The resolver does not evaluate `askIf`. A variable whose question is not asked is read like any other, so one that the text uses and that has no answer is a gap, whether or not it has a default.
 
 A variable that has a value is written as follows.
 
@@ -89,7 +92,7 @@ A list is written as held, so an empty item takes its place in the join. The Def
 | -- | -- | -- |
 | Deferred | `_deferred_` | `gap.deferred` |
 | Unanswered | `_unanswered_` | `gap.unanswered` |
-| Onboarding, no value | `<name>` | None |
+| Onboardee, no value | `<name>` | `gap.unanswered` |
 
 A variable with no `type` is a `string`.
 
@@ -97,7 +100,7 @@ A variable with no `type` is a `string`.
 
 A variable of type `contact`, `role`, or `team` holds ids. A `contact` or `role` answer is one id as Text, or a List of ids when the variable is `multiple`. A `team` answer is one id as Text. Ids are matched exactly, so `Sam-Okafor` and a contact's name are not the id `sam-okafor`. Contact, role, and team ids are separate, so a role id given to a `contact` variable names nothing. The type decides the lookup. A `string` variable that holds a contact id or a contact name is written as held.
 
-**Ids.** An id that is not in the directory counts as unanswered, as if it were not stored. In a List the unknown ids are skipped and the known ones keep their order. A List with no known id is unanswered. An unanswered directory variable follows the steps above: it takes a default that names something in the directory, else it is a gap, else `<name>` for an `onboardee` variable. A default is read as an answer is, so a default id that is not in the directory gives no value.
+**Ids.** An id that is not in the directory counts as unanswered, as if it were not stored. In a List the unknown ids are skipped and the known ones keep their order. A List with no known id is unanswered. An unanswered directory variable follows the steps above: it reports an unanswered gap, written `<name>` for an `onboardee` variable and `_unanswered_` otherwise. A known default id never replaces an unknown answer id or a missing answer. Role-holder lookup still uses the selected role's team override or organization-wide holders; that is directory lookup, not default acceptance.
 
 **The team.** The team of the plan is the Team in `directory.teams` whose id is `team`. When `team` is empty or names no Team, the plan has no team. The `team` variable of a section is not the plan's team. It is looked up by its own answer.
 
@@ -121,18 +124,18 @@ The `slackId` is never written. A vacant role is text and not a gap. It adds no 
 
 A `run` item that is exactly `$name`, for a declared variable of type `command` that has a list as its value, is replaced by the items of the list, in order, each as its own item of `run`. This holds in a step's `run` and in a check's `run`. The items are written as held and are not read again.
 
-In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$a && $b` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string`, a `choice`, or a `boolean`, gives one item and never splits on spaces, even when its value is a List, which is then joined with one space. An item is exactly `$name` only when it is a `$` and a name and nothing else, so `#name`, `!name`, and ` name` are prose and come back as written. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
+In every other place a command is prose. A `run` item such as `--cmd=$test_command` or `$build && $test_command` takes the items joined with one space. An exact `$name` for a variable that is not a `command`, such as a `string`, a `choice`, or a `boolean`, gives one item and never splits on spaces, even when its value is a List, which is then joined with one space. An item is exactly `$name` only when it is a `$` and a name and nothing else, so `#name`, `!name`, and ` name` are prose and come back as written. An exact `$name` for a `command` whose value is Text, not a list, gives one item, the text as held, and never splits on spaces. An exact `$name` whose value is deferred, unanswered, or an onboarding blank gives one item, the marker. An exact `$name` for a `contact`, `role`, or `team` variable gives one item, the text under Directory variables, with its `; ` and its spaces and never split. That holds for a List, a vacant role, and a team.
 
 ## Problems
 
-A problem is reported for a declared variable when its marker is written, `_deferred_` or `_unanswered_`, at least once in a filled field. A variable that the text does not use is never reported, and neither is one that is used only in a field that is left alone. A variable is reported once, however often it is used. Problems come in the order of the section's `variables`. A variable declared twice is not covered.
+A problem is reported for a declared variable when its marker is written, `_deferred_`, `_unanswered_`, or `<name>`, at least once in a filled field. A variable that the text does not use is never reported, and neither is one that is used only in a field that is left alone. A variable is reported once, however often it is used. Problems come in the order of the section's `variables`. A variable declared twice is not covered.
 
 | Code | When |
 | -- | -- |
 | `gap.deferred` | A variable the text uses has a deferred value |
-| `gap.unanswered` | A variable the text uses has no value and is not an onboarding variable, including a directory variable whose answer names nothing in the directory |
+| `gap.unanswered` | A variable the text uses has no value, of either audience, including a directory variable whose answer names nothing in the directory |
 
-Each Problem has the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. An id that names nothing in the directory gives `gap.unanswered`, as an unanswered variable does. A vacant role gives no Problem. A gap never blocks, because the plan validator blocks a required question that is unanswered. The `message` is for people and its wording is not specified. `detail` is not specified.
+Each Problem has the severity `warning`, `question` set to `<section id>.<name>`, and `section` set to the section's id. Its `detail.audience` is the declared audience, or `onboarder` when the audience is absent or empty. This warning severity is a compatibility default, not a context-dependent caller policy. An id that names nothing in the directory gives `gap.unanswered`, as an unanswered variable does. A vacant role gives no Problem. The resolver does not decide whether a gap blocks the caller's workflow. Required-question validation and context-dependent caller severity are outside this increment. The `message` is for people and its wording is not specified. Other `detail` entries are not specified.
 
 ## Properties
 
@@ -171,7 +174,7 @@ None, and it reads section content, the section's own answers, the directory, an
 
 These are choices the docs did not settle. Each says what the resolver does, what raised it, and how far a change would reach. `hard` means a change touches what template authors write, what a plan holds, or what a person sees. `cheap` means a change touches one fixture and nothing outside the component. The directory choices come first.
 
-D1. **An id that names nothing counts as unanswered in every way.** It takes a default, else it is `_unanswered_` with `gap.unanswered`, else `<name>` for an `onboardee` variable. A default that names nothing gives no value. Raised by: "An answer that names an id that is not in the directory counts as unanswered". `hard`.
+D1. **An id that names nothing counts as unanswered without fallback.** It reports `gap.unanswered` for either audience, with `_unanswered_` or `<name>` according to audience. Defaults never supply replacement ids. Source: 0120 supersedes the fallback in 0080. `hard`.
 D2. **A vacant role is text and not a gap.** It is written `Role name (vacant)` and adds no Problem, because the assembler reports it as `directory.role-vacant`. A vacant role keeps its place in a List of roles. Raised by: "No holder is a gap, shown like any other gap and never as an empty name or a guess". `hard`.
 D3. **A team entry replaces the role's holders and never merges.** An entry that is empty, or holds only unknown ids, makes the role vacant for that team. Raised by: "the newcomer's team, if the team override names holders for it, otherwise the role's own holders". `hard`.
 D4. **A List keeps its known ids in order and skips unknown ones.** A List with no known id is unanswered. The same contact twice is written twice. Raised by: "A `multiple: true` contact or role question holds an ordered list". `hard`.
@@ -184,18 +187,18 @@ D10. **Escalation stays as held.** Its items name variables and are not text, so
 
 The choices below were made before the directory.
 
-1. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered variable with no default is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
-2. **Unanswered and no default is a visible marker and a gap.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
-3. **A deferred answer wins over a default.** The person chose to answer later, so the default does not fill it. Raised by: "A variable takes its own section's value, then that section's default" and "A deferred answer becomes a gap". `hard`.
+1. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered onboarder variable is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
+2. **Unanswered is a visible marker and a gap, even with a default.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
+3. **Only stored answers resolve content.** A missing or deferred answer never authorizes using a suggestion. Source: 0045 and 0120. `hard`.
 4. **A list is joined with one space.** A List of a `command` is written in one string, in a sentence, a field, or a `run` item that is not exactly `$name`. Raised by: "joins with spaces in prose" for `command` in variables.md. `cheap`.
-5. **An onboarding variable is a blank only when it has no value.** A settled answer, a default, and a deferred answer in the plan still follow the general rules, and only the unanswered case becomes `<name>` and is not a gap. Raised by: "The plan does not hold the value, because each person has their own." `hard`.
+5. **An onboardee variable is a blank only when it has no value.** Stored settled and deferred answers follow the general rules. The unanswered case becomes `<name>` and reports `gap.unanswered` with audience `onboardee`. Source: 0055; marker wording is preserved for compatibility. `hard`.
 6. **Which fields are filled.** Section and step text, `run`, and `env` values are filled. Ids, `timing`, `after`, `escalation`, `includeIf`, variable declarations, `source`, and unknown fields are not. A step's `name`, `open`, and `directory` are filled even though the docs name only `owner`, `run`, `env`, `notes`, and `body` as places for a variable. Raised by: "A variable ... is written `$name` where text uses it" and "`owner` ... May contain `$name`". `hard`.
 7. **An answer is not read again.** An answer that holds `$` comes out as typed. Raised by: "Variables fill at assembly." `hard`.
 8. **Only an exact `$name` item splices.** A command inside a longer `run` item is joined with spaces, and only a `command` variable splices. Raised by: "A variable of type `command` is written `[$name]` and expands to its arguments". `cheap`.
 9. **A name the section does not declare is left as written, with no problem.** The validators report it. Raised by: "A `$name` the section does not declare is a lint error, even when a plan variable has that name." `cheap`.
 10. **Problems are the model's Problem.** The gaps come back as `gap.deferred` and `gap.unanswered` warnings, only for variables the text uses, once each, in the order of the section's variables. No new type is added to the model. Raised by: "perhaps a list of variables it could not fill, so a caller can build a gap table". `cheap`.
 11. **The resolver reads only the section's own answers and does not evaluate `askIf`.** Raised by: "Filling reads one scope". `cheap`.
-12. **A default that is not settled is no default.** An empty text default and an empty list default do not fill, and a deferred default gives a deferred value. Raised by: "`default` ... The value used when none is given." `cheap`.
+12. **A default of any kind is only a suggestion.** Empty, settled, and deferred defaults do not change answer state. A stored answer equal to a suggestion remains independent of later default changes. Source: 0045 and 0120. `hard`.
 13. **A `parent` is an identifier, so it is not filled.** A `$` in it stays. Raised by 0070, which names the resolver as having nothing to do for sub-sections, and by the rule that identifiers are left as held. Case: `sub-section`. `cheap`.
 
 ## Wrong implementations tried
@@ -204,6 +207,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| A stored answer changes when a suggestion changes, a deferred suggestion becomes an answer, or a suggestion replaces an unknown directory id | `TestOnlyStoredAnswersResolveRegardlessOfSuggestions`, from 0035, 0045, 0055, and 0120, across every variable type and both audiences |
+| A gap omits its audience, or an omitted audience is not normalized to onboarder | The fixture problem assertions and `TestOnlyStoredAnswersResolveRegardlessOfSuggestions`, from 0055 |
+| A three-character name is skipped, a short run is filled from undeclared answers, or a longer name is truncated to a declared prefix | `TestShortRunsAreLiteralAndThreeCharacterNamesResolve`, from 0040 and Reading the text, in prose and command arguments |
 | A field not filled: title, summary, owner, verification, body, a step's name, notes, owner, open, directory, run, an env value, a check's run or ask | `every-field`, and `list-in-prose`, `command-in-run`, `deferred` |
 | A field filled that is left alone: escalation, a step's escalation, a check's env, an env key, a variable's description or default, an unknown field, `includeIf`, `source` dropped | `left-alone`, `gap-report`, `single-pass` |
 | Reads the plan's answers as a fallback, takes any or the first section's scope | `own-scope`, `unanswered` |
@@ -215,15 +221,15 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A flag written in capitals or as empty text, text trimmed | `value-kinds`, `defaults` |
 | A list joined with a comma, `and`, or `then` | `list-in-prose`, `command-in-run` |
 | A command not spliced, spliced from a string variable, spliced inside a longer item, spliced for a `string`, first item dropped, or not spliced in a check | `command-in-run`, `single-pass`, `defaults` |
-| A default ignored, preferred over an answer, or preferred over a deferred answer | `defaults`, `deferred`, `onboarding` |
-| Empty text, an empty list, or a list of empty items treated as settled, a Flag `false` treated as unanswered, or a `false` default | `defaults`, `value-kinds` |
-| An empty default used, or a deferred default ignored | `defaults`, `deferred` |
+| A default silently used for a missing, invalid-directory, or deferred answer | `defaults`, `deferred`, `onboarding`, `directory-defaults`, `directory-unknown-ids` |
+| Empty text, an empty list, or a list of empty items treated as settled, a Flag `false` treated as unanswered, or an unaccepted `false` default used | `defaults`, `value-kinds` |
+| An empty or deferred default used | `defaults`, `deferred` |
 | Another wording for a marker, the same marker for deferred and unanswered, or `$name` left for an unanswered one | `deferred`, `gap-report`, `onboarding`, `defaults` |
 | The Text `deferred` treated as a deferred answer | `deferred` |
 | A gap not reported, reported as an error, with no section, with a bare question, or with the wrong code | `deferred`, `defaults`, `gap-report`, `onboarding` |
 | A variable the text does not use reported | `gap-report`, `left-alone`, `nothing-to-fill` |
 | Problems in order of use, sorted by name, or one for each use | `gap-report`, `deferred` |
-| An onboarding variable reported as a gap, its answer or default ignored, a deferred one written as a blank, or another blank wording | `onboarding` |
+| An onboardee gap omitted, its audience missing, its stored answer ignored, or a deferred value written as an unanswered blank | `onboarding`, the gap-audience assertions |
 | An `env` map made when there was none | `command-in-run`, `defaults`, `gap-report` |
 | The answers changed, or an input list or map changed | The inputs-unchanged test |
 | The result sharing a list, map, or pointer with the input | The shares-nothing test |
@@ -250,10 +256,10 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | A vacant role reported as a gap | `directory-roles`, `directory-team-override` |
 | Holders sorted, or sorted in place in the directory | `directory-roles`, `directory-fields`, the inputs-unchanged test |
 | An unknown id written as the id, an unknown id in a List voiding the list, or only the first id used | `directory-unknown-ids`, `directory-run`, `directory-roles` |
-| An unknown id ignoring the default, or a default ignored for a directory variable | `directory-unknown-ids`, `directory-defaults` |
+| An unknown directory id replaced by a default, or a directory suggestion silently accepted | `directory-unknown-ids`, `directory-defaults` |
 | A deferred answer replaced by the default | `directory-deferred` |
 | A contact id matched by name or without case, a role id read as a contact, a contact id read as a role | `directory-unknown-ids` |
-| A team variable written from the plan team or as its id | `directory-team-name`, `directory-defaults` |
+| A team variable written from the plan team or as its id | `directory-team-name` |
 | A directory List spliced into several `run` items, or one item split on spaces | `directory-run`, `directory-fields` |
 | A `string` variable looked up in the directory | `directory-string-unchanged`, `directory-empty` |
 | A contact's name or handle read again, or its `$$` halved | `directory-contact-forms` |

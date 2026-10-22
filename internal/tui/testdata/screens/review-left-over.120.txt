@@ -11,20 +11,20 @@
     It appears as the owner of the Access        │
     section.                                     │ | Gap | Who fills it | By when |
     required: Where do people request source     │ | --- | --- | --- |
-    control access?                              │ | Where do people request source control access? | Sam Okafor, @sam
-    required: What is the clone URL of the main  │ | Before day one |
-    repository?                                  │ | What is the clone URL of the main repository? | Sam Okafor, @sam
-    required: Which role grants CI dashboard     │ | Before day one |
-    access?                                      │ | Which role grants source control access? | Sam Okafor, @sam |
+    control access?                              │ | Which role owns onboarding here? It appears as the owner of the
+    required: What is the clone URL of the main  │ Access section. | _unanswered_ | Before day one |
+    repository?                                  │ | Where do people request source control access? | _unanswered_ |
+    required: Which role grants CI dashboard     │ Before day one |
+    access?                                      │ | What is the clone URL of the main repository? | _unanswered_ |
     required: Which role grants work tracker     │ Before day one |
-    access?                                      │ | Which role grants CI dashboard access? | Sam Okafor, @sam |
-    required: What is the clone URL of the main  │ Before day one |
-    repository?                                  │ | Which role grants work tracker access? | Sam Okafor, @sam |
-    required: Which command installs the         │ Before day one |
-    dependencies?                                │ | What is the clone URL of the main repository? | newcomer | Week
-    required: Which command runs the test suite? │ one |
-    required: Who can anyone ask for help with   │ | Which command installs the dependencies? | newcomer | Week one |
-    anything?                                    │ | Which command runs the test suite? | newcomer | Week one |
-                                                 │ | Who can anyone ask for help with anything? | | Anytime |
+    access?                                      │ | Which role grants source control access? | _unanswered_ | Before
+    required: What is the clone URL of the main  │ day one |
+    repository?                                  │ | Which role grants CI dashboard access? | _unanswered_ | Before
+    required: Which command installs the         │ day one |
+    dependencies?                                │ | Which role grants work tracker access? | _unanswered_ | Before
+    required: Which command runs the test suite? │ day one |
+    required: Who can anyone ask for help with   │ | What is your account name at the organization? | _unanswered_ |
+    anything?                                    │ Before day one |
+                                                 │ | What is the clone URL of the main repository? | newcomer | Week
 
   enter open  tab items/document  pgup/pgdn scroll  h left over  q quit  ? help

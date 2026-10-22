@@ -1,8 +1,8 @@
 {
   "id": "variable-examples",
   "title": "Role of Staff engineer",
-  "summary": "Where Platform works",
-  "body": "Your role is Staff engineer on Platform.",
+  "summary": "Where _unanswered_ works",
+  "body": "Your role is Staff engineer on _unanswered_.",
   "variables": [
     {"name": "role", "description": "Your role", "example": "Engineering manager"},
     {"name": "team", "description": "Your team", "example": "Payments, as in $role $$", "default": "Platform"},

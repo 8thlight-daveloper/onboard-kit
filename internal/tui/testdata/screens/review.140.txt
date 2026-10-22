@@ -12,6 +12,8 @@
                                                          │ | Gap | Who fills it | By when |
                                                          │ | --- | --- | --- |
                                                          │ | Which role grants work tracker access? | Sam Okafor, @sam | Before day one |
+                                                         │ | What is your account name at the organization? | Sam Okafor, @sam | Before
+                                                         │ day one |
                                                          │
                                                          │ ## Access
                                                          │
@@ -33,8 +35,6 @@
                                                          │ Owner: Sam Okafor, @sam. When: before day one.
                                                          │
                                                          │ ## Clone the project and run the tests
-                                                         │
-                                                         │ Get a working copy of the project and a passing test run on your machine.
                                                          │
 
   enter open  tab items/document  pgup/pgdn scroll  q quit  ? help

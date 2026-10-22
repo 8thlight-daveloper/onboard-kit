@@ -2,7 +2,7 @@
   "id": "onboarding",
   "title": "Onboarding",
   "summary": "Questions each newcomer answers",
-  "body": "account=[<account_name>] badge=[default-badge] seat=[A4] laptop=[_deferred_] team=[_unanswered_]",
+  "body": "account=[<account_name>] badge=[<badge>] seat=[A4] laptop=[_deferred_] team=[_unanswered_]",
   "variables": [
     {"name": "account_name", "audience": "onboardee", "description": "No answer, no default"},
     {"name": "badge", "audience": "onboardee", "description": "A default", "default": "default-badge"},

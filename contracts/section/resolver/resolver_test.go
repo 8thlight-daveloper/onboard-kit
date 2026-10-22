@@ -16,6 +16,7 @@ import (
 type fixtureProblem struct {
 	Code     string `json:"code"`
 	Question string `json:"question"`
+	Audience string `json:"audience"`
 }
 
 type fixtureCase struct {
@@ -128,6 +129,9 @@ func TestReportsTheVariablesItCouldNotFill(t *testing.T) {
 				}
 				if got.Section != section.ID {
 					t.Errorf("problem %d: got section %q, want %q", i, got.Section, section.ID)
+				}
+				if got.Detail["audience"] != want.Audience {
+					t.Errorf("problem %d: got audience %q, want %q", i, got.Detail["audience"], want.Audience)
 				}
 			}
 		})

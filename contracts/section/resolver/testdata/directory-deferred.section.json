@@ -2,12 +2,12 @@
   "id": "directory-deferred",
   "title": "Deferred",
   "summary": "A deferred directory answer",
-  "body": "a=[$a] b=[$b] c=[$c] d=[$d] e=[$e]",
+  "body": "a=[$value_a] b=[$value_b] c=[$value_c] d=[$value_d] e=[$value_e]",
   "variables": [
-    {"name": "a", "type": "contact", "description": "A contact"},
-    {"name": "b", "type": "role", "description": "A role"},
-    {"name": "c", "type": "team", "description": "A team"},
-    {"name": "d", "type": "contact", "default": "lee-park", "description": "A deferred answer beats the default"},
-    {"name": "e", "type": "contact", "multiple": true, "description": "Several contacts"}
+    {"name": "value_a", "type": "contact", "description": "A contact"},
+    {"name": "value_b", "type": "role", "description": "A role"},
+    {"name": "value_c", "type": "team", "description": "A team"},
+    {"name": "value_d", "type": "contact", "default": "lee-park", "description": "A deferred answer beats the default"},
+    {"name": "value_e", "type": "contact", "multiple": true, "description": "Several contacts"}
   ]
 }

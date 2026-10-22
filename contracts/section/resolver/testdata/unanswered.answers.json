@@ -1,5 +1,5 @@
 {
   "sections": {
-    "aaa-other": {"a": "other-a", "b": "other-b", "c": ["other-c"], "d": ["other-d"], "e": ["other-e"]}
+    "aaa-other": {"value_a": "other-a", "value_b": "other-b", "value_c": ["other-c"], "value_d": ["other-d"], "value_e": ["other-e"]}
   }
 }
