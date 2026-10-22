@@ -4,13 +4,13 @@ Status: draft by an agent. Not reviewed by a person. Component: `plan/validator`
 
 The plan validator checks whether the answers in a plan are acceptable. `Validate` checks every answer stored in a plan, for example after a hand edit. `CheckValue` checks one proposed value for one question, so the editor can refuse a bad answer before it applies it. Both are pure functions. They read no file, keep no state between calls, and change no argument. See [0080](../../../docs/decisions/0080-directory.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and the [variables reference](../../../docs/reference/section-template-schema/variables.md).
 
-This contract covers the answer checks, the integrity of the plan's directory, and two plan-wide id checks (duplicate section ids, more than one team variable). The checks between sections (references, `after`, cycles, timing, conditions) and the call to the section validator are other work, and they report other codes. A caller of `Validate` gets all of them in one list, and this contract judges only the problems whose code starts with `answer.`, `secret.`, or `directory.`, and the two codes `plan.duplicate-section-id` and `plan.duplicate-team-variable`.
+This contract covers the answer checks, directory integrity, duplicate section ids, duplicate variable names, duplicate step ids, and more than one team variable. See [0110](../../../docs/decisions/0110-reject-ambiguous-plans.md) for the ambiguity rule. The checks between sections (references, `after`, cycles, timing, conditions) and the call to the section validator are other work, and they report other codes. A caller of `Validate` gets all of them in one list, and this contract judges only the problems whose code starts with `answer.`, `secret.`, or `directory.`, and the codes `plan.duplicate-section-id`, `plan.duplicate-team-variable`, `plan.duplicate-variable-name`, and `plan.duplicate-step-id`.
 
 ## Interface
 
 `Validate(plan) -> list of Problem` and `CheckValue(plan, question, value) -> list of Problem`.
 
-- `plan` is a Plan, as stored. The validator reads `plan.Directory`, `plan.Variables`, `plan.Answers`, and `plan.Sections` (each section's `id`, `enabled`, `includeIf`, `timing`, `after`, and `variables`). It reads no other field.
+- `plan` is a Plan, as stored. The validator reads `plan.Directory`, `plan.Variables`, `plan.Answers`, and `plan.Sections` (each section's `id`, `enabled`, `includeIf`, `timing`, `after`, `variables`, and step `id` values). It reads no other field.
 - `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. It is split at the first dot. Any text is accepted, and an id that names nothing gives a problem. A name may be empty, so `main.` names a variable with an empty name. An id with no dot names nothing, even when its text is the scope of a variable with an empty name. The scope `plan` always means the plan's own variables, even when a section has the id `plan`, and such a question has no `section`.
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed and is treated as unanswered.
 - `CheckValue` reads the directory only to look up the ids a value names. It never reports a problem about the directory itself or about the plan as a whole.
@@ -28,6 +28,11 @@ This contract covers the answer checks, the integrity of the plan's directory, a
 2. A stored answer for a question that is declared and not active gets only the secrets check. It was given for a question that may be asked again, and the plan file holds it as it is, so type, options, and pattern are not judged. The secrets check is, because the plan file holds the text.
 3. A stored answer that no variable declares gets the problem `answer.unknown-question` with severity `warning`, and then the secrets check. A name that no variable of its scope declares, and a section id the plan does not hold, both count. This is a hand edit, and it never blocks assembly.
 
+A stored answer whose name has duplicate declarations in its scope gets only
+the secrets check, regardless of activity. The structural error below identifies
+the ambiguous definition. Do not select a declaration for kind, options,
+pattern, or directory checks.
+
 **Plan-wide and directory checks in `Validate`.** These do not depend on the answers or on which questions are active, and none of their problems has a `question`.
 
 1. Two or more sections with the same `id` give one `plan.duplicate-section-id` for that id, however many sections share it. What the answer checks do for the questions of such sections is not specified.
@@ -41,15 +46,31 @@ This contract covers the answer checks, the integrity of the plan's directory, a
 
 Rules 4, 6, 7, and 8 give one problem for each entry, holder, or team contact that has the defect, and an entry listed twice gives the problem twice. Two teams that name the same wrong contact give two problems. The format of an id (the lowercase slug) is not checked.
 
+Two or more variable declarations with the same exact name in one scope give
+one `plan.duplicate-variable-name` for that scope and name. Check the plan's
+variables and each section's variables, including hidden questions and disabled,
+excluded, or child sections. Matching metadata is still a duplicate. Three or
+more declarations still give one problem. Different valid scopes may share a
+name. The detail holds `scope` (`plan` or the section id) and `name`; `section`
+is empty for plan scope and otherwise holds the section id.
+
+Two or more steps with the same nonempty exact id in one section give one
+`plan.duplicate-step-id` for that section and id, whatever the section's
+activity. Matching step contents are still duplicates. The detail holds `step`,
+and `section` holds the section id. Step ids may repeat across sections. Absent
+or empty step ids do not give this duplicate problem. Repeated ordinary data,
+such as command arguments and options, does not give either duplicate problem.
+
 A variable's `default` is not an answer, and the validator never reads it. A required question with no settled or deferred answer is not a problem here. It is a blocker, and the finder's `Blockers` reports it ([0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md)).
 
 **What `CheckValue` checks.** One value for one question, as if the plan stored it. The answers already stored in the plan are not checked, and they take part only in deciding which questions are active.
 
 1. When no variable declares the question, the result is one problem, `answer.unknown-question`, with severity `error`. The id is read as written, so an id with no dot, and an empty id, are unknown.
-2. When a variable declares it and it is not active, the result is one problem, `answer.inactive-question`, with severity `error`. The editor asks the finder, and this puts the same answer in the validator for any other caller.
-3. Otherwise the result holds the answer checks for the value, and then the secrets check.
+2. When two or more variables declare it in its scope, the result is only `answer.ambiguous-question`, with severity `error`, the supplied question id and its section, and no detail. This check precedes activity, answer checks, and secrets checks. It never repeats the proposed value.
+3. When one variable declares it and it is not active, the result is one problem, `answer.inactive-question`, with severity `error`. The editor asks the finder, and this puts the same answer in the validator for any other caller.
+4. Otherwise the result holds the answer checks for the value, and then the secrets check.
 
-For a given active question and a given value, `CheckValue` gives the same problems that `Validate` gives for a plan that stores that value for that question, except that a `directory.unknown-id` problem is an `error` in `CheckValue` and a `warning` in `Validate`.
+For a given active, unambiguous question and a given value, `CheckValue` gives the same problems that `Validate` gives for a plan that stores that value for that question, except that a `directory.unknown-id` problem is an `error` in `CheckValue` and a `warning` in `Validate`.
 
 **Answer checks.** They run on one value for one active question. The type of the variable is `string` when it has none.
 
@@ -81,6 +102,9 @@ For a given active question and a given value, `CheckValue` gives the same probl
 | `directory.contact-unreachable` | `warning` | A contact has no email, slack, or slackId | `contact` |
 | `plan.duplicate-section-id` | `error` | Two or more sections share an id | none. The id is in `section` |
 | `plan.duplicate-team-variable` | `error` | Two or more plan variables have type `team` | `variables`, their names in declaration order, joined with a comma |
+| `plan.duplicate-variable-name` | `error` | Two or more variable declarations share a name in one scope | `scope` and `name` |
+| `plan.duplicate-step-id` | `error` | Two or more steps share a nonempty id in one section | `step` |
+| `answer.ambiguous-question` | `error`, only in `CheckValue` | More than one declaration names the question in its scope | none |
 | `answer.unknown-question` | `warning` in `Validate`, `error` in `CheckValue` | No variable declares the question | none |
 | `answer.inactive-question` | `error`, only in `CheckValue` | The question is declared and not active | none |
 | `secret.token-prefix`, `secret.url-credential`, `secret.private-key`, `secret.random-string` | `error` | The secrets check found a secret | `item` for a list item, as the secrets contract says |
@@ -88,7 +112,7 @@ For a given active question and a given value, `CheckValue` gives the same probl
 Every problem has a non-empty `message` for a person. The wording is not specified.
 
 - `question` is the question id. For a stored answer it is `<scope>.<name>`. For `CheckValue` it is the id as given. It is empty for the plan-wide and directory problems.
-- `section` is the id of the plan section that holds the question, and it is empty for a plan variable and for a section the plan does not hold. For `plan.duplicate-section-id` it is the duplicated id. The directory problems and `plan.duplicate-team-variable` have none.
+- `section` is the id of the plan section that holds the question, and it is empty for a plan variable and for a section the plan does not hold. For `plan.duplicate-section-id` it is the duplicated id. Duplicate variable and step problems use their section's id, or empty for a plan variable. The directory problems and `plan.duplicate-team-variable` have none.
 - A `directory.unknown-id` problem never repeats the id the answer named, in its message or its detail, because the text may be a secret.
 - **The two severities of `directory.unknown-id`.** In `Validate` it is a `warning`: the stored answer counts as unanswered and the plan stays usable. In `CheckValue` it is an `error`: the tool never creates an answer that names an id the directory lacks, so the value is refused. The difference is on purpose, as it is for `answer.unknown-question`.
 - A warning never stops an answer. An error does, as the [domain model](../../../docs/reference/domain-model.md) says.
@@ -104,10 +128,23 @@ Every problem has a non-empty `message` for a person. The wording is not specifi
 | `directory.team-role-unknown` | `team`, `role` |
 | `plan.duplicate-section-id` | `section` |
 | `plan.duplicate-team-variable` | none, there is one |
+| `plan.duplicate-variable-name` | `scope`, `name` |
+| `plan.duplicate-step-id` | `section`, `step` |
 
 Two answers never share an id. For one question the order is: the answer checks, in the order of the table, then the secrets problems in item order. For `answer.unknown-question` the problem comes before the secrets problems. The order does not depend on the order of `plan.Sections`, on the order of the directory's lists or of any holders list, or on the order the answers are held in.
 
 ## Properties
+
+**Duplicate fixture sources.** `duplicate-identities` is hand-written from
+0110's domain-identity and no-winner rules and the problem table above.
+`TestDuplicateDeclarationsHaveNoWinner` applies the same rule to matching and
+conflicting metadata, both declaration orders, and inactive or child scopes;
+its secret expectation comes from the secrets contract.
+`TestDuplicateVariableNamesSortWithinScopes` uses the Order table as its
+independent oracle. `TestStepIdentityNamespaces` follows 0110's distinction
+between scoped identities and ordinary repeated data, and the nonempty
+step-id rule above. These fixtures do not infer expected results from the
+finder or the validator.
 
 These hold for every plan the contract tests use.
 
@@ -115,7 +152,7 @@ These hold for every plan the contract tests use.
 - **No memory.** The same call gives the same result on a shared validator, whatever calls came before, forward or in reverse order, however often it is repeated, and when calls run at the same time.
 - **Same plan, same result.** Rotating or reversing `plan.Sections` does not change a result. Reversing the directory's three lists and every holders list does not change one either.
 - **New lists.** Changing a result, including a problem's `detail`, changes neither the plan nor a later result.
-- **Agreement.** For every stored answer of an active question, `CheckValue` with that value gives the problems `Validate` gives for that question, apart from the severity of `directory.unknown-id`. For every stored answer of another question, `Validate` gives at most secrets problems and `answer.unknown-question`.
+- **Agreement.** For every stored answer of an active, unambiguous question, `CheckValue` with that value gives the problems `Validate` gives for that question, apart from the severity of `directory.unknown-id`. Ambiguous questions are excluded from this equality: `Validate` checks their stored values only for secrets, while `CheckValue` refuses them without checking a proposed value. For every other stored answer, `Validate` gives at most secrets problems and `answer.unknown-question`.
 - **Empty plan.** A plan with nothing in it gives no problems. `CheckValue` on it gives `answer.unknown-question`.
 
 ## Side effects and plan access
@@ -128,7 +165,7 @@ None. It reads the plan's directory, variables, answers, and the content of the 
 - A required question with no answer. It is a blocker.
 - Whether a variable's `default` fits the type, options, and pattern. The section validator reports it.
 - A pattern that does not compile, a `type` that is none of the known types, and options listed for a `choice` that has none.
-- Duplicate variable names in one scope, and the answer checks for the questions of a section whose id is shared.
+- The answer checks for the questions of a section whose id is shared.
 - The format of a directory id, an empty id, the same holder listed twice in one list, and whether a slack handle or a slack id is well formed.
 - Whether a team variable is answered, and a template that gives a `team` variable `multiple`. A template check reports those.
 - Whitespace in an email other than the space character.
@@ -239,3 +276,7 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | `CheckValue` also reports the directory problems | `directory-check-value`, the agreement test |
 | Unknown holders of one role or team keep their input order instead of sorting by holder id | `directory-holder-order`, the directory order test |
 | A particular literal pattern is skipped, or a particular literal hint is omitted | `literal-pattern` |
+| Duplicate variables are accepted when their metadata matches, only checked in active scopes, or reported once per extra declaration | `TestDuplicateDeclarationsHaveNoWinner` |
+| Duplicate variable problems keep declaration order or sort by name before scope | `TestDuplicateVariableNamesSortWithinScopes`, `duplicate-identities` |
+| A first or last declaration supplies answer checks, or a submitted secret is scanned before ambiguity is refused | `TestDuplicateDeclarationsHaveNoWinner` |
+| Step ids are globally unique, empty ids count as duplicates, ordinary repeated strings are rejected, or one error is reported per extra step | `TestStepIdentityNamespaces` |

@@ -1,0 +1,86 @@
+name: assemble-duplicate-mapping-keys
+description: Identical repeated YAML keys are errors at every supported nesting level.
+source: docs/decisions/0110-reject-ambiguous-plans.md
+steps:
+  - run: [onboard-kit, assemble, --plan, root.obk.yaml, --out, root.md]
+    files:
+      root.obk.yaml: |
+        schemaVersion: 1
+        schemaVersion: 1
+        sections: []
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: format.duplicate-key}
+      files:
+        root.md: {absent: true}
+      unchanged: [root.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, section.obk.yaml, --out, section.md]
+    files:
+      section.obk.yaml: |
+        schemaVersion: 1
+        sections:
+          - id: setup
+            title: First
+            title: First
+            summary: A section.
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: format.duplicate-key}
+      files:
+        section.md: {absent: true}
+      unchanged: [section.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, variable.obk.yaml, --out, variable.md]
+    files:
+      variable.obk.yaml: |
+        schemaVersion: 1
+        variables:
+          - name: label
+            default: first
+            default: first
+        sections: []
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: format.duplicate-key}
+      files:
+        variable.md: {absent: true}
+      unchanged: [variable.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, step-env.obk.yaml, --out, step-env.md]
+    files:
+      step-env.obk.yaml: |
+        schemaVersion: 1
+        sections:
+          - id: setup
+            title: Setup
+            summary: A section.
+            steps:
+              - id: install
+                name: Install
+                env:
+                  MODE: local
+                  MODE: local
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: format.duplicate-key}
+      files:
+        step-env.md: {absent: true}
+      unchanged: [step-env.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, unknown.obk.yaml, --out, unknown.md]
+    files:
+      unknown.obk.yaml: |
+        schemaVersion: 1
+        x-extra:
+          nested:
+            key: first
+            key: first
+        sections: []
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: format.duplicate-key}
+      files:
+        unknown.md: {absent: true}
+      unchanged: [unknown.obk.yaml]

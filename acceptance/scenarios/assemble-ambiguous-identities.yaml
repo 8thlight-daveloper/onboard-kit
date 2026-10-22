@@ -1,0 +1,96 @@
+name: assemble-ambiguous-identities
+description: Assembly rejects duplicate identities before writing or replacing a document.
+source: docs/decisions/0110-reject-ambiguous-plans.md
+steps:
+  - run: [onboard-kit, assemble, --plan, variables.obk.yaml, --out, variables.md]
+    files:
+      variables.obk.yaml: |
+        schemaVersion: 1
+        variables:
+          - name: label
+          - name: label
+        sections:
+          - id: setup
+            title: Setup
+            summary: A valid section.
+      variables.md: {from: acceptance/testdata/preserved-document.md}
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: plan.duplicate-variable-name}
+      files:
+        variables.md: {same-as: acceptance/testdata/preserved-document.md}
+      unchanged: [variables.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, steps.obk.yaml, --out, steps.md]
+    files:
+      steps.obk.yaml: |
+        schemaVersion: 1
+        sections:
+          - id: setup
+            title: Setup
+            summary: A valid section.
+            steps:
+              - id: install
+                name: First
+              - id: install
+                name: Second
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: plan.duplicate-step-id}
+      files:
+        steps.md: {absent: true}
+      unchanged: [steps.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, sections.obk.yaml, --out, sections.md]
+    files:
+      sections.obk.yaml: |
+        schemaVersion: 1
+        sections:
+          - id: setup
+            title: First
+            summary: A valid section.
+          - id: setup
+            title: Second
+            summary: Another section.
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: plan.duplicate-section-id}
+      files:
+        sections.md: {absent: true}
+      unchanged: [sections.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, directory.obk.yaml, --out, directory.md]
+    files:
+      directory.obk.yaml: |
+        schemaVersion: 1
+        directory:
+          contacts:
+            - id: help
+              name: First
+            - id: help
+              name: Second
+        sections: []
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: directory.duplicate-id}
+      files:
+        directory.md: {absent: true}
+      unchanged: [directory.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, team.obk.yaml, --out, team.md]
+    files:
+      team.obk.yaml: |
+        schemaVersion: 1
+        variables:
+          - name: first_team
+            type: team
+          - name: second_team
+            type: team
+        sections: []
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {contains: plan.duplicate-team-variable}
+      files:
+        team.md: {absent: true}
+      unchanged: [team.obk.yaml]

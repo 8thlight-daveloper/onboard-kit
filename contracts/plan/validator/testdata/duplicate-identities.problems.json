@@ -1,0 +1,9 @@
+{
+  "problems": [
+    {"code": "plan.duplicate-step-id", "severity": "error", "section": "main", "detail": {"step": "repeat"}},
+    {"code": "plan.duplicate-variable-name", "severity": "error", "section": "main", "detail": {"scope": "main", "name": "owner"}},
+    {"code": "plan.duplicate-variable-name", "severity": "error", "detail": {"scope": "plan", "name": "owner"}},
+    {"code": "secret.token-prefix", "severity": "error", "question": "plan.owner"}
+  ],
+  "secretFragments": ["FAKEFAKE"]
+}

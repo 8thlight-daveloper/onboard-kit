@@ -1,5 +1,15 @@
 [
   {
+    "name": "duplicate-identities",
+    "plan": "duplicate-identities.plan.json",
+    "expected": "duplicate-identities.problems.json",
+    "checks": [
+      {"name": "ambiguous plan answer is refused before secrets", "question": "plan.owner", "value": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE", "secretFragments": ["FAKEFAKE"], "problems": [{"code": "answer.ambiguous-question", "severity": "error", "question": "plan.owner"}]},
+      {"name": "ambiguous section answer has a section", "question": "main.owner", "value": true, "problems": [{"code": "answer.ambiguous-question", "severity": "error", "question": "main.owner", "section": "main"}]}
+    ],
+    "source": "docs/decisions/0110-reject-ambiguous-plans.md, Domain identities and Verification: reject duplicates without choosing a winner; contracts/plan/validator/contract.md, Plan-wide checks, CheckValue, and Order. Hand-written structural, suppression, ordering, and secret-retention oracle."
+  },
+  {
     "name": "acme",
     "plan": "acme.plan.json",
     "expected": "acme.problems.json",

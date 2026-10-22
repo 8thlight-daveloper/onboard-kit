@@ -54,6 +54,12 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 
 `just acceptance` runs the scenarios under `acceptance/scenarios/` against the built binary.
 
+Variable names must be unique within their scope, and nonempty step IDs within
+their section. Validation reports ambiguous declarations instead of choosing a
+winner. Assembly refuses duplicate identities without replacing an existing
+document. The same name in different scopes and repeated command arguments
+remain valid. See [the ambiguity rule](docs/decisions/0110-reject-ambiguous-plans.md).
+
 ## What never goes in this repo
 
 This repo is generic on purpose. Keep out:

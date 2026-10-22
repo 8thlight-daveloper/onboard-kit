@@ -49,6 +49,7 @@ type fixtureCase struct {
 const markerCharacter = "¤"
 
 var answerCodes = []string{
+	"answer.ambiguous-question",
 	"answer.wrong-kind",
 	"answer.not-an-option",
 	"answer.pattern-mismatch",
@@ -66,9 +67,11 @@ var answerCodes = []string{
 	"directory.contact-unreachable",
 	"plan.duplicate-section-id",
 	"plan.duplicate-team-variable",
+	"plan.duplicate-variable-name",
+	"plan.duplicate-step-id",
 }
 
-var judgedPlanCodes = []string{"plan.duplicate-section-id", "plan.duplicate-team-variable"}
+var judgedPlanCodes = []string{"plan.duplicate-section-id", "plan.duplicate-team-variable", "plan.duplicate-variable-name", "plan.duplicate-step-id"}
 
 func readFixture(t *testing.T, name string) []byte {
 	t.Helper()
@@ -305,7 +308,7 @@ func TestCheckValueAgreesWithValidateAboutEachStoredAnswer(t *testing.T) {
 		for question, value := range storedAnswers(plan) {
 			checked := judgedProblems(validator.CheckValue(plan, question, value))
 			inReport := problemsOfQuestion(reported, question)
-			if len(checked) == 1 && (checked[0].Code == "answer.inactive-question" || checked[0].Code == "answer.unknown-question") {
+			if len(checked) == 1 && (checked[0].Code == "answer.inactive-question" || checked[0].Code == "answer.unknown-question" || checked[0].Code == "answer.ambiguous-question") {
 				for _, problem := range inReport {
 					if !strings.HasPrefix(problem.Code, "secret.") && problem.Code != "answer.unknown-question" {
 						t.Errorf("%s, %s: not an active question, but Validate reports %s", c.Name, question, problem.Code)

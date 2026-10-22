@@ -18,6 +18,11 @@ Steps are plain YAML with a vocabulary borrowed from CI files. They are optional
 
 A step with `run` and no `checks` passes when the command exits with code 0.
 
+A nonempty step `id` is unique within its section. The same id may occur in
+another section. Repeating a step id is a validation error even when the steps
+agree; repeating a command argument is not a duplicate identity. See
+[0110](../../decisions/0110-reject-ambiguous-plans.md).
+
 ## Checks
 
 A check says how to tell that a step worked. `checks` is a list. The step passes when every check passes. Each check has exactly one of these keys:

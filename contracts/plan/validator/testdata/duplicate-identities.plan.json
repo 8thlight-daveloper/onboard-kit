@@ -1,0 +1,5 @@
+{
+  "variables": [{"name": "owner", "type": "boolean"}, {"name": "owner", "type": "contact"}, {"name": "owner", "type": "choice", "options": ["known"]}],
+  "answers": {"plan": {"owner": "ghp_¤FAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKEFAKE"}, "sections": {"main": {"owner": "wrong"}}},
+  "sections": [{"id": "main", "variables": [{"name": "owner", "type": "string", "pattern": "^yes$"}, {"name": "owner", "type": "boolean"}], "steps": [{"id": "repeat"}, {"id": "repeat"}, {"id": "repeat"}]}]
+}

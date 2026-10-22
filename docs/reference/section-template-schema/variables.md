@@ -14,6 +14,12 @@ A variable belongs to the plan or to one section.
 - **A section uses only the variables it declares.** A `$name` the section does not declare is a lint error, even when a plan variable has that name. So a section stays self-contained if a plan variable is later removed. The finder still groups questions with the same name, type, and options across scopes, and offers a plan variable's answer as a suggestion. The consultant types `organization` once, and a section's own `organization` variable offers it.
 - A question id is `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`.
 
+Each scope declares a variable name at most once, even when the declarations
+have identical metadata. Validation reports a duplicate instead of choosing
+one, and a submission to that ambiguous question is refused. The same name
+in the plan and in a section, or in different sections, is still valid. See
+[0110](../../decisions/0110-reject-ambiguous-plans.md).
+
 ## Syntax
 
 - A name starts with a lowercase letter, then continues with at least two more lowercase letters, digits, or underscores, and ends at the first other character. The pattern is `[a-z][a-z0-9_]{2,}`. A `$` followed by a shorter run, such as `$x`, is not a variable and stays as written. See [0040](../../decisions/0040-blank-text-and-variable-name-length.md).

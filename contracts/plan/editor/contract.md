@@ -307,3 +307,4 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | Prune returns an absent map as an empty one | `prune-a-plan-with-no-answers-comes-back-equal`, `TestPruneWithNothingHiddenReturnsAnEqualPlan`, `TestARefusalOnAPlanWithNothingReturnsThatPlanExactly` |
 | Prune reorders the sections or drops an `example` | `examples-kept-by-a-prune`, `TestAnAppliedEditLeavesWhatItDoesNotChangeEqualToTheArgument` |
 | Prune removes a pre-existing nil or empty scope map, or fills absent editable fields while removing a hidden answer | `TestPrunePreservesNilAndEmptyScopeMapsWhileRemovingOtherAnswers` |
+| An ambiguous question submission changes or removes an existing answer instead of returning the unchanged plan with the validator's error | `TestAmbiguousSubmissionPreservesStoredAnswers` |

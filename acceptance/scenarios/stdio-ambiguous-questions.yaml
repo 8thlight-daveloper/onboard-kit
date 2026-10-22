@@ -1,0 +1,67 @@
+name: stdio-ambiguous-questions
+description: Duplicate declarations are diagnosed, ambiguous submissions are refused, and assembly produces no guessed document.
+source: docs/decisions/0110-reject-ambiguous-plans.md
+steps:
+  - run: [onboard-kit, stdio, --plan, plan.obk.yaml]
+    files:
+      plan.obk.yaml: |
+        schemaVersion: 1
+        variables:
+          - name: label
+            description: First label
+          - name: label
+            description: Second label
+            type: boolean
+        answers:
+          plan:
+            label: original
+          sections:
+            setup:
+              label: saved
+        sections:
+          - id: setup
+            title: Setup
+            summary: A section with conflicting declarations.
+            body: "Label: $label."
+            variables:
+              - name: label
+                description: First label
+              - name: label
+                description: Second label
+                type: boolean
+            steps:
+              - id: install
+                name: First install
+              - id: install
+                name: Second install
+    talk:
+      - send: {command: validate}
+        expect:
+          ok: true
+          problems:
+            - {code: plan.duplicate-step-id, severity: error, section: setup, detail: {step: install}}
+            - {code: plan.duplicate-variable-name, severity: error, detail: {scope: plan, name: label}}
+            - {code: plan.duplicate-variable-name, severity: error, section: setup, detail: {scope: setup, name: label}}
+      - send: {command: submit, question: plan.label, value: replacement}
+        expect:
+          ok: true
+          applied: false
+          problems:
+            - {code: answer.ambiguous-question, severity: error, question: plan.label}
+      - send: {command: submit, question: setup.label, value: replacement}
+        expect:
+          ok: true
+          applied: false
+          problems:
+            - {code: answer.ambiguous-question, severity: error, question: setup.label, section: setup}
+      - send: {command: assemble}
+        expect:
+          ok: false
+          error: {code: ambiguous_plan}
+          problems:
+            - {code: plan.duplicate-step-id, severity: error, section: setup}
+            - {code: plan.duplicate-variable-name, severity: error}
+            - {code: plan.duplicate-variable-name, severity: error, section: setup}
+    expect:
+      exit: 0
+      unchanged: [plan.obk.yaml]
