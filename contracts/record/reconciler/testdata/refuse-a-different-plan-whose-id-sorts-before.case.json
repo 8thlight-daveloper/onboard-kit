@@ -1,0 +1,70 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "1b7d0e32-5c44-4f0a-8e19-2d6a9b3c7f10",
+      "hash": "hash-other",
+      "url": "https://plans.example.test/other.plan.obk.yaml"
+    },
+    "answers": {
+      "plan": {
+        "team": "data"
+      }
+    },
+    "outcomes": [
+      {
+        "section": "access",
+        "outcome": "verified",
+        "on": "2026-10-22T14:05:00Z",
+        "sectionHash": "h1"
+      }
+    ]
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform"
+        ]
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "variables": [
+      {
+        "name": "team",
+        "audience": "onboardee",
+        "type": "choice",
+        "options": [
+          "platform"
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "reconciliation": {},
+    "problems": [
+      {
+        "code": "reconcile.different-plan",
+        "severity": "error",
+        "detail": {
+          "expected": "1b7d0e32-5c44-4f0a-8e19-2d6a9b3c7f10",
+          "found": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f"
+        }
+      }
+    ]
+  }
+}

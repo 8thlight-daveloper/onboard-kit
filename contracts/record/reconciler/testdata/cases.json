@@ -163,5 +163,15 @@
     "name": "every-other-field-is-unchanged",
     "file": "every-other-field-is-unchanged.case.json",
     "source": "Hand-written. 0090: only the answers and the plan reference change. The account, start date, schema version, outcomes with their notes, and unknown fields, with their nested lists, maps, integers and decimals, come back as they were."
+  },
+  {
+    "name": "refuse-a-different-plan-whose-id-sorts-before",
+    "file": "refuse-a-different-plan-whose-id-sorts-before.case.json",
+    "source": "Hand-written. The lead's decision on reconcile.different-plan: any record id that is not empty and differs from the plan id is refused, whichever id sorts first. This is the case where the record's id sorts before the plan's, beside refuse-a-different-plan where it sorts after."
+  },
+  {
+    "name": "many-sections-lose-all-their-answers",
+    "file": "many-sections-lose-all-their-answers.case.json",
+    "source": "Hand-written. The lead's decision in a-removed-answer-leaves-no-entry-and-no-empty-section: a section whose answers are all removed leaves no empty map. Here six sections lose everything and three keep their answer, so the result cannot depend on the order the sections are read in."
   }
 ]

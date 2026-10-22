@@ -503,6 +503,9 @@ func TestRefusalChangesNothing(t *testing.T) {
 		if recordText(t, record) != recordText(t, c.record) || record.Plan != c.record.Plan {
 			t.Errorf("case %s: a refused reconcile returns the record exactly as it was", c.name)
 		}
+		if !reflect.DeepEqual(record, c.record) {
+			t.Errorf("case %s: a refused reconcile returns a record equal to the argument in every part, an absent map staying absent", c.name)
+		}
 		if !reconciliationIsEmpty(reconciliation) {
 			t.Errorf("case %s: a refused reconcile has an empty reconciliation, got %s", c.name, reconciliationText(reconciliation))
 		}
@@ -556,6 +559,37 @@ func TestResultHoldsNoEntryOfNoKindAndNoEmptySectionMap(t *testing.T) {
 				if value.Kind == model.ValueKindNone {
 					t.Errorf("case %s: answer %s.%s has no kind", c.name, id, name)
 				}
+			}
+		}
+	}
+}
+
+func TestRecordWithNoPlanAnswersGivesResultWithNoPlanAnswers(t *testing.T) {
+	reconciler := newReconciler()
+	checked := 0
+	for _, c := range loadCases(t) {
+		if c.expected == nil || c.record.Answers.Plan != nil {
+			continue
+		}
+		checked++
+		record, _, _ := run(reconciler, c)
+		if record.Answers.Plan != nil {
+			t.Errorf("case %s: the record holds no plan answer map and the result holds one", c.name)
+		}
+	}
+	if checked == 0 {
+		t.Fatal("no case has a record with no plan answers")
+	}
+}
+
+func TestEveryCaseGivesOneResultWhateverTheMapOrder(t *testing.T) {
+	reconciler := newReconciler()
+	for _, c := range loadCases(t) {
+		first := outcomeOf(t, reconciler, c)
+		for round := 0; round < 30; round++ {
+			if again := outcomeOf(t, reconciler, c); !reflect.DeepEqual(first, again) {
+				t.Errorf("case %s: the result changed between calls", c.name)
+				break
 			}
 		}
 	}

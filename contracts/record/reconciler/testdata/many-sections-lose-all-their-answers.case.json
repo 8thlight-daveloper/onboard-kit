@@ -1,0 +1,364 @@
+{
+  "record": {
+    "schemaVersion": 1,
+    "account": "ada",
+    "startDate": "2026-10-22",
+    "plan": {
+      "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+      "hash": "hash-old",
+      "url": "https://plans.example.test/old.plan.obk.yaml"
+    },
+    "answers": {
+      "sections": {
+        "s1": {
+          "pick": "zzz"
+        },
+        "s2": {
+          "pick": "zzz"
+        },
+        "s3": {
+          "pick": "zzz"
+        },
+        "s4": {
+          "pick": "zzz"
+        },
+        "s5": {
+          "pick": "zzz"
+        },
+        "s6": {
+          "pick": "zzz"
+        },
+        "s7": {
+          "pick": "a"
+        },
+        "s8": {
+          "pick": "a"
+        },
+        "s9": {
+          "pick": "a"
+        }
+      }
+    }
+  },
+  "previous": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "sections": [
+      {
+        "id": "s1",
+        "title": "S1",
+        "summary": "About s1",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "S2",
+        "summary": "About s2",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "S3",
+        "summary": "About s3",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "S4",
+        "summary": "About s4",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "S5",
+        "summary": "About s5",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "S6",
+        "summary": "About s6",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s7",
+        "title": "S7",
+        "summary": "About s7",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s8",
+        "title": "S8",
+        "summary": "About s8",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s9",
+        "title": "S9",
+        "summary": "About s9",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "plan": {
+    "schemaVersion": 1,
+    "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+    "sections": [
+      {
+        "id": "s1",
+        "title": "S1",
+        "summary": "About s1",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s2",
+        "title": "S2",
+        "summary": "About s2",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s3",
+        "title": "S3",
+        "summary": "About s3",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s4",
+        "title": "S4",
+        "summary": "About s4",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s5",
+        "title": "S5",
+        "summary": "About s5",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s6",
+        "title": "S6",
+        "summary": "About s6",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s7",
+        "title": "S7",
+        "summary": "About s7",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s8",
+        "title": "S8",
+        "summary": "About s8",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "s9",
+        "title": "S9",
+        "summary": "About s9",
+        "variables": [
+          {
+            "name": "pick",
+            "audience": "onboardee",
+            "type": "choice",
+            "options": [
+              "a"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "hash": "hash-new",
+    "url": "https://plans.example.test/acme.plan.obk.yaml"
+  },
+  "expected": {
+    "record": {
+      "schemaVersion": 1,
+      "account": "ada",
+      "startDate": "2026-10-22",
+      "plan": {
+        "id": "6f1c2a40-3b1e-4c1a-9d52-0a1b2c3d4e5f",
+        "hash": "hash-new",
+        "url": "https://plans.example.test/acme.plan.obk.yaml"
+      },
+      "answers": {
+        "sections": {
+          "s7": {
+            "pick": "a"
+          },
+          "s8": {
+            "pick": "a"
+          },
+          "s9": {
+            "pick": "a"
+          }
+        }
+      }
+    },
+    "reconciliation": {
+      "answersToReview": [
+        "s1.pick",
+        "s2.pick",
+        "s3.pick",
+        "s4.pick",
+        "s5.pick",
+        "s6.pick"
+      ]
+    }
+  }
+}
