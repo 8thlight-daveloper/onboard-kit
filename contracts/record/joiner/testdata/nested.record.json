@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "answers": {
+    "plan": {"tools": ["shell", "editor"], "os": ["mac", "linux"]},
+    "sections": {"access": {"keys": ["k3"]}, "new": {"list": ["n1", "n2"]}}
+  }
+}

@@ -41,7 +41,7 @@ The record joiner puts a newcomer's onboarding record over the plan and gives ba
 
 **An empty record.** A record with no answers gives a plan equal to the plan given.
 
-**Nothing is shared.** The result holds its own maps, lists, and values. It shares none with the plan or with the record, so a caller can change the result without changing either argument.
+**Nothing is shared.** The result holds its own maps, lists, pointers, and values, at every depth. That covers the answers, the variables and their defaults, every condition and its answer tests, the sections, steps, checks, and escalation lists, and the unknown fields. It shares none with the plan or with the record. A caller can change anything in the result without changing either argument, and change anything in either argument without changing the result.
 
 ## Properties
 
@@ -50,7 +50,7 @@ These hold for every plan and record the contract tests use.
 - **Pure and deterministic.** Two calls with the same arguments give equal plans, and nothing is read from or written to anything outside the arguments.
 - **Arguments unchanged.** The plan and the record are equal to what they were before the call.
 - **Idempotent.** Joining the result with the same record gives a plan equal to the result.
-- **Nothing shared.** Changing any map, list, or value of the result changes neither argument.
+- **Nothing shared.** Changing any map, list, pointer target, or value of the result changes neither argument, and changing any of those in either argument changes neither the result nor the other argument.
 
 ## Not covered
 
@@ -93,5 +93,6 @@ Each row is a plausible wrong implementation and the cases that fail it.
 | An empty map of the plan turned to nil, or its empty section dropped | `plan-empty-map-stays`, `empty-plan-maps` |
 | The record's maps or lists shared with the result | the nothing shared test, the changing the result test |
 | The plan copied shallowly, so the sections, unknown fields, or answer lists are shared | the nothing shared test, the changing the result test, the empty record test |
+| One nested part of the plan left uncopied, such as a variable default, an answer test of a condition, a step's escalation list, or a flag pointer | `nested-values` with the nothing shared test and the two changing anything tests |
 | An argument changed in place | the arguments not changed test, the changing the result test |
 | An empty list laid over as a nil list | `value-kinds` |

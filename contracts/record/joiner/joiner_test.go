@@ -278,3 +278,81 @@ func TestTheResultIsTheSameEveryTime(t *testing.T) {
 		}
 	}
 }
+
+func scribble(v reflect.Value) {
+	switch v.Kind() {
+	case reflect.String:
+		if v.CanSet() {
+			v.SetString(v.String() + "-changed")
+		}
+	case reflect.Bool:
+		if v.CanSet() {
+			v.SetBool(!v.Bool())
+		}
+	case reflect.Int:
+		if v.CanSet() {
+			v.SetInt(v.Int() + 1)
+		}
+	case reflect.Pointer:
+		if !v.IsNil() {
+			scribble(v.Elem())
+		}
+	case reflect.Interface:
+		if v.IsNil() {
+			return
+		}
+		inner := reflect.New(v.Elem().Type()).Elem()
+		inner.Set(v.Elem())
+		scribble(inner)
+		v.Set(inner)
+	case reflect.Slice:
+		for i := 0; i < v.Len(); i++ {
+			scribble(v.Index(i))
+		}
+	case reflect.Map:
+		if v.IsNil() {
+			return
+		}
+		for _, key := range v.MapKeys() {
+			entry := reflect.New(v.Type().Elem()).Elem()
+			entry.Set(v.MapIndex(key))
+			scribble(entry)
+			v.SetMapIndex(key, entry)
+		}
+		if v.Type().Key().Kind() == reflect.String {
+			v.SetMapIndex(reflect.ValueOf("scribbled").Convert(v.Type().Key()), reflect.Zero(v.Type().Elem()))
+		}
+	case reflect.Struct:
+		for i := 0; i < v.NumField(); i++ {
+			if v.Type().Field(i).IsExported() {
+				scribble(v.Field(i))
+			}
+		}
+	}
+}
+
+func TestChangingAnythingInTheResultLeavesTheArgumentsAlone(t *testing.T) {
+	for _, c := range loadCases(t) {
+		t.Run(c.Name, func(t *testing.T) {
+			plan := loadPlan(t, c.Plan)
+			record := loadRecord(t, c.Record)
+			got := newJoiner().Join(plan, record)
+			scribble(reflect.ValueOf(&got).Elem())
+			requireSamePlan(t, plan, loadPlan(t, c.Plan))
+			requireSameRecord(t, record, loadRecord(t, c.Record))
+		})
+	}
+}
+
+func TestChangingAnythingInTheArgumentsLeavesTheResultAlone(t *testing.T) {
+	for _, c := range loadCases(t) {
+		t.Run(c.Name, func(t *testing.T) {
+			plan := loadPlan(t, c.Plan)
+			record := loadRecord(t, c.Record)
+			got := newJoiner().Join(plan, record)
+			scribble(reflect.ValueOf(&plan).Elem())
+			scribble(reflect.ValueOf(&record).Elem())
+			requireSamePlan(t, got, loadPlan(t, c.Joined))
+		})
+	}
+}

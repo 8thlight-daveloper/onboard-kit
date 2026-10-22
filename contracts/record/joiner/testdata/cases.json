@@ -26,5 +26,7 @@
   {"name": "plan-answers-only", "plan": "bare.plan.json", "record": "plan-answers-only.record.json", "joined": "plan-answers-only.joined.json",
    "source": "Hand-written. Contract rule: Absent stays absent. The record gives only plan answers, so the section map stays missing."},
   {"name": "section-answers-only", "plan": "bare.plan.json", "record": "section-answers-only.record.json", "joined": "section-answers-only.joined.json",
-   "source": "Hand-written. Contract rule: Absent stays absent. The record gives only section answers, so the plan map stays missing."}
+   "source": "Hand-written. Contract rule: Absent stays absent. The record gives only section answers, so the plan map stays missing."},
+  {"name": "nested-values", "plan": "nested.plan.json", "record": "nested.record.json", "joined": "nested.joined.json",
+   "source": "Hand-written. Contract rules: Everything else comes back as given, and Nothing is shared. The plan holds a list, a nested unknown field, a step escalation, and every kind of answer test in a variable condition and a section condition, so a copy that skips any of them shares memory with the plan. The record lays lists over plan lists and adds a section."}
 ]
