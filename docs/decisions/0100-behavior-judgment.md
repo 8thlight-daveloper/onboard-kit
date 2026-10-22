@@ -2,6 +2,9 @@
 
 Status: accepted for experimental use
 
+[0130](0130-survivor-risk-acceptance.md) makes a scoped exception for agent-only
+acceptance of the remaining mutation-survivor batch.
+
 Builds on [0025](0025-contracts-and-tests.md),
 [0045](0045-defaults-are-suggestions.md),
 [0055](0055-variable-audience.md), and
@@ -37,9 +40,14 @@ A person supplying a known answer is not the tool accepting a template default.
 ### P2. Respect ownership and deliberate choices
 
 Keep organizational facts under onboarder control. Respect saved personal
-answers and intentional deferrals. Suggestions do not silently become answers.
+answers and intentional deferrals. A default is a suggestion, not an answer;
+only a person's explicit acceptance makes it an answer. Never silently use a
+default, for any variable type, audience, or scope.
 The ownership and audience rules of 0055 and 0090 still govern where answers
 are stored and who may change them.
+
+[0120](0120-defaults-require-acceptance.md) makes the suggestion rule explicit
+for every variable type, audience, and scope, including directory references.
 
 ### P3. Make the next useful action clear
 

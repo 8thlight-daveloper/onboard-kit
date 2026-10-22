@@ -1,0 +1,25 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: available full gomu report, current source-derived keys; no new full run for this decision.
+ae57e4f8914bcb80 internal/plan/editor/answer.go:24 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f71bf47cbe27e5cc internal/plan/editor/answer.go:25 expression_removal: delete(sections, scope) -> <removed> :: agent-approved risk acceptance; equivalence not established; ADR 0130
+16fdcd9e282df195 internal/plan/editor/answerclearing.go:16 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2107e172ae27ca48 internal/plan/editor/copy.go:50 branch_condition: sections == nil -> false :: agent-approved risk acceptance; equivalence not established; ADR 0130
+4773e5bf544be126 internal/plan/editor/copy.go:50 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130
+4dc1c025bbeb0750 internal/plan/editor/directoryset.go:19 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+0c7d4ffddcc7ad9f internal/plan/editor/directoryset.go:32 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+325eda919046f327 internal/plan/editor/editor.go:24 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+7ef35364ff612ee2 internal/plan/editor/editor.go:24 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+a0f08e6ce455e03e internal/plan/editor/entryfault.go:28 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5254eb1b8665461e internal/plan/editor/entryfault.go:43 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2bbf1731198e9a67 internal/plan/editor/entryfault.go:83 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+84012bb93bb8662a internal/plan/editor/entryfault.go:83 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+6dc812fa48c20a8b internal/plan/editor/entryfault.go:86 conditional_binary: < -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b1a57dd3004d49fe internal/plan/editor/holderremoval.go:54 conditional_binary: != -> < :: agent-approved risk acceptance; equivalence not established; ADR 0130
+a8c0ec015ae00932 internal/plan/editor/prune.go:16 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+cbcfff7bd1fef11e internal/plan/editor/prune.go:20 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+739cdcfc380c70fe internal/plan/editor/switch.go:30 boundary_value: 1 -> 2 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b01189403f19f880 internal/plan/editor/unanswered.go:14 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+ba53dada1a6b057d internal/plan/editor/unanswered.go:16 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130

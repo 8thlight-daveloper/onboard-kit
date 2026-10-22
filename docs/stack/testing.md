@@ -18,6 +18,12 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 
 ### Accepted survivors
 
+[0130](../decisions/0130-survivor-risk-acceptance.md) authorizes agent-only risk
+acceptance for the remaining review batch. Its entries identify the approving
+agent role and evidence limits; they do not claim equivalence or individual
+human approval. Historical identities remain inactive until matched. This is
+a scoped exception to the normal rules below, not authority for future batches.
+
 A mutant that survives is either a gap in the contract or a change that alters no behavior. A person decides which, after checking it. The ones that alter no behavior go in `tools/mutation/accepted/<component>.txt`, one line each: the survivor's key, then the file, the change, and `::` and why it alters nothing. `just mutate` prints every survivor as exactly the first part of that line, so a person adds a line by copying it and writing the reason. The key is a hash of the file name, the mutator, the original and mutated text, and the text of the line, so it survives a line moving and changes when the line is edited. A survivor whose line was edited comes back for a fresh look. A rebuild deletes the component's folder, and old entries then match nothing. A builder reports survivors and never edits the list. See "Trust but verify" in `AGENTS.md`.
 
 The accepted lists that existed before 2026-10-21 hold the earlier tool's checksums, which no longer match anything. Each one needs a person to review it again against a gomu run, and to replace its lines with the new keys.

@@ -5,3 +5,21 @@
 5526bc0975f610d9265c19fceeb7b3cd | answertest.go | the guard before the isNot comparison is removed | A test that is not set is not evaluated, and the guard says so on purpose. No input shows the difference under the current contract: with isNot unset the comparison is against a value of kind None, and a settled answer is never kind None, so it is never equal. If the answer model changes, a contract test fails a missing guard.
 39a122afcf612b587cc07bd08983710d | answertest.go | the guard before the isNotOneOf comparison is removed | A test that is not set is not evaluated, and the guard says so on purpose. An unset list matches nothing, so no input shows the difference today.
 1feb4c4364fe914d90a41493f08d9614 | answertest.go | the list helper stops checking the is value | The helper checks every test field by design, so a new caller can rely on it. Under the current contract a List is value never equals a non-List answer, so the is test is false either way, and no input shows the difference.
+
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical 8070595b92059a1a answertest.go:16 != -> >; None=0.
+# agent-approved historical 00ad4805583c8908 answertest.go:17 != -> >; None=0.
+# agent-approved historical 496742dd04b5d316 answertest.go:26 != -> >; None=0.
+# agent-approved historical a6ca427a261eee0d answertest.go:29 != -> >; None=0.
+# agent-approved historical 4acfc279308d7850 answertest.go:29 != -> >=; compares an unset isNot too.
+# agent-approved historical e2b017ad60c3b243 equal.go:15 false -> true in default branch.
+# agent-approved historical 8ec05f6c4b85ed52 evaluator.go:21 != -> > against empty string.
+# agent-approved historical 580e37dcf4cf0fb7 settled.go:8 != -> > against empty string.
+# agent-approved historical c6fde3fe6505331d settled.go:20 != -> > against empty string.
+# agent-approved historical 568a7a0b19718701 equal.go:6 != -> >; Flag false can equal Deferred test.
+# agent-approved historical e71e88009c664ebb equal.go:20 == -> >=; Deferred test treated as List.

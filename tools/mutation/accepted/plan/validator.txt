@@ -1,0 +1,34 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: available full gomu report, current source-derived keys; no new full run for this decision.
+70d724fce9829d78 internal/plan/validator/answer.go:29 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+cefea8f9c421b52c internal/plan/validator/answer.go:38 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+575b9fab8f235320 internal/plan/validator/answer.go:40 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+dc195ef16165d322 internal/plan/validator/answer.go:42 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+a7d43c3a20602318 internal/plan/validator/answer.go:42 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+baaadad588979e0e internal/plan/validator/directorycontact.go:34 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+94ee38aa5edd7a7c internal/plan/validator/directorycontact.go:38 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+815175df8385fadc internal/plan/validator/directorycontact.go:38 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+197f71f696830763 internal/plan/validator/directorycontact.go:38 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+7e5e204196140e06 internal/plan/validator/directoryholder.go:15 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f75f0bad838c8da2 internal/plan/validator/directoryholder.go:27 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+bd1320a2f21db28f internal/plan/validator/directoryid.go:28 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+518ae21f11d82f4a internal/plan/validator/kind.go:13 string_literal: "This answer is " -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+51f1ea4d8176b400 internal/plan/validator/kind.go:13 string_literal: ", and the question takes " -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+06c3efade7384246 internal/plan/validator/kind.go:13 string_literal: "." -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+c2aeccad4aa0044d internal/plan/validator/kind.go:20 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+bc93df23a1d6dd17 internal/plan/validator/kind.go:24 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+35cdd00838d389df internal/plan/validator/option.go:10 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+d2ccc3594b917f73 internal/plan/validator/pattern.go:10 conditional_binary: == -> < :: agent-approved risk acceptance; equivalence not established; ADR 0130
+8cee388bb96278b9 internal/plan/validator/pattern.go:10 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+0755bf2d33da8d8e internal/plan/validator/pattern.go:10 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+282995d112164cd4 internal/plan/validator/pattern.go:26 branch_condition: variable.PatternHint != "" -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5f93f0c04eccf836 internal/plan/validator/pattern.go:26 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+25165cdcadb6e55a internal/plan/validator/pattern.go:26 conditional_binary: != -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+ae3d5be33151a41f internal/plan/validator/pattern.go:27 remove_self_assignments: += -> = :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3ed80577bf32beda internal/plan/validator/pattern.go:27 string_literal: " " -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+33e5b1b351376f4b internal/plan/validator/planid.go:29 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2eb5ee57480fb87b internal/plan/validator/planwide.go:39 boundary_value: 0 -> 1 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+6514b864c08ca66c internal/plan/validator/question.go:29 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130

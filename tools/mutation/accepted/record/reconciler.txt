@@ -1,0 +1,27 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical 20c04b8554f2a90b answers.go:42 == -> >=; listing has two values, 0/1.
+# agent-approved historical a12a2a6a4ad5a435 answers.go:45 != -> >; None=0, declared kinds nonnegative.
+# agent-approved historical d2c5fa4380a28eb4 answers.go:58 == -> <=; length nonnegative.
+# agent-approved historical 15198a493157c050 directory.go:60 == -> >=; filtering cannot lengthen list.
+# agent-approved historical 3c6d0a7a02a219a4 reconciliation.go:27 == -> <=; first nonnegative length.
+# agent-approved historical ce9b348d7bb0cbe6 reconciliation.go:27 == -> <=; second nonnegative length.
+# agent-approved historical 8215fc7e163bf24b refusal.go:11 == -> <=; string compared to empty string.
+# agent-approved historical f42f5889bcae934a directory.go:57 != -> >; string vs empty string.
+# agent-approved historical fb57bbbf13b7f303 validity.go:18 != -> >; string vs empty string.
+# agent-approved historical 0c6297f463b69539 value.go:13 != -> >; string vs empty string.
+# agent-approved historical 4607883c415ab772 value.go:24 != -> >; string vs empty string.
+# agent-approved historical 65f1ab4a98f4972b reconciliation.go:71 != -> >; SectionHash vs empty.
+# agent-approved historical 0d0c06a78d7e3e64 refusal.go:18 != -> >; record.Plan.ID vs empty.
+# agent-approved historical 7e9d8a6bb7315242 directory.go:38 != team -> < team.
+# agent-approved historical 6fb035a5237197f2 directory.go:49 == Text -> <= Text.
+# agent-approved historical 32f12dec79e92559 validity.go:16 == List -> >= List.
+# agent-approved historical a1956a354da59c2e copy.go:19 Plan != nil -> true.
+# agent-approved historical 596b102c761036cb reconciliation.go:31 branch_condition: len(set)==0 -> false.
+# agent-approved historical 083784936640051b reconciliation.go:31 conditional_binary: == -> <.
+# agent-approved historical 86ec5292701d4a4d reconciliation.go:31 conditional_binary: == -> <=.
+# agent-approved historical a711f37bf796ded3 reconciliation.go:31 empty_block: {...} -> {}.

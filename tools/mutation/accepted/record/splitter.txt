@@ -1,0 +1,8 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical 11bf5f48968e2bc8 copy.go:11 copied.Answers assignment removed.
+# agent-approved historical 64eddbe08f4d0a49 equality.go:25 != -> > against ValueKindNone.

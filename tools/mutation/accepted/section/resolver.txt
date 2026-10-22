@@ -1,0 +1,50 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: available full gomu report, current source-derived keys; no new full run for this decision.
+27188d1e50ab8bda internal/section/resolver/book.go:27 conditional_binary: > -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+cb161b753bd9f8d6 internal/section/resolver/book.go:58 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b848ad1f359241cb internal/section/resolver/book.go:63 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3289320ab77b8377 internal/section/resolver/book.go:65 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+d870ccbbc39e25aa internal/section/resolver/book.go:78 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+a1bba8e34a74f0a2 internal/section/resolver/copy.go:52 assignment_removal: copied.Run -> <removed> :: agent-approved risk acceptance; equivalence not established; ADR 0130
+e8443778ba8be9a0 internal/section/resolver/copy.go:61 assignment_removal: copied.Run -> <removed> :: agent-approved risk acceptance; equivalence not established; ADR 0130
+897f8de76dfdb89f internal/section/resolver/filler.go:26 conditional_binary: < -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+e4fb4ebad9e85395 internal/section/resolver/filler.go:38 conditional_binary: < -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+6f84e4383b221f71 internal/section/resolver/filler.go:44 conditional_binary: == -> < :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2fb97fb7e70b40f0 internal/section/resolver/filler.go:44 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+637515a589f4043f internal/section/resolver/filler.go:44 arithmetic_binary: + -> - :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f87b311a613b914e internal/section/resolver/filler.go:44 arithmetic_binary: + -> * :: agent-approved risk acceptance; equivalence not established; ADR 0130
+237f1e68675cc5b9 internal/section/resolver/filler.go:44 arithmetic_binary: + -> / :: agent-approved risk acceptance; equivalence not established; ADR 0130
+8bc59d6a1e47d38f internal/section/resolver/filler.go:44 boundary_value: 1 -> 0 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+0969facfaef1b077 internal/section/resolver/filler.go:54 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+17178ebfb8051ff7 internal/section/resolver/filler.go:60 branch_condition: items == nil -> false :: agent-approved risk acceptance; equivalence not established; ADR 0130
+96b2aa211f6ed530 internal/section/resolver/filler.go:60 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130
+94c1e24d80f16510 internal/section/resolver/name.go:4 conditional_binary: >= -> == :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3c2a0ab4ea8dc039 internal/section/resolver/name.go:7 arithmetic_binary: + -> * :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3f95a21d09f62af2 internal/section/resolver/name.go:7 arithmetic_binary: + -> / :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3c74d7004954d897 internal/section/resolver/name.go:7 boundary_value: 1 -> 0 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+09a9284d3be82cf0 internal/section/resolver/name.go:8 conditional_binary: < -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+18d3f127a71f67bf internal/section/resolver/name.go:23 boundary_value: 2 -> 1 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+4fea5edbc430f67d internal/section/resolver/name.go:24 return_bool_literal: false -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+fc3b19d809e37086 internal/section/resolver/name.go:24 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+16ca78b60d237f44 internal/section/resolver/name.go:27 logical_binary: || -> && :: agent-approved risk acceptance; equivalence not established; ADR 0130
+88e6ea345dd63033 internal/section/resolver/name.go:27 conditional_binary: == -> < :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2feea448f99bdf82 internal/section/resolver/name.go:27 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f165a2a402d6d0e0 internal/section/resolver/name.go:27 boundary_value: 1 -> 0 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+91a1bbacb4ad7673 internal/section/resolver/name.go:27 conditional_binary: != -> < :: agent-approved risk acceptance; equivalence not established; ADR 0130
+d68e3dd75aa68c18 internal/section/resolver/name.go:27 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b00758f66e4d1d5c internal/section/resolver/name.go:27 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130
+497ac7761502e123 internal/section/resolver/name.go:28 return_bool_literal: false -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+55eec7459bc0386f internal/section/resolver/name.go:28 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+2a5c2ba17837e6ec internal/section/resolver/problems.go:12 assignment_removal: reported[variable.Name] -> <removed> :: agent-approved risk acceptance; equivalence not established; ADR 0130
+d4506394a8e77910 internal/section/resolver/problems.go:22 string_literal: "variable " -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+020b8f8fff3205b2 internal/section/resolver/problems.go:22 string_literal: " has no value: " -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+dc939f2d28f04e2e internal/section/resolver/resolution.go:24 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+89f94dc7263c941f internal/section/resolver/resolution.go:43 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+63485f66a2f29c53 internal/section/resolver/resolution.go:43 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+11a213125822fc92 internal/section/resolver/role.go:15 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+a0388e750920a951 internal/section/resolver/role.go:25 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+9b07571f04519826 internal/section/resolver/settled.go:8 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+02cedc1b6b0e0c0e internal/section/resolver/settled.go:20 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130

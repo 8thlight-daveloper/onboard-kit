@@ -3,3 +3,32 @@
 # A checksum depends on the mutated file, so an edit to the file brings its survivors back.
 # Approved on 2026-10-19. The same Go detail was checked on 10,000,017 floats for the plan encoder.
 7cb6ca7acb2553992e845dfa7c516413 | unknown.go | FormatFloat precision -1 becomes -2 | Go treats every negative precision as the shortest exact form, so the text is identical. This is a library detail, not a contract rule: the contract fixes the output text, and a rebuild in another language gets its own mutation run and list.
+
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical cabcde3078ab10f5 condition.go:6
+# agent-approved historical 2c1faa7a3f4e2556 condition.go:43
+# agent-approved historical cb8cfbd9bb0b199d condition.go:44
+# agent-approved historical bfdaada434073d4b fields.go:27
+# agent-approved historical fb485baac7cc63c7 section.go:17
+# agent-approved historical 8606526ce46beb1c section.go:22
+# agent-approved historical d90c3d0c91b21aca section.go:23
+# agent-approved historical d8005fae38136c41 section.go:24
+# agent-approved historical 1045ecf03b90f454 step.go:28
+# agent-approved historical 07f0696e0d496228 step.go:29
+# agent-approved historical d126ef0496f1ba59 condition.go:35
+# agent-approved historical 579ad06f3e6d65e8 condition.go:35
+# agent-approved historical 426b128c19c8da63 condition.go:22
+# agent-approved historical 8ff0dba77ae735b4 fields.go:19
+# agent-approved historical d975f6503956148a section.go:7
+# agent-approved historical eb177fdce4e39e95 variable.go:15
+# agent-approved historical 6ecdfd6fa005bdc4 variable.go:19
+# agent-approved historical 9801db1a028f1ff3 value.go:44 index==0 -> <=0; index nonnegative.
+# agent-approved historical b368daf2355eab98 value.go:44 item!=previous -> item>previous; sorted input.
+# agent-approved historical 9f7ff79be4cca34e unknown.go:33 precision -1 becomes -2.
+# agent-approved historical 68438bc9be128fb9 variable.go:41 return empty string -> "mutated".
+# agent-approved historical 3f3cf7e1f078bcd5 value.go:28 kind!=None -> >None.

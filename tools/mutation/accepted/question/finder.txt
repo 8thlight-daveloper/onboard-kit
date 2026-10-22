@@ -1,0 +1,42 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: available full gomu report, current source-derived keys; no new full run for this decision.
+7821915e88221368 internal/question/finder/audience.go:6 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+e6e815031fbacd7d internal/question/finder/audience.go:19 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b63d3a6bfb0ae2b3 internal/question/finder/dependency.go:11 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f66e05c5b937d3f6 internal/question/finder/dependency.go:14 branch_condition: id != asked.id() -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+3dfa36a4377e2edd internal/question/finder/found.go:12 conditional_binary: > -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+d78a3259441cff05 internal/question/finder/found.go:14 return_bool_literal: false -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+90e2b36c3380fc32 internal/question/finder/found.go:29 return_bool_literal: false -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5119b20c8c151ed0 internal/question/finder/found.go:31 branch_condition: value.Kind == model.ValueKindList -> false :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5bc8a723126e3e96 internal/question/finder/found.go:31 conditional_binary: == -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+7c03bd701d391610 internal/question/finder/found.go:31 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f1ab0aeef1509f59 internal/question/finder/found.go:31 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130
+41a598e23dfb0f12 internal/question/finder/group.go:19 string_literal: "," -> "" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+8dd23193c879ce47 internal/question/finder/offer.go:12 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+110d10a37dd8ce9b internal/question/finder/offer.go:13 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f20234304f30669e internal/question/finder/offer.go:17 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f4e03b7913d93f69 internal/question/finder/offer.go:18 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+e2fb4819031e00cb internal/question/finder/offer.go:20 logical_binary: && -> || :: agent-approved risk acceptance; equivalence not established; ADR 0130
+aa947fbc6415a027 internal/question/finder/offer.go:20 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+860adf125df8614b internal/question/finder/offer.go:20 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5bcb9f4f7a70977a internal/question/finder/offer.go:20 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+62a9b3f1fc6b18f4 internal/question/finder/offer.go:20 conditional_binary: != -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b63b1d821c3e0d9a internal/question/finder/offer.go:20 string_literal: "" -> "mutated" :: agent-approved risk acceptance; equivalence not established; ADR 0130
+506042e983891054 internal/question/finder/offer.go:29 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+1b59477df2650cae internal/question/finder/offer.go:29 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b087804abd3bad94 internal/question/finder/offer.go:37 empty_block: {...} -> {} :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f88729f83cd5ab82 internal/question/finder/offer.go:38 return_bool_literal: false -> true :: agent-approved risk acceptance; equivalence not established; ADR 0130
+fc02fcb6e5493b2a internal/question/finder/offer.go:44 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+0c13b28a24fac7ef internal/question/finder/offer.go:44 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+bdbbdd7e84179782 internal/question/finder/offer.go:44 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+e73cac4cdd9f9f40 internal/question/finder/questions.go:50 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+1f49158ca79c7b76 internal/question/finder/sequence.go:6 conditional_binary: < -> != :: agent-approved risk acceptance; equivalence not established; ADR 0130
+c5b44d6c17e71bd2 internal/question/finder/sequence.go:15 boundary_value: 1 -> 2 :: agent-approved risk acceptance; equivalence not established; ADR 0130
+4b08467a1853ab08 internal/question/finder/settled.go:12 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+1c91bbc37e8130c3 internal/question/finder/settled.go:16 conditional_binary: != -> > :: agent-approved risk acceptance; equivalence not established; ADR 0130
+f321afaf95e277c3 internal/question/finder/settled.go:22 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+b88ed812b8f63a51 internal/question/finder/settled.go:26 conditional_binary: == -> <= :: agent-approved risk acceptance; equivalence not established; ADR 0130
+5fadecdbcf94a888 internal/question/finder/settled.go:26 conditional_binary: == -> >= :: agent-approved risk acceptance; equivalence not established; ADR 0130

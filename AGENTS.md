@@ -13,6 +13,10 @@ behavior choices in the assigned task. Its principles and bounded authority
 are in [0100](docs/decisions/0100-behavior-judgment.md). It does not waive the
 human approval or independent authorship rules below.
 
+[0130](docs/decisions/0130-survivor-risk-acceptance.md) authorizes agent-only
+acceptance of the remaining survivor batch. That scoped exception does not
+grant blanket acceptance authority for future survivors.
+
 ## Where docs go
 
 | Folder | Holds | Pace |

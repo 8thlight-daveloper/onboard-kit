@@ -1,0 +1,18 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical e2e72ed67d87fe7d active.go:42 parent==empty -> true.
+# agent-approved historical 3236c821f3bb8219 active.go:42 == -> <= against empty string.
+# agent-approved historical aa24df9080b7a868 active.go:42 == -> >= against empty string.
+# agent-approved historical 4ec84f2cf18e2812 active.go:48 false -> true.
+# agent-approved historical c14cb671c147242e timing.go:14 == -> <= against empty string.
+# agent-approved historical c17778b9c4cc3504 tree.go:9 == -> <= against empty string.
+# agent-approved historical 84503768654de9f3 order.go:49 > -> !=; remaining length nonnegative.
+# agent-approved historical 767453d57d0a8b70 timing.go:6 before-day-one rank 0 -> 1.
+# agent-approved historical 74f57691108f9a0b timing.go:7 week-one rank 1 -> 0.
+# agent-approved historical 569438b2cb45483b order.go:37 rankOrder!=0 -> true.
+# agent-approved historical 77cbfb6cd8a15dd4 timing.go:10 anytime rank 4 -> 5.
+# agent-approved historical c5eb3297626f3024 timing.go:22 unknown-timing fallback emptied.

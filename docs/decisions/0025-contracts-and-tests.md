@@ -2,6 +2,10 @@
 
 Status: accepted
 
+[0130](0130-survivor-risk-acceptance.md) makes a scoped exception to human-only
+acceptance of the remaining mutation-survivor batch. Other approval rules stay
+in force.
+
 Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20). Builds on [0015](0015-functional-core-and-imperative-shell.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 
 ## Context

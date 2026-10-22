@@ -1,0 +1,19 @@
+# Agent-approved risk acceptance, 2026-10-22. Authority: docs/decisions/0130-survivor-risk-acceptance.md.
+# Delegation was human-authorized; individual survivors were NOT human-approved.
+# Judge disposition: accept deferred testing risk to prioritize app delivery; NOT proof of equivalence.
+# Baseline: 69e65b8; runtime component source unchanged since the available reports.
+# Evidence: historical inventory only; source identities not refreshed after ordinal-key fix.
+# These accepted risks are nonblocking, but historical keys remain inactive to avoid wrong suppression.
+# agent-approved historical e67098480492ec81 copy.go:4 items nil check -> false.
+# agent-approved historical bd780e7293cd126a copy.go:4 nil-check block emptied.
+# agent-approved historical 3c4427092789fe1d copy.go:19 entries nil check -> false.
+# agent-approved historical fa6021faddd6e0da copy.go:19 nil-check block emptied.
+# agent-approved historical 5dd15c9e0730646a section.go:11 templates nil check -> false.
+# agent-approved historical a078da1075acbb8e section.go:11 nil-check block emptied.
+# agent-approved historical d92fdafcf2196545 unknown.go:4 entries nil check -> false.
+# agent-approved historical 73d13746e25a4a5e unknown.go:4 nil-check block emptied.
+# agent-approved historical 90d04f8bcb0cf2fd instantiator.go:15 len(problems)>0 -> !=0.
+# agent-approved historical c53d3039420701d1 problem.go:17 count>1 -> !=1; every count is >=1.
+# agent-approved historical e8b6ace17cbff125 problem.go:38 name!=empty -> >empty.
+# agent-approved historical f3f31d5482a32535 section.go:16 < -> <=; duplicate ids already refused.
+# agent-approved historical d755eaaf4fe7ac99 problem.go:27 duplicate-id message prefix removed.

@@ -12,7 +12,9 @@ not a model dependency in the shipped product.
 ## Read the authority
 
 Read `AGENTS.md` and the complete
-[behavior judgment decision](../../../docs/decisions/0100-behavior-judgment.md).
+[behavior judgment decision and product principles](../../../docs/decisions/0100-behavior-judgment.md),
+[ambiguous-plan rule](../../../docs/decisions/0110-reject-ambiguous-plans.md),
+and [default-acceptance rule](../../../docs/decisions/0120-defaults-require-acceptance.md).
 Then read the contracts and accepted decisions relevant to the question.
 Resolve paths from the repository root or this skill's canonical directory,
 not from a process's working directory. Vendor-specific discovery paths may
