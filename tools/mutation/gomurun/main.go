@@ -14,6 +14,8 @@ const (
 	exitProblem = 1
 	exitUsage   = 2
 
+	gomuGraceSeconds = 10
+
 	reportFile  = "mutation-report.json"
 	historyFile = ".gomu_history.json"
 )
@@ -25,7 +27,7 @@ func main() {
 func run(args []string) int {
 	options := flag.NewFlagSet("gomurun", flag.ContinueOnError)
 	workers := options.Int("workers", 1, "mutants tested at once")
-	timeout := options.Int("timeout", 120, "seconds a test run may take for one mutant")
+	timeout := options.Int("timeout", 30, "seconds a test run may take for one mutant")
 	gomu := options.String("gomu", ".direnv/bin/gomu", "path of the gomu program")
 	if options.Parse(args) != nil || options.NArg() != 1 {
 		fmt.Fprintln(os.Stderr, "usage: gomurun [--workers N] [--timeout S] <noun>/<role>")
@@ -64,14 +66,17 @@ func contractPathFrom(component string) string {
 	return strings.Repeat("../", depth) + "contracts/" + component + "/"
 }
 
-func runGomu(gomu string, component string, workers int, timeout int) error {
-	arguments := []string{
+func gomuArguments(gomu string, component string, workers int, timeout int) []string {
+	return []string{
 		"-n", "10", gomu, "run", "./internal/" + component,
 		"--incremental=false", "--threshold", "0", "--output", "json",
-		"--workers", fmt.Sprint(workers), "--timeout", fmt.Sprint(timeout),
-		"--", "-count=1", contractPathFrom(component),
+		"--workers", fmt.Sprint(workers), "--timeout", fmt.Sprint(timeout + gomuGraceSeconds),
+		"--", "-count=1", fmt.Sprintf("-timeout=%ds", timeout), contractPathFrom(component),
 	}
-	command := exec.Command("nice", arguments...)
+}
+
+func runGomu(gomu string, component string, workers int, timeout int) error {
+	command := exec.Command("nice", gomuArguments(gomu, component, workers, timeout)...)
 	command.Env = append(os.Environ(), "GOFLAGS="+limitedGoFlags(os.Getenv("GOFLAGS")))
 	command.Stdout = os.Stderr
 	command.Stderr = os.Stderr

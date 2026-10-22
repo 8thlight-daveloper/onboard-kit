@@ -109,3 +109,22 @@ func TestAReportThatIsNotJSONIsRefused(t *testing.T) {
 		t.Fatalf("got %v", err)
 	}
 }
+
+func TestTheTestBinaryGetsItsOwnTimeoutSoAHungMutantCannotOutliveTheRun(t *testing.T) {
+	arguments := gomuArguments(".direnv/bin/gomu", "record/joiner", 1, 30)
+	want := []string{"--", "-count=1", "-timeout=30s", "../../../contracts/record/joiner/"}
+	tail := arguments[len(arguments)-len(want):]
+	if strings.Join(tail, " ") != strings.Join(want, " ") {
+		t.Fatalf("test flags are %v, want %v", tail, want)
+	}
+}
+
+func TestGomuWaitsLongerThanTheTestBinaryDoes(t *testing.T) {
+	arguments := gomuArguments(".direnv/bin/gomu", "secrets", 2, 30)
+	joined := strings.Join(arguments, " ")
+	for _, want := range []string{"--timeout 40", "--workers 2", "./internal/secrets", "--incremental=false", "--output json"} {
+		if !strings.Contains(joined, want) {
+			t.Errorf("arguments %q lack %q", joined, want)
+		}
+	}
+}
