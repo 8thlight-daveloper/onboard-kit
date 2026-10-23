@@ -1,6 +1,6 @@
 # 0340. Guided recipient preparation and reviewed save
 
-Status: accepted by agent judgment; contract authored; implementation pending
+Status: accepted by agent judgment; recipient-only implementation available
 
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),
@@ -183,7 +183,7 @@ filesystem context, not acceptance of a question default.
 
 The [four-part driver contract](../../contracts/preparation/guide/contract.md)
 specifies the recipient-only interaction. Independent binary data scenarios
-and a separately authored implementation follow. Pin exact prompt grammar, input limits,
+and a separately authored implementation are available. Pin exact prompt grammar, input limits,
 literal display, cancellation, save consent, scoped preservation and truthful
 commit/cleanup reports. Use frozen literal payloads, not the product encoder
 to calculate expected saved bytes. Test real dispatch separately.

@@ -1,13 +1,8 @@
 package guide_test
 
 import (
-	"io"
-
 	contract "onboard-kit/contracts/preparation/guide"
+	implementation "onboard-kit/internal/preparation/guide"
 )
 
-type stubCommand struct{}
-
-func (stubCommand) Run([]string, io.Reader, io.Writer, io.Writer) int { return 0 }
-
-func newCommand() contract.Command { return stubCommand{} }
+func newCommand() contract.Command { return implementation.New() }

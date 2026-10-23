@@ -9,8 +9,10 @@ onboarder-owned preparation file to the invitation. Explain its purpose and
 ownership alongside the plan and the newcomer's record. The
 [guided preparation flow](../decisions/0150-onboarding-library-and-preparation-flow.md#guide-invitation-preparation)
 uses the same preparation data as later updates. Preparation editing and
-[explicit export](invitation-export.md) are implemented; guided authoring remains
-planned. The pure [preparation reviewer](../decisions/0330-preparation-review.md)
+[explicit export](invitation-export.md) are implemented. A
+[recipient guide](preparation-command.md#review-before-saving) stages details
+before saving; guided arrangements remain planned. The pure
+[preparation reviewer](../decisions/0330-preparation-review.md)
 combines validation, blockers and preview; it is not a new command, readiness gate
 or save operation.
 

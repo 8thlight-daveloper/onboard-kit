@@ -1,0 +1,59 @@
+name: prepare-guide-scoped-repair
+description: A refused local form can repair two stale contacts together while preserving unrelated stale arrangements under an explicit root.
+source: docs/decisions/0190-incremental-preparation-repair.md; docs/decisions/0340-guided-preparation-save.md; contracts/preparation/guide/contract.md; acceptance/testdata/guide/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one, --root, workspace]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+      workspace/records/newcomer-one/preparation.obk.yaml: |
+        schemaVersion: 1
+        kind: preparation
+        account: newcomer-one
+        planId: plan-one
+        recipient:
+          name: Example newcomer
+          manager: departed-manager
+          buddy: departed-buddy
+        arrangements:
+          - id: retained-stale-support
+            section: removed-section
+            kind: pairing
+            status: pending
+        x-retained:
+          purpose: Keep unrelated stale work
+      workspace/records/newcomer-one/record.obk.yaml: "DO_NOT_PARSE_OR_REPAIR: [\n"
+      workspace/unrelated.yaml: "UNRELATED_WORKSPACE_WORK\n"
+    stdin: |
+      recipient
+      5
+      change
+      lead-one
+      apply
+      7
+      change
+      buddy-one
+      apply
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: Recipient not applied.}
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, workspace/records/newcomer-one/record.obk.yaml, workspace/unrelated.yaml]
+      files:
+        workspace/records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide/repaired-recipient.yaml}
+        records: {absent: true}
+        invitation.zip: {absent: true}
+  - run: [onboard-kit, prepare, guide, --root, workspace, --account, newcomer-one, --plan, plan.yaml]
+    stdin: |
+      review
+      cancel
+    expect:
+      exit: 0
+      stdout: {contains: 'Onboarder blockers: Not evaluated.'}
+      stderr:
+        json: {status: cancelled, code: guide.cancelled, message: Cancelled. No files changed.}
+      unchanged: [plan.yaml, workspace/records/newcomer-one/preparation.obk.yaml, workspace/records/newcomer-one/record.obk.yaml, workspace/unrelated.yaml]
+      files:
+        records: {absent: true}

@@ -1,0 +1,47 @@
+name: prepare-guide-help-without-files
+description: Exact guide dispatch provides help and argument refusals without touching absent source or destination paths.
+source: docs/decisions/0340-guided-preparation-save.md; contracts/preparation/guide/contract.md
+steps:
+  - run: [onboard-kit, prepare, guide, --help, --plan, missing.yaml, --account, newcomer-one, --root, absent-root]
+    stdin: |
+      review
+      save
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit prepare guide --plan FILE --account ID [--root DIR]
+
+          Stage recipient details, review the draft, and explicitly save preparation.
+          The plan and onboardee record are not changed. Export is a separate command.
+      stderr: {equals: ""}
+      files:
+        missing.yaml: {absent: true}
+        absent-root: {absent: true}
+        records: {absent: true}
+  - run: [onboard-kit, prepare, guide, -h, --unknown, --account, ignored]
+    expect:
+      exit: 0
+      stdout: {contains: 'Usage: onboard-kit prepare guide --plan FILE --account ID [--root DIR]'}
+      stderr: {equals: ""}
+      files:
+        records: {absent: true}
+  - run: [onboard-kit, prepare, guide, --plan, missing.yaml, --account, newcomer-one, --help]
+    stdin: |
+      review
+      save
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json: {status: refused, code: guide.usage, message: 'Use prepare guide --plan FILE --account ID [--root DIR].'}
+      files:
+        records: {absent: true}
+  - run: [onboard-kit, prepare, guide, --plan, missing.yaml, --account, newcomer-one, --account, newcomer-two]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json: {status: refused, code: guide.usage, message: 'Use prepare guide --plan FILE --account ID [--root DIR].'}
+      files:
+        records: {absent: true}

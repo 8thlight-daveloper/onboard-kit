@@ -1,7 +1,7 @@
 # Preparing one person's onboarding
 
 Status: implemented, experimental. Explicit [invitation export](invitation-export.md)
-is available; the guided invitation flow remains planned.
+is available. Recipient guidance is implemented; guided arrangements remain planned.
 
 Preparation is the onboarder's file for one person. It holds supplied details
 and arrangements, not the newcomer's answers or proof that they completed work.
@@ -27,6 +27,32 @@ Show prints JSON. Recipient information and arrangements are separate from the
 record's outcomes. A missing record is normal. A malformed or mismatched record
 refuses the combined view, but does not block a preparation edit. Show writes no
 files and does not display private answers or preserved unknown data.
+
+## Review before saving
+
+```sh
+onboard-kit prepare guide --plan plan.obk.yaml --account newcomer-one
+```
+
+The guide stages recipient details in memory. Choose recipient to edit the nine
+fields, then apply the complete form to the draft. Each field offers keep,
+change, clear and back. Empty input selects nothing. Values such as save and q
+are literal text at a value prompt; directory fields require exact declared IDs.
+A refused form stays editable, including corrections already entered.
+
+Choose review to see old and proposed values, preparation problems, organizational
+blockers and the actual first-steps preview. A preview does not certify readiness.
+Only save at that complete Review prompt publishes preparation. Cancel or EOF
+before save discards the draft without creating files. An unchanged existing
+preparation keeps its original bytes and inode, even when its YAML is not canonical.
+If either source changed during editing, reload and review before saving.
+
+The guide reads no record and leaves arrangements and unknown preparation data
+unchanged. It does not export an invitation or select general-help contacts;
+export remains separate. Recipient facts appear intentionally on screen and may
+remain in terminal scrollback. Restrictive access controls are preserved, or the
+save refuses rather than silently weakening them. Use the explicit commands below
+to arrange support, then export with an explicitly selected help route.
 
 ## Supply recipient details
 

@@ -1,0 +1,66 @@
+name: prepare-guide-new-literal-values
+description: Explicit reviewed save creates only preparation and treats menu-looking field values literally.
+source: docs/decisions/0340-guided-preparation-save.md; contracts/preparation/guide/contract.md; acceptance/testdata/guide/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+      unrelated.yaml: "UNRELATED_WORK\n"
+    stdin: |
+      recipient
+      1
+      change
+      save
+      6
+      change
+      owner-one
+      9
+      change
+      q
+      apply
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'Name: "" -> "save"'}
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, unrelated.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide/new-literal-values.yaml}
+        records/newcomer-one/record.obk.yaml: {absent: true}
+        invitation.zip: {absent: true}
+        first-steps.md: {absent: true}
+  - run: [onboard-kit, prepare, guide, --account, newcomer-one, --plan, plan.yaml]
+    stdin: |
+      recipient
+      1
+      keep
+      9
+      keep
+      apply
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'Time zone: "q" -> "q"'}
+      stderr:
+        json: {status: unchanged, code: guide.unchanged, message: Preparation unchanged. Original bytes preserved.}
+      unchanged: [plan.yaml, unrelated.yaml, records/newcomer-one/preparation.obk.yaml]
+      files:
+        records/newcomer-one/record.obk.yaml: {absent: true}
+        invitation.zip: {absent: true}
+  - run: [onboard-kit, prepare, guide, --account, newcomer-two, --plan, plan.yaml]
+    stdin: |
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'Question: "plan.organization"'}
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, unrelated.yaml, records/newcomer-one/preparation.obk.yaml]
+      files:
+        records/newcomer-two/preparation.obk.yaml: {same-as: acceptance/testdata/guide/new-identity-only.yaml}
+        records/newcomer-two/record.obk.yaml: {absent: true}
+        invitation.zip: {absent: true}

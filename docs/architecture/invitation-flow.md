@@ -1,7 +1,7 @@
 # Invitation and preparation flow
 
-Status: preparation editing and explicit export implemented; guided authoring,
-confirmed import and record-backed startup remain planned.
+Status: preparation editing, recipient guidance and explicit export implemented;
+guided arrangements, confirmed import and record-backed startup remain planned.
 
 Decisions [0140](../decisions/0140-person-specific-preparation.md) and
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) establish
@@ -91,16 +91,16 @@ exclusive archive publication. The command and independent binary scenarios
 are implemented; see [invitation export](../reference/invitation-export.md).
 It does not settle confirmed import or preparation-answer bindings.
 
-Build the guided flow using the same preparation format and editor, then add
-an explicit reviewed save. The next bounded component is the read-only
-[preparation reviewer](../decisions/0330-preparation-review.md): keep validation
+The recipient guide uses the same preparation format and editor with an
+explicit reviewed save. The read-only
+[preparation reviewer](../decisions/0330-preparation-review.md) keeps validation
 problems, actual onboarder blockers and the real first-steps preview separate,
-without a ready flag or writes. Its contract and pure implementation are available;
-the guided driver remains pending. [0340](../decisions/0340-guided-preparation-save.md)
+without a ready flag or writes. Its contract and pure implementation are available.
+[0340](../decisions/0340-guided-preparation-save.md)
 specifies a recipient-only text interaction with unsaved forms, explicit review
 and one preparation save. Existing arrangements are preserved, not generated or
-edited by that first slice. Its four-part driver contract is authored;
-implementation and independently scripted binary scenarios remain pending.
+edited by that first slice. Its four-part driver contract, implementation and
+independently scripted binary scenarios are available.
 Guided arrangements follow separately. The implemented
 archive codecs already include preparation under 0240's bounded-entry, size and
 untrusted-path rules; do not create a second envelope or speculative publisher.

@@ -1,0 +1,42 @@
+name: prepare-guide-unchanged-bytes
+description: Reviewed no-op preserves noncanonical source bytes even when an empty arrangement cannot be encoded.
+source: docs/decisions/0340-guided-preparation-save.md; contracts/preparation/guide/contract.md; acceptance/testdata/guide/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+      records/newcomer-one/preparation.obk.yaml: |-
+        # Retain this exact hand-edited file and its missing final newline.
+        schemaVersion: 1
+        kind: preparation
+        account: newcomer-one
+        planId: plan-one
+        recipient: {name: Example newcomer}
+        arrangements: [{}]
+        x-held: {second: 2, first: [a, b]}
+      records/newcomer-one/record.obk.yaml: "NOT_A_PARSEABLE_RECORD: [\n"
+    stdin: |
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'Onboarder blockers: Not evaluated.'}
+      stderr:
+        json: {status: unchanged, code: guide.unchanged, message: Preparation unchanged. Original bytes preserved.}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]
+      files:
+        invitation.zip: {absent: true}
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    stdin: |
+      recipient
+      1
+      keep
+      apply
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'First steps: Not evaluated.'}
+      stderr:
+        json: {status: unchanged, code: guide.unchanged, message: Preparation unchanged. Original bytes preserved.}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]
