@@ -28,8 +28,8 @@ accounts.
 
 ### 1. Preparation format and ownership
 
-The preparation model and validator are implemented. Serializer contracts and
-implementation remain pending. See the [preparation format](../reference/preparation-format.md).
+The preparation model and validator are implemented. Serializer contracts are
+staged; their implementation remains pending. See the [preparation format](../reference/preparation-format.md).
 Define the person-specific artifact before adding personalized questions to
 the existing plan editor. Specify identity, references to the plan and account,
 the location beside the record, and which values are assignments rather than
