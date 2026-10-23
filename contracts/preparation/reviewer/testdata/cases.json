@@ -1,0 +1,826 @@
+[
+  {
+    "name": "valid-baseline-real-bootstrap",
+    "source": "contracts/firststeps/assembler/testdata/cases.json original-plan-real-bootstrap-renderer plus literal bootstrap.md; current reviewer composition",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {
+          "kind": "contact",
+          "id": "helper"
+        },
+        {
+          "kind": "contact",
+          "id": "helper"
+        }
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "answers": {
+        "plan": {
+          "organization": "Example organization"
+        },
+        "sections": {
+          "group": {
+            "ready": true
+          },
+          "access": {
+            "owner": "owner"
+          }
+        }
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "helper",
+            "name": "Example helper",
+            "slack": "@helper",
+            "email": "ignored@example.invalid"
+          },
+          {
+            "id": "owner",
+            "name": "Example owner",
+            "email": "owner@example.invalid"
+          }
+        ]
+      },
+      "sections": [
+        {
+          "id": "gate",
+          "enabled": false,
+          "body": "PRIVATE unmarked gate"
+        },
+        {
+          "id": "group",
+          "title": "PRIVATE parent",
+          "body": "PRIVATE parent body",
+          "variables": [
+            {
+              "name": "ready",
+              "type": "boolean"
+            },
+            {
+              "name": "secret"
+            }
+          ],
+          "summary": "PRIVATE $secret"
+        },
+        {
+          "id": "access",
+          "parent": "group",
+          "bootstrap": true,
+          "title": "Public access",
+          "includeIf": {
+            "all": [
+              {
+                "question": "group.ready",
+                "answer": {
+                  "is": true
+                }
+              },
+              {
+                "section": "gate",
+                "enabled": false
+              }
+            ]
+          },
+          "variables": [
+            {
+              "name": "owner",
+              "type": "contact"
+            }
+          ],
+          "body": "Ask $owner.",
+          "steps": [
+            {
+              "name": "Request access",
+              "run": [
+                "tool",
+                "--check"
+              ],
+              "checks": [
+                {
+                  "run": [
+                    "tool",
+                    "verify"
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone",
+      "recipient": {
+        "onboardingOwner": "owner"
+      }
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "bootstrap.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "missing-optional-fields-owner-and-help-remain-previewable",
+    "source": "contracts/firststeps/assembler/testdata/minimal.md; preparation validator optional-field rules; no export readiness in reviewer",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone"
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "required-onboarder-default-remains-blocker-with-guide",
+    "source": "ADR0120; question finder required-default rule; firststeps minimal guide does not accept organization default",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "organization",
+          "required": true,
+          "audience": "onboarder",
+          "default": "PRIVATE unaccepted organization"
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [
+      "plan.organization"
+    ],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "explicit-deferred-onboarder-satisfies-existing-blocker-rule",
+    "source": "ADR0035; actual finder blocker rule; firststeps minimal organization source excludes Deferred",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "organization",
+          "required": true,
+          "audience": "onboarder"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "organization": {
+            "deferred": true
+          }
+        }
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "required-onboardee-question-is-not-onboarder-blocker",
+    "source": "ADR0055; actual finder audience projection; firststeps minimal guide independent of personal answer",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "personal_choice",
+          "required": true,
+          "audience": "onboardee"
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "wrong-identity-stops-before-blockers-help-and-layout",
+    "source": "preparation validator identity order account then planId; reviewer phase1 prevents later output",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {
+          "kind": "contact",
+          "id": "PRIVATE unknown help"
+        }
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "resultsPath": "../PRIVATE",
+      "variables": [
+        {
+          "name": "required_route",
+          "required": true
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "PRIVATE-other",
+      "planId": "PRIVATE-other-plan"
+    },
+    "preparationProblems": [
+      {
+        "code": "preparation.account-mismatch",
+        "severity": "error",
+        "path": "account"
+      },
+      {
+        "code": "preparation.plan-mismatch",
+        "severity": "error",
+        "path": "planId"
+      }
+    ],
+    "onboarderBlockers": [],
+    "golden": "",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "invalid-arrangement-visible-without-repair-or-later-output",
+    "source": "preparation validator arranged pairing completeness order owner contacts reference targetDate; reviewer phase1",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {
+          "kind": "contact",
+          "id": "PRIVATE unknown help"
+        }
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "required_route",
+          "required": true
+        }
+      ],
+      "sections": [
+        {
+          "id": "work",
+          "title": "Work",
+          "summary": "Work context"
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone",
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "work",
+          "kind": "pairing",
+          "status": "arranged",
+          "targetDate": "2026-02-30",
+          "note": "PRIVATE retained note"
+        }
+      ]
+    },
+    "preparationProblems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "severity": "error",
+        "path": "arrangements[0].owner"
+      },
+      {
+        "code": "preparation.incomplete-arrangement",
+        "severity": "error",
+        "path": "arrangements[0].contacts"
+      },
+      {
+        "code": "preparation.incomplete-arrangement",
+        "severity": "error",
+        "path": "arrangements[0].reference"
+      },
+      {
+        "code": "preparation.date",
+        "severity": "error",
+        "path": "arrangements[0].targetDate"
+      }
+    ],
+    "onboarderBlockers": [],
+    "golden": "",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "ordered-explicit-help-with-original-plan-team-unchanged",
+    "source": "ADR0280 firststeps general-help order/dedup and preparation-team role override; original-plan Bootstrap and finder remain blue; guide derived literally from minimal.md",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {
+          "kind": "contact",
+          "id": "extra"
+        },
+        {
+          "kind": "role",
+          "id": "support"
+        },
+        {
+          "kind": "contact",
+          "id": "extra"
+        },
+        {
+          "kind": "contact",
+          "id": "blue-helper"
+        }
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "workspace",
+          "type": "team",
+          "required": true
+        }
+      ],
+      "answers": {
+        "plan": {
+          "workspace": "blue"
+        },
+        "sections": {
+          "access": {
+            "support_contact": "support"
+          }
+        }
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "extra",
+            "name": "Extra helper",
+            "slack": "@extra"
+          },
+          {
+            "id": "blue-helper",
+            "name": "Blue helper",
+            "slack": "@blue"
+          },
+          {
+            "id": "red-helper",
+            "name": "Red helper",
+            "slack": "@red"
+          }
+        ],
+        "roles": [
+          {
+            "id": "support",
+            "name": "Support",
+            "holders": [
+              "blue-helper"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "blue",
+            "name": "Blue",
+            "holders": {
+              "support": [
+                "blue-helper"
+              ]
+            }
+          },
+          {
+            "id": "red",
+            "name": "Red",
+            "holders": {
+              "support": [
+                "red-helper"
+              ]
+            }
+          }
+        ]
+      },
+      "sections": [
+        {
+          "id": "red",
+          "title": "PRIVATE team-injected activity",
+          "summary": "PRIVATE red content",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.workspace",
+                "answer": {
+                  "is": "red"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "access",
+          "title": "Original blue activity",
+          "summary": "Ask $support_contact.",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.workspace",
+                "answer": {
+                  "is": "blue"
+                }
+              }
+            ]
+          },
+          "variables": [
+            {
+              "name": "support_contact",
+              "type": "role"
+            }
+          ]
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone",
+      "recipient": {
+        "team": "red"
+      }
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "ordered-team.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "guide-help-errors-preserve-independent-blockers-and-order",
+    "source": "question finder declared candidate order; firststeps explicit invalid distinct help indexes; no blocker-first short circuit",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {
+          "kind": "contact",
+          "id": "PRIVATE help"
+        },
+        {
+          "kind": "contact",
+          "id": "PRIVATE help"
+        },
+        {
+          "kind": "role",
+          "id": "PRIVATE role"
+        }
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "zeta",
+          "required": true
+        },
+        {
+          "name": "personal",
+          "required": true,
+          "audience": "onboardee"
+        },
+        {
+          "name": "alpha",
+          "required": true
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [
+      "plan.zeta",
+      "plan.alpha"
+    ],
+    "golden": "",
+    "firstStepsProblems": [
+      {
+        "code": "firststeps.help-reference",
+        "severity": "error",
+        "message": "Choose an existing contact or role for this help item, or remove it.",
+        "detail": {
+          "field": "generalHelp",
+          "item": "0"
+        },
+        "question": "",
+        "section": ""
+      },
+      {
+        "code": "firststeps.help-reference",
+        "severity": "error",
+        "message": "Choose an existing contact or role for this help item, or remove it.",
+        "detail": {
+          "field": "generalHelp",
+          "item": "2"
+        },
+        "question": "",
+        "section": ""
+      }
+    ]
+  },
+  {
+    "name": "guide-layout-error-preserves-independent-blockers",
+    "source": "firststeps actual locator results-path guard; reviewer does not invent its own path/readiness gate",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {
+          "name": "zeta",
+          "required": true
+        },
+        {
+          "name": "personal",
+          "required": true,
+          "audience": "onboardee"
+        },
+        {
+          "name": "alpha",
+          "required": true
+        }
+      ],
+      "resultsPath": "../PRIVATE/{account}/record.yaml"
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [
+      "plan.zeta",
+      "plan.alpha"
+    ],
+    "golden": "",
+    "firstStepsProblems": [
+      {
+        "code": "preparation.results-path",
+        "severity": "error",
+        "path": "resultsPath"
+      }
+    ]
+  },
+  {
+    "name": "successful-guide-warning-stays-separate-from-preparation-validity",
+    "source": "contracts/firststeps/assembler/testdata/fragments.json bootstrap-warning-and-onboardee-placeholder-propagate; exact literal fragment inserted into minimal.md",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "sections": [
+        {
+          "id": "private",
+          "title": "PRIVATE",
+          "summary": "PRIVATE $secret",
+          "variables": [
+            {
+              "name": "secret"
+            }
+          ]
+        },
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "summary": "Use $account.",
+          "owner": "Onboarding owner",
+          "timing": "week-one",
+          "variables": [
+            {
+              "name": "account",
+              "description": "Account name",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "warning.md",
+    "firstStepsProblems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "access.account",
+        "section": "access",
+        "detail": {
+          "audience": "onboardee"
+        }
+      }
+    ]
+  },
+  {
+    "name": "deferred-bootstrap-gap-is-warning-not-onboarder-blocker",
+    "source": "question finder Deferred satisfying rule; document assembler normative gaps-deferred.md marker and firststeps minimal wrapper literal composition",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public access",
+          "summary": "Use $setup.",
+          "owner": "Onboarding owner",
+          "timing": "week-one",
+          "bootstrap": true,
+          "variables": [
+            {
+              "name": "setup",
+              "description": "Setup route",
+              "required": true,
+              "audience": "onboarder"
+            }
+          ]
+        }
+      ],
+      "answers": {
+        "sections": {
+          "access": {
+            "setup": {
+              "deferred": true
+            }
+          }
+        }
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "deferred.md",
+    "firstStepsProblems": [
+      {
+        "code": "gap.deferred",
+        "severity": "warning",
+        "question": "access.setup",
+        "section": "access",
+        "detail": {
+          "audience": "onboarder"
+        }
+      }
+    ]
+  },
+  {
+    "name": "all-declared-context-includes-inactive-arrangement-target",
+    "source": "preparation validator trusts all declared contact/section IDs including inactive; pending arrangements may be incomplete; minimal guide",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "directory": {
+        "contacts": [
+          {
+            "id": "known",
+            "name": "Known contact"
+          }
+        ]
+      },
+      "sections": [
+        {
+          "id": "inactive-work",
+          "title": "Inactive work",
+          "summary": "Held",
+          "enabled": false
+        }
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone",
+      "recipient": {
+        "manager": "known",
+        "buddy": "known"
+      },
+      "arrangements": [
+        {
+          "id": "later-pairing",
+          "section": "inactive-work",
+          "kind": "pairing",
+          "status": "pending",
+          "note": "PRIVATE pending assignment"
+        }
+      ],
+      "unknownFields": {
+        "held": {
+          "values": [
+            "PRIVATE unknown",
+            1,
+            null
+          ]
+        }
+      }
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  },
+  {
+    "name": "private-optional-recipient-and-unknown-data-do-not-become-guide-context",
+    "source": "ADRs0140/0160/0180 ownership, data minimization and honest first-use meaning; existing firststeps literal minimal.md",
+    "context": {
+      "account": "newcomer"
+    },
+    "plan": {
+      "id": "planone",
+      "unknownFields": {
+        "firstOpenedAt": "PRIVATE fake event",
+        "outcomes": "PRIVATE fake outcomes"
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone",
+      "recipient": {
+        "name": "PRIVATE recipient",
+        "companyEmail": "private@example.invalid",
+        "plannedStartDate": "2027-02-01",
+        "workLocation": "remote",
+        "timeZone": "PRIVATE zone"
+      },
+      "unknownFields": {
+        "distributionUrl": "PRIVATE fake location"
+      }
+    },
+    "preparationProblems": [],
+    "onboarderBlockers": [],
+    "golden": "minimal.md",
+    "firstStepsProblems": []
+  }
+]

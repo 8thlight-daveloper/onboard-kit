@@ -81,7 +81,8 @@ Stop at the first failed phase; return exactly empty text and no partial guide.
 Preparation validation is deliberately not a readiness check. Missing email,
 owner, general help, dates and arrangements do not alone refuse this preview.
 Successful output is previewable help, not permission to send or import an
-invitation. Sending still requires a future driver readiness contract.
+invitation. The separate [invitation export contract](../../command/invite/contract.md)
+owns export readiness; this preview does not perform those checks.
 
 ## Standard help and source values
 

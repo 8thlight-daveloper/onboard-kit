@@ -8,7 +8,10 @@ Each part has a source. **Tool** means fixed wording that the tool supplies. **P
 onboarder-owned preparation file to the invitation. Explain its purpose and
 ownership alongside the plan and the newcomer's record. The
 [guided preparation flow](../decisions/0150-onboarding-library-and-preparation-flow.md#guide-invitation-preparation)
-uses the same preparation data as later updates. Implementation is pending.
+uses the same preparation data as later updates. Preparation editing and
+[explicit export](invitation-export.md) are implemented; guided authoring remains
+planned. The [preparation reviewer](../decisions/0330-preparation-review.md) is the
+next read-only increment, not a readiness gate or save operation.
 
 | # | Part | What it says | Source |
 | -- | -- | -- | -- |

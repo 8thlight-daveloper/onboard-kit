@@ -1,6 +1,6 @@
 # 0300. Explicit invitation export
 
-Status: accepted by agent judgment; implementation pending
+Status: accepted by agent judgment; explicit export implemented
 
 Builds on [0055](0055-variable-audience.md),
 [0140](0140-person-specific-preparation.md),
@@ -137,6 +137,7 @@ Whole-binary scenarios must separately verify command dispatch and exact artifac
 operation. Component success alone does not establish those command boundaries.
 
 Import conflicts, recoverable multifile installation, confirmed identity,
-first-use recording, prepared answer bindings, guided selection and the full
-embedded catalog remain separate work. Do not advertise them as delivered by
+first-use recording, prepared answer bindings and guided selection remain
+separate work. Full embedded catalog availability is delivered separately under
+[0320](0320-embedded-catalog-availability.md). Do not advertise remaining flows as delivered by
 this export increment.

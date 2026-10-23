@@ -1,0 +1,8 @@
+{
+  "cases.json": "Every case has an individual source; ADR0330 fixes reviewer phases and four fields; preparation validator and question finder contracts supply independent diagnostic/blocker rules; existing firststeps normative fixtures supply guide content",
+  "minimal.md": "Exact copy of contracts/firststeps/assembler/testdata/minimal.md, existing lasting normative missing-source guide; not implementation output",
+  "bootstrap.md": "Exact copy of contracts/firststeps/assembler/testdata/bootstrap.md and the corresponding original-plan-real-bootstrap-renderer input from its cases.json; not implementation output",
+  "warning.md": "Existing normative minimal.md with its neutral empty-Bootstrap paragraph replaced by the exact literal fragment in contracts/firststeps/assembler/testdata/fragments.json, bootstrap-warning-and-onboardee-placeholder-propagate; no production call",
+  "deferred.md": "Existing normative minimal.md wrapper plus independently written literal Bootstrap gap table, heading, deferred summary and footer; marker spelling also pinned by contracts/document/assembler/testdata/gaps-deferred.md; no production call",
+  "ordered-team.md": "Existing normative minimal.md wrapper plus independently written exact blue-plan Bootstrap fragment and held contact/role/contact help list; ADR0280 current general-help ordering and preparation-team role override, without plan answer injection"
+}
