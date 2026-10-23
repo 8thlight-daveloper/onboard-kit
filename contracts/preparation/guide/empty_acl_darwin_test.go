@@ -3,6 +3,8 @@ package guide_test
 import (
 	"encoding/binary"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"reflect"
 	"runtime"
 	"strings"
@@ -174,6 +176,117 @@ func TestDarwinExplicitEmptyACLIsNotNoACL(t *testing.T) {
 			actual := readNativeFilesec(t, box.Prep)
 			if !actual.Present || actual.Count != 0 || actual.Flags != held.Flags || !reflect.DeepEqual(actual.Payload, held.Payload) {
 				t.Fatal("explicit zero-entry ACL was changed or silently replaced by absence")
+			}
+		})
+	}
+}
+
+func hasNativeReadGrant(t *testing.T, state nativeFilesec, requiredFlags uint32) bool {
+	t.Helper()
+	if !state.Present {
+		return false
+	}
+	for index := uint32(0); index < state.Count; index++ {
+		start := uint64(filesecHeaderSize) + uint64(index)*24
+		if start+24 > uint64(len(state.Payload)) {
+			t.Fatal("invalid native ACE bounds")
+		}
+		flags := binary.LittleEndian.Uint32(state.Payload[start+16 : start+20])
+		rights := binary.LittleEndian.Uint32(state.Payload[start+20 : start+24])
+		if flags&0xf == 1 && flags&requiredFlags == requiredFlags && rights&(1<<1) != 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func TestDarwinInheritedACLDoesNotBroadenPrivatePublication(t *testing.T) {
+	if runtime.GOARCH != "arm64" && runtime.GOARCH != "amd64" {
+		t.Skip("native filesec fixture specifies little-endian Darwin arm64 and amd64")
+	}
+	for _, mode := range []string{"existing-noop", "existing-change"} {
+		t.Run(mode, func(t *testing.T) {
+			box := newSandbox(t, "identity.yaml")
+			parent := filepath.Dir(box.Prep)
+			if err := os.MkdirAll(parent, 0o700); err != nil {
+				t.Fatal("cannot create owned ACL fixture parent")
+			}
+			value, err := exec.Command("/bin/chmod", "+a", "everyone allow read,file_inherit,directory_inherit", parent).CombinedOutput()
+			if err != nil {
+				t.Fatalf("cannot add inheritable ACL to owned parent: exit error; output bytes %d", len(value))
+			}
+			parentState := readNativeFilesec(t, parent)
+			if !hasNativeReadGrant(t, parentState, 1<<5) {
+				t.Fatal("owned parent lacks native file-inheritable read grant")
+			}
+			if !strings.Contains(strings.Join(darwinAccessEntries(t, parent), "\n"), "everyone allow") {
+				t.Fatal("native listing does not identify the configured everyone grant")
+			}
+			value, err = exec.Command("/bin/chmod", "-N", box.Prep).CombinedOutput()
+			if err != nil {
+				t.Fatalf("cannot remove ACL only from owned selected fixture: exit error; output bytes %d", len(value))
+			}
+			if readNativeFilesec(t, box.Prep).Present {
+				t.Fatal("selected fixture must start with no ACL")
+			}
+			control := filepath.Join(parent, "owned-inheritance-control")
+			writeFile(t, control, []byte("disposable inheritance control\n"))
+			controlState := readNativeFilesec(t, control)
+			if !hasNativeReadGrant(t, controlState, 1<<4) {
+				t.Fatal("native file creation did not inherit the read grant; fixture does not reach the concern")
+			}
+			controlInfo, err := os.Stat(control)
+			if err != nil || controlInfo.Mode().Perm() != 0o600 {
+				t.Fatal("native inheritance control must still have nominal mode0600")
+			}
+			if err := os.Remove(control); err != nil {
+				t.Fatal("cannot remove owned inheritance control")
+			}
+			parentState = readNativeFilesec(t, parent)
+			before := snapshot(t, box.Root)
+			info, err := os.Stat(box.Prep)
+			if err != nil {
+				t.Fatal("cannot observe original owned preparation")
+			}
+			input := "recipient\n1\nchange\nExample newcomer\napply\nreview\nsave\n"
+			if mode == "existing-noop" {
+				input = "review\nsave\n"
+			}
+			var stdout, stderr strings.Builder
+			exit := newCommand().Run(box.args(), strings.NewReader(input), &stdout, &stderr)
+			want := before
+			saved := false
+			if mode == "existing-noop" {
+				if exit != 0 {
+					t.Fatalf("inherited-parent no-op exit %d", exit)
+				}
+				assertReport(t, []byte(stderr.String()), "unchanged", "guide.unchanged")
+			} else if exit == 0 {
+				saved = true
+				assertReport(t, []byte(stderr.String()), "saved", "guide.saved")
+				want["records/newcomer/preparation.obk.yaml"] = string(fixture(t, "named.yaml"))
+			} else {
+				if exit != 1 {
+					t.Fatalf("inherited-parent save exit %d", exit)
+				}
+				assertReport(t, []byte(stderr.String()), "refused", "guide.commit")
+			}
+			if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, want) {
+				t.Fatal("inherited-parent publication changed unexpected files or left a temporary")
+			}
+			if actual := readNativeFilesec(t, parent); !reflect.DeepEqual(actual.Payload, parentState.Payload) {
+				t.Fatal("publication changed the owned parent ACL")
+			}
+			after, statErr := os.Stat(box.Prep)
+			if statErr != nil || after.Mode().Perm() != 0o600 {
+				t.Fatal("publication lost the selected mode0600 file")
+			}
+			replaced := !os.SameFile(info, after)
+			if replaced != saved {
+				t.Fatal("replacement/refusal/no-op inode result is inconsistent")
+			}
+			if readNativeFilesec(t, box.Prep).Present {
+				t.Fatal("publication silently granted an inherited ACL to an ACL-free preparation")
 			}
 		})
 	}
