@@ -104,6 +104,7 @@ flowchart TB
 | Preparation encoder | Turns a preparation value into canonical YAML bytes without changing it. Preserves representable values and unknown top-level data, reports unsupported values, and neither validates references nor writes files |
 | Preparation decoder | Turns preparation YAML bytes into a new value, enforcing file-kind and strict format guards. Preserves unknown root data, rejects duplicate raw keys and unknown fixed nested keys, and leaves semantic checks to the preparation validator |
 | Preparation editor | Returns preparation with an explicitly replaced recipient, replaced or appended arrangement, or removed arrangement. Validates the requested change after identity and ambiguity guards while preserving unrelated details. Does not certify invitation readiness |
+| Preparation locator | Derives a person's relative record path and fixed preparation sibling from explicit account and results-path strings. Rejects ambiguous layouts, unsafe lexical forms, collisions, and oversized expansion. Does not inspect the filesystem or authorize writes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
@@ -133,6 +134,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `preparation/encoder` | None. Reads every Preparation field and returns bytes and problems. Reads or changes no Plan or record fields |
 | `preparation/decoder` | None. Reads supplied bytes and creates Preparation and problems. Reads or changes no Plan or record fields |
 | `preparation/editor` | None. Reads Preparation and trusted context; returns only Recipient or Arrangements changed. Changes no Plan, record, identity, or unknown-field data |
+| `preparation/locator` | None. Reads only supplied resultsPath and account strings, returning relative paths and problems. Reads or changes no Plan, preparation body, record, environment, or filesystem |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
@@ -170,6 +172,8 @@ or drivers. Drivers perform semantic validation separately from serialization.
 The preparation editor may depend on the preparation validator, including its
 contract's context projection, and model, plus its own contract interface. It
 does not depend on codecs or drivers.
+The preparation locator depends only on its own contract interface and the
+domain model. It does not depend on other components or drivers.
 
 ## Commands
 

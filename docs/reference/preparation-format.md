@@ -16,9 +16,13 @@ records/<account>/record.obk.yaml
 
 Keep the record's existing configurable results path. Derive the preparation
 path from the same person's record directory, with a fixed sibling filename.
-If a custom record filename is that sibling filename, reject the collision.
-Never follow an arbitrary archive entry path. This is the path-policy direction;
-the preparation validator does not implement filesystem or archive safety.
+The [locator contract](../../contracts/preparation/locator/contract.md) and
+[0210](../decisions/0210-person-specific-preparation-paths.md) require an explicit
+account directory, bounded exact interpolation, and rejection of the sibling
+filename collision, including ASCII case variants. Legacy flat paths are not
+silently moved or renamed. Never follow an arbitrary archive entry path.
+Lexical location does not establish filesystem or archive safety; drivers must
+enforce those boundaries separately.
 
 ## Example
 
