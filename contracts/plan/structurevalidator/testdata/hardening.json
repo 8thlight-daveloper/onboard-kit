@@ -1,0 +1,71 @@
+[
+  {
+    "name": "leading-space-is-part-of-identity",
+    "source": "Exact held UTF-8 identity rule; no trimming before duplicate detection",
+    "plan": {"sections": [{"id": "a"}, {"id": " a"}]},
+    "expected": []
+  },
+  {
+    "name": "empty-after-target-is-unknown-not-omitted",
+    "source": "Empty After items are exact references, unlike empty Parent",
+    "plan": {"sections": [{"id": "a", "after": [""]}]},
+    "expected": [{"code": "plan.after-unknown", "severity": "error", "message": "Choose an existing section, or remove this after item.", "question": "", "section": "a", "detail": {"field": "after", "item": "0"}}]
+  },
+  {
+    "name": "empty-after-target-can-name-unique-empty-id",
+    "source": "Unique empty IDs remain ordinary exact After targets",
+    "plan": {"sections": [{"id": "a", "after": [""]}, {"id": ""}]},
+    "expected": []
+  },
+  {
+    "name": "unmarked-required-child-does-not-inherit-bootstrap",
+    "source": "ADR0260 direct bootstrap closure ignores Parent containment",
+    "plan": {"sections": [{"id": "a", "bootstrap": true, "requires": ["b"]}, {"id": "b", "parent": "a"}]},
+    "expected": [{"code": "plan.bootstrap-requires-nonbootstrap", "severity": "error", "message": "Make this prerequisite bootstrap, or correct the bootstrap claim.", "question": "", "section": "a", "detail": {"field": "requires", "item": "0"}}]
+  },
+  {
+    "name": "own-timing-does-not-repair-broken-ancestry",
+    "source": "Complete parent chain validity is required for effective legacy After grouping",
+    "plan": {"sections": [{"id": "p", "parent": "missing"}, {"id": "a", "parent": "p", "timing": "week-one", "after": ["b"]}, {"id": "b", "parent": "p", "timing": "week-one", "after": ["a"]}]},
+    "expected": [{"code": "plan.parent-unknown", "severity": "error", "message": "Choose an existing section as parent, or remove parent.", "question": "", "section": "p", "detail": {"field": "parent"}}]
+  },
+  {
+    "name": "root-empty-timing-is-anytime-not-week-one",
+    "source": "ADR0070/0260 empty root timing defaults to anytime for grouping",
+    "plan": {"sections": [{"id": "a", "after": ["b"]}, {"id": "b", "timing": "week-one", "after": ["a"]}]},
+    "expected": []
+  },
+  {
+    "name": "timing-grouping-preserves-case",
+    "source": "Nonempty held Timing compares exactly; enum authoring validation belongs elsewhere",
+    "plan": {"sections": [{"id": "a", "timing": "Week-One", "after": ["b"]}, {"id": "b", "timing": "week-one", "after": ["a"]}]},
+    "expected": []
+  },
+  {
+    "name": "timing-grouping-preserves-whitespace",
+    "source": "Nonempty held Timing is not normalized before legacy grouping",
+    "plan": {"sections": [{"id": "a", "timing": "week-one ", "after": ["b"]}, {"id": "b", "timing": "week-one", "after": ["a"]}]},
+    "expected": []
+  },
+  {
+    "name": "unknown-timing-is-not-coerced-to-anytime",
+    "source": "Structural contract does not validate or repair the Timing enum",
+    "plan": {"sections": [{"id": "a", "timing": "arbitrary", "after": ["b"]}, {"id": "b", "timing": "anytime", "after": ["a"]}]},
+    "expected": []
+  },
+  {
+    "name": "unread-content-is-nevertheless-preserved",
+    "source": "Pure component access boundary preserves nonempty ignored content as well as graph fields",
+    "plan": {"sections": [{"id": "a", "body": "private body stays held", "title": "Held title", "summary": "Held summary", "verification": "Held verification", "unknownFields": {"held": ["value"]}}]},
+    "expected": []
+  },
+  {
+    "name": "completed-cycle-does-not-swallow-another-cycle",
+    "source": "One exact SCC diagnostic per cycle; an edge to a completed component does not merge SCCs",
+    "plan": {"sections": [{"id": "a", "requires": ["b"]}, {"id": "b", "requires": ["a"]}, {"id": "c", "requires": ["d", "a"]}, {"id": "d", "requires": ["c"]}]},
+    "expected": [
+      {"code": "plan.requires-cycle", "severity": "error", "message": "Remove a requires edge within the listed cycle members.", "question": "", "section": "a", "detail": {"field": "requires", "members": "[\"a\",\"b\"]"}},
+      {"code": "plan.requires-cycle", "severity": "error", "message": "Remove a requires edge within the listed cycle members.", "question": "", "section": "c", "detail": {"field": "requires", "members": "[\"c\",\"d\"]"}}
+    ]
+  }
+]

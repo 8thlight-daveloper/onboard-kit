@@ -87,6 +87,7 @@ flowchart TB
 | -- | -- |
 | Question finder | Finds a plan's active questions, one per section variable plus with their answers, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks whether a plan's answers are acceptable: type, options, pattern, and the secrets check. Checks directory integrity and duplicate section IDs, variable names within each scope, nonempty step IDs within each section, and plan team declarations. Reads step IDs for that identity check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
+| Plan structure validator | Reports duplicate section identities, invalid Parent/Requires/After references, true graph cycles, impossible combined ordering, and contradictory bootstrap claims. Checks complete declarations before activity filtering; returns problems only. Runtime composition remains pending |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, check shapes, and `escalation` references, with warnings for thin contacts and single points of failure. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied, one section's switch changed, or one directory entry added, changed, or removed. An answer changes only `answers`, a switch only that section's `enabled`, and a directory edit only the directory. Removing an entry also clears the answers and holder entries that named it, and reports them. The plan it was given is not altered |
@@ -110,7 +111,7 @@ flowchart TB
 | Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
-| Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
+| Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers, and fills `contact`, `role`, and `team` variables from the directory and the answered team |
 | Section hasher | Computes the content hash recorded in a section's `source` |
@@ -130,6 +131,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `section/loader`, `plan/migrator`, `plan/decoder`, `plan/encoder`, `plan/instantiator`, `record/decoder`, `record/encoder`, `record/joiner`, `record/splitter`, `record/reconciler` | None. They take and return values, and a driver reads and writes the files |
 | `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
+| `plan/structurevalidator` | None. Reads only section ID, Parent, Requires, After, Bootstrap, and Timing; returns fresh problems without changing any plan field |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
 | `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
@@ -154,6 +156,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `plan/refresher` |  |  |  | W | W | W | W | W | W |
 | `question/finder` |  |  |  |  | R | R | R | R |  |
 | `plan/validator` |  |  |  |  | R | R | R | R |  |
+| `plan/structurevalidator` |  |  |  |  |  |  |  | R |  |
 | `section/selector` |  |  |  |  |  |  | R | R |  |
 | `section/resolver` |  |  |  |  | R |  | R | R |  |
 | `section/hasher` |  |  |  |  |  |  |  | R |  |
@@ -186,7 +189,12 @@ by each current contract until its independently tested replacement is integrate
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held
-Source.Hash comparison without changing the original template baseline. Runtime
+Source.Hash comparison without changing the original template baseline. The
+plan structure validator has a contract and independent implementation at
+position 1, with only the model as a project dependency. Runtime composition
+through the plan validator and scheduler remains pending. The section selector
+now applies Parent/Requires cascading against original answer and switch context,
+without adding verification gates or changing grouped reference order. Runtime
 recording integration remains pending. Requires format
 preservation precedes structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.

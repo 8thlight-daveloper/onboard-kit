@@ -1,0 +1,1035 @@
+[
+  {
+    "name": "removed-parent-cannot-leave-invisible-prerequisite-support",
+    "source": "ADR0260 repeated Parent and Requires removals must precede grouped rendering; a hidden orphan cannot support another root",
+    "plan": {"sections": [
+      {"id": "a", "requires": ["a1"]},
+      {"id": "a1", "parent": "a", "enabled": false},
+      {"id": "a2", "parent": "a"},
+      {"id": "z", "requires": ["a2"]},
+      {"id": "w"}
+    ]},
+    "active": ["w"]
+  },
+  {
+    "name": "unchecked-utf8-identities-sort-exactly",
+    "source": "Defensive exact UTF-8 identity scope; authoring slug validation is separate",
+    "plan": {"sections": [{"id": "猫"}, {"id": "a "}, {"id": ""}, {"id": "é"}, {"id": " a"}, {"id": "A"}, {"id": "\n"}]},
+    "active": ["", "\n", " a", "A", "a ", "é", "猫"]
+  },
+  {
+    "name": "no-requires-control",
+    "source": "ADR0260 additive optional Requires; existing grouped reference ordering unchanged",
+    "plan": {
+      "sections": [
+        {
+          "id": "b"
+        },
+        {
+          "id": "a"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "requires-does-not-topologically-sort-reference",
+    "source": "ADR0260 reference browsing is not action execution; present target does not reorder",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "missing-prerequisite-is-inactive",
+    "source": "ADR0260 repeatedly remove candidates whose required target is missing",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "disabled-prerequisite-cascades",
+    "source": "ADR0260 own held switch failure removes target and dependent",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "enabled": false
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "condition-excluded-prerequisite-cascades",
+    "source": "ADR0260 evaluate own condition then derive remaining candidates; unanswered condition removes target",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.flag",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "transitive-missing-chain",
+    "source": "ADR0260 fixed point, not one pass or declaration-order-sensitive recursion",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "requires": [
+            "d"
+          ]
+        },
+        {
+          "id": "d",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "every-required-target-counts",
+    "source": "ADR0260 every direct prerequisite must be active; one inactive target removes dependents transitively",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b",
+            "c"
+          ]
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c",
+          "enabled": false
+        },
+        {
+          "id": "d",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "b",
+      "z"
+    ]
+  },
+  {
+    "name": "parent-requires-child",
+    "source": "ADR0260 explicit valid mutual applicability support: Parent is not an execution edge",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "a1"
+          ]
+        },
+        {
+          "id": "a1",
+          "parent": "a"
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "a1",
+      "a2",
+      "z"
+    ]
+  },
+  {
+    "name": "required-child-off-removes-parent-and-other-children",
+    "source": "ADR0260 child failure propagates Requires to parent, then Parent to all children",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "a1"
+          ]
+        },
+        {
+          "id": "a1",
+          "parent": "a",
+          "enabled": false
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "required-parent-own-gate-still-counts",
+    "source": "ADR0260 valid mutual support cannot resurrect a parent with a failed own gate",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "a1"
+          ],
+          "enabled": false
+        },
+        {
+          "id": "a1",
+          "parent": "a"
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "child-prerequisite-failure-does-not-disable-unrelated-siblings",
+    "source": "ADR0260 dependency removal is directed, not whole-family failure",
+    "plan": {
+      "sections": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "a1",
+          "parent": "a",
+          "requires": [
+            "a3"
+          ]
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "a3",
+          "parent": "a",
+          "enabled": false
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "a2"
+    ]
+  },
+  {
+    "name": "cross-subtree-shared-target-cascade",
+    "source": "ADR0260 prerequisite activity crosses containment subtrees while independent parents/siblings remain",
+    "plan": {
+      "sections": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "a1",
+          "parent": "a",
+          "requires": [
+            "z"
+          ]
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "b1",
+          "parent": "b",
+          "requires": [
+            "z"
+          ]
+        },
+        {
+          "id": "z",
+          "enabled": false
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "a2",
+      "b"
+    ]
+  },
+  {
+    "name": "cross-subtree-reference-order-not-action-order",
+    "source": "ADR0260 concrete noncontiguous-action DAG still has ordinary contiguous grouped reference order",
+    "plan": {
+      "sections": [
+        {
+          "id": "b2",
+          "parent": "b",
+          "requires": [
+            "a2"
+          ]
+        },
+        {
+          "id": "a1",
+          "parent": "a",
+          "requires": [
+            "b1"
+          ]
+        },
+        {
+          "id": "a"
+        },
+        {
+          "id": "b1",
+          "parent": "b"
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "a1",
+      "a2",
+      "b",
+      "b1",
+      "b2"
+    ]
+  },
+  {
+    "name": "section-clause-uses-original-switch-map",
+    "source": "ADR0260 condition section clause tests own held switch, never derived Requires activity",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "c",
+          "includeIf": {
+            "all": [
+              {
+                "section": "a",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "active": [
+      "c"
+    ]
+  },
+  {
+    "name": "derived-inactive-is-not-switched-off",
+    "source": "ADR0260 missing prerequisite does not rewrite own switch to false for other section clauses",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "section": "a",
+                "enabled": false
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "child-clause-uses-original-own-switch",
+    "source": "ADR0070 and0260 Parent cascade does not rewrite child's held switch map",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "enabled": false
+        },
+        {
+          "id": "c",
+          "parent": "p"
+        },
+        {
+          "id": "a",
+          "includeIf": {
+            "all": [
+              {
+                "section": "c",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "active": [
+      "a"
+    ]
+  },
+  {
+    "name": "original-stored-answer-survives-filtering-context",
+    "source": "Existing selector unchecked condition behavior and0260 full-original-plan evaluation: do not drop stored answers of derived-inactive sections before evaluation",
+    "plan": {
+      "answers": {
+        "sections": {
+          "a": {
+            "q": "yes"
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing"
+          ],
+          "variables": [
+            {
+              "name": "q"
+            }
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "a.q",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "active": [
+      "b"
+    ]
+  },
+  {
+    "name": "unaccepted-default-does-not-enable-prerequisite",
+    "source": "ADR0120 default is not an answer; ADR0260 target and dependent activity cascade",
+    "plan": {
+      "variables": [
+        {
+          "name": "flag",
+          "default": "yes"
+        }
+      ],
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.flag",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "stored-accepted-answer-enables-prerequisite",
+    "source": "ADR0120 explicit stored acceptance is an answer; reference ordering still not Requires execution order",
+    "plan": {
+      "variables": [
+        {
+          "name": "flag",
+          "default": "no"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "flag": "yes"
+        }
+      },
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.flag",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b",
+      "z"
+    ]
+  },
+  {
+    "name": "after-is-not-an-activity-gate",
+    "source": "ADR0260 legacy hints never impose prerequisite activity; unknown/self After remains defensive selector behavior",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b",
+            "missing",
+            "a"
+          ]
+        },
+        {
+          "id": "b",
+          "enabled": false
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "z"
+    ]
+  },
+  {
+    "name": "omitted-after-hints-are-not-forwarded",
+    "source": "Existing grouped order computes After only among remaining siblings, never forwards hints of an omitted node",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "after": [
+            "c"
+          ],
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "c"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "bootstrap-neither-filters-nor-reorders",
+    "source": "ADR0250/0260 markers do not alter ordinary selector applicability/order; unchecked invalid Bootstrap closure belongs to structure validator",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "z"
+          ],
+          "bootstrap": true
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b",
+      "z"
+    ]
+  },
+  {
+    "name": "later-goal-prerequisite-stays-active",
+    "source": "ADR0260 planning goals do not block prerequisites or reorder the grouped reference view",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "timing": "week-one",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "timing": "days-31-to-90"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "repeated-targets-preserved-as-held",
+    "source": "ADR0110 repeated ordinary references and0260 field preservation: no list normalization or repeated obligations",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "c",
+            "b",
+            "c"
+          ],
+          "bootstrap": true,
+          "source": {
+            "template": "held",
+            "hash": "held"
+          }
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b",
+      "c"
+    ]
+  },
+  {
+    "name": "exact-target-id-not-trimmed",
+    "source": "ADR0260 exact identities: a different case or whitespace is a missing target, not repair",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            " b"
+          ]
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c",
+          "requires": [
+            "B"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "b",
+      "z"
+    ]
+  },
+  {
+    "name": "empty-target-is-exact-reference",
+    "source": "Contract-only unchecked valid unique empty identity: empty item in Requires names it, not omitted",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            ""
+          ]
+        },
+        {
+          "id": ""
+        }
+      ]
+    },
+    "active": [
+      "",
+      "a"
+    ]
+  },
+  {
+    "name": "defensive-requires-cycle-retains-greatest-set",
+    "source": "Agent-decided defensive termination under0260: malformed closed Requires cycle stays applicable when own gates pass; structure validator still rejects runtime graph",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "tail",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "b",
+      "tail"
+    ]
+  },
+  {
+    "name": "defensive-requires-cycle-broken-by-failed-gate",
+    "source": "ADR0260 greatest remaining set removes a Requires cycle and downstream tails when one own gate fails",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ],
+          "enabled": false
+        },
+        {
+          "id": "tail",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "defensive-self-requires-terminates",
+    "source": "Agent-decided defensive greatest-set behavior: self-requiring unchecked section remains if own gates pass, not legitimate runtime graph",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "a",
+      "z"
+    ]
+  },
+  {
+    "name": "parent-cycle-is-never-reactivated",
+    "source": "ADR0070 preserved malformed Parent exclusion precedes0260 fixed point; do not reactivate a closed Parent cycle",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "b",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "parent": "a",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "c",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "self-parent-is-never-reactivated",
+    "source": "Existing selector malformed Parent behavior: self-parent remains inactive despite closed mutual Requires support",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "a",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "missing-parent-removal-cascades-through-requires",
+    "source": "ADR0070 unknown Parent exclusion plus0260 Requires cascade, not treating missing Parent as root",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "missing"
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  },
+  {
+    "name": "all-candidates-removed-has-empty-result",
+    "source": "ADR0260 complete removal returns no sections, not the previous result from a reused selector",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "enabled": false
+        }
+      ]
+    },
+    "active": []
+  },
+  {
+    "name": "defensive-cycle-with-missing-external-target-removes-cycle",
+    "source": "ADR0260 greatest remaining set must remove an unchecked Requires cycle when one member also names a missing external prerequisite",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b",
+            "missing"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "tail",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "active": [
+      "z"
+    ]
+  }
+]

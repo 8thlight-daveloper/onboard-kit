@@ -1,0 +1,707 @@
+[
+  {
+    "name": "empty-plan",
+    "source": "ADR0260 no selected activities gives an empty successful schedule",
+    "plan": {
+      "sections": []
+    },
+    "sequence": []
+  },
+  {
+    "name": "plain-reference-rank-control",
+    "source": "ADR0260 free-node priority defaults to same timing and selected reference rank",
+    "plan": {
+      "sections": [
+        {
+          "id": "b"
+        },
+        {
+          "id": "a"
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "cross-subtree-global-dag",
+    "source": "ADR0260 literal example: rank a,a1,a2,b,b1,b2; requires b1 before a1 and a2 before b2",
+    "plan": {
+      "sections": [
+        {
+          "id": "a"
+        },
+        {
+          "id": "a1",
+          "parent": "a",
+          "requires": [
+            "b1"
+          ]
+        },
+        {
+          "id": "a2",
+          "parent": "a"
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "b1",
+          "parent": "b"
+        },
+        {
+          "id": "b2",
+          "parent": "b",
+          "requires": [
+            "a2"
+          ]
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "a2",
+      "b",
+      "b1",
+      "a1",
+      "b2"
+    ]
+  },
+  {
+    "name": "parent-requires-child",
+    "source": "ADR0260 parent adds no execution edge; actual selector greatest-set applicability retains both",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "requires": [
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "parent": "p"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "sequence": [
+      "c",
+      "p",
+      "z"
+    ]
+  },
+  {
+    "name": "child-earlier-goal-can-precede-parent",
+    "source": "ADR0260 global free-node goals do not enforce parent-before-child execution",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "timing": "days-31-to-90"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "b",
+          "timing": "week-one"
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "b",
+      "p"
+    ]
+  },
+  {
+    "name": "inherited-planning-timing",
+    "source": "ADR0070 and0260 effective timing inherited from parent beats a later-goal free root",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "timing": "week-one"
+        },
+        {
+          "id": "a",
+          "parent": "p"
+        },
+        {
+          "id": "c",
+          "timing": "days-8-to-30"
+        }
+      ]
+    },
+    "sequence": [
+      "p",
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "nested-inherited-planning-timing",
+    "source": "ADR0070 inherited planning timing follows the complete ancestor chain",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "timing": "week-one"
+        },
+        {
+          "id": "g",
+          "parent": "p"
+        },
+        {
+          "id": "a",
+          "parent": "g"
+        },
+        {
+          "id": "c",
+          "timing": "days-8-to-30"
+        }
+      ]
+    },
+    "sequence": [
+      "p",
+      "g",
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "later-target-prerequisite",
+    "source": "ADR0260 later-goal prerequisite dominates blocked dependent's earlier goal; free middle goal still goes first",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "timing": "week-one",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "timing": "days-31-to-90"
+        },
+        {
+          "id": "c",
+          "timing": "days-8-to-30"
+        }
+      ]
+    },
+    "sequence": [
+      "c",
+      "b",
+      "a"
+    ]
+  },
+  {
+    "name": "bootstrap-before-unmarked-earlier-goal",
+    "source": "ADR0260 free Bootstrap priority precedes planning timing, with no inferred marker",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true
+        },
+        {
+          "id": "b",
+          "timing": "before-day-one"
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "before-day-one-does-not-imply-bootstrap",
+    "source": "ADR0250/0260 Bootstrap is explicit content, not a timing synonym",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "b",
+          "bootstrap": true
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "a"
+    ]
+  },
+  {
+    "name": "marker-not-inherited-from-parent",
+    "source": "ADR0250/0260 no implicit Bootstrap inheritance: early unmarked child does not leap ahead of marked free roots",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "bootstrap": true
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "b",
+          "bootstrap": true,
+          "timing": "week-one"
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "p",
+      "a"
+    ]
+  },
+  {
+    "name": "marked-child-unmarked-parent",
+    "source": "ADR0260 marked child is not blocked by unmarked containment parent",
+    "plan": {
+      "sections": [
+        {
+          "id": "p"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "bootstrap": true
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "p"
+    ]
+  },
+  {
+    "name": "marked-prerequisite-dominates-goal-and-rank",
+    "source": "ADR0260 real prerequisite blocks earlier-ranked marked dependent; free marked predecessor still precedes unmarked early-goal work",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true,
+          "timing": "before-day-one",
+          "requires": [
+            "z"
+          ]
+        },
+        {
+          "id": "b",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "z",
+          "bootstrap": true
+        }
+      ]
+    },
+    "sequence": [
+      "z",
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "newly-freed-earlier-rank-precedes-already-free-later-rank",
+    "source": "ADR0260 choose from all free nodes after every placement, not ready-queue insertion order",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c"
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "reference-rank-not-global-id",
+    "source": "ADR0260 reference rank breaks equal timing/marker ties before exact ID; reference rank b,z,a differs from global ID order",
+    "plan": {
+      "sections": [
+        {
+          "id": "z"
+        },
+        {
+          "id": "a",
+          "parent": "z"
+        },
+        {
+          "id": "b"
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "z",
+      "a"
+    ]
+  },
+  {
+    "name": "requires-activity-filter",
+    "source": "ADR0260 selector removes disabled target and transitive dependents before action graph construction",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "enabled": false
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "sequence": [
+      "z"
+    ]
+  },
+  {
+    "name": "full-original-switch-context",
+    "source": "ADR0260 full original selector context: clause sees b's own on switch though b is inactive through its required c",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "includeIf": {
+            "all": [
+              {
+                "section": "b",
+                "enabled": true
+              }
+            ]
+          }
+        },
+        {
+          "id": "b",
+          "requires": [
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "enabled": false
+        }
+      ]
+    },
+    "sequence": [
+      "a"
+    ]
+  },
+  {
+    "name": "default-is-not-an-answer",
+    "source": "ADR0120/0260 never select a default to make prerequisite conditions hold",
+    "plan": {
+      "variables": [
+        {
+          "name": "flag",
+          "default": "yes"
+        }
+      ],
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.flag",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "sequence": [
+      "z"
+    ]
+  },
+  {
+    "name": "stored-answer-enables-prerequisite",
+    "source": "ADR0120 explicit stored answer drives own gates; scheduler then respects the real prerequisite",
+    "plan": {
+      "variables": [
+        {
+          "name": "flag",
+          "default": "no"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "flag": "yes"
+        }
+      },
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.flag",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "a",
+      "z"
+    ]
+  },
+  {
+    "name": "cross-timing-after-hint-is-inert",
+    "source": "ADR0260 only effective After edges constrain actions; promoting ignored hint would create a false union cycle",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "timing": "week-one",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "timing": "days-31-to-90",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "b"
+    ]
+  },
+  {
+    "name": "cross-parent-after-hint-is-inert",
+    "source": "ADR0260 valid non-sibling hints remain inert even when promoting them would conflict with Requires",
+    "plan": {
+      "sections": [
+        {
+          "id": "p"
+        },
+        {
+          "id": "q"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "parent": "q",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "sequence": [
+      "p",
+      "a",
+      "q",
+      "b"
+    ]
+  },
+  {
+    "name": "inactive-after-hints-not-forwarded",
+    "source": "Selector contract legacy behavior retained in0260: do not forward c through inactive b into a new ordering edge",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "after": [
+            "c"
+          ],
+          "enabled": false
+        },
+        {
+          "id": "c"
+        }
+      ]
+    },
+    "sequence": [
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "effective-after-still-constrains-blocked-reference-predecessor",
+    "source": "ADR0260 reference rank alone cannot substitute After constraints once an earlier-ranked predecessor waits on Requires",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "z"
+          ]
+        },
+        {
+          "id": "c"
+        },
+        {
+          "id": "z"
+        }
+      ]
+    },
+    "sequence": [
+      "c",
+      "z",
+      "b",
+      "a"
+    ]
+  },
+  {
+    "name": "duplicate-requires-and-after-edges-count-once",
+    "source": "ADR0110 ordinary repeats and0260 graph-set semantics: shared edge in both lists never creates extra indegree or drops work",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b",
+            "b"
+          ],
+          "after": [
+            "b",
+            "b"
+          ]
+        },
+        {
+          "id": "b"
+        },
+        {
+          "id": "c"
+        }
+      ]
+    },
+    "sequence": [
+      "b",
+      "a",
+      "c"
+    ]
+  },
+  {
+    "name": "global-goal-order-can-interleave-subtree",
+    "source": "ADR0260 parent subtree contiguity applies only to reference browsing, not action order",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "timing": "week-one"
+        },
+        {
+          "id": "q",
+          "timing": "before-day-one"
+        }
+      ]
+    },
+    "sequence": [
+      "p",
+      "q",
+      "a"
+    ]
+  },
+  {
+    "name": "all-activities-inactive-is-success",
+    "source": "ADR0260 valid graph with no remaining activities returns empty sequence and no structural problems",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "enabled": false
+        }
+      ]
+    },
+    "sequence": []
+  }
+]

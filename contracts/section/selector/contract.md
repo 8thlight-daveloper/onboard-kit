@@ -4,7 +4,7 @@ Status: draft by an agent. Not reviewed by a person. Component: `section/selecto
 
 The section selector finds the active sections of a plan and puts them in reading order. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0070](../../../docs/decisions/0070-sub-sections.md) for sub-sections, [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), [ordering](../../../docs/reference/section-template-schema/ordering.md), [0050](../../../docs/decisions/0050-section-switch.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
-A plan holds every template as a section. A section is active when its `includeIf` holds, or it has none, its own switch, the `enabled` field of the section, is on, and its parent, when it has one, is active. The switch is on when the field is absent. Nothing is stored. The selector computes the set from the plan whenever it is asked.
+A plan holds every template as a section. Under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md), a section is active when its own gates hold, its parent chain is valid and active, and all its Requires targets are present and active. The switch is on when the field is absent. Nothing is stored. The selector computes the set from the plan whenever it is asked.
 
 ## Interface
 
@@ -16,17 +16,24 @@ A plan holds every template as a section. A section is active when its `includeI
 - The result is the active sections in reading order. It is empty when no section is active.
 - There is no error and no problem list. The selector evaluates the plan as written. The validators report plans that cannot do their job.
 
+On unchecked unique-ID inputs, identity comparisons and reference ordering use
+exact valid UTF-8 strings, including an empty ID, whitespace, case, and Unicode.
+No trimming, case folding, or normalization occurs. This defensive boundary
+does not permit non-slug IDs in an authored plan: spelling validation remains
+with the authoring validators. Empty Parent still means no parent, never a link
+to the unique empty ID; empty items in Requires or After are exact references.
+
 ## Rules
 
-**Whether a section is active.** Three gates must pass.
+**Whether a section is active.** Evaluate the own condition and switch against the complete original plan, then apply Parent and Requires applicability as specified below.
 
 1. **`includeIf`.** A section with no `includeIf` passes. Otherwise the selector asks the condition evaluator, `Holds(includeIf, scope, plan.Answers, switches)`, with the section's `id` as the scope, because the condition is written in the section. The answers are passed as stored. A declared default is never added to them. The switches are those of every section of the plan, as described under Interface. A condition that does not hold, whether the answer is wrong, deferred, or unanswered, or a section it names has the other switch, puts the section out. The meaning of each test is the evaluator's, see [its contract](../../condition/evaluator/contract.md).
 2. **The switch.** A section passes when its `Enabled` is nil or true. It is out when `Enabled` is false, whatever its `includeIf`, its answers, and its variables say. A switched-off section keeps its answers, and they play no part.
-3. **The parent.** A section with no parent passes. A section with a parent passes when the parent is a section of the plan, and the parent is active by these same three gates, and so on up. A parent that is not a section of the plan puts the section out. A parent chain that returns to a section it has already passed through, a **cycle**, puts out every section on it and every section below it. A section that names itself as parent is a cycle of one. A cycle never makes the selector loop, fail, or drop a section outside it.
+3. **The parent.** A section with no parent passes. A section with a parent passes when the parent is a section of the plan, and the parent remains active under the own gates and Parent/Requires applicability rules below, and so on up. A parent that is not a section of the plan puts the section out. A parent chain that returns to a section it has already passed through, a **cycle**, puts out every section on it and every section below it. A section that names itself as parent is a cycle of one. A cycle never makes the selector loop, fail, or drop a section outside it.
 
-A sub-section is active only when all three gates pass for it and for every section above it. The ancestor's own gates count as that ancestor's own: its `includeIf` is read in its own scope, and its own switch. The activity of an ancestor is not read from the result, so the plan's list order does not matter.
+A sub-section is active only when its own gates, its ancestors' gates, and all transitive Parent/Requires applicability constraints hold. The ancestor's own gates count as that ancestor's own: its `includeIf` is read in its own scope, and its own switch. The activity of an ancestor is not read from the result, so the plan's list order does not matter.
 
-**Switches cascade.** A switched-off parent puts out its sub-sections, and theirs. The switches map still holds the own `Enabled` of each section, unchanged. So a section clause that names a sub-section whose parent is switched off reads the sub-section's own switch, which can be on. A sub-section is switched off alone by its own `Enabled`, and its parent, its siblings, and the sections above stay.
+**Switches cascade.** A switched-off parent puts out its sub-sections, and theirs. The switches map still holds the own `Enabled` of each section, unchanged. So a section clause that names a sub-section whose parent is switched off reads the sub-section's own switch, which can be on. Changing a sub-section's own `Enabled` does not write any other held switch. Without explicit Requires relationships, its parent, siblings, and ancestors stay as before. Derived activity can nevertheless remove a parent or sibling through explicit Requires dependencies and the resulting Parent cascade; the parent-requires-child case below pins that distinction.
 
 **Questions of ancestors.** An `includeIf` of a sub-section may name the questions of its ancestors by id, `<ancestor id>.<name>`, and plan variables. The selector adds no restriction. It passes the condition as written to the evaluator with the section's own `id` as the scope, and the evaluator reads `answers.sections[<ancestor id>][<name>]` as for any qualified id. The answers of an ancestor count as stored: an answer kept for a question that is now hidden still counts. A condition that names a question of a sibling, a descendant, or an unrelated section is evaluated the same way and is not reported. A bare name is read in the section's own scope, never its parent's.
 
@@ -34,7 +41,7 @@ A section clause in an `includeIf` names another section by `id`, as written, wi
 
 A section with a variable named `enabled` is an ordinary section with an ordinary variable. An answer, a default, or a plan answer named `enabled` never switches anything. Only the `Enabled` field of the section does.
 
-A section that fails a gate is out. The gates do not depend on the order of the sections. A section's active state depends on the other sections only through their switches, and through its ancestors' gates.
+A section that fails a gate is out. The gates do not depend on the order of the sections. A section's active state also depends on the remaining Parent/Requires applicability set. Section clauses still read only the held switches, not that derived active state.
 
 **Reading order.** The order uses `timing`, then `after`, then `id`, and places each sub-section directly after its parent.
 
@@ -62,17 +69,17 @@ These hold for every plan the contract tests use.
 
 ## Side effects and plan access
 
-None. It reads section content (`id`, `parent`, `includeIf`, `timing`, `after`, and `Enabled`) and the answers. It reads no other plan field. This matches the row for `section/selector` in [components](../../../docs/architecture/components.md).
+None. It reads section content (`id`, `parent`, `requires`, `includeIf`, `timing`, `after`, and `Enabled`) and the answers. It reads no other plan field. This matches the row for `section/selector` in [components](../../../docs/architecture/components.md).
 
 ## Not covered
 
-- Duplicate section ids in one plan.
-- A `timing` that is not one of the five names, and an `id` that is not a lowercase slug.
+- Duplicate section ids in one plan. The structure validator rejects them before runtime; no first/last-wins rule is added here.
+- A `timing` that is not one of the five names, invalid UTF-8 IDs, and Unicode normalization.
 - Whether a parent exists, whether the parents form a cycle, whether a depth is too great, and whether an `includeIf` names only plan variables and questions of ancestors. The plan validator's structure check reports these. The selector treats a missing parent or a cycle as inactive, and passes a condition as written.
 - A variable named `enabled`. The loader and the validators report it. The selector treats it as any variable.
 - Whether a question an `includeIf` names exists, and whether a section it names exists. The validators report these. The selector passes the condition to the evaluator as written.
 - A clause with both a `question` and a `section`. The decoder and the loader report it.
-- Whether the plan has a timing conflict. The validator reports it.
+- Whether declared relationships are valid: unknown/self references, true prerequisite cycles, effective legacy cycles, Bootstrap closure, and impossible ordering unions. The structure validator reports these. Dates alone do not create a relationship error under 0260.
 - Whether a section's variables, steps, or any other content is valid.
 - The active questions of a section. That is the question finder.
 - Filling in `$name` in a section. That is the section resolver.
@@ -81,7 +88,7 @@ None. It reads section content (`id`, `parent`, `includeIf`, `timing`, `after`, 
 
 The docs were silent, or could be read two ways, in these places. A choice marked `hard` changes what a consultant sees or the order they read in. A choice marked `cheap` touches one fixture and nothing outside the component.
 
-01. **`after` orders sections only inside one timing, and timing wins.** A section that lists a section of a later timing, or an earlier one, is not linked to it. Raised by "Sort the active sections by `timing`" followed by "Within that, place each section after every section it lists". The validator reports the conflict. Cases: `after-across-timings`, `after-across-timings-loop`. `hard`
+01. **`after` orders sections only inside one timing, and timing wins.** A section that lists a section of a later timing, or an earlier one, is not linked to it. Raised by "Sort the active sections by `timing`" followed by "Within that, place each section after every section it lists". Under 0260 these inert cross-timing hints give no timing-conflict diagnostic. Cases: `after-across-timings`, `after-across-timings-loop`. `hard`
 02. **Ties are broken by the free section with the smallest `id`, and ids compare by bytes.** This is not the same as visiting sections in id order and pulling each one's dependencies in first. With `a` after `c` and a free `b`, the order is `b`, `c`, `a`, and not `c`, `a`, `b`. Raised by "Where nothing constrains two sections, the one with the smaller `id` comes first". Cases: `after-moves-later`, `id-order`. `hard`
 03. **The switch is the section's own `Enabled`, and nothing named `enabled` elsewhere counts.** A variable named `enabled`, its answer, and its default switch nothing, and a stored answer under that name is not read. Raised by [0050](../../../docs/decisions/0050-section-switch.md) removing the toggle without saying what a leftover variable does. Cases: `enabled-variable-is-ordinary`, `switch-keeps-answers`. `hard`
 04. **A section that names an inactive section in `after` ignores it, and the inactive section does not pass its own `after` on.** Raised by "A listed section that is not active is ignored". In `x` after `y`, `y` after `z`, with `y` out, `x` and `z` are free of each other. Cases: `after-section-left-out`, `after-section-switched-off`. `hard`
@@ -176,8 +183,100 @@ Bootstrap does not activate, order or filter ordinary selection. Return each sel
 [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
 the source for [Requires tests](requires_test.go). Return each selected section's
 Requires exactly, with its order and repetitions unchanged. Grouped reference
-order remains distinct from prerequisite action order. The preservation case
-uses present, active targets; prerequisite activity propagation is a separate
-graph contract increment. Do not interpret this test as permission to ignore
-that planned propagation. The result has new section slots, but inner lists
-may still be shared under What is returned.
+order remains distinct from prerequisite action order. The result has new
+section slots, but inner lists may still be shared under What is returned.
+Requires applicability is now specified below; it does not topologically sort
+the grouped reference view.
+
+## Requires applicability
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) requires
+a greatest remaining active set, not a recursive verification walk.
+
+1. Compute each section's own IncludeIf and Enabled gates from the complete
+   original Answers and the complete original map of held own switches.
+   Never evaluate a condition against a plan already filtered by activity.
+   Defaults are not answers under
+   [0120](../../../docs/decisions/0120-defaults-require-acceptance.md).
+2. Preserve the existing Parent-chain rule: a missing parent, self-parent, or
+   cyclic parent chain excludes the section and every descendant, even when
+   their own gates hold. These exclusions happen before the remaining-set
+   calculation and can never be undone by a closed mutual support cycle.
+3. Begin with every section whose own gates hold and whose Parent chain is
+   valid. Repeatedly remove a candidate when its nonempty Parent or any exact
+   Requires target is missing from the plan or absent from the current candidate
+   set. Continue until no section can be removed. A removal can cascade through
+   both Parent and Requires edges across any number of sections/subtrees.
+   No removed section is added back during this call.
+4. Return only the remaining sections in the existing grouped reference order:
+   timing, effective legacy After hints among the remaining siblings, and ID,
+   with each parent's subtree contiguous as before. Requires never reorders
+   this reference view. Do not forward an omitted section's After hints as new
+   edges, or use Bootstrap as a selection or reference-order preference.
+
+A parent requiring its own child is not an applicability cycle to discard:
+when both own gates hold and the Parent chain is valid, both remain. Turning
+the required child off removes the parent and therefore all its other children.
+Parent containment does not impose a verified outcome or an execution edge.
+
+A missing, disabled, or condition-excluded required target makes the dependent
+inactive, not waiting-for-verification. An active but untried, failed, or deferred
+target still counts as active; the selector reads no record/outcome and performs
+no verification gate. The later walker distinguishes active-but-waiting work.
+Do not infer prerequisites from Parent, After, Bootstrap, dates, Source, defaults,
+or unknown data. Repeated Requires targets are ordinary repeated references;
+they create no extra gates. IDs compare exactly, with no trimming or case
+folding. Empty Requires is no constraint; an empty string item is a reference.
+
+Section clauses always test each target's own held switch, including a target
+that is inactive through its parent, condition, or Requires. They never test
+derived activity. An unrelated condition can still read the original stored
+answer of an inactive section under the selector's existing unchecked-condition
+behavior; validity of that condition reference belongs to other validators.
+
+### Defensive malformed Requires input
+
+The structure validator rejects self-requiring sections and true prerequisite
+cycles before supported runtime use. The selector has no diagnostic channel.
+On unchecked unique-ID input, a closed Requires cycle, including a self edge,
+remains in the greatest candidate set if every own gate and Parent chain passes.
+A failing gate or missing external target removes the cycle and its dependents
+through the same finite removal rule. This is defensive termination behavior,
+not permission to author or execute a prerequisite cycle. Do not use recursive
+"visiting means inactive" handling for Requires: it would also discard the valid
+parent-requires-child case. Existing malformed Parent-cycle exclusions remain
+stronger and are never reactivated.
+
+### Independent applicability fixtures
+
+[requires-applicability.json](testdata/requires-applicability.json) pins exact
+remaining IDs in hand-specified grouped reference order, with a source per case.
+[Requires applicability tests](requires_applicability_test.go) retain complete
+held sections, test original-plan conditions/switches, section permutations,
+input preservation, reused/concurrent instances, and fresh result slots.
+Inner lists/maps may still be shared under the unchanged immutable-value rule.
+
+### Proposed wrong implementations
+
+These adapters are planned, not executed evidence. No mutation acceptance or
+implementation completion is implied by this draft.
+
+Separately applied wrong variants are rejected by the applicability suite:
+ignoring Requires, removing candidates in only one pass, rejecting defensive
+self-support, and omitting the repeated Parent cascade. The last is pinned by
+`removed-parent-cannot-leave-invisible-prerequisite-support`: an invisible
+orphan may not remain as support for an otherwise unrelated root. The exact
+UTF-8 control also makes the defensive identity scope explicit without changing
+the authoring slug rule. Other proposed variants below remain plans.
+
+| Wrong implementation | Intended rejection |
+| -- | -- |
+| Ignore Requires, make missing targets harmless, or perform only one removal pass | Missing/disabled/transitive cascade fixtures |
+| Reject mutual applicability support or add Parent as an execution prerequisite | Parent-requires-child fixtures |
+| Apply a greatest fixed point to malformed Parent cycles without initial exclusion | Parent-cycle and self-parent defensive fixtures |
+| Test a section clause against derived activity or only the filtered switch map | Original-switch-map fixtures |
+| Use defaults or discard original stored answers before condition evaluation | Default/accepted-answer and inactive-answer controls |
+| Sort reference output by Requires topology or Bootstrap stage | Cross-subtree/reference-order and marked-dependent fixtures |
+| Reject closed unchecked Requires cycles recursively or hang | Defensive self/cycle controls and bounded termination tests |
+| Read invented outcomes from unknown data or require verification for selection | Outcome-shaped unknown-data independence test |
+| Change held Requires/Bootstrap/Source or return input section slots | Held-value, purity and result-slot tests |
