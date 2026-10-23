@@ -1,0 +1,49 @@
+Original arrangements:
+Arrangement 1:
+ID: "z-retained"
+Section ID: "inactive"
+Kind: "access"
+Accountable owner contact ID: "stale-owner"
+Assigned contacts:
+None.
+Reference: ""
+Target date (goal): ""
+Preparation status: "pending"
+Note: "Retained support"
+Arrangement 2:
+ID: "a-edit"
+Section ID: "visible"
+Kind: "pairing"
+Accountable owner contact ID: "owner"
+Assigned contacts:
+1. "helper"
+2. "manager"
+3. "helper"
+Reference: "Original ticket"
+Target date (goal): "2000-01-02"
+Preparation status: "arranged"
+Note: "Held line one\nHeld line two\n"
+Draft arrangements:
+Arrangement 1:
+ID: "z-retained"
+Section ID: "inactive"
+Kind: "access"
+Accountable owner contact ID: "stale-owner"
+Assigned contacts:
+None.
+Reference: ""
+Target date (goal): ""
+Preparation status: "pending"
+Note: "Retained support"
+Arrangement 2:
+ID: "a-edit"
+Section ID: "inactive"
+Kind: "meeting"
+Accountable owner contact ID: ""
+Assigned contacts:
+1. "helper"
+2. "manager"
+Reference: ""
+Target date (goal): ""
+Preparation status: "pending"
+Note: ""

@@ -1,0 +1,22 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer
+planId: planone
+recipient:
+  name: Held newcomer
+  manager: stale-manager
+arrangements:
+  - id: z-retained
+    section: inactive
+    kind: access
+    owner: stale-owner
+    status: pending
+    note: Retained support
+  - id: a-edit
+    section: inactive
+    kind: meeting
+    contacts:
+      - helper
+      - manager
+    status: pending
+x-retained: PRIVATE-unknown-value

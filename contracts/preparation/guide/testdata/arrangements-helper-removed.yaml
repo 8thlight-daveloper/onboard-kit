@@ -1,0 +1,28 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer
+planId: planone
+recipient:
+  name: Held newcomer
+  manager: stale-manager
+arrangements:
+  - id: z-retained
+    section: inactive
+    kind: access
+    owner: stale-owner
+    status: pending
+    note: Retained support
+  - id: a-edit
+    section: visible
+    kind: pairing
+    owner: owner
+    contacts:
+      - helper
+      - manager
+    reference: Original ticket
+    targetDate: "2000-01-02"
+    status: arranged
+    note: |
+      Held line one
+      Held line two
+x-retained: PRIVATE-unknown-value

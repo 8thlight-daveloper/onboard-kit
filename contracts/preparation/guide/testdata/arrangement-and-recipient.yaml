@@ -1,0 +1,11 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer
+planId: planone
+recipient:
+  name: Example newcomer
+arrangements:
+  - id: access-one
+    section: inactive
+    kind: access
+    status: pending
