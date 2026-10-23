@@ -31,6 +31,16 @@ following arguments and returns the exact help fixture with exit 0, empty stderr
 no input read and no filesystem inspection. Help elsewhere is ordinary invalid
 syntax. Invalid arguments return usage without input or filesystem access.
 
+The exact help text is the following four lines, including the empty second
+line and one final LF. The help fixture contains these same bytes:
+
+```text
+Usage: onboard-kit prepare guide --plan FILE --account ID [--root DIR]
+
+Stage recipient details, review the draft, and explicitly save preparation.
+The plan and onboardee record are not changed. Export is a separate command.
+```
+
 Read bounded regular UTF-8 plan/preparation through actual decoders. A source
 may contain at most 1,048,576 bytes, inclusive; never read an unbounded special
 file. Require an existing real nonsymlink root and nonsymlink path traversal;
