@@ -1,7 +1,7 @@
 # Invitation and preparation flow
 
-Status: preparation editing, recipient guidance and explicit export implemented;
-guided arrangements, confirmed import and record-backed startup remain planned.
+Status: guided recipient/support preparation and explicit export implemented;
+confirmed import and record-backed startup remain planned.
 
 Decisions [0140](../decisions/0140-person-specific-preparation.md) and
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) establish
@@ -52,9 +52,9 @@ wrong person or plan. Do not introduce an unrestricted generic overlay map.
 
 ### 2. Preparation editing and updates
 
-The pure editor, [command flow](../reference/preparation-command.md), and combined
-preparation/outcome view are implemented. Guided invitation preparation remains
-later work.
+The pure editor, [command flow](../reference/preparation-command.md), combined
+preparation/outcome view and guided recipient/support forms are implemented.
+Guided export selection and invitation import remain later work.
 Provide an onboarder view scoped to one person. Show missing assignments and
 requests separately from verified newcomer outcomes. Saving preparation must
 not rewrite the record or shared plan. Loading later preparation changes must
@@ -101,7 +101,10 @@ specifies a recipient-only text interaction with unsaved forms, explicit review
 and one preparation save. Existing arrangements are preserved, not generated or
 edited by that first slice. Its four-part driver contract, implementation and
 independently scripted binary scenarios are available.
-Guided arrangements follow separately. The implemented
+[0350](../decisions/0350-guided-support-arrangements.md) extends that guide with
+implemented arrangement forms, ordered repeated helpers, staged removal and
+complete original/draft review under a consumed-input budget. It does not infer
+activity assignments or readiness. The implemented
 archive codecs already include preparation under 0240's bounded-entry, size and
 untrusted-path rules; do not create a second envelope or speculative publisher.
 

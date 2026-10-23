@@ -1,0 +1,78 @@
+name: prepare-guide-arrangements-new
+description: Append a complete arrangement for an inactive declared section with ordered repeated and literal menu-looking helpers.
+source: docs/decisions/0350-guided-support-arrangements.md; acceptance/testdata/guide-arrangements/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/guide-arrangements/plan.yaml}
+      records/newcomer-one/record.obk.yaml: "MALFORMED_RECORD: [\n"
+      records/newcomer-two/preparation.obk.yaml: "OTHER_PERSON_WORK\n"
+    stdin: |
+      arrangements
+      new
+      id
+      change
+      save
+      1
+      change
+      review
+      2
+      change
+      pairing
+      3
+      change
+      owner-one
+      4
+      add
+      save
+      add
+      back
+      add
+      save
+      add
+      clear
+      apply
+      5
+      change
+      cancel
+      6
+      change
+      2020-02-29
+      7
+      change
+      arranged
+      8
+      change
+      q
+      apply
+      back
+      review
+      save
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          Original arrangements:
+          None.
+          Draft arrangements:
+          Arrangement 1:
+          ID: "save"
+          Section ID: "review"
+          Kind: "pairing"
+          Accountable owner contact ID: "owner-one"
+          Assigned contacts:
+          1. "save"
+          2. "back"
+          3. "save"
+          4. "clear"
+          Reference: "cancel"
+          Target date (goal): "2020-02-29"
+          Preparation status: "arranged"
+          Note: "q"
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml, records/newcomer-two/preparation.obk.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide-arrangements/full.yaml}
+        invitation.zip: {absent: true}
+        first-steps.md: {absent: true}

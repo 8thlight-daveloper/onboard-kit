@@ -2,47 +2,34 @@ package guide
 
 import (
 	"encoding/binary"
+	"runtime"
+	"syscall"
 	"unsafe"
 
 	"golang.org/x/sys/unix"
 )
 
-func permissionsSafe(parent int, name string) bool {
-	fd, err := unix.Openat(parent, name, unix.O_RDONLY|unix.O_NOFOLLOW|unix.O_CLOEXEC|unix.O_NONBLOCK, 0)
-	if err != nil {
+func aclAbsent(fd int) bool {
+	attributes := unix.Attrlist{Bitmapcount: 5, Commonattr: unix.ATTR_CMN_EXTENDED_SECURITY}
+	var buffer [8192]byte
+	_, _, errno := syscall.Syscall6(syscall.SYS_FGETATTRLIST, uintptr(fd), uintptr(unsafe.Pointer(&attributes)), uintptr(unsafe.Pointer(&buffer[0])), uintptr(len(buffer)), 0, 0)
+	runtime.KeepAlive(&attributes)
+	runtime.KeepAlive(&buffer)
+	if errno != 0 {
 		return false
 	}
-	defer unix.Close(fd)
-	attributes := unix.Attrlist{Bitmapcount: unix.ATTR_BIT_MAP_COUNT, Commonattr: unix.ATTR_CMN_EXTENDED_SECURITY}
-	buffer := make([]byte, 4096)
-	_, _, failure := unix.Syscall6(unix.SYS_FGETATTRLIST, uintptr(fd), uintptr(unsafe.Pointer(&attributes)), uintptr(unsafe.Pointer(&buffer[0])), uintptr(len(buffer)), 0, 0)
-	if failure != 0 {
+	length := int(binary.NativeEndian.Uint32(buffer[:4]))
+	if length < 12 || length > len(buffer) {
 		return false
 	}
-	size := binary.NativeEndian.Uint32(buffer[:4])
-	if size < 12 || size > uint32(len(buffer)) {
-		return false
-	}
-	length := binary.NativeEndian.Uint32(buffer[8:12])
-	if length == 0 {
+	offset := int(int32(binary.NativeEndian.Uint32(buffer[4:8])))
+	size := int(binary.NativeEndian.Uint32(buffer[8:12]))
+	if size == 0 {
 		return true
 	}
-	offset := int(int32(binary.NativeEndian.Uint32(buffer[4:8]))) + 4
-	const fileSecurityBaseSize = 44
-	const fileSecurityMagic = 0x012cc16d
-	const fileSecurityAbsentACL = ^uint32(0)
-	if offset < 12 || length != fileSecurityBaseSize || uint64(offset)+uint64(length) > uint64(size) {
+	start := 4 + offset
+	if start < 12 || size < 44 || start > length || size > length-start {
 		return false
 	}
-	if binary.NativeEndian.Uint32(buffer[offset:offset+4]) != fileSecurityMagic {
-		return false
-	}
-	for _, value := range buffer[offset+4 : offset+36] {
-		if value != 0 {
-			return false
-		}
-	}
-	count := binary.NativeEndian.Uint32(buffer[offset+36 : offset+40])
-	flags := binary.NativeEndian.Uint32(buffer[offset+40 : offset+44])
-	return count == fileSecurityAbsentACL && flags == 0
+	return binary.NativeEndian.Uint32(buffer[start:start+4]) == 0x012cc16d && binary.NativeEndian.Uint32(buffer[start+36:start+40]) == 0xffffffff
 }

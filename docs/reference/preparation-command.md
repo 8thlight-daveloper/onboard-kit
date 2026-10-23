@@ -1,7 +1,7 @@
 # Preparing one person's onboarding
 
 Status: implemented, experimental. Explicit [invitation export](invitation-export.md)
-is available. Recipient guidance is implemented; guided arrangements remain planned.
+is available. Guided recipient and arrangement preparation are implemented.
 
 Preparation is the onboarder's file for one person. It holds supplied details
 and arrangements, not the newcomer's answers or proof that they completed work.
@@ -34,7 +34,7 @@ files and does not display private answers or preserved unknown data.
 onboard-kit prepare guide --plan plan.obk.yaml --account newcomer-one
 ```
 
-The guide stages recipient details in memory. Choose recipient to edit the nine
+The guide stages recipient details and arrangements in memory. Choose recipient to edit the nine
 fields, then apply the complete form to the draft. Each field offers keep,
 change, clear and back. Empty input selects nothing. Values such as save and q
 are literal text at a value prompt; directory fields require exact declared IDs.
@@ -47,12 +47,22 @@ before save discards the draft without creating files. An unchanged existing
 preparation keeps its original bytes and inode, even when its YAML is not canonical.
 If either source changed during editing, reload and review before saving.
 
-The guide reads no record and leaves arrangements and unknown preparation data
-unchanged. It does not export an invitation or select general-help contacts;
+Choose arrangements to create, edit or remove support. New arrangements require
+an unused permanent ID and explicit section, kind and status. Existing IDs stay
+fixed. Assigned contacts form an ordered list: add or remove one occurrence,
+clear, apply to the local arrangement, or back out. Back from the arrangement
+discards its local changes too. Removal requires selection and confirmation;
+it remains staged until reviewed save. Review shows complete original and
+proposed arrangements, including removed items and empty fields.
+
+The guide reads no record and preserves unrelated arrangements and unknown data.
+It does not export an invitation or select general-help contacts;
 export remains separate. Recipient facts appear intentionally on screen and may
 remain in terminal scrollback. Restrictive access controls are preserved, or the
-save refuses rather than silently weakening them. Use the explicit commands below
-to arrange support, then export with an explicitly selected help route.
+save refuses rather than silently weakening them. The interaction consumes at
+most 1 MiB per run, including line endings, with a 64 KiB logical-line limit.
+Exhaustion refuses without a partial save. Export separately with an explicitly
+selected help route; the direct editing commands below also remain available.
 
 ## Supply recipient details
 

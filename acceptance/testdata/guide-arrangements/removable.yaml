@@ -1,0 +1,14 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer-one
+planId: plan-one
+arrangements:
+  - id: ""
+    note: Empty identity is explicit
+  - id: "bad id"
+    note: Malformed identity is explicit
+  - id: retained
+    section: review
+    kind: support
+    status: pending
+x-held: keep

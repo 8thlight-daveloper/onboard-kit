@@ -1,0 +1,29 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer-one
+planId: plan-one
+recipient:
+  manager: departed-manager
+arrangements:
+  - id: first
+    section: ticket-pairing
+    kind: pairing
+    owner: owner-one
+    contacts:
+      - buddy-one
+      - buddy-one
+    reference: Example resource
+    targetDate: "2020-02-29"
+    status: arranged
+    note: |-
+      First line
+      Second line
+  - id: stale
+    section: retired-section
+    kind: support
+    status: pending
+x-held:
+  alpha:
+    - retained
+    - retained
+  zeta: 7

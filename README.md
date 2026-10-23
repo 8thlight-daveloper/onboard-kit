@@ -51,7 +51,7 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 | `assemble --plan FILE [--out FILE]` | Writes a Markdown document from a plan. Gaps go on standard error and in the document's gap table |
 | `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
 | `prepare <operation> --plan FILE --account ID [--root DIR]` | Creates or edits the onboarder's preparation for one person, or shows it beside recorded outcomes without changing the plan or record. See [preparation commands](docs/reference/preparation-command.md) |
-| `prepare guide --plan FILE --account ID [--root DIR]` | Stages recipient details, previews changes and saves only after explicit review. Existing arrangements remain unchanged |
+| `prepare guide --plan FILE --account ID [--root DIR]` | Stages recipient details and support arrangements, previews changes and saves only after explicit review |
 | `invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID` | Publishes a new invitation ZIP with the original plan, preparation, identity-only record seed and first-steps guide. See [invitation export](docs/reference/invitation-export.md) |
 | `catalog list`, `catalog show --id ID`, `catalog export --id ID` | Lists, displays or exports all eighty compiled catalog entries without reading or writing files. See [the catalog](docs/reference/onboarding-catalog.md#using-the-embedded-catalog) |
 | `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |

@@ -1,0 +1,81 @@
+name: prepare-guide-arrangements-remove
+description: Removal requires explicit ordinal and confirmation and stays staged until reviewed save, including empty and malformed IDs.
+source: docs/decisions/0190-incremental-preparation-repair.md; docs/decisions/0350-guided-support-arrangements.md; acceptance/testdata/guide-arrangements/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/guide-arrangements/plan.yaml}
+      records/newcomer-one/preparation.obk.yaml: {from: acceptance/testdata/guide-arrangements/removable.yaml}
+      records/newcomer-one/record.obk.yaml: "MALFORMED: [\n"
+    stdin: |
+      arrangements
+      remove
+
+      01
+      1
+      back
+      remove
+      2
+      remove
+      back
+      review
+      cancel
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          Draft arrangements:
+          Arrangement 1:
+          ID: ""
+          Section ID: ""
+          Kind: ""
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: ""
+          Note: "Empty identity is explicit"
+          Arrangement 2:
+          ID: "retained"
+      stderr:
+        json: {status: cancelled, code: guide.cancelled, message: Cancelled. No files changed.}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]
+      files:
+        invitation.zip: {absent: true}
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    stdin: |
+      arrangements
+      remove
+      1
+      remove
+      remove
+      1
+      remove
+      back
+      review
+      save
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          Original arrangements:
+          Arrangement 1:
+          ID: ""
+          Section ID: ""
+          Kind: ""
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: ""
+          Note: "Empty identity is explicit"
+          Arrangement 2:
+          ID: "bad id"
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide-arrangements/removed.yaml}
+        invitation.zip: {absent: true}

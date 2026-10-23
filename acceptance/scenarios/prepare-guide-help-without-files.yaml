@@ -12,7 +12,7 @@ steps:
         equals: |
           Usage: onboard-kit prepare guide --plan FILE --account ID [--root DIR]
 
-          Stage recipient details, review the draft, and explicitly save preparation.
+          Stage recipient details and support arrangements, review, and explicitly save preparation.
           The plan and onboardee record are not changed. Export is a separate command.
       stderr: {equals: ""}
       files:

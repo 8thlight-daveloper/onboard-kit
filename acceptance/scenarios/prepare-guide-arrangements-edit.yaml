@@ -1,0 +1,105 @@
+name: prepare-guide-arrangements-edit
+description: Whole-form clearing replaces in place and retains stale recipient, other arrangement and unknown data.
+source: docs/decisions/0190-incremental-preparation-repair.md; docs/decisions/0350-guided-support-arrangements.md; acceptance/testdata/guide-arrangements/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/guide-arrangements/plan.yaml}
+      records/newcomer-one/preparation.obk.yaml: {from: acceptance/testdata/guide-arrangements/stale.yaml}
+      records/newcomer-one/record.obk.yaml: "DO_NOT_PARSE_RECORD: [\n"
+    stdin: |
+      arrangements
+      edit
+      1
+      id
+      1
+      change
+      review
+      2
+      change
+      support
+      3
+      clear
+      4
+      clear
+      apply
+      5
+      clear
+      6
+      clear
+      7
+      change
+      pending
+      8
+      clear
+      apply
+      back
+      review
+      save
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          Original arrangements:
+          Arrangement 1:
+          ID: "first"
+          Section ID: "ticket-pairing"
+          Kind: "pairing"
+          Accountable owner contact ID: "owner-one"
+          Assigned contacts:
+          1. "buddy-one"
+          2. "buddy-one"
+          Reference: "Example resource"
+          Target date (goal): "2020-02-29"
+          Preparation status: "arranged"
+          Note: "First line\nSecond line"
+          Arrangement 2:
+          ID: "stale"
+          Section ID: "retired-section"
+          Kind: "support"
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: "pending"
+          Note: ""
+          Draft arrangements:
+          Arrangement 1:
+          ID: "first"
+          Section ID: "review"
+          Kind: "support"
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: "pending"
+          Note: ""
+          Arrangement 2:
+          ID: "stale"
+          Section ID: "retired-section"
+          Kind: "support"
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: "pending"
+          Note: ""
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide-arrangements/cleared.yaml}
+        invitation.zip: {absent: true}
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    stdin: |
+      review
+      cancel
+    expect:
+      exit: 0
+      stdout: {contains: 'Onboarder blockers: Not evaluated.'}
+      stderr:
+        json: {status: cancelled, code: guide.cancelled, message: Cancelled. No files changed.}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]

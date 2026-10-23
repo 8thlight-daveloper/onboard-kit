@@ -1,0 +1,17 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer-one
+planId: plan-one
+arrangements:
+  - id: save
+    section: review
+    kind: pairing
+    owner: owner-one
+    contacts:
+      - back
+      - save
+      - clear
+    reference: cancel
+    targetDate: "2020-02-29"
+    status: arranged
+    note: q

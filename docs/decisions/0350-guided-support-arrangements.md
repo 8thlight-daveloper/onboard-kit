@@ -1,6 +1,6 @@
 # 0350. Guided support arrangements
 
-Status: accepted by agent judgment; contract and implementation pending
+Status: accepted by agent judgment; contract and implementation available
 
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),

@@ -1,0 +1,94 @@
+name: prepare-guide-arrangements-mixed-review
+description: Recipient and arrangement changes share the final current review and one save; export remains a separate explicit boundary.
+source: docs/decisions/0340-guided-preparation-save.md; docs/decisions/0350-guided-support-arrangements.md; docs/decisions/0300-explicit-invitation-export.md; acceptance/testdata/guide-arrangements/sources.md
+steps:
+  - run: [onboard-kit, prepare, guide, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/guide-arrangements/plan.yaml}
+      records/newcomer-one/record.obk.yaml: "UNPARSEABLE_RECORD: [\n"
+      records/newcomer-two/preparation.obk.yaml: "OTHER_PERSON_PREPARATION\n"
+      records/newcomer-two/record.obk.yaml: "OTHER_PERSON_OUTCOMES\n"
+    stdin: |
+      recipient
+      1
+      change
+      save
+      6
+      change
+      owner-one
+      apply
+      review
+      back
+      arrangements
+      new
+      id
+      change
+      final-support
+      1
+      change
+      ticket-pairing
+      2
+      change
+      support
+      apply
+      7
+      change
+      pending
+      apply
+      back
+      save
+      review
+      save
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          Name: "" -> "save"
+          Company email: "" -> ""
+          Planned start date (goal): "" -> ""
+          Team ID: "" -> ""
+          Manager contact ID: "" -> ""
+          Onboarding owner contact ID: "" -> "owner-one"
+          Buddy contact ID: "" -> ""
+          Work location: "" -> ""
+          Time zone: "" -> ""
+          Original arrangements:
+          None.
+          Draft arrangements:
+          Arrangement 1:
+          ID: "final-support"
+          Section ID: "ticket-pairing"
+          Kind: "support"
+          Accountable owner contact ID: ""
+          Assigned contacts:
+          None.
+          Reference: ""
+          Target date (goal): ""
+          Preparation status: "pending"
+          Note: ""
+      stderr:
+        json: {status: saved, code: guide.saved, message: Preparation saved.}
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml, records/newcomer-two/preparation.obk.yaml, records/newcomer-two/record.obk.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {same-as: acceptance/testdata/guide-arrangements/mixed.yaml}
+        invitation.zip: {absent: true}
+        first-steps.md: {absent: true}
+  - run: [onboard-kit, invite, export, --plan, plan.yaml, --preparation, records/newcomer-one/preparation.obk.yaml, --account, newcomer-one, --out, invitation.zip, --preaccess-help-contact, absent-helper]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.preaccess-help
+          message: Designate a known named business contact with a displayable pre-access help route.
+          problems:
+            - {code: directory.contact-unreachable, severity: warning}
+            - {code: directory.contact-unreachable, severity: warning}
+            - {code: directory.contact-unreachable, severity: warning}
+            - {code: directory.contact-unreachable, severity: warning}
+            - {code: directory.contact-unreachable, severity: warning}
+          blockers: []
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml, records/newcomer-two/preparation.obk.yaml, records/newcomer-two/record.obk.yaml]
+      files:
+        invitation.zip: {absent: true}
