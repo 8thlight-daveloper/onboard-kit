@@ -95,8 +95,9 @@ state. A success returns no problems. A failure returns no bytes. Golden bytes
 are the independent oracle, not another encoder or the decoder's output.
 
 The [API](api.go), [tests](encoder_test.go), and [binding](wire_test.go) complete
-the four-part contract. The binding is a stub until a separate implementation
-increment. File I/O, semantic validity, invitation readiness, privacy scanning,
+the four-part contract. The binding selects the independently authored implementation;
+a rebuild first runs against a stub to demonstrate the red baseline.
+File I/O, semantic validity, invitation readiness, privacy scanning,
 and first-use recording are outside this component.
 
 ## Wrong implementations tried

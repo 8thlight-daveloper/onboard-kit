@@ -1,6 +1,6 @@
 # Preparation format
 
-Status: bounded shape approved under R1; typed validator implemented; codec contracts staged.
+Status: bounded shape approved under R1; validator, codecs, and editor implemented; command flows pending.
 Date meaning follows [0180](../decisions/0180-first-onboarding-use.md).
 
 ## The three files
@@ -136,10 +136,13 @@ own fixtures for those rules, including raw repeated YAML keys and canonical
 round trips. They are not tested by the typed
 [validator suite](../../contracts/preparation/validator/contract.md).
 
-The typed validator is implemented. The [decoder](../../contracts/preparation/decoder/contract.md)
-and [encoder](../../contracts/preparation/encoder/contract.md) contracts define the
-serialization boundary; their implementations are a separate increment. Template
-bindings remain a separate format change. Before invitation implementation, approve
+The typed validator, [decoder](../../contracts/preparation/decoder/contract.md),
+[encoder](../../contracts/preparation/encoder/contract.md), and
+[editor](../../contracts/preparation/editor/contract.md) are implemented. The editor
+supports scoped repair under [0190](../decisions/0190-incremental-preparation-repair.md);
+successful edits do not certify invitation readiness. Unicode separators follow
+[0200](../decisions/0200-preserve-unicode-line-separators.md). Template bindings
+remain a separate format change. Before invitation implementation, approve
 the bounded archive layout, import conflict handling, path validation, identity
 confirmation, and readiness rules. No new runtime behavior is authorized by
 this format reference alone.

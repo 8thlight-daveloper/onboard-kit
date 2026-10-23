@@ -28,8 +28,9 @@ accounts.
 
 ### 1. Preparation format and ownership
 
-The preparation model and validator are implemented. Serializer contracts are
-staged; their implementation remains pending. See the [preparation format](../reference/preparation-format.md).
+The preparation model, validator, decoder, encoder, and typed editor are
+implemented. Driver integration and the combined view remain pending. See the
+[preparation format](../reference/preparation-format.md).
 Define the person-specific artifact before adding personalized questions to
 the existing plan editor. Specify identity, references to the plan and account,
 the location beside the record, and which values are assignments rather than
@@ -49,6 +50,7 @@ wrong person or plan. Do not introduce an unrestricted generic overlay map.
 
 ### 2. Preparation editing and updates
 
+The pure editor is implemented; the command flow and combined view are not.
 Provide an onboarder view scoped to one person. Show missing assignments and
 requests separately from verified newcomer outcomes. Saving preparation must
 not rewrite the record or shared plan. Loading later preparation changes must

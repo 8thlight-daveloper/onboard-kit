@@ -24,11 +24,11 @@ Tools come from a Nix dev shell, so everyone has the same versions.
 
 ```sh
 nix develop    # or `direnv allow`, to enter the shell on cd
-just check     # exactly what CI runs: format, linters, tests
+just check     # format, linters, and tests
 just hook      # optional: run `just check` before every commit
 ```
 
-`just` lists the other recipes. CI runs `just check` on every pull request.
+`just` lists the other recipes. Run `just check` before committing.
 
 ### GoLand
 

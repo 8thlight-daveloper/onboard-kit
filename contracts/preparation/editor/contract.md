@@ -116,7 +116,8 @@ plus exact code/path pairs. Each case cites its source. An unchanged result on
 failure is an explicit invariant, not an expected result derived by another
 editor. [editor_test.go](editor_test.go) compares every field, checks input
 preservation and diagnostics, and forks edits to protect prior values.
-[wire_test.go](wire_test.go) is a stub until an independent implementation.
+[wire_test.go](wire_test.go) selects the independently authored implementation.
+A rebuild first runs against a stub to demonstrate the red baseline.
 
 The editor performs no serialization, secret scanning, privacy inference, file
 authorization, invitation conflict handling, first-use event recording, or
