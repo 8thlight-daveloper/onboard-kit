@@ -77,12 +77,23 @@ func validAccount(account string) bool {
 
 func validateTypes(entries []entry) []model.Problem {
 	for _, entry := range entries {
-		if !entry.file.Mode().IsRegular() || strings.HasSuffix(entry.file.Name, "/") {
+		if !regularFile(entry.file) {
 			_, problems := failure("entry-type", "Recreate the invitation using regular files only.", entry.path)
 			return problems
 		}
 	}
 	return nil
+}
+
+func regularFile(file *zip.File) bool {
+	creator := file.CreatorVersion >> 8
+	if creator == 3 || creator == 19 {
+		fileType := (file.ExternalAttrs >> 16) & 0xf000
+		if fileType != 0 && fileType != 0x8000 {
+			return false
+		}
+	}
+	return file.Mode().IsRegular() && !strings.HasSuffix(file.Name, "/")
 }
 
 func validateEncodings(entries []entry) []model.Problem {
