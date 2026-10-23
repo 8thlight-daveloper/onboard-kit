@@ -19,6 +19,9 @@ UTF-8, two spaces, LF, one final newline, no markers, comments, anchors, or tags
 reserved words and digit-leading strings quoted; qualifying multiline text in
 literal blocks; sorted mapping keys; lists kept in their original order.
 Control-character escapes use two lowercase hexadecimal digits after `\x`.
+Under [0200](../../../docs/decisions/0200-preserve-unicode-line-separators.md),
+U+2028 and U+2029 in any string or key require double quotes with `\u2028` and
+`\u2029`. Never use a literal block for text containing either separator.
 
 ### Known fields
 

@@ -167,8 +167,9 @@ Written out in 0020. In short:
 The preparation decoder, encoder, and validator depend only on the domain model and their
 own contract interfaces. They do not depend on each other, plan or record codecs,
 or drivers. Drivers perform semantic validation separately from serialization.
-The preparation editor may depend on the preparation validator and model, plus
-its own contract interface. It does not depend on codecs or drivers.
+The preparation editor may depend on the preparation validator, including its
+contract's context projection, and model, plus its own contract interface. It
+does not depend on codecs or drivers.
 
 ## Commands
 

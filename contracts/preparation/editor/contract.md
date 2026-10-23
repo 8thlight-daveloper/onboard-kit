@@ -133,3 +133,5 @@ support that an onboarder has not explicitly supplied.
 | Append a replacement instead of keeping its index | replace-arrangement-in-place |
 | Silently ignore a missing removal target | remove-missing-not-success |
 | Return only the first failure | invalid-recipient-no-partial-change, duplicate-id-blocks-replace |
+| Ignore a lone validation problem | single-invalid-recipient-no-partial-change |
+| Reject several duplicates but choose a winner when only two declarations conflict | two-duplicate-ids-block-replace |
