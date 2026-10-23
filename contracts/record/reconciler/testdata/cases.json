@@ -1,5 +1,9 @@
 [
   {
+    "name": "first-use-is-preserved", "file": "first-use-is-preserved.case.json",
+    "source": "Hand-written from ADR 0230, Decision and Verification boundaries: unusual firstOpenedAt text survives while an invalid choice answer is removed and the plan reference changes."
+  },
+  {
     "name": "refuse-a-plan-with-no-id",
     "file": "refuse-a-plan-with-no-id.case.json",
     "source": "Hand-written. 0090 'Refreshing becomes reconciling', and the lead's decision: reconcile.missing-plan-id when the plan has no id. The record, its answers, and its old reference come back unchanged, and nothing is listed."

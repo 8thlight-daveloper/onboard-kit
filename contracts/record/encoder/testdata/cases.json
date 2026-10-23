@@ -1,5 +1,13 @@
 [
   {
+    "name": "first-use", "input": "../../testdata/first-use.record.json", "output": "../../testdata/first-use.yaml",
+    "source": "Hand-written from ADR 0230, Decision: optional firstOpenedAt follows legacy startDate and precedes plan; exact case variants remain unknown."
+  },
+  {
+    "name": "unicode-separators", "input": "../../testdata/unicode-separators.record.json", "output": "../../testdata/unicode-separators.yaml",
+    "source": "Hand-written expected bytes from ADR 0230, Decision, extending ADR 0200, Decision and Verification: record text and unknown keys preserve U+2028/U+2029 using explicit escapes, including text also holding LF."
+  },
+  {
     "name": "empty",
     "input": "empty.record.json",
     "output": "empty.yaml",

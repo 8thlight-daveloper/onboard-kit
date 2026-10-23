@@ -1,0 +1,6 @@
+{
+  "plan": {"variables": [{"name": "question", "audience": "onboardee"}]},
+  "joined": {"variables": [{"name": "question", "audience": "onboardee"}], "answers": {"plan": {"question": "edited"}}},
+  "previous": {"schemaVersion": 1, "startDate": "legacy", "firstOpenedAt": " held\nnot a timestamp\u2028\u2029 "},
+  "expected": {"schemaVersion": 1, "startDate": "legacy", "firstOpenedAt": " held\nnot a timestamp\u2028\u2029 ", "answers": {"plan": {"question": "edited"}}}
+}

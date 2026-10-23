@@ -1,5 +1,13 @@
 [
   {
+    "name": "first-use", "input": "../../testdata/first-use.yaml", "output": "../../testdata/first-use.record.json",
+    "source": "Hand-written from ADR 0230, Decision: firstOpenedAt is recognized as exact text, separate from legacy startDate and unknown case variants."
+  },
+  {
+    "name": "unicode-separators", "input": "../../testdata/unicode-separators.yaml", "output": "../../testdata/unicode-separators.record.json",
+    "source": "Hand-written decoded text from ADR 0230 and ADR 0200, Verification: explicit Unicode escapes preserve every supplied separator and ordinary LF in record strings and unknown keys."
+  },
+  {
     "name": "minimal",
     "input": "minimal.yaml",
     "output": "minimal.record.json",

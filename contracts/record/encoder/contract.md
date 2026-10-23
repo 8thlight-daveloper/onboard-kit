@@ -21,7 +21,7 @@ A key with a zero value is omitted, as in the plan encoder. Zero means an empty 
 
 | Type | Key order |
 | -- | -- |
-| Record | `schemaVersion`, `kind`, `account`, `startDate`, `plan`, `answers`, `outcomes`, then the unknown fields |
+| Record | `schemaVersion`, `kind`, `account`, `startDate`, `firstOpenedAt`, `plan`, `answers`, `outcomes`, then the unknown fields |
 | Plan reference | `id`, `hash`, `url` |
 | Answers | `plan`, `sections` |
 | Outcome | `section`, `outcome`, `on`, `sectionHash`, `note`, `differently` |
@@ -35,7 +35,11 @@ A key with a zero value is omitted, as in the plan encoder. Zero means an empty 
 - An outcome writes each field by the string rules and omits an empty one. A Timestamp such as `2026-10-22T14:05:00Z` starts with a digit, so it is quoted. `note` and `differently` may hold a newline, and are written by the multi-line rules, as a block indented two spaces more than their key.
 - The `outcome` word is written as the text held, by the string rules, with one exception: the word `deferred` is written plain. In an `outcome` it cannot be taken for the answer Deferred. Any other word, including one that is not `verified`, `failed`, or `deferred`, is written as held, with no problem. A validator judges it.
 
-Unknown fields are written after the known keys, as siblings of them, in ascending byte order. An unknown field whose key is one of the seven keys of a Record is a problem. A record has no sections, variables, directory, provenance, or id, so those keys, and any other, are written as any unknown field.
+Unknown fields are written after the known keys, as siblings of them, in ascending byte order. An unknown field whose key is one of the eight keys of a Record is a problem. A record has no sections, variables, directory, provenance, or id, so those keys, and any other, are written as any unknown field.
+
+`firstOpenedAt` is optional Timestamp text, written exactly as held after `startDate` and before `plan`. Empty text is omitted. No date or timestamp is validated or inferred, and legacy `startDate` never supplies this field. Its known-key collision is rejected even when the field is empty. See [0230](../../../docs/decisions/0230-first-use-record-compatibility.md).
+
+Every record string and mapping key containing U+2028 or U+2029 is double-quoted and writes those characters as `\u2028` or `\u2029`. This also applies when the text contains ordinary newlines: use quoted escapes, never a literal block. Other text stays exact. This overrides the inherited literal-character rule for record serialization, extending [0200](../../../docs/decisions/0200-preserve-unicode-line-separators.md).
 
 ## Problems
 
@@ -43,7 +47,7 @@ Unknown fields are written after the known keys, as siblings of them, in ascendi
 | -- | -- |
 | `encode.empty-answer` | A Value of kind none is an answer |
 | `encode.empty-item` | An outcome would write no keys. Dropping it would shift the list, so it is a problem. The path is such as `outcomes[1]` |
-| `encode.unknown-field-collision` | An unknown field has one of the keys `schemaVersion`, `kind`, `account`, `startDate`, `plan`, `answers`, `outcomes`. It is reported once, and its value is not examined |
+| `encode.unknown-field-collision` | An unknown field has one of the keys `schemaVersion`, `kind`, `account`, `startDate`, `firstOpenedAt`, `plan`, `answers`, `outcomes`. It is reported once, and its value is not examined |
 | `encode.unsupported-value` | An unknown field holds a value that cannot be written |
 
 A problem names its place in `detail.path`: dots for fields and a number in brackets for a list item, such as `answers.plan.organization`, `answers.sections.s.name`, `outcomes[1]`, or `x[0]`. An unknown field is its key alone. Problems come in the order their places occur in the canonical file, so answers, then outcomes, then unknown fields, with map keys in ascending byte order.
@@ -68,7 +72,7 @@ These hold for every record the contract tests use.
 1. **hard.** The `outcome` word `deferred` is written plain, `outcome: deferred`, while every other text field writes the text `deferred` in quotes. The shared decisions list `deferred` as an outcome word and the plan encoder quotes it everywhere. The quotes in a plan keep an answer that is the text `deferred` apart from an answer that is deferred. An `outcome` holds no answer, so the quotes would only make the common case look odd. Only the exact word `deferred` is affected. `Deferred` is plain by the ordinary rule.
 2. **cheap.** An outcome that would write no keys is `encode.empty-item` at its path, as in the plan encoder. Writing `- {}` or dropping it are the other choices, and dropping shifts the list. The docs say outcomes are written in the order held and do not name this case.
 3. **cheap.** An outcome word that is not one of the three is written as held, with no problem. The docs say the decoder reads any text without validating and a validator checks later. The encoder follows the same split.
-4. **cheap.** An unknown field named `schemaVersion`, `kind`, `account`, `startDate`, `plan`, `answers`, or `outcomes` collides. The docs say unknown fields are written back as for a plan, and the plan encoder reports a key that is a known key. `id`, `sections`, `directory`, `provenance`, and `variables` do not collide, because the shared decisions say a record has no such fields.
+4. **cheap.** An unknown field named `schemaVersion`, `kind`, `account`, `startDate`, `firstOpenedAt`, `plan`, `answers`, or `outcomes` collides. The docs say unknown fields are written back as for a plan, and the plan encoder reports a key that is a known key. `id`, `sections`, `directory`, `provenance`, and `variables` do not collide, because the shared decisions say a record has no such fields.
 5. **cheap.** A section with no answers is omitted from `answers.sections`, and an empty `plan` or `sections` map is omitted, as in the plan encoder. A map entry that holds an answer is always written.
 6. **cheap.** A `plan` reference that holds only one field writes that field. It is omitted only when all three are empty.
 7. **cheap.** The encoder writes any `schemaVersion` as held, and does not refuse a version other than 1. Refusing is the decoder's guard.
@@ -100,3 +104,6 @@ Each row is a plausible wrong implementation and the cases that fail it.
 | A colliding field's value examined as well | The collision-once test |
 | Unknown fields dropped | `unknown-fields`, the number kind tests |
 | A stub that returns nothing | Every golden case |
+| Drops or swaps firstOpenedAt, infers it from legacy startDate, or validates timestamp text | `first-use`, `TestFirstOpenedAtIsRepresentationalText` |
+| Lets unknown firstOpenedAt shadow the known field, including when empty | `TestFirstOpenedAtCollisionIsRejectedEvenWhenTheFieldIsEmpty` |
+| Emits Unicode separators literally or in a literal block | `unicode-separators`, `TestRecordUnicodeSeparatorsUseExplicitEscapes` |

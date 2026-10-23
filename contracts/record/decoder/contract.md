@@ -25,17 +25,20 @@ A record file is YAML in the same dialect as a plan file. This contract is the [
 
 ## Known fields
 
-The top-level keys a record knows are `schemaVersion`, `kind`, `account`, `startDate`, `plan`, `answers`, and `outcomes`. They sit in any order. Keys are exact: `Account` and `startdate` are unknown fields.
+The top-level keys a record knows are `schemaVersion`, `kind`, `account`, `startDate`, `firstOpenedAt`, `plan`, `answers`, and `outcomes`. They sit in any order. Keys are exact: `Account` and `startdate` are unknown fields.
 
 | Key | Read as |
 | -- | -- |
 | `account` | Text, `Record.Account` |
 | `startDate` | Text, `Record.StartDate`, with no check that it is a date |
+| `firstOpenedAt` | Text, `Record.FirstOpenedAt`, with no timestamp validation or inference |
 | `plan` | A map of `id`, `hash`, `url`, each text, into `Record.Plan` |
 | `answers` | Answers, see above |
 | `outcomes` | A list of maps, into `Record.Outcomes` |
 
 Every string field, here and below, is read as a plan's `title` is: a quoted or plain string is text, absent, empty, or null is the empty string, and a plain `deferred` is text. So `account: "42"` is text and a plain `account: 42` is `format.number-spelling`. A hash such as `1e3` or `5d3c1f` is plain text only when YAML cannot read it as another type, and a file quotes one that starts with a digit. A plain `yes` is `format.boolean-spelling`. A list, a map, or a plain `true` is `format.wrong-type`, at the field.
+
+`firstOpenedAt` follows every existing text guard, including null and empty handling, duplicate raw mapping keys, and source-order problem reporting. Its exact key is known and is not also kept in unknown fields; `FirstOpenedAt` remains unknown. Escaped Unicode line and paragraph separators are preserved as supplied text in all record strings and unknown keys. Neither a clock nor legacy `startDate` fills an absent event. See [0230](../../../docs/decisions/0230-first-use-record-compatibility.md) and [0200](../../../docs/decisions/0200-preserve-unicode-line-separators.md).
 
 ### Plan reference
 
@@ -109,6 +112,10 @@ Each row names a plausible wrong implementation and the cases that fail it. The 
 | A non-scalar `kind` read as missing | `kind-list`, `kind-alias` |
 | A plain `kind: yes` reported as a boolean spelling | `kind-spelling` |
 | Unknown fields dropped | `unknown-fields` |
+| Drops or swaps firstOpenedAt, keeps it as unknown, infers it, or validates its timestamp | `first-use`, `TestFirstOpenedAtDecodesAsExactText` |
+| Applies loose scalar conversion or ignores repeated event keys | `TestFirstOpenedAtUsesTheTextFormatGuards`, `TestFirstOpenedAtDuplicatesAndSourceOrder` |
+| Case-folds the new known key | `TestFirstOpenedAtCaseVariantRemainsUnknown` |
+| Loses Unicode separators or ordinary newlines | `unicode-separators` |
 | Plan-only keys such as `sections` or `id` refused | `unknown-fields` |
 | An unknown key in the plan reference or in an outcome kept or ignored | `unknown-field`, `problem-order` |
 | Outcomes sorted, or repeats removed, or an empty item dropped | `outcomes-edges`, `strings` |

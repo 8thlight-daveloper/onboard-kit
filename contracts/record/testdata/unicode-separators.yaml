@@ -1,0 +1,24 @@
+schemaVersion: 1
+kind: record
+account: "a\u2028b"
+startDate: "c\u2029d"
+firstOpenedAt: "event\n\u2028\u2029text"
+plan:
+  id: "e\u2028f"
+  hash: "g\u2029h"
+  url: "i\n\u2028j"
+answers:
+  plan:
+    list:
+      - "u\u2028v"
+    "q\u2028r": "s\u2029t"
+outcomes:
+  - section: "w\u2029x"
+    outcome: "y\u2028z"
+    on: "a\u2029b"
+    sectionHash: "c\u2028d"
+    note: "e\n\u2029f"
+    differently: "g\u2028h"
+"x\u2028key":
+  "nested\u2029key":
+    - "value\u2028text"

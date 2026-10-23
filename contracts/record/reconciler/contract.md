@@ -38,7 +38,9 @@ A refusal returns the record as it was, copied, with its old plan reference, an 
 | `plan` reference | `id` from `plan.id`, and `hash` and `url` from `reference`, as given. An empty `url` is written as empty. The old reference is not kept |
 | `answers` | The rules below |
 | `outcomes` | The record, as held, in the same order. None is added, removed, or changed |
-| `schemaVersion`, `account`, `startDate`, and `unknownFields` | The record, as held. Unknown fields keep their nested maps, lists, integers, and decimals |
+| `schemaVersion`, `account`, `startDate`, `firstOpenedAt`, and `unknownFields` | The record, as held. Unknown fields keep their nested maps, lists, integers, and decimals |
+
+FirstOpenedAt is preserved exactly on successful reconciliation and refusal, including empty or unusual held text. Reconciliation records no first-use event and infers nothing from `startDate`. See [0230](../../../docs/decisions/0230-first-use-record-compatibility.md).
 
 ### Questions and audience
 
@@ -133,6 +135,7 @@ Each row names a plausible wrong implementation and the cases that fail it.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drops, repairs, or invents firstOpenedAt during answer removal or refusal | `first-use-is-preserved`, `TestFirstOpenedAtSurvivesReconciliationAndRefusal` |
 | The old url kept when the driver's url is empty, the old hash kept, or the plan id taken from the record | `reference-is-replaced-as-given`, `first-reconcile-is-accepted`, the reconcile-again test |
 | A first reconcile refused, or a missing id accepted | `first-reconcile-is-accepted`, `refuse-a-plan-with-no-id` |
 | Both problems reported, or the different-plan problem reported first | `missing-id-is-the-only-problem-when-both-apply` |

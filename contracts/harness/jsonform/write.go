@@ -442,6 +442,7 @@ func recordObject(record model.Record) object {
 	}
 	o.addText("account", record.Account)
 	o.addText("startDate", string(record.StartDate))
+	o.addText("firstOpenedAt", string(record.FirstOpenedAt))
 	if record.Plan != (model.PlanReference{}) {
 		var p object
 		p.addText("id", record.Plan.ID)

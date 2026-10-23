@@ -15,7 +15,9 @@ The record splitter takes the newcomer's answers back out of the joined plan, so
 
 ## The result
 
-The result is `previous` with its `answers` recomputed. Every other field is copied from `previous` without change: `schemaVersion`, `account`, `startDate`, the plan reference, `outcomes` in their order, and the unknown fields. Nothing but `answers` is read from `plan` or `joined`. Their `id`, `planUrl`, `resultsPath`, `origin`, and content never reach the record.
+The result is `previous` with its `answers` recomputed. Every other field is copied from `previous` without change: `schemaVersion`, `account`, `startDate`, `firstOpenedAt`, the plan reference, `outcomes` in their order, and the unknown fields. Nothing but `answers` is read from `plan` or `joined`. Their `id`, `planUrl`, `resultsPath`, `origin`, and content never reach the record.
+
+FirstOpenedAt is copied exactly, including empty or unusual text, while answers change. Splitting records no first-use event, infers nothing from `startDate`, and repairs no timestamp. See [0230](../../../docs/decisions/0230-first-use-record-compatibility.md).
 
 ## Which answers the record holds
 
@@ -107,6 +109,7 @@ Each row is a plausible wrong implementation and the cases that fail it.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drops, rewrites, or invents firstOpenedAt while saving an answer | `first-use-is-preserved`, `TestFirstOpenedAtSurvivesAnswerEdits` |
 | Returns a zero record | `TestCases`, `TestAbsentStaysAbsent`, the round trip test |
 | Returns `previous` unchanged | `answer-that-differs-from-the-plan-is-stored`, `cleared-answer-leaves-the-record`, the stored answers test |
 | Stores every answer in `joined` | `answer-equal-to-the-plan-is-not-stored`, `equal-lists-are-not-stored`, `deferred-equal-to-deferred-is-not-stored` |

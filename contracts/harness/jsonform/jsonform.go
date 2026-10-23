@@ -495,11 +495,12 @@ func (r *reader) generic(path string, v any) any {
 }
 
 func (r *reader) record(path string, v any) model.Record {
-	m := r.object(path, v, "schemaVersion", "account", "startDate", "plan", "answers", "outcomes", "unknownFields")
+	m := r.object(path, v, "schemaVersion", "account", "startDate", "firstOpenedAt", "plan", "answers", "outcomes", "unknownFields")
 	record := model.Record{
 		SchemaVersion: r.integer(path, m, "schemaVersion"),
 		Account:       r.str(path, m, "account"),
 		StartDate:     model.Date(r.str(path, m, "startDate")),
+		FirstOpenedAt: model.Timestamp(r.str(path, m, "firstOpenedAt")),
 		Plan:          r.planReference(path+".plan", m["plan"]),
 		Answers:       r.answers(path+".answers", m["answers"]),
 		UnknownFields: r.unknownFields(path+".unknownFields", m["unknownFields"]),

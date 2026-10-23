@@ -1,0 +1,10 @@
+{
+  "record": {"schemaVersion": 1, "startDate": "legacy", "firstOpenedAt": " held\nnot a timestamp\u2028\u2029 ", "plan": {"id": "plan-id"}, "answers": {"plan": {"question": "removed"}}},
+  "previous": {},
+  "plan": {"id": "plan-id", "variables": [{"name": "question", "audience": "onboardee", "type": "choice", "options": ["kept"]}]},
+  "reference": {"hash": "new"},
+  "expected": {
+    "record": {"schemaVersion": 1, "startDate": "legacy", "firstOpenedAt": " held\nnot a timestamp\u2028\u2029 ", "plan": {"id": "plan-id", "hash": "new"}},
+    "reconciliation": {"answersToReview": ["plan.question"]}
+  }
+}

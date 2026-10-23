@@ -1,5 +1,9 @@
 [
   {
+    "name": "first-use-is-preserved", "file": "first-use-is-preserved.case.json",
+    "source": "Hand-written from ADR 0230, Decision and Verification boundaries: unusual firstOpenedAt text survives while an onboardee answer is added."
+  },
+  {
     "name": "answer-that-differs-from-the-plan-is-stored",
     "file": "answer-that-differs-from-the-plan-is-stored.case.json",
     "source": "Hand-written. 0090: the record holds the answers the newcomer gave. Contract rule: Which answers are kept, (a), differs from the plan's pre-seed."
