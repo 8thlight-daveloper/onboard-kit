@@ -13,13 +13,40 @@ func activeSections(plan model.Plan) []model.Section {
 	for _, section := range plan.Sections {
 		passes[section.ID] = isSwitchedOn(section) && includeIfPasses(conditions, section, plan.Answers, switches)
 	}
-	active := make([]model.Section, 0, len(plan.Sections))
+	remaining := map[string]bool{}
 	for _, section := range plan.Sections {
 		if isActive(section, byID, passes) {
+			remaining[section.ID] = true
+		}
+	}
+	for changed := true; changed; {
+		changed = false
+		for _, section := range plan.Sections {
+			if remaining[section.ID] && !dependenciesActive(section, remaining) {
+				delete(remaining, section.ID)
+				changed = true
+			}
+		}
+	}
+	active := make([]model.Section, 0, len(remaining))
+	for _, section := range plan.Sections {
+		if remaining[section.ID] {
 			active = append(active, section)
 		}
 	}
 	return active
+}
+
+func dependenciesActive(section model.Section, remaining map[string]bool) bool {
+	if section.Parent != "" && !remaining[section.Parent] {
+		return false
+	}
+	for _, target := range section.Requires {
+		if !remaining[target] {
+			return false
+		}
+	}
+	return true
 }
 
 func indexByID(sections []model.Section) map[string]model.Section {
