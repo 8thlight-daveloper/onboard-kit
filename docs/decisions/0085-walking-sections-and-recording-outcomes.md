@@ -2,6 +2,10 @@
 
 Status: accepted
 
+[0260](0260-prerequisites-and-action-order.md) reconciles legacy After retention,
+global action order, containment, and timing goals without weakening verified
+prerequisites. Its implementation remains pending.
+
 Builds on [0030](0030-self-contained-plan-file.md), [0050](0050-section-switch.md), [0055](0055-variable-audience.md), [0060](0060-personal-plan.md), [0065](0065-messages-and-evidence.md), [0070](0070-sub-sections.md), and [0075](0075-refreshing-a-personal-plan.md). It answers the progress record that 0065 and 0075 leave open, and it is the first stage of the onboardee runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28). It replaces the ordering field `after` with `requires`.
 
 ## Context

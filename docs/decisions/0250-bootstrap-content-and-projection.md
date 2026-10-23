@@ -2,6 +2,10 @@
 
 Status: accepted by agent judgment; implementation pending
 
+[0260](0260-prerequisites-and-action-order.md) retains the marker and full-plan
+evaluation rules, but replaces the still-planned nested action fragment with
+the global prerequisite sequence and flat activity presentation.
+
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0090](0090-plan-and-onboarding-record.md), and
 [0240](0240-invitation-archive-envelope.md).
