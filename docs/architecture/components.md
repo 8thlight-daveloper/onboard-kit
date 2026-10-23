@@ -100,6 +100,7 @@ flowchart TB
 | Record joiner | Puts a newcomer's onboarding record over the plan, giving the one plan value that every other component takes |
 | Record splitter | Takes the onboardee answers back out of the joined plan, giving the record to save. The plan is left alone |
 | Record reconciler | Checks a record against a new plan. Removes answers the plan no longer accepts, lists hidden answers, new questions, and new and removed sections, and flags outcomes whose section changed. Replaces the plan refresher |
+| Preparation validator | Contract staged, implementation pending. Checks a person's preparation against trusted account, plan, contact, team, and section identities. Reads preparation and context only, returns problems, and performs no writes. It neither joins answers nor records first use |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
@@ -125,6 +126,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
 | `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
 | `binary` | Reads embedded templates, wires the components, writes only through the drivers |
+| `preparation/validator` | None. Reads Preparation and the contract's Context projection, including optional record identity. Returns problems only; reads or changes no Plan fields or record answers, outcomes, or notes |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 

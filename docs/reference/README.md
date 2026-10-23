@@ -5,6 +5,8 @@ Exact definitions of formats the tool reads and writes, with a worked example. T
 | Doc | Defines |
 | -- | -- |
 | [domain-model.md](domain-model.md) | The types that components share, stored and computed |
+| [onboarding-catalog.md](onboarding-catalog.md) | Required embedded library coverage, activity outcomes, and onboarder preparation; implementation pending |
+| [preparation-format.md](preparation-format.md) | Approved person-specific preparation shape and ownership; serializers and runtime pending |
 | [section-template-schema/README.md](section-template-schema/README.md) | The shape of a template and a section, variables, question conditions, and reserved names |
 | [tui.md](tui.md) | The terminal walkthrough: who uses it, the flow, the layout at each width, and how it is tested |
 | [acceptance-scenarios.md](acceptance-scenarios.md) | The data format of an acceptance scenario, and how a run is judged |

@@ -69,6 +69,39 @@ Onboarding must not require the access it is helping someone obtain. Preserve
 the invitation's bootstrap path, the standalone offline-capable tool, and
 deterministic assembly. See [0005](0005-self-contained-install.md) and 0090.
 
+### P6. Use dates to plan support, not punish progress
+
+Dates are goals. A passed target must not fail an activity, block the newcomer,
+or imply blame. Identify missing preparation, who can supply it, and whom it
+blocks. Preserve real prerequisites and authorization independently of dates.
+See [0150](0150-onboarding-library-and-preparation-flow.md).
+
+### P7. Treat personal data as PII
+
+Treat information about an identifiable person as PII for product design,
+including company email, account ids, and linked dates, assignments, and progress.
+Collect and retain only what serves a stated onboarding purpose, and explain
+storage and readership. File ownership does not provide privacy. Exclude personal
+email accounts, phone numbers, home addresses, and precise location from the
+normal flow unless an explicit exception is justified. Prefer time zone to
+location. Needed business email may be visible in shared files; do not imply
+it is hidden without an implemented control. Avoid unnecessary personal values
+in diagnostics or logs. See [0160](0160-personal-data-and-preparation-approval.md),
+including the recorded option for field-level encryption in a later version.
+
+### P8. Prefer sufficient accuracy with less user effort
+
+Collect information precise enough for the real decision, not the most precise
+information imaginable. When an observed event or clearly labeled proxy serves
+the purpose, prefer it to another question or manual entry. Make the limitation
+visible and ask for the exact fact when the difference would change a meaningful
+decision. Do not collect extra personal data for hypothetical future metrics.
+
+Close enough is not permission to guess an answer, silently accept a default,
+hide ambiguity, claim completion, or relax safety or authorization. Keep a
+proxy's honest name rather than presenting it as a fact it does not establish.
+[0180](0180-first-onboarding-use.md) applies this to first use versus actual start.
+
 ## Decision
 
 Use the [behavior judge skill](../../.agents/skills/behavior-judge/SKILL.md) for

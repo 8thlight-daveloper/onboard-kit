@@ -2,6 +2,17 @@
 
 Status: accepted
 
+[0150](0150-onboarding-library-and-preparation-flow.md) replaces deadline-style
+treatment of timing with planning targets and support needs. Passing a target
+does not fail an activity or block the newcomer. Implementation is pending.
+
+[0170](0170-planned-and-actual-start-dates.md) separates planned and actual start
+dates. A future report must declare its date anchor and show unknown dates
+without silently substituting the other one.
+
+[0180](0180-first-onboarding-use.md) replaces actual start with first use of the
+tool. It is not an employment start date and must not be labeled as one.
+
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md) and [0090](0090-plan-and-onboarding-record.md). It records what a report is and the questions that are still open. Nothing here is built.
 
 ## Context

@@ -1,0 +1,4881 @@
+[
+  {
+    "name": "valid-before-first-record",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Preparation can exist before a record.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-after-first-record",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A matching record does not prevent preparation.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": {
+        "account": "newcomer-one",
+        "planId": "plan-one"
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-second-person",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Different people can have different assignments.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-two",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-two",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "lead-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "pending-without-company-email",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Email access cannot require company email to exist.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "incomplete-recipient",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Partial preparation is valid; readiness is separate.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {},
+      "arrangements": []
+    },
+    "problems": []
+  },
+  {
+    "name": "pending-without-assignment",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Incomplete arrangements stay visible.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "status": "pending"
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "requested-without-assignment",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Incomplete arrangements stay visible.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "status": "requested"
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "deferred-without-assignment",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Incomplete arrangements stay visible.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "status": "deferred"
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "past-target-remains-valid",
+    "source": "docs/decisions/0150-onboarding-library-and-preparation-flow.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A passed target cannot invalidate preparation.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2000-01-01",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "repeated-contact-data",
+    "source": "docs/decisions/0110-reject-ambiguous-plans.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Repeated contact data is not a duplicate identity.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one",
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "empty-arrangements",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "There may be no arrangements yet.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": []
+    },
+    "problems": []
+  },
+  {
+    "name": "null-arrangements",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An absent list is not a completion claim.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": null
+    },
+    "problems": []
+  },
+  {
+    "name": "matching-case-sensitive-account",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Identity is preserved exactly.",
+    "context": {
+      "planId": "plan-one",
+      "account": "Newcomer.One",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "Newcomer.One",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "version-precedes-kind-and-identity",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Unsupported version is the only result.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 2,
+      "kind": "record",
+      "account": "other",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.version",
+        "path": "schemaVersion"
+      }
+    ]
+  },
+  {
+    "name": "wrong-kind",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A record is not preparation.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "record",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.kind",
+        "path": "kind"
+      }
+    ]
+  },
+  {
+    "name": "missing-account",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Missing identity is not incomplete preparation.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "unsafe-account",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An account cannot contain path separators.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "../other",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "account-case-mismatch",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Identity is case sensitive.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "Newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account-mismatch",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "wrong-person",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Another person's preparation must be refused.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-two",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account-mismatch",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "missing-plan",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Preparation identifies its plan.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.plan",
+        "path": "planId"
+      }
+    ]
+  },
+  {
+    "name": "wrong-plan",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Another plan's preparation must be refused.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-two",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.plan-mismatch",
+        "path": "planId"
+      }
+    ]
+  },
+  {
+    "name": "record-wrong-person",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An existing record identifies the same person.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": {
+        "account": "newcomer-two",
+        "planId": "plan-one"
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.record-account",
+        "path": "record.account"
+      }
+    ]
+  },
+  {
+    "name": "record-wrong-plan",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An existing record identifies the same plan.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": {
+        "account": "newcomer-one",
+        "planId": "plan-two"
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.record-plan",
+        "path": "record.planId"
+      }
+    ]
+  },
+  {
+    "name": "identity-errors-stop-details",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Do not read details after identity mismatch.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-two",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "unknown",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account-mismatch",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "multiple-identity-errors",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Identity errors have fixed field order.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": {
+        "account": "newcomer-three",
+        "planId": "plan-three"
+      }
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-two",
+      "planId": "plan-two",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account-mismatch",
+        "path": "account"
+      },
+      {
+        "code": "preparation.plan-mismatch",
+        "path": "planId"
+      },
+      {
+        "code": "preparation.record-account",
+        "path": "record.account"
+      },
+      {
+        "code": "preparation.record-plan",
+        "path": "record.planId"
+      }
+    ]
+  },
+  {
+    "name": "unknown-team",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A supplied team exists.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "unknown",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-team",
+        "path": "recipient.team"
+      }
+    ]
+  },
+  {
+    "name": "unknown-manager",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A supplied contact exists.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "unknown",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "recipient.manager"
+      }
+    ]
+  },
+  {
+    "name": "unknown-onboardingOwner",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A supplied contact exists.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "unknown",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "recipient.onboardingOwner"
+      }
+    ]
+  },
+  {
+    "name": "unknown-contact",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A supplied contact exists.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "unknown",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "recipient.buddy"
+      }
+    ]
+  },
+  {
+    "name": "invalid-planned-start-date",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A supplied date is a real calendar date.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-02-30"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.date",
+        "path": "recipient.plannedStartDate"
+      }
+    ]
+  },
+  {
+    "name": "invalid-planned-start-date-spelling",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Do not normalize ambiguous date spelling.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "11/02/2026"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.date",
+        "path": "recipient.plannedStartDate"
+      }
+    ]
+  },
+  {
+    "name": "invalid-location",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Location uses a bounded vocabulary.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "office-ish",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.location",
+        "path": "recipient.workLocation"
+      }
+    ]
+  },
+  {
+    "name": "unknown-section",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An arrangement names a known section instance.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "missing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-section",
+        "path": "arrangements[0].section"
+      }
+    ]
+  },
+  {
+    "name": "missing-section",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An arrangement needs its activity reference.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-section",
+        "path": "arrangements[0].section"
+      }
+    ]
+  },
+  {
+    "name": "missing-arrangement-id",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An arrangement ID cannot be empty.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.arrangement-id",
+        "path": "arrangements[0].id"
+      }
+    ]
+  },
+  {
+    "name": "duplicate-identical-arrangement",
+    "source": "docs/decisions/0110-reject-ambiguous-plans.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Matching duplicate IDs are invalid.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        },
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.duplicate-id",
+        "path": "arrangements[1].id"
+      }
+    ]
+  },
+  {
+    "name": "duplicate-conflicting",
+    "source": "docs/decisions/0110-reject-ambiguous-plans.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Conflicting duplicates fail in either order.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        },
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "lead-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.duplicate-id",
+        "path": "arrangements[1].id"
+      }
+    ]
+  },
+  {
+    "name": "duplicate-conflicting-reversed",
+    "source": "docs/decisions/0110-reject-ambiguous-plans.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Conflicting duplicates fail in either order.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "lead-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        },
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.duplicate-id",
+        "path": "arrangements[1].id"
+      }
+    ]
+  },
+  {
+    "name": "distinct-arrangements-same-section",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "One activity can have several distinct arrangements.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        },
+        {
+          "id": "second-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "unknown-kind",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Kind has a bounded vocabulary.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "anything",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.arrangement-kind",
+        "path": "arrangements[0].kind"
+      }
+    ]
+  },
+  {
+    "name": "unknown-status",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A newcomer outcome is not a preparation status.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "verified",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.arrangement-status",
+        "path": "arrangements[0].status"
+      }
+    ]
+  },
+  {
+    "name": "missing-status",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Do not silently infer status.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.arrangement-status",
+        "path": "arrangements[0].status"
+      }
+    ]
+  },
+  {
+    "name": "unknown-owner",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An owner names a contact.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "unknown",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "arrangements[0].owner"
+      }
+    ]
+  },
+  {
+    "name": "unknown-support",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A support contact exists.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "unknown"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "arrangements[0].contacts[0]"
+      }
+    ]
+  },
+  {
+    "name": "invalid-target",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A target is a real calendar date.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-02-30",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.date",
+        "path": "arrangements[0].targetDate"
+      }
+    ]
+  },
+  {
+    "name": "arranged-without-owner",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Arranged preparation names its accountable owner.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].owner"
+      }
+    ]
+  },
+  {
+    "name": "arranged-pairing-without-partner",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Arranged pairing needs a partner.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].contacts"
+      }
+    ]
+  },
+  {
+    "name": "arranged-pairing-without-ticket",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Arranged pairing needs a work reference.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].reference"
+      }
+    ]
+  },
+  {
+    "name": "deploy-shadow-with-support",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Deployment roles are explicit.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "deploy-shadow",
+          "kind": "deploy-shadow",
+          "owner": "owner-one",
+          "contacts": [
+            "lead-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "deploy-shadow-without-support",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An arranged deployment needs experienced support.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "deploy-shadow",
+          "kind": "deploy-shadow",
+          "owner": "owner-one",
+          "contacts": [],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].contacts"
+      }
+    ]
+  },
+  {
+    "name": "deploy-lead-with-support",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Deployment roles are explicit.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "deploy-lead",
+          "kind": "deploy-lead",
+          "owner": "owner-one",
+          "contacts": [
+            "lead-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "deploy-lead-without-support",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An arranged deployment needs experienced support.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "deploy-lead",
+          "kind": "deploy-lead",
+          "owner": "owner-one",
+          "contacts": [],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].contacts"
+      }
+    ]
+  },
+  {
+    "name": "stable-arrangement-reorder",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "List position is not identity.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "later-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        },
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "ordered-detail-errors",
+    "source": "docs/decisions/0140-person-specific-preparation.md; contracts/preparation/validator/contract.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Recipient errors precede arrangement errors.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "unknown",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "unknown",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "bad",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-team",
+        "path": "recipient.team"
+      },
+      {
+        "code": "preparation.unknown-contact",
+        "path": "recipient.buddy"
+      },
+      {
+        "code": "preparation.date",
+        "path": "arrangements[0].targetDate"
+      }
+    ]
+  },
+  {
+    "name": "valid-kind-support",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "support",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-equipment",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "equipment",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-office",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "office",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-remote",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "remote",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-access",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "access",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-meeting",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "meeting",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-reading",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "reading",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-ticket",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "ticket",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-pr-review",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pr-review",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-pr-post",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pr-post",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "valid-kind-pr-merge",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Every declared arrangement kind is usable.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pr-merge",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "support-without-resource",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Support need not invent a work item.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "support",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "blank-reference",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Arranged work needs meaningful reference content.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "  ",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.incomplete-arrangement",
+        "path": "arrangements[0].reference"
+      }
+    ]
+  },
+  {
+    "name": "unsafe-arrangement-id",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Arrangement IDs have an explicit grammar.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "../pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.arrangement-id",
+        "path": "arrangements[0].id"
+      }
+    ]
+  },
+  {
+    "name": "dot-account",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A path-like dot account is invalid.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": ".",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.account",
+        "path": "account"
+      }
+    ]
+  },
+  {
+    "name": "unknown-empty-helper",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "An empty helper item is not an empty helper list.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            ""
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.unknown-contact",
+        "path": "arrangements[0].contacts[0]"
+      }
+    ]
+  },
+  {
+    "name": "valid-leap-day",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Date validation follows the calendar, not a loose pattern.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2028-02-29"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "non-leap-day",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "A matching date pattern is insufficient.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": "2027-02-29"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "preparation.date",
+        "path": "recipient.plannedStartDate"
+      }
+    ]
+  },
+  {
+    "name": "optional-dates",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Preparation can start before dates are known.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "remote",
+        "timeZone": "",
+        "plannedStartDate": ""
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "on-site-location",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "On-site location is supported.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "on-site",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  },
+  {
+    "name": "hybrid-location",
+    "source": "contracts/preparation/validator/contract.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0160-personal-data-and-preparation-approval.md; docs/decisions/0180-first-onboarding-use.md",
+    "rule": "Hybrid location is supported.",
+    "context": {
+      "planId": "plan-one",
+      "account": "newcomer-one",
+      "contacts": [
+        "owner-one",
+        "buddy-one",
+        "lead-one",
+        "reviewer-one"
+      ],
+      "teams": [
+        "team-one",
+        "team-two"
+      ],
+      "sections": [
+        "ticket-pairing",
+        "pr-review",
+        "pr-post",
+        "pr-merge",
+        "deploy-shadow",
+        "deploy-lead",
+        "repository-access-service"
+      ],
+      "record": null
+    },
+    "preparation": {
+      "schemaVersion": 1,
+      "kind": "preparation",
+      "account": "newcomer-one",
+      "planId": "plan-one",
+      "recipient": {
+        "name": "Example newcomer",
+        "companyEmail": "",
+        "team": "team-one",
+        "manager": "lead-one",
+        "onboardingOwner": "owner-one",
+        "buddy": "buddy-one",
+        "workLocation": "hybrid",
+        "timeZone": "",
+        "plannedStartDate": "2026-11-02"
+      },
+      "arrangements": [
+        {
+          "id": "first-pairing",
+          "section": "ticket-pairing",
+          "kind": "pairing",
+          "owner": "owner-one",
+          "contacts": [
+            "buddy-one"
+          ],
+          "reference": "Example first ticket",
+          "targetDate": "2026-11-05",
+          "status": "arranged",
+          "note": ""
+        }
+      ]
+    },
+    "problems": []
+  }
+]

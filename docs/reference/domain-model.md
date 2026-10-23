@@ -151,6 +151,27 @@ A Plan is a value. No function changes one, and an edit returns a new Plan. A Se
 | `templateSet` | Text | The build's commit sha or tag |
 | `generatedOn` | Date | Text in ISO form, such as `2026-10-15`. A driver passes it in, because the core never reads a clock |
 
+## Preparation
+
+[0160](../decisions/0160-personal-data-and-preparation-approval.md) approves a
+separate Preparation type, now declared in internal/model/preparation.go.
+Its fields and ownership are defined in the
+[preparation format](preparation-format.md). It carries schemaVersion, kind,
+account, planId, recipient, arrangements, and unknownFields. PreparationRecipient
+holds organization-supplied recipient details, including plannedStartDate;
+Arrangement holds the named preparation tasks. It has no personal answer map
+or newcomer outcomes.
+
+The [preparation validator](../../contracts/preparation/validator/contract.md)
+reads these values and a trusted context projection, returns problems, and
+changes no input. Model declarations and contract tests do not implement YAML
+serialization or invitation support.
+
+[0180](../decisions/0180-first-onboarding-use.md) requires a firstOpenedAt event
+in the future onboarding record format, not an actual-start-date answer.
+The current Record and its serializers remain unchanged by this increment.
+Do not silently reinterpret its existing startDate field.
+
 ## Onboarding record
 
 The newcomer's own file. See [0090](../decisions/0090-plan-and-onboarding-record.md). It holds only what the newcomer produced, and it is read and written apart from the plan.

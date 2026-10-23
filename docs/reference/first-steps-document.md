@@ -4,10 +4,16 @@ The `first-steps.md` file in an invitation. See [0090](../decisions/0090-plan-an
 
 Each part has a source. **Tool** means fixed wording that the tool supplies. **Plan** means content that comes from the plan or its directory.
 
+[0140](../decisions/0140-person-specific-preparation.md) adds a separate
+onboarder-owned preparation file to the invitation. Explain its purpose and
+ownership alongside the plan and the newcomer's record. The
+[guided preparation flow](../decisions/0150-onboarding-library-and-preparation-flow.md#guide-invitation-preparation)
+uses the same preparation data as later updates. Implementation is pending.
+
 | # | Part | What it says | Source |
 | -- | -- | -- | -- |
 | 1 | Welcome | Who sent this, what onboarding the organization expects, and what the newcomer will end up with. Names the onboarding owner | Plan |
-| 2 | What is in the invitation | The plan, the newcomer's record, and this document, and what each is for. It says that the first question is whether the account is theirs, and what to do if it is not | Tool |
+| 2 | What is in the invitation | The plan, the onboarder's preparation, the newcomer's record, and this document, and what each is for. It says that the first question is whether the account is theirs, and what to do if it is not | Tool |
 | 3 | Get the tool | Where to download `onboard-kit` and how to check that it runs. The address is part of the tool | Tool |
 | 4 | Start | The command that opens the invitation. It asks first whether the account is theirs, and writes nothing until they say yes. Then where it saves their files | Tool |
 | 5 | Do these first | The bootstrap sections of the plan, as the assembler writes them, in order | Plan |

@@ -24,6 +24,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 | [data-flow.md](data-flow.md) | How templates and answers become a document |
 | [walkthrough-sequence.md](walkthrough-sequence.md) | The steps of one run, including reopening a plan |
 | [authoring-loop.md](authoring-loop.md) | How feedback becomes a better template |
+| [invitation-flow.md](invitation-flow.md) | Planned preparation, invitation, and embedded-library increments, with ownership and verification boundaries |
 
 ## Related
 

@@ -2,6 +2,18 @@
 
 Status: accepted
 
+[0140](0140-person-specific-preparation.md) adds an onboarder-owned preparation
+file per newcomer. It supersedes the two-artifact boundary and the rule that
+all onboarder writes go to the shared plan, and extends the invitation contents.
+Its implementation is pending.
+
+[0170](0170-planned-and-actual-start-dates.md) distinguishes the onboarder's
+planned date from the onboardee's explicitly confirmed actual date. Existing
+startDate values must not silently become confirmed actual starts.
+
+[0180](0180-first-onboarding-use.md) replaces the actual-date question with a
+recorded first onboarding use. Neither field is inferred from legacy startDate.
+
 Builds on [0030](0030-self-contained-plan-file.md), [0055](0055-variable-audience.md), [0080](0080-directory.md), and [0085](0085-walking-sections-and-recording-outcomes.md). It replaces the personal plan of [0060](0060-personal-plan.md), and it replaces the part of [0075](0075-refreshing-a-personal-plan.md) that keeps the personal plan as a full copy of the org plan.
 
 ## Context
