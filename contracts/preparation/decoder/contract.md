@@ -20,6 +20,7 @@ the zero Preparation, never a partially filled one. Every problem has severity
 for file problems, which have no path. Messages and details must not repeat
 supplied scalar values or YAML parser excerpts. Paths identify keys and list
 positions; this is not a promise to conceal personal data put into a key.
+The root location is an empty path; an omitted detail.path is equivalent there.
 Diagnostics may name expected fixed fields and the required `kind: preparation`.
 
 ## YAML dialect and precedence
@@ -43,12 +44,13 @@ part of this one. No plan-only field or answer behavior is introduced here.
    version with an anchor produces the ordinary alias problem after kind checks.
 3. `kind` is checked before the body. It must be the scalar text `preparation`,
    compared exactly without trimming or case folding. Quotes do not matter.
-   Missing, null, or bare empty kind gives `kind.missing`; quoted empty text,
+   Missing, canonical plain `null`, or bare empty kind gives `kind.missing`; quoted empty text,
    other scalars, lists, maps, and aliases give `kind.not-a-preparation`.
    A repeated kind gives `format.duplicate-key`, regardless of its values.
    This kind problem is the only problem, at `kind`, and its message includes
    `kind: preparation` without echoing the supplied value. Scalar spelling
-   checks do not override kind checks. A valid anchored kind produces ordinary
+   checks do not override kind checks: `~`, `Null`, and `NULL` are wrong kinds,
+   not missing kinds or spelling problems. A valid anchored kind produces ordinary
    `format.alias` at `kind`, alongside body problems in file order.
 4. After good version and kind, report all ordinary guards and field problems
    in source order, not alphabetical path order. At the same place retain the

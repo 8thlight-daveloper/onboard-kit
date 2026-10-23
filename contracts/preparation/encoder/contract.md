@@ -18,6 +18,7 @@ scalar, multiline, list, and unknown-value rules. Those rules apply unchanged:
 UTF-8, two spaces, LF, one final newline, no markers, comments, anchors, or tags;
 reserved words and digit-leading strings quoted; qualifying multiline text in
 literal blocks; sorted mapping keys; lists kept in their original order.
+Control-character escapes use two lowercase hexadecimal digits after `\x`.
 
 ### Known fields
 
