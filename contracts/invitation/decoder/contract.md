@@ -46,6 +46,12 @@ plan, preparation, record, first-steps order regardless of directory order.
    symlink, socket, device, FIFO, or other declared special type. Otherwise
    invitation.entry-type at its fixed role path. Regular files with ordinary
    permission differences remain valid. A slash suffix is not a regular file.
+   For Unix (creator system 3) and macOS (creator system 19), also inspect the
+   raw Unix type bits: `(external attributes >> 16) & 0xf000` must be zero
+   (unspecified type, including permission-only metadata) or 0x8000 (regular).
+   Reject every other nonzero type, including unassigned type values that a
+   library mode conversion might silently erase. Do not apply Unix bit meanings
+   to other creator systems; retain their supported ZIP file-type interpretation.
 6. For each entry in directory order, reject general-purpose encryption bits
    0, 6, or 13 with invitation.encrypted at its role path. Accept only Store
    (method 0) or Deflate (method 8); otherwise invitation.compression there.
@@ -79,6 +85,14 @@ descriptors. Central-directory names are the routing authority; a different
 local-header name is inert metadata and need not match. Never extract either
 name. Prefixes and trailing bytes are accepted when the ZIP remains structurally
 readable within the raw limit. Other unrecognized metadata is not retained.
+The central-directory uncompressed length, actual decompressed output length,
+and central-directory CRC remain authoritative. Redundant compressed and
+uncompressed length words in an otherwise readable data descriptor are inert:
+different words alone do not reject an entry. A corrupt descriptor checksum
+still rejects it. A valid Deflate stream may have inert suffix bytes within
+its declared compressed span; those bytes are not returned as payload and do
+not change the uncompressed budget. These allowances do not waive the raw
+input limit, actual length checks, checksum checks, or malformed-stream errors.
 This is not a byte-canonicality or all-ZIP-variants certification promise.
 Archive permissions, comments, and dates never become onboarding facts.
 
@@ -107,6 +121,9 @@ a stub and every output or problem fixture must fail.
 | Ignore extra or duplicate entries | Exact entry count and name cases |
 | Normalize traversal, case variants, or account spellings | Entry-name cases |
 | Treat symlinks as harmless regular payloads | Entry-type cases |
+| Erase an unassigned Unix or macOS file type during mode conversion | Raw-attribute type cases across all roles |
+| Interpret every creator's attributes as Unix mode bits | Non-Unix creator controls |
+| Reject inert descriptor lengths or Deflate compressed-span suffix bytes | Noncanonical metadata controls |
 | Ignore encryption flags or unsupported methods | Entry encoding cases |
 | Trust a declared size or skip CRC verification | Overflow, size, checksum cases |
 | Require the writer's exact order or metadata | Noncanonical valid controls |

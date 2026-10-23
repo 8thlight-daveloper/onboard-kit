@@ -21,7 +21,12 @@ import (
 
 type entry struct {
 	Name, LocalName, Data, Compressed, Type string
+	CompressedSuffix                        string
 	Method, Flags, Permissions              uint16
+	CreatorSystem                           *uint8
+	ExternalAttributes                      *uint32
+	DescriptorCompressed                    *uint32
+	DescriptorUncompressed                  *uint32
 	Declared                                json.RawMessage
 	CRC                                     *uint32
 	BadCRC, Descriptor, BadDescriptor       bool
@@ -90,6 +95,7 @@ func buildArchive(t *testing.T, entries []entry, metadata bool) []byte {
 		if e.Compressed != "" {
 			compressed = unhex(t, e.Compressed)
 		}
+		compressed = append(bytes.Clone(compressed), unhex(t, e.CompressedSuffix)...)
 		declared := uint64(len(payload))
 		if len(e.Declared) != 0 {
 			var err error
@@ -148,11 +154,22 @@ func buildArchive(t *testing.T, entries []entry, metadata bool) []byte {
 				descriptorCRC ^= 1
 			}
 			word(&local, descriptorCRC)
-			word(&local, uint32(len(compressed)))
-			word(&local, declared32)
+			descriptorCompressed, descriptorUncompressed := uint32(len(compressed)), declared32
+			if e.DescriptorCompressed != nil {
+				descriptorCompressed = *e.DescriptorCompressed
+			}
+			if e.DescriptorUncompressed != nil {
+				descriptorUncompressed = *e.DescriptorUncompressed
+			}
+			word(&local, descriptorCompressed)
+			word(&local, descriptorUncompressed)
 		}
 		word(&central, uint32(0x02014b50))
-		for _, v := range []uint16{0x0314, 20, flags, e.Method, 0, 0x21} {
+		creatorVersion := uint16(0x0314)
+		if e.CreatorSystem != nil {
+			creatorVersion = uint16(*e.CreatorSystem)<<8 | 20
+		}
+		for _, v := range []uint16{creatorVersion, 20, flags, e.Method, 0, 0x21} {
 			word(&central, v)
 		}
 		for _, v := range []uint32{checksum, uint32(len(compressed)), declared32} {
@@ -184,7 +201,11 @@ func buildArchive(t *testing.T, entries []entry, metadata bool) []byte {
 		if permissions == 0 {
 			permissions = 0600
 		}
-		word(&central, (mode|uint32(permissions))<<16)
+		attributes := (mode | uint32(permissions)) << 16
+		if e.ExternalAttributes != nil {
+			attributes = *e.ExternalAttributes
+		}
+		word(&central, attributes)
 		word(&central, offset)
 		central.WriteString(e.Name)
 		central.Write(extra)
@@ -378,6 +399,31 @@ func TestFixtureTransportControls(t *testing.T) {
 	archive = buildArchive(t, entries, false)
 	archive = append(bytes.Repeat([]byte{'x'}, 2097152-len(archive)), archive...)
 	inspect(t, archive, entries)
+}
+
+func TestRawMetadataFixtureOracle(t *testing.T) {
+	t.Parallel()
+	for _, f := range readFixtures(t) {
+		if !strings.HasPrefix(f.Name, "raw-") && !strings.HasPrefix(f.Name, "nonunix-") {
+			continue
+		}
+		t.Run(f.Name, func(t *testing.T) {
+			t.Parallel()
+			data := buildArchive(t, f.Entries, false)
+			reader, err := zip.NewReader(bytes.NewReader(data), int64(len(data)))
+			if err != nil {
+				t.Fatal(err)
+			}
+			for i, input := range f.Entries {
+				if input.CreatorSystem != nil && reader.File[i].CreatorVersion>>8 != uint16(*input.CreatorSystem) {
+					t.Fatal("fixture helper changed explicit creator system")
+				}
+				if input.ExternalAttributes != nil && reader.File[i].ExternalAttrs != *input.ExternalAttributes {
+					t.Fatal("fixture helper changed explicit raw attributes, including zero")
+				}
+			}
+		})
+	}
 }
 
 func TestMalformedContainers(t *testing.T) {

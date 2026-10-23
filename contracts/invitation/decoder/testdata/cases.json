@@ -1345,5 +1345,2933 @@
     ],
     "code": "invitation.entry-data",
     "path": "plan"
+  },
+  {
+    "name": "raw-type-3-3-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-3-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-3-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-3-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 830472192
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-5-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-5-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-5-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-5-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 1367343104
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-7-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-7-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-7-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-7-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 1904214016
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-9-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-9-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-9-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-9-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 2441084928
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-b-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-b-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-b-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-b-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 2977955840
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-d-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-d-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-d-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-d-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 3514826752
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-e-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-e-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-e-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-e-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 3783262208
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-3-f-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-3-f-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-3-f-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-3-f-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 3, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 4051697664
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-regular-3-zero-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 0
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-zero-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 0
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-zero-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 0
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-zero-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 0
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-permissions-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-permissions-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-permissions-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-permissions-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 25165824
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-regular-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 3,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-regular-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 3,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-regular-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 3,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-3-regular-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator3 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 3,
+        "externalAttributes": 2172649472
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-type-19-3-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-3-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-3-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 830472192
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-3-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x3000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 830472192
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-5-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-5-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-5-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 1367343104
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-5-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x5000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 1367343104
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-7-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-7-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-7-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 1904214016
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-7-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x7000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 1904214016
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-9-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-9-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-9-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 2441084928
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-9-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0x9000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 2441084928
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-b-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-b-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-b-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 2977955840
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-b-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xb000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 2977955840
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-d-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-d-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-d-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 3514826752
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-d-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xd000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 3514826752
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-e-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-e-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-e-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-e-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xe000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 3783262208
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-type-19-f-plan",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic plan payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "plan"
+  },
+  {
+    "name": "raw-type-19-f-preparation",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic preparation payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "raw-type-19-f-record",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic record payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 4051697664
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "record"
+  },
+  {
+    "name": "raw-type-19-f-firstSteps",
+    "source": "ADR0240 unsupported file types, decoder phase5 raw Unix/macOS type rule; creator 19, type 0xf000 and permissions0600 independently declare a nonregular unsupported type; synthetic firstSteps payload",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 4051697664
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "raw-regular-19-zero-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 0
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-zero-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 0
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-zero-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 0
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-zero-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 zero attributes 0x0 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 0
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-permissions-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-permissions-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-permissions-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 25165824
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-permissions-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 permissions attributes 0x1800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 25165824
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-regular-plan",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 19,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-regular-preparation",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 19,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-regular-record",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 19,
+        "externalAttributes": 2172649472
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "raw-regular-19-regular-firstSteps",
+    "source": "ADR0240 ordinary regular-file metadata; decoder phase5 accepts creator19 regular attributes 0x81800000 without inferring unsupported type; synthetic opaque payloads",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 19,
+        "externalAttributes": 2172649472
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-0-plan",
+    "source": "ADR0240 ZIP type interpretation; creator0 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 0,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-0-preparation",
+    "source": "ADR0240 ZIP type interpretation; creator0 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 0,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-0-record",
+    "source": "ADR0240 ZIP type interpretation; creator0 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 0,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-0-firstSteps",
+    "source": "ADR0240 ZIP type interpretation; creator0 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 0,
+        "externalAttributes": 3783262208
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-10-plan",
+    "source": "ADR0240 ZIP type interpretation; creator10 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "creatorSystem": 10,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-10-preparation",
+    "source": "ADR0240 ZIP type interpretation; creator10 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "creatorSystem": 10,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-10-record",
+    "source": "ADR0240 ZIP type interpretation; creator10 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "creatorSystem": 10,
+        "externalAttributes": 3783262208
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "nonunix-creator-10-firstSteps",
+    "source": "ADR0240 ZIP type interpretation; creator10 is not Unix/macOS and high attribute bits0xe1800000 are not Unix type declarations, with no DOS directory bit; synthetic regular-file control",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "creatorSystem": 10,
+        "externalAttributes": 3783262208
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-zero-plan",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths0/0",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "descriptor": true,
+        "descriptorCompressed": 0,
+        "descriptorUncompressed": 0
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-different-plan",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths999/888",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-corrupt-checksum-plan",
+    "source": "ADR0240 checksum verification remains required even when redundant descriptor lengths are inert; decoder phase8 requires descriptor CRC integrity",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888,
+        "badDescriptor": true
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "deflate-inert-compressed-suffix-plan",
+    "source": "ADR0240 bounded noncanonical ZIP allowance; valid Deflate stream with bytes for inert suffix inside central compressed span, central actual length1 and CRC unchanged; no full ZIP-conformance claim",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "method": 8,
+        "compressedSuffix": "696e65727420737566666978"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-zero-preparation",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths0/0",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "descriptor": true,
+        "descriptorCompressed": 0,
+        "descriptorUncompressed": 0
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-different-preparation",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths999/888",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-corrupt-checksum-preparation",
+    "source": "ADR0240 checksum verification remains required even when redundant descriptor lengths are inert; decoder phase8 requires descriptor CRC integrity",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888,
+        "badDescriptor": true
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "preparation"
+  },
+  {
+    "name": "deflate-inert-compressed-suffix-preparation",
+    "source": "ADR0240 bounded noncanonical ZIP allowance; valid Deflate stream with bytes for inert suffix inside central compressed span, central actual length1 and CRC unchanged; no full ZIP-conformance claim",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "method": 8,
+        "compressedSuffix": "696e65727420737566666978"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-zero-record",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths0/0",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "descriptor": true,
+        "descriptorCompressed": 0,
+        "descriptorUncompressed": 0
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-different-record",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths999/888",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-corrupt-checksum-record",
+    "source": "ADR0240 checksum verification remains required even when redundant descriptor lengths are inert; decoder phase8 requires descriptor CRC integrity",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888,
+        "badDescriptor": true
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "record"
+  },
+  {
+    "name": "deflate-inert-compressed-suffix-record",
+    "source": "ADR0240 bounded noncanonical ZIP allowance; valid Deflate stream with bytes for inert suffix inside central compressed span, central actual length1 and CRC unchanged; no full ZIP-conformance claim",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "method": 8,
+        "compressedSuffix": "696e65727420737566666978"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-zero-firstSteps",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths0/0",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "descriptor": true,
+        "descriptorCompressed": 0,
+        "descriptorUncompressed": 0
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-inert-lengths-different-firstSteps",
+    "source": "ADR0240 noncanonical readable ZIP allowance; decoder inert descriptor length words rule: central length1, actual byte1 and correct CRC remain authoritative despite descriptor lengths999/888",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptor-corrupt-checksum-firstSteps",
+    "source": "ADR0240 checksum verification remains required even when redundant descriptor lengths are inert; decoder phase8 requires descriptor CRC integrity",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "descriptor": true,
+        "descriptorCompressed": 999,
+        "descriptorUncompressed": 888,
+        "badDescriptor": true
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "firstSteps"
+  },
+  {
+    "name": "deflate-inert-compressed-suffix-firstSteps",
+    "source": "ADR0240 bounded noncanonical ZIP allowance; valid Deflate stream with bytes for inert suffix inside central compressed span, central actual length1 and CRC unchanged; no full ZIP-conformance claim",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 8,
+        "compressedSuffix": "696e65727420737566666978"
+      }
+    ],
+    "code": "",
+    "path": ""
   }
 ]
