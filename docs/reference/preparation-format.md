@@ -1,6 +1,6 @@
 # Preparation format
 
-Status: bounded shape approved under R1; validator, codecs, editor, and locator implemented; command flows pending.
+Status: bounded shape approved under R1; core and preparation command implemented; invitation flows pending.
 Date meaning follows [0180](../decisions/0180-first-onboarding-use.md).
 
 ## The three files
@@ -151,3 +151,7 @@ remain a separate format change. Before invitation implementation, approve
 the bounded archive layout, import conflict handling, path validation, identity
 confirmation, and readiness rules. No new runtime behavior is authorized by
 this format reference alone.
+
+The [preparation command](preparation-command.md) edits this artifact and shows
+its arrangements separately from the newcomer's recorded outcomes. It does not
+create an invitation, record an answer, or mark an activity complete.

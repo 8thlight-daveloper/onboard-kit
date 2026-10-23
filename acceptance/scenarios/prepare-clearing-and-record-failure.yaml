@@ -1,0 +1,34 @@
+name: prepare-clearing-and-record-failure
+description: Explicit clearing keeps omitted details and malformed progress blocks only its combined display.
+source: docs/decisions/0190-incremental-preparation-repair.md; docs/decisions/0220-preparation-command.md
+steps:
+  - run: [onboard-kit, prepare, recipient, --plan, plan.yaml, --account, newcomer-one, --company-email=, --planned-start-date=]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+      records/newcomer-one/preparation.obk.yaml: {from: acceptance/testdata/preparation/preparation.yaml}
+      records/newcomer-one/record.obk.yaml: "private: [\n"
+    expect:
+      exit: 0
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml]
+  - run: [onboard-kit, prepare, arrangement, --plan, plan.yaml, --account, newcomer-one, --id, first-pairing, --status, pending, --clear-contacts, --reference=, --target-date=]
+    expect:
+      exit: 0
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml]
+  - run: [onboard-kit, prepare, show, --plan, plan.yaml, --account, newcomer-one]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]
+  - run: [onboard-kit, prepare, show, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      records/newcomer-one/record.obk.yaml: {from: acceptance/testdata/preparation/record.yaml}
+    expect:
+      exit: 0
+      stdout:
+        json:
+          recipient: {name: Example newcomer, companyEmail: "", plannedStartDate: "", team: team-one, buddy: buddy-one}
+          arrangements:
+            - {id: first-pairing, section: ticket-pairing, kind: pairing, owner: owner-one, contacts: [], reference: "", targetDate: "", status: pending, note: Example support context}
+          preparationProblems: []
+          record: {present: true}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]

@@ -1,0 +1,18 @@
+schemaVersion: 1
+kind: record
+account: newcomer-one
+startDate: "2026-10-22"
+plan:
+  id: plan-one
+  hash: old-plan-hash
+answers:
+  plan:
+    private-answer: Private answer sentinel
+outcomes:
+  - section: ticket-pairing
+    outcome: deferred
+    on: "2026-10-22T14:05:00Z"
+    sectionHash: old-section-hash
+    note: Waiting for support
+    differently: Ask a helper together
+x-private: Private unknown sentinel

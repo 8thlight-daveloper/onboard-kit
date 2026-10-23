@@ -1,0 +1,63 @@
+name: prepare-two-people
+description: Two newcomers have separate assignments and later preparation changes preserve newcomer progress.
+source: docs/decisions/0220-preparation-command.md
+steps:
+  - run: [onboard-kit, prepare, init, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+    expect:
+      exit: 0
+      stdout: {equals: "records/newcomer-one/preparation.obk.yaml\n"}
+      stderr: {equals: ""}
+      unchanged: [plan.yaml]
+      files:
+        records/newcomer-one/record.obk.yaml: {absent: true}
+  - run: [onboard-kit, prepare, init, --plan, plan.yaml, --account, newcomer-two]
+    expect:
+      exit: 0
+      stdout: {equals: "records/newcomer-two/preparation.obk.yaml\n"}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, recipient, --plan, plan.yaml, --account, newcomer-one, --name, Example newcomer, --team, team-one, --planned-start-date, "2026-11-02"]
+    expect:
+      exit: 0
+      unchanged: [plan.yaml, records/newcomer-two/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, arrangement, --plan, plan.yaml, --account, newcomer-one, --id, pairing, --section, ticket-pairing, --kind, pairing, --owner, owner-one, --contact, buddy-one, --reference, Example ticket, --status, arranged]
+    expect:
+      exit: 0
+      unchanged: [plan.yaml, records/newcomer-two/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, arrangement, --plan, plan.yaml, --account, newcomer-two, --id, pairing, --section, ticket-pairing, --kind, pairing, --owner, owner-one, --contact, lead-one, --reference, Another ticket, --status, arranged]
+    expect:
+      exit: 0
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, show, --plan, plan.yaml, --account, newcomer-two]
+    expect:
+      exit: 0
+      stdout:
+        json:
+          account: newcomer-two
+          arrangements:
+            - {id: pairing, contacts: [lead-one], reference: Another ticket, status: arranged}
+          preparationProblems: []
+          record: {present: false, outcomes: []}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-two/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, arrangement, --plan, plan.yaml, --account, newcomer-one, --id, pairing, --contact, lead-one, --note, Updated support]
+    files:
+      records/newcomer-one/record.obk.yaml: {from: acceptance/testdata/preparation/record.yaml}
+    expect:
+      exit: 0
+      stdout: {equals: "records/newcomer-one/preparation.obk.yaml\n"}
+      unchanged: [plan.yaml, records/newcomer-one/record.obk.yaml, records/newcomer-two/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, show, --plan, plan.yaml, --account, newcomer-one]
+    expect:
+      exit: 0
+      stdout:
+        json:
+          recipient: {name: Example newcomer, plannedStartDate: "2026-11-02", companyEmail: ""}
+          arrangements:
+            - {id: pairing, contacts: [lead-one], status: arranged, note: Updated support}
+          preparationProblems: []
+          record:
+            present: true
+            outcomes:
+              - {section: ticket-pairing, outcome: deferred, on: "2026-10-22T14:05:00Z", note: Waiting for support, differently: Ask a helper together}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml, records/newcomer-two/preparation.obk.yaml]

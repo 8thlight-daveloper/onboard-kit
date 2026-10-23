@@ -105,7 +105,7 @@ flowchart TB
 | Preparation decoder | Turns preparation YAML bytes into a new value, enforcing file-kind and strict format guards. Preserves unknown root data, rejects duplicate raw keys and unknown fixed nested keys, and leaves semantic checks to the preparation validator |
 | Preparation editor | Returns preparation with an explicitly replaced recipient, replaced or appended arrangement, or removed arrangement. Validates the requested change after identity and ambiguity guards while preserving unrelated details. Does not certify invitation readiness |
 | Preparation locator | Derives a person's relative record path and fixed preparation sibling from explicit account and results-path strings. Rejects ambiguous layouts, unsafe lexical forms, collisions, and oversized expansion. Does not inspect the filesystem or authorize writes |
-| Preparation command, planned | Loads an explicit plan and one person's preparation, applies explicit edits through the preparation editor, or shows preparation beside read-only record outcomes. Writes only that preparation under the selected root. See [0220](../decisions/0220-preparation-command.md) |
+| Preparation command | Loads an explicit plan and one person's preparation, applies explicit edits through the preparation editor, or shows preparation beside read-only record outcomes. Writes only that preparation under the selected root. See [0220](../decisions/0220-preparation-command.md) |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
@@ -136,7 +136,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `preparation/decoder` | None. Reads supplied bytes and creates Preparation and problems. Reads or changes no Plan or record fields |
 | `preparation/editor` | None. Reads Preparation and trusted context; returns only Recipient or Arrangements changed. Changes no Plan, record, identity, or unknown-field data |
 | `preparation/locator` | None. Reads only supplied resultsPath and account strings, returning relative paths and problems. Reads or changes no Plan, preparation body, record, environment, or filesystem |
-| `command/prepare`, planned | Reads an explicit plan, arguments, and preparation; show also reads the selected record. Writes stdout, stderr, and only the selected preparation plus its missing parent directories and temporary publication file. Changes no Plan or record bytes |
+| `command/prepare` | Reads an explicit plan, arguments, and preparation; show also reads the selected record. Writes stdout, stderr, and only the selected preparation plus its missing parent directories and temporary publication file. Changes no Plan or record bytes |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
@@ -189,7 +189,7 @@ command drivers, template loading, record editing, or the plan refresher.
 | `onboard-kit assemble --plan <file>` | Assembles a document from a plan. Experimental |
 | `onboard-kit stdio` | Exposes the plan components over stdin and stdout, for black-box tests. Experimental |
 | `onboard-kit lint` | Checks templates: structure and hygiene. Builds the default plan from the template set and runs the plan validator, to cover checks across templates. Reads files, prints findings, and exits non-zero on any finding |
-| `onboard-kit prepare <operation> --plan <file> --account <id>` | Planned: initializes or edits one person's preparation, or displays preparation and recorded outcomes without changing the record |
+| `onboard-kit prepare <operation> --plan <file> --account <id>` | Initializes or edits one person's preparation, or displays preparation and recorded outcomes without changing the record |
 
 ## Open questions
 

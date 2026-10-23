@@ -1,0 +1,41 @@
+name: prepare-refuses-identity-and-ambiguity
+description: Preparation refuses wrong identities and ambiguous plans without changing any artifact.
+source: docs/decisions/0110-reject-ambiguous-plans.md; docs/decisions/0220-preparation-command.md
+steps:
+  - run: [onboard-kit, prepare, recipient, --plan, plan.yaml, --account, newcomer-two, --name, Changed]
+    files:
+      plan.yaml: {from: acceptance/testdata/preparation/plan.yaml}
+      records/newcomer-two/preparation.obk.yaml: {from: acceptance/testdata/preparation/preparation.yaml}
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      unchanged: [plan.yaml, records/newcomer-two/preparation.obk.yaml]
+  - run: [onboard-kit, prepare, init, --plan, ambiguous.yaml, --account, newcomer-one]
+    files:
+      ambiguous.yaml: |
+        schemaVersion: 1
+        id: plan-one
+        variables:
+          - name: organization
+            description: First declaration
+          - name: organization
+            description: Second declaration
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      unchanged: [ambiguous.yaml]
+      files:
+        records/newcomer-one/preparation.obk.yaml: {absent: true}
+  - run: [onboard-kit, prepare, show, --plan, plan.yaml, --account, newcomer-one]
+    files:
+      records/newcomer-one/preparation.obk.yaml: {from: acceptance/testdata/preparation/preparation.yaml}
+      records/newcomer-one/record.obk.yaml: |
+        schemaVersion: 1
+        kind: record
+        account: newcomer-one
+        plan:
+          id: another-plan
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      unchanged: [plan.yaml, records/newcomer-one/preparation.obk.yaml, records/newcomer-one/record.obk.yaml]

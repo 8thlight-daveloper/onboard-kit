@@ -29,7 +29,8 @@ accounts.
 ### 1. Preparation format and ownership
 
 The preparation model, validator, decoder, encoder, typed editor, and locator are
-implemented. Driver integration and the combined view remain pending. See the
+implemented. The preparation command supplies editing and a read-only combined
+view of preparation and record outcomes. See the
 [preparation format](../reference/preparation-format.md).
 Define the person-specific artifact before adding personalized questions to
 the existing plan editor. Specify identity, references to the plan and account,
@@ -50,7 +51,9 @@ wrong person or plan. Do not introduce an unrestricted generic overlay map.
 
 ### 2. Preparation editing and updates
 
-The pure editor is implemented; the command flow and combined view are not.
+The pure editor, [command flow](../reference/preparation-command.md), and combined
+preparation/outcome view are implemented. Guided invitation preparation remains
+later work.
 Provide an onboarder view scoped to one person. Show missing assignments and
 requests separately from verified newcomer outcomes. Saving preparation must
 not rewrite the record or shared plan. Loading later preparation changes must
