@@ -21,6 +21,7 @@ func (c *collector) sectionNode(section model.Section, path string) node {
 		builder.add("enabled", booleanNode(*section.Enabled))
 	}
 	builder.add("after", listField(section.After))
+	builder.add("requires", listField(section.Requires))
 	builder.add("owner", stringField(section.Owner))
 	builder.add("escalation", listField(section.Escalation))
 	builder.add("verification", stringField(section.Verification))
@@ -44,7 +45,7 @@ func sourceNode(source *model.Source) node {
 
 func isSectionKey(key string) bool {
 	switch key {
-	case "id", "title", "summary", "includeIf", "parent", "bootstrap", "timing", "enabled", "after", "owner", "escalation", "verification", "body", "variables", "steps", "source":
+	case "id", "title", "summary", "includeIf", "parent", "bootstrap", "timing", "enabled", "after", "requires", "owner", "escalation", "verification", "body", "variables", "steps", "source":
 		return true
 	}
 	return false

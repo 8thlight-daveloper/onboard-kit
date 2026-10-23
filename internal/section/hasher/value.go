@@ -55,3 +55,15 @@ func quotedSetText(values []string) string {
 	}
 	return setText(items)
 }
+
+func identifierSetText(values []string) string {
+	sorted := append([]string(nil), values...)
+	sort.Strings(sorted)
+	unique := sorted[:0]
+	for index, item := range sorted {
+		if index == 0 || item != sorted[index-1] {
+			unique = append(unique, item)
+		}
+	}
+	return stringListText(unique)
+}

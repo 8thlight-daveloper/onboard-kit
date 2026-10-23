@@ -5,6 +5,7 @@ import (
 	"slices"
 
 	"onboard-kit/internal/model"
+	"onboard-kit/internal/section/hasher"
 )
 
 func reconciliationOf(record model.Record, previous model.Plan, plan model.Plan, questions map[questionKey]model.Variable, review map[string]bool) model.Reconciliation {
@@ -60,15 +61,14 @@ func sortedSectionIDs(including model.Plan, excluding model.Plan) []string {
 
 func changedOutcomes(outcomes []model.Outcome, plan model.Plan) []string {
 	hashes := map[string]string{}
+	definitionHasher := hasher.New()
 	for _, section := range plan.Sections {
-		if section.Source != nil {
-			hashes[section.ID] = section.Source.Hash
-		}
+		hashes[section.ID] = definitionHasher.Hash(section)
 	}
 	changed := map[string]bool{}
 	for _, outcome := range outcomes {
-		current, sourced := hashes[outcome.Section]
-		if sourced && outcome.SectionHash != "" && outcome.SectionHash != current {
+		current, present := hashes[outcome.Section]
+		if present && outcome.SectionHash != "" && outcome.SectionHash != current {
 			changed[outcome.Section] = true
 		}
 	}

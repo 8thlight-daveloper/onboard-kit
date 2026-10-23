@@ -16,6 +16,7 @@ func sectionText(section model.Section) string {
 		withFlag("bootstrap", section.Bootstrap).
 		withString("timing", string(timing)).
 		withRaw("after", quotedSetText(section.After), len(section.After) > 0).
+		withRaw("requires", identifierSetText(section.Requires), len(section.Requires) > 0).
 		withString("owner", section.Owner).
 		withStrings("escalation", section.Escalation).
 		withProse("verification", section.Verification).

@@ -6,6 +6,7 @@ func copySection(section model.Section) model.Section {
 	section.Enabled = copyPointer(section.Enabled)
 	section.IncludeIf = copyCondition(section.IncludeIf)
 	section.After = copyEach(section.After, identity[string])
+	section.Requires = copyEach(section.Requires, identity[string])
 	section.Escalation = copyEach(section.Escalation, identity[string])
 	section.Variables = copyEach(section.Variables, copyVariable)
 	section.Steps = copyEach(section.Steps, copyStep)

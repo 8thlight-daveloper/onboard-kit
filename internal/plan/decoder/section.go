@@ -46,6 +46,8 @@ func (c *collector) sectionOf(node *yaml.Node, at location) model.Section {
 			section.IncludeIf = c.conditionOf(found.value, found.at)
 		case "after":
 			section.After = c.stringListOf(found.value, found.at)
+		case "requires":
+			section.Requires = c.stringListOf(found.value, found.at)
 		case "escalation":
 			section.Escalation = c.stringListOf(found.value, found.at)
 		case "variables":

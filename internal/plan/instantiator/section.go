@@ -22,6 +22,7 @@ func copySection(template model.Section) model.Section {
 	copied := template
 	copied.IncludeIf = copyCondition(template.IncludeIf)
 	copied.After = copyStrings(template.After)
+	copied.Requires = copyStrings(template.Requires)
 	copied.Escalation = copyStrings(template.Escalation)
 	copied.Variables = copyVariables(template.Variables)
 	copied.Steps = copySlice(template.Steps, copyStep)
