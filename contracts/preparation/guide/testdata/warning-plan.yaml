@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: planone
+sections:
+  - id: private
+    title: PRIVATE
+    summary: PRIVATE $secret
+    variables:
+      - name: secret
+  - id: access
+    title: Public access
+    bootstrap: true
+    summary: Use $account.
+    owner: Onboarding owner
+    timing: week-one
+    variables:
+      - name: account
+        description: Account name
+        audience: onboardee

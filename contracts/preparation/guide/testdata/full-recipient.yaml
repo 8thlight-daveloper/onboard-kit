@@ -1,0 +1,14 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer
+planId: planone
+recipient:
+  name: " Example newcomer "
+  companyEmail: example@company.example
+  plannedStartDate: "2026-11-02"
+  team: team
+  manager: manager
+  onboardingOwner: owner
+  buddy: helper
+  workLocation: remote
+  timeZone: " Etc/UTC "

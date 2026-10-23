@@ -293,12 +293,20 @@ authored broken variants and record assertion failures; a table of intended
 defects is not evidence of a performed run. Keep execution evidence and remaining
 coverage limits in the hardening report, not in this regenerable contract.
 
-Potential wrong implementations include autosaving each field, treating value
-save as consent, empty Enter as a default, merging nonempty recipient fields,
-erasing arrangements/unknown fields, validating stale references before repair,
-ignoring one writer error, consuming queued save after display failure, skipping
-source rechecks, following symlinks, rewriting unchanged YAML, and truncating
-an existing preparation inode. The static plan/preparation hardlink fixture is
+## Wrong implementations tried
+
+| Wrong implementation | Caught by |
+| -- | -- |
+| Drop a recipient field, trim literal values, merge clears, or guess the first team/contact | save-all-nine-recipient-fields-literally; clear-all-nine-does-not-guess-directory-defaults; empty-manager-input-retries-before-explicit-id |
+| Adopt the empty guard probe, autosave apply, apply a discarded form, or lose corrections after refused apply | stage-name-not-autosave; discard-entire-local-form; repair-two-references-retain-stale-arrangement |
+| Treat Draft save, menu Enter, a value word, incomplete EOF or stale review as save consent | save-at-draft-is-not-consent; empty-menu-does-not-save; literal-save-value; literal-q-value; partial-save-eof; TestStaleReviewAndAppearingDestination |
+| Drop preparation problems, blockers, warning severity, guide problems or guide text; suppress one reviewer result because another is present | repair-two-references-retain-stale-arrangement; TestActualPlanValidationAndBlockerReview; TestFirstStepsWarningRetainedBesideGuide |
+| Skip identity or byte-change guards, ignore a changed or appearing source, or allow oversized input/encoding | TestIdentityAndAmbiguityRefusal; TestStaleReviewAndAppearingDestination; TestSourceSizeBoundary; TestUnencodableSizeExpansionDoesNotPublish |
+| Re-encode a no-op, discard arrangements/unknown values, truncate a shared inode, retain a temporary or follow a selected symlink | noop-unencodable-preserves-original; repair-two-references-retain-stale-arrangement; TestLiteralDisplayAndNoopInode; TestSafePathsAndHardlinks; filesystem snapshots in TestRecipientScenarios |
+| Ignore full-count writer errors, prefetch consent, lose saved bytes after report failure, omit the fallback or falsely report cancellation after save | TestReviewOutputFailurePrecedesConsent; TestReviewDisplayFailureDoesNotPrefetchConsent; TestPostcommitReportFailureRetainsSavedBytes; create-identity-explicit |
+| Strip existing ACLs or restrictive modes, or reveal terminal controls or record content | TestDarwinExistingAccessControlPreservedOrRefused; TestDarwinExplicitEmptyACLIsNotNoACL; TestExistingReadOnlyModePreservedOrRefused; TestLiteralDisplayAndNoopInode; TestRecordIsNotReadAndPrivateDirectories |
+
+The static plan/preparation hardlink fixture is
 a cross-kind alias refusal control: the real plan and preparation decoders
 require different kinds, so its shared bytes cannot pass both. It is not a
 reaching proof of an otherwise-valid output-alias guard. Filesystem faults and race coverage must be

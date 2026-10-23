@@ -812,3 +812,34 @@ func TestExistingReadOnlyModePreservedOrRefused(t *testing.T) {
 		t.Fatalf("existing restrictive mode changed: %v %v", info, err)
 	}
 }
+
+func TestFirstStepsWarningRetainedBesideGuide(t *testing.T) {
+	t.Parallel()
+	box := newSandbox(t, "")
+	writeFile(t, box.Plan, fixture(t, "warning-plan.yaml"))
+	before := snapshot(t, box.Root)
+	var stdout, stderr bytes.Buffer
+	if exit := newCommand().Run(box.args(), strings.NewReader("review\ncancel\n"), &stdout, &stderr); exit != 0 {
+		t.Fatalf("warning preview exit %d: %q", exit, stderr.String())
+	}
+	assertReport(t, stderr.Bytes(), "cancelled", "guide.cancelled")
+	for _, part := range []string{
+		"Preparation problems:\nNone.",
+		"Onboarder blockers:\nNone.",
+		"First-steps problems:\nSeverity: \"warning\" Code: \"gap.unanswered\" Path: \"\"",
+		"First-steps document:\n| \"# First steps\"",
+		"| \"### Public access\"",
+		"| \"Use `<account>`.\"",
+		"| \"| Account name | Onboarding owner | Week one |\"",
+	} {
+		if !strings.Contains(stdout.String(), part) {
+			t.Errorf("missing warning or actual guide context %q in %q", part, stdout.String())
+		}
+	}
+	if strings.Contains(stdout.String(), "PRIVATE") {
+		t.Fatal("non-bootstrap content leaked into first-steps review")
+	}
+	if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, before) {
+		t.Fatal("warning review changed files")
+	}
+}
