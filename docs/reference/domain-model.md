@@ -13,6 +13,7 @@ This page is language-neutral. A type here is a record with named fields. A fiel
 | Stored | Plan, Provenance, Variable, Answers, Value, Section, Source, Variable, Condition, Clause, AnswerTest, Step, Check | The plan file |
 | Computed | Question, Suggestion, Blocker, Problem | Returned by the finder, validator, and editor. Never saved |
 | Output | Document | Returned by the document assembler. Transitional, see [0025](../decisions/0025-contracts-and-tests.md) |
+| Transport | InvitationFiles | Opaque invitation payload bytes returned by the archive decoder or supplied to the archive encoder |
 
 Stored types are what the decoder reads and the encoder writes. Computed types are what drivers show and what acceptance scenarios assert on, so their serialized shape is part of the `stdio` protocol in [0010](../decisions/0010-plan-editor.md).
 
@@ -169,9 +170,28 @@ serialization or invitation support.
 
 [0180](../decisions/0180-first-onboarding-use.md) requires a firstOpenedAt event,
 not an actual-start-date answer. The optional Record field is declared under
-[0230](../decisions/0230-first-use-record-compatibility.md); serialization and
-confirmed-start integration are separate increments. Do not silently reinterpret
+[0230](../decisions/0230-first-use-record-compatibility.md). Record codecs preserve
+the field; confirmed-start integration remains pending. Do not silently reinterpret
 the existing startDate field or backfill unknown earlier first use.
+
+## Invitation files
+
+[0240](../decisions/0240-invitation-archive-envelope.md) defines a transport value,
+not another source of truth or a saved YAML schema. Archive components preserve
+the payload bytes without decoding the artifacts or authorizing their import.
+
+| Field | Type | Meaning |
+| -- | -- | -- |
+| Account | Text | Exact account namespace of the two person-specific archive entries |
+| Plan | Bytes | Payload of plan.obk.yaml |
+| Preparation | Bytes | Payload of records/<account>/preparation.obk.yaml |
+| Record | Bytes | Payload of records/<account>/record.obk.yaml |
+| FirstSteps | Bytes | Payload of first-steps.md |
+
+Each result owns its byte sequences. Drivers separately check artifact identity,
+format, readiness, and existing work before writing. A successful archive decode
+does not establish that any payload is usable. Encoding and decoding are planned;
+the type alone implements no invitation command.
 
 ## Onboarding record
 
