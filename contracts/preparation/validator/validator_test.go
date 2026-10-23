@@ -27,13 +27,17 @@ type expectedProblem struct {
 
 func fixtures(t *testing.T) []fixture {
 	t.Helper()
-	data, err := os.ReadFile("testdata/cases.json")
-	if err != nil {
-		t.Fatal(err)
-	}
 	var cases []fixture
-	if err := json.Unmarshal(data, &cases); err != nil {
-		t.Fatal(err)
+	for _, path := range []string{"testdata/cases.json", "testdata/mutation-boundaries.json"} {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var group []fixture
+		if err := json.Unmarshal(data, &group); err != nil {
+			t.Fatal(err)
+		}
+		cases = append(cases, group...)
 	}
 	if len(cases) == 0 {
 		t.Fatal("no fixtures")

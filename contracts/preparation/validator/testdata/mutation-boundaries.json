@@ -1,0 +1,74 @@
+[
+  {
+    "name": "reject-older-version",
+    "source": "contracts/preparation/validator/contract.md#validation-phases",
+    "rule": "Only version 1 is supported, including when the supplied version is smaller.",
+    "context": {},
+    "preparation": {"schemaVersion": 0, "kind": "preparation"},
+    "problems": [{"code": "preparation.version", "path": "schemaVersion"}]
+  },
+  {
+    "name": "reject-kind-that-sorts-before-preparation",
+    "source": "contracts/preparation/validator/contract.md#validation-phases",
+    "rule": "Kind must equal preparation, not compare before it.",
+    "context": {},
+    "preparation": {"schemaVersion": 1, "kind": "aaa"},
+    "problems": [{"code": "preparation.kind", "path": "kind"}]
+  },
+  {
+    "name": "reject-plan-that-sorts-before-expected-plan",
+    "source": "contracts/preparation/validator/contract.md#identity",
+    "rule": "Plan identity is an exact match, not an ordering comparison.",
+    "context": {"account": "newcomer-one", "planId": "plan-one"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "aaa"},
+    "problems": [{"code": "preparation.plan-mismatch", "path": "planId"}]
+  },
+  {
+    "name": "reject-record-person-that-sorts-before-expected-person",
+    "source": "contracts/preparation/validator/contract.md#identity",
+    "rule": "An existing record must belong to this account, irrespective of lexical order.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "record": {"account": "aaa", "planId": "plan-one"}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one"},
+    "problems": [{"code": "preparation.record-account", "path": "record.account"}]
+  },
+  {
+    "name": "reject-record-plan-that-sorts-before-expected-plan",
+    "source": "contracts/preparation/validator/contract.md#identity",
+    "rule": "An existing record must belong to this plan, irrespective of lexical order.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "record": {"account": "newcomer-one", "planId": "aaa"}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one"},
+    "problems": [{"code": "preparation.record-plan", "path": "record.planId"}]
+  },
+  {
+    "name": "empty-status-does-not-claim-arranged-completeness",
+    "source": "contracts/preparation/validator/contract.md#arrangements",
+    "rule": "An empty status produces its status error, not extra completeness errors reserved for arranged work.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "sections": ["ticket-pairing"]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one", "arrangements": [{"id": "first-pairing", "section": "ticket-pairing", "kind": "pairing", "status": ""}]},
+    "problems": [{"code": "preparation.arrangement-status", "path": "arrangements[0].status"}]
+  },
+  {
+    "name": "arranged-support-needs-no-helper-or-reference",
+    "source": "contracts/preparation/validator/contract.md#arrangements",
+    "rule": "A support arrangement with its accountable owner may omit helpers and resource reference.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "sections": ["ticket-pairing"], "contacts": ["owner-one"]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one", "arrangements": [{"id": "first-support", "section": "ticket-pairing", "kind": "support", "status": "arranged", "owner": "owner-one"}]},
+    "problems": []
+  },
+  {
+    "name": "arranged-ticket-needs-reference",
+    "source": "contracts/preparation/validator/contract.md#arrangements",
+    "rule": "Ticket work requires an identified opportunity even when owner and helper are known.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "sections": ["ticket-pairing"], "contacts": ["owner-one", "buddy-one"]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one", "arrangements": [{"id": "first-ticket", "section": "ticket-pairing", "kind": "ticket", "status": "arranged", "owner": "owner-one", "contacts": ["buddy-one"]}]},
+    "problems": [{"code": "preparation.incomplete-arrangement", "path": "arrangements[0].reference"}]
+  },
+  {
+    "name": "empty-helper-remains-invalid-even-in-contact-projection",
+    "source": "contracts/preparation/validator/contract.md#arrangements",
+    "rule": "An empty helper is explicitly unknown even if the supplied directory projection contains an empty identity.",
+    "context": {"account": "newcomer-one", "planId": "plan-one", "sections": ["ticket-pairing"], "contacts": ["owner-one", ""]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer-one", "planId": "plan-one", "arrangements": [{"id": "first-pairing", "section": "ticket-pairing", "kind": "pairing", "status": "arranged", "owner": "owner-one", "contacts": [""], "reference": "Example work item"}]},
+    "problems": [{"code": "preparation.unknown-contact", "path": "arrangements[0].contacts[0]"}]
+  }
+]

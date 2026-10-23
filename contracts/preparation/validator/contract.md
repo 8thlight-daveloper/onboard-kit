@@ -1,12 +1,12 @@
 # Preparation validator contract
 
 Status: R1 approved by the person; planned-date meaning settled by 0180.
-Component: `preparation/validator`. Implementation pending.
+Component: `preparation/validator`.
 
 Authority: [0140](../../../docs/decisions/0140-person-specific-preparation.md),
 [0160](../../../docs/decisions/0160-personal-data-and-preparation-approval.md), and
 [0180](../../../docs/decisions/0180-first-onboarding-use.md). The approved bounded
-shape is described in the [preparation format](../../../docs/reference/preparation-the preparation format).
+shape is described in the [preparation format](../../../docs/reference/preparation-format.md).
 Each fixture cites its governing decision and this contract.
 
 ## Boundary and interface
@@ -19,10 +19,9 @@ optional record identity are contract input projections. Tests use plain JSON
 fixture data and compare existing model.Problem fields. A diagnostic path is
 stored in Detail under the key path, with severity error.
 
-The initial wiring is deliberately an empty test stub until an independently
-authored implementation replaces it. The standard check excludes contracts whose
-component does not yet exist, as 0025 requires. Run this package explicitly to
-reproduce its red baseline; do not treat exclusion as passing implementation.
+The wiring binds the interface to the independently authored implementation.
+During a rebuild, run the suite against an empty stub before implementing it.
+Valid-input controls may pass against that stub; invalid-input cases must fail.
 
 The context is a trusted projection supplied after validating the plan. It holds
 the expected plan id and account, known contact/team/section ids, and optionally
@@ -127,14 +126,16 @@ perform filesystem writes. Those need separate tests; passing this suite does
 not establish those workflows. See the preparation format and the
 [invitation flow](../../../docs/architecture/invitation-flow.md) for later increments.
 
-## Draft strength evidence
+## Wrong implementations tried
 
-The 75 fixture cases were first exercised against an accept-everything stub:
-42 invalid-input cases failed and 33 valid-input controls passed. Targeted
-scratch probes exercise wrong identity, duplicate omission, rejecting a missing
-company email or record, interpreting targets as deadlines, mutating inputs,
-echoing personal values, and reversed diagnostics. These are negative controls,
-not a complete passing reference implementation or a full mutation campaign.
-The promoted model binding reproduces the same 42 invalid-case stub failures
-and all 13 targeted negative-probe failures. This is test-strength evidence,
-not evidence that a real validator passes. The implementation remains pending.
+| Defect | Observable safeguard |
+| -- | -- |
+| Accept every preparation | Invalid-input fixtures require diagnostic codes and paths |
+| Ignore identity or duplicate arrangement ids | Wrong-account, wrong-plan, record-identity, and repeated-id fixtures require rejection |
+| Require a company email or an existing record | Partial-preparation controls remain valid |
+| Treat targets as completion deadlines | Calendar-valid targets remain valid independently of the clock |
+| Mutate input, echo personal values, or reverse diagnostics | Input-preservation, diagnostic-privacy, and ordered-problem assertions |
+| Replace identity equality with lexical ordering | `reject-older-version`, `reject-kind-that-sorts-before-preparation`, and the lexically earlier plan and record fixtures |
+| Apply arranged completeness checks to an empty status | `empty-status-does-not-claim-arranged-completeness` |
+| Treat an empty contact id as a usable helper | `empty-helper-remains-invalid-even-in-contact-projection` |
+| Exempt ticket work from its reference or demand a helper for general support | `arranged-ticket-needs-reference` and `arranged-support-needs-no-helper-or-reference` |

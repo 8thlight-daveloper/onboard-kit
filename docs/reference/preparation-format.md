@@ -1,6 +1,6 @@
 # Preparation format
 
-Status: bounded shape approved under R1; implementation pending.
+Status: bounded shape approved under R1; typed validator implemented; serialization pending.
 Date meaning follows [0180](../decisions/0180-first-onboarding-use.md).
 
 ## The three files

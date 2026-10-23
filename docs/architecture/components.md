@@ -100,7 +100,7 @@ flowchart TB
 | Record joiner | Puts a newcomer's onboarding record over the plan, giving the one plan value that every other component takes |
 | Record splitter | Takes the onboardee answers back out of the joined plan, giving the record to save. The plan is left alone |
 | Record reconciler | Checks a record against a new plan. Removes answers the plan no longer accepts, lists hidden answers, new questions, and new and removed sections, and flags outcomes whose section changed. Replaces the plan refresher |
-| Preparation validator | Contract staged, implementation pending. Checks a person's preparation against trusted account, plan, contact, team, and section identities. Reads preparation and context only, returns problems, and performs no writes. It neither joins answers nor records first use |
+| Preparation validator | Checks a person's preparation against trusted account, plan, contact, team, and section identities. Reads preparation and context only, returns problems, and performs no writes. It neither joins answers nor records first use |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
