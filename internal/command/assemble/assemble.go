@@ -33,7 +33,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 	if !ok {
 		return exitProblem
 	}
-	if problems := planfile.Ambiguities(plan); len(problems) > 0 {
+	if problems := planfile.AssemblyProblems(plan); len(problems) > 0 {
 		report.Problems(stderr, *planPath, problems)
 		return exitProblem
 	}

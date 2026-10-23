@@ -77,8 +77,14 @@ func (s *session) handle(line []byte) map[string]any {
 }
 
 func (s *session) assemble() map[string]any {
-	if problems := planfile.Ambiguities(s.plan); len(problems) > 0 {
-		result := failure("ambiguous_plan", "the plan has duplicate identities; fix the reported declarations before assembly")
+	if problems := planfile.AssemblyProblems(s.plan); len(problems) > 0 {
+		code := "ambiguous_plan"
+		message := "the plan has duplicate identities; fix the reported declarations before assembly"
+		if !planfile.OnlyAmbiguities(problems) {
+			code = "invalid_plan"
+			message = "the plan has invalid section relationships; fix the reported declarations before assembly"
+		}
+		result := failure(code, message)
 		result["problems"] = valuejson.EncodeProblems(problems)
 		return result
 	}
