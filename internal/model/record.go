@@ -14,6 +14,7 @@ type Record struct {
 	SchemaVersion int
 	Account       string
 	StartDate     Date
+	FirstOpenedAt Timestamp
 	Plan          PlanReference
 	Answers       Answers
 	Outcomes      []Outcome

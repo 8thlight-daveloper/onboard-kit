@@ -167,10 +167,11 @@ reads these values and a trusted context projection, returns problems, and
 changes no input. Model declarations and contract tests do not implement YAML
 serialization or invitation support.
 
-[0180](../decisions/0180-first-onboarding-use.md) requires a firstOpenedAt event
-in the future onboarding record format, not an actual-start-date answer.
-The current Record and its serializers remain unchanged by this increment.
-Do not silently reinterpret its existing startDate field.
+[0180](../decisions/0180-first-onboarding-use.md) requires a firstOpenedAt event,
+not an actual-start-date answer. The optional Record field is declared under
+[0230](../decisions/0230-first-use-record-compatibility.md); serialization and
+confirmed-start integration are separate increments. Do not silently reinterpret
+the existing startDate field or backfill unknown earlier first use.
 
 ## Onboarding record
 
@@ -181,7 +182,8 @@ The newcomer's own file. See [0090](../decisions/0090-plan-and-onboarding-record
 | `schemaVersion` | Integer | As for a plan |
 | `kind` | Text | Always `record`. A decoder refuses a file of the wrong kind. It is part of the file and not of the Record type |
 | `account` | Text | The permanent key. It is in the path of the file |
-| `startDate` | Date | The day the newcomer starts. Due dates count from it |
+| `startDate` | Date | Legacy date retained exactly; not evidence of actual employment start or first use. New invitation seeds do not fill it from preparation |
+| `firstOpenedAt` | Timestamp, optional | Observed first confirmed onboarding use for a newly created record. Existing records without the event stay unknown. Codecs preserve held text; the recording driver supplies UTC RFC 3339 |
 | `plan` | PlanReference | Which plan the record was last reconciled against |
 | `answers` | Answers | Only the answers the newcomer gave, to onboardee questions |
 | `outcomes` | List of Outcome | One entry for each section the newcomer tried, sorted by `section` |
