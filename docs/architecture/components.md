@@ -120,8 +120,8 @@ flowchart TB
 | Invitation command | Validates explicit plan/preparation and handover readiness, builds an identity-only seed and real first-steps guide, then exclusively publishes one new ZIP. No delivery, import, first use or input writes. See [0300](../decisions/0300-explicit-invitation-export.md) |
 | Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
-| Catalog reader, planned | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
-| Catalog command, planned | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
+| Catalog reader | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
+| Catalog command | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
 | Section scheduler | Validates all declared relationships, selects from the full original plan, and returns active activities in global prerequisite action order. Goals break ties between free activities, never override prerequisites or gate progress. Reads no outcomes and performs no writes |
@@ -163,8 +163,8 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `command/invite` | Reads explicit arguments, bounded local plan/preparation files and stable path metadata. Writes stdout/stderr and only a new explicit ZIP plus its owned temporary file in an existing parent. Changes no plan, preparation, record, index or preference bytes |
 | `invitation/encoder` | None. Reads InvitationFiles only and returns archive bytes or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
-| `catalog/reader`, planned | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
-| `command/catalog`, planned | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
+| `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
+| `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
@@ -234,7 +234,8 @@ paths. Real loader/validator composition is independent test evidence, not a
 same-position dependency. The catalog command is a driver depending on that
 reader and its contract types plus its own command interface. It may not depend
 on other command drivers, model calls, selection, preparation generation or
-filesystem loading. Both implementations remain pending.
+filesystem loading. Both implementations are available through root command
+dispatch. Binary scenarios check all eighty exports without adjacent catalog files.
 
 Written out in 0020. In short:
 

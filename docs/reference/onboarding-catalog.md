@@ -1,21 +1,45 @@
 # Onboarding catalog
 
-Status: full normative content authored; embedding and runtime availability pending.
+Status: all eighty entries are compiled into the executable and available offline.
 
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) requires the
-full catalog in the binary. This reference specifies coverage; it does not
-claim executable YAML templates or the workflows have been implemented.
+full catalog in the binary. This reference specifies coverage and the read-only
+availability commands. Guided selection and record-backed workflows remain planned.
 
 [0320](../decisions/0320-embedded-catalog-availability.md) divides offline
 availability into 59 section templates, 19 onboarder preparation guides and
 two non-instantiable tool-help topics. The full authored content is a permanent
 input to the [catalog reader contract](../../contracts/catalog/reader/contract.md).
-Its presence in the contract is not yet evidence of embedding in the executable.
+Independent binary scenarios check the complete inventory and exact exported
+bytes without supplying catalog files beside the executable.
 
 Sources are the [worked example](examples/acme/README.md), the repository's core
 and discipline guides, and the product discussion recorded in 0150. Each row
 names a useful outcome. Standard tool wording is embedded once, not copied
 into every organization's authored sections.
+
+## Using the embedded catalog
+
+```sh
+onboard-kit catalog list
+onboard-kit catalog show --id company-email
+onboard-kit catalog export --id company-email > company-email.yaml
+```
+
+`list` prints a JSON inventory sorted by exact entry ID. `show` includes the
+metadata and complete content. `export` prints only the original content:
+section YAML for templates, Markdown for preparation guides and tool help.
+The shell redirection above creates the file; the command itself writes only
+to standard output and standard error. It does not load a plan or local templates.
+
+Use the exact ID from `list`. Unknown IDs and malformed arguments fail without
+echoing supplied values. Add `--help` immediately after `catalog` or a recognized
+operation for usage. Each command uses the compiled catalog, not local files.
+Existing custom-template loading remains available through `new` and `walk`.
+
+Availability does not select activities, fill in organizational facts, generate
+personal preparation, or expand repeated activities. The onboarder still supplies
+the routes, contacts and policies requested by the section's questions.
 
 ## Reading the catalog
 
@@ -118,11 +142,11 @@ role needs, not unrestricted access to every repository or production system.
 | `deploy-lead` | Lead a deploy with support | When authorized and ready | Lead an appropriate deployment with experienced support available |
 | `incident-orientation` | Incident and on-call orientation | Before participation | Understand responsibilities, escalation, and relevant runbooks |
 
-For `pr-merge`, the behavior judge recommends allowing the person's own PR or
-another person's PR when team policy permits. The learning goal is the authorized
-merge process, not authorship. This recommendation needs an explicit acceptance
-fixture before implementation. Never bypass a separation-of-duties rule or grant
-permissions solely to complete onboarding.
+For `pr-merge`, the onboarder must state whether team policy permits the person's
+own PR, another person's PR, or both. The learning goal is the authorized merge
+process, not authorship. The template asks for that policy rather than choosing
+one. The tool neither grants permissions nor performs the merge. Never bypass a
+separation-of-duties rule or grant permissions solely to complete onboarding.
 
 The ACME clone-and-test example groups several instructions. Independent
 readiness outcomes can use separate sections without changing that historical
@@ -189,7 +213,8 @@ Unknown partners and opportunities stay visibly unassigned.
 Catalog completeness, authored template content, embedding, repeated instances,
 and the three-file preparation workflow are distinct checks. This document
 alone does not deliver the library. The [preparation format](preparation-format.md)
-and command now provide person-specific ownership. Embedded catalog content,
-selection relationships, template bindings, and list-driven expansion remain
-pending and need separate contracts. Personal arrangements must not be stored
+and command now provide person-specific ownership. All catalog content is compiled
+and available through the read-only commands. Selection relationships, template
+bindings, and list-driven expansion remain pending and need separate contracts.
+Personal arrangements must not be stored
 in shared answers.

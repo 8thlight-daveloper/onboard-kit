@@ -115,7 +115,8 @@ The full normative content and independent availability contracts are authored
 under [0320](../decisions/0320-embedded-catalog-availability.md): 59 actual Section
 templates, 19 preparation guides and two static tool-help topics. The real loader
 accepts every Section and current combined-plan validation reports no problems.
-Compiled availability and its read-only catalog command remain pending. This
+Compiled availability and its read-only catalog command are implemented. Binary
+scenarios check all eighty exported entries without adjacent catalog files. This
 does not imply selected activities or generated personal preparation.
 
 Add organization and team selection through an approved format. Including a

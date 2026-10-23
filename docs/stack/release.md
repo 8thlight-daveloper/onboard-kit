@@ -45,8 +45,8 @@ nix develop -c just release-check --binary output/release/onboard-kit
 
 Other hosts fail with an explanation rather than silently skipping checks.
 The scenario files and their matching rules are unchanged. The checks cover
-the current scenarios, including supplied templates; they do not claim that
-embedded templates, offline network isolation, distribution channels, release
+the current scenarios, including supplied templates and all eighty embedded
+catalog exports; they do not claim that offline network isolation, distribution channels, release
 publication, or release CI are implemented. No tag or publication is created.
 
 ## Retired

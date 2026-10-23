@@ -1,7 +1,7 @@
 # Preparing one person's onboarding
 
-Status: implemented, experimental. Invitation packaging and the guided invitation
-flow are not implemented yet.
+Status: implemented, experimental. Explicit [invitation export](invitation-export.md)
+is available; the guided invitation flow remains planned.
 
 Preparation is the onboarder's file for one person. It holds supplied details
 and arrangements, not the newcomer's answers or proof that they completed work.

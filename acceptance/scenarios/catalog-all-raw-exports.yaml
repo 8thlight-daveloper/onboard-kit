@@ -1,0 +1,2443 @@
+name: catalog-all-raw-exports
+description: Every catalog identity exports its complete literal YAML or Markdown bytes from the standalone binary with no wrapper or local writes.
+source: docs/decisions/0320-embedded-catalog-availability.md; contracts/catalog/reader/content/; contracts/command/catalog/contract.md Export
+steps:
+  - run: ["onboard-kit","catalog","export","--id","application-local"]
+    files:
+      plan.obk.yaml: "PRIVATE_EXISTING_PLAN_BYTES\n"
+      preparation.obk.yaml: "PRIVATE_EXISTING_PREPARATION_BYTES\n"
+      record.obk.yaml: "PRIVATE_EXISTING_RECORD_BYTES\n"
+      company-email.yaml: "PRIVATE_EXISTING_CUSTOM_TEMPLATE_BYTES\n"
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: application-local
+          title: Run the application locally
+          summary: Exercise the application
+          timing: week-one
+          variables:
+            - {name: local_run_instructions, description: "What reviewed local startup, shutdown and safe data instructions apply?", audience: onboarder, required: true}
+            - {name: local_exercise, description: "Which harmless user journey should verify local behavior and who can help?", audience: onboarder, required: true}
+          body: |
+            Review the local application instructions: $local_run_instructions
+            Exercise the approved behavior: $local_exercise
+          
+            Check environment and data sources before starting anything. Use approved
+            sample data, not copied production data or personal credentials. Follow a
+            representative flow and inspect its result, then shut down as documented.
+            A running process alone is not a usable application. Report missing setup
+            or differing instructions rather than changing shared services to fit them.
+          steps:
+            - id: exercise-local-flow
+              name: Exercise a safe local application flow
+              checks:
+                - ask: Can you complete the approved local flow and explain how to start and stop the application safely?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=artifact-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: artifact-access
+          title: Package or artifact registry access
+          summary: Obtain required dependencies and artifacts
+          timing: anytime
+          variables:
+            - {name: artifact_scope, description: "Which approved registry and exact dependencies or artifacts are required?", audience: onboarder, required: true}
+            - {name: artifact_access_route, description: "What approved authentication, request and safe retrieval instructions apply?", audience: onboarder, required: true}
+          body: |
+            Confirm the registry and artifact scope: $artifact_scope
+            Follow the approved retrieval instructions: $artifact_access_route
+          
+            Retrieve an intended artifact with the permitted account and verify its
+            identity or integrity using the project's documented method. Retrieval
+            does not authorize publishing or deleting packages. Keep authentication
+            material in the approved system, not a template or record. Do not switch
+            to an untrusted mirror or disable verification to bypass missing access.
+          steps:
+            - id: retrieve-approved-artifact
+              name: Obtain the intended dependency or artifact
+              checks:
+                - ask: Can you retrieve and identify the required artifact through the approved registry and authentication route?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","calendar-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange calendar access
+          
+          Identify the configured calendar service, account grantor and approved request
+          process. Shared setup and sharing rules stay in the plan. Put the individual's
+          request in an access arrangement for an actual declared calendar section
+          instance, rather than inventing a calendar kind or silently selecting an activity.
+          
+          Keep a stable unique arrangement id and name known directory references.
+          Arranged requires an accountable owner and nonsecret reference. Pending,
+          requested and deferred can show missing details; supplied unknown contacts or
+          sections remain invalid. Use a real optional targetDate to coordinate support.
+          Do not record private calendar contents or personal reasons for availability.
+          
+          Coordinate a harmless invitation or support contact so the newcomer can test
+          viewing and responding after access is available. Sending an invitation and
+          granting an account are not verification of calendar use. If setup depends on
+          another service, make the support need clear without inventing a runtime
+          prerequisite edge. Preparation records arrangements, never newcomer outcomes.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=chat-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange chat membership
+          
+          Confirm the organization's actual chat service, intended account and relevant
+          workspaces or channels. Keep shared joining instructions and fallback routes
+          in the plan. Do not assume a provider or create an account automatically.
+          Identify an initial route that does not depend on already having chat access.
+          
+          Use access arrangements for person-specific requests against actual declared
+          chat section instances. Distinct resources may need separate arrangements with
+          stable unique ids. Arranged requires a known owner and nonsecret reference;
+          helpers are included only when assigned. Pending, requested and deferred may
+          retain visible gaps, but unknown supplied contacts or sections are invalid.
+          Do not store invitations containing secret tokens or recovery material.
+          
+          Confirm who can resolve expired invitations or missing channel membership.
+          Targets coordinate support and do not fail the newcomer. A sent invitation or
+          arranged request does not establish that messages can be exchanged; the
+          newcomer verifies the actual capability. No chat-specific kind or outcome field
+          is introduced, and neither plan answers nor personal record are changed.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","ci-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: ci-access
+          title: CI access
+          summary: Access required pipeline results and actions
+          timing: anytime
+          variables:
+            - {name: pipeline_scope, description: "Which pipelines, result views and authorized actions does the role need?", audience: onboarder, required: true}
+            - {name: pipeline_access_route, description: "Who grants CI access and how should required capabilities be verified safely?", audience: onboarder, required: true}
+          body: |
+            Review the required pipeline scope: $pipeline_scope
+            Follow the access and safe verification route: $pipeline_access_route
+          
+            Open a relevant run and find its checks, logs and outcome. Learn which
+            actions can spend resources, publish artifacts or affect environments.
+            Viewing a run does not authorize rerunning or changing it. Never expose
+            secret log material in onboarding notes. Confirm any action permission
+            through the agreed safe procedure rather than triggering a live pipeline.
+          steps:
+            - id: inspect-required-pipeline
+              name: Find required CI results and understand action boundaries
+              checks:
+                - ask: Can you inspect the relevant pipeline results and identify which actions you are authorized to take?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=codebase-orientation"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: codebase-orientation
+          title: Understand the codebase
+          summary: Locate main components and trace a relevant flow
+          timing: week-one
+          variables:
+            - {name: codebase_map, description: "Which architecture material and main code locations should be explored?", audience: onboarder, required: true}
+            - {name: tracing_exercise, description: "Which relevant flow should be traced and who can discuss its design?", audience: onboarder, required: true}
+          body: |
+            Start with the current architecture and locations: $codebase_map
+            Trace and discuss this useful flow: $tracing_exercise
+          
+            Follow an input through the important components to its observable
+            result. Locate related tests, ownership and failure handling. Compare
+            the diagram with the actual code and ask about discrepancies. Aim for
+            enough understanding to make a safe first change, not memorization of
+            every module. Share corrections through the team's review process.
+          steps:
+            - id: explain-code-flow
+              name: Explain a relevant flow through the codebase
+              checks:
+                - ask: Can you locate the main components and explain a relevant flow, its tests and the owners to consult?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","company-calendar"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: company-calendar
+          title: Company calendar
+          summary: View the calendar and respond to invitations
+          timing: week-one
+          variables:
+            - {name: calendar_process, description: "Which calendar service, setup instructions and sharing rules apply?", audience: onboarder, required: true}
+            - {name: calendar_test, description: "Which harmless invitation or support contact can be used to verify calendar access?", audience: onboarder, required: true}
+          body: |
+            Follow the calendar setup and sharing instructions: $calendar_process
+            Verify with the supplied invitation or contact: $calendar_test
+          
+            Check the displayed time zone before responding. Open an intended event,
+            inspect its joining details and send an appropriate response. Confirm
+            that your availability is shared only as policy requires. A meeting
+            invitation being sent does not prove you can view or answer it.
+          steps:
+            - id: answer-invitation
+              name: Open and respond to an intended calendar invitation
+              checks:
+                - ask: Can you view the intended calendar and respond to an invitation with the correct time zone?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=company-email"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: company-email
+          title: Company email
+          summary: Send and receive mail
+          timing: week-one
+          variables:
+            - {name: email_process, description: "Which approved mail service and setup instructions apply?", audience: onboarder, required: true}
+            - {name: email_test_route, description: "Which business contact or safe test procedure should verify sending and receiving mail?", audience: onboarder, required: true}
+          body: |
+            Set up the approved mail service using $email_process.
+            Use the safe test procedure or contact: $email_test_route
+          
+            Confirm the mailbox is your intended company mailbox. Send a nonsecret
+            test message and receive a reply or equivalent approved test. Check how
+            to reach support if mail is unavailable, rather than depending on that
+            mailbox to obtain its own access. Never forward business mail to a
+            personal account as an onboarding workaround.
+          steps:
+            - id: exchange-mail
+              name: Verify sending and receiving
+              checks:
+                - ask: Have you sent and received a nonsecret test message using the intended company mailbox?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","company-identity"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: company-identity
+          title: Company identity and SSO
+          summary: Required authentication works
+          timing: week-one
+          variables:
+            - {name: identity_process, description: "What approved account activation and authentication instructions apply?", audience: onboarder, required: true}
+            - {name: identity_support, description: "Who handles identity provisioning, recovery and authentication problems through an approved route?", audience: onboarder, required: true}
+          body: |
+            Use the approved identity process: $identity_process
+            Get provisioning or recovery help through $identity_support.
+          
+            Confirm that the account belongs to you before activation. Set up the
+            required authentication factors through the approved system, keeping
+            passwords and recovery material out of onboarding files. Test sign-in to
+            a permitted service and sign out afterwards where appropriate. A request
+            or activation email alone does not prove working authentication.
+          steps:
+            - id: verify-authentication
+              name: Verify the required authentication flow
+              checks:
+                - ask: Can you authenticate with your own intended account and required factors to an approved service?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=contribution-practices"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: contribution-practices
+          title: Learn contribution and review practices
+          summary: Understand branching, review, checks, and the definition of done
+          timing: anytime
+          variables:
+            - {name: contribution_policy, description: "Where are the current branching, change, review and completion rules?", audience: onboarder, required: true}
+            - {name: contribution_discussion, description: "Who can explain authorization, required checks and exceptions for a first contribution?", audience: onboarder, required: true}
+          body: |
+            Review the contribution rules: $contribution_policy
+            Resolve questions through $contribution_discussion.
+          
+            Walk through an example change from task to delivery. Identify required
+            reviews, checks, release conditions and who may approve or merge. Ask how
+            to handle disagreement and an urgent exception; do not invent one.
+            Access to a control is not authorization to use it. Keep the team's
+            definition of done visible before beginning the first contribution.
+          steps:
+            - id: explain-contribution-process
+              name: Explain how a contribution becomes done
+              checks:
+                - ask: Can you explain the required branching, review, checks and authorization before a contribution is considered done?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","day-ninety-review"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: day-ninety-review
+          title: Review 90-day goals
+          summary: Agree on outcomes and the next phase
+          timing: days-31-to-90
+          variables:
+            - {name: ninety_day_review, description: "How is the roughly ninety-day review arranged and which outcomes should be discussed?", audience: onboarder, required: true}
+            - {name: next_phase_process, description: "How are next-phase priorities, ownership and support agreed?", audience: onboarder, required: true}
+          body: |
+            Arrange the review using $ninety_day_review.
+            Agree the next phase through $next_phase_process.
+          
+            Discuss outcomes, confidence, unresolved dependencies and what should
+            change in the support model. Keep organizational barriers visible and
+            make room for feedback on onboarding itself. Agree next responsibilities
+            rather than inferring them from time served. The planning window neither
+            fails someone nor grants access, authority or automatic completion.
+          steps:
+            - id: agree-next-phase
+              name: Review outcomes and agree the next phase
+              checks:
+                - ask: Have you reviewed the relevant outcomes and agreed next-phase priorities, responsibilities and support?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=day-thirty-review"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: day-thirty-review
+          title: Review 30-day goals
+          summary: Agree on progress, feedback, and revised priorities
+          timing: days-8-to-30
+          variables:
+            - {name: thirty_day_review, description: "How is the roughly thirty-day review arranged and which shared goals guide it?", audience: onboarder, required: true}
+            - {name: review_support_route, description: "Who can revise priorities and arrange support after the review?", audience: onboarder, required: true}
+          body: |
+            Arrange the review and revisit the shared goals: $thirty_day_review
+            Agree changes and support through $review_support_route.
+          
+            Discuss useful outcomes, remaining blockers, feedback and changing work.
+            Distinguish verified progress from requests, attempts and unavailable
+            opportunities. Revise priorities with the people involved and name any
+            support actions. Around day thirty is a planning goal, not a pass/fail
+            deadline or a demand for private performance notes in an onboarding file.
+          steps:
+            - id: agree-next-month-priorities
+              name: Review progress and revise the next priorities
+              checks:
+                - ask: Have you discussed progress and feedback and agreed revised priorities and support with the relevant owner?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","deploy-lead"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: deploy-lead
+          title: Lead a deploy with support
+          summary: Lead an appropriate deployment with experienced support available
+          timing: anytime
+          variables:
+            - {name: lead_deploy_policy, description: "What readiness, authorization and supported deployment procedure must a first lead satisfy?", audience: onboarder, required: true}
+            - {name: deploy_stop_rules, description: "Who may stop or roll back deployment and how is experienced support reached?", audience: onboarder, required: true}
+          body: |
+            Follow the first-lead policy and reviewed procedure: $lead_deploy_policy
+            Confirm stop decisions, rollback and support: $deploy_stop_rules
+          
+            Confirm a suitable deployment and available experienced supporter in
+            preparation. Check current authorization and readiness before acting.
+            Lead only the agreed scope, verify the result and follow up with the
+            supporter. Stop or postpone when conditions are unsafe. A target date or
+            onboarding goal never authorizes deployment or excuses missing support.
+          steps:
+            - id: lead-supported-deployment
+              name: Lead an authorized deployment with experienced support
+              checks:
+                - ask: Have you led the agreed authorized deployment with support available and verified its outcome under the runbook?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=deploy-lead-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign an experienced deploy lead
+          
+          Find an experienced person leading an appropriate deployment for the newcomer
+          to observe. Keep the deployment runbook and shared safety rules in the plan.
+          Use deploy-shadow for this personal arrangement and name an actual declared
+          shadowing section instance; the guide's title does not introduce a new kind.
+          
+          An arranged item requires a known accountable owner, at least one known helper
+          and a nonsecret deployment opportunity reference. Here helpers are experienced
+          leads whom the newcomer observes. They are not automatically supporters for a
+          newcomer-led deployment. Keep a stable unique id and optional real planning
+          target. Missing details may be pending, requested or deferred, but unknown
+          supplied helpers or section references are invalid.
+          
+          Confirm observation access and a route for questions without granting control
+          authority. Discuss verification, rollback and cancellation. A scheduled or
+          arranged deployment is not observed work or a verified newcomer outcome.
+          If conditions change, rearrange the opportunity; the date does not compel it.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","deploy-shadow"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: deploy-shadow
+          title: Shadow a deploy
+          summary: Observe preparation, deployment, verification, and rollback considerations
+          timing: days-8-to-30
+          variables:
+            - {name: deployment_runbook, description: "Which deployment process and runbook should be observed?", audience: onboarder, required: true}
+            - {name: shadow_expectations, description: "How is a safe observation opportunity arranged and what questions should the observer cover?", audience: onboarder, required: true}
+          body: |
+            Review the process before observing: $deployment_runbook
+            Arrange the opportunity and learning focus: $shadow_expectations
+          
+            Confirm the experienced lead and deployment opportunity in preparation.
+            Observe readiness checks, authorization, execution, verification and
+            rollback considerations. Ask when a deploy should stop and who decides.
+            Observation does not authorize operating production controls. If the
+            planned deployment is cancelled or unsuitable, rearrange it instead of
+            treating the planning date as a failure.
+          steps:
+            - id: observe-deployment-lifecycle
+              name: Observe an experienced lead through a deployment
+              checks:
+                - ask: Have you observed the deployment lifecycle and discussed readiness, verification, rollback and decision ownership?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=deploy-support-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign deployment support
+          
+          Arrange a suitable authorized deployment and experienced support for the
+          newcomer to lead it. Keep the runbook, readiness and stop rules in the plan.
+          Use deploy-lead for the person-specific arrangement and an actual declared
+          lead-deployment section instance. Never infer readiness from a planning date.
+          
+          An arranged item needs a known accountable owner, at least one known helper
+          and a nonsecret opportunity reference. For this kind helpers are experienced
+          observers or supporters, not the lead being shadowed. Give the item a stable
+          unique id and optional real targetDate. Pending, requested or deferred keep
+          missing support visible; unknown supplied contacts and sections are invalid.
+          
+          Confirm support availability, authority to act, safe scope, verification and
+          rollback decisions. Do not grant production rights solely for onboarding.
+          Arranged is a minimum preparation claim, not permission at action time,
+          successful deployment or a verified newcomer outcome. Preserve the committed
+          ownership boundaries: no shared-answer injection or personal-record writes.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","design-contribution"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: design-contribution
+          title: First design contribution
+          summary: Take a suitable contribution through the team's process
+          timing: days-8-to-30
+          variables:
+            - {name: design_contribution_scope, description: "What makes a first design contribution suitable and how should its scope be agreed?", audience: onboarder, required: true}
+            - {name: design_contribution_process, description: "Which support, review and completion process must that contribution follow?", audience: onboarder, required: true}
+          body: |
+            Agree a suitable real contribution using $design_contribution_scope.
+            Follow the support and completion process: $design_contribution_process
+          
+            Clarify the user need, constraints and expected evidence with the owner.
+            Explore and communicate the proposed change, seek the required review
+            and follow through on the agreed handoff. Keep research and personal
+            data within approved systems. A first-month goal does not justify
+            bypassing research, accessibility, approval or collaboration expectations.
+          steps:
+            - id: complete-design-contribution
+              name: Complete a suitably scoped design contribution
+              checks:
+                - ask: Has your agreed contribution met the team's review, evidence and handoff conditions with support available?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=design-handoff"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: design-handoff
+          title: Learn design review and handoff
+          summary: Understand review, approval, and collaboration expectations
+          timing: anytime
+          variables:
+            - {name: design_handoff_process, description: "What design review, approval and engineering handoff process applies?", audience: onboarder, required: true}
+            - {name: design_handoff_example, description: "Which reviewed example and discussion contact can explain expected handoff evidence?", audience: onboarder, required: true}
+          body: |
+            Review the collaboration process: $design_handoff_process
+            Walk through the supplied example with $design_handoff_example.
+          
+            Identify how intent, states, accessibility, constraints and unresolved
+            questions are communicated. Learn who approves what and how changes
+            remain visible after handoff. A shared link is not proof that another
+            discipline has the context it needs. Ask about ambiguous responsibilities
+            rather than assuming that design sign-off grants delivery authority.
+          steps:
+            - id: explain-design-handoff
+              name: Explain a useful reviewed design handoff
+              checks:
+                - ask: Can you explain the review, approval and collaboration evidence needed for a useful handoff?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","design-system-review"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: design-system-review
+          title: Review the design system
+          summary: Find and use the system and main product files
+          timing: week-one
+          variables:
+            - {name: design_system_material, description: "Where are the current design system, main product files and usage guidance?", audience: onboarder, required: true}
+            - {name: design_system_discussion, description: "Which representative task should be explored and who explains gaps or contribution rules?", audience: onboarder, required: true}
+          body: |
+            Explore the current system and product files: $design_system_material
+            Discuss a representative use through $design_system_discussion.
+          
+            Locate the relevant components, patterns, accessibility guidance and
+            source of truth. Explain how a common interface uses them and how an
+            exception is reviewed. Distinguish a published component from a draft.
+            If no system exists, ask the team to identify current conventions and
+            gaps; do not invent a claim that an established system was reviewed.
+          steps:
+            - id: explain-system-use
+              name: Locate and explain a useful design-system pattern
+              checks:
+                - ask: Can you find the current design references and explain how to use or discuss a relevant pattern and its gaps?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=design-workspace"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: design-workspace
+          title: Design workspace access
+          summary: Access required files and tools
+          timing: week-one
+          variables:
+            - {name: design_workspace_scope, description: "Which configured design tools, workspaces and file capabilities does the role require?", audience: onboarder, required: true}
+            - {name: design_access_route, description: "How is design access requested and safely verified, and who handles problems?", audience: onboarder, required: true}
+          body: |
+            Confirm the required tools, files and capability: $design_workspace_scope
+            Follow the access and verification route: $design_access_route
+          
+            Open the intended workspace with your approved identity. Verify the
+            permitted capability on an agreed safe file; viewing is not editing
+            authority. Learn where current work lives and what may be shared outside
+            the team. Do not duplicate restricted assets into a personal workspace
+            or request organization-wide rights to resolve a narrow access problem.
+          steps:
+            - id: verify-design-workspace
+              name: Verify the intended design files and capability
+              checks:
+                - ask: Can you use the required design files and tools within the approved permission and sharing scope?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","device-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange a working device
+          
+          Confirm the approved equipment process, delivery expectations and setup support
+          with the responsible team. Keep shared setup instructions in the plan. Put a
+          person's equipment opportunity in an equipment arrangement linked to an actual
+          declared section instance; do not create a catalog-id binding automatically.
+          Do not put a home address, private shipping details or credentials in preparation.
+          
+          Give the arrangement a stable unique id. Name a known accountable owner and a
+          nonsecret reference to the approved equipment request or handoff before marking
+          it arranged. Add known support contacts when available. Pending, requested or
+          deferred may retain missing details visibly, but supplied unknown references
+          are invalid. A targetDate is an optional real calendar planning date.
+          
+          Confirm who resolves delayed delivery or failed setup and how the newcomer
+          can reach them before company access. Arranged means the onboarder has made
+          the minimum arrangement, not that a device arrived or works. The newcomer
+          verifies usability in the corresponding activity; preparation changes no record.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=document-reading"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: document-reading
+          title: Read a document
+          summary: Read with a stated purpose and a route for questions
+          timing: anytime
+          variables:
+            - {name: reading_material, description: "Which current document should be read and for what work purpose?", audience: onboarder, required: true}
+            - {name: reading_questions, description: "Which questions should guide the reading and who can discuss them?", audience: onboarder, required: true}
+          body: |
+            Read the material for the supplied purpose: $reading_material
+            Use these questions and discussion route: $reading_questions
+          
+            Identify the decisions or actions the material informs, not just whether
+            you opened it. Note uncertainties and confirm stale or contradictory
+            instructions with its owner. Do not paste restricted content into an
+            onboarding record. Use separate activities for reading assignments whose
+            outcomes need independent discussion or follow-up.
+          steps:
+            - id: discuss-reading
+              name: Explain the reading's useful implications
+              checks:
+                - ask: Can you explain how the document informs your work and raise any unresolved questions through the supplied route?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","documentation-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: documentation-access
+          title: Documentation workspace access
+          summary: Open the assigned material
+          timing: anytime
+          variables:
+            - {name: documentation_scope, description: "Which documentation workspace and material should the newcomer be able to open?", audience: onboarder, required: true}
+            - {name: documentation_route, description: "Who grants documentation access and resolves missing or restricted material?", audience: onboarder, required: true}
+          body: |
+            Locate the intended workspace and material: $documentation_scope
+            Request or repair access through $documentation_route.
+          
+            Open the assigned content using the intended account, not a copied
+            private document. Check how to find the current version and its owner.
+            Workspace membership alone does not prove a particular page opens.
+            Keep access restrictions intact and ask for an approved alternative
+            if assigned material cannot be shared with your role.
+          steps:
+            - id: open-assigned-material
+              name: Open the intended documentation
+              checks:
+                - ask: Can you open the assigned current material and identify its owner or access support route?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=environment-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: environment-access
+          title: Development or staging environment access
+          summary: Use the required environment
+          timing: anytime
+          variables:
+            - {name: environment_scope, description: "Which development or staging environment and permitted tasks are required?", audience: onboarder, required: true}
+            - {name: environment_route, description: "How is environment access granted and what safe verification and support procedure applies?", audience: onboarder, required: true}
+          body: |
+            Identify the intended environment and task scope: $environment_scope
+            Obtain and verify access using $environment_route.
+          
+            Check environment identity before interacting with it. Perform only the
+            agreed safe task; do not assume staging data is public or disposable.
+            Production permission is separate and is not granted by this activity.
+            Report missing access without modifying shared resources or copying
+            sensitive data into a local workaround.
+          steps:
+            - id: verify-environment
+              name: Use the approved environment safely
+              checks:
+                - ask: Can you perform the agreed task in the intended environment and distinguish it from production?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","hosting-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: hosting-access
+          title: Cloud or hosting access
+          summary: Use the required role and permissions
+          timing: anytime
+          variables:
+            - {name: hosting_scope, description: "Which hosting account, role and resource scope does this work require?", audience: onboarder, required: true}
+            - {name: hosting_route, description: "What approved role-assumption, access request and safe verification process applies?", audience: onboarder, required: true}
+          body: |
+            Confirm the required hosting scope and role: $hosting_scope
+            Follow the access process: $hosting_route
+          
+            Verify account and role context before using a permitted read or other
+            approved safe operation. Do not request administrator permissions,
+            change billing or create resources merely to prove sign-in. A console
+            opening is not proof of authority for every action. Escalate excessive
+            or missing permissions to the grantor without retaining secret material.
+          steps:
+            - id: verify-hosting-role
+              name: Verify the intended hosting role and permission scope
+              checks:
+                - ask: Can you use the intended role for the approved task and identify its resource and action limits?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=identity-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange company identity
+          
+          Confirm the provisioning owner, approved account policy and request route.
+          Keep those shared facts in the plan. Preparation may carry a known company
+          email when useful, but its absence is not itself an invitation blocker.
+          Never store an initial password, recovery code or personal delivery address.
+          
+          Track a person-specific provisioning request with the existing access kind
+          and an actual declared identity section instance. Use a stable unique id,
+          known owner and nonsecret request reference before claiming arranged. An access
+          item need not invent a helper when none is assigned. Missing details can stay
+          visible while pending, requested or deferred; an unknown supplied contact is
+          invalid rather than incomplete. Do not invent an identity-arrange kind.
+          
+          Ensure activation and support instructions are usable before the account works.
+          Confirm any target date as a planning goal, not a deadline that fails someone.
+          Requested or arranged provisioning is not working authentication, confirmed
+          recipient identity, invitation import or first use. Verification belongs to
+          the newcomer's actual capability check, not this preparation status.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","incident-orientation"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: incident-orientation
+          title: Incident and on-call orientation
+          summary: Understand responsibilities, escalation, and relevant runbooks
+          timing: anytime
+          variables:
+            - {name: incident_material, description: "Which incident roles, runbooks and any on-call expectations apply to this work?", audience: onboarder, required: true}
+            - {name: incident_escalation, description: "What approved incident reporting, escalation and training route should a newcomer use?", audience: onboarder, required: true}
+          body: |
+            Review the relevant responsibilities and runbooks: $incident_material
+            Locate the reporting and escalation route: $incident_escalation
+          
+            Discuss a safe scenario with an experienced teammate. Identify how to
+            raise concern, who coordinates response and where communications belong.
+            Distinguish learning from joining a rota or accepting incident authority.
+            Do not trigger a real alert, test production recovery or promise on-call
+            availability without explicit agreement and the required training.
+          steps:
+            - id: explain-incident-response
+              name: Walk through an appropriate incident scenario
+              checks:
+                - ask: Can you explain your expected role, escalation route and the runbooks to consult before incident participation?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=internal-network"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: internal-network
+          title: VPN or internal network
+          summary: Reach required internal resources
+          timing: anytime
+          variables:
+            - {name: network_setup, description: "What approved VPN or internal-network instructions and resource scope apply?", audience: onboarder, required: true}
+            - {name: network_test, description: "Which permitted internal resource is a safe connectivity test, and where is connection support?", audience: onboarder, required: true}
+          body: |
+            Set up only the required network access: $network_setup
+            Test the permitted resource and use support as described: $network_test
+          
+            Use approved clients and authentication. Distinguish a connection being
+            established from authorization to a particular resource. Do not disable
+            protective controls, scan other systems or request unrestricted network
+            access to complete this activity. Explain the blocked dependent work if
+            the approved route does not work.
+          steps:
+            - id: verify-network
+              name: Reach an approved internal resource
+              checks:
+                - ask: Can you reach the specified permitted internal resource through the approved network route?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","invitation-prepare"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Prepare the invitation
+          
+          The onboarder reviews one person's preparation beside the untouched shared
+          plan. Confirm the explicit account and matching plan identity; do not infer
+          identity from a directory name or copy another person's preparation. Supply
+          known business details only. Company email, a planned start date and optional
+          arrangements may remain absent; missing optional details alone do not block
+          export. Do not collect personal delivery email, phone or home address.
+          
+          Review selected work and its actual declared section instances. Catalog
+          membership does not select activities, create arrangements or bind recipient
+          fields to answers. Answer required onboarder questions explicitly or deliberately
+          defer them under the existing rules; a template default is not an answer.
+          
+          Name the preparation's onboarding owner and explicitly designate a known named
+          business contact with a displayable pre-access help route for export. This is
+          an organizational assertion, not a network test. Inspect the real first-steps
+          preview and visible missing information before delivery. Preserve the original
+          plan, preparation and any newer personal work. Export creates a new archive,
+          not an import, confirmed identity, first use or verified onboarding outcome.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=invitation-start"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Start from the invitation ZIP
+          
+          An invitation contains the organization plan, onboarder-owned preparation,
+          an identity-only newcomer record seed and first-steps.md. Read its first-steps
+          document and contact the named onboarding owner if anything is missing. Use
+          only the supported standalone tool supplied through your organization's
+          approved route; this catalog invents no download address or installation command.
+          
+          Before any future import, the account must be confirmed as yours and proposed
+          destinations reviewed. A ZIP entry name is not permission to extract over local
+          files. If the account is wrong or you already have newer work, stop and ask the
+          owner. Keep existing plan, preparation and record files rather than replacing
+          them from an older invitation. Anyone who can read stored records can read
+          their answers and notes; keep credentials and unnecessary personal data out.
+          
+          The supported invite export operation creates a new archive for an onboarder
+          to deliver through an approved external channel. It does not send the package,
+          import it, confirm identity or record first use. Confirmed invitation import
+          and record-backed startup remain staged work. The existing start command is
+          a legacy organization-plan flow, not an invitation-ZIP importer. Do not pass
+          the archive to it expecting this planned behavior.
+          
+          Use the actual rendered first-steps help and selected business support route
+          for bootstrap work before company access exists. This static catalog entry
+          does not render a personal invitation, assert contact availability or duplicate
+          the first-steps assembler's account-specific guide. Reading a preview or this
+          entry records no start, accepts no default and verifies no activity.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","knowledge-transfer"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: knowledge-transfer
+          title: Knowledge transfer and onboarding ownership
+          summary: Name knowledge recipients and an owner for shared onboarding material
+          timing: anytime
+          variables:
+            - {name: knowledge_handoff, description: "Which work knowledge needs transfer, where should it live and how are recipients identified?", audience: onboarder, required: true}
+            - {name: onboarding_ownership, description: "Who owns shared onboarding material and how are reviewed updates and future handoffs maintained?", audience: onboarder, required: true}
+          body: |
+            Plan the knowledge handoff using $knowledge_handoff.
+            Confirm ownership of shared material: $onboarding_ownership
+          
+            Share useful decisions, operational context and open questions with
+            the intended recipients while respecting access restrictions. Confirm
+            that recipients can find and use the material; sending a link is not
+            enough. Keep it current throughout the work and confirm continuity
+            before departure. Never transfer credentials or publish personal records
+            as a substitute for documented work knowledge.
+          steps:
+            - id: confirm-knowledge-continuity
+              name: Confirm recipients and ownership of useful shared knowledge
+              checks:
+                - ask: Can the intended recipients use the needed knowledge and is an owner identified for shared onboarding material?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=meeting-invite"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Send meeting invitations
+          
+          Coordinate introductions, regular meetings, retrospectives and check-ins that
+          are relevant to the selected work. Confirm participants, purpose, time-zone
+          interpretation and joining instructions without copying private calendar
+          contents. Keep shared meeting policies in the plan and individual invitations
+          in preparation; no automatic selection or meeting delivery is implied.
+          
+          Use the meeting kind with stable unique arrangement ids and actual declared
+          section instances. Several arrangements may support one section when useful.
+          Arranged requires a known owner and nonsecret meeting reference; helpers are
+          optional for this kind. Pending, requested or deferred retain missing details
+          visibly. Unknown supplied section or contact references remain invalid.
+          
+          Check that joining guidance is usable with the access expected at that time,
+          and identify who handles missing invitations. Targets are planning goals, not
+          attendance failures. An invitation sent or an arranged meeting is not proof
+          of joining, attendance, understanding or a completed conversation. Those
+          outcomes are separate from onboarder preparation.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","observability-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: observability-access
+          title: Logs, metrics, and tracing access
+          summary: Inspect the relevant service
+          timing: anytime
+          variables:
+            - {name: observability_scope, description: "Which service, approved dashboards and data scope are needed?", audience: onboarder, required: true}
+            - {name: observability_route, description: "How is access granted, what safe example should be inspected and who handles questions?", audience: onboarder, required: true}
+          body: |
+            Locate the service's approved observability surfaces: $observability_scope
+            Use the supplied example and access route: $observability_route
+          
+            Find a relevant metric, log or trace and relate it to service behavior.
+            Learn retention and redaction expectations before sharing a sample.
+            Observability data may contain personal or secret information; link to
+            approved views rather than copying raw data into the record. Read access
+            does not authorize changing alerts or querying unrelated systems.
+          steps:
+            - id: inspect-service-signals
+              name: Inspect a permitted service signal
+              checks:
+                - ask: Can you find and interpret a relevant service signal while respecting its data and access restrictions?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=office-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: office-access
+          title: Office access and security badge
+          summary: Entry and badge work; arrival instructions and contact are clear
+          timing: anytime
+          variables:
+            - {name: arrival_process, description: "What shared arrival, visitor, badge and physical-security instructions apply?", audience: onboarder, required: true}
+            - {name: arrival_support, description: "Which business contact and fallback can assist someone who cannot enter?", audience: onboarder, required: true}
+          body: |
+            Follow the approved arrival and badge process: $arrival_process
+            If entry fails, use $arrival_support.
+          
+            Confirm your own visit arrangements with the onboarder before travel.
+            Test the access needed for your work with an authorized host. Learn
+            visitor, lost-badge and emergency procedures. Never borrow another
+            person's badge, tailgate or bypass an access control to finish the task.
+            Keep access codes and private travel details out of onboarding records.
+          steps:
+            - id: confirm-entry
+              name: Verify authorized office entry
+              checks:
+                - ask: Can you use the intended entry or badge process and identify a reachable host if entry fails?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","office-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange office access and badge
+          
+          Coordinate the approved badge or visitor process, arrival instructions and a
+          reachable business host before the first on-site visit. Shared security rules
+          and arrival routes belong in the plan. Keep a person's arrangement in the
+          office kind, linked to an actual declared office-access section instance.
+          Do not collect a home address, private itinerary or access code in preparation.
+          
+          Use a stable unique id. Before marking arranged, provide a known accountable
+          owner and a nonsecret reference to the office request or approved instructions.
+          Add known host contacts when assigned. Pending, requested or deferred can
+          retain missing information visibly; unknown supplied contacts or sections are
+          invalid. A targetDate supports coordination rather than enforcing attendance.
+          
+          Confirm a fallback if the badge or host is unavailable, including a route that
+          works before entering. Arranged is not proof that the badge or entry works.
+          The newcomer verifies authorized access; neither urgency nor onboarding
+          completion permits borrowed badges or bypassing physical security controls.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=onboarding-buddy-meeting"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-buddy-meeting
+          title: Meet the onboarding buddy
+          summary: Know the day-to-day first contact
+          timing: week-one
+          variables:
+            - {name: buddy_process, description: "How is a newcomer introduced to their assigned buddy and what support does the buddy provide?", audience: onboarder, required: true}
+            - {name: buddy_backup, description: "What shared backup route applies when the buddy is unavailable?", audience: onboarder, required: true}
+          body: |
+            Meet your assigned buddy through $buddy_process.
+            The backup support route is $buddy_backup.
+          
+            Agree how to ask small day-to-day questions and when a different owner
+            should decide. Discuss availability and suitable check-ins without
+            assuming the buddy is continuously on call. Keep the personal assignment
+            in preparation. If no buddy is assigned, ask the owner to arrange one or
+            explicitly agree another support model; do not invent a name.
+          steps:
+            - id: establish-buddy-route
+              name: Establish a day-to-day support relationship
+              checks:
+                - ask: Do you know your agreed day-to-day contact, their support scope and the fallback when they are unavailable?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","onboarding-correction"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-correction
+          title: Report incorrect onboarding instructions
+          summary: Give the plan owner corrections without silently editing shared instructions
+          timing: anytime
+          variables:
+            - {name: correction_route, description: "Where should a newcomer report incorrect shared onboarding instructions?", audience: onboarder, required: true}
+            - {name: correction_review, description: "Who reviews corrections and how are approved changes shared while preserving personal work?", audience: onboarder, required: true}
+          body: |
+            Send proposed corrections through $correction_route.
+            Follow the ownership and review process: $correction_review
+          
+            Identify the affected instruction, the expected behavior and a safe
+            explanation of the difference. Keep secrets, personal records and raw
+            sensitive logs out of the report. Do not silently rewrite shared facts
+            or overwrite local work to match a new copy. If instructions conflict,
+            stop the risky action and ask the plan owner which guidance applies.
+          steps:
+            - id: establish-correction-path
+              name: Use or identify the reviewed correction process
+              checks:
+                - ask: Do you know how to give the plan owner a useful correction without exposing private data or silently changing shared instructions?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=onboarding-help"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-help
+          title: Get help when blocked
+          summary: Have a reachable initial contact and a fallback when the usual route fails
+          timing: anytime
+          bootstrap: true
+          variables:
+            - {name: general_contacts, description: "Who can help with an onboarding problem?", type: contact, multiple: true, audience: onboarder, required: true}
+            - {name: preaccess_route, description: "Which approved business route can the newcomer use before company access?", audience: onboarder, required: true}
+            - {name: fallback_route, description: "What should the newcomer do if the initial route or usual contact is unavailable?", audience: onboarder, required: true}
+          escalation: [$general_contacts]
+          body: |
+            General support: $general_contacts
+          
+            Before company access, use this explicitly supplied route: $preaccess_route
+            If it is unavailable, use the fallback: $fallback_route
+          
+            Describe the activity, the nonsecret error and what you already tried.
+            Never send passwords, recovery codes, tokens or a complete private record.
+            A request being sent is not proof of access. Tell the owner when a blocker
+            prevents later work so support can be rearranged without blaming the date.
+          steps:
+            - id: locate-support
+              name: Locate the initial and fallback help routes
+              checks:
+                - ask: Can you identify a route available before company access and a fallback if it fails?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","onboarding-owner-meeting"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-owner-meeting
+          title: Meet the onboarding owner or manager
+          summary: Understand support, priorities, and the first week's plan
+          timing: week-one
+          variables:
+            - {name: owner_meeting_process, description: "How is the initial owner or manager conversation arranged, and what should it cover?", audience: onboarder, required: true}
+            - {name: priority_context, description: "What shared priorities and decision context should guide the first week?", audience: onboarder, required: true}
+          body: |
+            Arrange the conversation using $owner_meeting_process.
+            Start from the shared priorities: $priority_context
+          
+            Ask your assigned owner to confirm the first week's useful work, how to
+            get support and how expectations will be revisited. Discuss dependencies
+            and missing arrangements before treating a goal as a commitment. Personal
+            manager and owner assignments belong in preparation, not shared answers.
+            Leave with a clear next conversation or contact if plans change.
+          steps:
+            - id: agree-initial-plan
+              name: Discuss priorities and support with the assigned owner
+              checks:
+                - ask: Have you discussed initial priorities, available support and how to revisit the first week's plan?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=onboarding-refresh"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-refresh
+          title: Get the latest plan
+          summary: Request an update without losing personal work
+          timing: anytime
+          variables:
+            - {name: update_route, description: "Where should a newcomer request the current organization plan and report a version mismatch?", audience: onboarder, required: true}
+            - {name: preservation_process, description: "What reviewed procedure preserves newer preparation and personal work when sharing updates?", audience: onboarder, required: true}
+          body: |
+            Ask for the current plan through $update_route.
+            Use the reviewed preservation procedure: $preservation_process
+          
+            Compare plan identity and available version information with the owner.
+            Preserve your current files before any reviewed replacement. Do not copy
+            an older invitation over newer preparation or personal work. A changed
+            shared instruction is not permission to erase a personal answer or claim
+            a verified outcome. Report conflicts for review. No automatic plan-update
+            command or confirmed invitation-import flow is supplied by this section.
+          steps:
+            - id: request-safe-update
+              name: Establish a safe route for plan updates
+              checks:
+                - ask: Do you know how to request the latest plan while preserving and reviewing existing work?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","onboarding-repository"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-repository
+          title: Connect to the onboarding repository
+          summary: Know where files go and who can read them
+          timing: anytime
+          variables:
+            - {name: sharing_location, description: "Where is the approved shared plan location, and how is access requested?", audience: onboarder, required: true}
+            - {name: sharing_policy, description: "Who may read or update each onboarding artifact, and what approved sharing procedure applies?", audience: onboarder, required: true}
+          body: |
+            After the relevant access works, locate the shared plan: $sharing_location
+            Follow the organization's sharing procedure: $sharing_policy
+          
+            The shared plan, onboarder-owned preparation and newcomer-owned record
+            have different owners. Confirm destinations before moving anything.
+            Anyone with read access to a stored record can read its answers and notes;
+            file ownership alone is not privacy. Keep credentials out of every file.
+            Ask the owner about unfamiliar or conflicting files instead of replacing
+            them. This activity does not supply an automatic import or Git command.
+          steps:
+            - id: confirm-sharing
+              name: Confirm artifact destinations and readership
+              checks:
+                - ask: Can you locate the approved plan and explain where your artifacts belong and who may read them?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=onboarding-resume"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Resume onboarding
+          
+          Return through the approved support and sharing procedure for your actual
+          plan and tool version. Keep your own saved work and ask the onboarding owner
+          when instructions disagree. Do not replace newer preparation or personal work
+          with an older invitation just to get back to a familiar screen.
+          
+          The existing walk command is a legacy plan-file question walkthrough: accepted
+          answers are saved in that selected plan file. It is not the planned record-backed
+          activity walker. Confirmed invitation import, saved activity outcomes, automatic
+          verified-prerequisite gates and their reopening flow remain staged. This catalog
+          does not invent a resume command or silently migrate your files.
+          
+          In the planned activity model, verified means the required capability or result
+          was actually established; failed means an attempted result did not work; deferred
+          means intentionally postponed. A request sent, an onboarder arrangement or a
+          date passing is none of those verified outcomes. Do not claim that the current
+          legacy question flow records or enforces that model.
+          
+          Use the owner's guidance to continue useful supported work. Report blockers,
+          incorrect instructions, missing files, a wrong account or an unsupported plan
+          version without sharing credentials or complete private records. Ask for a safe
+          recovery or update procedure before changing destinations. Reading this help,
+          reopening a document or rendering a preview does not record first use or an
+          employment start date, accept an unanswered default or complete an activity.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","onboarding-welcome"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: onboarding-welcome
+          title: Welcome and expectations
+          summary: Know the team, owner, start arrangements, and initial goals
+          timing: week-one
+          bootstrap: true
+          variables:
+            - {name: welcome_context, description: "What should a newcomer know about the team, its purpose and initial goals?", audience: onboarder, required: true}
+            - {name: initial_arrangements, description: "What shared arrival or remote joining instructions and support route apply before company access?", audience: onboarder, required: true}
+          body: |
+            Welcome to the team. Start with the shared context: $welcome_context
+          
+            Initial joining instructions: $initial_arrangements
+          
+            Ask the onboarding owner to confirm your own arrangements. Individual
+            assignments belong in preparation, not shared template answers. If a goal
+            or instruction does not fit, discuss it rather than guessing. Planning
+            targets guide support; they are not a test of whether you belong here.
+          steps:
+            - id: discuss-expectations
+              name: Discuss the first useful work and available support
+              checks:
+                - ask: Do you know the team's purpose, the first priorities and whom to ask about your arrangements?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=pair-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign a pairing partner
+          
+          Arrange a willing partner and suitable real ticket with a clear learning focus.
+          Keep shared pairing practices in the plan. Store the personal opportunity in
+          a pairing arrangement for an actual declared ticket-pairing section instance,
+          not in a shared answer or an invented pair-assign kind.
+          
+          Use a stable unique id. Before claiming arranged, supply a known accountable
+          owner, at least one known helper contact and a nonsecret ticket or opportunity
+          reference. The owner is accountable for arranging; the helper is the partner.
+          Pending, requested and deferred may retain unassigned details visibly. A
+          supplied unknown helper is invalid, not a placeholder for a missing assignment.
+          
+          Confirm availability, scope and a support route if the opportunity changes.
+          The optional real targetDate coordinates people and does not fail the newcomer.
+          Arranged means a minimum opportunity exists, not that pairing happened or a
+          ticket was delivered. Preparation edits change neither shared organization
+          answers nor the newcomer's outcomes or first-use state.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","people-map"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: people-map
+          title: Build a people map
+          summary: Understand important relationships, responsibilities, and dependencies
+          timing: days-8-to-30
+          variables:
+            - {name: relationship_scope, description: "Which roles, teams and dependencies matter for this work?", audience: onboarder, required: true}
+            - {name: relationship_reference, description: "Where is the approved responsibility map and who can correct it?", audience: onboarder, required: true}
+          body: |
+            Focus on the work relationships described in $relationship_scope.
+            Use the current reference and correction route: $relationship_reference
+          
+            Map responsibilities, decision owners and handoffs for a real piece of
+            work. Confirm uncertain relationships with the people involved. Record
+            only useful business context, not private biographies or judgments about
+            individuals. Identify where a dependency needs an introduction or clearer
+            ownership, and share corrections through the agreed route.
+          steps:
+            - id: explain-key-relationships
+              name: Trace responsibilities and work dependencies
+              checks:
+                - ask: Can you identify the relevant decision owners, collaborators and handoffs for your current work?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=pr-merge"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: pr-merge
+          title: Merge a PR
+          summary: Complete an authorized merge after required reviews and checks
+          timing: anytime
+          variables:
+            - {name: merge_policy, description: "Does team policy permit merging your own PR, another person's PR, or only a designated subset, and what approvals and checks are mandatory?", audience: onboarder, required: true}
+            - {name: merge_process, description: "What approved merge procedure, authorization confirmation and support route apply?", audience: onboarder, required: true}
+          body: |
+            Confirm the explicit team decision before selecting an opportunity:
+            $merge_policy
+          
+            Follow the approved procedure and authorization route: $merge_process
+          
+            Your own PR or another person's PR may be suitable only when this policy
+            permits it. Confirm that this particular merge is authorized, reviews and
+            checks are current, and any separation-of-duties rules are satisfied.
+            Recheck the intended branch and merge result. Never bypass protection,
+            self-authorize or obtain extra rights merely to complete onboarding.
+          steps:
+            - id: complete-authorized-merge
+              name: Complete a policy-permitted and authorized merge
+              checks:
+                - ask: Did you complete an authorized merge of a policy-permitted PR after all required reviews and checks, without bypassing separation of duties?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","pr-merge-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange a merge opportunity
+          
+          Ask the team to state whether this newcomer may merge their own PR, another
+          person's PR or only a defined subset. Keep that policy and mandatory reviews,
+          checks and separation of duties in the plan. Do not infer authorization from
+          source-host permissions or grant more access merely to complete onboarding.
+          
+          Use pr-merge for an opportunity linked to an actual declared merge section
+          instance. Arranged requires a known accountable owner, at least one known
+          helper and a nonsecret PR or opportunity reference. Keep a stable unique id.
+          Pending, requested or deferred retain missing information visibly; unknown
+          supplied references are invalid. Targets are optional real planning dates.
+          
+          Confirm that the selected opportunity is policy-permitted, that authorization
+          will be checked at action time and that support is available. Either author's
+          PR may serve only if team policy permits it. Arranged never means merged,
+          approved or verified. If a safe authorized opportunity is absent, keep the gap
+          instead of bypassing protection or manufacturing an outcome.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=pr-post"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: pr-post
+          title: Post a PR
+          summary: Submit a real change with context, checks, and review requests
+          timing: anytime
+          variables:
+            - {name: posting_practice, description: "What PR content, branch, check and review-request practices apply?", audience: onboarder, required: true}
+            - {name: posting_support, description: "How is an appropriate reviewer identified and where should posting problems be raised?", audience: onboarder, required: true}
+          body: |
+            Prepare the change using $posting_practice.
+            Identify review support through $posting_support.
+          
+            Submit a real, appropriately scoped change with its purpose, relevant
+            evidence and known limitations. Inspect the diff for unintended changes
+            or secrets and report actual check results. Request the intended review
+            without assuming that posting means approval or readiness to merge.
+            Personal reviewer assignments and opportunities belong in preparation.
+          steps:
+            - id: submit-real-change
+              name: Submit a clear change for the required review
+              checks:
+                - ask: Have you posted a real change with useful context, honest check results and the appropriate review request?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","pr-review"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: pr-review
+          title: Review a PR
+          summary: Give a substantive review following team practices
+          timing: anytime
+          variables:
+            - {name: review_practice, description: "What review scope, conduct and approval rules apply?", audience: onboarder, required: true}
+            - {name: review_support, description: "How is a suitable review opportunity arranged and who can discuss uncertain findings?", audience: onboarder, required: true}
+          body: |
+            Follow the review practice: $review_practice
+            Arrange and discuss the opportunity through $review_support.
+          
+            Confirm the selected PR and discussion contact in preparation. Understand
+            its purpose, inspect the change and tests, and give specific useful
+            feedback. Separate questions, suggestions and blocking concerns. If you
+            lack context or approval authority, ask rather than approving by habit.
+            A substantive review can surface uncertainty; it need not manufacture a
+            defect or satisfy an arbitrary comment count.
+          steps:
+            - id: provide-substantive-review
+              name: Review the intended change and discuss useful feedback
+              checks:
+                - ask: Have you reviewed the change against team practices and communicated substantive findings or reasoned approval within your authority?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=pr-review-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange a PR review opportunity
+          
+          Identify a suitable real change and an experienced discussion contact. Match
+          the opportunity to the newcomer's context and authority. Shared review rules
+          stay in the plan; the person-specific opportunity uses pr-review and an actual
+          declared review section instance. Catalog selection alone creates no instance.
+          
+          Before marking arranged, supply a known owner, at least one known helper and
+          a nonsecret PR reference. Keep a stable unique arrangement id. Missing owner,
+          opportunity or helper remains visible while pending, requested or deferred;
+          unknown supplied references remain invalid. A targetDate is optional and a
+          planning goal. Do not include restricted patch contents or credentials in notes.
+          
+          Confirm who can answer questions and whether the newcomer can approve or only
+          comment. Do not grant extra approval authority for onboarding. Arranged is
+          not a substantive review, an approval or a newcomer outcome. Preserve honest
+          gaps if the PR changes, closes or becomes unsuitable before the activity.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","pr-reviewer-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign a reviewer
+          
+          Identify an appropriate available reviewer and the normal review request route
+          for a first real change. Keep shared branching and review rules in the plan.
+          Use pr-post for the personal arrangement and link an actual declared posting
+          section instance. There is no pr-reviewer-assign arrangement kind.
+          
+          An arranged item requires a known owner, at least one known helper contact
+          and a nonsecret change or opportunity reference. The helper is the assigned
+          reviewer, not automatically the owner. Use a stable unique id; an optional
+          real targetDate coordinates availability. Pending, requested and deferred can
+          retain missing assignments visibly, but unknown supplied contacts are invalid.
+          
+          Discuss expected context, checks and how to handle reviewer absence. A named
+          reviewer is not a review request sent, approval granted or change delivered.
+          Do not invent a reviewer from a guessed variable name or write a personal
+          arrangement into shared answers. Preparation status changes no newcomer record.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=product-orientation"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: product-orientation
+          title: Understand the product and users
+          summary: Explain the users, product purpose, and current priorities
+          timing: week-one
+          variables:
+            - {name: product_material, description: "Which product introduction, safe demonstration or user context should be reviewed?", audience: onboarder, required: true}
+            - {name: product_contact, description: "Who can explain current priorities and answer product questions?", audience: onboarder, required: true}
+          body: |
+            Explore the approved product introduction: $product_material
+            Discuss priorities and questions with $product_contact.
+          
+            Explain who uses the product, which problem it addresses and how the
+            team learns whether it helps. Trace one ordinary user journey using
+            permitted material, not private customer data. Ask how current priorities
+            connect to that journey and where assumptions remain uncertain. Share
+            misunderstandings early rather than treating a presentation as proof
+            that every product decision is understood.
+          steps:
+            - id: explain-product-purpose
+              name: Explain the product and its current priorities
+              checks:
+                - ask: Can you explain the intended users, product purpose and a current priority, including any open questions?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","project-dependencies"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: project-dependencies
+          title: Install project dependencies
+          summary: Complete the documented setup
+          timing: week-one
+          variables:
+            - {name: dependency_setup, description: "Which reviewed project dependency setup instructions and versions apply?", audience: onboarder, required: true}
+            - {name: dependency_verification, description: "What safe check confirms dependency setup and where should failures be discussed?", audience: onboarder, required: true}
+          body: |
+            Review the setup instructions before using them: $dependency_setup
+            Verify with the documented check and support route: $dependency_verification
+          
+            Confirm the correct project and environment. Understand downloads,
+            permissions and changes before following a command. Prefer the project's
+            documented versions rather than an arbitrary latest release. Do not
+            disable integrity checks, add credentials to files or change system-wide
+            settings without approval. Record nonsecret setup discrepancies for review.
+          steps:
+            - id: verify-dependency-setup
+              name: Complete and verify the documented dependency setup
+              checks:
+                - ask: Have you completed the documented dependency setup and its verification successfully?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=project-tests"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: project-tests
+          title: Run the test suite
+          summary: Run tests and identify known failures rather than hide them
+          timing: week-one
+          variables:
+            - {name: test_instructions, description: "Which reviewed test instructions, environment and scope apply?", audience: onboarder, required: true}
+            - {name: test_baseline, description: "Where are known test failures documented and who can help distinguish setup from product failures?", audience: onboarder, required: true}
+          body: |
+            Review and follow the test instructions: $test_instructions
+            Compare results and discuss failures through $test_baseline.
+          
+            Confirm whether tests affect external services or persistent data before
+            running them yourself. Inspect the actual result rather than assuming
+            success from a command starting. Distinguish known baseline failures,
+            environment problems and new failures. Do not skip tests, rewrite their
+            expectations or hide failing output to complete onboarding. This plain
+            instruction template executes no command.
+          steps:
+            - id: understand-test-results
+              name: Run the intended tests and interpret the result
+              checks:
+                - ask: Have you run the intended tests and identified passing results or the specific unresolved and known failures?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","reading-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign reading
+          
+          Choose current material for a stated work purpose. Supply the question or
+          decision the reading should inform and a business contact for discussion.
+          Keep shared documentation routes in the plan. A person's assignment uses the
+          existing reading kind and an actual declared document-reading section instance;
+          use separate instances when reading outcomes are independent.
+          
+          An arranged reading item needs a known owner and a nonsecret material reference.
+          Helper contacts are optional for this kind, though a discussion route should
+          be clear. Keep a stable unique id and an optional real planning target. Missing
+          details may remain pending, requested or deferred; supplied unknown section
+          or contact references are invalid. Do not copy restricted content into a note.
+          
+          Check that the material is accessible for the intended role or arrange an
+          approved alternative. A link sent or an arranged assignment is not evidence
+          of reading or understanding. Preserve open questions and stale-content reports
+          instead of marking the newcomer's outcome from onboarder task status.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=regular-meetings"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: regular-meetings
+          title: Join regular team meetings
+          summary: Know which meetings matter and be able to attend
+          timing: week-one
+          variables:
+            - {name: meeting_purposes, description: "Which regular meetings matter, what are their purposes and which participation expectations apply?", audience: onboarder, required: true}
+            - {name: meeting_access, description: "How are invitations, joining details and missing-access support obtained?", audience: onboarder, required: true}
+          body: |
+            Review the relevant meetings and purposes: $meeting_purposes
+            Obtain invitations and joining help through $meeting_access.
+          
+            Confirm the schedule in your time zone and distinguish required,
+            optional and role-specific attendance. Join an appropriate meeting and
+            learn how decisions or actions are recorded. If invitations are missing
+            or overlap creates a problem, ask the meeting owner; being invited alone
+            is not proof that joining works or attendance is useful.
+          steps:
+            - id: join-relevant-meeting
+              name: Join a relevant team meeting
+              checks:
+                - ask: Do you understand the relevant meetings and can you join with the required access and context?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","remote-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange remote onboarding
+          
+          Coordinate approved equipment, connection guidance and a remote first-day
+          business contact. Hybrid work may also need office preparation; neither mode
+          automatically replaces the other. Shared remote instructions stay in the plan.
+          Recipient workLocation may be remote, on-site, hybrid or unfilled; timeZone is
+          preferable to collecting precise location. Do not invent preferences.
+          
+          Use the existing remote kind for a person's actual declared remote-related
+          section instance. An arranged item needs a known owner and nonsecret reference.
+          Add known helpers when available; do not infer one from directory order.
+          Pending, requested and deferred may keep gaps visible, but unknown supplied
+          references are invalid. Use stable unique ids and optional real planning dates.
+          
+          Confirm how to get support if company systems or the intended connection do
+          not work yet. Keep personal phone numbers, home addresses and credentials out
+          of preparation. Arranged support is not verification of connectivity or device
+          usability. Updating these arrangements changes no shared answers, newcomer
+          record or first-use timestamp.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=repository-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: repository-access
+          title: Repository access
+          summary: Use the required capability for that specific repository
+          timing: anytime
+          variables:
+            - {name: repository_scope, description: "Which repository and exact capability does this activity cover?", audience: onboarder, required: true}
+            - {name: repository_grant_route, description: "Who grants this capability and what safe verification procedure applies?", audience: onboarder, required: true}
+          body: |
+            Confirm the repository and required capability: $repository_scope
+            Request and verify it through $repository_grant_route.
+          
+            Use your intended account to perform a permitted operation that proves
+            the required capability. Reading does not prove write or merge authority;
+            a request does not prove access. Do not push a test change or grant broad
+            permissions without approval. Configure separate section instances for
+            repositories with independent outcomes. Report wrong-account access or
+            excessive permissions to the grantor.
+          steps:
+            - id: verify-repository-capability
+              name: Verify the specific approved repository capability
+              checks:
+                - ask: Have you used the approved capability in the intended repository without exceeding its permission scope?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","repository-clone"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: repository-clone
+          title: Clone a repository
+          summary: Have a usable local checkout
+          timing: week-one
+          variables:
+            - {name: clone_instructions, description: "Which repository, approved clone procedure and local destination guidance apply?", audience: onboarder, required: true}
+            - {name: checkout_verification, description: "How should the intended checkout and branch be verified, and who helps with failures?", audience: onboarder, required: true}
+          body: |
+            Follow the reviewed clone instructions: $clone_instructions
+            Verify the result using $checkout_verification.
+          
+            Confirm the repository identity before obtaining it. Choose a destination
+            that does not replace existing work. Inspect project instructions before
+            executing repository content. Check that the local checkout can be read
+            and identifies the intended repository and branch. This section stores
+            instructions only; it does not run Git or assume a clone command.
+          steps:
+            - id: verify-local-checkout
+              name: Obtain and verify the intended local checkout
+              checks:
+                - ask: Do you have a usable checkout of the intended repository without overwriting existing local work?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=research-review"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: research-review
+          title: Review user research
+          summary: Understand relevant findings and open questions
+          timing: days-8-to-30
+          variables:
+            - {name: research_material, description: "Which approved findings and research context are relevant to current work?", audience: onboarder, required: true}
+            - {name: research_discussion, description: "Who can explain evidence limitations, consent restrictions and open research questions?", audience: onboarder, required: true}
+          body: |
+            Review the permitted research material: $research_material
+            Discuss evidence and limitations through $research_discussion.
+          
+            Distinguish observations, interpretations and hypotheses. Explain which
+            decisions a finding supports and where uncertainty remains. Respect
+            participant consent and restricted recordings; summarize useful insights
+            without copying identifying material into onboarding files. Ask what is
+            missing before treating historical findings as current universal truth.
+          steps:
+            - id: explain-research-evidence
+              name: Discuss findings, limits and useful next questions
+              checks:
+                - ask: Can you explain relevant research findings, their limitations and an open question without exposing participant details?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","resource-access-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange resource access
+          
+          Identify each required resource, minimum capability, accountable grantor and
+          approved request route. Shared policies belong in the plan. Person-specific
+          requests use the existing access kind and actual declared resource section
+          instances. Do not grant blanket privileges or treat a catalog identity as a
+          generated repeated instance. Keep independent requests distinct when useful.
+          
+          Use stable unique ids. Arranged needs a known accountable owner and a nonsecret
+          resource or request reference. Helpers are optional for access. Pending,
+          requested and deferred may show missing details, while supplied unknown
+          contacts or sections are invalid. Targets are optional real planning dates.
+          Never put credentials, private tokens or secret request links in preparation.
+          
+          Confirm how the newcomer will safely verify the intended capability and who
+          handles refusal or excessive permissions. A request, membership or arranged
+          status does not prove use of the resource. No preparation status grants
+          authorization, verifies access or changes the newcomer-owned record.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=retrospective-participation"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: retrospective-participation
+          title: Participate in a retrospective
+          summary: Participate and understand how improvements are followed up
+          timing: anytime
+          variables:
+            - {name: retrospective_process, description: "How is the team's retrospective run and how does a newcomer join?", audience: onboarder, required: true}
+            - {name: retrospective_followup, description: "What confidentiality, facilitation and improvement follow-up practices apply?", audience: onboarder, required: true}
+          body: |
+            Join an appropriate retrospective using $retrospective_process.
+            Respect its discussion and follow-up rules: $retrospective_followup
+          
+            Learn how observations become experiments or actions and who follows
+            through. Contribute a useful observation or question without being
+            pressured to reveal private concerns publicly. Do not copy confidential
+            discussion or judgments about colleagues into onboarding notes. Ask how
+            to raise a concern outside the meeting when that is the safer route.
+          steps:
+            - id: participate-and-follow-up
+              name: Participate and understand improvement follow-up
+              checks:
+                - ask: Have you participated appropriately and learned how retrospective improvements are owned and revisited?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","secrets-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: secrets-access
+          title: Secrets manager access
+          summary: Obtain necessary secrets through the approved system
+          timing: anytime
+          variables:
+            - {name: secret_scope, description: "Which approved secret-management system and minimum secret scope does the role need?", audience: onboarder, required: true}
+            - {name: secret_handling, description: "What approved access, consumption, incident and support procedure applies without revealing secret values?", audience: onboarder, required: true}
+          body: |
+            Confirm the approved system and minimum scope: $secret_scope
+            Follow the handling and support procedure: $secret_handling
+          
+            Verify that the required application or approved workflow can consume
+            the needed secret without copying it into onboarding material. Do not
+            print values, share credentials, store recovery codes or attach a secret
+            to a support request. Access approval is not permission to use every
+            secret. Report accidental exposure through the security process.
+          steps:
+            - id: verify-approved-secret-workflow
+              name: Verify the approved secret-consumption workflow
+              checks:
+                - ask: Can the approved workflow obtain the necessary secret without exposing its value in onboarding files or messages?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=security-orientation"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: security-orientation
+          title: Security and acceptable-use orientation
+          summary: Understand required practices and support routes
+          timing: anytime
+          variables:
+            - {name: security_material, description: "Which current security and acceptable-use material must a newcomer review?", audience: onboarder, required: true}
+            - {name: security_support, description: "How should someone report a security concern or ask about an unclear rule?", audience: onboarder, required: true}
+          body: |
+            Review the required material: $security_material
+            Questions and concerns go through $security_support.
+          
+            Identify the rules for handling information, devices, authentication and
+            external tools before affected work. Ask about unclear cases rather than
+            assuming permission. Learn how to report suspicious events without
+            spreading secret material. Reading this section does not grant access,
+            authorize testing systems or replace required organizational training.
+          steps:
+            - id: explain-security-route
+              name: Review the rules and locate the security support path
+              checks:
+                - ask: Can you explain the practices relevant to your work and the approved route for concerns or uncertain cases?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","source-host-account"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: source-host-account
+          title: GitHub or other source-host account
+          summary: The appropriate named account and authentication work
+          timing: anytime
+          variables:
+            - {name: source_account_policy, description: "Which source host, account policy and approved authentication setup apply?", audience: onboarder, required: true}
+            - {name: source_account_support, description: "Who resolves account or authentication problems before repository access is requested?", audience: onboarder, required: true}
+          body: |
+            Follow the configured host and account policy: $source_account_policy
+            Ask for account help through $source_account_support.
+          
+            Confirm which named account should be associated with the organization.
+            Verify sign-in and required authentication without sharing credentials
+            or saving recovery material in the plan. Account creation does not imply
+            organization membership or repository permission. Do not create duplicate
+            identities or assume a particular source-host provider.
+          steps:
+            - id: verify-source-identity
+              name: Verify the intended source-host identity
+              checks:
+                - ask: Can you authenticate to the configured source host with the account approved for this work?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=source-host-membership"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: source-host-membership
+          title: Source-host organization membership
+          summary: Join the required organization or group
+          timing: anytime
+          variables:
+            - {name: membership_scope, description: "Which source-host organization or group and membership level are required?", audience: onboarder, required: true}
+            - {name: membership_route, description: "Who grants membership and what approved request and invitation process applies?", audience: onboarder, required: true}
+          body: |
+            Request only the membership described in $membership_scope.
+            Follow the grantor and invitation process: $membership_route
+          
+            Check that any invitation targets your intended account and the correct
+            organization. After approval, verify the membership is visible with the
+            expected scope. Membership does not establish access to every repository;
+            ask for the specific capability required by assigned work. Report an
+            expired invitation or wrong account rather than accepting an ambiguous one.
+          steps:
+            - id: verify-membership
+              name: Verify the required organization or group membership
+              checks:
+                - ask: Can you confirm the intended account belongs to the required organization or group at the approved level?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","support-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign onboarding support
+          
+          Identify the manager, onboarding owner, buddy and initial help contacts as
+          applicable. Recipient manager, onboardingOwner and buddy reference known contacts
+          in the plan directory; do not invent names or assume the first directory entry.
+          Keep shared support routes and policies in the plan and individual assignments
+          in this person's preparation. Explain any missing assignment visibly.
+          
+          When a support arrangement is useful, use the existing support kind and an
+          actual declared section instance. Do not manufacture an instance or add a
+          support-assign arrangement kind. The accountable owner and assigned helpers
+          are distinct roles, even when the same known contact fills both.
+          
+          Pending, requested and deferred describe preparation, not newcomer outcomes.
+          An arranged support item requires an owner; its reference is optional under
+          the current support rules. Unknown contacts are invalid even while pending.
+          Confirm a reachable initial route and fallback with the people involved.
+          An assignment or arranged status is not proof that help is available, access
+          works or the newcomer has met anyone. Dates are support planning goals only.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=team-chat"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: team-chat
+          title: Team chat
+          summary: Reach relevant team and support channels
+          timing: week-one
+          variables:
+            - {name: chat_setup, description: "Which chat service and approved account or membership instructions apply?", audience: onboarder, required: true}
+            - {name: chat_channels, description: "Which team and support channels matter, and what are their purposes and fallback routes?", audience: onboarder, required: true}
+          body: |
+            Set up the configured chat service: $chat_setup
+            Find the relevant channels and fallback routes: $chat_channels
+          
+            Confirm you joined the intended workspace with the appropriate account.
+            Send a nonsecret introduction or test message in a suitable channel and
+            confirm someone can respond. Learn response-time expectations and when
+            to use a different support route. Do not assume a provider or request
+            broad workspace permissions merely to finish onboarding.
+          steps:
+            - id: reach-team
+              name: Reach the team and locate support in chat
+              checks:
+                - ask: Can you send and receive a message in the relevant team channel and locate its support route?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","teammate-introduction"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: teammate-introduction
+          title: Meet a teammate
+          summary: Know their responsibilities and when to ask them
+          timing: week-one
+          variables:
+            - {name: introduction_scope, description: "Which shared role or responsibility should this introduction explain?", audience: onboarder, required: true}
+            - {name: introduction_route, description: "How should this introduction be arranged and what questions are useful?", audience: onboarder, required: true}
+          body: |
+            Learn about this part of the team: $introduction_scope
+            Arrange the conversation through $introduction_route.
+          
+            Ask what the teammate owns, how their work connects to yours and when
+            they prefer to be consulted. Offer a short introduction to your own work
+            without collecting personal details. For several independent people or
+            roles, ask the plan author for separate configured activities rather than
+            treating one conversation as evidence that all introductions happened.
+          steps:
+            - id: understand-responsibility
+              name: Discuss responsibilities and collaboration
+              checks:
+                - ask: Can you explain this teammate's responsibilities and when to involve them?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=ticket-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Identify a first owned ticket
+          
+          Agree a suitably scoped real task, expected result and support contact. Avoid
+          selecting a task solely to satisfy an onboarding counter. Keep the shared
+          delivery process in the plan and the personal opportunity in a ticket
+          arrangement linked to an actual declared ticket-ownership section instance.
+          
+          An arranged ticket item requires a known accountable owner, at least one known
+          helper and a nonsecret task reference. Give it a stable unique id. Pending,
+          requested and deferred can show missing details; unknown supplied contacts
+          or sections are invalid. An optional real targetDate is a planning aid, not
+          a deadline that authorizes work or fails someone.
+          
+          Discuss permission boundaries, dependencies and how to request scope changes.
+          If no suitable task exists, retain the gap and arrange support rather than
+          inventing a ticket. Assigned or arranged does not mean accepted, delivered or
+          verified by the newcomer. Do not update the personal record or populate
+          answers through guessed recipient-to-template bindings.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","ticket-ownership"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: ticket-ownership
+          title: Own a ticket
+          summary: Take a suitable task through the team's delivery process
+          timing: days-8-to-30
+          variables:
+            - {name: ownership_process, description: "What task ownership, scope agreement and delivery process should be followed?", audience: onboarder, required: true}
+            - {name: ownership_support, description: "Which shared support route and completion evidence should guide a first owned task?", audience: onboarder, required: true}
+          body: |
+            Follow the team's ownership process: $ownership_process
+            Use the support and completion guidance: $ownership_support
+          
+            Confirm a suitable assigned ticket and support contact in preparation.
+            Clarify the outcome and acceptance conditions before changing anything.
+            Keep collaborators informed, seek required review and verify the delivered
+            result. Ask for help when scope or access changes. Owning a task means
+            coordinating its progress, not being expected to solve every problem alone.
+          steps:
+            - id: deliver-owned-task
+              name: Take an agreed task through the team's process
+              checks:
+                - ask: Has the agreed task reached the team's completion conditions with required review and verified delivery evidence?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=ticket-pairing"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: ticket-pairing
+          title: Pair on a ticket
+          summary: Work through a real task with a teammate
+          timing: week-one
+          variables:
+            - {name: pairing_practice, description: "How should a first pairing session be arranged and what collaboration practices apply?", audience: onboarder, required: true}
+            - {name: pairing_goal, description: "What learning outcome and suitable task characteristics should guide the session?", audience: onboarder, required: true}
+          body: |
+            Arrange the session using $pairing_practice.
+            Use the agreed learning focus: $pairing_goal
+          
+            Confirm the assigned partner and real ticket in preparation; an unassigned
+            partner stays missing rather than becoming a shared default. Agree scope,
+            roles and permission boundaries together. Work through a useful slice,
+            inspect its tests or evidence and discuss what happens next. Pairing does
+            not bypass review or authorize a production change.
+          steps:
+            - id: complete-pairing-session
+              name: Work through a real task with the assigned partner
+              checks:
+                - ask: Have you worked through a real task together and discussed the result, learning and next steps?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","ticket-system-access"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: ticket-system-access
+          title: Ticket system access
+          summary: Read and update the relevant project or board as needed
+          timing: anytime
+          variables:
+            - {name: ticket_scope, description: "Which ticket service, project or board and permitted operations are required?", audience: onboarder, required: true}
+            - {name: ticket_access_route, description: "How is ticket access requested and safely verified, and who handles problems?", audience: onboarder, required: true}
+          body: |
+            Locate the intended service and project: $ticket_scope
+            Obtain and verify access using $ticket_access_route.
+          
+            Open a relevant issue and inspect its status and collaboration context.
+            If your role needs updates, use an explicitly permitted non-disruptive
+            action to confirm that capability. Do not alter a real ticket merely
+            as a test without its owner's agreement. Ask about restricted material
+            rather than requesting access to every project.
+          steps:
+            - id: verify-ticket-capability
+              name: Verify the needed ticket-system operations
+              checks:
+                - ask: Can you read the relevant board and perform the approved updates your role requires?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=tool-feedback"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: tool-feedback
+          title: Provide feedback on onboard-kit
+          summary: Send tool friction and suggestions through the agreed route without secrets or unnecessary personal details
+          timing: anytime
+          variables:
+            - {name: tool_feedback_route, description: "Which agreed internal route receives onboard-kit feedback?", audience: onboarder, required: true}
+            - {name: tool_feedback_context, description: "What nonsecret context and review process make a feedback report useful?", audience: onboarder, required: true}
+          body: |
+            Send useful feedback through $tool_feedback_route.
+            Include only the agreed nonsecret context: $tool_feedback_context
+          
+            Describe the task you were attempting, the friction and the useful
+            result you expected. Review any example before sharing it; do not attach
+            a real plan, preparation, record or invitation without approved handling.
+            Separate tool behavior from organization-specific instructions. Revisit
+            feedback around day thirty if helpful, but do not block useful work on
+            submitting a report or assume a public issue tracker is the right route.
+          steps:
+            - id: provide-safe-feedback
+              name: Identify or use the agreed tool-feedback route
+              checks:
+                - ask: Can you provide actionable tool feedback through the agreed route without secrets or unnecessary personal details?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","video-arrange"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Arrange meeting service access
+          
+          Identify each configured meeting service and whether an approved account,
+          client or guest route is appropriate. Keep shared joining and privacy
+          instructions in the plan. Arrange a safe test without assuming a provider,
+          paid licence, recording permission or already-working company account.
+          
+          Use the existing access kind for a person-specific service arrangement linked
+          to an actual declared meeting-access section instance. An arranged item needs
+          a known accountable owner and nonsecret reference; known helper contacts are
+          optional for this kind. Keep missing details visible under pending, requested
+          or deferred instead of claiming readiness. Unknown supplied references remain
+          invalid. Do not add a video-arrange kind or save secret joining tokens.
+          
+          Confirm a support route for guest restrictions, audio or collaboration problems.
+          Any target date is a planning goal. Arranged access is not proof the newcomer
+          can join with required features, and a sent meeting invitation proves neither
+          attendance nor usability. Preparation is onboarder-owned and changes no
+          newcomer record or shared organization answers.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=video-meetings"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: video-meetings
+          title: Video meetings
+          summary: Join with required audio and collaboration features
+          timing: week-one
+          variables:
+            - {name: video_setup, description: "Which configured meeting services, approved clients or guest joining instructions apply?", audience: onboarder, required: true}
+            - {name: meeting_test, description: "How can a newcomer safely test required meeting features and get joining help?", audience: onboarder, required: true}
+          body: |
+            Follow the service-specific instructions: $video_setup
+            Use the approved test and support route: $meeting_test
+          
+            Test joining, sound and the collaboration features your role needs.
+            Check privacy and recording expectations before sharing a screen or
+            recording. Do not install an unapproved client or assume a paid account
+            is required when the organization provides guest access. Report any
+            accessibility or connection barrier through the agreed route.
+          steps:
+            - id: test-meeting
+              name: Join a safe test meeting
+              checks:
+                - ask: Can you join with usable audio and the required collaboration features under the team's privacy rules?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","week-one-check-in"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: week-one-check-in
+          title: End-of-week onboarding check-in
+          summary: Discuss blockers, surprises, and next priorities
+          timing: week-one
+          variables:
+            - {name: checkin_route, description: "How is the first-week check-in arranged with the onboarding owner?", audience: onboarder, required: true}
+            - {name: checkin_focus, description: "What shared first-week goals and support questions should guide the conversation?", audience: onboarder, required: true}
+          body: |
+            Arrange the conversation through $checkin_route.
+            Use the agreed focus: $checkin_focus
+          
+            Discuss what helped, what surprised you and what still blocks useful
+            work. Separate unavailable organizational support from personal learning
+            needs. Agree the next priorities, owners and a follow-up route. The end
+            of week one is a planning prompt, not a failure deadline; reschedule when
+            needed and preserve the value of the conversation over a completion count.
+          steps:
+            - id: review-first-week
+              name: Discuss the first week and agree next priorities
+              checks:
+                - ask: Have you discussed blockers and surprises with the owner and agreed supported next priorities?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=working-agreements"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: working-agreements
+          title: Review working agreements
+          summary: Understand communication, decisions, review, availability, and feedback
+          timing: week-one
+          variables:
+            - {name: agreement_material, description: "Where are current working agreements, or how will the team establish them if absent?", audience: onboarder, required: true}
+            - {name: agreement_discussion, description: "Who can explain agreements, resolve uncertainty and discuss improvements?", audience: onboarder, required: true}
+          body: |
+            Review or establish the agreements using $agreement_material.
+            Discuss questions through $agreement_discussion.
+          
+            Cover communication, decision ownership, review, availability and
+            feedback. Ask for examples of how the agreements work in practice.
+            Distinguish written policy from a preference or an assumption. If the
+            team has no agreements, work with the people involved to establish them;
+            do not report an imaginary policy as reviewed. Capture agreed changes
+            through the team's normal process.
+          steps:
+            - id: discuss-agreements
+              name: Understand or establish practical working agreements
+              checks:
+                - ask: Can you describe the agreed collaboration practices and how an unclear or missing agreement will be resolved?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","working-device"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: working-device
+          title: Working device
+          summary: An approved device is available and usable
+          timing: week-one
+          variables:
+            - {name: device_process, description: "What approved device setup, management and delivery instructions apply?", audience: onboarder, required: true}
+            - {name: device_support, description: "What support route handles missing equipment or a device that will not work?", audience: onboarder, required: true}
+          body: |
+            Follow the approved equipment instructions: $device_process
+            For missing equipment or setup problems, contact $device_support.
+          
+            Confirm the device is intended for this work before enrolling or changing
+            it. Check power, required peripherals, connectivity and an ordinary work
+            session. Do not bypass device management or use unapproved personal
+            equipment to make progress appear complete. Tell the owner which work is
+            blocked if delivery or support is still pending.
+          steps:
+            - id: verify-device
+              name: Use the approved working device
+              checks:
+                - ask: Can you use the approved device and necessary peripherals for an ordinary work session?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=working-hours"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          schemaVersion: 1
+          id: working-hours
+          title: Working hours and availability
+          summary: Agree and configure hours, time zone overlap, and availability signals
+          timing: week-one
+          variables:
+            - {name: availability_agreement, description: "What shared overlap expectations and process for agreeing individual hours apply?", audience: onboarder, required: true}
+            - {name: availability_tools, description: "Which calendar or status settings communicate availability and whom should conflicts be discussed with?", audience: onboarder, required: true}
+          body: |
+            Discuss the shared working expectations: $availability_agreement
+            Configure the agreed availability signals using $availability_tools.
+          
+            Confirm time zones and sustainable overlap with the people involved.
+            Individual arrangements are a discussion, not an assumed preference or
+            a demand for personal location. Make focus time and planned absence
+            understandable without disclosing private reasons. Revisit the agreement
+            when it creates avoidable coordination problems.
+          steps:
+            - id: agree-availability
+              name: Agree and communicate working availability
+              checks:
+                - ask: Have the relevant people agreed working overlap and can they interpret your availability signals?
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]

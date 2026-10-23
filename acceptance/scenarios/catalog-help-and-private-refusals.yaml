@@ -1,0 +1,410 @@
+name: catalog-help-and-private-refusals
+description: Help precedence and malformed or unknown requests preserve local files and return fixed reports rather than echoing supplied private tokens.
+source: docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md syntax and reports; contracts/command/catalog/testdata/arguments.json; contracts/command/catalog/testdata/help.txt
+steps:
+  - run: ["onboard-kit","catalog","--help","PRIVATE_IGNORED_ARG"]
+    files:
+      plan.obk.yaml: "PRIVATE_EXISTING_PLAN_BYTES\n"
+      preparation.obk.yaml: "PRIVATE_EXISTING_PREPARATION_BYTES\n"
+      record.obk.yaml: "PRIVATE_EXISTING_RECORD_BYTES\n"
+      company-email.yaml: "PRIVATE_EXISTING_CUSTOM_TEMPLATE_BYTES\n"
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit catalog list
+                 onboard-kit catalog show --id ID
+                 onboard-kit catalog export --id ID
+          
+          list prints JSON inventory. show displays complete catalog content.
+          export prints section YAML or preparation/tool-help Markdown; it writes no files.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","list","--help","--PRIVATE_UNKNOWN"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit catalog list
+                 onboard-kit catalog show --id ID
+                 onboard-kit catalog export --id ID
+          
+          list prints JSON inventory. show displays complete catalog content.
+          export prints section YAML or preparation/tool-help Markdown; it writes no files.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--help","--id","PRIVATE_IGNORED_ID"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit catalog list
+                 onboard-kit catalog show --id ID
+                 onboard-kit catalog export --id ID
+          
+          list prints JSON inventory. show displays complete catalog content.
+          export prints section YAML or preparation/tool-help Markdown; it writes no files.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--help","--out","catalog-output.yaml"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit catalog list
+                 onboard-kit catalog show --id ID
+                 onboard-kit catalog export --id ID
+          
+          list prints JSON inventory. show displays complete catalog content.
+          export prints section YAML or preparation/tool-help Markdown; it writes no files.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","private-operation"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","--"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","list","--id","company-email"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","list","company-email"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","list","--out","private-path"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id="]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id","company-email","--id","company-email"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=company-email","--id=company-email"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id","--private-selector"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","company-email"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id","company-email","private-data"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id","company-email","--account","private-account"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","unknown","--help"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=company-email","--help"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","--help=true"]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.usage
+          message: Use catalog list, show --id ID, or export --id ID.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=unknown-private-selector"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=Company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id= company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=company-email "]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=../company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=sections/company-email.yaml"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id=--private-selector"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=unknown-private-selector"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=Company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id= company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=company-email "]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=../company-email"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=sections/company-email.yaml"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","export","--id=--private-selector"]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          code: catalog.unknown-id
+          message: Choose an exact ID from catalog list.
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]

@@ -2,13 +2,7 @@ package reader_test
 
 import (
 	contract "onboard-kit/contracts/catalog/reader"
-	"onboard-kit/internal/model"
+	implementation "onboard-kit/internal/catalog/reader"
 )
 
-type stubReader struct{}
-
-func (stubReader) List() []contract.Summary { return nil }
-
-func (stubReader) Read(string) (contract.Entry, []model.Problem) { return contract.Entry{}, nil }
-
-func newReader() contract.Reader { return stubReader{} }
+func newReader() contract.Reader { return implementation.New() }

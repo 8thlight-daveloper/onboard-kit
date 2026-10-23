@@ -1,6 +1,6 @@
 # 0320. Embedded catalog availability
 
-Status: accepted by agent judgment; implementation pending
+Status: accepted by agent judgment; read-only availability implemented
 
 Implements a bounded availability increment of
 [0150](0150-onboarding-library-and-preparation-flow.md), using the complete

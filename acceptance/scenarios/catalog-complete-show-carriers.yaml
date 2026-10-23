@@ -1,0 +1,138 @@
+name: catalog-complete-show-carriers
+description: Section templates, preparation guidance and tool help retain their complete exact display metadata and content.
+source: contracts/command/catalog/contract.md Show; contracts/command/catalog/testdata/show-company-email.md; contracts/command/catalog/testdata/show-pair-assign.md; contracts/command/catalog/testdata/show-invitation-start.md
+steps:
+  - run: ["onboard-kit","catalog","show","--id","company-email"]
+    files:
+      plan.obk.yaml: "PRIVATE_EXISTING_PLAN_BYTES\n"
+      preparation.obk.yaml: "PRIVATE_EXISTING_PREPARATION_BYTES\n"
+      record.obk.yaml: "PRIVATE_EXISTING_RECORD_BYTES\n"
+      company-email.yaml: "PRIVATE_EXISTING_CUSTOM_TEMPLATE_BYTES\n"
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Company email
+          
+          ID: `company-email`
+          Carrier: `section-template`
+          Category: `identity-equipment-and-communication`
+          Goal: Day one
+          Result: Send and receive mail
+          Content: `sections/company-email.yaml`
+          
+          ## Content
+          
+          ```yaml
+          schemaVersion: 1
+          id: company-email
+          title: Company email
+          summary: Send and receive mail
+          timing: week-one
+          variables:
+            - {name: email_process, description: "Which approved mail service and setup instructions apply?", audience: onboarder, required: true}
+            - {name: email_test_route, description: "Which business contact or safe test procedure should verify sending and receiving mail?", audience: onboarder, required: true}
+          body: |
+            Set up the approved mail service using $email_process.
+            Use the safe test procedure or contact: $email_test_route
+          
+            Confirm the mailbox is your intended company mailbox. Send a nonsecret
+            test message and receive a reply or equivalent approved test. Check how
+            to reach support if mail is unavailable, rather than depending on that
+            mailbox to obtain its own access. Never forward business mail to a
+            personal account as an onboarding workaround.
+          steps:
+            - id: exchange-mail
+              name: Verify sending and receiving
+              checks:
+                - ask: Have you sent and received a nonsecret test message using the intended company mailbox?
+          ```
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id","pair-assign"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Assign a pairing partner
+          
+          ID: `pair-assign`
+          Carrier: `preparation-guidance`
+          Category: `onboarder-preparation`
+          Goal: Before ticket pairing
+          Result: Identify a partner and suitable ticket
+          Content: `preparation/pair-assign.md`
+          
+          ## Content
+          
+          # Assign a pairing partner
+          
+          Arrange a willing partner and suitable real ticket with a clear learning focus.
+          Keep shared pairing practices in the plan. Store the personal opportunity in
+          a pairing arrangement for an actual declared ticket-pairing section instance,
+          not in a shared answer or an invented pair-assign kind.
+          
+          Use a stable unique id. Before claiming arranged, supply a known accountable
+          owner, at least one known helper contact and a nonsecret ticket or opportunity
+          reference. The owner is accountable for arranging; the helper is the partner.
+          Pending, requested and deferred may retain unassigned details visibly. A
+          supplied unknown helper is invalid, not a placeholder for a missing assignment.
+          
+          Confirm availability, scope and a support route if the opportunity changes.
+          The optional real targetDate coordinates people and does not fail the newcomer.
+          Arranged means a minimum opportunity exists, not that pairing happened or a
+          ticket was delivered. Preparation edits change neither shared organization
+          answers nor the newcomer's outcomes or first-use state.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
+  - run: ["onboard-kit","catalog","show","--id","invitation-start"]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Start from the invitation ZIP
+          
+          ID: `invitation-start`
+          Carrier: `tool-help`
+          Category: `invitation-and-first-steps`
+          Goal: First interaction
+          Result: Understand the package, get the tool, confirm identity, and start without company access
+          Content: `help/invitation-start.md`
+          
+          ## Content
+          
+          # Start from the invitation ZIP
+          
+          An invitation contains the organization plan, onboarder-owned preparation,
+          an identity-only newcomer record seed and first-steps.md. Read its first-steps
+          document and contact the named onboarding owner if anything is missing. Use
+          only the supported standalone tool supplied through your organization's
+          approved route; this catalog invents no download address or installation command.
+          
+          Before any future import, the account must be confirmed as yours and proposed
+          destinations reviewed. A ZIP entry name is not permission to extract over local
+          files. If the account is wrong or you already have newer work, stop and ask the
+          owner. Keep existing plan, preparation and record files rather than replacing
+          them from an older invitation. Anyone who can read stored records can read
+          their answers and notes; keep credentials and unnecessary personal data out.
+          
+          The supported invite export operation creates a new archive for an onboarder
+          to deliver through an approved external channel. It does not send the package,
+          import it, confirm identity or record first use. Confirmed invitation import
+          and record-backed startup remain staged work. The existing start command is
+          a legacy organization-plan flow, not an invitation-ZIP importer. Do not pass
+          the archive to it expecting this planned behavior.
+          
+          Use the actual rendered first-steps help and selected business support route
+          for bootstrap work before company access exists. This static catalog entry
+          does not render a personal invitation, assert contact availability or duplicate
+          the first-steps assembler's account-specific guide. Reading a preview or this
+          entry records no start, accepts no default and verifies no activity.
+      stderr: {equals: ""}
+      files:
+        catalog-output.yaml: {absent: true}
+      unchanged: ["plan.obk.yaml","preparation.obk.yaml","record.obk.yaml","company-email.yaml"]
