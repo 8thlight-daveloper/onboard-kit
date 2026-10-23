@@ -2,15 +2,9 @@ package recorder_test
 
 import (
 	contract "onboard-kit/contracts/outcome/recorder"
-	"onboard-kit/internal/model"
+	implementation "onboard-kit/internal/outcome/recorder"
 )
 
-type stubRecorder struct{}
-
-func (stubRecorder) Record(model.Plan, model.Record, contract.Proposal, model.Timestamp) (model.Record, []model.Problem) {
-	return model.Record{}, nil
-}
-
 func newRecorder() contract.Recorder {
-	return stubRecorder{}
+	return implementation.New()
 }

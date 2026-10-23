@@ -1,6 +1,6 @@
 # 0290. Explicit outcome recording
 
-Status: accepted by agent judgment; implementation pending
+Status: accepted by agent judgment; core implemented, driver integration pending
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0090](0090-plan-and-onboarding-record.md),

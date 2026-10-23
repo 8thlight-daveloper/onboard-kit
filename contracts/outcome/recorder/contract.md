@@ -1,6 +1,6 @@
 # Outcome recorder contract
 
-Status: agent-authored contract; implementation pending.
+Status: agent-authored contract; core implemented, driver integration pending.
 Component `outcome/recorder`, package `recorder`, position 5.
 
 Authorities: ADR 0085 section-level personal statements, 0090 record ownership,
@@ -148,7 +148,8 @@ The manifest gives literal success/refusal oracles with sources. Hash oracles
 contain independent canonical JSON and literal SHA-256 digests, not expected
 values computed by any production dependency. Tests judge preservation,
 isolation, repeat calls, current rechecking and injected timestamp boundaries.
-The binding is a stub until independently authored source is separately approved.
+The binding returns the real constructor directly, without copying or translating
+its output. Literal calendar boundaries cover every month and leap centuries.
 
 | Plausible wrong implementation | Intended distinguishing test |
 | -- | -- |
