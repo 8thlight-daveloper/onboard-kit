@@ -108,6 +108,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop, normalize or use Requires to reorder the grouped reference view | [Requires preservation test](requires_test.go) |
 | `includeIf` ignored | `include-if-holds`, `include-if-unanswered`, `acme` |
 | `includeIf` read in the plan scope | `include-if-scope` |
 | A deferred or unanswered answer lets `isNot` hold, or a default is used as an answer | `include-if-unanswered`, `include-if-deferred`, `include-if-ignores-defaults` |
@@ -169,3 +170,14 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Bootstrap does not activate, order or filter ordinary selection. Return each selected section's held marker unchanged, including false. Existing switches/conditions and ancestor gates still control activity. Bootstrap projection is the assembler's later operation.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Return each selected section's
+Requires exactly, with its order and repetitions unchanged. Grouped reference
+order remains distinct from prerequisite action order. The preservation case
+uses present, active targets; prerequisite activity propagation is a separate
+graph contract increment. Do not interpret this test as permission to ignore
+that planned propagation. The result has new section slots, but inner lists
+may still be shared under What is returned.

@@ -56,7 +56,7 @@
         "section": "g",
         "outcome": "verified",
         "on": "2026-10-22T14:05:00Z",
-        "sectionHash": "H-G"
+        "sectionHash": "2b2902a102a62918a84a8896888f076646a48044f4454b1c3edc6de35b46b682"
       }
     ]
   },
@@ -234,13 +234,15 @@
           "section": "g",
           "outcome": "verified",
           "on": "2026-10-22T14:05:00Z",
-          "sectionHash": "H-G"
+          "sectionHash": "2b2902a102a62918a84a8896888f076646a48044f4454b1c3edc6de35b46b682"
         }
       ]
     },
     "reconciliation": {
       "changedOutcomes": [
+        "a",
         "b",
+        "c",
         "f"
       ]
     }

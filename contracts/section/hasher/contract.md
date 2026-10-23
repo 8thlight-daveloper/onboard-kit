@@ -16,7 +16,7 @@ The hash covers the section's definition:
 - Its questions: the variables it declares, with their descriptions, examples, types, options, patterns, and defaults.
 - Its steps and checks.
 - Its conditions, `includeIf` and each `askIf`, with their question clauses and their section clauses.
-- Its `parent`, `bootstrap`, `timing`, `after`, `escalation`, and unknown fields.
+- Its `parent`, `bootstrap`, `timing`, `after`, `requires`, `escalation`, and unknown fields.
 
 It does not cover answers, because answers live in the plan and not in the section. It does not cover `source`, and it does not cover the section's switch `enabled`, which is the plan's own setting. It detects an edit to a section and a change to its template. It does not detect that someone answered a question.
 
@@ -41,7 +41,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 
 | Type | Key order |
 | -- | -- |
-| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `requires`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, `section`, `enabled` |
@@ -101,7 +101,7 @@ Every other character is written as it is, including `<`, `>`, `&`, U+007F, U+20
 
 ### Lists and sets
 
-Three lists are sets: a section's `after`, and `isOneOf` and `isNotOneOf`. Their order and repeats have no effect, because `after` is the set of sections that must come before this one (see [ordering](../../../docs/reference/section-template-schema/ordering.md)), and `isOneOf` and `isNotOneOf` test membership. A set is written sorted in ascending byte order, with repeats removed. The items of `after` are sorted by the bytes of the id. The items of the two tests are sorted by the bytes of their canonical text, as the Values section gives it, so the Text `"a"`, the list `["x"]`, `null`, `true`, and `{"deferred":true}` come in that order.
+Four lists are sets: a section's `after` and `requires`, and `isOneOf` and `isNotOneOf`. Their order and repeats have no effect. After holds legacy reading-order hints, Requires holds explicit verification prerequisites under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md), and the two tests check membership. A set is written sorted in ascending byte order, with repeats removed. The items of `after` and `requires` are sorted by the bytes of the exact id. The items of the two tests are sorted by the bytes of their canonical text, as the Values section gives it, so the Text `"a"`, the list `["x"]`, `null`, `true`, and `{"deferred":true}` come in that order.
 
 Every other list is written in the order held, and its repeats are kept, because its order is behavior: `steps`, `variables`, `checks`, `run`, `escalation` (an ordered list of who to ask), `options`, a Variable's list default, a Clause list in `all`, and every list inside `unknownFields`. The hasher never sorts or reverses these, and never removes an item.
 
@@ -156,6 +156,22 @@ independent SHA-256 constants in [bootstrap.json](testdata/bootstrap.json) pin
 both marked hashes and old unmarked hashes. Changing Bootstrap must also pass
 the existing every-field property without any exception.
 
+### Requires
+
+Under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md),
+Requires is section content. Write its sorted, deduplicated set after After
+and before Owner. Omit nil and empty Requires, preserving all old hashes.
+Do not combine it with After, infer it from Parent or Bootstrap, or move it
+into unknownFields. Exact target changes change the hash; case, whitespace,
+and empty IDs are not normalized or validated here. Self-references and unknown
+targets are hashed as held, without consulting a plan. Each list is sorted on
+a copy, including when After and Requires share backing storage.
+
+The hand-written canonical strings and independent SHA-256 constants in
+[requires.json](testdata/requires.json) pin these rules, their position relative
+to Bootstrap, and the distinction from legacy After and unknown fields.
+The existing every-field property applies without a Requires exception.
+
 ### Parent
 
 `parent` is the id of another section of the same plan, 0070. It is written like any text identifier: exactly as held, never normalized, trimmed, or case-folded, because it is an identifier and not prose. A parent with a trailing space, or in another case, differs. It is written right after `includeIf` and before `bootstrap` and `timing`, and it is omitted when it is empty, so an empty `parent` hashes like an absent one and every hash written before `parent` existed stays the same. A section that names itself as its parent is written as held. The hasher does not check that the parent exists, and it does not read the parent section.
@@ -200,7 +216,7 @@ These are not open. A rebuild keeps them.
 4. Unknown fields on a section are in the hash, as held.
 5. The key order is the encoder's, as an independent choice.
 
-Decided from the docs, as rules above: the three defaults, the nine prose fields and their rule, an empty condition as absent, and the three sets.
+Decided from the docs, as rules above: the three defaults, the nine prose fields and their rule, an empty condition as absent, and the four sets.
 
 ## Wrong implementations tried
 
@@ -208,6 +224,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop Requires, retain repeats or held order, move its key, merge it into After, or normalize its IDs | [Requires hash fixtures](testdata/requires.json) |
+| Sort Requires by escaped JSON text rather than raw ID bytes | `raw-id-bytes-not-json-escape-order` in [Requires hash fixtures](testdata/requires.json) |
+| Write empty Requires, mutate its backing storage, or cache a Requires hash by section ID | Requires omission fixtures and the Requires input-isolation and repeat-call tests |
 | Drop Bootstrap, emit false, or move true away from its canonical key position | [bootstrap hash fixtures](testdata/bootstrap.json) and the every-field property |
 | `parent` left out of the hash | `parent`, `parent-differs`, the parent test, `every-field` |
 | `parent` written in another place, such as after `timing` or in the order of the key sort, or under another key | `parent`, the parent test |

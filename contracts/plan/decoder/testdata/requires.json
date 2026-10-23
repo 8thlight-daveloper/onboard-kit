@@ -1,0 +1,92 @@
+[
+  {
+    "name": "exact-order-repeats-and-independent-after",
+    "source": "ADR0260 Requires explicit content and plan decoder Known fields: exact strings, file order and repeats; no relationship validation",
+    "input": "schemaVersion: 1\nsections:\n  - requires: [b, a, b, ' A ', '', deferred, 'true', '123', 2026-10-15, '$item']\n    id: access\n    bootstrap: true\n    after: [legacy]\n    owner: lead\n",
+    "want": {"schemaVersion": 1, "sections": [{"id": "access", "bootstrap": true, "after": ["legacy"], "requires": ["b", "a", "b", " A ", "", "deferred", "true", "123", "2026-10-15", "$item"], "owner": "lead"}]}
+  },
+  {
+    "name": "after-does-not-become-requires",
+    "source": "ADR0260: legacy After is retained independently, never converted",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    after: [legacy]\n",
+    "want": {"schemaVersion": 1, "sections": [{"id": "access", "after": ["legacy"]}]}
+  },
+  {
+    "name": "empty-null-and-absent",
+    "source": "ADR0260 and decoder Known fields: no-item list fields are nil",
+    "input": "schemaVersion: 1\nsections:\n  - id: a\n    requires: []\n  - id: b\n    requires: null\n  - id: c\n    requires:\n  - id: d\n",
+    "want": {"schemaVersion": 1, "sections": [{"id": "a"}, {"id": "b"}, {"id": "c"}, {"id": "d"}]}
+  },
+  {
+    "name": "self-and-unknown-ids-are-held",
+    "source": "ADR0260 separates format reading from relationship validation",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [access, missing]\n",
+    "want": {"schemaVersion": 1, "sections": [{"id": "access", "requires": ["access", "missing"]}]}
+  },
+  {
+    "name": "root-and-case-variants-are-unknown-data",
+    "source": "ADR0260 Requires belongs to exact lowercase section key only; decoder unknown-field preservation",
+    "input": "schemaVersion: 1\nrequires: [root]\nsections:\n  - id: access\n    Requires: [upper]\n    x-requires: [extension]\n",
+    "want": {"schemaVersion": 1, "unknownFields": {"requires": ["root"]}, "sections": [{"id": "access", "unknownFields": {"Requires": ["upper"], "x-requires": ["extension"]}}]}
+  },
+  {
+    "name": "scalar-is-not-one-item",
+    "source": "Decoder list-field guards inherited by Requires under ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: setup\n",
+    "problems": [{"code": "format.wrong-type", "path": "sections[0].requires"}]
+  },
+  {
+    "name": "map-value-not-scanned",
+    "source": "Decoder wrong-type values are not read inside; ADR0260 list guards",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: {bad: yes}\n",
+    "problems": [{"code": "format.wrong-type", "path": "sections[0].requires"}]
+  },
+  {
+    "name": "boolean-and-number-list-values",
+    "source": "Decoder Scalars and list wrong-type guards; ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: true\n  - id: other\n    requires: 1\n",
+    "problems": [{"code": "format.wrong-type", "path": "sections[0].requires"}, {"code": "format.wrong-type", "path": "sections[1].requires"}]
+  },
+  {
+    "name": "item-guards-and-source-order",
+    "source": "Decoder Problems: every list item checked in source order with spelling before type and null as empty item; ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [null, true, 1, yes, ~, {bad: yes}, []]\n",
+    "problems": [{"code": "format.empty-item", "path": "sections[0].requires[0]"}, {"code": "format.wrong-type", "path": "sections[0].requires[1]"}, {"code": "format.number-spelling", "path": "sections[0].requires[2]"}, {"code": "format.boolean-spelling", "path": "sections[0].requires[3]"}, {"code": "format.null-spelling", "path": "sections[0].requires[4]"}, {"code": "format.wrong-type", "path": "sections[0].requires[5]"}, {"code": "format.wrong-type", "path": "sections[0].requires[6]"}]
+  },
+  {
+    "name": "tags-do-not-coerce-string-items",
+    "source": "Decoder Style is free and Scalars: tags ignored, quoted text preserved; ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [!!bool 'true', !!int '123', !!str deferred]\n",
+    "want": {"schemaVersion": 1, "sections": [{"id": "access", "requires": ["true", "123", "deferred"]}]}
+  },
+  {
+    "name": "tag-cannot-hide-bad-spelling",
+    "source": "Decoder ignores tags and still checks plain spelling; ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [!!str yes]\n",
+    "problems": [{"code": "format.boolean-spelling", "path": "sections[0].requires[0]"}]
+  },
+  {
+    "name": "list-and-item-anchors",
+    "source": "Decoder alias guard applies to list and item nodes; ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: &list [&item setup, *item]\n",
+    "problems": [{"code": "format.alias", "path": "sections[0].requires"}, {"code": "format.alias", "path": "sections[0].requires[0]"}, {"code": "format.alias", "path": "sections[0].requires[1]"}]
+  },
+  {
+    "name": "repeated-agreeing-key",
+    "source": "ADR0110 serialized keys must be unique even when matching; ADR0260 raw-key checks",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [a]\n    'requires': [a]\n",
+    "problems": [{"code": "format.duplicate-key", "path": "sections[0].requires"}]
+  },
+  {
+    "name": "duplicate-value-still-checked",
+    "source": "Decoder duplicate-key value read normally and code order at one place; ADR0110 and ADR0260",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    requires: [a]\n    requires: true\n",
+    "problems": [{"code": "format.duplicate-key", "path": "sections[0].requires"}, {"code": "format.wrong-type", "path": "sections[0].requires"}]
+  },
+  {
+    "name": "step-requires-is-unknown",
+    "source": "ADR0260 Requires is section metadata, not step metadata; decoder unknown keys in steps",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    steps:\n      - id: task\n        requires: [setup]\n",
+    "problems": [{"code": "format.unknown-field", "path": "sections[0].steps[0].requires"}]
+  }
+]

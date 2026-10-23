@@ -116,17 +116,17 @@
   {
     "name": "outcomes-are-kept-and-the-changed-ones-listed",
     "file": "outcomes-are-kept-and-the-changed-ones-listed.case.json",
-    "source": "Hand-written. 0090: an outcome is flagged when its sectionHash differs from the section's current hash. Outcomes are never added, removed, or reordered. A section with no source, an outcome with no sectionHash, and an outcome for a section the plan no longer has are not listed. A section is listed once even when two of its outcomes differ. The comparison is exact, with case."
+    "source": "Hand-written. 0090: an outcome is flagged when its sectionHash differs from the section's current hash. Outcomes are never added, removed, or reordered. Under ADR0270, actual held section content is hashed even without Source. An outcome with no sectionHash and an outcome for a removed section are not listed. Legacy nonempty placeholder hashes compare as held. A section is listed once even when two of its outcomes differ. The comparison is exact, with case."
   },
   {
     "name": "an-outcome-with-the-current-hash-is-not-listed",
     "file": "an-outcome-with-the-current-hash-is-not-listed.case.json",
-    "source": "Hand-written. The hash comparison is exact. The section g now holds the hash its outcome was recorded against, so it is not listed, while the case of the letters is what separated it in the case before."
+    "source": "Hand-written. ADR0270: g carries its independently pinned actual definition hash (canonical id g, title G, summary About g, default timing anytime), so g is not listed despite an unrelated Source.Hash. Other nonempty placeholders mismatch actual definitions."
   },
   {
     "name": "a-removed-section-keeps-its-outcome",
     "file": "a-removed-section-keeps-its-outcome.case.json",
-    "source": "Hand-written. 0090: outcomes are kept as they are. An outcome of a section the plan no longer has is not listed as changed, and its section is in removedSections because the previous plan had it."
+    "source": "Hand-written. 0090: outcomes are kept as they are. An outcome of a section the plan no longer has is not listed as changed, and its section is in removedSections because the previous plan had it. ADR0270: still-present stay has an arbitrary nonempty old hash, so its actual definition mismatch is listed."
   },
   {
     "name": "new-and-removed-questions-and-sections",
@@ -136,7 +136,7 @@
   {
     "name": "nothing-changed",
     "file": "nothing-changed.case.json",
-    "source": "Hand-written. Reconciling against the plan it was last reconciled against changes only the reference and lists nothing."
+    "source": "Hand-written. ADR0270: an independently pinned actual section digest replaces the old placeholder in input and preserved expected outcome, retaining the matching-definition control despite an unrelated Source.Hash. Canonical s has title S, summary About s, default timing anytime and variable three of type string, audience onboardee. Reconciling this matching definition changes only the reference and lists nothing."
   },
   {
     "name": "answers-of-the-plan-never-enter-the-record",
@@ -166,7 +166,7 @@
   {
     "name": "every-other-field-is-unchanged",
     "file": "every-other-field-is-unchanged.case.json",
-    "source": "Hand-written. 0090: only the answers and the plan reference change. The account, start date, schema version, outcomes with their notes, and unknown fields, with their nested lists, maps, integers and decimals, come back as they were."
+    "source": "Hand-written. 0090: only the answers and the plan reference change. The account, start date, schema version, outcomes with their notes, and unknown fields, with their nested lists, maps, integers and decimals, come back as they were. ADR0270: the nonempty placeholder outcome hash for s now differs from its actual held definition and is listed, without rewriting that history."
   },
   {
     "name": "refuse-a-different-plan-whose-id-sorts-before",

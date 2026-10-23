@@ -1,0 +1,155 @@
+[
+  {
+    "name": "absent-preserves-old-zero",
+    "source": "ADR0260: absent Requires preserves every old hash; existing canonical timing default",
+    "section": {},
+    "canonical": "{\"timing\":\"anytime\"}",
+    "hash": "7f45f0901771cc2e49d31383a646ab9a5e0023a200a0156adc3cf480e3c708c9"
+  },
+  {
+    "name": "empty-preserves-old-zero",
+    "source": "ADR0260: empty Requires omitted exactly like nil",
+    "section": {
+      "requires": []
+    },
+    "canonical": "{\"timing\":\"anytime\"}",
+    "hash": "7f45f0901771cc2e49d31383a646ab9a5e0023a200a0156adc3cf480e3c708c9"
+  },
+  {
+    "name": "set-repeats",
+    "source": "ADR0260: Requires hash set sorted by exact ID bytes with repeats removed",
+    "section": {
+      "id": "access",
+      "requires": [
+        "b",
+        "a",
+        "b"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"a\",\"b\"]}",
+    "hash": "4f6a5ba7ddefab56aa399697f6e2f03f69aef6939f996aa1b1f1bc0c30ad0119"
+  },
+  {
+    "name": "set-permutation",
+    "source": "ADR0260: order and repetition do not change prerequisite behavior",
+    "section": {
+      "id": "access",
+      "requires": [
+        "a",
+        "b"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"a\",\"b\"]}",
+    "hash": "4f6a5ba7ddefab56aa399697f6e2f03f69aef6939f996aa1b1f1bc0c30ad0119"
+  },
+  {
+    "name": "changed-target",
+    "source": "ADR0260: a different exact prerequisite changes section content",
+    "section": {
+      "id": "access",
+      "requires": [
+        "c",
+        "a"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"a\",\"c\"]}",
+    "hash": "84f986add6ef1c37cf2346847b01c77165e53a472dcf2d0a726bf3d3512dcf92"
+  },
+  {
+    "name": "bootstrap-after-requires-owner-position",
+    "source": "ADR0260: independent After and Requires sets; Requires after After before Owner; ADR0250: Bootstrap after Parent before Timing",
+    "section": {
+      "id": "access",
+      "parent": "group",
+      "bootstrap": true,
+      "timing": "week-one",
+      "after": [
+        "z",
+        "m",
+        "z"
+      ],
+      "requires": [
+        "b",
+        "a",
+        "b"
+      ],
+      "owner": "lead"
+    },
+    "canonical": "{\"id\":\"access\",\"parent\":\"group\",\"bootstrap\":true,\"timing\":\"week-one\",\"after\":[\"m\",\"z\"],\"requires\":[\"a\",\"b\"],\"owner\":\"lead\"}",
+    "hash": "20698d2da6855249dcf8bc4b91642ae83bc066434df83d3e16c7222158d4b367"
+  },
+  {
+    "name": "exact-unvalidated-ids",
+    "source": "ADR0260 exact IDs and existing hasher no-validation rule: keep case, spaces and empty IDs; sort UTF-8 bytes",
+    "section": {
+      "id": "access",
+      "requires": [
+        "é",
+        "a",
+        "A",
+        " a",
+        "",
+        "a"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"\",\" a\",\"A\",\"a\",\"é\"]}",
+    "hash": "1c43b8ef518dd958d5a05619ae10c86407d4a0aca5967124f06da0475032883c"
+  },
+  {
+    "name": "after-is-not-requires",
+    "source": "ADR0260: legacy After remains independent order-only content, never converted into Requires",
+    "section": {
+      "id": "access",
+      "after": [
+        "b",
+        "a"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"after\":[\"a\",\"b\"]}",
+    "hash": "00fa063bb7cd97ac87cac85c10ecdc5d22fca2b8751e0ff261c50b5d370d7ace"
+  },
+  {
+    "name": "self-reference-is-held",
+    "source": "Existing hasher no-validation rule and ADR0260: relationship validation is another component, not hashing",
+    "section": {
+      "id": "access",
+      "requires": [
+        "access"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"access\"]}",
+    "hash": "7ea01d113375fbd21b23ba39f89c50c2f0d9cc612c0fa5c77e0fbf5bbc5a38e5"
+  },
+  {
+    "name": "unknown-field-is-not-requires",
+    "source": "Existing hasher unknown-field namespace and ADR0260: held typed Requires is not an unknown field",
+    "section": {
+      "id": "access",
+      "unknownFields": {
+        "requires": [
+          "a",
+          "b"
+        ]
+      }
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"unknownFields\":{\"requires\":[\"a\",\"b\"]}}",
+    "hash": "a1f975bba27d65cf8710443945878d87beb4d0b1a577775e1c4ae59c061b0f52"
+  },
+  {
+    "name": "raw-id-bytes-not-json-escape-order",
+    "source": "ADR0260 and hasher Lists and sets: sort exact prerequisite IDs by raw UTF-8 bytes before JSON escaping, not by their quoted canonical text",
+    "section": {
+      "id": "access",
+      "requires": [
+        " ",
+        "\n",
+        "\t",
+        "\\",
+        "\"",
+        "a"
+      ]
+    },
+    "canonical": "{\"id\":\"access\",\"timing\":\"anytime\",\"requires\":[\"\\t\",\"\\n\",\" \",\"\\\"\",\"\\\\\",\"a\"]}",
+    "hash": "a364284ce0c975bc9ecd6992a1846859d4427cef518fd2d0ab3d697cb55ce50c"
+  }
+]

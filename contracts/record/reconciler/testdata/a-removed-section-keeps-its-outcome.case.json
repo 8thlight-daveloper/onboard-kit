@@ -94,7 +94,8 @@
     "reconciliation": {
       "removedSections": [
         "gone"
-      ]
+      ],
+      "changedOutcomes": ["stay"]
     }
   }
 }

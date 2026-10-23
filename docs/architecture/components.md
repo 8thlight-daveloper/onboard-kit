@@ -67,6 +67,7 @@ flowchart TB
     assembler --> selector
     assembler --> resolver
     instantiator --> hasher
+    reconciler --> hasher
 
     entry --> loader
     entry --> instantiator
@@ -99,7 +100,7 @@ flowchart TB
 | Record encoder | Turns a Record into canonical bytes, so the same record always gives the same bytes |
 | Record joiner | Puts a newcomer's onboarding record over the plan, giving the one plan value that every other component takes |
 | Record splitter | Takes the onboardee answers back out of the joined plan, giving the record to save. The plan is left alone |
-| Record reconciler | Checks a record against a new plan. Removes answers the plan no longer accepts, lists hidden answers, new questions, and new and removed sections, and flags outcomes whose section changed. Replaces the plan refresher |
+| Record reconciler | Checks a record against a new plan. Removes answers the plan no longer accepts, lists hidden answers, new questions, and new and removed sections, and compares nonempty recorded outcome hashes with actual current definitions. Preserves all outcomes and original template baselines. Replaces the plan refresher |
 | Preparation validator | Checks a person's preparation against trusted account, plan, contact, team, and section identities. Reads preparation and context only, returns problems, and performs no writes. It neither joins answers nor records first use |
 | Preparation encoder | Turns a preparation value into canonical YAML bytes without changing it. Preserves representable values and unknown top-level data, reports unsupported values, and neither validates references nor writes files |
 | Preparation decoder | Turns preparation YAML bytes into a new value, enforcing file-kind and strict format guards. Preserves unknown root data, rejects duplicate raw keys and unknown fixed nested keys, and leaves semantic checks to the preparation validator |
@@ -163,6 +164,34 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 A person editing a plan by hand can change anything, and the plan validator checks the result on load. The template linter takes templates and not plans, so it has no row in the plan access table.
 
 ## Dependency rules
+
+### Pending prerequisite and outcome integration
+
+[0260](../decisions/0260-prerequisites-and-action-order.md) and
+[0270](../decisions/0270-outcome-definition-hashes.md) define the following
+target boundaries. These are implementation plans, not claims that the new
+components or contract changes already exist. Existing behavior remains governed
+by each current contract until its independently tested replacement is integrated.
+
+| Component | Planned reads | Planned writes or returns | Position and project dependencies |
+| -- | -- | -- | -- |
+| Plan structure validator, new | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
+| Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
+| Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
+| Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
+| Section walker, new | Plan and record, including outcomes and actual section definitions | Action, waiting, outcome, and definition-comparison views; no writes | 4: section scheduler, question finder, section resolver, section hasher, model |
+| Outcome recorder, new | Validated plan, record, explicit proposed outcome, injected timestamp | New record or refusal; outcomes only, no plan writes | 5: section walker, section hasher, model |
+| Plan validator | Existing authoring fields and declared section relationships | Problems only; no plan writes | 4: plan structure validator, question finder, section validator, secrets, model |
+| Record reconciler | Existing answer inputs plus actual current Section content | Existing copied record and reconciliation report; no plan writes or historical-outcome rewrites | 2: section hasher, model |
+
+The reconciler comparison increment under ADR 0270 now uses the section hasher
+directly at dependency position 2. Its contract and implementation replace held
+Source.Hash comparison without changing the original template baseline. Runtime
+recording integration remains pending. Requires format
+preservation precedes structural and runtime builds. No core component here
+reads a clock or filesystem, runs commands, or holds state between calls.
+
+### Current rules
 
 Written out in 0020. In short:
 

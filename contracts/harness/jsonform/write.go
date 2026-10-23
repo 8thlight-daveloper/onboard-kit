@@ -249,6 +249,7 @@ func sectionObject(section model.Section) object {
 		o.add("enabled", *section.Enabled)
 	}
 	o.addStrings("after", section.After)
+	o.addStrings("requires", section.Requires)
 	o.addText("owner", section.Owner)
 	o.addStrings("escalation", section.Escalation)
 	o.addText("verification", section.Verification)

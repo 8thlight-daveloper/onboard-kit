@@ -123,6 +123,18 @@ The word `deferred` is the Deferred value only when it is a whole plain Value. Q
 
 ### Known fields
 
+Under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md),
+requires is a known section list of strings, independent of legacy after.
+Read it into Requires, never UnknownFields, using every existing list and
+string guard. Keep exact strings, file order and repetitions; absent, null,
+empty values and empty lists give nil. Do not resolve placeholders, validate
+references or manufacture Requires from After. The exact lowercase key is
+section-only: root requires and case variants are preserved unknown data;
+a step's requires is unknown. Raw repeated keys are errors even when values
+agree. [Requires fixtures](testdata/requires.json) and
+[tests](requires_test.go) pin reading, problem paths/order, separate-result
+isolation and reuse across inputs independently of the encoder.
+
 Under [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md),
 bootstrap is a known optional boolean on saved sections. Read it into Bootstrap:
 absent, empty, null and false are false; only canonical plain true is true.
@@ -255,6 +267,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop Requires, keep it as unknown data, sort or deduplicate it, convert After, skip its list guards, or accept repeated raw keys | [Requires fixtures](testdata/requires.json) and [tests](requires_test.go) |
 | Drop the known Bootstrap value or accept quoted true as a boolean | [bootstrap fixtures](testdata/bootstrap.json) |
 | Unknown fields dropped, at the plan or at a section | `unknown-fields`, `hand-edited`, `zero-and-null` |
 | Plain `yes`, `no`, `on`, `off` read as booleans, or only some cases recognized | `boolean-spelling` |

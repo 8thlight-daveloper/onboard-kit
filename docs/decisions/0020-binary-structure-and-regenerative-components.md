@@ -2,6 +2,11 @@
 
 Status: accepted
 
+[0260](0260-prerequisites-and-action-order.md) extends the dependency order for
+prerequisite scheduling and outcome operations. [0270](0270-outcome-definition-hashes.md)
+moves the record reconciler to position 2 with a section hasher dependency;
+its current contract and architecture view carry that boundary.
+
 Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0015](0015-functional-core-and-imperative-shell.md), [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md). The contract and test rules are in [0025](0025-contracts-and-tests.md).
 
 ## Context

@@ -8,6 +8,11 @@ Contract tests keep their fixtures as plain data. This page says how a Plan is w
 - A plan's `directory` is an object with `contacts`, `roles`, and `teams`, each a list of objects with the fields in the domain model. A team's `holders` is an object of role id to a list of contact ids. A plan has an optional `id` and an `origin` with `planId`, `source`, `contentHash`, and `refreshedOn`.
 - An onboarding record is an object with `account`, `startDate`, `firstOpenedAt`, `plan` (`id`, `hash`, `url`), `answers`, `outcomes` (each with `section`, `outcome`, `on`, `sectionHash`, `note`, `differently`), and `unknownFields`. The optional `firstOpenedAt` is exact text, omitted when empty; see [0230](../../../docs/decisions/0230-first-use-record-compatibility.md). A plan also has optional `planUrl` and `resultsPath`. `Record` reads one and `RecordJSON` writes one.
 - A section's `source` is an object with `template` and `hash`.
+- A section's `requires` is an array of exact strings, independent of `after`.
+  Reading and writing preserve its order and repeats; neither sorts it as a
+  hash set. An absent or empty array reads as the zero list, and the writer
+  omits nil and empty lists. Other types, including null and nonstring items,
+  are fixture errors. See [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md).
 - A section's `bootstrap` is a boolean, false when absent. The harness writer
   omits false and writes true; a nonboolean fixture value is an error. This
   fixture representation is separate from YAML's empty/null optional-field

@@ -39,7 +39,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
-| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `enabled`, `after`, `requires`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
 | Source | `template`, `hash` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
@@ -145,6 +145,19 @@ must return only encode.unknown-field-collision at sections[0].<key> and no
 bytes, without inspecting the colliding value. Section ID is deliberately
 nonempty so an empty-item guard cannot hide the collision requirement.
 
+## Requires
+
+Under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md),
+write Requires as a string block list after After and before Owner, preserving
+exact strings, order and repeats. Omit nil and empty Requires; do not infer it
+from After or validate its references. A section holding only nonempty Requires
+is not an empty item. Treat requires as a known section key even when its held
+list is nil or empty. A colliding unknown field gives only
+encode.unknown-field-collision at sections[n].requires, without traversing its
+value. At the plan root and with a different case it remains unknown data.
+Independent [fixtures](testdata/requires.json) and [tests](requires_test.go)
+pin canonical bytes, reuse across inputs and collisions without decoder calls.
+
 ## Properties
 
 These hold for every plan the contract tests use.
@@ -185,6 +198,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Omit Requires, write it in the wrong key position, normalize its list, copy After into it, or miss a zero-held known-key collision | [Requires fixtures](testdata/requires.json), [tests](requires_test.go) and [known section keys](section_collision_test.go) |
 | Forget a reserved section key when its typed field is zero, or traverse its colliding value | [all known section keys](section_collision_test.go) |
 | Drop true Bootstrap or emit bootstrap false instead of omitting it | [bootstrap fixtures](testdata/bootstrap.json) |
 | Map keys in iteration order, not sorted | The golden cases that have maps, and the determinism test |

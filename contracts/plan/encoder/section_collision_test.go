@@ -11,7 +11,7 @@ func TestAllKnownSectionKeysRejectUnknownFieldCollisions(t *testing.T) {
 	t.Parallel()
 	keys := []string{
 		"id", "title", "summary", "includeIf", "parent", "bootstrap", "timing",
-		"enabled", "after", "owner", "escalation", "verification", "body",
+		"enabled", "after", "requires", "owner", "escalation", "verification", "body",
 		"variables", "steps", "source",
 	}
 	for _, key := range keys {

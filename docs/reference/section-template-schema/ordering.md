@@ -2,7 +2,14 @@
 
 Part of the [section template schema](README.md).
 
-Sections appear in the document, and are asked about in the walkthrough, in a deterministic order. The order comes from the section's `timing`, then from the dependencies it declares, then from its `id`. There is no numeric position to maintain.
+[0260](../../decisions/0260-prerequisites-and-action-order.md) separates the
+grouped reference document from the global action sequence. Requires format
+preservation and hashing are implemented; structural validation, scheduler, and
+walkthrough integration remain pending. The legacy ordering below remains current,
+not the promised prerequisite enforcement.
+
+Sections appear in the reference document in a deterministic grouped order.
+There is no numeric position to maintain.
 
 ## Timing
 
@@ -23,9 +30,29 @@ Sections appear in the document, and are asked about in the walkthrough, in a de
 
 A step inherits its section's `timing`, and may state its own from the same set.
 
-## Dependencies
+## Prerequisites and legacy hints
 
-`after` is an optional list of template ids. A section lists the sections that must come before it. A listed section that is not active is ignored.
+`requires` names real prerequisite activities. A dependent stays active but
+waits until each direct prerequisite has a unique stored verified outcome.
+Failed, deferred, or absent outcomes are insufficient. An inactive prerequisite
+makes its dependents inactive. Parent containment supplies no verification
+obligation. Dates are planning goals, never permission or failure gates.
+
+Requires works across parent subtrees. The planned action scheduler orders
+prerequisites before dependents, even when their timing goals suggest otherwise.
+Among available activities it chooses bootstrap first, then effective timing,
+grouped reference rank, and exact ID. See 0260 for closure and cycle rules.
+
+```yaml
+id: lead-deploy
+requires: [shadow-deploy]
+```
+
+`after` is a deprecated optional list of reading-order hints. A listed inactive
+section is ignored. Only active siblings in the same effective timing group
+constrain the grouped reference order. After does not require verification and
+must not be silently converted to Requires. New library content uses Requires
+for real prerequisites.
 
 ```yaml
 id: review-design-system
@@ -67,7 +94,7 @@ These are about the relation between sections, so the plan validator reports the
 | Unknown reference | `after` names an id that is not in the plan |
 | Self reference | A section lists itself in `after` |
 | Dependency cycle | A is after B, and B is after A. The report names the sections in the cycle |
-| Timing conflict | A is after B, but A's window starts before B's. The report names both sections and their windows. `anytime` never conflicts |
+| Timing conflict, retired by 0260 | Cross-timing After hints are ignored, not errors. Goals never invalidate a real Requires edge. Structural-validator integration is pending |
 | Question condition cycle | A question's condition depends on an answer that depends back on it, including across sections |
 | Unknown question reference | A condition names a question that no section declares |
 | `includeIf` on a section question | An `includeIf` names a question that is not a plan variable |

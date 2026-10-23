@@ -13,6 +13,7 @@ type Section struct {
 	Body          string
 	IncludeIf     *Condition
 	After         []string
+	Requires      []string
 	Escalation    []string
 	Variables     []Variable
 	Steps         []Step

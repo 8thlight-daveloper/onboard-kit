@@ -135,6 +135,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop Requires, normalize its held list, omit it from Source.Hash, or share its backing list with the template | [Requires preservation and isolation](requires_test.go) |
 | `schemaVersion` 0 or 2 | every plan case |
 | The template set or the date fixed in the code, or the two swapped | `values-as-given`, `acme-default-plan` |
 | Sections kept in the order given | `acme-default-plan`, `byte-order`, `hasher-goldens`, the template order test |
@@ -188,3 +189,15 @@ No second independent build or differential run was made, because the issue is a
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Copy each template's Bootstrap value exactly into the saved section and its definition hash. Neither false nor true is inferred from timing or answers. Both independent pinned hashes are checked while instantiating a real section; adding Source does not erase the marker.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Copy Requires exactly,
+including order and repetitions, independently of After and Bootstrap. Keep
+the existing nothing-shared promise for its backing list in both directions.
+Do not validate the references. Source.Hash includes Requires under the hasher
+contract's set rule, without sorting the held list. The two pinned canonical
+texts and hashes come from the independently handwritten
+[Requires hasher fixtures](../../section/hasher/testdata/requires.json), not a
+call to the implementation being judged.

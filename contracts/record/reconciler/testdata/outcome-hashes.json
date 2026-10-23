@@ -1,0 +1,178 @@
+[
+  {
+    "name": "manual-edit-baseline-unchanged",
+    "source": "ADR0270 actual held content; ADR0030 original template baseline remains unchanged after a manual edit",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access through help desk",
+      "source": {
+        "template": "access",
+        "hash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc"
+      }
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access through help desk\",\"timing\":\"anytime\"}",
+    "currentHash": "423c3fce4113082df2b87850806c7a035c56ab76890942e350cf91e27f750dd7",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": true
+  },
+  {
+    "name": "custom-without-source",
+    "source": "ADR0270 custom sections with nil Source participate, without a fallback baseline",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access through help desk"
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access through help desk\",\"timing\":\"anytime\"}",
+    "currentHash": "423c3fce4113082df2b87850806c7a035c56ab76890942e350cf91e27f750dd7",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": true
+  },
+  {
+    "name": "actual-match-with-stale-source",
+    "source": "ADR0270 matching actual content is not flagged even when its Source.Hash differs",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access through help desk",
+      "source": {
+        "template": "access",
+        "hash": "stale-baseline"
+      }
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access through help desk\",\"timing\":\"anytime\"}",
+    "currentHash": "423c3fce4113082df2b87850806c7a035c56ab76890942e350cf91e27f750dd7",
+    "storedHash": "423c3fce4113082df2b87850806c7a035c56ab76890942e350cf91e27f750dd7",
+    "changed": false
+  },
+  {
+    "name": "source-only-change",
+    "source": "ADR0270 and section hasher Source exclusion: template identity and baseline do not affect actual definition",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access",
+      "source": {
+        "template": "renamed-template",
+        "hash": "unrelated"
+      }
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": false
+  },
+  {
+    "name": "switch-only-change",
+    "source": "ADR0270 and section hasher Enabled exclusion: disabled sections still compare their definition",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access",
+      "enabled": false
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": false
+  },
+  {
+    "name": "disabled-edited-definition",
+    "source": "ADR0270 no Enabled-state exemption: switched-off edited content still differs",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access through help desk",
+      "enabled": false
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access through help desk\",\"timing\":\"anytime\"}",
+    "currentHash": "423c3fce4113082df2b87850806c7a035c56ab76890942e350cf91e27f750dd7",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": true
+  },
+  {
+    "name": "empty-is-unknown",
+    "source": "ADR0270 empty recorded hash means comparison unknown, preserved and unlisted",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access"
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": "",
+    "changed": false
+  },
+  {
+    "name": "removed-is-unknown",
+    "source": "ADR0270 removed section has no current definition; preserve history without claiming freshness",
+    "section": null,
+    "canonical": "",
+    "currentHash": "",
+    "storedHash": "legacy-removed",
+    "changed": false
+  },
+  {
+    "name": "uppercase-is-not-repaired",
+    "source": "ADR0270 compare exact held text with no case folding or migration",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access"
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": "6C0301D995D0A3B0DAB95A641A087120C5266746E59C50D934C575E135CA2FDC",
+    "changed": true
+  },
+  {
+    "name": "whitespace-is-not-repaired",
+    "source": "ADR0270 arbitrary nonempty legacy text compared exactly, without trimming",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access"
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": " 6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc\n",
+    "changed": true
+  },
+  {
+    "name": "unversioned-legacy-hash",
+    "source": "ADR0270 a bare legacy hash is compared as held; mismatch cannot establish edit chronology",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access"
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}",
+    "currentHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "storedHash": "template-baseline-with-no-version",
+    "changed": true
+  },
+  {
+    "name": "bootstrap-and-requires-are-current-content",
+    "source": "ADR0270 uses the entire held definition; ADR0250 Bootstrap and ADR0260 Requires participate in the section hash without activity or relationship validation here",
+    "section": {
+      "id": "access",
+      "title": "Access",
+      "summary": "Request access",
+      "bootstrap": true,
+      "requires": [
+        "b",
+        "a",
+        "b"
+      ],
+      "source": {
+        "template": "access",
+        "hash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc"
+      }
+    },
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"bootstrap\":true,\"timing\":\"anytime\",\"requires\":[\"a\",\"b\"]}",
+    "currentHash": "4dc35b57676a045d60326db8905438d316b3db09eaeb77e85a7751142fcbd433",
+    "storedHash": "6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc",
+    "changed": true
+  }
+]

@@ -75,6 +75,7 @@ Each row is a plausible wrong implementation and the cases that fail it.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop, normalize or alias Requires while layering record answers | [Requires preservation and isolation](requires_test.go) |
 | A stub that returns nothing, or ignores the record | Every case, and the empty record test |
 | The plan wins on the same key | `record-wins`, `value-kinds`, `scopes-are-separate`, `ada` |
 | The record's plan map replaces the plan's | `hidden`, `one-side`, and the empty record test |
@@ -102,3 +103,13 @@ Each row is a plausible wrong implementation and the cases that fail it.
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Layering record answers preserves every section's Bootstrap definition value. No record answer changes that marker, and the deep-copied returned sections do not alias input section slots.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Layering answers preserves
+Requires exactly, including order, repeats and nil versus empty lists, while
+keeping After and Bootstrap. No record value supplies or changes requirements.
+The existing deep-copy promise includes each Requires backing list in both
+directions; changing the returned list changes neither input and changing the
+input list changes no result.

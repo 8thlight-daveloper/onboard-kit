@@ -225,6 +225,7 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop or normalize Requires while applying or refusing an unrelated edit | [Requires preservation tests](requires_test.go) |
 | An answer with an error is applied anyway | `pattern-mismatch-is-refused`, `hidden-question-is-refused`, `secret-is-refused` |
 | The problems are dropped | `secret-is-refused` |
 | A refusal returns an empty plan | `secret-is-refused`, `question-of-a-switched-off-section-is-refused` |
@@ -314,3 +315,13 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Every unrelated edit preserves each held Bootstrap value, including false, while retaining the existing operation's own write boundary. Submitting answers, changing Enabled, directory edits/removals and pruning must not manufacture or clear the definition marker. Returned editable section slots remain isolated from inputs.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Every operation preserves
+Requires as held, including exact order, repeats and nil versus empty lists,
+on success and refusal. After and Bootstrap remain independent content. Never
+alter Requires through an answer or a switch. This does not add inner-list
+ownership to the existing editable-parts isolation promise; unchanged section
+content may still be shared.

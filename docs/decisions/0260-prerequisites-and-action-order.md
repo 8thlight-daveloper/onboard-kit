@@ -1,6 +1,6 @@
 # 0260. Prerequisites and action order
 
-Status: accepted by agent judgment; implementation pending
+Status: accepted by agent judgment; format implemented, graph and runtime pending
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0110](0110-reject-ambiguous-plans.md),
@@ -100,6 +100,11 @@ Retain only the legacy After edges that existing reference ordering honors:
 references between active siblings in the same effective timing group. Those
 effective edges also constrain action order, but never verification or activity.
 Do not promote previously ignored cross-group hints into new global constraints.
+Unknown and self-referencing After IDs remain authoring errors. A cross-timing
+hint is ignored, not a timing error: this also supersedes the schema reference's
+old After timing-conflict rule. Dates are goals for either field. If a malformed
+parent chain prevents deriving a group or timing, omit only the affected After
+edges and still validate independent Requires relationships.
 
 For the example above, use equal timings and IDs a, a1, a2, b, b1, b2, with
 their stated parents and no After hints. Reference rank is a,a1,a2,b,b1,b2.
@@ -191,8 +196,12 @@ All core components are pure, change no argument, and perform no outside I/O.
 These positions extend [0020](0020-binary-structure-and-regenerative-components.md)
 and move the document assembler from position 3 to 4. The architecture view and
 each component contract must state their exact read/write sets before building.
-The model's Requires slice needs independent copy/isolation tests wherever a
-plan or section is returned. Codecs and hasher come before graph/runtime builds.
+The model's Requires slice needs independent preservation and input-immutability
+tests wherever a plan or section is returned. Where an existing contract promises
+owned inner lists, copy Requires too and test result isolation. Where immutable
+values explicitly permit shared inner lists, keep that boundary; this field
+does not introduce a general deep-copy requirement. Codecs and hasher come
+before graph/runtime builds.
 
 ## Verification and delivery
 

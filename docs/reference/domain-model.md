@@ -62,6 +62,7 @@ classDiagram
         parent
         bootstrap
         after
+        requires
         escalation
         variables
         steps
@@ -214,6 +215,12 @@ A PlanReference has `id`, `hash`, and `url`: the plan's id, the hash of that pla
 
 An Outcome has `section` (a section id), `outcome` (`verified`, `failed`, or `deferred`), `on` (a UTC time in RFC 3339 form, passed in by a driver), `sectionHash` (the section's content hash when the outcome was recorded), and optional `note` and `differently`. A section with no outcome has not been tried.
 
+[0270](../decisions/0270-outcome-definition-hashes.md) requires new outcome
+operations to hash the actual current definition, not its original Source.Hash
+template baseline. Legacy bare hashes do not identify their basis or prove edit
+chronology. Reconciliation lists exact definition-reference mismatches without
+rewriting history; runtime recording integration remains pending.
+
 ## Origin
 
 | Field | Type | Notes |
@@ -270,7 +277,8 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `parent` | Text, optional | The id of another section. A section with a parent is a sub-section: it is active only if its parent is. See [0070](../decisions/0070-sub-sections.md) |
 | `bootstrap` | Boolean, optional | Author-designated pre-access instructions. False when absent; not activity or completion. Included in definition hashes when true. See [0250](../decisions/0250-bootstrap-content-and-projection.md) |
 | `includeIf` | Condition, optional | Names plan variables and the questions of its ancestors |
-| `after` | List of section ids, optional |  |
+| `after` | List of section ids, optional | Deprecated reading-order hints, not verification prerequisites |
+| `requires` | List of section ids, optional | Explicit prerequisite activities. Codecs preserve order and repetitions; definition hashing uses a sorted, deduplicated set. See [0260](../decisions/0260-prerequisites-and-action-order.md). Format implemented; graph and runtime integration pending |
 | `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `contact` or `role` variables the section declares. See [escalation](section-template-schema/escalation.md) |
 | `variables` | List of Variable, optional |  |
 | `steps` | List of Step, optional |  |
@@ -385,7 +393,7 @@ What the record reconciler returns beside the record.
 | `answersToReview` | List of text | Question ids whose answer the new plan no longer accepts. The answer is removed, sorted |
 | `newSections` | List of text | Section ids that are new, sorted |
 | `removedSections` | List of text | Section ids that are gone, sorted |
-| `changedOutcomes` | List of text | Section ids whose outcome was recorded against content that has since changed, sorted |
+| `changedOutcomes` | List of text | Section ids whose nonempty recorded hash differs from the actual current definition hash, sorted. Empty hashes and removed sections have unknown comparison. See 0270; not proof of edit chronology |
 
 ### Cleared
 

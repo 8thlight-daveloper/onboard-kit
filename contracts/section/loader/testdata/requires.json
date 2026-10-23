@@ -1,0 +1,110 @@
+[
+  {
+    "name": "exact-order-repeats-and-independent-after",
+    "source": "ADR0260 Requires explicit content and loader inherited list rules: exact strings, file order and repeats; no relationship validation",
+    "input": "schemaVersion: 1\nrequires: [b, a, b, ' A ', '', deferred, 'true', '123', 2026-10-15, '$item']\nid: access\nbootstrap: true\nafter: [legacy]\nowner: lead\n",
+    "want": {"id": "access", "bootstrap": true, "after": ["legacy"], "requires": ["b", "a", "b", " A ", "", "deferred", "true", "123", "2026-10-15", "$item"], "owner": "lead"}
+  },
+  {
+    "name": "after-does-not-become-requires",
+    "source": "ADR0260: legacy After retained independently, never converted",
+    "input": "schemaVersion: 1\nid: access\nafter: [legacy]\n",
+    "want": {"id": "access", "after": ["legacy"]}
+  },
+  {
+    "name": "empty-list",
+    "source": "ADR0260 and loader inherited Known fields: no-item list fields are nil",
+    "input": "schemaVersion: 1\nid: access\nrequires: []\n",
+    "want": {"id": "access"}
+  },
+  {
+    "name": "null-list",
+    "source": "ADR0260 and loader inherited Known fields: null list fields are nil",
+    "input": "schemaVersion: 1\nid: access\nrequires: null\n",
+    "want": {"id": "access"}
+  },
+  {
+    "name": "empty-value",
+    "source": "ADR0260 and loader inherited Known fields: empty list fields are nil",
+    "input": "schemaVersion: 1\nid: access\nrequires:\n",
+    "want": {"id": "access"}
+  },
+  {
+    "name": "self-and-unknown-ids-are-held",
+    "source": "ADR0260 separates format reading from relationship validation",
+    "input": "schemaVersion: 1\nid: access\nrequires: [access, missing]\n",
+    "want": {"id": "access", "requires": ["access", "missing"]}
+  },
+  {
+    "name": "case-variants-are-unknown",
+    "source": "ADR0260 exact lowercase section key only; loader rejects unknown template keys",
+    "input": "schemaVersion: 1\nid: access\nRequires: [upper]\nx-requires: [extension]\n",
+    "problems": [{"code": "format.unknown-field", "path": "Requires"}, {"code": "format.unknown-field", "path": "x-requires"}]
+  },
+  {
+    "name": "scalar-is-not-one-item",
+    "source": "Loader inherited list-field guards under ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: setup\n",
+    "problems": [{"code": "format.wrong-type", "path": "requires"}]
+  },
+  {
+    "name": "map-value-not-scanned",
+    "source": "Loader wrong-type values are not read inside; ADR0260 list guards",
+    "input": "schemaVersion: 1\nid: access\nrequires: {bad: yes}\n",
+    "problems": [{"code": "format.wrong-type", "path": "requires"}]
+  },
+  {
+    "name": "boolean-list-value",
+    "source": "Loader inherited Scalars and list wrong-type guards; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: true\n",
+    "problems": [{"code": "format.wrong-type", "path": "requires"}]
+  },
+  {
+    "name": "numeric-list-value",
+    "source": "Loader inherited Scalars and list wrong-type guards; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: 1\n",
+    "problems": [{"code": "format.wrong-type", "path": "requires"}]
+  },
+  {
+    "name": "item-guards-and-source-order",
+    "source": "Loader inherited Problems: every item checked in source order with spelling before type and null as empty item; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: [null, true, 1, yes, ~, {bad: yes}, []]\n",
+    "problems": [{"code": "format.empty-item", "path": "requires[0]"}, {"code": "format.wrong-type", "path": "requires[1]"}, {"code": "format.number-spelling", "path": "requires[2]"}, {"code": "format.boolean-spelling", "path": "requires[3]"}, {"code": "format.null-spelling", "path": "requires[4]"}, {"code": "format.wrong-type", "path": "requires[5]"}, {"code": "format.wrong-type", "path": "requires[6]"}]
+  },
+  {
+    "name": "tags-do-not-coerce-string-items",
+    "source": "Loader inherited style rules: tags ignored, quoted text preserved; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: [!!bool 'true', !!int '123', !!str deferred]\n",
+    "want": {"id": "access", "requires": ["true", "123", "deferred"]}
+  },
+  {
+    "name": "tag-cannot-hide-bad-spelling",
+    "source": "Loader ignores tags and still checks plain spelling; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: [!!str yes]\n",
+    "problems": [{"code": "format.boolean-spelling", "path": "requires[0]"}]
+  },
+  {
+    "name": "list-and-item-anchors",
+    "source": "Loader inherited alias guard applies to list and item nodes; ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: &list [&item setup, *item]\n",
+    "problems": [{"code": "format.alias", "path": "requires"}, {"code": "format.alias", "path": "requires[0]"}, {"code": "format.alias", "path": "requires[1]"}]
+  },
+  {
+    "name": "repeated-agreeing-key",
+    "source": "ADR0110 serialized keys must be unique even when matching; ADR0260 raw-key checks",
+    "input": "schemaVersion: 1\nid: access\nrequires: [a]\n'requires': [a]\n",
+    "problems": [{"code": "format.duplicate-key", "path": "requires"}]
+  },
+  {
+    "name": "duplicate-value-still-checked",
+    "source": "Loader inherited duplicate-key value reading and code order at one place; ADR0110 and ADR0260",
+    "input": "schemaVersion: 1\nid: access\nrequires: [a]\nrequires: true\n",
+    "problems": [{"code": "format.duplicate-key", "path": "requires"}, {"code": "format.wrong-type", "path": "requires"}]
+  },
+  {
+    "name": "step-requires-is-unknown",
+    "source": "ADR0260 Requires is section metadata, not step metadata; loader unknown keys in steps",
+    "input": "schemaVersion: 1\nid: access\nsteps:\n  - id: task\n    requires: [setup]\n",
+    "problems": [{"code": "format.unknown-field", "path": "steps[0].requires"}]
+  }
+]

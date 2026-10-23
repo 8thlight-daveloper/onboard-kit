@@ -12,7 +12,7 @@ A section template, often shortened to template, is one YAML file at `templates/
 | [variables.md](variables.md) | The `$name` syntax, dollar signs, `deferred`, fields, types, and audience |
 | [conditions.md](conditions.md) | `askIf` and `includeIf`: when a question is asked and when a section is included |
 | [optional-sections.md](optional-sections.md) | The `enabled` switch |
-| [ordering.md](ordering.md) | `timing`, `after`, the computed order, and the checks on dependencies |
+| [ordering.md](ordering.md) | Planning timing, legacy reading order, and explicit prerequisites |
 | [escalation.md](escalation.md) | Who to ask when something is blocked, and the `contact` and `role` types in use |
 | [steps.md](steps.md) | Steps, `checks`, and environment variables |
 | [reserved-names.md](reserved-names.md) | Names a template may not use |
@@ -31,6 +31,7 @@ classDiagram
         includeIf
         bootstrap
         after
+        requires
         escalation
         variables
         steps
@@ -46,6 +47,7 @@ classDiagram
         includeIf
         bootstrap
         after
+        requires
         escalation
         variables
         steps
@@ -96,7 +98,8 @@ classDiagram
 | `includeIf` | A [condition](conditions.md) on answers to plan variables, such as the discipline. No `includeIf` means always included |
 | `bootstrap` | Author-designated instructions usable before company access. Optional, false when absent, empty, or null; only plain `true` enables it. Does not imply activity or completion. See [0250](../../decisions/0250-bootstrap-content-and-projection.md) |
 | `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
-| `after` | Ids of sections that must come before this one. See [ordering](ordering.md) |
+| `after` | Deprecated reading-order hints; never evidence of verification. See [ordering](ordering.md) |
+| `requires` | Explicit prerequisite section IDs under [0260](../../decisions/0260-prerequisites-and-action-order.md). Format implemented; graph and runtime integration pending. Do not rely on preservation alone to enforce this field |
 | `escalation` | Names of `contact` or `role` variables to ask, in order, when the section is blocked. See [escalation](escalation.md) |
 | `owner`, `verification`, `body` | Who acts, how to tell it worked, and Markdown prose |
 | `variables` | Values the section needs. Each becomes a question. See [variables](variables.md) |

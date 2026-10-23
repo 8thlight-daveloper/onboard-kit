@@ -379,7 +379,7 @@ func (r *reader) clause(path string, v any) model.Clause {
 }
 
 func (r *reader) section(path string, v any) model.Section {
-	m := r.object(path, v, "id", "title", "summary", "parent", "bootstrap", "includeIf", "timing", "enabled", "after", "owner", "escalation", "verification", "body", "variables", "steps", "source", "unknownFields")
+	m := r.object(path, v, "id", "title", "summary", "parent", "bootstrap", "includeIf", "timing", "enabled", "after", "requires", "owner", "escalation", "verification", "body", "variables", "steps", "source", "unknownFields")
 	section := model.Section{
 		ID:            r.str(path, m, "id"),
 		Title:         r.str(path, m, "title"),
@@ -388,6 +388,7 @@ func (r *reader) section(path string, v any) model.Section {
 		Bootstrap:     r.boolean(path, m, "bootstrap"),
 		Timing:        model.Timing(r.str(path, m, "timing")),
 		After:         r.strings(path, m, "after"),
+		Requires:      r.strings(path, m, "requires"),
 		Owner:         r.str(path, m, "owner"),
 		Escalation:    r.strings(path, m, "escalation"),
 		Verification:  r.str(path, m, "verification"),

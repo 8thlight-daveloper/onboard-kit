@@ -146,6 +146,7 @@ Each row names a plausible wrong implementation and the cases that fail it.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Keep Requires from ours or base, merge it, normalize it or lose it on refusal | [Requires preservation tests](requires_test.go) |
 | An onboardee answer always taken from theirs, or never taken | `onboardee-answer-changed-is-kept`, `onboardee-answer-not-changed-takes-theirs`, `equality-by-kind-and-order` |
 | An onboarder answer treated as an onboardee one, so ours wins | `onboarder-takes-theirs`, `audience-comes-from-theirs` |
 | The audience default is onboardee, or the audience is read from ours | `audience-defaults-to-onboarder`, `audience-comes-from-theirs` |
@@ -186,3 +187,13 @@ Each row names a plausible wrong implementation and the cases that fail it.
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Bootstrap is onboarder-owned section content: a successful refresh takes the new organization's held marker, whether true or false. A refused refresh preserves the local marker exactly. Do not treat the marker as a newcomer answer or infer it from dates.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Successful refresh takes
+the organization's exact Requires content, including order, repetitions and nil
+versus empty lists. It does not merge local or base requirements. A refusal
+keeps ours as held. After and Bootstrap follow their existing content rules.
+Input lists are unchanged during the call; the existing answers-only ownership
+promise is not strengthened to require isolated section-content backing lists.

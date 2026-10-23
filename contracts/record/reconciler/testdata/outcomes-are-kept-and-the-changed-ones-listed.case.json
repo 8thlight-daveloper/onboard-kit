@@ -240,7 +240,9 @@
     },
     "reconciliation": {
       "changedOutcomes": [
+        "a",
         "b",
+        "c",
         "f",
         "g"
       ]

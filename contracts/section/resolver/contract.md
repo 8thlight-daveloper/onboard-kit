@@ -33,7 +33,7 @@ A `$name` is filled in these fields, and only in these.
 
 These are left as held, even when they hold `$`.
 
-- Names and identifiers: `id`, `parent`, `timing`, `after`, and a step's `id` and `timing`. A `parent` is the id of another section of the plan, as [0070](../../../docs/decisions/0070-sub-sections.md) says. The resolver keeps it as held, even when it holds `$`, and does not look for the section it names.
+- Names and identifiers: `id`, `parent`, `timing`, `after`, `requires`, and a step's `id` and `timing`. A `parent` is the id of another section of the plan, as [0070](../../../docs/decisions/0070-sub-sections.md) says. The resolver keeps it as held, even when it holds `$`, and does not look for the section it names.
 - `escalation` on a section and on a step. Its items name variables and are not text.
 - The keys of a step's `env`, and a check's `env`, which is a variable name.
 - `includeIf`, and every part of every variable the section declares: its description, example, default, options, pattern, hint, and `askIf`. A declaration is not resolved.
@@ -218,6 +218,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop, reorder, resolve placeholders in Requires, or share its backing list | [Requires preservation and isolation](requires_test.go) |
 | A stored answer changes when a suggestion changes, a deferred suggestion becomes an answer, or a suggestion replaces an unknown directory id | `TestOnlyStoredAnswersResolveRegardlessOfSuggestions`, from 0035, 0045, 0055, and 0120, across every variable type and both audiences |
 | A gap omits its audience, or an omitted audience is not normalized to onboarder | The fixture problem assertions and `TestOnlyStoredAnswersResolveRegardlessOfSuggestions`, from 0055 |
 | A three-character name is skipped, a short run is filled from undeclared answers, or a longer name is truncated to a declared prefix | `TestShortRunsAreLiteralAndThreeCharacterNamesResolve`, from 0040 and Reading the text, in prose and command arguments |
@@ -284,3 +285,12 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
 the source for the independently specified [preservation tests](bootstrap_test.go).
 Resolving text preserves the section's held Bootstrap value, whether true or false, while carrying out the real answer substitution. Never infer the marker from answers or mutate it during resolution.
+
+## Requires preservation
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supplies
+the source for [Requires tests](requires_test.go). Requires holds identifiers,
+not prose: keep every exact item, order and repeat, including dollar signs.
+Do not resolve it from answers or infer it from After. Preserve Bootstrap while
+performing actual prose substitution. The existing nothing-shared promise
+includes Requires in both directions.

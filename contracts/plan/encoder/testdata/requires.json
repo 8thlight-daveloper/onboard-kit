@@ -1,0 +1,38 @@
+[
+  {
+    "name": "canonical-after-requires-owner-with-bootstrap",
+    "source": "ADR0260 independent After/Requires lists and Requires key after After before Owner; ADR0250 marker preserved; encoder canonical block lists",
+    "input": {"schemaVersion": 1, "sections": [{"id": "access", "bootstrap": true, "after": ["legacy", "legacy"], "requires": ["b", "a", "b", " A ", "", "deferred", "true", "123", "$item"], "owner": "lead"}]},
+    "output": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: true\n    after:\n      - legacy\n      - legacy\n    requires:\n      - b\n      - a\n      - b\n      - \" A \"\n      - \"\"\n      - \"deferred\"\n      - \"true\"\n      - \"123\"\n      - $item\n    owner: lead\n"
+  },
+  {
+    "name": "requires-only-section-is-not-empty",
+    "source": "ADR0260 new known list content; encoder empty-item only when no key would be written",
+    "input": {"schemaVersion": 1, "sections": [{"requires": ["missing"]}]},
+    "output": "schemaVersion: 1\nsections:\n  - requires:\n      - missing\n"
+  },
+  {
+    "name": "empty-requires-omitted-independently",
+    "source": "ADR0260 optional Requires absent or empty is omitted without manufacturing it from After",
+    "input": {"schemaVersion": 1, "sections": [{"id": "a", "requires": [], "after": ["legacy"]}, {"id": "b"}]},
+    "output": "schemaVersion: 1\nsections:\n  - id: a\n    after:\n      - legacy\n  - id: b\n"
+  },
+  {
+    "name": "root-and-case-variants-unknown",
+    "source": "ADR0260 exact lowercase section key only; encoder unknown fields follow known fields and compare by bytes",
+    "input": {"schemaVersion": 1, "unknownFields": {"requires": ["root"]}, "sections": [{"id": "access", "requires": ["setup"], "unknownFields": {"Requires": ["upper"]}}]},
+    "output": "schemaVersion: 1\nsections:\n  - id: access\n    requires:\n      - setup\n    Requires:\n      - upper\nrequires:\n  - root\n"
+  },
+  {
+    "name": "zero-held-scalar-collision",
+    "source": "ADR0260 Requires reserved even when held list absent; colliding unknown value not traversed",
+    "input": {"schemaVersion": 1, "sections": [{"id": "access", "unknownFields": {"requires": "held"}}]},
+    "problems": [{"code": "encode.unknown-field-collision", "path": "sections[0].requires"}]
+  },
+  {
+    "name": "nonempty-held-collision",
+    "source": "ADR0260 known Requires key cannot also be unknown data",
+    "input": {"schemaVersion": 1, "sections": [{"id": "access", "requires": ["a"], "unknownFields": {"requires": ["b"]}}]},
+    "problems": [{"code": "encode.unknown-field-collision", "path": "sections[0].requires"}]
+  }
+]

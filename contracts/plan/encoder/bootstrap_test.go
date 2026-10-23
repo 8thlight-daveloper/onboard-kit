@@ -13,16 +13,21 @@ import (
 
 func TestBootstrapEncoding(t *testing.T) {
 	t.Parallel()
+	testSectionFieldEncoding(t, "bootstrap.json")
+}
+
+func testSectionFieldEncoding(t *testing.T, fixture string) {
+	t.Helper()
 	var cases []struct {
 		Name, Source, Output string
 		Input                json.RawMessage
 		Problems             []expectedProblem
 	}
-	if err := json.Unmarshal(readFixture(t, "bootstrap.json"), &cases); err != nil {
+	if err := json.Unmarshal(readFixture(t, fixture), &cases); err != nil {
 		t.Fatal(err)
 	}
 	if len(cases) == 0 {
-		t.Fatal("empty bootstrap manifest")
+		t.Fatal("empty section field manifest")
 	}
 	for _, c := range cases {
 		t.Run(c.Name, func(t *testing.T) {

@@ -29,7 +29,7 @@ The known keys at each level. A key not listed is unknown.
 
 | Level | Keys |
 | -- | -- |
-| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
+| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `requires`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause, question form | `question`, `answer` |
@@ -176,12 +176,25 @@ template marker only.
 The [bootstrap fixtures](testdata/bootstrap.json) and [tests](bootstrap_test.go)
 pin representational reading independently of product implementation.
 
+## Requires
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) makes
+requires a known optional template list of strings, read into Requires.
+Apply the decoder's Requires list rules at template-relative paths: keep exact
+text, list order and repetitions, and read absent, null, empty values and empty
+lists as nil. Do not convert After, resolve placeholders or validate the
+referenced sections. Case variants and a step's requires remain unknown keys.
+Each raw repeated key is an error even when values agree. Independent
+[fixtures](testdata/requires.json) and [tests](requires_test.go) pin the reading,
+all-item guards, problem paths/order, separate-result isolation and state reuse.
+
 ## Wrong implementations tried
 
 Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Ignore Requires, sort or deduplicate it, convert After, skip list/item guards, or accept a raw repeated key | [Requires fixtures](testdata/requires.json) and [tests](requires_test.go) |
 | Skip an anchor check on the root mapping or the supported schemaVersion value | anchored root and version [bootstrap fixtures](testdata/bootstrap.json) |
 | Drop the known Bootstrap value or accept quoted true as a boolean | [bootstrap fixtures](testdata/bootstrap.json) |
 | An unknown key kept or ignored at the top level, or only below it, or only at the top | `unknown-field-top`, `unknown-field-everywhere`, `unknown-field-repeated`, `many-problems` |
