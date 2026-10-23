@@ -25,7 +25,9 @@ subprocess, repository discovery, working-directory change, or model run.
 
 Operations are `init`, `show`, `recipient`, `arrangement`, and `remove`. Each
 requires `--plan FILE` and `--account ID`; `--root DIR` defaults to `.`. Support
-`--flag value` and `--flag=value`, including explicitly empty values. Flag
+`--flag value` and `--flag=value`, including explicitly empty values. Values
+beginning `--` require the equals spelling, such as `--name=--literal`; in the
+separate spelling a following `--` token is a missing-value usage error. Flag
 names are exact. Unknown operations, flags, positional arguments, missing flag
 values, or missing required nonempty plan/account/root values are usage errors.
 An account with invalid identity syntax is a data error. Repeated scalar or
@@ -34,6 +36,8 @@ boolean flags are usage errors, even when their values agree. Repeated
 filesystem effects. An initial `--help` returns 0 with fixed usage text on
 stdout, empty stderr, and no filesystem reads or writes. Each known operation
 also accepts `--help` immediately after its name with the same behavior.
+These help forms take precedence over remaining tokens; they inspect no files
+and do not display supplied argument values.
 
 Recipient flags are `--name`, `--company-email`, `--planned-start-date`,
 `--team`, `--manager`, `--onboarding-owner`, `--buddy`, `--work-location`, and
@@ -116,7 +120,8 @@ support output; diagnostic privacy rules still apply to errors.
 
 ## Filesystem effects
 
-Root must already be a real directory, never a symlink. Every preparation
+Root must already be a real directory, never a symlink. Trailing separators
+must not make a symlink root acceptable. Every preparation
 component, and each record component used by show, must be nonsymlink; final
 existing artifacts must be regular files. Plan must be regular and its final
 pathname nonsymlink. Use a rooted filesystem capability so concurrent symlink

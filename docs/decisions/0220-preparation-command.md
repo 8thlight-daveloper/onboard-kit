@@ -36,15 +36,18 @@ clear-contacts flag clears it; using that flag together with contacts is an
 error. Accept that action flag bare or with exactly =true; reject =false instead
 of silently saving a no-op. An arrangement's id selects exact replacement in
 place or append; it is not a position or display title. Remove requires an
-explicitly supplied id and
-may remove a unique malformed empty id as allowed by 0190. No edit infers a
+explicitly supplied id and may remove a unique malformed empty id as allowed by
+0190\. No edit infers a
 kind, status, helper, date, answer, or completion.
 
 Reject repeated scalar or boolean flags, even with matching values. Contact is
 the only repeatable flag. In particular, two account or root flags must not
-silently select the last person's destination. Help returns success without
-reading or writing artifacts. Reject unknown flags, operations, and positional
-arguments without echoing their values.
+silently select the last person's destination. Values beginning with two hyphens
+require the equals spelling, such as --name=--literal, so a missing value is not
+silently interpreted as the next flag's name. Initial help, or help immediately
+after a known operation, takes precedence over remaining tokens and returns
+success without reading or writing artifacts. Outside those help forms, reject
+unknown flags, operations, and positional arguments without echoing their values.
 
 Use the typed editor's identity and duplicate guards and scoped repair rules.
 An edit may succeed while unrelated stale references remain; do not label that

@@ -456,7 +456,7 @@ func TestCustomPathsAndTwoPeople(t *testing.T) {
 
 func TestSymlinkBoundaries(t *testing.T) {
 	t.Parallel()
-	for _, target := range []string{"root", "plan", "records", "person", "preparation", "record"} {
+	for _, target := range []string{"root", "root-trailing-slash", "plan", "records", "person", "preparation", "record"} {
 		t.Run(target, func(t *testing.T) {
 			t.Parallel()
 			w := setup(t, false)
@@ -466,9 +466,12 @@ func TestSymlinkBoundaries(t *testing.T) {
 			link := ""
 			destination := outside
 			switch target {
-			case "root":
+			case "root", "root-trailing-slash":
 				link = filepath.Join(t.TempDir(), "root-link")
 				w.root = link
+				if target == "root-trailing-slash" {
+					w.root += string(os.PathSeparator)
+				}
 			case "plan":
 				link = filepath.Join(t.TempDir(), "plan-link")
 				destination = w.plan
@@ -687,9 +690,23 @@ func TestOutputFailureRetainsPublishedEdit(t *testing.T) {
 	unchanged(t, w.preparation(), before)
 }
 
+func TestFlagLookingTextRequiresEquals(t *testing.T) {
+	t.Parallel()
+	w := setup(t, true)
+	command := newCommand()
+	before := read(t, w.preparation())
+	run(t, command, w.args("recipient", "--name", "--literal"), 2)
+	unchanged(t, w.preparation(), before)
+	writeSuccess(t, command, w.args("recipient", "--name=--literal"))
+	view := object(t, run(t, command, w.args("show"), 0))
+	if view["recipient"].(map[string]any)["name"] != "--literal" {
+		t.Fatal("equals spelling lost the literal flag-looking value")
+	}
+}
+
 func TestHelpNeedsNoFilesystem(t *testing.T) {
 	t.Parallel()
-	for _, args := range [][]string{{"--help"}, {"init", "--help"}, {"show", "--help"}, {"recipient", "--help"}, {"arrangement", "--help"}, {"remove", "--help"}} {
+	for _, args := range [][]string{{"--help"}, {"init", "--help"}, {"show", "--help"}, {"recipient", "--help"}, {"arrangement", "--help"}, {"remove", "--help"}, {"--help", "--unknown", "PRIVATE-SENTINEL"}, {"show", "--help", "--account", "PRIVATE-SENTINEL"}} {
 		output := run(t, newCommand(), args, 0)
 		for _, word := range []string{"--plan", "--account"} {
 			if !strings.Contains(output, word) {
