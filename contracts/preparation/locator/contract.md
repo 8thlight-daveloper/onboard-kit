@@ -115,6 +115,11 @@ cases supply invalid UTF-8, which JSON cannot represent. [wire_test.go](wire_tes
 binds only to the independently authored component's New constructor. A rebuild
 first runs these tests against an empty stub; every output fixture must fail.
 
+The serial allocation probe rejects a template whose expansion would exceed
+32 MiB while allowing less than 8 MiB of working allocation. This independently
+checks preflight rejection without asking an intentionally broken implementation
+to allocate gigabytes during mutation testing.
+
 The contract does not implement preparation editing, readiness, archive entry
 selection, root selection, file ownership checks, or any filesystem write.
 Those boundaries need their own contracts and binary acceptance scenarios.
@@ -137,6 +142,9 @@ Those boundaries need their own contracts and binary acceptance scenarios.
 | Allow an unsupported token beside the known token | unsupported-placeholder-with-account |
 | Check collision case-sensitively or before substitution | collision-uppercase, collision-after-substitution |
 | Inspect path before rejecting account | account-guard-before-path |
+| Skip the second account character or exclude valid ASCII endpoints | invalid-second-account-character, uppercase-interior-account, uppercase-last-account, last-digit-account |
+| Reject a prefix or same-length nonmatching sibling name | sibling-prefix-is-not-collision, same-length-name-before-sibling, same-length-name-after-sibling |
 | Accept invalid UTF-8 as replacement characters | TestInvalidUTF8 |
 | Count runes, permit only one oversized sibling, or amplify before checking | TestExpandedPathBudget |
+| Expand oversized paths and only then report the length error | TestRejectsAmplificationBeforeAllocation |
 | Share diagnostic maps or keep a previous account | TestDiagnosticsDoNotShareState, TestCallsDoNotKeepAccountOrPath |

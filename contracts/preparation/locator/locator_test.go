@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -195,8 +196,8 @@ func TestExpandedPathBudget(t *testing.T) {
 			ResultsPath: "{account}/" + strings.Repeat("é", 2048), Account: "a", Problems: tooLong,
 		},
 		{
-			Name: "bounded-input-rejects-four-gib-expansion", Source: "docs/decisions/0210-person-specific-preparation-paths.md; contract.md#resolution-phases",
-			ResultsPath: strings.Repeat("{account}", 4096) + "/record", Account: strings.Repeat("a", 1024*1024), Problems: tooLong,
+			Name: "bounded-input-rejects-amplification", Source: "docs/decisions/0210-person-specific-preparation-paths.md; contract.md#resolution-phases",
+			ResultsPath: strings.Repeat("{account}", 4096) + "/record", Account: strings.Repeat("a", 8192), Problems: tooLong,
 		},
 		{
 			Name: "syntax-before-budget", Source: "contract.md#resolution-phases",
@@ -220,5 +221,23 @@ func TestExpandedPathBudget(t *testing.T) {
 			}
 			checkProblems(t, problems, f.Problems)
 		})
+	}
+}
+
+func TestRejectsAmplificationBeforeAllocation(t *testing.T) {
+	resultsPath := strings.Repeat("{account}", 4096) + "/record"
+	account := strings.Repeat("a", 8192)
+	locator := newLocator()
+	runtime.GC()
+	var before, after runtime.MemStats
+	runtime.ReadMemStats(&before)
+	paths, problems := locator.Locate(resultsPath, account)
+	runtime.ReadMemStats(&after)
+	if paths != (contract.Paths{}) {
+		t.Error("returned paths after exceeding the expansion budget")
+	}
+	checkProblems(t, problems, []expectedProblem{{Code: "preparation.path-too-long", Path: "resultsPath"}})
+	if allocated := after.TotalAlloc - before.TotalAlloc; allocated > 8*1024*1024 {
+		t.Errorf("rejection allocated %d bytes; expansion must be rejected before constructing the paths", allocated)
 	}
 }
