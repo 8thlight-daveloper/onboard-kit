@@ -50,8 +50,8 @@ func fixtures(t *testing.T) []fixture {
 	if err := decoder.Decode(&cases); err != nil {
 		t.Fatal(err)
 	}
-	if len(cases) != 14 {
-		t.Fatal("expected fourteen independently sourced reviewer cases")
+	if len(cases) != 15 {
+		t.Fatal("expected fifteen independently sourced reviewer cases")
 	}
 	seen := make(map[string]bool)
 	for _, c := range cases {

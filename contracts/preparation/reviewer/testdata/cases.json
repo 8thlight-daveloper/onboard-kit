@@ -822,5 +822,33 @@
     "onboarderBlockers": [],
     "golden": "minimal.md",
     "firstStepsProblems": []
+  },
+  {
+    "name": "single-version-problem-stops-before-blockers-and-help",
+    "source": "ADR0330 phase1 stops on any preparation problem; contracts/preparation/validator/contract.md validation phase1 reports only preparation.version at schemaVersion for unsupported versions; question finder onboarder blocker and firststeps invalid-help inputs are later-phase controls, not expected calls",
+    "context": {
+      "account": "newcomer",
+      "generalHelp": [
+        {"kind": "contact", "id": "PRIVATE unknown help"}
+      ]
+    },
+    "plan": {
+      "id": "planone",
+      "variables": [
+        {"name": "required_route", "required": true, "audience": "onboarder"}
+      ]
+    },
+    "preparation": {
+      "schemaVersion": 2,
+      "kind": "preparation",
+      "account": "newcomer",
+      "planId": "planone"
+    },
+    "preparationProblems": [
+      {"code": "preparation.version", "severity": "error", "path": "schemaVersion"}
+    ],
+    "onboarderBlockers": [],
+    "golden": "",
+    "firstStepsProblems": []
   }
 ]
