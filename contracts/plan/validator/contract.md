@@ -4,19 +4,19 @@ Status: draft by an agent. Not reviewed by a person. Component: `plan/validator`
 
 The plan validator checks whether the answers in a plan are acceptable. `Validate` checks every answer stored in a plan, for example after a hand edit. `CheckValue` checks one proposed value for one question, so the editor can refuse a bad answer before it applies it. Both are pure functions. They read no file, keep no state between calls, and change no argument. See [0080](../../../docs/decisions/0080-directory.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and the [variables reference](../../../docs/reference/section-template-schema/variables.md).
 
-This contract covers the answer checks, directory integrity, duplicate section ids, duplicate variable names, duplicate step ids, and more than one team variable. See [0110](../../../docs/decisions/0110-reject-ambiguous-plans.md) for the ambiguity rule. The checks between sections (references, `after`, cycles, timing, conditions) and the call to the section validator are other work, and they report other codes. A caller of `Validate` gets all of them in one list, and this contract judges only the problems whose code starts with `answer.`, `secret.`, or `directory.`, and the codes `plan.duplicate-section-id`, `plan.duplicate-team-variable`, `plan.duplicate-variable-name`, and `plan.duplicate-step-id`.
+This contract covers the answer checks, directory integrity, duplicate section ids, duplicate variable names, duplicate step ids, more than one team variable, and the delegated structural checks under [0260](../../../docs/decisions/0260-prerequisites-and-action-order.md). See [0110](../../../docs/decisions/0110-reject-ambiguous-plans.md) for the ambiguity rule. Parent, Requires, Bootstrap closure, effective After, and combined ordering diagnostics are delegated to the real [plan structure validator](../structurevalidator/contract.md). Condition-reference legality and the call to the section validator remain separate work; this increment does not add those checks. A caller of `Validate` gets all of them in one list, and this contract judges only the problems whose code starts with `answer.`, `secret.`, or `directory.`, the codes `plan.duplicate-section-id`, `plan.duplicate-team-variable`, `plan.duplicate-variable-name`, and `plan.duplicate-step-id`, and the twelve additional structure codes listed below.
 
 ## Interface
 
 `Validate(plan) -> list of Problem` and `CheckValue(plan, question, value) -> list of Problem`.
 
-- `plan` is a Plan, as stored. The validator reads `plan.Directory`, `plan.Variables`, `plan.Answers`, and `plan.Sections` (each section's `id`, `enabled`, `includeIf`, `timing`, `after`, `variables`, and step `id` values). It reads no other field.
+- `plan` is a Plan, as stored. The validator reads `plan.Directory`, `plan.Variables`, `plan.Answers`, and `plan.Sections` (each section's `id`, `parent`, `requires`, `bootstrap`, `enabled`, `includeIf`, `timing`, `after`, `variables`, and step `id` values). It reads no other field.
 - `question` is a question id, `<scope>.<name>`, such as `plan.team_state` or `access.repo_url`. It is split at the first dot. Any text is accepted, and an id that names nothing gives a problem. A name may be empty, so `main.` names a variable with an empty name. An id with no dot names nothing, even when its text is the scope of a variable with an empty name. The scope `plan` always means the plan's own variables, even when a section has the id `plan`, and such a question has no `section`.
 - `value` is a Value, as a person or a driver would submit it. A value of no kind is allowed and is treated as unanswered.
 - `CheckValue` reads the directory only to look up the ids a value names. It never reports a problem about the directory itself or about the plan as a whole.
 - Both results are empty when nothing is wrong. There is no error return.
 
-**Where the other components come from.** [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) puts the validator after the question finder and the secrets check and lets it depend on both. `New()` takes no argument, so the validator uses the real components. It asks the finder for the active questions of the plan, for both audiences, and the secrets check for each text. The expected problems in the fixtures therefore rest on the [finder contract](../../question/finder/contract.md) and the [secrets contract](../../secrets/contract.md), and they use only what those contracts fix.
+**Where the other components come from.** [0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md) puts the validator after the question finder and the secrets check. Under 0260 its position is 4 and it additionally depends on the real plan structure validator at position 1, alongside model and its own contract. `New()` takes no argument, so the validator uses the real components. It asks the finder for the active questions of the plan, for both audiences, and the secrets check for each text. The expected problems in the fixtures therefore rest on the [finder contract](../../question/finder/contract.md) and the [secrets contract](../../secrets/contract.md), and they use only what those contracts fix.
 
 ## Rules
 
@@ -35,7 +35,7 @@ pattern, or directory checks.
 
 **Plan-wide and directory checks in `Validate`.** These do not depend on the answers or on which questions are active, and none of their problems has a `question`.
 
-1. Two or more sections with the same `id` give one `plan.duplicate-section-id` for that id, however many sections share it. What the answer checks do for the questions of such sections is not specified.
+1. The real structure validator supplies exactly one `plan.duplicate-section-id` per duplicated ID. Do not also run a local duplicate-section reporter and emit it twice. Its duplicate-only phase suppresses graph resolution only; it does not suppress independent directory, variable/step identity, answer, or secrets checks here. What answer checks do for the questions of duplicate-ID sections stays unspecified.
 2. Two or more variables of type `team` in `plan.variables` give one `plan.duplicate-team-variable` for the plan, however many there are. A `team` variable in a section does not count, and neither do variables of other types.
 3. Two or more entries of one directory list that share an id give one `directory.duplicate-id` for that list and id, however many entries share it. The three lists are separate: a contact, a role, and a team may share an id.
 4. Each holder id in a role's `holders` that is not the id of a contact gives `directory.holder-not-a-contact`. So does each holder id in each list of a team's `holders`. A holder id is compared exactly, with case, and a role id is not a contact id. A team whose `contact` is not empty and is not the id of a contact also gives this code, once for the team, with the detail `team-contact` in place of `holder`. The same exact comparison applies, so a role id, a team id, a different case, and a text of only spaces are not contacts. A team with no `contact`, or an empty one, is fine, and a team's `contact` never counts as one of its holders. A wrong `contact` and a wrong holder of the same team are two problems.
@@ -86,6 +86,43 @@ For a given active, unambiguous question and a given value, `CheckValue` gives t
 
 **Secrets.** The secrets check runs on the stored or submitted value, whatever the question's type and whatever the answer checks said, unless the value is of no kind. It runs on text and on each list item, as the [secrets contract](../../secrets/contract.md) says. Its problems come through with its `code`, `severity`, `message`, and `detail` as they are, and the validator fills in `question` and `section`. A secrets problem is an `error`. No problem repeats the secret or a part of it.
 
+## Delegated section structure
+
+Validate calls the actual structure validator on the complete original plan,
+before any applicability filtering. It preserves every structural diagnostic's
+code, severity, Question, Section, fixed repair message, and exact detail keys.
+The compact JSON members field is compared by decoded exact member IDs, with
+the same allowed escaping, validity, compactness and deterministic-output rules.
+Do not copy its graph algorithm or rely on the selector's defensive tie-breaks
+to declare a bad authored graph valid.
+
+The thirteen structural codes are plan.duplicate-section-id,
+plan.parent-unknown, plan.parent-self, plan.parent-cycle,
+plan.requires-unknown, plan.requires-self, plan.requires-cycle,
+plan.bootstrap-requires-nonbootstrap, plan.after-unknown, plan.after-self,
+plan.after-cycle, plan.bootstrap-after-nonbootstrap, and plan.ordering-conflict.
+Their diagnostics are exactly the structure contract's; this wrapper supplies
+no alternate Parent/After/Requires/timing diagnostic for the same relationship.
+Only effective sibling/same-timing After edges constrain graphs. Cross-group
+legacy hints remain inert, and a later-target prerequisite is not a timing error.
+
+Merge those problems with the existing independent checks, not a global
+short-circuit on any structural error. Duplicate-section ambiguity stops graph
+reference checking, but independent plan-variable answers and directory checks
+still report as before. This does not decide a declaration winner for answers
+under duplicate section IDs. No changes to variable/step identity scopes,
+duplicate-question refusal, condition semantics, type/options/pattern checks,
+directory integrity, secret checks, warnings, or hidden-answer handling are
+authorized by this delegation.
+
+CheckValue remains a local proposed-answer operation. It does not return
+plan-wide structural diagnostics, duplicate-section errors, or directory-wide
+warnings in addition to the existing local result. Existing finder activity
+still applies: Requires inactivity can make a declared question inactive under
+0260, while the unchanged full-plan Validate rule still scans every stored
+answer for secrets. This is applicability integration, not prerequisite outcome
+verification. A verified/failed/deferred outcome is never read here.
+
 ## The problems
 
 | Code | Severity | When | Detail |
@@ -127,6 +164,7 @@ Every problem has a non-empty `message` for a person. The wording is not specifi
 | `directory.role-vacant` | `role` |
 | `directory.team-role-unknown` | `team`, `role` |
 | `plan.duplicate-section-id` | `section` |
+| The twelve additional structure codes | `section`, then `field`, numeric `item` (absent first), then decoded `members`, as the structure contract specifies |
 | `plan.duplicate-team-variable` | none, there is one |
 | `plan.duplicate-variable-name` | `scope`, `name` |
 | `plan.duplicate-step-id` | `section`, `step` |
@@ -161,7 +199,7 @@ None. It reads the plan's directory, variables, answers, and the content of the 
 
 ## Not covered
 
-- Which problems `Validate` adds once the checks between sections and the section validator exist. Their codes are not the ones this contract judges.
+- Remaining nonstructural cross-section condition checks and section-template validation. Their future codes are not activated by this delegation; the thirteen structural codes above are judged now.
 - A required question with no answer. It is a blocker.
 - Whether a variable's `default` fits the type, options, and pattern. The section validator reports it.
 - A pattern that does not compile, a `type` that is none of the known types, and options listed for a `choice` that has none.
@@ -210,7 +248,7 @@ None. It reads the plan's directory, variables, answers, and the content of the 
 28. **`directory.unknown-id` never repeats the id in its message or its detail.** Its detail holds `kind` and, for a list, `item`. Raised by the rule that no problem repeats a secret, since an answer to a contact question may hold one. Cases: `directory-answers`, `directory-check-value`. `cheap`
 29. **An email is malformed when it is not empty and has no `@` or a space (U+0020), and a contact is unreachable when email, slack, and slackId are all empty.** A malformed email still makes a contact reachable. Raised by "an email with no `@` or with a space" and "a contact with no way to reach them" in 0080. Case: `directory-warnings`. `cheap`
 30. **A role whose holders all name no contact is not vacant, and a holder id is compared exactly.** The holders are an error already, so a second problem would repeat it. Holders under a team key for a role that does not exist are still checked. Raised by "a holder that is not a contact" in 0080. Case: `directory-holders`. `cheap`
-31. **A duplicated section id gives one `plan.duplicate-section-id` for the id, with the id in `section`.** Raised by "ids are unique within the plan" in 0075. Case: `duplicate-sections`. `cheap`
+31. **A duplicated section id gives one `plan.duplicate-section-id` for the id, with the id in `section`.** Raised by "ids are unique within the plan" in 0075. Cases: `duplicate-sections` and the delegated structure fixture family. Its diagnostic now comes from the actual structure validator, without a second local report. `cheap`
 32. **A list for a `multiple` string or `choice` is not judged against the options or the pattern.** The code reads text only there, and the contract never said what a list does. Raised by "The allowed values of a `choice`" and "A regular expression a `string` must match" in variables.md, which speak of one value, and by lint rejecting `multiple` on these types. Cases: `choice-options`, `patterns`. `hard`
 33. **The scope `plan` is the plan's own variables, and an id with no dot is unknown.** The id is read as written. Raised by "It is split at the first dot" in the Interface. Case: `question-ids`. `cheap`
 
@@ -280,3 +318,30 @@ Each row names a plausible wrong implementation and the cases or tests that fail
 | Duplicate variable problems keep declaration order or sort by name before scope | `TestDuplicateVariableNamesSortWithinScopes`, `duplicate-identities` |
 | A first or last declaration supplies answer checks, or a submitted secret is scanned before ambiguity is refused | `TestDuplicateDeclarationsHaveNoWinner` |
 | Step ids are globally unique, empty ids count as duplicates, ordinary repeated strings are rejected, or one error is reported per extra step | `TestStepIdentityNamespaces` |
+
+## Structural fixture provenance and wrong adapters
+
+[structure-delegation.json](testdata/structure-delegation.json) copies the
+independent literal structural oracles from the structure validator's data.
+No expected problem is obtained by calling
+that implementation. Existing answer/directory/secrets/identity fixture files
+and expected lists are unchanged. The old fixture family has no Parent, After,
+or Requires relationships, so no legacy timing golden is manufactured or removed.
+
+[Delegation tests](structure_test.go) judge structural codes exactly, including
+fixed messages and semantic compact member arrays. They test all-off plans,
+section permutations, independent-check composition, local CheckValue behavior,
+valid legacy timing controls, state, input preservation and result isolation.
+The existing wrapper filter gains exactly the twelve missing structural codes,
+retaining all four old identity codes and every original test assertion.
+
+The following wrong adapters describe the intended rejection boundary.
+
+| Wrong implementation | Intended rejection |
+| -- | -- |
+| Omit real structural delegation, validate only active nodes, or retain old timing errors | Structural fixture family, all-off variants, fully formed valid timing controls |
+| Report local and delegated duplicate errors twice, or globally stop all checks on duplicates | Duplicate-only graph plus independent answer/directory composition test |
+| Hide structural codes in an old answer-only test filter or alter their messages/details | Exact code family, literal structural oracle and updated wrapper filter |
+| Add structural errors to CheckValue | Local proposed-answer controls on structurally invalid plans |
+| Count prerequisite completion instead of applicability, or skip secrets in newly inactive questions | Requires-inactive question and stored-secret controls |
+| Mutate lists or cache shared problem detail maps | Purity/permutation/reused-instance/result-isolation tests |

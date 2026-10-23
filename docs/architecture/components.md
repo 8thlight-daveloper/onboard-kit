@@ -4,7 +4,9 @@ Status: accepted
 
 The parts of the tool, and which may depend on which. Each component has one responsibility and can be deleted and rebuilt from its contract. The rules and the full responsibilities are in [0020](../decisions/0020-binary-structure-and-regenerative-components.md). Terms are in the [glossary](../glossary.md).
 
-Arrows point from a component to what it depends on. Every component also depends on the domain model, which is left out of the diagram.
+Arrows point from a component to what it depends on, including planned
+dependencies. The responsibility tables identify pending work. Every component
+also depends on the domain model, which is left out of the diagram.
 
 ```mermaid
 flowchart TB
@@ -20,6 +22,7 @@ flowchart TB
     subgraph core["Core components"]
         finder["Question finder"]
         validator["Plan validator"]
+        structurevalidator["Plan structure validator"]
         editor["Plan editor"]
         assembler["Document assembler"]
         instantiator["Plan instantiator"]
@@ -34,6 +37,7 @@ flowchart TB
         reconciler["Record reconciler"]
         loader["Section loader"]
         selector["Section selector"]
+        scheduler["Section scheduler"]
         evaluator["Condition evaluator"]
         resolver["Section resolver"]
         hasher["Section hasher"]
@@ -59,12 +63,16 @@ flowchart TB
     finder --> selector
     finder --> evaluator
     selector --> evaluator
+    scheduler --> structurevalidator
+    scheduler --> selector
+    validator --> structurevalidator
     validator --> finder
     validator --> sectionvalidator
     validator --> secrets
     editor --> finder
     editor --> validator
     assembler --> selector
+    assembler --> scheduler
     assembler --> resolver
     instantiator --> hasher
     reconciler --> hasher
@@ -86,12 +94,12 @@ flowchart TB
 | Component | Does |
 | -- | -- |
 | Question finder | Finds a plan's active questions, one per section variable plus with their answers, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
-| Plan validator | Checks whether a plan's answers are acceptable: type, options, pattern, and the secrets check. Checks directory integrity and duplicate section IDs, variable names within each scope, nonempty step IDs within each section, and plan team declarations. Reads step IDs for that identity check. Checks each section's structure by calling the section validator, and the relations between sections: references to other sections' questions, `after` references, dependency and condition cycles, and timing conflicts |
-| Plan structure validator | Reports duplicate section identities, invalid Parent/Requires/After references, true graph cycles, impossible combined ordering, and contradictory bootstrap claims. Checks complete declarations before activity filtering; returns problems only. Runtime composition remains pending |
+| Plan validator | Checks answers, directory integrity, local variable/step/team identities, and all stored answers for secrets. Delegates complete declared section relationships to the real plan structure validator before applicability filtering; merges independent diagnostics without a global short circuit. CheckValue remains local. Condition-reference legality and section-template validation remain pending |
+| Plan structure validator | Reports duplicate section identities, invalid Parent/Requires/After references, true graph cycles, impossible combined ordering, and contradictory bootstrap claims. Checks complete declarations before activity filtering; returns problems only |
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, check shapes, and `escalation` references, with warnings for thin contacts and single points of failure. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied, one section's switch changed, or one directory entry added, changed, or removed. An answer changes only `answers`, a switch only that section's `enabled`, and a directory edit only the directory. Removing an entry also clears the answers and holder entries that named it, and reports them. The plan it was given is not altered |
-| Document assembler | Turns a plan into a document in an output style, with a gap table and the review marker. The bootstrap projection of [0250](../decisions/0250-bootstrap-content-and-projection.md) uses full-plan selection and resolution context, returning only marked active content; implementation pending |
+| Document assembler | Renders ordinary grouped reference documents with explicit prerequisites, gap table and review marker. Its bootstrap operation validates and schedules the full original plan, then renders only marked activities as flat contextual fragments. Both operations share section and gap formatting under [0260](../decisions/0260-prerequisites-and-action-order.md); first-steps driver integration remains pending |
 | Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
 | Plan refresher | Brings a personal plan up to date with a newer org plan, by a three-way comparison of the cached org plan, the new org plan, and the personal plan. Returns the new personal plan and a report of what changed |
 | Plan migrator | Deferred until the first breaking schema change. Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
@@ -112,6 +120,7 @@ flowchart TB
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
+| Section scheduler | Validates all declared relationships, selects from the full original plan, and returns active activities in global prerequisite action order. Goals break ties between free activities, never override prerequisites or gate progress. Reads no outcomes and performs no writes |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers, and fills `contact`, `role`, and `team` variables from the directory and the answered team |
 | Section hasher | Computes the content hash recorded in a section's `source` |
@@ -132,6 +141,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `plan/structurevalidator` | None. Reads only section ID, Parent, Requires, After, Bootstrap, and Timing; returns fresh problems without changing any plan field |
+| `section/scheduler` | None. Reads original section relationships, activity gates, answers, and held section values; returns copied action-order slots and fresh diagnostics without plan writes |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
 | `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
@@ -158,6 +168,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `plan/validator` |  |  |  |  | R | R | R | R |  |
 | `plan/structurevalidator` |  |  |  |  |  |  |  | R |  |
 | `section/selector` |  |  |  |  |  |  | R | R |  |
+| `section/scheduler` |  |  |  |  |  |  | R | R |  |
 | `section/resolver` |  |  |  |  | R |  | R | R |  |
 | `section/hasher` |  |  |  |  |  |  |  | R |  |
 | `section/validator` |  |  |  |  |  |  |  | R |  |
@@ -172,8 +183,8 @@ A person editing a plan by hand can change anything, and the plan validator chec
 
 [0260](../decisions/0260-prerequisites-and-action-order.md) and
 [0270](../decisions/0270-outcome-definition-hashes.md) define the following
-target boundaries. These are implementation plans, not claims that the new
-components or contract changes already exist. Existing behavior remains governed
+target boundaries. The table includes implemented components and remaining
+targets; the status below distinguishes them. Existing behavior remains governed
 by each current contract until its independently tested replacement is integrated.
 
 | Component | Planned reads | Planned writes or returns | Position and project dependencies |
@@ -191,12 +202,14 @@ The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held
 Source.Hash comparison without changing the original template baseline. The
 plan structure validator has a contract and independent implementation at
-position 1, with only the model as a project dependency. Runtime composition
-through the plan validator and scheduler remains pending. The section selector
+position 1, with only the model as a project dependency. The plan validator
+now delegates declared relationships at position 4. The section scheduler at
+position 3 uses the real structure validator and selector; the document
+assembler at position 4 uses it for bootstrap fragments. The section selector
 now applies Parent/Requires cascading against original answer and switch context,
-without adding verification gates or changing grouped reference order. Runtime
-recording integration remains pending. Requires format
-preservation precedes structural and runtime builds. No core component here
+without adding verification gates or changing grouped reference order. The
+record-backed walkthrough and outcome writes remain pending. Requires format
+preservation underlies the structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.
 
 ### Current rules

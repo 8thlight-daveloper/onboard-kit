@@ -69,9 +69,12 @@ the editors' responsibility, not a new automatic merge feature.
 The opaque archive encoder and decoder of
 [0240](../decisions/0240-invitation-archive-envelope.md) are implemented.
 They do not validate payload readiness or authorize importing files.
-The bootstrap content/projection foundation is specified in
-[0250](../decisions/0250-bootstrap-content-and-projection.md), with implementation
-pending. Prerequisite enforcement and record-backed startup remain required.
+Bootstrap markers, declared prerequisite validation, applicability, global action
+scheduling, and flat contextual fragments are implemented under
+[0260](../decisions/0260-prerequisites-and-action-order.md). Ordinary reference
+documents also show explicit prerequisites without becoming action sequences.
+First-steps delivery, outcome-verification gates, and record-backed startup
+remain required.
 
 Build the guided flow using the same preparation format and editor, then add
 the archive writer and reader. The allowed entry layout must include preparation

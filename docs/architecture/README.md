@@ -1,6 +1,8 @@
 # Architecture
 
-Proposed architecture for onboard-kit. Nothing here is built yet. These docs record our current best guesses so we can argue with them before writing code.
+Architecture and planned increments for onboard-kit. The component views and
+contracts distinguish delivered behavior from work that remains. The
+[tool overview](../../README.md#the-tool) describes current commands.
 
 Diagrams use Mermaid, which GitHub renders in Markdown.
 
@@ -8,7 +10,7 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 - **Deterministic assembly.** The same answers and the same templates always produce the same document. No model runs during assembly.
 - **Agents author, they do not assemble.** Agents help write and tune templates. A human reviews every change.
-- **The plan is the source.** Answers and content save to one self-contained plan file. The document regenerates from it, in any output style.
+- **Owned inputs are the source.** Shared content and organizational answers stay in one self-contained plan. Person-specific preparation and the onboarding record have separate owners under [0140](../decisions/0140-person-specific-preparation.md). Documents regenerate from those inputs; they are not the source of progress.
 - **The plan is the lasting artifact.** The assembled document is transitional. The end state is the plan file and the onboarding helper flow, so nothing long-term may key on assembled content.
 - **Functional core, imperative shell.** Components are pure functions over immutable values, and never alter an argument. Only drivers and the entry point do input and output. See [0015](../decisions/0015-functional-core-and-imperative-shell.md).
 - **Stands alone.** Installing means getting one file. No runtime, package manager, or second download. See [0005](../decisions/0005-self-contained-install.md).
@@ -56,7 +58,7 @@ Each open decision has its own issue.
 | Update action conflict handling, deferred past the MVP | [#32](https://github.com/8thlight-daveloper/onboard-kit/issues/32) |
 | Keep the contract-strength checks after the first builds | [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37) |
 
-The walking skeleton, [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25), is the next piece of work.
+The [invitation flow](invitation-flow.md) orders the remaining delivery work.
 
 ## Decided
 

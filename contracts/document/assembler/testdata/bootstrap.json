@@ -1,0 +1,833 @@
+[
+  {
+    "name": "blank-title-keeps-existing-empty-block-rule",
+    "source": "ADR0260 shared renderer and existing assembler empty-block rule; root agent clarification, not a synthetic activity title",
+    "plan": {"sections": [{"id": "parent", "title": "Omitted ancestor"}, {"id": "child", "parent": "parent", "title": " \t\n", "bootstrap": true, "summary": "Read this."}]},
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\nWithin: `parent`.\n\nRead this.\n",
+    "problems": []
+  },
+  {
+    "name": "timing-is-not-bootstrap",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "early",
+          "title": "Private early work",
+          "timing": "before-day-one"
+        },
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "timing": "anytime",
+          "summary": "Request access."
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public access\n\nRequest access.\n",
+    "problems": []
+  },
+  {
+    "name": "empty-plan",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {},
+    "document": "",
+    "problems": []
+  },
+  {
+    "name": "unmarked-only",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "early",
+          "title": "Early",
+          "timing": "before-day-one"
+        }
+      ]
+    },
+    "document": "",
+    "problems": []
+  },
+  {
+    "name": "condition-on-omitted-switch",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "gate",
+          "title": "Private gate",
+          "enabled": false
+        },
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "section": "gate",
+                "enabled": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public access\n",
+    "problems": []
+  },
+  {
+    "name": "opposite-omitted-switch",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "gate",
+          "title": "Private gate",
+          "enabled": true
+        },
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "section": "gate",
+                "enabled": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": "",
+    "problems": []
+  },
+  {
+    "name": "unmarked-ordering-predecessor-is-structural-refusal",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "title": "A",
+          "bootstrap": true,
+          "after": [
+            "m"
+          ]
+        },
+        {
+          "id": "m",
+          "title": "PRIVATE",
+          "after": [
+            "z"
+          ]
+        },
+        {
+          "id": "z",
+          "title": "Z",
+          "bootstrap": true
+        }
+      ]
+    },
+    "document": "",
+    "problems": [
+      {
+        "code": "plan.bootstrap-after-nonbootstrap",
+        "severity": "error",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "item": "0"
+        },
+        "message": "Remove this ordering hint, or correct the bootstrap claim."
+      }
+    ]
+  },
+  {
+    "name": "marked-child-unmarked-parent",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "group",
+          "title": "PRIVATE parent",
+          "body": "PRIVATE internal instructions",
+          "variables": [
+            {
+              "name": "private_url",
+              "description": "Private URL"
+            }
+          ],
+          "summary": "Use $private_url."
+        },
+        {
+          "id": "access",
+          "title": "Public child",
+          "parent": "group",
+          "bootstrap": true,
+          "summary": "Ask the owner."
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public child\n\nWithin: `group`.\n\nAsk the owner.\n",
+    "problems": []
+  },
+  {
+    "name": "parent-gate-still-applies",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "group",
+          "title": "PRIVATE parent",
+          "enabled": false
+        },
+        {
+          "id": "access",
+          "title": "Public child",
+          "parent": "group",
+          "bootstrap": true
+        }
+      ]
+    },
+    "document": "",
+    "problems": []
+  },
+  {
+    "name": "all-activities-flat-with-full-containment-ids",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "top",
+          "title": "Top",
+          "bootstrap": true
+        },
+        {
+          "id": "middle",
+          "title": "PRIVATE",
+          "parent": "top"
+        },
+        {
+          "id": "access",
+          "title": "Deep",
+          "parent": "middle",
+          "bootstrap": true
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Top\n\n### Deep\n\nWithin: `top` / `middle`.\n",
+    "problems": []
+  },
+  {
+    "name": "marked-parent-does-not-mark-child",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "group",
+          "title": "Public parent",
+          "bootstrap": true
+        },
+        {
+          "id": "child",
+          "title": "PRIVATE child",
+          "parent": "group"
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public parent\n",
+    "problems": []
+  },
+  {
+    "name": "ancestor-answer-context",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "answers": {
+        "sections": {
+          "group": {
+            "ready": true
+          }
+        }
+      },
+      "sections": [
+        {
+          "id": "group",
+          "title": "PRIVATE",
+          "variables": [
+            {
+              "name": "ready",
+              "type": "boolean"
+            }
+          ]
+        },
+        {
+          "id": "access",
+          "title": "Public child",
+          "parent": "group",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "question": "group.ready",
+                "answer": {
+                  "is": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public child\n\nWithin: `group`.\n",
+    "problems": []
+  },
+  {
+    "name": "unaccepted-default-does-not-select",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "variables": [
+        {
+          "name": "ready",
+          "type": "boolean",
+          "default": true
+        }
+      ],
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.ready",
+                "answer": {
+                  "is": true
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": "",
+    "problems": []
+  },
+  {
+    "name": "selected-gap-not-private-gap",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "private",
+          "title": "PRIVATE",
+          "summary": "Use $secret.",
+          "variables": [
+            {
+              "name": "secret",
+              "description": "Private gap"
+            }
+          ]
+        },
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "summary": "Use $account.",
+          "owner": "Onboarding owner",
+          "timing": "week-one",
+          "variables": [
+            {
+              "name": "account",
+              "description": "Account name",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n| Account name | Onboarding owner | Week one |\n\n### Public access\n\nUse `<account>`.\n\nOwner: Onboarding owner. When: week one.\n",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "access.account",
+        "section": "access",
+        "detail": {
+          "audience": "onboardee"
+        }
+      }
+    ]
+  },
+  {
+    "name": "actual-step-check-prose-rendering",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "body": "Read this.",
+          "verification": "You have access",
+          "steps": [
+            {
+              "name": "Request access",
+              "owner": "IT",
+              "notes": "First line\nSecond line",
+              "directory": "work",
+              "run": [
+                "tool",
+                "--check"
+              ],
+              "env": {
+                "Z": "two",
+                "A": "one"
+              },
+              "checks": [
+                {
+                  "run": [
+                    "tool",
+                    "verify"
+                  ]
+                },
+                {
+                  "ask": "Can you open it?"
+                },
+                {
+                  "env": "ACCESS"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public access\n\n- [ ] **Request access.** Owner: IT. First line\n  Second line Directory: `work`. Run: `tool --check`. Env: `A=one`, `Z=two`. Check: `tool verify` exits with code 0. Check: Can you open it? Check: `ACCESS` is set and not empty.\n\nRead this.\n\nDone when: You have access\n",
+    "problems": []
+  },
+  {
+    "name": "directory-team-context",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "variables": [
+        {
+          "name": "squad",
+          "type": "team"
+        }
+      ],
+      "answers": {
+        "plan": {
+          "squad": "blue"
+        },
+        "sections": {
+          "access": {
+            "manager": "manager"
+          }
+        }
+      },
+      "directory": {
+        "contacts": [
+          {
+            "id": "org",
+            "name": "Organization contact"
+          },
+          {
+            "id": "lead",
+            "name": "Team lead",
+            "slack": "@lead"
+          }
+        ],
+        "roles": [
+          {
+            "id": "manager",
+            "name": "Manager",
+            "holders": [
+              "org"
+            ]
+          }
+        ],
+        "teams": [
+          {
+            "id": "blue",
+            "name": "Blue",
+            "holders": {
+              "manager": [
+                "lead"
+              ]
+            }
+          }
+        ]
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "summary": "Ask $manager.",
+          "variables": [
+            {
+              "name": "manager",
+              "type": "role"
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public access\n\nAsk Team lead, @lead.\n",
+    "problems": []
+  },
+  {
+    "name": "vacant-role-once",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "answers": {
+        "sections": {
+          "access": {
+            "manager": "manager"
+          }
+        }
+      },
+      "directory": {
+        "roles": [
+          {
+            "id": "manager",
+            "name": "Manager",
+            "holders": []
+          }
+        ]
+      },
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "summary": "Ask $manager.",
+          "owner": "$manager",
+          "variables": [
+            {
+              "name": "manager",
+              "description": "Onboarding manager",
+              "type": "role"
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n| Onboarding manager | Manager (vacant) | Anytime |\n\n### Public access\n\nAsk Manager (vacant).\n\nOwner: Manager (vacant).\n",
+    "problems": [
+      {
+        "code": "directory.role-vacant",
+        "severity": "warning",
+        "question": "access.manager",
+        "section": "access"
+      }
+    ]
+  },
+  {
+    "name": "deep-context-keeps-flat-headings",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "level0",
+          "title": "Level 0",
+          "bootstrap": true
+        },
+        {
+          "id": "level1",
+          "title": "Level 1",
+          "bootstrap": true,
+          "parent": "level0"
+        },
+        {
+          "id": "level2",
+          "title": "Level 2",
+          "bootstrap": true,
+          "parent": "level1"
+        },
+        {
+          "id": "level3",
+          "title": "Level 3",
+          "bootstrap": true,
+          "parent": "level2"
+        },
+        {
+          "id": "level4",
+          "title": "Level 4",
+          "bootstrap": true,
+          "parent": "level3"
+        },
+        {
+          "id": "level5",
+          "title": "Level 5",
+          "bootstrap": true,
+          "parent": "level4"
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Level 0\n\n### Level 1\n\nWithin: `level0`.\n\n### Level 2\n\nWithin: `level0` / `level1`.\n\n### Level 3\n\nWithin: `level0` / `level1` / `level2`.\n\n### Level 4\n\nWithin: `level0` / `level1` / `level2` / `level3`.\n\n### Level 5\n\nWithin: `level0` / `level1` / `level2` / `level3` / `level4`.\n",
+    "problems": []
+  },
+  {
+    "name": "body-is-not-sliced-markdown",
+    "source": "ADR0260 global action scheduling before Bootstrap projection, flat level-three activities and exact-ID context; ADR0250 explicit marker/original-plan resolution; existing assembler renderer rules. Hand-written Markdown, never product output.",
+    "plan": {
+      "sections": [
+        {
+          "id": "access",
+          "title": "Public access",
+          "bootstrap": true,
+          "body": "# Keep this content\n\n## Gaps to fill\n\nLiteral review text."
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Public access\n\n# Keep this content\n\n## Gaps to fill\n\nLiteral review text.\n",
+    "problems": []
+  },
+  {
+    "name": "cross-subtree-global-action-order",
+    "source": "ADR0260 literal cross-subtree schedule a,a2,b,b1,a1,b2; flat activity headings, original-ID containment and Requires context",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "title": "A",
+          "bootstrap": true
+        },
+        {
+          "id": "a1",
+          "title": "A1",
+          "parent": "a",
+          "bootstrap": true,
+          "requires": [
+            "b1"
+          ]
+        },
+        {
+          "id": "a2",
+          "title": "A2",
+          "parent": "a",
+          "bootstrap": true
+        },
+        {
+          "id": "b",
+          "title": "B",
+          "bootstrap": true
+        },
+        {
+          "id": "b1",
+          "title": "B1",
+          "parent": "b",
+          "bootstrap": true
+        },
+        {
+          "id": "b2",
+          "title": "B2",
+          "parent": "b",
+          "bootstrap": true,
+          "requires": [
+            "a2"
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### A\n\n### A2\n\nWithin: `a`.\n\n### B\n\n### B1\n\nWithin: `b`.\n\n### A1\n\nWithin: `a`.\n\nRequires: `b1`.\n\n### B2\n\nWithin: `b`.\n\nRequires: `a2`.\n",
+    "problems": []
+  },
+  {
+    "name": "parent-requires-child-action-order",
+    "source": "ADR0260 Parent is not execution edge: marked child renders before marked parent requiring it, with context still identifying original parent",
+    "plan": {
+      "sections": [
+        {
+          "id": "parent",
+          "title": "Parent",
+          "bootstrap": true,
+          "requires": [
+            "child"
+          ]
+        },
+        {
+          "id": "child",
+          "title": "Child",
+          "parent": "parent",
+          "bootstrap": true
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Child\n\nWithin: `parent`.\n\n### Parent\n\nRequires: `child`.\n",
+    "problems": []
+  },
+  {
+    "name": "scheduled-gaps-follow-actions-not-reference-order",
+    "source": "ADR0260 prerequisites dominate goals, projected gap rows follow scheduled activities; existing renderer preserves actual own footer/gap timing and onboardee placeholders",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "title": "A",
+          "bootstrap": true,
+          "requires": [
+            "z"
+          ],
+          "summary": "Use $account.",
+          "owner": "A owner",
+          "timing": "week-one",
+          "variables": [
+            {
+              "name": "account",
+              "description": "Account",
+              "audience": "onboardee"
+            }
+          ]
+        },
+        {
+          "id": "z",
+          "title": "Z",
+          "bootstrap": true,
+          "summary": "Use $token.",
+          "owner": "Z owner",
+          "timing": "days-31-to-90",
+          "variables": [
+            {
+              "name": "token",
+              "description": "Token",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n| Token | Z owner | Days 31 to 90 |\n| Account | A owner | Week one |\n\n### Z\n\nUse `<token>`.\n\nOwner: Z owner. When: days 31 to 90.\n\n### A\n\nRequires: `z`.\n\nUse `<account>`.\n\nOwner: A owner. When: week one.\n",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "z.token",
+        "section": "z",
+        "detail": {
+          "audience": "onboardee"
+        }
+      },
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "a.account",
+        "section": "a",
+        "detail": {
+          "audience": "onboardee"
+        }
+      }
+    ]
+  },
+  {
+    "name": "inherited-planning-timing-is-not-rendered-own-timing",
+    "source": "ADR0260 inherited planning timing is scheduler context only; existing assembler gap/footer formatting uses held own timing without materializing default",
+    "plan": {
+      "sections": [
+        {
+          "id": "parent",
+          "title": "PRIVATE",
+          "timing": "week-one",
+          "body": "PRIVATE instructions"
+        },
+        {
+          "id": "child",
+          "title": "Child",
+          "parent": "parent",
+          "bootstrap": true,
+          "summary": "Use $account.",
+          "variables": [
+            {
+              "name": "account",
+              "description": "Account",
+              "audience": "onboardee"
+            }
+          ]
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n| Account |  | Anytime |\n\n### Child\n\nWithin: `parent`.\n\nUse `<account>`.\n",
+    "problems": [
+      {
+        "code": "gap.unanswered",
+        "severity": "warning",
+        "question": "child.account",
+        "section": "child",
+        "detail": {
+          "audience": "onboardee"
+        }
+      }
+    ]
+  },
+  {
+    "name": "requires-display-first-held-occurrence-order",
+    "source": "Root-agent presentation decision under0260: explicit prerequisite context uses exact IDs once in first-held order, without changing held repetitions",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "title": "A",
+          "bootstrap": true,
+          "requires": [
+            "c",
+            "b",
+            "c"
+          ]
+        },
+        {
+          "id": "b",
+          "title": "B",
+          "bootstrap": true
+        },
+        {
+          "id": "c",
+          "title": "C",
+          "bootstrap": true
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### B\n\n### C\n\n### A\n\nRequires: `c`, `b`.\n",
+    "problems": []
+  },
+  {
+    "name": "full-plan-condition-before-global-projection",
+    "source": "ADR0260 full-plan selection reads original own switches, even when named unmarked activity is derived inactive through a disabled required target",
+    "plan": {
+      "sections": [
+        {
+          "id": "gate",
+          "requires": [
+            "target"
+          ]
+        },
+        {
+          "id": "target",
+          "enabled": false
+        },
+        {
+          "id": "access",
+          "title": "Access",
+          "bootstrap": true,
+          "includeIf": {
+            "all": [
+              {
+                "section": "gate",
+                "enabled": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "document": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Access\n",
+    "problems": []
+  }
+]

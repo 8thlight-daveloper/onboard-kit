@@ -5,6 +5,4 @@ import (
 	implementation "onboard-kit/internal/document/assembler"
 )
 
-func newAssembler() contract.Assembler {
-	return implementation.New()
-}
+func newAssembler() contract.Assembler { return implementation.New() }

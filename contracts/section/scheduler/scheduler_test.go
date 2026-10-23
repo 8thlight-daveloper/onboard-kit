@@ -46,6 +46,12 @@ func scheduleCases(t *testing.T) []scheduleCase {
 	if len(cases) != 26 {
 		t.Fatal("expected twenty-six independently ordered schedule cases")
 	}
+	var priorities []scheduleCase
+	readCases(t, "goal-priority.json", &priorities)
+	if len(priorities) != 10 {
+		t.Fatal("expected ten independently ordered cross-subtree goal pairs")
+	}
+	cases = append(cases, priorities...)
 	seen := map[string]bool{}
 	for _, c := range cases {
 		if c.Name == "" || c.Source == "" || c.Sequence == nil || seen[c.Name] {

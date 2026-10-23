@@ -71,7 +71,21 @@ var answerCodes = []string{
 	"plan.duplicate-step-id",
 }
 
-var judgedPlanCodes = []string{"plan.duplicate-section-id", "plan.duplicate-team-variable", "plan.duplicate-variable-name", "plan.duplicate-step-id"}
+var judgedPlanCodes = []string{
+	"plan.duplicate-section-id", "plan.duplicate-team-variable", "plan.duplicate-variable-name", "plan.duplicate-step-id",
+	"plan.parent-unknown",
+	"plan.parent-self",
+	"plan.parent-cycle",
+	"plan.requires-unknown",
+	"plan.requires-self",
+	"plan.requires-cycle",
+	"plan.bootstrap-requires-nonbootstrap",
+	"plan.after-unknown",
+	"plan.after-self",
+	"plan.after-cycle",
+	"plan.bootstrap-after-nonbootstrap",
+	"plan.ordering-conflict",
+}
 
 func readFixture(t *testing.T, name string) []byte {
 	t.Helper()

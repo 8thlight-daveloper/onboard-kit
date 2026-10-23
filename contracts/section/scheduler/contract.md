@@ -1,6 +1,6 @@
 # Section scheduler contract
 
-Status: agent-authored draft for review; implementation absent.
+Status: agent-authored contract; independent implementation integrated.
 Component: `section/scheduler`. Package: `scheduler`.
 
 The section scheduler returns the global action order chosen by
@@ -22,10 +22,9 @@ contract. The scheduler constructs these dependencies itself, without injecting
 alternate selectors or a caller-supplied rank map. Use their complete contracts,
 including the selector's Requires applicability increment, not older behavior.
 
-The draft [binding](wire_test.go) returns empty results. It imports no product
-implementation. Replace it only through a separately authorized binding change.
-Nonempty action-output and error-output cases must fail that stub; empty-output
-and property cases may pass it.
+The [binding](wire_test.go) calls the implementation. Before source integration,
+nonempty action-output and error-output cases must fail a nil-returning stub;
+empty-output and property cases may pass it.
 
 ## Validate the full original plan first
 
@@ -157,6 +156,11 @@ not from calls to its implementation. [Tests](scheduler_test.go) never compute
 expected orders/problems by calling a selector or validator implementation.
 They also check held values, section permutations, shared-instance state and
 concurrency, input preservation, fresh section slots, and error-detail isolation.
+
+[Goal priority cases](testdata/goal-priority.json) place a later-goal child before
+an earlier-goal root in the grouped reference view. The global action schedule
+must still put the earlier goal first. Every pair of known goal windows has a
+literal expected order, without fixing invisible numeric rank values.
 
 These wrong adapters are planned, not executed evidence. No implementation,
 mutation, independent-build, or differential completion is claimed by this draft.

@@ -1,0 +1,1283 @@
+[
+  {
+    "name": "duplicate-identities-stop-graph-checks",
+    "source": "ADR0110 no graph winner; ADR0260 duplicate-first rule suppresses unrelated relationship diagnostics",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": "a",
+          "parent": "a"
+        },
+        {
+          "id": "z",
+          "requires": [
+            "missing"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.duplicate-section-id",
+        "severity": "error",
+        "message": "Give each section a unique ID before checking relationships.",
+        "question": "",
+        "section": "a",
+        "detail": {}
+      }
+    ]
+  },
+  {
+    "name": "duplicate-identical-and-conflicting",
+    "source": "ADR0110 matching metadata is still duplicate; each exact ID reports once independent of count",
+    "plan": {
+      "sections": [
+        {
+          "id": "z",
+          "title": "same"
+        },
+        {
+          "id": "z",
+          "title": "same"
+        },
+        {
+          "id": "a",
+          "parent": "z"
+        },
+        {
+          "id": "a"
+        },
+        {
+          "id": "z",
+          "title": "different"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.duplicate-section-id",
+        "severity": "error",
+        "message": "Give each section a unique ID before checking relationships.",
+        "question": "",
+        "section": "a",
+        "detail": {}
+      },
+      {
+        "code": "plan.duplicate-section-id",
+        "severity": "error",
+        "message": "Give each section a unique ID before checking relationships.",
+        "question": "",
+        "section": "z",
+        "detail": {}
+      }
+    ]
+  },
+  {
+    "name": "parent-unknown-and-self",
+    "source": "ADR0070 parent exists and is acyclic; self gets only its specific error",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "a"
+        },
+        {
+          "id": "b",
+          "parent": "not-declared"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.parent-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself as parent.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "parent"
+        }
+      },
+      {
+        "code": "plan.parent-unknown",
+        "severity": "error",
+        "message": "Choose an existing section as parent, or remove parent.",
+        "question": "",
+        "section": "b",
+        "detail": {
+          "field": "parent"
+        }
+      }
+    ]
+  },
+  {
+    "name": "parent-cycle-with-tail",
+    "source": "ADR0070 and ADR0260 one SCC diagnostic, not downstream descendants",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "b"
+        },
+        {
+          "id": "b",
+          "parent": "a"
+        },
+        {
+          "id": "tail",
+          "parent": "a"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.parent-cycle",
+        "severity": "error",
+        "message": "Remove a parent link within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "parent",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "two-parent-components",
+    "source": "ADR0260 SCC diagnostics remain separate and sorted by representative ID",
+    "plan": {
+      "sections": [
+        {
+          "id": "z",
+          "parent": "y"
+        },
+        {
+          "id": "b",
+          "parent": "a"
+        },
+        {
+          "id": "a",
+          "parent": "b"
+        },
+        {
+          "id": "y",
+          "parent": "z"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.parent-cycle",
+        "severity": "error",
+        "message": "Remove a parent link within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "parent",
+          "members": "[\"a\",\"b\"]"
+        }
+      },
+      {
+        "code": "plan.parent-cycle",
+        "severity": "error",
+        "message": "Remove a parent link within the listed cycle members.",
+        "question": "",
+        "section": "y",
+        "detail": {
+          "field": "parent",
+          "members": "[\"y\",\"z\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "repeated-reference-locations",
+    "source": "ADR0260 repeated ordinary references diagnose once at first held index; self edges excluded from SCCs",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "missing",
+            "a",
+            "missing",
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself in requires.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "1"
+        }
+      },
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "requires-cycle-with-tail",
+    "source": "ADR0260 true prerequisite SCC, no report for outgoing dependent tail",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "tail",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\",\"c\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "disabled-latent-requires-cycle",
+    "source": "ADR0260 declared graph validated even when switches hide an activity",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "enabled": false,
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "bad-parent-and-independent-graphs",
+    "source": "ADR0260 and bounded diagnostic choice: parent failure does not hide independent Requires checks",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "missing",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "z",
+          "after": [
+            "z"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself in after.",
+        "question": "",
+        "section": "z",
+        "detail": {
+          "field": "after",
+          "item": "0"
+        }
+      },
+      {
+        "code": "plan.parent-unknown",
+        "severity": "error",
+        "message": "Choose an existing section as parent, or remove parent.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "parent"
+        }
+      },
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "bootstrap-transitive-closure",
+    "source": "ADR0260 check direct Bootstrap prerequisite edges; transitive invalidity is identified at the actual violating edge",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true,
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "bootstrap": true,
+          "requires": [
+            "c",
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "timing": "before-day-one"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.bootstrap-requires-nonbootstrap",
+        "severity": "error",
+        "message": "Make this prerequisite bootstrap, or correct the bootstrap claim.",
+        "question": "",
+        "section": "b",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "excluded-bootstrap-closure",
+    "source": "ADR0260 declared closure checked before switches and conditions; dates do not imply Bootstrap",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true,
+          "enabled": false,
+          "includeIf": {
+            "all": [
+              {
+                "question": "plan.hidden",
+                "answer": {
+                  "is": "yes"
+                }
+              }
+            ]
+          },
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "timing": "before-day-one",
+          "enabled": false
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.bootstrap-requires-nonbootstrap",
+        "severity": "error",
+        "message": "Make this prerequisite bootstrap, or correct the bootstrap claim.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "after-unknown-and-self",
+    "source": "Existing ordering reference unknown/self validation retained under0260; no duplicate SCC for self",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "missing",
+            "a",
+            "missing",
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself in after.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "item": "1"
+        }
+      },
+      {
+        "code": "plan.after-unknown",
+        "severity": "error",
+        "message": "Choose an existing section, or remove this after item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "pure-after-cycle",
+    "source": "ADR0260 effective legacy cycle is ordering error, not true prerequisite cycle",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "after": [
+            "a"
+          ]
+        },
+        {
+          "id": "tail",
+          "after": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-cycle",
+        "severity": "error",
+        "message": "Remove an after edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "inherited-after-cycle",
+    "source": "ADR0070 timing inheritance through ancestors defines same effective timing sibling group",
+    "plan": {
+      "sections": [
+        {
+          "id": "root",
+          "timing": "week-one"
+        },
+        {
+          "id": "parent",
+          "parent": "root"
+        },
+        {
+          "id": "a",
+          "parent": "parent",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "parent": "parent",
+          "timing": "week-one",
+          "after": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-cycle",
+        "severity": "error",
+        "message": "Remove an after edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "mixed-ordering-cycle",
+    "source": "ADR0260 B requires A while A is after B: both pure graphs acyclic, union impossible",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.ordering-conflict",
+        "severity": "error",
+        "message": "Change a requires or effective after edge within these members so both orders can coexist.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "ordering",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "long-mixed-ordering-cycle",
+    "source": "ADR0260 union SCC spans a longer mixed cycle, not just two-edge contradictions",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "c"
+          ]
+        },
+        {
+          "id": "b",
+          "after": [
+            "a"
+          ]
+        },
+        {
+          "id": "c",
+          "requires": [
+            "b"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.ordering-conflict",
+        "severity": "error",
+        "message": "Change a requires or effective after edge within these members so both orders can coexist.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "ordering",
+          "members": "[\"a\",\"b\",\"c\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "disjoint-pure-and-mixed",
+    "source": "ADR0260 bounded SCC noise suppression must not hide unrelated mixed conflicts when a pure cycle exists",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "x",
+          "requires": [
+            "y"
+          ]
+        },
+        {
+          "id": "y",
+          "after": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.ordering-conflict",
+        "severity": "error",
+        "message": "Change a requires or effective after edge within these members so both orders can coexist.",
+        "question": "",
+        "section": "x",
+        "detail": {
+          "field": "ordering",
+          "members": "[\"x\",\"y\"]"
+        }
+      },
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "nested-pure-cycle-suppresses-mixed-echo",
+    "source": "Agent-decided diagnostic noise rule under0260: union component containing an already reported pure cycle gets no redundant ordering-conflict",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ],
+          "after": [
+            "c"
+          ]
+        },
+        {
+          "id": "c",
+          "after": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "both-pure-cycle-kinds",
+    "source": "ADR0260 pure graph diagnostics are independent even when the same nodes have both kinds of cycle",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b"
+          ],
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "requires": [
+            "a"
+          ],
+          "after": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-cycle",
+        "severity": "error",
+        "message": "Remove an after edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "members": "[\"a\",\"b\"]"
+        }
+      },
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\",\"b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "bootstrap-after-contradiction",
+    "source": "ADR0260 nonbootstrap predecessor before bootstrap contradicts first stage for an effective hint only",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true,
+          "after": [
+            "b",
+            "b"
+          ]
+        },
+        {
+          "id": "b"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.bootstrap-after-nonbootstrap",
+        "severity": "error",
+        "message": "Remove this ordering hint, or correct the bootstrap claim.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "bad-parent-chain-omits-only-affected-after",
+    "source": "Bounded error composition under0260: unusable ancestor grouping suppresses affected After edges only; unrelated valid groups and Requires still checked",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "parent": "missing"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "after": [
+            "b"
+          ],
+          "requires": [
+            "absent"
+          ]
+        },
+        {
+          "id": "b",
+          "parent": "p",
+          "after": [
+            "a"
+          ]
+        },
+        {
+          "id": "x",
+          "after": [
+            "y"
+          ]
+        },
+        {
+          "id": "y",
+          "after": [
+            "x"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-cycle",
+        "severity": "error",
+        "message": "Remove an after edge within the listed cycle members.",
+        "question": "",
+        "section": "x",
+        "detail": {
+          "field": "after",
+          "members": "[\"x\",\"y\"]"
+        }
+      },
+      {
+        "code": "plan.parent-unknown",
+        "severity": "error",
+        "message": "Choose an existing section as parent, or remove parent.",
+        "question": "",
+        "section": "p",
+        "detail": {
+          "field": "parent"
+        }
+      },
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "private-reference-locations",
+    "source": "ADR0110 diagnostic privacy: identify bad authored slots without echoing raw target or unrelated plan content",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "parent": "secret-parent-do-not-echo",
+          "requires": [
+            "secret-target-do-not-echo",
+            "secret-target-do-not-echo",
+            "second-private-target"
+          ],
+          "after": [
+            "secret-after-do-not-echo"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.after-unknown",
+        "severity": "error",
+        "message": "Choose an existing section, or remove this after item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "after",
+          "item": "0"
+        }
+      },
+      {
+        "code": "plan.parent-unknown",
+        "severity": "error",
+        "message": "Choose an existing section as parent, or remove parent.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "parent"
+        }
+      },
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      },
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "2"
+        }
+      }
+    ]
+  },
+  {
+    "name": "exact-identifiers-not-normalized",
+    "source": "ADR0260 exact held section IDs and references: case and whitespace are not repaired",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "A",
+            " a"
+          ]
+        },
+        {
+          "id": "A"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "1"
+        }
+      }
+    ]
+  },
+  {
+    "name": "self-bootstrap-requires-only-self-error",
+    "source": "ADR0260 self-reference diagnosed once; known Bootstrap target does not add closure error or SCC",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "bootstrap": true,
+          "requires": [
+            "a",
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself in requires.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "empty-target-is-an-ordinary-reference",
+    "source": "Model-only exact-reference rule: a list containing empty text is not an omitted list",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "",
+            ""
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "escaped-cycle-member-locations",
+    "source": "ADR0260 deterministic SCC members and exact ID identity; JSON member representation remains unambiguous for unchecked punctuation IDs",
+    "plan": {
+      "sections": [
+        {
+          "id": "a,b",
+          "requires": [
+            "a\"b"
+          ]
+        },
+        {
+          "id": "a\"b",
+          "requires": [
+            "a,b"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "a\"b",
+        "detail": {
+          "field": "requires",
+          "members": "[\"a\\\"b\",\"a,b\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "cyclic-parent-chain-omits-affected-after",
+    "source": "ADR0070 invalid ancestor cycle makes After grouping unusable, while parent SCC still reports once",
+    "plan": {
+      "sections": [
+        {
+          "id": "p",
+          "parent": "q"
+        },
+        {
+          "id": "q",
+          "parent": "p"
+        },
+        {
+          "id": "a",
+          "parent": "p",
+          "after": [
+            "b"
+          ]
+        },
+        {
+          "id": "b",
+          "parent": "p",
+          "after": [
+            "a"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.parent-cycle",
+        "severity": "error",
+        "message": "Remove a parent link within the listed cycle members.",
+        "question": "",
+        "section": "p",
+        "detail": {
+          "field": "parent",
+          "members": "[\"p\",\"q\"]"
+        }
+      }
+    ]
+  },
+  {
+    "name": "duplicate-empty-identities",
+    "source": "ADR0110 duplicate identities apply to exact empty IDs too, before any graph references resolve",
+    "plan": {
+      "sections": [
+        {
+          "id": "",
+          "requires": [
+            "missing"
+          ]
+        },
+        {
+          "id": ""
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.duplicate-section-id",
+        "severity": "error",
+        "message": "Give each section a unique ID before checking relationships.",
+        "question": "",
+        "section": "",
+        "detail": {}
+      }
+    ]
+  },
+  {
+    "name": "empty-id-requires-itself",
+    "source": "Exact relationship identity and self-only diagnostic: held empty target names the unique empty section, not an unknown section",
+    "plan": {
+      "sections": [
+        {
+          "id": "",
+          "requires": [
+            ""
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-self",
+        "severity": "error",
+        "message": "Remove the section's reference to itself in requires.",
+        "question": "",
+        "section": "",
+        "detail": {
+          "field": "requires",
+          "item": "0"
+        }
+      }
+    ]
+  },
+  {
+    "name": "reference-indices-sort-numerically",
+    "source": "Contract diagnostics order: first held list indices are nonnegative integers, not lexicographic strings; known repeated targets remain ordinary data",
+    "plan": {
+      "sections": [
+        {
+          "id": "a",
+          "requires": [
+            "b",
+            "b",
+            "private-at-two",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "b",
+            "private-at-ten"
+          ]
+        },
+        {
+          "id": "b"
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "2"
+        }
+      },
+      {
+        "code": "plan.requires-unknown",
+        "severity": "error",
+        "message": "Choose an existing prerequisite, or remove this requires item.",
+        "question": "",
+        "section": "a",
+        "detail": {
+          "field": "requires",
+          "item": "10"
+        }
+      }
+    ]
+  },
+  {
+    "name": "json-string-escape-spelling-is-not-member-identity",
+    "source": "Bounded0260 diagnostic clarification: members is a compact JSON array of sorted exact IDs, with equivalent valid string escaping permitted",
+    "plan": {
+      "sections": [
+        {
+          "id": "<",
+          "requires": [
+            "a"
+          ]
+        },
+        {
+          "id": "a",
+          "requires": [
+            "<"
+          ]
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "plan.requires-cycle",
+        "severity": "error",
+        "message": "Remove a requires edge within the listed cycle members.",
+        "question": "",
+        "section": "<",
+        "detail": {
+          "field": "requires",
+          "members": "[\"<\",\"a\"]"
+        }
+      }
+    ]
+  }
+]

@@ -14,11 +14,116 @@ This contract is transitional and kept thin, as [0025](../../../docs/decisions/0
 - `document` is text, in Markdown.
 - `problems` is the gaps of the document. They are the ones the section resolver reported, and the vacant roles, see Vacant roles. They are listed in the gap table and returned in the same order. It is empty when there are none.
 
-The assembler does not fail. Any plan gives a document. It does not check that the plan is valid or that its required questions are answered. A driver does that first, with the plan validator and the question finder, as [0010](../../../docs/decisions/0010-plan-editor.md) says.
+Ordinary Assemble does not fail. Any plan gives a document. It does not check that the plan is valid or that its required questions are answered. A driver does that first, with the plan validator and the question finder, as [0010](../../../docs/decisions/0010-plan-editor.md) says.
+
+## Bootstrap projection
+
+[0260](../../../docs/decisions/0260-prerequisites-and-action-order.md) supersedes
+0250's planned nested projection. AssembleBootstrap(plan) is a pure scheduled
+bootstrap fragment over the complete original plan. The [API](api.go),
+[bootstrap fixtures](testdata/bootstrap.json), [tests](bootstrap_test.go), and
+[binding](wire_test.go) specify this increment. The initial binding delegates
+ordinary Assemble to the existing implementation and stubs only this new method.
+A separate authorized binding change later selects its independent implementation.
+
+Call the actual [section scheduler](../../section/scheduler/contract.md) with
+the complete unchanged plan before any projection or resolution. Its contract
+validates full original structure, uses the real selector on that same full plan,
+and computes global action order. Do not duplicate those algorithms here.
+If scheduling returns structural problems, return exactly empty text and all
+those problems in scheduler order. Preserve their exact diagnostic semantics,
+including flexible valid string escaping in compact JSON members. Resolve no
+section and add no gap warnings on that failed call. Even invalid unmarked or
+currently inactive declarations cause this refusal. There is no partial fragment.
+
+On success, retain exactly the scheduled active sections with Bootstrap true,
+without changing their relative global order. Resolve only those sections using
+the original full Answers, directory, team and section identities. Never filter
+the input first, slice a finished Markdown document, infer a marker from timing
+or ancestry, fill defaults, or resolve omitted ancestor content. Unmarked and
+inactive sections contribute no instructions, gaps, vacant-role warnings, or
+resolution problems. Original ancestor gates and Requires applicability still
+apply through the selector. Recorded outcomes never gate this operation.
+
+Return a fragment with no document title or generated-review line. For a nonempty
+projection, write the existing gap table at exactly heading level three, then
+every retained activity with a flat level-three heading, regardless of original
+Parent depth or whether any ancestor is marked. Each activity is:
+
+1. `### ` plus its resolved title, when that title is not blank. Preserve the
+   existing empty-block rule: an empty or whitespace-only title gives no
+   heading, not a synthetic title or a dangling heading mark. Context and other
+   nonempty blocks still render normally.
+2. For a nonroot only, `Within: ` plus exact original ancestor IDs, outermost
+   ancestor first, each in a single-backtick code span, separated by ` / `,
+   and a final full stop. For example, ``Within: `top` / `middle`.``
+3. When Requires is nonempty, `Requires: ` plus its exact IDs in single-backtick
+   spans, separated by `, `, with a final full stop. Show each distinct ID at
+   its first held occurrence, preserving that display order. For example,
+   held [second, first, second] writes ``Requires: `second`, `first`.``
+4. The existing summary, steps, body, verification, and footer blocks unchanged.
+
+Each present block is separated by exactly one blank line under the existing
+renderer rules. No Within block appears for a root. Context is only exact
+containment/prerequisite IDs: never substitute omitted ancestor titles or answers,
+render their instructions, invent a verification state, or create gaps for their
+content. Parent itself is not a prerequisite, and After is not displayed as one.
+Keep the ordinary code-span/backtick exclusions; do not invent broader Markdown
+escaping for these context IDs. Context rendering adds no new model/storage field.
+
+The existing gap rows and returned warning problems follow the projected global
+activity order and then each section's declared variable order. All existing
+step/check/prose/footer/placeholder/escaping/vacant-role rules remain those of the
+actual renderer. In particular, a footer and gap row use the held own timing,
+not the inherited planning timing the scheduler used; missing own timing remains
+Anytime in a gap row and gives no timing footer. Authored heading-like body text
+is written as held, not parsed or promoted to structure. Reuse shared formatting
+inside this component; no copied external renderer or Markdown slicing.
+
+No scheduled marked sections means exactly empty text and no problems after
+successful structural validation. The caller owns neutral no-activities wording.
+A nonempty fragment ends in exactly one newline. Calls preserve all input and
+previous result values, are deterministic across declaration permutations, and
+retain no state, including concurrent calls on one instance.
+
+Ordinary Assemble keeps full reference order, original nested heading depth,
+original title/review/gap rules, and no new scheduler validation/refusal step.
+Sections with Requires show the same explicit prerequisite block described
+below; documents without Requires and every existing ordinary golden remain
+unchanged. Its existing scope exclusions stay in force. Bootstrap is not a
+global mode switch on ordinary assembly.
+
+Under 0260 this component is at dependency position 4 and may additionally use
+the real section scheduler. This bootstrap operation reads the full plan fields
+the scheduler needs, then the original resolution/rendering context described
+above. It reads no clock, file, preparation, record, or outcome hash; creates no
+first-use event; stores no answers; and rewrites no Source.Hash or outcome under
+[0270](../../../docs/decisions/0270-outcome-definition-hashes.md). It is not the
+complete first-steps wrapper: commands, download addresses and invitation account
+confirmation still belong to later implemented driver flows.
+
+### Proposed bootstrap wrong adapters
+
+These are planned checks, not evidence of executed wrong adapters or completed
+hardening. Working evidence must distinguish draft, stub-red, implementation,
+and independently reproduced results.
+
+| Wrong implementation | Intended rejection |
+| -- | -- |
+| Filter to marked work before validation, conditions, or scheduling | Invalid unmarked graph and omitted-switch/ancestor-answer fixtures |
+| Use grouped reference order or nested projected headings | Cross-subtree action order, parent-requires-child, and deep flat-context fixtures |
+| Leak omitted ancestor titles, instructions or gaps | Exact-ID Within context and selected-only gaps fixtures |
+| Infer Bootstrap from timing or parent | Timing and marked-parent/unmarked-child controls |
+| Forget explicit prerequisite context or normalize held Requires in place | Display first-occurrence ordering and purity checks |
+| Use a second private renderer, slice finished Markdown, or resolve a smaller plan | Actual step/check wording, literal heading body, directory/team and scope fixtures |
+| Reorder gaps by reference order, or materialize inherited planning timing | Scheduled gap order and held-own-timing fixture |
+| Return a partial fragment or warning gaps beside structural errors | Structural refusal fixtures and complete literal diagnostic oracles |
+| Add scheduler validation/nonnested headings to ordinary Assemble | Existing ordinary goldens and ordinary/projection separation tests |
+| Keep state or share returned diagnostic maps | Reused-instance, permutation, concurrency and result-isolation tests |
 
 ## How the component gets the selector and the resolver
 
-The assembler may depend on the section selector, the section resolver, and the model, and on nothing else in the project ([0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md)). A contract folder may import only the model, the shared test code, and its own component, in its wiring test. So the constructor takes nothing, `New()`, and the component calls the real selector and the real resolver itself. The contract tests run against them and not against stand-ins. The assembler gives the resolver each section, the plan's answers, the plan's `directory`, and the id of the plan's team, see Team. What the two do is as their own contracts say: [section selector](../../section/selector/contract.md) and [section resolver](../../section/resolver/contract.md). The assembler does not redo their work. It does not decide which sections are active, in which order, or how a `$name` is filled. It does not look up a contact, a role, or a team for a `$name` in text: the resolver does, and the assembler writes what the resolver returns.
+At position 4 under 0260, the assembler may depend on the section selector, the section resolver, the section scheduler, and the model, and on nothing else in the project ([0020](../../../docs/decisions/0020-binary-structure-and-regenerative-components.md)). A contract folder may import only the model, the shared test code, and its own component, in its wiring test. So the constructor takes nothing, `New()`, and the component calls the real selector and the real resolver itself. The contract tests run against them and not against stand-ins. The assembler gives the resolver each section, the plan's answers, the plan's `directory`, and the id of the plan's team, see Team. What the two do is as their own contracts say: [section selector](../../section/selector/contract.md) and [section resolver](../../section/resolver/contract.md). The assembler does not redo their work. It does not decide which sections are active, in which order, or how a `$name` is filled. It does not look up a contact, a role, or a team for a `$name` in text: the resolver does, and the assembler writes what the resolver returns.
 
 ## Rules
 
@@ -67,11 +172,16 @@ The heading `## Gaps to fill`, a blank line, and a table.
 Each active section is these blocks, in this order, from the section as the resolver returned it. A block with nothing in it is left out, with its blank line.
 
 1. The heading: the heading mark and then the `title`. The mark is `#` repeated `2 + depth` times. The depth of a section is the number of its ancestors in the plan, by `parent`: 0 for a section with no `parent`, 1 for a sub-section, 2 for its sub-section, and so on. The mark is never longer than six, so every depth from 4 up is written with `######`.
-2. The `summary`.
-3. The steps, as a list, see Steps.
-4. The `body`.
-5. `Done when: ` and the `verification`.
-6. The footer.
+2. When Requires is nonempty, `Requires: ` plus the exact IDs once in first-held
+   occurrence order, each between single backticks, joined by `, ` and ending
+   in a full stop. Use the same block as the bootstrap fragment, exactly once.
+   This reference document shows obligations without claiming execution order
+   or verified outcomes. After and Parent create no prerequisite block.
+3. The `summary`.
+4. The steps, as a list, see Steps.
+5. The `body`.
+6. `Done when: ` and the `verification`.
+7. The footer.
 
 A section that is not active is not in the document, and its gaps are not in the table. The assembler does not group sections or put a heading for a timing. The order is the selector's, and it puts a sub-section after its parent, see the [section selector contract](../../section/selector/contract.md). A sub-section of a section that is not active is not active, so it is left out with its gaps, at any depth. The assembler does not follow `parent` to decide that. It reads `parent` only to count the depth, in the plan as held, and the selector gives the sections it returns.
 
@@ -141,7 +251,7 @@ The assembler escapes very little. A person writes Markdown in the plan and the 
 
 ## Properties
 
-These hold for every plan the contract tests use.
+These ordinary Assemble properties hold for every plan its contract tests use. Bootstrap projection adds its operation-specific guarantees above.
 
 - **Pure.** The plan is the same after the call as before. Changing the returned problems changes nothing in the plan.
 - **No memory.** The same plan gives the same document and problems on a shared assembler, whatever calls came before, forward or in reverse order.
@@ -156,7 +266,7 @@ None. It reads `provenance`, `answers`, the `directory`, the plan's `variables`,
 
 ## Not covered
 
-- Whether the plan is valid: required questions, types, options, patterns, timing conflicts, cycles, and unknown references. The validators and the finder report them. A driver stops before assembling when they do.
+- Complete authoring validity: required questions, types, options, patterns, directory integrity, secrets, and condition legality. Bootstrap performs only the scheduler's structural validation before rendering; ordinary Assemble adds no new validator. Drivers still use the complete validators and finder at the authoring boundary.
 - An empty or missing `generatedOn` or `templateSet`.
 - A title in which `organization` or `team` holds a line break.
 - Text that holds a backtick where the assembler writes a code span, a `|` in a heading, and a name or a title that ends in a full stop.
@@ -164,7 +274,7 @@ None. It reads `provenance`, `answers`, the `directory`, the plan's `variables`,
 - Escaping any other Markdown in a field, such as `*`, `_`, or a tag. The one exception is the blank for an onboarding variable.
 - An onboarding blank that sits inside a code span a template author wrote.
 - What the selector and the resolver do. Their contracts cover it, and the assembler tests rely on it. That includes how a variable with a `default` is filled, see [0045](../../../docs/decisions/0045-defaults-are-suggestions.md). The fixtures here declare no default.
-- That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The plan validator's structure check covers them. The selector leaves out a section whose parent is not in the plan or whose chain of parents loops, so the assembler never writes one.
+- For ordinary Assemble, that a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The selector leaves malformed parent chains inactive as before. Bootstrap instead refuses the scheduler's parent structural errors before projection, but still does not add condition-reference legality checks.
 - A list of ids with some that are in the directory and some that are not, and a `multiple` role variable that holds both a vacant role and one with holders.
 - A contact variable that has a `default`, a role variable that has a `default` and no answer, and an `escalation` item for a variable with the audience `onboardee`.
 - Who holds a role beyond the rules above: that a role with no holder is a warning to the validator, and that a team is marked as not yet known. The document does not mark a role as not specific to a team.

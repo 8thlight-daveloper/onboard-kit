@@ -4,9 +4,9 @@ Part of the [section template schema](README.md).
 
 [0260](../../decisions/0260-prerequisites-and-action-order.md) separates the
 grouped reference document from the global action sequence. Requires format
-preservation and hashing are implemented; structural validation, scheduler, and
-walkthrough integration remain pending. The legacy ordering below remains current,
-not the promised prerequisite enforcement.
+preservation, hashing, structural validation, and action scheduling are implemented;
+record-backed walkthrough integration remains pending. The grouped order below
+is a reference view, not proof that prerequisites have been verified.
 
 Sections appear in the reference document in a deterministic grouped order.
 There is no numeric position to maintain.
@@ -94,7 +94,7 @@ These are about the relation between sections, so the plan validator reports the
 | Unknown reference | `after` names an id that is not in the plan |
 | Self reference | A section lists itself in `after` |
 | Dependency cycle | A is after B, and B is after A. The report names the sections in the cycle |
-| Timing conflict, retired by 0260 | Cross-timing After hints are ignored, not errors. Goals never invalidate a real Requires edge. Structural-validator integration is pending |
+| Timing conflict, retired by 0260 | Cross-timing After hints are ignored, not errors. Goals never invalidate a real Requires edge. The plan validator delegates these structural rules |
 | Question condition cycle | A question's condition depends on an answer that depends back on it, including across sections |
 | Unknown question reference | A condition names a question that no section declares |
 | `includeIf` on a section question | An `includeIf` names a question that is not a plan variable |

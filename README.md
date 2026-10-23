@@ -53,8 +53,9 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 | `prepare <operation> --plan FILE --account ID [--root DIR]` | Creates or edits the onboarder's preparation for one person, or shows it beside recorded outcomes without changing the plan or record. See [preparation commands](docs/reference/preparation-command.md) |
 | `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |
 
-Preparation editing is implemented. Invitation ZIP import and the record-backed
-walkthrough remain planned; start and walk still use the legacy plan-file flow.
+Preparation editing and explicit prerequisite graph validation are implemented.
+Invitation ZIP import and the record-backed walkthrough remain planned; start
+and walk still use the legacy plan-file flow, without outcome-verification gates.
 
 `just acceptance` builds a development binary and runs the scenarios under
 `acceptance/scenarios/` against it.

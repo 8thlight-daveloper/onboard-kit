@@ -1,0 +1,23 @@
+[
+  {
+    "name":"reference-order-shows-prerequisite-without-reordering",
+    "source":"ADR0260 grouped reference instructions show explicit prerequisites; no action topology is imposed on ordinary Assemble",
+    "plan":{"provenance":{"templateSet":"test","generatedOn":"2026-10-23"},"sections":[{"id":"a","title":"A","requires":["b"],"summary":"Read A."},{"id":"b","title":"B","summary":"Read B."}]},
+    "document":"# Onboarding\n\nGenerated 2026-10-23 from template set `test`. A person must review this before it is sent.\n\n## Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n## A\n\nRequires: `b`.\n\nRead A.\n\n## B\n\nRead B.\n",
+    "problems":[]
+  },
+  {
+    "name":"reference-prerequisites-use-first-held-occurrence-order",
+    "source":"ADR0260 visible exact prerequisites; shared presentation rule preserves first-held order without changing original repeats",
+    "plan":{"provenance":{"templateSet":"test","generatedOn":"2026-10-23"},"sections":[{"id":"a","title":"A","requires":["c","b","c"]},{"id":"b","title":"B"},{"id":"c","title":"C"}]},
+    "document":"# Onboarding\n\nGenerated 2026-10-23 from template set `test`. A person must review this before it is sent.\n\n## Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n## A\n\nRequires: `c`, `b`.\n\n## B\n\n## C\n",
+    "problems":[]
+  },
+  {
+    "name":"reference-parent-can-require-its-nested-child",
+    "source":"ADR0260 reference containment is not an execution edge; parent keeps nested reference position and explicitly names the child prerequisite",
+    "plan":{"provenance":{"templateSet":"test","generatedOn":"2026-10-23"},"sections":[{"id":"parent","title":"Parent","requires":["child"]},{"id":"child","parent":"parent","title":"Child"}]},
+    "document":"# Onboarding\n\nGenerated 2026-10-23 from template set `test`. A person must review this before it is sent.\n\n## Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n## Parent\n\nRequires: `child`.\n\n### Child\n",
+    "problems":[]
+  }
+]

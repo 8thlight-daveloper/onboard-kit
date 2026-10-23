@@ -1,6 +1,7 @@
 # 0260. Prerequisites and action order
 
-Status: accepted by agent judgment; format implemented, graph and runtime pending
+Status: accepted by agent judgment; format, graph validation, scheduling, and
+bootstrap projection implemented; record-backed walkthrough pending
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0110](0110-reject-ambiguous-plans.md),
