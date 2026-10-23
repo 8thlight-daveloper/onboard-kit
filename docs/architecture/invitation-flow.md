@@ -92,8 +92,13 @@ are implemented; see [invitation export](../reference/invitation-export.md).
 It does not settle confirmed import or preparation-answer bindings.
 
 Build the guided flow using the same preparation format and editor, then add
-the archive writer and reader. The allowed entry layout must include preparation
-and satisfy 0090's bounded-entry, size, and untrusted-path rules.
+an explicit reviewed save. The next bounded component is the read-only
+[preparation reviewer](../decisions/0330-preparation-review.md): keep validation
+problems, actual onboarder blockers and the real first-steps preview separate,
+without a ready flag or writes. Its contract and implementation remain pending.
+Guided edits and publication follow through separate contracts. The implemented
+archive codecs already include preparation under 0240's bounded-entry, size and
+untrusted-path rules; do not create a second envelope or speculative publisher.
 
 Confirm the account and destination before writes. Test wrong identity, invalid
 archives, missing company access, and existing records. Define stale or conflicting

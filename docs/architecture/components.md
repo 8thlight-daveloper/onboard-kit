@@ -122,6 +122,7 @@ flowchart TB
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Catalog reader | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
 | Catalog command | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
+| Preparation reviewer, planned | Returns preparation problems, actual onboarder blockers and the real first-steps preview separately, without a readiness claim or writes. See [0330](../decisions/0330-preparation-review.md) |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
 | Section scheduler | Validates all declared relationships, selects from the full original plan, and returns active activities in global prerequisite action order. Goals break ties between free activities, never override prerequisites or gate progress. Reads no outcomes and performs no writes |
@@ -165,6 +166,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
+| `preparation/reviewer`, planned | Reads explicit account/help context, original Plan and proposed preparation through actual validation, finder and first-steps dependencies. Returns owned problems, blockers and guide only; no input, record, filesystem, clock or outside-state writes |
 
 R means reads. W means returns the field changed, in a copy. C means creates the field, in a new plan. The plan migrator works on bytes and not on a plan, so it has no row.
 
@@ -227,6 +229,12 @@ preservation underlies the structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.
 
 ### Current rules
+
+The planned preparation reviewer is at position 6, depending on its own
+contract, model, preparation validator at 1, question finder at 3 and first-steps
+assembler at 5. It does not edit preparation, infer bindings, read a record or
+certify export readiness. Its phase order is defined by
+[0330](../decisions/0330-preparation-review.md).
 
 The catalog reader contract is at position 1, depending only on its own contract
 and the domain model. Normative manifest/content are compiled data, never runtime
