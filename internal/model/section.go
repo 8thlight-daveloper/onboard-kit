@@ -5,6 +5,7 @@ type Section struct {
 	Title         string
 	Summary       string
 	Parent        string
+	Bootstrap     bool
 	Owner         string
 	Timing        Timing
 	Enabled       *bool

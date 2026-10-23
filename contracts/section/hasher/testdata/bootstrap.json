@@ -1,0 +1,30 @@
+[
+  {
+    "name": "marked-key-position",
+    "source": "ADR0250: bootstrap true hashes after parent and before timing; canonical bytes specified independently of product code",
+    "section": {"id":"access","title":"Access","summary":"Request access","parent":"welcome","bootstrap":true},
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"parent\":\"welcome\",\"bootstrap\":true,\"timing\":\"anytime\"}",
+    "hash": "f535f7f5bd75a85be203c32c910e72e5372fe09ad2679527b1e325c418c19ec2"
+  },
+  {
+    "name": "false-preserves-old-hash",
+    "source": "ADR0250: false marker omitted, all existing unmarked content hashes unchanged",
+    "section": {"id":"access","title":"Access","summary":"Request access","parent":"welcome","bootstrap":false},
+    "canonical": "{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"parent\":\"welcome\",\"timing\":\"anytime\"}",
+    "hash": "7d499ca40c6beb131cbd5fe60630e18d6f328eea6194a37e785dcf0ba0956d99"
+  },
+  {
+    "name": "marker-alone",
+    "source": "ADR0250: true definition marker does not depend on id, timing or activity validity",
+    "section": {"bootstrap":true},
+    "canonical": "{\"bootstrap\":true,\"timing\":\"anytime\"}",
+    "hash": "e930c8a781e51d0fc04a390f79289d041bd76002ed371780fb88dd74da3fb7e9"
+  },
+  {
+    "name": "absent-preserves-zero-hash",
+    "source": "ADR0250 false omission and existing hasher timing default; zero definition remains the old canonical form",
+    "section": {},
+    "canonical": "{\"timing\":\"anytime\"}",
+    "hash": "7f45f0901771cc2e49d31383a646ab9a5e0023a200a0156adc3cf480e3c708c9"
+  }
+]

@@ -16,7 +16,7 @@ The hash covers the section's definition:
 - Its questions: the variables it declares, with their descriptions, examples, types, options, patterns, and defaults.
 - Its steps and checks.
 - Its conditions, `includeIf` and each `askIf`, with their question clauses and their section clauses.
-- Its `parent`, `timing`, `after`, `escalation`, and unknown fields.
+- Its `parent`, `bootstrap`, `timing`, `after`, `escalation`, and unknown fields.
 
 It does not cover answers, because answers live in the plan and not in the section. It does not cover `source`, and it does not cover the section's switch `enabled`, which is the plan's own setting. It detects an edit to a section and a change to its template. It does not detect that someone answered a question.
 
@@ -41,7 +41,7 @@ A Section is written as an object. Its keys come in this order, and `source` and
 
 | Type | Key order |
 | -- | -- |
-| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `unknownFields` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause | `question`, `answer`, `section`, `enabled` |
@@ -144,9 +144,21 @@ The unknown fields of a section are written as one object under the key `unknown
 
 Inside an unknown field, a key with an empty list or an empty map differs from an absent key. The hasher cannot know what it means to a newer tool, so it does not call it a zero. A decimal `2.0` differs from the integer `2` and from the string `"2"`.
 
+### Bootstrap
+
+Under [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md),
+Bootstrap is section content, not an answer or a plan-owned switch. Write
+`"bootstrap":true` after parent and before timing when true; omit it when false.
+This preserves all hashes for sections without a true marker. Do not infer it
+from timing, source, conditions, or another section. Its value is independent
+of Enabled, which stays excluded. The hand-written canonical strings and
+independent SHA-256 constants in [bootstrap.json](testdata/bootstrap.json) pin
+both marked hashes and old unmarked hashes. Changing Bootstrap must also pass
+the existing every-field property without any exception.
+
 ### Parent
 
-`parent` is the id of another section of the same plan, 0070. It is written like any text identifier: exactly as held, never normalized, trimmed, or case-folded, because it is an identifier and not prose. A parent with a trailing space, or in another case, differs. It is written right after `includeIf` and before `timing`, and it is omitted when it is empty, so an empty `parent` hashes like an absent one and every hash written before `parent` existed stays the same. A section that names itself as its parent is written as held. The hasher does not check that the parent exists, and it does not read the parent section.
+`parent` is the id of another section of the same plan, 0070. It is written like any text identifier: exactly as held, never normalized, trimmed, or case-folded, because it is an identifier and not prose. A parent with a trailing space, or in another case, differs. It is written right after `includeIf` and before `bootstrap` and `timing`, and it is omitted when it is empty, so an empty `parent` hashes like an absent one and every hash written before `parent` existed stays the same. A section that names itself as its parent is written as held. The hasher does not check that the parent exists, and it does not read the parent section.
 
 ### Source and switch
 
@@ -196,6 +208,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop Bootstrap, emit false, or move true away from its canonical key position | [bootstrap hash fixtures](testdata/bootstrap.json) and the every-field property |
 | `parent` left out of the hash | `parent`, `parent-differs`, the parent test, `every-field` |
 | `parent` written in another place, such as after `timing` or in the order of the key sort, or under another key | `parent`, the parent test |
 | `parent` trimmed, normalized as prose, or case-folded | `parent-differs`, the parent test, `every-field` |

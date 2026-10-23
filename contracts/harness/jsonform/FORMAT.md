@@ -8,6 +8,10 @@ Contract tests keep their fixtures as plain data. This page says how a Plan is w
 - A plan's `directory` is an object with `contacts`, `roles`, and `teams`, each a list of objects with the fields in the domain model. A team's `holders` is an object of role id to a list of contact ids. A plan has an optional `id` and an `origin` with `planId`, `source`, `contentHash`, and `refreshedOn`.
 - An onboarding record is an object with `account`, `startDate`, `firstOpenedAt`, `plan` (`id`, `hash`, `url`), `answers`, `outcomes` (each with `section`, `outcome`, `on`, `sectionHash`, `note`, `differently`), and `unknownFields`. The optional `firstOpenedAt` is exact text, omitted when empty; see [0230](../../../docs/decisions/0230-first-use-record-compatibility.md). A plan also has optional `planUrl` and `resultsPath`. `Record` reads one and `RecordJSON` writes one.
 - A section's `source` is an object with `template` and `hash`.
+- A section's `bootstrap` is a boolean, false when absent. The harness writer
+  omits false and writes true; a nonboolean fixture value is an error. This
+  fixture representation is separate from YAML's empty/null optional-field
+  rules. See [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md).
 - A condition is `{"all": [{"question": "...", "answer": {"is": ...}}]}` or, for a section clause, `{"all": [{"section": "access", "enabled": true}]}`. A section has an optional boolean `enabled`.
 
 The harness reads a whole plan with `Plan`, and one part of a plan with `Section`, `Condition`, `Value`, and `Answers`. The forms of the parts are the ones above. `JSON` and `SectionJSON` write a plan and a section back, so a failing test can show the values side by side.

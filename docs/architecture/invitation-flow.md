@@ -66,6 +66,13 @@ the editors' responsibility, not a new automatic merge feature.
 
 ### 3. Invitation packaging and startup
 
+The opaque archive encoder and decoder of
+[0240](../decisions/0240-invitation-archive-envelope.md) are implemented.
+They do not validate payload readiness or authorize importing files.
+The bootstrap content/projection foundation is specified in
+[0250](../decisions/0250-bootstrap-content-and-projection.md), with implementation
+pending. Prerequisite enforcement and record-backed startup remain required.
+
 Build the guided flow using the same preparation format and editor, then add
 the archive writer and reader. The allowed entry layout must include preparation
 and satisfy 0090's bounded-entry, size, and untrusted-path rules.
@@ -113,8 +120,8 @@ network isolation from an empty PATH alone.
 
 ## Approval boundary
 
-Next is the preparation format and its contract/test increment, not a workaround
-in shared plan answers. Under [0025](../decisions/0025-contracts-and-tests.md),
+The remaining increments need explicit contracts, not a workaround in shared
+plan answers. Under [0025](../decisions/0025-contracts-and-tests.md),
 contracts and acceptance scenarios need human approval and implementation needs
 independent authorship. This document supplies the scope and expected behaviors;
 it does not report those tests as written or verified.

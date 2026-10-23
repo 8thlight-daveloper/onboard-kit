@@ -60,6 +60,7 @@ classDiagram
         body
         includeIf
         parent
+        bootstrap
         after
         escalation
         variables
@@ -267,6 +268,7 @@ A Value is a settled answer unless it is Deferred or empty. See [conditions](sec
 | `enabled` | Boolean, optional | True by default. Only a plan section has it, and a person turns a section off. See [0050](../decisions/0050-section-switch.md) |
 | `verification`, `body` | Text, optional | Markdown prose |
 | `parent` | Text, optional | The id of another section. A section with a parent is a sub-section: it is active only if its parent is. See [0070](../decisions/0070-sub-sections.md) |
+| `bootstrap` | Boolean, optional | Author-designated pre-access instructions. False when absent; not activity or completion. Included in definition hashes when true. See [0250](../decisions/0250-bootstrap-content-and-projection.md) |
 | `includeIf` | Condition, optional | Names plan variables and the questions of its ancestors |
 | `after` | List of section ids, optional |  |
 | `escalation` | List of variable names, optional | Who to ask when the section is blocked. Names of `contact` or `role` variables the section declares. See [escalation](section-template-schema/escalation.md) |

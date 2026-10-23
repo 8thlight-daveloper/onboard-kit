@@ -29,6 +29,7 @@ classDiagram
         verification
         body
         includeIf
+        bootstrap
         after
         escalation
         variables
@@ -43,6 +44,7 @@ classDiagram
         verification
         body
         includeIf
+        bootstrap
         after
         escalation
         variables
@@ -92,6 +94,7 @@ classDiagram
 | -- | -- |
 | `id`, `title`, `summary` | The only required fields. Everything else is optional |
 | `includeIf` | A [condition](conditions.md) on answers to plan variables, such as the discipline. No `includeIf` means always included |
+| `bootstrap` | Author-designated instructions usable before company access. Optional, false when absent, empty, or null; only plain `true` enables it. Does not imply activity or completion. See [0250](../../decisions/0250-bootstrap-content-and-projection.md) |
 | `timing` | When the work happens, from a closed ordered set. See [ordering](ordering.md) |
 | `after` | Ids of sections that must come before this one. See [ordering](ordering.md) |
 | `escalation` | Names of `contact` or `role` variables to ask, in order, when the section is blocked. See [escalation](escalation.md) |

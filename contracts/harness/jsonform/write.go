@@ -240,6 +240,7 @@ func sectionObject(section model.Section) object {
 	o.addText("title", section.Title)
 	o.addText("summary", section.Summary)
 	o.addText("parent", section.Parent)
+	o.addFlag("bootstrap", section.Bootstrap)
 	if section.IncludeIf != nil {
 		o.add("includeIf", conditionObject(*section.IncludeIf))
 	}
