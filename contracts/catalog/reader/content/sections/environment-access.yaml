@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: environment-access
+title: Development or staging environment access
+summary: Use the required environment
+timing: anytime
+variables:
+  - {name: environment_scope, description: "Which development or staging environment and permitted tasks are required?", audience: onboarder, required: true}
+  - {name: environment_route, description: "How is environment access granted and what safe verification and support procedure applies?", audience: onboarder, required: true}
+body: |
+  Identify the intended environment and task scope: $environment_scope
+  Obtain and verify access using $environment_route.
+
+  Check environment identity before interacting with it. Perform only the
+  agreed safe task; do not assume staging data is public or disposable.
+  Production permission is separate and is not granted by this activity.
+  Report missing access without modifying shared resources or copying
+  sensitive data into a local workaround.
+steps:
+  - id: verify-environment
+    name: Use the approved environment safely
+    checks:
+      - ask: Can you perform the agreed task in the intended environment and distinguish it from production?

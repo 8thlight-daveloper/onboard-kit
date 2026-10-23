@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: regular-meetings
+title: Join regular team meetings
+summary: Know which meetings matter and be able to attend
+timing: week-one
+variables:
+  - {name: meeting_purposes, description: "Which regular meetings matter, what are their purposes and which participation expectations apply?", audience: onboarder, required: true}
+  - {name: meeting_access, description: "How are invitations, joining details and missing-access support obtained?", audience: onboarder, required: true}
+body: |
+  Review the relevant meetings and purposes: $meeting_purposes
+  Obtain invitations and joining help through $meeting_access.
+
+  Confirm the schedule in your time zone and distinguish required,
+  optional and role-specific attendance. Join an appropriate meeting and
+  learn how decisions or actions are recorded. If invitations are missing
+  or overlap creates a problem, ask the meeting owner; being invited alone
+  is not proof that joining works or attendance is useful.
+steps:
+  - id: join-relevant-meeting
+    name: Join a relevant team meeting
+    checks:
+      - ask: Do you understand the relevant meetings and can you join with the required access and context?

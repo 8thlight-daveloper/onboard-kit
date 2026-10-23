@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: team-chat
+title: Team chat
+summary: Reach relevant team and support channels
+timing: week-one
+variables:
+  - {name: chat_setup, description: "Which chat service and approved account or membership instructions apply?", audience: onboarder, required: true}
+  - {name: chat_channels, description: "Which team and support channels matter, and what are their purposes and fallback routes?", audience: onboarder, required: true}
+body: |
+  Set up the configured chat service: $chat_setup
+  Find the relevant channels and fallback routes: $chat_channels
+
+  Confirm you joined the intended workspace with the appropriate account.
+  Send a nonsecret introduction or test message in a suitable channel and
+  confirm someone can respond. Learn response-time expectations and when
+  to use a different support route. Do not assume a provider or request
+  broad workspace permissions merely to finish onboarding.
+steps:
+  - id: reach-team
+    name: Reach the team and locate support in chat
+    checks:
+      - ask: Can you send and receive a message in the relevant team channel and locate its support route?

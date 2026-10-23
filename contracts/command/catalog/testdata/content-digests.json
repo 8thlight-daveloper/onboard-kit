@@ -1,0 +1,405 @@
+{
+  "source": "Independently computed with shasum -a 256 and wc -c over the eighty normative assets frozen by a separate content author under ADR0320; manifest SHA256 f365b32f98d4ba74e7bd482187c0cfce822d3bbeb637b8e8d1a5828fdd389d70. IDs/order come from the independently fixed catalog-table inventory, not asset discovery or product code.",
+  "entries": [
+    {
+      "id": "application-local",
+      "size": 1169,
+      "sha256": "1ab850c7d783842e4eb8a04093a796074d65338a5d81a96e93aba0c56d9d100e"
+    },
+    {
+      "id": "artifact-access",
+      "size": 1213,
+      "sha256": "2bf0938bbff9ee89e27c36bdd4e37e032f43579d367b3720fe109b4c73f17715"
+    },
+    {
+      "id": "calendar-arrange",
+      "size": 1106,
+      "sha256": "0a386f258c709f268aaf99bf3e179e00edc47af9eb9c73fe8ab295fbf8ffd777"
+    },
+    {
+      "id": "chat-arrange",
+      "size": 1171,
+      "sha256": "b995796d4450f9775844217c4591378f2d2dc3f528041aafe76879f0bd502e73"
+    },
+    {
+      "id": "ci-access",
+      "size": 1186,
+      "sha256": "b95457c53dafc663b8fe7db93195806af117f2c311c732b48ca47101a7a934d0"
+    },
+    {
+      "id": "codebase-orientation",
+      "size": 1160,
+      "sha256": "ed2c1aceb52362b02ba055525feb123cbe5f31bbbc758352f2564cbd112950c7"
+    },
+    {
+      "id": "company-calendar",
+      "size": 1098,
+      "sha256": "b0200b5d28e7a304245710918b8a27f069a9e22f8c6e58eee108abc9dab9e84f"
+    },
+    {
+      "id": "company-email",
+      "size": 1066,
+      "sha256": "41dfc1db5f3597237a9b8f4c2e97fcaf54671bbdbe701413a0800997df2203d0"
+    },
+    {
+      "id": "company-identity",
+      "size": 1168,
+      "sha256": "578a143bc797ee7e068a6e2afcb1d518ed6f5cea43a72f9591b85a1fdb8eda35"
+    },
+    {
+      "id": "contribution-practices",
+      "size": 1234,
+      "sha256": "0c2cae0f12bfbb062aea0441c446601611d4359b1b8a1932dd0e5b3753a2d5dd"
+    },
+    {
+      "id": "day-ninety-review",
+      "size": 1143,
+      "sha256": "0f5dec39c2b8dea44c3b3170b2e1d51de196fff5dbfb1e861f03d20a49ea97d3"
+    },
+    {
+      "id": "day-thirty-review",
+      "size": 1211,
+      "sha256": "5504630b3b03bb8d447f71943fa378c54f4f624c860c3d9cc93398a005b35c2d"
+    },
+    {
+      "id": "deploy-lead",
+      "size": 1263,
+      "sha256": "1508cbe2f584d5e5474933c96af871cd33267404d89afe31bc5e840eabfd8917"
+    },
+    {
+      "id": "deploy-lead-assign",
+      "size": 1090,
+      "sha256": "fde99a391fc3a32863ccb3e272aba823d8768cb9dbd8c35a280d64234b25c4f6"
+    },
+    {
+      "id": "deploy-shadow",
+      "size": 1277,
+      "sha256": "807b30e3cc6e66058b11086088fe12114c8b22ef2cd013ab543938b19f0b773b"
+    },
+    {
+      "id": "deploy-support-assign",
+      "size": 1093,
+      "sha256": "24d6f62ae2b1af008455d8d51dc85c61bac05a6e5b19880cde57d77ae8702b01"
+    },
+    {
+      "id": "design-contribution",
+      "size": 1266,
+      "sha256": "fc3199a46f24d5d945826a232e3c7bbe437d755da6c23a023d556831adc01c19"
+    },
+    {
+      "id": "design-handoff",
+      "size": 1206,
+      "sha256": "665be704a6f85d9b8d1a00e218d5c4da174d2d7b377d86059808a25faf860967"
+    },
+    {
+      "id": "design-system-review",
+      "size": 1236,
+      "sha256": "9b4716f233002482eb8aeca547223831f442678ea770636d306d2d50b6582478"
+    },
+    {
+      "id": "design-workspace",
+      "size": 1208,
+      "sha256": "d05a6a076054e302774461dbb6d0e71456ec7aae4a3280e719c734b9eb2ac626"
+    },
+    {
+      "id": "device-arrange",
+      "size": 1115,
+      "sha256": "79f586d8e7d1b0758019d4c0880a8aa287f9757455baefad335e40a69697c251"
+    },
+    {
+      "id": "document-reading",
+      "size": 1150,
+      "sha256": "6d2d448041fbf01b0b7e5da0a09e3a784fdc06d8e841b08c4d607cb01f428133"
+    },
+    {
+      "id": "documentation-access",
+      "size": 1136,
+      "sha256": "7c926be711616dc3dc45d3e959812906a80a0e264085979ddc5a7b223068b75b"
+    },
+    {
+      "id": "environment-access",
+      "size": 1152,
+      "sha256": "1821338100fc7ea5bd55fef21ab0f7efb94c2f6f40d949f26fd0df5d827f2231"
+    },
+    {
+      "id": "hosting-access",
+      "size": 1153,
+      "sha256": "ebccd826109b9701f6daa1503924e39d8634ec71687dd44bd63f2775d367f25c"
+    },
+    {
+      "id": "identity-arrange",
+      "size": 1165,
+      "sha256": "0d27c01879d8ed9e2db34c2774feab9b3a9cc43419cfc22aa8456572a243ee36"
+    },
+    {
+      "id": "incident-orientation",
+      "size": 1264,
+      "sha256": "124546c5c6c19bce51dcc7efae8a34b3f3ab8ee2a1fa55d649babced06ac3b6c"
+    },
+    {
+      "id": "internal-network",
+      "size": 1135,
+      "sha256": "384bacb0ce946ad5c54e85912c9bcc829e05897b7cdc5eff296a826bf43a7e6a"
+    },
+    {
+      "id": "invitation-prepare",
+      "size": 1253,
+      "sha256": "a6e2759c85d72d5b53f45bb6df953fcd9259a96fb6c0e6213b3f12370be4dfef"
+    },
+    {
+      "id": "invitation-start",
+      "size": 1704,
+      "sha256": "2f385d4e7517d0c66e3a637329bafb6c4b4d026d86e4df10d2414240feeb41af"
+    },
+    {
+      "id": "knowledge-transfer",
+      "size": 1339,
+      "sha256": "86047f9392d95d264eb203b37079a1259e3012bb19a499f9bb2f6c4ccfbbd932"
+    },
+    {
+      "id": "meeting-invite",
+      "size": 1140,
+      "sha256": "0d9aed6eedc82cc041e5244b565b6b9c33e2769fbfe59a441df4dec51b93f292"
+    },
+    {
+      "id": "observability-access",
+      "size": 1193,
+      "sha256": "9b7ad16e3497ebb4eb3faad218ff409ec4a5c61017cd3e1275c567d9f13bee11"
+    },
+    {
+      "id": "office-access",
+      "size": 1153,
+      "sha256": "b10a90d89f9d3ae007ed59a9e09ec620ea08c344f923f7fbaed1d5f20ad51a42"
+    },
+    {
+      "id": "office-arrange",
+      "size": 1110,
+      "sha256": "d54cc0428446766003c8ac4a8cdfd76ea8fb064406fbfe182d211595ce652ffa"
+    },
+    {
+      "id": "onboarding-buddy-meeting",
+      "size": 1150,
+      "sha256": "40a7ce97ee0c82bf3cccfe68575e7bf7e548f4ab8a921abb210dde287e643111"
+    },
+    {
+      "id": "onboarding-correction",
+      "size": 1274,
+      "sha256": "14387efc05de607c4f257d88f0318e0604eadb51be21a297c1706beaedfa74d4"
+    },
+    {
+      "id": "onboarding-help",
+      "size": 1377,
+      "sha256": "eff376af79bf154098f337e455fff1c7d8e0625ff023fa89f044f1a0fa828e46"
+    },
+    {
+      "id": "onboarding-owner-meeting",
+      "size": 1222,
+      "sha256": "7726b72e14be4bc07e9eb2e9d2357a60cae78b22261fcf5cc20d873629b108f9"
+    },
+    {
+      "id": "onboarding-refresh",
+      "size": 1270,
+      "sha256": "05f915b966e9ebe3d511bf789d524b32f1ce002d7229ad072bf34634549c9930"
+    },
+    {
+      "id": "onboarding-repository",
+      "size": 1294,
+      "sha256": "8172d82fa208f7a3ea5268ae54d142a02516100af7d8a2ae66326b5f295750c1"
+    },
+    {
+      "id": "onboarding-resume",
+      "size": 1542,
+      "sha256": "717eb2cc55c84188e680e6b9bc8b2a3556d811a626cb59cf805152d33834ba1f"
+    },
+    {
+      "id": "onboarding-welcome",
+      "size": 1171,
+      "sha256": "814b7525cf245881850c8d9b6c4da6775fb19bbaca05892858664495737dfc2c"
+    },
+    {
+      "id": "pair-assign",
+      "size": 1071,
+      "sha256": "051943b33ad146d69fc47bb489188f53042e9ac1aabacf86bdca2039461fcf1f"
+    },
+    {
+      "id": "people-map",
+      "size": 1192,
+      "sha256": "ea913a96dbb06f15d3f120c39081d6a72e15de9a6c34d248ee2943c5999cd0ad"
+    },
+    {
+      "id": "pr-merge",
+      "size": 1328,
+      "sha256": "5b5db97ef9adc6c54ad2cbb264047add51e24516562fa02154be082952db68b8"
+    },
+    {
+      "id": "pr-merge-arrange",
+      "size": 1086,
+      "sha256": "82863ee39f875054d437ef71e30a9b9de54547fe28904bd7931f38e9f65cbcdd"
+    },
+    {
+      "id": "pr-post",
+      "size": 1155,
+      "sha256": "0518123deec24bf6b20025945bdb58ab793e177a8217072fdaf340261d35bd5d"
+    },
+    {
+      "id": "pr-review",
+      "size": 1238,
+      "sha256": "2c697f4f11918cfcd350400d50436f6d1a73ea14c0de96996128694968099cfb"
+    },
+    {
+      "id": "pr-review-arrange",
+      "size": 1040,
+      "sha256": "544082b0f9775b473d2d89c61c999c9ac7b2712c03c967b6408873e9a04d08e9"
+    },
+    {
+      "id": "pr-reviewer-assign",
+      "size": 1014,
+      "sha256": "c042969cb12fddf47baa35fe2194648c3111b9dac242c72211fc22ebbbdf2514"
+    },
+    {
+      "id": "product-orientation",
+      "size": 1250,
+      "sha256": "e90a74cdfdee50648f914704868083301e3673f888d4e09d2e83f5cfc17184e0"
+    },
+    {
+      "id": "project-dependencies",
+      "size": 1207,
+      "sha256": "657a3597087704c21179a2cb0d4eee9cca7a50bd0981704d7e35d2ffe1ec5483"
+    },
+    {
+      "id": "project-tests",
+      "size": 1258,
+      "sha256": "8b482f203cdff70a89abbdbad7501c78aa26c8cd81bb3987370ac43970e808eb"
+    },
+    {
+      "id": "reading-assign",
+      "size": 1079,
+      "sha256": "f56c215c13c9044133c870d3eb9195643607963c419cd6625e41c9ac2b25f581"
+    },
+    {
+      "id": "regular-meetings",
+      "size": 1172,
+      "sha256": "d766687771642ea19b3af603ed943b55a5f77e6073ad0e26ef41bc5bbba885f5"
+    },
+    {
+      "id": "remote-arrange",
+      "size": 1133,
+      "sha256": "b216bc2a76740e2854b0094ad31409f10c72ea00980e618b8a141eaccfecaeca"
+    },
+    {
+      "id": "repository-access",
+      "size": 1244,
+      "sha256": "921f3d796b28d0395c75ef06fe9fc8b51401f385a6266abde861e9b135db40bf"
+    },
+    {
+      "id": "repository-clone",
+      "size": 1171,
+      "sha256": "9886edb5c289ca76c73977032803b85b556f29fa5bd2663b69d3c9b069cd092e"
+    },
+    {
+      "id": "research-review",
+      "size": 1235,
+      "sha256": "3a79a326e041c3a2a40c9d94d18f869f4ba8e164441013997a9687934fb9a8ef"
+    },
+    {
+      "id": "resource-access-arrange",
+      "size": 1082,
+      "sha256": "be5cc2de2a18a464d8acd77f6ff7c83d291da6bca749b9a0bc551eb84894c2ed"
+    },
+    {
+      "id": "retrospective-participation",
+      "size": 1235,
+      "sha256": "43c85d2a13b90fd7f35e6b0894d2b4f2be3f20bdf7d37bde3e86286ce002d2cf"
+    },
+    {
+      "id": "secrets-access",
+      "size": 1241,
+      "sha256": "a6f4b2f3ead900a0c27e7f3a590323221b963a054afa47f27f9189eb013f1e65"
+    },
+    {
+      "id": "security-orientation",
+      "size": 1204,
+      "sha256": "6cb191369c3beeb9c84c19d8adb8f400466daa4a06fa53b8df341572c716b4dd"
+    },
+    {
+      "id": "source-host-account",
+      "size": 1210,
+      "sha256": "21de886b60ad5a22ff2aa8942de898f7514a923694df6cf29c74277c60ff132d"
+    },
+    {
+      "id": "source-host-membership",
+      "size": 1216,
+      "sha256": "717a64c4ceda54cbaebc64a411c16d6ef08cfd402682ec798f6f7a22932fe591"
+    },
+    {
+      "id": "support-assign",
+      "size": 1163,
+      "sha256": "d6fc121a3803d145ec608e69c56f033082d435659bde3f6369bd149ff8ecabda"
+    },
+    {
+      "id": "team-chat",
+      "size": 1117,
+      "sha256": "eb4609a87cbb71f31932b0930677a6eaeccac3cf0524449163d429619468dcfc"
+    },
+    {
+      "id": "teammate-introduction",
+      "size": 1147,
+      "sha256": "15034ed5071d8cd28afe1137cc82d8cd90c16cf325803b9e9c3ef14e08e3c92a"
+    },
+    {
+      "id": "ticket-assign",
+      "size": 1048,
+      "sha256": "5f121d2d73cfc369c889c1a4ec6dba1cf253a9bc744155f4eb6c1459446abd68"
+    },
+    {
+      "id": "ticket-ownership",
+      "size": 1218,
+      "sha256": "bd24f9d30e3dd8eae036a00465c501467ccf77b18615c8a940224281a0fb8712"
+    },
+    {
+      "id": "ticket-pairing",
+      "size": 1148,
+      "sha256": "733e4e7800755e504113490d85b42637fcd8889836cb1e3a2157be0d8b487631"
+    },
+    {
+      "id": "ticket-system-access",
+      "size": 1146,
+      "sha256": "0b0fa12f69cfa5072dbab873ea47a1e4e212fb1ec54bfb808ca980dca42fc0b7"
+    },
+    {
+      "id": "tool-feedback",
+      "size": 1328,
+      "sha256": "5f5abc3b216e8c2d2d5dc159793d4c3cd281416d874a4cf7b80a34f711b4b6e8"
+    },
+    {
+      "id": "video-arrange",
+      "size": 1144,
+      "sha256": "44031546e0f28dc0217adbdcc2d76a777cda0322e278306f08032e3858f88f1d"
+    },
+    {
+      "id": "video-meetings",
+      "size": 1132,
+      "sha256": "e98add3749caa259499e0f0e4357884726b7012c48d79301a72c2b3cfa1a735b"
+    },
+    {
+      "id": "week-one-check-in",
+      "size": 1155,
+      "sha256": "ca0b81af7efaf76a86021b789fc221846d1ccd81dab8976b135ef57aba780926"
+    },
+    {
+      "id": "working-agreements",
+      "size": 1260,
+      "sha256": "34cbc0bd7286e931adc09e23b93c85973b79d81046c3a18f16116c5d21e96f3a"
+    },
+    {
+      "id": "working-device",
+      "size": 1117,
+      "sha256": "719473c855df404ecefb76355d46ba19bf9cdaf8367e30d891967a7d3fa8dea6"
+    },
+    {
+      "id": "working-hours",
+      "size": 1236,
+      "sha256": "1c3cb7f3740611af7ab63cae96744aeeb404fdcebd14a5fb6858b872fc3cd40f"
+    }
+  ]
+}

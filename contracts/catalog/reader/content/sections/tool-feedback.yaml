@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: tool-feedback
+title: Provide feedback on onboard-kit
+summary: Send tool friction and suggestions through the agreed route without secrets or unnecessary personal details
+timing: anytime
+variables:
+  - {name: tool_feedback_route, description: "Which agreed internal route receives onboard-kit feedback?", audience: onboarder, required: true}
+  - {name: tool_feedback_context, description: "What nonsecret context and review process make a feedback report useful?", audience: onboarder, required: true}
+body: |
+  Send useful feedback through $tool_feedback_route.
+  Include only the agreed nonsecret context: $tool_feedback_context
+
+  Describe the task you were attempting, the friction and the useful
+  result you expected. Review any example before sharing it; do not attach
+  a real plan, preparation, record or invitation without approved handling.
+  Separate tool behavior from organization-specific instructions. Revisit
+  feedback around day thirty if helpful, but do not block useful work on
+  submitting a report or assume a public issue tracker is the right route.
+steps:
+  - id: provide-safe-feedback
+    name: Identify or use the agreed tool-feedback route
+    checks:
+      - ask: Can you provide actionable tool feedback through the agreed route without secrets or unnecessary personal details?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: ticket-system-access
+title: Ticket system access
+summary: Read and update the relevant project or board as needed
+timing: anytime
+variables:
+  - {name: ticket_scope, description: "Which ticket service, project or board and permitted operations are required?", audience: onboarder, required: true}
+  - {name: ticket_access_route, description: "How is ticket access requested and safely verified, and who handles problems?", audience: onboarder, required: true}
+body: |
+  Locate the intended service and project: $ticket_scope
+  Obtain and verify access using $ticket_access_route.
+
+  Open a relevant issue and inspect its status and collaboration context.
+  If your role needs updates, use an explicitly permitted non-disruptive
+  action to confirm that capability. Do not alter a real ticket merely
+  as a test without its owner's agreement. Ask about restricted material
+  rather than requesting access to every project.
+steps:
+  - id: verify-ticket-capability
+    name: Verify the needed ticket-system operations
+    checks:
+      - ask: Can you read the relevant board and perform the approved updates your role requires?

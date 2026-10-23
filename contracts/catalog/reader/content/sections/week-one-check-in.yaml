@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: week-one-check-in
+title: End-of-week onboarding check-in
+summary: Discuss blockers, surprises, and next priorities
+timing: week-one
+variables:
+  - {name: checkin_route, description: "How is the first-week check-in arranged with the onboarding owner?", audience: onboarder, required: true}
+  - {name: checkin_focus, description: "What shared first-week goals and support questions should guide the conversation?", audience: onboarder, required: true}
+body: |
+  Arrange the conversation through $checkin_route.
+  Use the agreed focus: $checkin_focus
+
+  Discuss what helped, what surprised you and what still blocks useful
+  work. Separate unavailable organizational support from personal learning
+  needs. Agree the next priorities, owners and a follow-up route. The end
+  of week one is a planning prompt, not a failure deadline; reschedule when
+  needed and preserve the value of the conversation over a completion count.
+steps:
+  - id: review-first-week
+    name: Discuss the first week and agree next priorities
+    checks:
+      - ask: Have you discussed blockers and surprises with the owner and agreed supported next priorities?

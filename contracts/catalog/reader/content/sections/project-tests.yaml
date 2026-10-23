@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: project-tests
+title: Run the test suite
+summary: Run tests and identify known failures rather than hide them
+timing: week-one
+variables:
+  - {name: test_instructions, description: "Which reviewed test instructions, environment and scope apply?", audience: onboarder, required: true}
+  - {name: test_baseline, description: "Where are known test failures documented and who can help distinguish setup from product failures?", audience: onboarder, required: true}
+body: |
+  Review and follow the test instructions: $test_instructions
+  Compare results and discuss failures through $test_baseline.
+
+  Confirm whether tests affect external services or persistent data before
+  running them yourself. Inspect the actual result rather than assuming
+  success from a command starting. Distinguish known baseline failures,
+  environment problems and new failures. Do not skip tests, rewrite their
+  expectations or hide failing output to complete onboarding. This plain
+  instruction template executes no command.
+steps:
+  - id: understand-test-results
+    name: Run the intended tests and interpret the result
+    checks:
+      - ask: Have you run the intended tests and identified passing results or the specific unresolved and known failures?

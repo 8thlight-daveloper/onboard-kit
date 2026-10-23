@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: research-review
+title: Review user research
+summary: Understand relevant findings and open questions
+timing: days-8-to-30
+variables:
+  - {name: research_material, description: "Which approved findings and research context are relevant to current work?", audience: onboarder, required: true}
+  - {name: research_discussion, description: "Who can explain evidence limitations, consent restrictions and open research questions?", audience: onboarder, required: true}
+body: |
+  Review the permitted research material: $research_material
+  Discuss evidence and limitations through $research_discussion.
+
+  Distinguish observations, interpretations and hypotheses. Explain which
+  decisions a finding supports and where uncertainty remains. Respect
+  participant consent and restricted recordings; summarize useful insights
+  without copying identifying material into onboarding files. Ask what is
+  missing before treating historical findings as current universal truth.
+steps:
+  - id: explain-research-evidence
+    name: Discuss findings, limits and useful next questions
+    checks:
+      - ask: Can you explain relevant research findings, their limitations and an open question without exposing participant details?

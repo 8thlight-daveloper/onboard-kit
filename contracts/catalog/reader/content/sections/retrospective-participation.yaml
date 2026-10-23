@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: retrospective-participation
+title: Participate in a retrospective
+summary: Participate and understand how improvements are followed up
+timing: anytime
+variables:
+  - {name: retrospective_process, description: "How is the team's retrospective run and how does a newcomer join?", audience: onboarder, required: true}
+  - {name: retrospective_followup, description: "What confidentiality, facilitation and improvement follow-up practices apply?", audience: onboarder, required: true}
+body: |
+  Join an appropriate retrospective using $retrospective_process.
+  Respect its discussion and follow-up rules: $retrospective_followup
+
+  Learn how observations become experiments or actions and who follows
+  through. Contribute a useful observation or question without being
+  pressured to reveal private concerns publicly. Do not copy confidential
+  discussion or judgments about colleagues into onboarding notes. Ask how
+  to raise a concern outside the meeting when that is the safer route.
+steps:
+  - id: participate-and-follow-up
+    name: Participate and understand improvement follow-up
+    checks:
+      - ask: Have you participated appropriately and learned how retrospective improvements are owned and revisited?

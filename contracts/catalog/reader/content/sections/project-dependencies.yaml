@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: project-dependencies
+title: Install project dependencies
+summary: Complete the documented setup
+timing: week-one
+variables:
+  - {name: dependency_setup, description: "Which reviewed project dependency setup instructions and versions apply?", audience: onboarder, required: true}
+  - {name: dependency_verification, description: "What safe check confirms dependency setup and where should failures be discussed?", audience: onboarder, required: true}
+body: |
+  Review the setup instructions before using them: $dependency_setup
+  Verify with the documented check and support route: $dependency_verification
+
+  Confirm the correct project and environment. Understand downloads,
+  permissions and changes before following a command. Prefer the project's
+  documented versions rather than an arbitrary latest release. Do not
+  disable integrity checks, add credentials to files or change system-wide
+  settings without approval. Record nonsecret setup discrepancies for review.
+steps:
+  - id: verify-dependency-setup
+    name: Complete and verify the documented dependency setup
+    checks:
+      - ask: Have you completed the documented dependency setup and its verification successfully?

@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: product-orientation
+title: Understand the product and users
+summary: Explain the users, product purpose, and current priorities
+timing: week-one
+variables:
+  - {name: product_material, description: "Which product introduction, safe demonstration or user context should be reviewed?", audience: onboarder, required: true}
+  - {name: product_contact, description: "Who can explain current priorities and answer product questions?", audience: onboarder, required: true}
+body: |
+  Explore the approved product introduction: $product_material
+  Discuss priorities and questions with $product_contact.
+
+  Explain who uses the product, which problem it addresses and how the
+  team learns whether it helps. Trace one ordinary user journey using
+  permitted material, not private customer data. Ask how current priorities
+  connect to that journey and where assumptions remain uncertain. Share
+  misunderstandings early rather than treating a presentation as proof
+  that every product decision is understood.
+steps:
+  - id: explain-product-purpose
+    name: Explain the product and its current priorities
+    checks:
+      - ask: Can you explain the intended users, product purpose and a current priority, including any open questions?

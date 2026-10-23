@@ -1,0 +1,4 @@
+{
+  "inventory.json": "docs/reference/onboarding-catalog.md, all eight coverage tables copied independently; docs/decisions/0320-embedded-catalog-availability.md, exact 59/19/2 carrier classification and durable identity",
+  "content-digests.json": "Independent shasum -a 256 and wc -c over all eighty separately authored normative assets; frozen manifest SHA256 f365b32f98d4ba74e7bd482187c0cfce822d3bbeb637b8e8d1a5828fdd389d70; no product Reader used"
+}

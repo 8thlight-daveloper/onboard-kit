@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: internal-network
+title: VPN or internal network
+summary: Reach required internal resources
+timing: anytime
+variables:
+  - {name: network_setup, description: "What approved VPN or internal-network instructions and resource scope apply?", audience: onboarder, required: true}
+  - {name: network_test, description: "Which permitted internal resource is a safe connectivity test, and where is connection support?", audience: onboarder, required: true}
+body: |
+  Set up only the required network access: $network_setup
+  Test the permitted resource and use support as described: $network_test
+
+  Use approved clients and authentication. Distinguish a connection being
+  established from authorization to a particular resource. Do not disable
+  protective controls, scan other systems or request unrestricted network
+  access to complete this activity. Explain the blocked dependent work if
+  the approved route does not work.
+steps:
+  - id: verify-network
+    name: Reach an approved internal resource
+    checks:
+      - ask: Can you reach the specified permitted internal resource through the approved network route?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: incident-orientation
+title: Incident and on-call orientation
+summary: Understand responsibilities, escalation, and relevant runbooks
+timing: anytime
+variables:
+  - {name: incident_material, description: "Which incident roles, runbooks and any on-call expectations apply to this work?", audience: onboarder, required: true}
+  - {name: incident_escalation, description: "What approved incident reporting, escalation and training route should a newcomer use?", audience: onboarder, required: true}
+body: |
+  Review the relevant responsibilities and runbooks: $incident_material
+  Locate the reporting and escalation route: $incident_escalation
+
+  Discuss a safe scenario with an experienced teammate. Identify how to
+  raise concern, who coordinates response and where communications belong.
+  Distinguish learning from joining a rota or accepting incident authority.
+  Do not trigger a real alert, test production recovery or promise on-call
+  availability without explicit agreement and the required training.
+steps:
+  - id: explain-incident-response
+    name: Walk through an appropriate incident scenario
+    checks:
+      - ask: Can you explain your expected role, escalation route and the runbooks to consult before incident participation?

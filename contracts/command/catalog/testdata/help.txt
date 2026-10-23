@@ -1,0 +1,6 @@
+Usage: onboard-kit catalog list
+       onboard-kit catalog show --id ID
+       onboard-kit catalog export --id ID
+
+list prints JSON inventory. show displays complete catalog content.
+export prints section YAML or preparation/tool-help Markdown; it writes no files.

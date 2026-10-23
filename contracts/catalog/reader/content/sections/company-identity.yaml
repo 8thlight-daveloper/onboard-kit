@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: company-identity
+title: Company identity and SSO
+summary: Required authentication works
+timing: week-one
+variables:
+  - {name: identity_process, description: "What approved account activation and authentication instructions apply?", audience: onboarder, required: true}
+  - {name: identity_support, description: "Who handles identity provisioning, recovery and authentication problems through an approved route?", audience: onboarder, required: true}
+body: |
+  Use the approved identity process: $identity_process
+  Get provisioning or recovery help through $identity_support.
+
+  Confirm that the account belongs to you before activation. Set up the
+  required authentication factors through the approved system, keeping
+  passwords and recovery material out of onboarding files. Test sign-in to
+  a permitted service and sign out afterwards where appropriate. A request
+  or activation email alone does not prove working authentication.
+steps:
+  - id: verify-authentication
+    name: Verify the required authentication flow
+    checks:
+      - ask: Can you authenticate with your own intended account and required factors to an approved service?

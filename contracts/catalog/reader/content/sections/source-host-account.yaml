@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: source-host-account
+title: GitHub or other source-host account
+summary: The appropriate named account and authentication work
+timing: anytime
+variables:
+  - {name: source_account_policy, description: "Which source host, account policy and approved authentication setup apply?", audience: onboarder, required: true}
+  - {name: source_account_support, description: "Who resolves account or authentication problems before repository access is requested?", audience: onboarder, required: true}
+body: |
+  Follow the configured host and account policy: $source_account_policy
+  Ask for account help through $source_account_support.
+
+  Confirm which named account should be associated with the organization.
+  Verify sign-in and required authentication without sharing credentials
+  or saving recovery material in the plan. Account creation does not imply
+  organization membership or repository permission. Do not create duplicate
+  identities or assume a particular source-host provider.
+steps:
+  - id: verify-source-identity
+    name: Verify the intended source-host identity
+    checks:
+      - ask: Can you authenticate to the configured source host with the account approved for this work?

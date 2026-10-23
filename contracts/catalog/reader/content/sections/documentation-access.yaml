@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: documentation-access
+title: Documentation workspace access
+summary: Open the assigned material
+timing: anytime
+variables:
+  - {name: documentation_scope, description: "Which documentation workspace and material should the newcomer be able to open?", audience: onboarder, required: true}
+  - {name: documentation_route, description: "Who grants documentation access and resolves missing or restricted material?", audience: onboarder, required: true}
+body: |
+  Locate the intended workspace and material: $documentation_scope
+  Request or repair access through $documentation_route.
+
+  Open the assigned content using the intended account, not a copied
+  private document. Check how to find the current version and its owner.
+  Workspace membership alone does not prove a particular page opens.
+  Keep access restrictions intact and ask for an approved alternative
+  if assigned material cannot be shared with your role.
+steps:
+  - id: open-assigned-material
+    name: Open the intended documentation
+    checks:
+      - ask: Can you open the assigned current material and identify its owner or access support route?

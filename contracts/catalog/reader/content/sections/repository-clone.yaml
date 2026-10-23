@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: repository-clone
+title: Clone a repository
+summary: Have a usable local checkout
+timing: week-one
+variables:
+  - {name: clone_instructions, description: "Which repository, approved clone procedure and local destination guidance apply?", audience: onboarder, required: true}
+  - {name: checkout_verification, description: "How should the intended checkout and branch be verified, and who helps with failures?", audience: onboarder, required: true}
+body: |
+  Follow the reviewed clone instructions: $clone_instructions
+  Verify the result using $checkout_verification.
+
+  Confirm the repository identity before obtaining it. Choose a destination
+  that does not replace existing work. Inspect project instructions before
+  executing repository content. Check that the local checkout can be read
+  and identifies the intended repository and branch. This section stores
+  instructions only; it does not run Git or assume a clone command.
+steps:
+  - id: verify-local-checkout
+    name: Obtain and verify the intended local checkout
+    checks:
+      - ask: Do you have a usable checkout of the intended repository without overwriting existing local work?

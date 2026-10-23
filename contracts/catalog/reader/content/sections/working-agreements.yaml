@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: working-agreements
+title: Review working agreements
+summary: Understand communication, decisions, review, availability, and feedback
+timing: week-one
+variables:
+  - {name: agreement_material, description: "Where are current working agreements, or how will the team establish them if absent?", audience: onboarder, required: true}
+  - {name: agreement_discussion, description: "Who can explain agreements, resolve uncertainty and discuss improvements?", audience: onboarder, required: true}
+body: |
+  Review or establish the agreements using $agreement_material.
+  Discuss questions through $agreement_discussion.
+
+  Cover communication, decision ownership, review, availability and
+  feedback. Ask for examples of how the agreements work in practice.
+  Distinguish written policy from a preference or an assumption. If the
+  team has no agreements, work with the people involved to establish them;
+  do not report an imaginary policy as reviewed. Capture agreed changes
+  through the team's normal process.
+steps:
+  - id: discuss-agreements
+    name: Understand or establish practical working agreements
+    checks:
+      - ask: Can you describe the agreed collaboration practices and how an unclear or missing agreement will be resolved?

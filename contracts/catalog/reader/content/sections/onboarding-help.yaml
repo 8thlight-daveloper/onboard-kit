@@ -1,0 +1,26 @@
+schemaVersion: 1
+id: onboarding-help
+title: Get help when blocked
+summary: Have a reachable initial contact and a fallback when the usual route fails
+timing: anytime
+bootstrap: true
+variables:
+  - {name: general_contacts, description: "Who can help with an onboarding problem?", type: contact, multiple: true, audience: onboarder, required: true}
+  - {name: preaccess_route, description: "Which approved business route can the newcomer use before company access?", audience: onboarder, required: true}
+  - {name: fallback_route, description: "What should the newcomer do if the initial route or usual contact is unavailable?", audience: onboarder, required: true}
+escalation: [$general_contacts]
+body: |
+  General support: $general_contacts
+
+  Before company access, use this explicitly supplied route: $preaccess_route
+  If it is unavailable, use the fallback: $fallback_route
+
+  Describe the activity, the nonsecret error and what you already tried.
+  Never send passwords, recovery codes, tokens or a complete private record.
+  A request being sent is not proof of access. Tell the owner when a blocker
+  prevents later work so support can be rearranged without blaming the date.
+steps:
+  - id: locate-support
+    name: Locate the initial and fallback help routes
+    checks:
+      - ask: Can you identify a route available before company access and a fallback if it fails?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: office-access
+title: Office access and security badge
+summary: Entry and badge work; arrival instructions and contact are clear
+timing: anytime
+variables:
+  - {name: arrival_process, description: "What shared arrival, visitor, badge and physical-security instructions apply?", audience: onboarder, required: true}
+  - {name: arrival_support, description: "Which business contact and fallback can assist someone who cannot enter?", audience: onboarder, required: true}
+body: |
+  Follow the approved arrival and badge process: $arrival_process
+  If entry fails, use $arrival_support.
+
+  Confirm your own visit arrangements with the onboarder before travel.
+  Test the access needed for your work with an authorized host. Learn
+  visitor, lost-badge and emergency procedures. Never borrow another
+  person's badge, tailgate or bypass an access control to finish the task.
+  Keep access codes and private travel details out of onboarding records.
+steps:
+  - id: confirm-entry
+    name: Verify authorized office entry
+    checks:
+      - ask: Can you use the intended entry or badge process and identify a reachable host if entry fails?

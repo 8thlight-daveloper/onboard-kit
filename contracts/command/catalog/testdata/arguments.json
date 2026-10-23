@@ -1,0 +1,318 @@
+[
+  {
+    "name": "missing-operation",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "unknown-operation",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "private-operation"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "bare-end",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "--"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-id",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "list",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-positional",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "list",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-output-file",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "list",
+      "--out",
+      "private-path"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-missing",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-empty",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id="
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-double",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id",
+      "company-email",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-double",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=company-email",
+      "--id=company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-flag-value",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id",
+      "--private-selector"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-positional",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "extra-token",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id",
+      "company-email",
+      "private-data"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "unknown-flag",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id",
+      "company-email",
+      "--account",
+      "private-account"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "unknown-operation-help",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "unknown",
+      "--help"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "late-help",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=company-email",
+      "--help"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "help-equals",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "--help=true"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-unknown-17",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=unknown-private-selector"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-18",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=Company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-19",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id= company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-20",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=company-email "
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-21",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=../company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-22",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=sections/company-email.yaml"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-unknown-23",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "show",
+      "--id=--private-selector"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-24",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=unknown-private-selector"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-25",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=Company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-26",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id= company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-27",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=company-email "
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-28",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=../company-email"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-29",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=sections/company-email.yaml"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-unknown-30",
+    "source": "docs/decisions/0320-embedded-catalog-availability.md; contracts/command/catalog/contract.md, syntax and private reporting",
+    "args": [
+      "export",
+      "--id=--private-selector"
+    ],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  }
+]

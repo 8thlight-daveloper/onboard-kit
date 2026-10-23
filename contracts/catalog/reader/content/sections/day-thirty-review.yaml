@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: day-thirty-review
+title: Review 30-day goals
+summary: Agree on progress, feedback, and revised priorities
+timing: days-8-to-30
+variables:
+  - {name: thirty_day_review, description: "How is the roughly thirty-day review arranged and which shared goals guide it?", audience: onboarder, required: true}
+  - {name: review_support_route, description: "Who can revise priorities and arrange support after the review?", audience: onboarder, required: true}
+body: |
+  Arrange the review and revisit the shared goals: $thirty_day_review
+  Agree changes and support through $review_support_route.
+
+  Discuss useful outcomes, remaining blockers, feedback and changing work.
+  Distinguish verified progress from requests, attempts and unavailable
+  opportunities. Revise priorities with the people involved and name any
+  support actions. Around day thirty is a planning goal, not a pass/fail
+  deadline or a demand for private performance notes in an onboarding file.
+steps:
+  - id: agree-next-month-priorities
+    name: Review progress and revise the next priorities
+    checks:
+      - ask: Have you discussed progress and feedback and agreed revised priorities and support with the relevant owner?

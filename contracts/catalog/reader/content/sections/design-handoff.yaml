@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: design-handoff
+title: Learn design review and handoff
+summary: Understand review, approval, and collaboration expectations
+timing: anytime
+variables:
+  - {name: design_handoff_process, description: "What design review, approval and engineering handoff process applies?", audience: onboarder, required: true}
+  - {name: design_handoff_example, description: "Which reviewed example and discussion contact can explain expected handoff evidence?", audience: onboarder, required: true}
+body: |
+  Review the collaboration process: $design_handoff_process
+  Walk through the supplied example with $design_handoff_example.
+
+  Identify how intent, states, accessibility, constraints and unresolved
+  questions are communicated. Learn who approves what and how changes
+  remain visible after handoff. A shared link is not proof that another
+  discipline has the context it needs. Ask about ambiguous responsibilities
+  rather than assuming that design sign-off grants delivery authority.
+steps:
+  - id: explain-design-handoff
+    name: Explain a useful reviewed design handoff
+    checks:
+      - ask: Can you explain the review, approval and collaboration evidence needed for a useful handoff?

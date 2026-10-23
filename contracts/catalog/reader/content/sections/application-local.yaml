@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: application-local
+title: Run the application locally
+summary: Exercise the application
+timing: week-one
+variables:
+  - {name: local_run_instructions, description: "What reviewed local startup, shutdown and safe data instructions apply?", audience: onboarder, required: true}
+  - {name: local_exercise, description: "Which harmless user journey should verify local behavior and who can help?", audience: onboarder, required: true}
+body: |
+  Review the local application instructions: $local_run_instructions
+  Exercise the approved behavior: $local_exercise
+
+  Check environment and data sources before starting anything. Use approved
+  sample data, not copied production data or personal credentials. Follow a
+  representative flow and inspect its result, then shut down as documented.
+  A running process alone is not a usable application. Report missing setup
+  or differing instructions rather than changing shared services to fit them.
+steps:
+  - id: exercise-local-flow
+    name: Exercise a safe local application flow
+    checks:
+      - ask: Can you complete the approved local flow and explain how to start and stop the application safely?

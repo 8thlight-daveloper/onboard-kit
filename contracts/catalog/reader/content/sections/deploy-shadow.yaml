@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: deploy-shadow
+title: Shadow a deploy
+summary: Observe preparation, deployment, verification, and rollback considerations
+timing: days-8-to-30
+variables:
+  - {name: deployment_runbook, description: "Which deployment process and runbook should be observed?", audience: onboarder, required: true}
+  - {name: shadow_expectations, description: "How is a safe observation opportunity arranged and what questions should the observer cover?", audience: onboarder, required: true}
+body: |
+  Review the process before observing: $deployment_runbook
+  Arrange the opportunity and learning focus: $shadow_expectations
+
+  Confirm the experienced lead and deployment opportunity in preparation.
+  Observe readiness checks, authorization, execution, verification and
+  rollback considerations. Ask when a deploy should stop and who decides.
+  Observation does not authorize operating production controls. If the
+  planned deployment is cancelled or unsuitable, rearrange it instead of
+  treating the planning date as a failure.
+steps:
+  - id: observe-deployment-lifecycle
+    name: Observe an experienced lead through a deployment
+    checks:
+      - ask: Have you observed the deployment lifecycle and discussed readiness, verification, rollback and decision ownership?

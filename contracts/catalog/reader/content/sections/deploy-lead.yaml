@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: deploy-lead
+title: Lead a deploy with support
+summary: Lead an appropriate deployment with experienced support available
+timing: anytime
+variables:
+  - {name: lead_deploy_policy, description: "What readiness, authorization and supported deployment procedure must a first lead satisfy?", audience: onboarder, required: true}
+  - {name: deploy_stop_rules, description: "Who may stop or roll back deployment and how is experienced support reached?", audience: onboarder, required: true}
+body: |
+  Follow the first-lead policy and reviewed procedure: $lead_deploy_policy
+  Confirm stop decisions, rollback and support: $deploy_stop_rules
+
+  Confirm a suitable deployment and available experienced supporter in
+  preparation. Check current authorization and readiness before acting.
+  Lead only the agreed scope, verify the result and follow up with the
+  supporter. Stop or postpone when conditions are unsafe. A target date or
+  onboarding goal never authorizes deployment or excuses missing support.
+steps:
+  - id: lead-supported-deployment
+    name: Lead an authorized deployment with experienced support
+    checks:
+      - ask: Have you led the agreed authorized deployment with support available and verified its outcome under the runbook?

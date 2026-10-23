@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: contribution-practices
+title: Learn contribution and review practices
+summary: Understand branching, review, checks, and the definition of done
+timing: anytime
+variables:
+  - {name: contribution_policy, description: "Where are the current branching, change, review and completion rules?", audience: onboarder, required: true}
+  - {name: contribution_discussion, description: "Who can explain authorization, required checks and exceptions for a first contribution?", audience: onboarder, required: true}
+body: |
+  Review the contribution rules: $contribution_policy
+  Resolve questions through $contribution_discussion.
+
+  Walk through an example change from task to delivery. Identify required
+  reviews, checks, release conditions and who may approve or merge. Ask how
+  to handle disagreement and an urgent exception; do not invent one.
+  Access to a control is not authorization to use it. Keep the team's
+  definition of done visible before beginning the first contribution.
+steps:
+  - id: explain-contribution-process
+    name: Explain how a contribution becomes done
+    checks:
+      - ask: Can you explain the required branching, review, checks and authorization before a contribution is considered done?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: design-workspace
+title: Design workspace access
+summary: Access required files and tools
+timing: week-one
+variables:
+  - {name: design_workspace_scope, description: "Which configured design tools, workspaces and file capabilities does the role require?", audience: onboarder, required: true}
+  - {name: design_access_route, description: "How is design access requested and safely verified, and who handles problems?", audience: onboarder, required: true}
+body: |
+  Confirm the required tools, files and capability: $design_workspace_scope
+  Follow the access and verification route: $design_access_route
+
+  Open the intended workspace with your approved identity. Verify the
+  permitted capability on an agreed safe file; viewing is not editing
+  authority. Learn where current work lives and what may be shared outside
+  the team. Do not duplicate restricted assets into a personal workspace
+  or request organization-wide rights to resolve a narrow access problem.
+steps:
+  - id: verify-design-workspace
+    name: Verify the intended design files and capability
+    checks:
+      - ask: Can you use the required design files and tools within the approved permission and sharing scope?

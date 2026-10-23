@@ -1,0 +1,21 @@
+schemaVersion: 1
+id: company-calendar
+title: Company calendar
+summary: View the calendar and respond to invitations
+timing: week-one
+variables:
+  - {name: calendar_process, description: "Which calendar service, setup instructions and sharing rules apply?", audience: onboarder, required: true}
+  - {name: calendar_test, description: "Which harmless invitation or support contact can be used to verify calendar access?", audience: onboarder, required: true}
+body: |
+  Follow the calendar setup and sharing instructions: $calendar_process
+  Verify with the supplied invitation or contact: $calendar_test
+
+  Check the displayed time zone before responding. Open an intended event,
+  inspect its joining details and send an appropriate response. Confirm
+  that your availability is shared only as policy requires. A meeting
+  invitation being sent does not prove you can view or answer it.
+steps:
+  - id: answer-invitation
+    name: Open and respond to an intended calendar invitation
+    checks:
+      - ask: Can you view the intended calendar and respond to an invitation with the correct time zone?

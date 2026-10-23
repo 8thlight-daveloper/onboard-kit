@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: repository-access
+title: Repository access
+summary: Use the required capability for that specific repository
+timing: anytime
+variables:
+  - {name: repository_scope, description: "Which repository and exact capability does this activity cover?", audience: onboarder, required: true}
+  - {name: repository_grant_route, description: "Who grants this capability and what safe verification procedure applies?", audience: onboarder, required: true}
+body: |
+  Confirm the repository and required capability: $repository_scope
+  Request and verify it through $repository_grant_route.
+
+  Use your intended account to perform a permitted operation that proves
+  the required capability. Reading does not prove write or merge authority;
+  a request does not prove access. Do not push a test change or grant broad
+  permissions without approval. Configure separate section instances for
+  repositories with independent outcomes. Report wrong-account access or
+  excessive permissions to the grantor.
+steps:
+  - id: verify-repository-capability
+    name: Verify the specific approved repository capability
+    checks:
+      - ask: Have you used the approved capability in the intended repository without exceeding its permission scope?

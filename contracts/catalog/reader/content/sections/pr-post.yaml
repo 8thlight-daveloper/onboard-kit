@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: pr-post
+title: Post a PR
+summary: Submit a real change with context, checks, and review requests
+timing: anytime
+variables:
+  - {name: posting_practice, description: "What PR content, branch, check and review-request practices apply?", audience: onboarder, required: true}
+  - {name: posting_support, description: "How is an appropriate reviewer identified and where should posting problems be raised?", audience: onboarder, required: true}
+body: |
+  Prepare the change using $posting_practice.
+  Identify review support through $posting_support.
+
+  Submit a real, appropriately scoped change with its purpose, relevant
+  evidence and known limitations. Inspect the diff for unintended changes
+  or secrets and report actual check results. Request the intended review
+  without assuming that posting means approval or readiness to merge.
+  Personal reviewer assignments and opportunities belong in preparation.
+steps:
+  - id: submit-real-change
+    name: Submit a clear change for the required review
+    checks:
+      - ask: Have you posted a real change with useful context, honest check results and the appropriate review request?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: working-hours
+title: Working hours and availability
+summary: Agree and configure hours, time zone overlap, and availability signals
+timing: week-one
+variables:
+  - {name: availability_agreement, description: "What shared overlap expectations and process for agreeing individual hours apply?", audience: onboarder, required: true}
+  - {name: availability_tools, description: "Which calendar or status settings communicate availability and whom should conflicts be discussed with?", audience: onboarder, required: true}
+body: |
+  Discuss the shared working expectations: $availability_agreement
+  Configure the agreed availability signals using $availability_tools.
+
+  Confirm time zones and sustainable overlap with the people involved.
+  Individual arrangements are a discussion, not an assumed preference or
+  a demand for personal location. Make focus time and planned absence
+  understandable without disclosing private reasons. Revisit the agreement
+  when it creates avoidable coordination problems.
+steps:
+  - id: agree-availability
+    name: Agree and communicate working availability
+    checks:
+      - ask: Have the relevant people agreed working overlap and can they interpret your availability signals?

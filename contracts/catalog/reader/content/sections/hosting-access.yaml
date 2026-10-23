@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: hosting-access
+title: Cloud or hosting access
+summary: Use the required role and permissions
+timing: anytime
+variables:
+  - {name: hosting_scope, description: "Which hosting account, role and resource scope does this work require?", audience: onboarder, required: true}
+  - {name: hosting_route, description: "What approved role-assumption, access request and safe verification process applies?", audience: onboarder, required: true}
+body: |
+  Confirm the required hosting scope and role: $hosting_scope
+  Follow the access process: $hosting_route
+
+  Verify account and role context before using a permitted read or other
+  approved safe operation. Do not request administrator permissions,
+  change billing or create resources merely to prove sign-in. A console
+  opening is not proof of authority for every action. Escalate excessive
+  or missing permissions to the grantor without retaining secret material.
+steps:
+  - id: verify-hosting-role
+    name: Verify the intended hosting role and permission scope
+    checks:
+      - ask: Can you use the intended role for the approved task and identify its resource and action limits?

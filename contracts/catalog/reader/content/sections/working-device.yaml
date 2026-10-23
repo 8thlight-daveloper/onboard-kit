@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: working-device
+title: Working device
+summary: An approved device is available and usable
+timing: week-one
+variables:
+  - {name: device_process, description: "What approved device setup, management and delivery instructions apply?", audience: onboarder, required: true}
+  - {name: device_support, description: "What support route handles missing equipment or a device that will not work?", audience: onboarder, required: true}
+body: |
+  Follow the approved equipment instructions: $device_process
+  For missing equipment or setup problems, contact $device_support.
+
+  Confirm the device is intended for this work before enrolling or changing
+  it. Check power, required peripherals, connectivity and an ordinary work
+  session. Do not bypass device management or use unapproved personal
+  equipment to make progress appear complete. Tell the owner which work is
+  blocked if delivery or support is still pending.
+steps:
+  - id: verify-device
+    name: Use the approved working device
+    checks:
+      - ask: Can you use the approved device and necessary peripherals for an ordinary work session?

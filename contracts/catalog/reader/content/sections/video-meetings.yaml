@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: video-meetings
+title: Video meetings
+summary: Join with required audio and collaboration features
+timing: week-one
+variables:
+  - {name: video_setup, description: "Which configured meeting services, approved clients or guest joining instructions apply?", audience: onboarder, required: true}
+  - {name: meeting_test, description: "How can a newcomer safely test required meeting features and get joining help?", audience: onboarder, required: true}
+body: |
+  Follow the service-specific instructions: $video_setup
+  Use the approved test and support route: $meeting_test
+
+  Test joining, sound and the collaboration features your role needs.
+  Check privacy and recording expectations before sharing a screen or
+  recording. Do not install an unapproved client or assume a paid account
+  is required when the organization provides guest access. Report any
+  accessibility or connection barrier through the agreed route.
+steps:
+  - id: test-meeting
+    name: Join a safe test meeting
+    checks:
+      - ask: Can you join with usable audio and the required collaboration features under the team's privacy rules?

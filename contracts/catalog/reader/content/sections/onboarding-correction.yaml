@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: onboarding-correction
+title: Report incorrect onboarding instructions
+summary: Give the plan owner corrections without silently editing shared instructions
+timing: anytime
+variables:
+  - {name: correction_route, description: "Where should a newcomer report incorrect shared onboarding instructions?", audience: onboarder, required: true}
+  - {name: correction_review, description: "Who reviews corrections and how are approved changes shared while preserving personal work?", audience: onboarder, required: true}
+body: |
+  Send proposed corrections through $correction_route.
+  Follow the ownership and review process: $correction_review
+
+  Identify the affected instruction, the expected behavior and a safe
+  explanation of the difference. Keep secrets, personal records and raw
+  sensitive logs out of the report. Do not silently rewrite shared facts
+  or overwrite local work to match a new copy. If instructions conflict,
+  stop the risky action and ask the plan owner which guidance applies.
+steps:
+  - id: establish-correction-path
+    name: Use or identify the reviewed correction process
+    checks:
+      - ask: Do you know how to give the plan owner a useful correction without exposing private data or silently changing shared instructions?

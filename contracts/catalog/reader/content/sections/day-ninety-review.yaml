@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: day-ninety-review
+title: Review 90-day goals
+summary: Agree on outcomes and the next phase
+timing: days-31-to-90
+variables:
+  - {name: ninety_day_review, description: "How is the roughly ninety-day review arranged and which outcomes should be discussed?", audience: onboarder, required: true}
+  - {name: next_phase_process, description: "How are next-phase priorities, ownership and support agreed?", audience: onboarder, required: true}
+body: |
+  Arrange the review using $ninety_day_review.
+  Agree the next phase through $next_phase_process.
+
+  Discuss outcomes, confidence, unresolved dependencies and what should
+  change in the support model. Keep organizational barriers visible and
+  make room for feedback on onboarding itself. Agree next responsibilities
+  rather than inferring them from time served. The planning window neither
+  fails someone nor grants access, authority or automatic completion.
+steps:
+  - id: agree-next-phase
+    name: Review outcomes and agree the next phase
+    checks:
+      - ask: Have you reviewed the relevant outcomes and agreed next-phase priorities, responsibilities and support?

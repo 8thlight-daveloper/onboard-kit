@@ -1,10 +1,16 @@
 # Onboarding catalog
 
-Status: required embedded library; content and runtime implementation pending.
+Status: full normative content authored; embedding and runtime availability pending.
 
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) requires the
 full catalog in the binary. This reference specifies coverage; it does not
 claim executable YAML templates or the workflows have been implemented.
+
+[0320](../decisions/0320-embedded-catalog-availability.md) divides offline
+availability into 59 section templates, 19 onboarder preparation guides and
+two non-instantiable tool-help topics. The full authored content is a permanent
+input to the [catalog reader contract](../../contracts/catalog/reader/contract.md).
+Its presence in the contract is not yet evidence of embedding in the executable.
 
 Sources are the [worked example](examples/acme/README.md), the repository's core
 and discipline guides, and the product discussion recorded in 0150. Each row

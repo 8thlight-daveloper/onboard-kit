@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: onboarding-repository
+title: Connect to the onboarding repository
+summary: Know where files go and who can read them
+timing: anytime
+variables:
+  - {name: sharing_location, description: "Where is the approved shared plan location, and how is access requested?", audience: onboarder, required: true}
+  - {name: sharing_policy, description: "Who may read or update each onboarding artifact, and what approved sharing procedure applies?", audience: onboarder, required: true}
+body: |
+  After the relevant access works, locate the shared plan: $sharing_location
+  Follow the organization's sharing procedure: $sharing_policy
+
+  The shared plan, onboarder-owned preparation and newcomer-owned record
+  have different owners. Confirm destinations before moving anything.
+  Anyone with read access to a stored record can read its answers and notes;
+  file ownership alone is not privacy. Keep credentials out of every file.
+  Ask the owner about unfamiliar or conflicting files instead of replacing
+  them. This activity does not supply an automatic import or Git command.
+steps:
+  - id: confirm-sharing
+    name: Confirm artifact destinations and readership
+    checks:
+      - ask: Can you locate the approved plan and explain where your artifacts belong and who may read them?

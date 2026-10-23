@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: artifact-access
+title: Package or artifact registry access
+summary: Obtain required dependencies and artifacts
+timing: anytime
+variables:
+  - {name: artifact_scope, description: "Which approved registry and exact dependencies or artifacts are required?", audience: onboarder, required: true}
+  - {name: artifact_access_route, description: "What approved authentication, request and safe retrieval instructions apply?", audience: onboarder, required: true}
+body: |
+  Confirm the registry and artifact scope: $artifact_scope
+  Follow the approved retrieval instructions: $artifact_access_route
+
+  Retrieve an intended artifact with the permitted account and verify its
+  identity or integrity using the project's documented method. Retrieval
+  does not authorize publishing or deleting packages. Keep authentication
+  material in the approved system, not a template or record. Do not switch
+  to an untrusted mirror or disable verification to bypass missing access.
+steps:
+  - id: retrieve-approved-artifact
+    name: Obtain the intended dependency or artifact
+    checks:
+      - ask: Can you retrieve and identify the required artifact through the approved registry and authentication route?

@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: knowledge-transfer
+title: Knowledge transfer and onboarding ownership
+summary: Name knowledge recipients and an owner for shared onboarding material
+timing: anytime
+variables:
+  - {name: knowledge_handoff, description: "Which work knowledge needs transfer, where should it live and how are recipients identified?", audience: onboarder, required: true}
+  - {name: onboarding_ownership, description: "Who owns shared onboarding material and how are reviewed updates and future handoffs maintained?", audience: onboarder, required: true}
+body: |
+  Plan the knowledge handoff using $knowledge_handoff.
+  Confirm ownership of shared material: $onboarding_ownership
+
+  Share useful decisions, operational context and open questions with
+  the intended recipients while respecting access restrictions. Confirm
+  that recipients can find and use the material; sending a link is not
+  enough. Keep it current throughout the work and confirm continuity
+  before departure. Never transfer credentials or publish personal records
+  as a substitute for documented work knowledge.
+steps:
+  - id: confirm-knowledge-continuity
+    name: Confirm recipients and ownership of useful shared knowledge
+    checks:
+      - ask: Can the intended recipients use the needed knowledge and is an owner identified for shared onboarding material?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: observability-access
+title: Logs, metrics, and tracing access
+summary: Inspect the relevant service
+timing: anytime
+variables:
+  - {name: observability_scope, description: "Which service, approved dashboards and data scope are needed?", audience: onboarder, required: true}
+  - {name: observability_route, description: "How is access granted, what safe example should be inspected and who handles questions?", audience: onboarder, required: true}
+body: |
+  Locate the service's approved observability surfaces: $observability_scope
+  Use the supplied example and access route: $observability_route
+
+  Find a relevant metric, log or trace and relate it to service behavior.
+  Learn retention and redaction expectations before sharing a sample.
+  Observability data may contain personal or secret information; link to
+  approved views rather than copying raw data into the record. Read access
+  does not authorize changing alerts or querying unrelated systems.
+steps:
+  - id: inspect-service-signals
+    name: Inspect a permitted service signal
+    checks:
+      - ask: Can you find and interpret a relevant service signal while respecting its data and access restrictions?

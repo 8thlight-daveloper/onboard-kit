@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: security-orientation
+title: Security and acceptable-use orientation
+summary: Understand required practices and support routes
+timing: anytime
+variables:
+  - {name: security_material, description: "Which current security and acceptable-use material must a newcomer review?", audience: onboarder, required: true}
+  - {name: security_support, description: "How should someone report a security concern or ask about an unclear rule?", audience: onboarder, required: true}
+body: |
+  Review the required material: $security_material
+  Questions and concerns go through $security_support.
+
+  Identify the rules for handling information, devices, authentication and
+  external tools before affected work. Ask about unclear cases rather than
+  assuming permission. Learn how to report suspicious events without
+  spreading secret material. Reading this section does not grant access,
+  authorize testing systems or replace required organizational training.
+steps:
+  - id: explain-security-route
+    name: Review the rules and locate the security support path
+    checks:
+      - ask: Can you explain the practices relevant to your work and the approved route for concerns or uncertain cases?

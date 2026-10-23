@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: teammate-introduction
+title: Meet a teammate
+summary: Know their responsibilities and when to ask them
+timing: week-one
+variables:
+  - {name: introduction_scope, description: "Which shared role or responsibility should this introduction explain?", audience: onboarder, required: true}
+  - {name: introduction_route, description: "How should this introduction be arranged and what questions are useful?", audience: onboarder, required: true}
+body: |
+  Learn about this part of the team: $introduction_scope
+  Arrange the conversation through $introduction_route.
+
+  Ask what the teammate owns, how their work connects to yours and when
+  they prefer to be consulted. Offer a short introduction to your own work
+  without collecting personal details. For several independent people or
+  roles, ask the plan author for separate configured activities rather than
+  treating one conversation as evidence that all introductions happened.
+steps:
+  - id: understand-responsibility
+    name: Discuss responsibilities and collaboration
+    checks:
+      - ask: Can you explain this teammate's responsibilities and when to involve them?

@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: design-contribution
+title: First design contribution
+summary: Take a suitable contribution through the team's process
+timing: days-8-to-30
+variables:
+  - {name: design_contribution_scope, description: "What makes a first design contribution suitable and how should its scope be agreed?", audience: onboarder, required: true}
+  - {name: design_contribution_process, description: "Which support, review and completion process must that contribution follow?", audience: onboarder, required: true}
+body: |
+  Agree a suitable real contribution using $design_contribution_scope.
+  Follow the support and completion process: $design_contribution_process
+
+  Clarify the user need, constraints and expected evidence with the owner.
+  Explore and communicate the proposed change, seek the required review
+  and follow through on the agreed handoff. Keep research and personal
+  data within approved systems. A first-month goal does not justify
+  bypassing research, accessibility, approval or collaboration expectations.
+steps:
+  - id: complete-design-contribution
+    name: Complete a suitably scoped design contribution
+    checks:
+      - ask: Has your agreed contribution met the team's review, evidence and handoff conditions with support available?

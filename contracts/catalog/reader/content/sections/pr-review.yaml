@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: pr-review
+title: Review a PR
+summary: Give a substantive review following team practices
+timing: anytime
+variables:
+  - {name: review_practice, description: "What review scope, conduct and approval rules apply?", audience: onboarder, required: true}
+  - {name: review_support, description: "How is a suitable review opportunity arranged and who can discuss uncertain findings?", audience: onboarder, required: true}
+body: |
+  Follow the review practice: $review_practice
+  Arrange and discuss the opportunity through $review_support.
+
+  Confirm the selected PR and discussion contact in preparation. Understand
+  its purpose, inspect the change and tests, and give specific useful
+  feedback. Separate questions, suggestions and blocking concerns. If you
+  lack context or approval authority, ask rather than approving by habit.
+  A substantive review can surface uncertainty; it need not manufacture a
+  defect or satisfy an arbitrary comment count.
+steps:
+  - id: provide-substantive-review
+    name: Review the intended change and discuss useful feedback
+    checks:
+      - ask: Have you reviewed the change against team practices and communicated substantive findings or reasoned approval within your authority?

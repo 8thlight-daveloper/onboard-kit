@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: onboarding-refresh
+title: Get the latest plan
+summary: Request an update without losing personal work
+timing: anytime
+variables:
+  - {name: update_route, description: "Where should a newcomer request the current organization plan and report a version mismatch?", audience: onboarder, required: true}
+  - {name: preservation_process, description: "What reviewed procedure preserves newer preparation and personal work when sharing updates?", audience: onboarder, required: true}
+body: |
+  Ask for the current plan through $update_route.
+  Use the reviewed preservation procedure: $preservation_process
+
+  Compare plan identity and available version information with the owner.
+  Preserve your current files before any reviewed replacement. Do not copy
+  an older invitation over newer preparation or personal work. A changed
+  shared instruction is not permission to erase a personal answer or claim
+  a verified outcome. Report conflicts for review. No automatic plan-update
+  command or confirmed invitation-import flow is supplied by this section.
+steps:
+  - id: request-safe-update
+    name: Establish a safe route for plan updates
+    checks:
+      - ask: Do you know how to request the latest plan while preserving and reviewing existing work?

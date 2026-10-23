@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: document-reading
+title: Read a document
+summary: Read with a stated purpose and a route for questions
+timing: anytime
+variables:
+  - {name: reading_material, description: "Which current document should be read and for what work purpose?", audience: onboarder, required: true}
+  - {name: reading_questions, description: "Which questions should guide the reading and who can discuss them?", audience: onboarder, required: true}
+body: |
+  Read the material for the supplied purpose: $reading_material
+  Use these questions and discussion route: $reading_questions
+
+  Identify the decisions or actions the material informs, not just whether
+  you opened it. Note uncertainties and confirm stale or contradictory
+  instructions with its owner. Do not paste restricted content into an
+  onboarding record. Use separate activities for reading assignments whose
+  outcomes need independent discussion or follow-up.
+steps:
+  - id: discuss-reading
+    name: Explain the reading's useful implications
+    checks:
+      - ask: Can you explain how the document informs your work and raise any unresolved questions through the supplied route?

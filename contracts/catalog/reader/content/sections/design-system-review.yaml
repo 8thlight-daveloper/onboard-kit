@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: design-system-review
+title: Review the design system
+summary: Find and use the system and main product files
+timing: week-one
+variables:
+  - {name: design_system_material, description: "Where are the current design system, main product files and usage guidance?", audience: onboarder, required: true}
+  - {name: design_system_discussion, description: "Which representative task should be explored and who explains gaps or contribution rules?", audience: onboarder, required: true}
+body: |
+  Explore the current system and product files: $design_system_material
+  Discuss a representative use through $design_system_discussion.
+
+  Locate the relevant components, patterns, accessibility guidance and
+  source of truth. Explain how a common interface uses them and how an
+  exception is reviewed. Distinguish a published component from a draft.
+  If no system exists, ask the team to identify current conventions and
+  gaps; do not invent a claim that an established system was reviewed.
+steps:
+  - id: explain-system-use
+    name: Locate and explain a useful design-system pattern
+    checks:
+      - ask: Can you find the current design references and explain how to use or discuss a relevant pattern and its gaps?

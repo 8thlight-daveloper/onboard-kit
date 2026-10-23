@@ -111,6 +111,13 @@ onboarder preparation and standard tool instructions. Embed the full set, retain
 custom template loading. Check availability against the catalog, not against
 whatever happens to be present in the implementation directory.
 
+The full normative content and independent availability contracts are authored
+under [0320](../decisions/0320-embedded-catalog-availability.md): 59 actual Section
+templates, 19 preparation guides and two static tool-help topics. The real loader
+accepts every Section and current combined-plan validation reports no problems.
+Compiled availability and its read-only catalog command remain pending. This
+does not imply selected activities or generated personal preparation.
+
 Add organization and team selection through an approved format. Including a
 newcomer activity surfaces its preparation; unrelated preparation stays out.
 Do not ask newcomers to supply organizational facts merely to fill a template.

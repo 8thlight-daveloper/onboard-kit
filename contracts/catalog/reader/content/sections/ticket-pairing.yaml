@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: ticket-pairing
+title: Pair on a ticket
+summary: Work through a real task with a teammate
+timing: week-one
+variables:
+  - {name: pairing_practice, description: "How should a first pairing session be arranged and what collaboration practices apply?", audience: onboarder, required: true}
+  - {name: pairing_goal, description: "What learning outcome and suitable task characteristics should guide the session?", audience: onboarder, required: true}
+body: |
+  Arrange the session using $pairing_practice.
+  Use the agreed learning focus: $pairing_goal
+
+  Confirm the assigned partner and real ticket in preparation; an unassigned
+  partner stays missing rather than becoming a shared default. Agree scope,
+  roles and permission boundaries together. Work through a useful slice,
+  inspect its tests or evidence and discuss what happens next. Pairing does
+  not bypass review or authorize a production change.
+steps:
+  - id: complete-pairing-session
+    name: Work through a real task with the assigned partner
+    checks:
+      - ask: Have you worked through a real task together and discussed the result, learning and next steps?

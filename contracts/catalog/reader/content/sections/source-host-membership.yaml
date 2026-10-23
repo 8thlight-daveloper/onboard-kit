@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: source-host-membership
+title: Source-host organization membership
+summary: Join the required organization or group
+timing: anytime
+variables:
+  - {name: membership_scope, description: "Which source-host organization or group and membership level are required?", audience: onboarder, required: true}
+  - {name: membership_route, description: "Who grants membership and what approved request and invitation process applies?", audience: onboarder, required: true}
+body: |
+  Request only the membership described in $membership_scope.
+  Follow the grantor and invitation process: $membership_route
+
+  Check that any invitation targets your intended account and the correct
+  organization. After approval, verify the membership is visible with the
+  expected scope. Membership does not establish access to every repository;
+  ask for the specific capability required by assigned work. Report an
+  expired invitation or wrong account rather than accepting an ambiguous one.
+steps:
+  - id: verify-membership
+    name: Verify the required organization or group membership
+    checks:
+      - ask: Can you confirm the intended account belongs to the required organization or group at the approved level?

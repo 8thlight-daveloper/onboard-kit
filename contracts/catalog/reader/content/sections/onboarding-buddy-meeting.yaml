@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: onboarding-buddy-meeting
+title: Meet the onboarding buddy
+summary: Know the day-to-day first contact
+timing: week-one
+variables:
+  - {name: buddy_process, description: "How is a newcomer introduced to their assigned buddy and what support does the buddy provide?", audience: onboarder, required: true}
+  - {name: buddy_backup, description: "What shared backup route applies when the buddy is unavailable?", audience: onboarder, required: true}
+body: |
+  Meet your assigned buddy through $buddy_process.
+  The backup support route is $buddy_backup.
+
+  Agree how to ask small day-to-day questions and when a different owner
+  should decide. Discuss availability and suitable check-ins without
+  assuming the buddy is continuously on call. Keep the personal assignment
+  in preparation. If no buddy is assigned, ask the owner to arrange one or
+  explicitly agree another support model; do not invent a name.
+steps:
+  - id: establish-buddy-route
+    name: Establish a day-to-day support relationship
+    checks:
+      - ask: Do you know your agreed day-to-day contact, their support scope and the fallback when they are unavailable?

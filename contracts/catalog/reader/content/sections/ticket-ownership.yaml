@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: ticket-ownership
+title: Own a ticket
+summary: Take a suitable task through the team's delivery process
+timing: days-8-to-30
+variables:
+  - {name: ownership_process, description: "What task ownership, scope agreement and delivery process should be followed?", audience: onboarder, required: true}
+  - {name: ownership_support, description: "Which shared support route and completion evidence should guide a first owned task?", audience: onboarder, required: true}
+body: |
+  Follow the team's ownership process: $ownership_process
+  Use the support and completion guidance: $ownership_support
+
+  Confirm a suitable assigned ticket and support contact in preparation.
+  Clarify the outcome and acceptance conditions before changing anything.
+  Keep collaborators informed, seek required review and verify the delivered
+  result. Ask for help when scope or access changes. Owning a task means
+  coordinating its progress, not being expected to solve every problem alone.
+steps:
+  - id: deliver-owned-task
+    name: Take an agreed task through the team's process
+    checks:
+      - ask: Has the agreed task reached the team's completion conditions with required review and verified delivery evidence?

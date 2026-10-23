@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: codebase-orientation
+title: Understand the codebase
+summary: Locate main components and trace a relevant flow
+timing: week-one
+variables:
+  - {name: codebase_map, description: "Which architecture material and main code locations should be explored?", audience: onboarder, required: true}
+  - {name: tracing_exercise, description: "Which relevant flow should be traced and who can discuss its design?", audience: onboarder, required: true}
+body: |
+  Start with the current architecture and locations: $codebase_map
+  Trace and discuss this useful flow: $tracing_exercise
+
+  Follow an input through the important components to its observable
+  result. Locate related tests, ownership and failure handling. Compare
+  the diagram with the actual code and ask about discrepancies. Aim for
+  enough understanding to make a safe first change, not memorization of
+  every module. Share corrections through the team's review process.
+steps:
+  - id: explain-code-flow
+    name: Explain a relevant flow through the codebase
+    checks:
+      - ask: Can you locate the main components and explain a relevant flow, its tests and the owners to consult?

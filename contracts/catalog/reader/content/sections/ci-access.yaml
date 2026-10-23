@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: ci-access
+title: CI access
+summary: Access required pipeline results and actions
+timing: anytime
+variables:
+  - {name: pipeline_scope, description: "Which pipelines, result views and authorized actions does the role need?", audience: onboarder, required: true}
+  - {name: pipeline_access_route, description: "Who grants CI access and how should required capabilities be verified safely?", audience: onboarder, required: true}
+body: |
+  Review the required pipeline scope: $pipeline_scope
+  Follow the access and safe verification route: $pipeline_access_route
+
+  Open a relevant run and find its checks, logs and outcome. Learn which
+  actions can spend resources, publish artifacts or affect environments.
+  Viewing a run does not authorize rerunning or changing it. Never expose
+  secret log material in onboarding notes. Confirm any action permission
+  through the agreed safe procedure rather than triggering a live pipeline.
+steps:
+  - id: inspect-required-pipeline
+    name: Find required CI results and understand action boundaries
+    checks:
+      - ask: Can you inspect the relevant pipeline results and identify which actions you are authorized to take?

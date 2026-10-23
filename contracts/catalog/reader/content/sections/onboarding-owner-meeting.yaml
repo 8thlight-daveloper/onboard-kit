@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: onboarding-owner-meeting
+title: Meet the onboarding owner or manager
+summary: Understand support, priorities, and the first week's plan
+timing: week-one
+variables:
+  - {name: owner_meeting_process, description: "How is the initial owner or manager conversation arranged, and what should it cover?", audience: onboarder, required: true}
+  - {name: priority_context, description: "What shared priorities and decision context should guide the first week?", audience: onboarder, required: true}
+body: |
+  Arrange the conversation using $owner_meeting_process.
+  Start from the shared priorities: $priority_context
+
+  Ask your assigned owner to confirm the first week's useful work, how to
+  get support and how expectations will be revisited. Discuss dependencies
+  and missing arrangements before treating a goal as a commitment. Personal
+  manager and owner assignments belong in preparation, not shared answers.
+  Leave with a clear next conversation or contact if plans change.
+steps:
+  - id: agree-initial-plan
+    name: Discuss priorities and support with the assigned owner
+    checks:
+      - ask: Have you discussed initial priorities, available support and how to revisit the first week's plan?

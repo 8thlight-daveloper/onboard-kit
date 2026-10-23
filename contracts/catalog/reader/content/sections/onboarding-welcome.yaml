@@ -1,0 +1,23 @@
+schemaVersion: 1
+id: onboarding-welcome
+title: Welcome and expectations
+summary: Know the team, owner, start arrangements, and initial goals
+timing: week-one
+bootstrap: true
+variables:
+  - {name: welcome_context, description: "What should a newcomer know about the team, its purpose and initial goals?", audience: onboarder, required: true}
+  - {name: initial_arrangements, description: "What shared arrival or remote joining instructions and support route apply before company access?", audience: onboarder, required: true}
+body: |
+  Welcome to the team. Start with the shared context: $welcome_context
+
+  Initial joining instructions: $initial_arrangements
+
+  Ask the onboarding owner to confirm your own arrangements. Individual
+  assignments belong in preparation, not shared template answers. If a goal
+  or instruction does not fit, discuss it rather than guessing. Planning
+  targets guide support; they are not a test of whether you belong here.
+steps:
+  - id: discuss-expectations
+    name: Discuss the first useful work and available support
+    checks:
+      - ask: Do you know the team's purpose, the first priorities and whom to ask about your arrangements?

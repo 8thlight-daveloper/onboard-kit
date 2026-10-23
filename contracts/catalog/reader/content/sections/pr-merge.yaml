@@ -1,0 +1,24 @@
+schemaVersion: 1
+id: pr-merge
+title: Merge a PR
+summary: Complete an authorized merge after required reviews and checks
+timing: anytime
+variables:
+  - {name: merge_policy, description: "Does team policy permit merging your own PR, another person's PR, or only a designated subset, and what approvals and checks are mandatory?", audience: onboarder, required: true}
+  - {name: merge_process, description: "What approved merge procedure, authorization confirmation and support route apply?", audience: onboarder, required: true}
+body: |
+  Confirm the explicit team decision before selecting an opportunity:
+  $merge_policy
+
+  Follow the approved procedure and authorization route: $merge_process
+
+  Your own PR or another person's PR may be suitable only when this policy
+  permits it. Confirm that this particular merge is authorized, reviews and
+  checks are current, and any separation-of-duties rules are satisfied.
+  Recheck the intended branch and merge result. Never bypass protection,
+  self-authorize or obtain extra rights merely to complete onboarding.
+steps:
+  - id: complete-authorized-merge
+    name: Complete a policy-permitted and authorized merge
+    checks:
+      - ask: Did you complete an authorized merge of a policy-permitted PR after all required reviews and checks, without bypassing separation of duties?

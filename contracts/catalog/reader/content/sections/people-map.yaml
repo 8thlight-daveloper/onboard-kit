@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: people-map
+title: Build a people map
+summary: Understand important relationships, responsibilities, and dependencies
+timing: days-8-to-30
+variables:
+  - {name: relationship_scope, description: "Which roles, teams and dependencies matter for this work?", audience: onboarder, required: true}
+  - {name: relationship_reference, description: "Where is the approved responsibility map and who can correct it?", audience: onboarder, required: true}
+body: |
+  Focus on the work relationships described in $relationship_scope.
+  Use the current reference and correction route: $relationship_reference
+
+  Map responsibilities, decision owners and handoffs for a real piece of
+  work. Confirm uncertain relationships with the people involved. Record
+  only useful business context, not private biographies or judgments about
+  individuals. Identify where a dependency needs an introduction or clearer
+  ownership, and share corrections through the agreed route.
+steps:
+  - id: explain-key-relationships
+    name: Trace responsibilities and work dependencies
+    checks:
+      - ask: Can you identify the relevant decision owners, collaborators and handoffs for your current work?
