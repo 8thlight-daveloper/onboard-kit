@@ -21,6 +21,8 @@ func (c *collector) sectionFrom(root *yaml.Node) model.Section {
 			section.Summary = c.stringOf(found.value, found.at)
 		case "parent":
 			section.Parent = c.stringOf(found.value, found.at)
+		case "bootstrap":
+			section.Bootstrap = c.flagOf(found.value, found.at)
 		case "owner":
 			section.Owner = c.stringOf(found.value, found.at)
 		case "timing":
