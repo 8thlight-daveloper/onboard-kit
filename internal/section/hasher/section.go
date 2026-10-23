@@ -13,6 +13,7 @@ func sectionText(section model.Section) string {
 		withProse("summary", section.Summary).
 		withRaw("includeIf", conditionTextOrEmpty(section.IncludeIf), hasClauses(section.IncludeIf)).
 		withString("parent", section.Parent).
+		withFlag("bootstrap", section.Bootstrap).
 		withString("timing", string(timing)).
 		withRaw("after", quotedSetText(section.After), len(section.After) > 0).
 		withString("owner", section.Owner).
