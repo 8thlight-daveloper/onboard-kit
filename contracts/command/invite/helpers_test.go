@@ -126,10 +126,10 @@ func readReport(t *testing.T, got result, code string, exit int, problems []proj
 		if actual.Status != "written" || got.stdout != success || actual.Message != "Pre-access help availability has not been tested; deliver through an approved channel." {
 			t.Fatalf("success reporting differs: %#v", got)
 		}
-	} else if code != "invite.result-output" && (actual.Status != "refused" || got.stdout != "") {
+	} else if code != "invite.result-output" && code != "invite.cleanup-written" && (actual.Status != "refused" || got.stdout != "") {
 		t.Fatalf("failure claimed usable output: %#v", got)
 	}
-	if code == "invite.result-output" && actual.Status != "written" {
+	if (code == "invite.result-output" || code == "invite.cleanup-written") && actual.Status != "written" {
 		t.Fatal("postcommit output failure must acknowledge the published artifact")
 	}
 	for _, private := range []string{"PRIVATE", "private@example.invalid"} {

@@ -1,0 +1,18 @@
+{
+  "test": "TestACLPostcommitCleanupFailureIsWrittenError",
+  "authority": "ADR0310 cleanup policy and command/invite contract publication/reporting section; agent judgment, not human approval",
+  "os_source": "Complete host macOS 26.6 chmod(1) manual: delete/delete_child, file_inherit, +a and -N",
+  "capability_evidence": "Independent Python owned-directory control returned capable with EACCES(13) after successful create/fchmod/write/close/link; parent separately reproduced it",
+  "payload_oracles": "Existing independent literal plan.yaml, preparation.yaml, record.yaml and first-steps.md; unchanged",
+  "message_oracle": "New literal cleanup entries in messages.json; no production formatter or encoder used",
+  "expected": "Complete private committed artifact and residual same-inode temporary, unchanged input/unrelated tree, exit1, status written, invite.cleanup-written even if stdout fails",
+  "coverage_limit": "Precommit cleanup-refused lacks a deterministic independently established fixture; no such coverage claimed",
+  "wrong_variants": [
+    "Discard unlink error and return exit0",
+    "Report refused after atomic publication",
+    "Delete complete final archive to simulate refusal",
+    "Replace cleanup error with invite.result-output when stdout also fails",
+    "Leak raw OS error, account or temporary path",
+    "Strip inherited ACL to force cleanup"
+  ]
+}

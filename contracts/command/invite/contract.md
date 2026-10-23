@@ -171,6 +171,8 @@ values belong only inside intentional payloads.
 | invite.record-encode | refused | The identity-only record seed could not be encoded. |
 | invite.archive | refused | Keep all invitation payloads within the archive limits. |
 | invite.publish | refused | The new archive could not be safely published; existing files were preserved. |
+| invite.cleanup-refused | refused | No archive was published, but temporary invitation data may remain. Restore access to the selected output directory and check exporter-owned temporary data before retrying. |
+| invite.cleanup-written | written | The archive was written, but temporary invitation data may remain. Keep the archive; restore access to the selected output directory and check exporter-owned temporary data. |
 | invite.written | written | Pre-access help availability has not been tested; deliver through an approved channel. |
 | invite.result-output | written | The archive was written, but its result could not be fully displayed. |
 | invite.help-output | refused | The usage text could not be displayed. |
@@ -198,8 +200,26 @@ exactly as the concurrent creator left it. This is not crash durability or a
 universal hostile same-owner race guarantee. Do not infer private repository
 visibility from local output mode.
 
+Under ADR0310, check owned temporary cleanup rather than discarding its result. If the OS
+prevents removing the owned temporary entry, return 1 and report the repair
+need. Before publication, use invite.cleanup-refused with status refused and
+empty stdout; retain the actual absent or independently created final leaf.
+After publication, use invite.cleanup-written with status written; keep the
+complete committed archive and still attempt the ordinary written stdout line.
+Both reports keep the existing five keys and accumulated dependency warnings,
+add no synthetic model diagnostic, and disclose no temporary basename, raw
+path, account, OS error or other private value. Never delete a committed archive
+to make a refusal report true. Cleanup failure takes priority over a secondary
+stdout/report-writer failure; if stderr is writable, retain the cleanup code.
+An unwritable stderr cannot be promised a diagnostic, but still requires exit1.
+Absence of the owned temporary entry counts as cleanup, including ENOENT.
+Do not clear inherited ACLs, change directory permissions, alter unrelated
+entries, or retry indefinitely to force cleanup. Normal temporary mode0600
+setting does not authorize stripping its inherited access controls. This is
+truthful ordinary OS-error handling, not a crash-cleanup or hostile-host promise.
+
 Atomic publication is the commit point. Afterwards write success stdout then
-the stderr report. If stdout fails, keep the archive, return 1 and attempt the
+the stderr report. If stdout fails without a cleanup error, keep the archive, return 1 and attempt the
 fixed invite.result-output report with status written. Stderr failure returns
 1 and keeps any committed archive; it cannot guarantee an unwritable diagnostic.
 Do not retry indefinitely or roll back publication. Help stdout failure has no
@@ -230,6 +250,10 @@ they must not be claimed verified merely because a simpler case passes.
 | Omit a payload or truncate to evade the archive budget | Exact four payloads and real canonical aggregate boundary |
 | Copy personal fields or parser/OS errors into reporting | Literal guide equality and private-marker diagnostics |
 | Report success despite a supplied output-writer error | Explicit post-publication and help-writer failure cases |
+| Ignore denied temporary unlink and report success | Independently controlled inherited-ACL postcommit cleanup case |
+| Report refusal or delete final output after committed cleanup failure | Complete literal ZIP, retained temporary and exact written-status cleanup report |
+| Replace cleanup repair need with a secondary stdout error | Same real ACL fault combined with the supplied failing stdout writer |
+| Strip inherited ACLs to hide the cleanup fault | Controlled ACL retains the temporary after OS-denied unlink |
 
 These rows define intended distinguishing tests, not execution claims. Applied
 wrong-variant evidence and unresolved practical probes belong in working reports.

@@ -19,6 +19,8 @@
   "invite.record-encode": "The identity-only record seed could not be encoded.",
   "invite.archive": "Keep all invitation payloads within the archive limits.",
   "invite.publish": "The new archive could not be safely published; existing files were preserved.",
+  "invite.cleanup-refused": "No archive was published, but temporary invitation data may remain. Restore access to the selected output directory and check exporter-owned temporary data before retrying.",
+  "invite.cleanup-written": "The archive was written, but temporary invitation data may remain. Keep the archive; restore access to the selected output directory and check exporter-owned temporary data.",
   "invite.written": "Pre-access help availability has not been tested; deliver through an approved channel.",
   "invite.result-output": "The archive was written, but its result could not be fully displayed.",
   "invite.help-output": "The usage text could not be displayed."

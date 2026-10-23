@@ -6,5 +6,8 @@
   "cases.json": "Per-case source citations name actual dependency semantics and ADR0300 readiness; literal input deltas, expected result classes, problem codes and blocker IDs",
   "messages.json": "Literal command contract fixed repair instructions;0300 diagnostics minimization and0100 P3/P7; exact blocker IDs are the explicit actionability exception",
   "filesystem": "ADR0300 new stable nonsymlink parent, existing-object refusal, no replacement, source preservation and actual concurrent Run publication contenders",
-  "zip-metadata": "ADR0240 and invitation/encoder canonical profile: four ordered Store regular entries, fixed1980 date, mode0600, no extras/comments and literal payload CRCs"
+  "zip-metadata": "ADR0240 and invitation/encoder canonical profile: four ordered Store regular entries, fixed1980 date, mode0600, no extras/comments and literal payload CRCs",
+  "cleanup-sources.json": "Independent cleanup supplement provenance: parent-reviewed bounded policy; local primary Darwin chmod manual; independently reproduced owned-directory ACL capability; unchanged literal payloads",
+  "cleanup-messages": "Literal invite.cleanup-refused and invite.cleanup-written messages in messages.json; truthful commit state and actionable residual-data repair without OS/path/account disclosure",
+  "cleanup-coverage": "Public API test combines actual inherited-ACL unlink denial with ordinary or failing stdout. Precommit cleanup-refused remains an explicitly unverified OS boundary; no execution claim is made here"
 }
