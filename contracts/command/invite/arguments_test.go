@@ -15,7 +15,7 @@ func TestHelpIsLiteralAndIgnoresRemainingTokens(t *testing.T) {
 }
 
 func TestUsageRefusalsDoNotTouchFiles(t *testing.T) {
-	for _, name := range []string{"missing-operation", "unknown-operation", "missing-out", "missing-assertion", "repeat-plan", "unknown-flag", "positional", "bare-terminator", "empty-account", "missing-value"} {
+	for _, name := range []string{"missing-operation", "missing-operation-with-flags", "unknown-operation", "missing-out", "missing-assertion", "repeat-plan", "unknown-flag", "positional", "bare-terminator", "empty-account", "missing-value"} {
 		t.Run(name, func(t *testing.T) {
 			t.Parallel()
 			s := newSandbox(t)
@@ -23,6 +23,8 @@ func TestUsageRefusalsDoNotTouchFiles(t *testing.T) {
 			switch name {
 			case "missing-operation":
 				args = nil
+			case "missing-operation-with-flags":
+				args = args[1:]
 			case "unknown-operation":
 				args[0] = "PRIVATE_OPERATION"
 			case "missing-out":
@@ -88,5 +90,20 @@ func TestTypedHelpSelectorsKeepAppearanceOrder(t *testing.T) {
 	want := "## Who to ask\n\nOnboarding owner: Example owner, owner@example\\.invalid\n\n- Example helper, @helper\n- Example owner, owner@example\\.invalid\n- Example owner, owner@example\\.invalid\n\n## About this plan"
 	if !strings.Contains(string(payloads["first-steps.md"]), want) {
 		t.Fatal("explicit mixed contact/role/route selectors lost held order or deduped by rendered text")
+	}
+}
+
+func TestTypedHelpSelectorsPreserveNonpalindromicOrder(t *testing.T) {
+	s := newSandbox(t)
+	addition := "    - id: helper\n      name: Example helper\n      slack: '@helper'\n"
+	writeLiteral(t, s.plan, append(literal(t, "plan.yaml"), []byte(addition)...))
+	args := append(s.args()[:9], "--help-contact", "helper", "--preaccess-help-contact", "owner")
+	before := tree(t, s.root)
+	readReport(t, run(newCommand(), args), "invite.written", 0, nil, nil)
+	preserved(t, s, before, true)
+	payloads := exportedPayloads(t, s.out)
+	want := "## Who to ask\n\nOnboarding owner: Example owner, owner@example\\.invalid\n\n- Example helper, @helper\n- Example owner, owner@example\\.invalid\n\n## About this plan"
+	if !strings.Contains(string(payloads["first-steps.md"]), want) {
+		t.Fatal("distinct helper order differs from explicit selector appearance order")
 	}
 }
