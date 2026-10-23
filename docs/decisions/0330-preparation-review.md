@@ -1,6 +1,6 @@
 # 0330. Read-only preparation review
 
-Status: accepted by agent judgment; contract and implementation pending
+Status: accepted by agent judgment; pure reviewer implemented, guided driver pending
 
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),

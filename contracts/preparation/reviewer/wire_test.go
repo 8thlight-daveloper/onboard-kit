@@ -2,13 +2,7 @@ package reviewer_test
 
 import (
 	contract "onboard-kit/contracts/preparation/reviewer"
-	"onboard-kit/internal/model"
+	implementation "onboard-kit/internal/preparation/reviewer"
 )
 
-type stubReviewer struct{}
-
-func (stubReviewer) Review(contract.Context, model.Plan, model.Preparation) contract.Review {
-	return contract.Review{}
-}
-
-func newReviewer() contract.Reviewer { return stubReviewer{} }
+func newReviewer() contract.Reviewer { return implementation.New() }
