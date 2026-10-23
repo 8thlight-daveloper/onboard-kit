@@ -176,7 +176,11 @@ Review complete. Choose save, back, or cancel:
 
 Only at this prompt does exact `save` consent to this displayed snapshot.
 `back` returns to Draft; a later accepted edit invalidates the old review.
-Never consume queued save input after a failed review display. A completed
+Never consume queued save input after a failed review display. Consumption
+includes reading following save bytes into an input buffer, not only
+interpreting them; failed display leaves the passed reader immediately after
+the previous completed review action.
+A completed
 `save\n` followed by EOF is consent; an unterminated `save` followed by EOF is not.
 After one successful save or no-op, exit. Do not export or reopen menus.
 
@@ -213,6 +217,9 @@ then atomically publish the frozen reviewed bytes: no-replace publication for
 new preparation, pathname replacement for existing preparation. No-op preserves
 original bytes, inode and modes. Do not regenerate bytes after consent. Observe
 existing restrictive permissions and never strip ACLs or chmod unrelated data.
+If existing access controls cannot be preserved safely, refuse with guide.commit
+and preserve the original preparation; an unchanged no-op does not require the
+ability to copy or replace its ACL.
 Commit-attempt failure may leave empty newly created directories; report that
 possibility instead of claiming unchanged filesystem.
 
@@ -250,7 +257,11 @@ terminal outcomes use the table, including errors before startup:
 | 1 | saved | guide.cleanup-saved | Preparation saved. Owned temporary cleanup needs repair. |
 | 1 | saved | guide.report-saved | Preparation saved, but its completion report could not be written. |
 
-Dependency decode errors use source; warnings alone do not refuse. Locator
+Dependency decode errors use source; warnings alone do not refuse. Locator,
+root, traversal and output-alias selection failures use path. Once a regular
+preparation source has been safely selected, bounded body-read failures,
+including oversize and invalid UTF-8, use source, not path. A derived filename
+does not make its body-read failure a path-selection failure. Locator
 problems use path;
 editor startup guard problems use identity; plan validation errors use plan.
 Absent files are permitted only for the selected preparation. Other unsafe

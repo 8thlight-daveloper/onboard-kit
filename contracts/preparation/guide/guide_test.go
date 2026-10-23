@@ -6,8 +6,10 @@ import (
 	"errors"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -680,5 +682,133 @@ func TestInvalidSelectionBeforeInteraction(t *testing.T) {
 		if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, before) {
 			t.Fatalf("%s changed files", mode)
 		}
+	}
+}
+
+type chunkReader struct {
+	Reader    *strings.Reader
+	ReadCount int
+}
+
+func (r *chunkReader) Read(value []byte) (int, error) {
+	count, err := r.Reader.Read(value)
+	r.ReadCount += count
+	return count, err
+}
+
+func TestReviewDisplayFailureDoesNotPrefetchConsent(t *testing.T) {
+	t.Parallel()
+	box := newSandbox(t, "")
+	before := snapshot(t, box.Root)
+	reader := &chunkReader{Reader: strings.NewReader("review\nsave\n")}
+	writer := &reviewWriter{Mode: "full-error"}
+	var stderr bytes.Buffer
+	if exit := newCommand().Run(box.args(), reader, writer, &stderr); exit != 1 {
+		t.Fatalf("exit %d", exit)
+	}
+	assertReport(t, stderr.Bytes(), "refused", "guide.output")
+	if reader.ReadCount != len("review\n") {
+		t.Fatalf("consent prefetched before complete review: read %d bytes; want %d", reader.ReadCount, len("review\n"))
+	}
+	if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, before) {
+		t.Fatal("failed display changed filesystem")
+	}
+}
+
+func darwinAccessEntries(t *testing.T, path string) []string {
+	t.Helper()
+	value, err := exec.Command("/bin/ls", "-lde", path).CombinedOutput()
+	if err != nil {
+		t.Fatalf("observe disposable file ACL: %v: %s", err, value)
+	}
+	var entries []string
+	for _, line := range strings.Split(string(value), "\n") {
+		line = strings.TrimSpace(line)
+		if len(line) > 0 && line[0] >= '0' && line[0] <= '9' && strings.Contains(line, ": ") {
+			entries = append(entries, line)
+		}
+	}
+	return entries
+}
+
+func TestDarwinExistingAccessControlPreservedOrRefused(t *testing.T) {
+	if runtime.GOOS != "darwin" {
+		t.Skip("actual Darwin ACL preservation fixture")
+	}
+	for _, changed := range []bool{false, true} {
+		box := newSandbox(t, "identity.yaml")
+		value, err := exec.Command("/bin/chmod", "+a", "everyone deny execute", box.Prep).CombinedOutput()
+		if err != nil {
+			t.Fatalf("add ACL only to disposable preparation: %v: %s", err, value)
+		}
+		entries := darwinAccessEntries(t, box.Prep)
+		if len(entries) == 0 || !strings.Contains(strings.Join(entries, "\n"), "everyone deny execute") {
+			t.Fatalf("fixture ACL not observed: %q", entries)
+		}
+		before := snapshot(t, box.Root)
+		info, err := os.Stat(box.Prep)
+		if err != nil {
+			t.Fatal(err)
+		}
+		input := "review\nsave\n"
+		if changed {
+			input = "recipient\n1\nchange\nExample newcomer\napply\nreview\nsave\n"
+		}
+		var stdout, stderr bytes.Buffer
+		exit := newCommand().Run(box.args(), strings.NewReader(input), &stdout, &stderr)
+		want := before
+		if !changed {
+			if exit != 0 {
+				t.Fatalf("ACL no-op exit %d: %q", exit, stderr.String())
+			}
+			assertReport(t, stderr.Bytes(), "unchanged", "guide.unchanged")
+			after, err := os.Stat(box.Prep)
+			if err != nil || !os.SameFile(info, after) {
+				t.Fatalf("ACL no-op replaced inode: %v", err)
+			}
+		} else if exit == 0 {
+			assertReport(t, stderr.Bytes(), "saved", "guide.saved")
+			want["records/newcomer/preparation.obk.yaml"] = string(fixture(t, "named.yaml"))
+		} else {
+			if exit != 1 {
+				t.Fatalf("ACL changed save exit %d: %q", exit, stderr.String())
+			}
+			assertReport(t, stderr.Bytes(), "refused", "guide.commit")
+		}
+		if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, want) {
+			t.Fatalf("ACL save changed unexpected bytes/paths: %#v want %#v", actual, want)
+		}
+		if actual := darwinAccessEntries(t, box.Prep); !reflect.DeepEqual(actual, entries) {
+			t.Fatalf("existing ACL lost or changed: %q want %q", actual, entries)
+		}
+	}
+}
+
+func TestExistingReadOnlyModePreservedOrRefused(t *testing.T) {
+	t.Parallel()
+	box := newSandbox(t, "identity.yaml")
+	if err := os.Chmod(box.Prep, 0o400); err != nil {
+		t.Fatal(err)
+	}
+	before := snapshot(t, box.Root)
+	var stdout, stderr bytes.Buffer
+	input := "recipient\n1\nchange\nExample newcomer\napply\nreview\nsave\n"
+	exit := newCommand().Run(box.args(), strings.NewReader(input), &stdout, &stderr)
+	want := before
+	if exit == 0 {
+		assertReport(t, stderr.Bytes(), "saved", "guide.saved")
+		want["records/newcomer/preparation.obk.yaml"] = string(fixture(t, "named.yaml"))
+	} else {
+		if exit != 1 {
+			t.Fatalf("restricted mode exit %d: %q", exit, stderr.String())
+		}
+		assertReport(t, stderr.Bytes(), "refused", "guide.commit")
+	}
+	if actual := snapshot(t, box.Root); !reflect.DeepEqual(actual, want) {
+		t.Fatal("restricted mode save changed unexpected bytes/paths")
+	}
+	info, err := os.Stat(box.Prep)
+	if err != nil || info.Mode().Perm() != 0o400 {
+		t.Fatalf("existing restrictive mode changed: %v %v", info, err)
 	}
 }
