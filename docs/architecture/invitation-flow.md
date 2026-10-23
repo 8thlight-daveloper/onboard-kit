@@ -96,8 +96,11 @@ an explicit reviewed save. The next bounded component is the read-only
 [preparation reviewer](../decisions/0330-preparation-review.md): keep validation
 problems, actual onboarder blockers and the real first-steps preview separate,
 without a ready flag or writes. Its contract and pure implementation are available;
-the guided driver remains pending. Guided edits and publication follow through
-separate contracts. The implemented
+the guided driver remains pending. [0340](../decisions/0340-guided-preparation-save.md)
+specifies a recipient-only text interaction with unsaved forms, explicit review
+and one preparation save. Existing arrangements are preserved, not generated or
+edited by that first slice. Its driver contract and implementation remain pending.
+Guided arrangements follow separately. The implemented
 archive codecs already include preparation under 0240's bounded-entry, size and
 untrusted-path rules; do not create a second envelope or speculative publisher.
 
