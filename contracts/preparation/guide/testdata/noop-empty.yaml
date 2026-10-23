@@ -1,0 +1,6 @@
+# Decoder-accepted but deliberately unencodable, and not canonical.
+kind: preparation
+schemaVersion: 1
+planId: planone
+account: newcomer
+arrangements: [{}]

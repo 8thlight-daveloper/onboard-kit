@@ -1,0 +1,12 @@
+{
+  "plan.yaml": "ADR0340 original validated plan, exact directory choices and inactive section; hand-authored minimal directory without contact routes deliberately permits three plan warnings, not errors",
+  "identity.yaml": "ADR0340 absent identity-only explicit reviewed create; contracts/preparation/encoder/testdata/cases.json identity field ordering",
+  "named.yaml": "ADR0340 explicit recipient save; preparation encoder recipient-all field order and plain printable scalar rule",
+  "repair-before.yaml": "ADR0190 unrelated invalid arrangements retained; ADR0340 whole form can repair two stale references and startup guard does not erase recipient",
+  "repair-after.yaml": "Hand-specified manager and buddy replacement only; existing preparation encoder arrangement/root ordering; no automatic readiness gate",
+  "noop-empty.yaml": "ADR0340 clarified existing semantic no-op does not require encoder representability; preparation decoder accepts empty arrangement and encoder contract refuses empty items",
+  "literal.yaml": "ADR0340 literal terminal display; ADR0200 Unicode separators remain underlying data; decoder quoted scalar controls accepted; non-ASCII printable name retained",
+  "help.txt": "ADR0340 explicit recipient-only prepare guide, no record/plan writes and separate export",
+  "cases.json": "Every individual case cites governing source; saved payloads literal independent YAML, never product-generated",
+  "guide_test.go": "ADR0340 protected API/stream/filesystem boundary; supplementary hand-authored source errors, actual symlink/hardlink paths, cooperative byte changes triggered after review begins, logical UTF-8 byte bounds, writer short/full-count errors and record-isolation probes. The static plan/preparation hardlink is a cross-kind alias refusal control, not a reaching proof of a valid output-alias guard: real decoders require incompatible kinds. ADR0200 requires each retained U+2028 to encode as six ASCII bytes: 180000 literal three-byte separators yield source below 1MiB but changed encoding above 1MiB, independent of product calculation. ADR0110 duplicate variables refuse; ADR0120 unaccepted organization default remains absent from guide. Missing plan ID cannot supply expected preparation identity. ADR0210 invalid resultsPath/account refuses without interaction."
+}

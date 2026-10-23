@@ -99,7 +99,8 @@ without a ready flag or writes. Its contract and pure implementation are availab
 the guided driver remains pending. [0340](../decisions/0340-guided-preparation-save.md)
 specifies a recipient-only text interaction with unsaved forms, explicit review
 and one preparation save. Existing arrangements are preserved, not generated or
-edited by that first slice. Its driver contract and implementation remain pending.
+edited by that first slice. Its four-part driver contract is authored;
+implementation and independently scripted binary scenarios remain pending.
 Guided arrangements follow separately. The implemented
 archive codecs already include preparation under 0240's bounded-entry, size and
 untrusted-path rules; do not create a second envelope or speculative publisher.
