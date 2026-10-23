@@ -1,0 +1,7 @@
+[
+  {"name":"plan.yaml","source":"docs/decisions/0220-preparation-command.md; docs/reference/examples/acme/acme.obk.yaml; docs/decisions/0045-defaults-are-suggestions.md","rule":"Minimal identified plan with declared contact, team, inactive section, and unanswered required suggested variable."},
+  {"name":"preparation.yaml","source":"docs/reference/preparation-format.md; docs/decisions/0140-person-specific-preparation.md; docs/decisions/0200-preserve-unicode-line-separators.md","rule":"Hand-specified complete preparation with preserved unknown root data."},
+  {"name":"record.yaml","source":"docs/decisions/0090-plan-and-onboarding-record.md; docs/decisions/0220-preparation-command.md","rule":"Record progress is independent from preparation and private answers are excluded from show."},
+  {"name":"empty-show.json","source":"docs/decisions/0220-preparation-command.md; contracts/command/prepare/contract.md","rule":"Exact JSON shape before any record exists, with no inferred recipient values or progress."},
+  {"name":"full-show.json","source":"docs/decisions/0220-preparation-command.md; contracts/command/prepare/contract.md","rule":"Exact separate preparation/progress projection with dates and outcome context preserved."}
+]
