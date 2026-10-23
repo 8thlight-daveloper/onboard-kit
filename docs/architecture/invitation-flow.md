@@ -28,7 +28,7 @@ accounts.
 
 ### 1. Preparation format and ownership
 
-The preparation model, validator, decoder, encoder, and typed editor are
+The preparation model, validator, decoder, encoder, typed editor, and locator are
 implemented. Driver integration and the combined view remain pending. See the
 [preparation format](../reference/preparation-format.md).
 Define the person-specific artifact before adding personalized questions to

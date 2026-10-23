@@ -1,6 +1,6 @@
 # Preparation format
 
-Status: bounded shape approved under R1; validator, codecs, and editor implemented; command flows pending.
+Status: bounded shape approved under R1; validator, codecs, editor, and locator implemented; command flows pending.
 Date meaning follows [0180](../decisions/0180-first-onboarding-use.md).
 
 ## The three files
@@ -141,8 +141,9 @@ round trips. They are not tested by the typed
 [validator suite](../../contracts/preparation/validator/contract.md).
 
 The typed validator, [decoder](../../contracts/preparation/decoder/contract.md),
-[encoder](../../contracts/preparation/encoder/contract.md), and
-[editor](../../contracts/preparation/editor/contract.md) are implemented. The editor
+[encoder](../../contracts/preparation/encoder/contract.md),
+[editor](../../contracts/preparation/editor/contract.md), and
+[locator](../../contracts/preparation/locator/contract.md) are implemented. The editor
 supports scoped repair under [0190](../decisions/0190-incremental-preparation-repair.md);
 successful edits do not certify invitation readiness. Unicode separators follow
 [0200](../decisions/0200-preserve-unicode-line-separators.md). Template bindings
