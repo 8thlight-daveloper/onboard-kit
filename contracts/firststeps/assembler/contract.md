@@ -1,6 +1,6 @@
 # First steps assembler contract
 
-Status: agent-authored contract; implementation pending.
+Status: agent-authored contract; independent implementation integrated.
 Component: `firststeps/assembler`. Package: `assembler`.
 
 Assemble one deterministic Markdown guide around the actual bootstrap fragment.
@@ -13,7 +13,7 @@ reference; the document assembler, preparation validator, and locator contracts.
 ## Interface and dependencies
 
 `Assemble(context, originalPlan, preparation) -> (Markdown, problems)`.
-`New()` has no arguments. See `api.go`; the draft binding returns empty results.
+`New()` has no arguments. See `api.go`; the binding calls the implementation.
 Position 5 permits model, this contract, and the actual document assembler at
 position 4, preparation validator at position 1, and preparation locator at
 position 1. No record, joiner, encoder, hasher, action runner, or driver dependency.

@@ -1,6 +1,6 @@
 # 0280. First steps help and sources
 
-Status: accepted by agent judgment; implementation pending
+Status: accepted by agent judgment; preview implemented, driver integration pending
 
 Builds on [0090](0090-plan-and-onboarding-record.md),
 [0140](0140-person-specific-preparation.md),

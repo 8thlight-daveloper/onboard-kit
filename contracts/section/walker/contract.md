@@ -1,6 +1,6 @@
 # Section walker contract
 
-Status: agent-authored contract; implementation pending.
+Status: agent-authored contract; independent implementation integrated.
 Component `section/walker`, package `walker`, dependency position 4.
 
 Sources: ADR 0085, 0090, 0140, 0180, 0250, 0260, 0270; principles 0100,

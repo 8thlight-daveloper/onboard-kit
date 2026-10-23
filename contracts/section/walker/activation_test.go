@@ -214,8 +214,8 @@ func isolationPlan(t *testing.T) model.Plan {
 		"answers":{"plan":{"ready":"yes","command":["echo","ok"]}},
 		"sections":[{"id":"b"},{"id":"a","enabled":true,"requires":["b","b"],"after":["b"],"body":"Literal instructions.","escalation":["Ask support","Ask support"],
 		"source":{"template":"original","hash":"baseline"},
-		"includeIf":{"all":[{"question":"plan.command","answer":{"isOneOf":[["echo","ok"]]}},{"question":"plan.command","answer":{"isNotOneOf":[["no"]]}},{"question":"plan.ready","answer":{"isSettled":true}},{"section":"b","enabled":true}]},
-		"variables":[{"name":"picker","type":"choice","options":["one","two"],"default":"one","askIf":{"all":[{"question":"plan.ready","answer":{"isSettled":true}}]}},{"name":"command","type":"command","default":["echo","ok"],"askIf":{"all":[{"question":"plan.command","answer":{"is":["echo","ok"]}}]}}],
+		"includeIf":{"all":[{"question":"plan.ready","answer":{"isOneOf":["yes","maybe"]}},{"question":"plan.ready","answer":{"isNotOneOf":["no"]}},{"question":"plan.command","answer":{"isSettled":true}},{"question":"plan.ready","answer":{"is":"yes","isNot":"no"}},{"section":"b","enabled":true}]},
+		"variables":[{"name":"picker","type":"choice","options":["one","two"],"default":"one","askIf":{"all":[{"question":"plan.ready","answer":{"isSettled":true}}]}},{"name":"command","type":"command","default":["echo","ok"],"askIf":{"all":[{"question":"plan.command","answer":{"isSettled":true}}]}}],
 		"steps":[{"id":"read","name":"Read","run":["echo","ok"],"escalation":["Ask another helper"],"env":{"MODE":"quiet"},"checks":[{"run":["test","ok"]}]}],
 		"unknownFields":{"extra":{"list":["held",{"inside":"value"}]}}}]
 	}`

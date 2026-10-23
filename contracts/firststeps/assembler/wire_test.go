@@ -2,13 +2,7 @@ package assembler_test
 
 import (
 	contract "onboard-kit/contracts/firststeps/assembler"
-	"onboard-kit/internal/model"
+	implementation "onboard-kit/internal/firststeps/assembler"
 )
 
-type emptyAssembler struct{}
-
-func (emptyAssembler) Assemble(contract.Context, model.Plan, model.Preparation) (string, []model.Problem) {
-	return "", nil
-}
-
-func newAssembler() contract.Assembler { return emptyAssembler{} }
+func newAssembler() contract.Assembler { return implementation.New() }

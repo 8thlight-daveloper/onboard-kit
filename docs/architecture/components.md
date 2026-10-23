@@ -100,7 +100,7 @@ flowchart TB
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied, one section's switch changed, or one directory entry added, changed, or removed. An answer changes only `answers`, a switch only that section's `enabled`, and a directory edit only the directory. Removing an entry also clears the answers and holder entries that named it, and reports them. The plan it was given is not altered |
 | Document assembler | Renders ordinary grouped reference documents with explicit prerequisites, gap table and review marker. Its bootstrap operation validates and schedules the full original plan, then renders only marked activities as flat contextual fragments. Both operations share section and gap formatting under [0260](../decisions/0260-prerequisites-and-action-order.md); first-steps driver integration remains pending |
-| First steps assembler, planned | Wraps the real bootstrap fragment with standard help using explicit account/help references and validated preparation owner/team. Renders a preview only; no readiness, import, first-use or file writes. Boundary: [0280](../decisions/0280-first-steps-help-and-sources.md) |
+| First steps assembler | Wraps the real bootstrap fragment with standard help using explicit account/help references and validated preparation owner/team. Renders a preview only; no readiness, import, first-use or file writes. Boundary: [0280](../decisions/0280-first-steps-help-and-sources.md) |
 | Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
 | Plan refresher | Brings a personal plan up to date with a newer org plan, by a three-way comparison of the cached org plan, the new org plan, and the personal plan. Returns the new personal plan and a report of what changed |
 | Plan migrator | Deferred until the first breaking schema change. Brings a plan's bytes from one schema version to the next. One step per version, bytes in and bytes out, so it needs no current types. Steps chain |
@@ -122,7 +122,7 @@ flowchart TB
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
 | Section scheduler | Validates all declared relationships, selects from the full original plan, and returns active activities in global prerequisite action order. Goals break ties between free activities, never override prerequisites or gate progress. Reads no outcomes and performs no writes |
-| Section walker, planned | Reads an already composed effective plan and only the record's outcomes. Returns action rows, direct prerequisite waiting, resolved support, full finder questions and held history with actual-definition comparisons. Does not join answers, write outcomes or infer first use |
+| Section walker | Reads an already composed effective plan and only the record's outcomes. Returns action rows, direct prerequisite waiting, resolved support, full finder questions and held history with actual-definition comparisons. Does not join answers, write outcomes or infer first use; driver integration remains pending |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers, and fills `contact`, `role`, and `team` variables from the directory and the answered team |
 | Section hasher | Computes the content hash recorded in a section's `source` |
@@ -144,7 +144,8 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `plan/structurevalidator` | None. Reads only section ID, Parent, Requires, After, Bootstrap, and Timing; returns fresh problems without changing any plan field |
 | `section/scheduler` | None. Reads original section relationships, activity gates, answers, and held section values; returns copied action-order slots and fresh diagnostics without plan writes |
-| `section/walker`, planned | None. Reads the caller-composed plan and record.Outcomes; returns independent action/waiting/history views and diagnostics without changing either input |
+| `section/walker` | None. Reads the caller-composed plan and record.Outcomes; returns independent action/waiting/history views and diagnostics without changing either input |
+| `firststeps/assembler` | None. Reads the original plan, explicit account/help selection and validated preparation; returns a guide or refusal, not files or readiness |
 | `document/assembler` | None. It returns the document |
 | `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
 | `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
@@ -196,8 +197,8 @@ by each current contract until its independently tested replacement is integrate
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
-| First steps assembler, planned | Original plan, explicit account/help references, preparation validation and owner/team, derived destinations | Standard help around the real bootstrap fragment, or refusal; no writes | 5: document assembler, preparation validator, preparation locator, model |
-| Section walker, planned | Caller-composed effective plan and record.Outcomes only | Action, direct waiting, resolved support, finder questions/blockers, and complete held outcome history with actual-definition comparisons; no writes | 4: section scheduler, question finder, section resolver, section hasher, model |
+| First steps assembler | Original plan, explicit account/help references, preparation validation and owner/team, derived destinations | Standard help around the real bootstrap fragment, or refusal; no writes | 5: document assembler, preparation validator, preparation locator, model |
+| Section walker | Caller-composed effective plan and record.Outcomes only | Action, direct waiting, resolved support, finder questions/blockers, and complete held outcome history with actual-definition comparisons; no writes | 4: section scheduler, question finder, section resolver, section hasher, model |
 | Outcome recorder, new | Validated plan, record, explicit proposed outcome, injected timestamp | New record or refusal; outcomes only, no plan writes | 5: section walker, section hasher, model |
 | Plan validator | Existing authoring fields and declared section relationships | Problems only; no plan writes | 4: plan structure validator, question finder, section validator, secrets, model |
 | Record reconciler | Existing answer inputs plus actual current Section content | Existing copied record and reconciliation report; no plan writes or historical-outcome rewrites | 2: section hasher, model |
@@ -212,7 +213,8 @@ position 3 uses the real structure validator and selector; the document
 assembler at position 4 uses it for bootstrap fragments. The section selector
 now applies Parent/Requires cascading against original answer and switch context,
 without adding verification gates or changing grouped reference order. The
-record-backed walkthrough and outcome writes remain pending. Requires format
+read-only walker views and standard first-steps help are implemented; command
+integration and outcome writes remain pending. Requires format
 preservation underlies the structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.
 

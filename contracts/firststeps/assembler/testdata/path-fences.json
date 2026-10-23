@@ -1,0 +1,37 @@
+[
+  {
+    "name": "prefix-only-backtick",
+    "source": "First steps inline code rule requires padding when exact path begins with a backtick; actual locator permits printable backticks",
+    "resultsPath": "`people/{account}/record.yaml",
+    "record": {"path": "`people/newcomer/record.yaml", "minimumFence": 2, "padding": true},
+    "preparation": {"path": "`people/newcomer/preparation.obk.yaml", "minimumFence": 2, "padding": true}
+  },
+  {
+    "name": "suffix-only-backtick",
+    "source": "First steps inline code rule requires padding when exact record path ends with a backtick; preparation sibling has a distinct fixed filename",
+    "resultsPath": "people/{account}/record.yaml`",
+    "record": {"path": "people/newcomer/record.yaml`", "minimumFence": 2, "padding": true},
+    "preparation": {"path": "people/newcomer/preparation.obk.yaml", "minimumFence": 1, "padding": false}
+  },
+  {
+    "name": "three-then-two-then-one-internal-runs",
+    "source": "First steps fence must exceed every held run, including an earlier longer run; no requirement to use the shortest safe fence",
+    "resultsPath": "pe```ople/{account}/re``co`rd.yaml",
+    "record": {"path": "pe```ople/newcomer/re``co`rd.yaml", "minimumFence": 4, "padding": false},
+    "preparation": {"path": "pe```ople/newcomer/preparation.obk.yaml", "minimumFence": 4, "padding": false}
+  },
+  {
+    "name": "one-then-three-then-two-internal-runs",
+    "source": "First steps fence must exceed the longest internal run even when it is neither the first nor last",
+    "resultsPath": "pe`ople/{account}/re```co``rd.yaml",
+    "record": {"path": "pe`ople/newcomer/re```co``rd.yaml", "minimumFence": 4, "padding": false},
+    "preparation": {"path": "pe`ople/newcomer/preparation.obk.yaml", "minimumFence": 2, "padding": false}
+  },
+  {
+    "name": "both-boundaries-with-unequal-interior-runs",
+    "source": "First steps safe literal code span: preserve all exact backticks and use required edge padding without changing payload",
+    "resultsPath": "`pe```ople/{account}/re``co`rd.yaml`",
+    "record": {"path": "`pe```ople/newcomer/re``co`rd.yaml`", "minimumFence": 4, "padding": true},
+    "preparation": {"path": "`pe```ople/newcomer/preparation.obk.yaml", "minimumFence": 4, "padding": true}
+  }
+]

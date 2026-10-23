@@ -76,6 +76,12 @@ documents also show explicit prerequisites without becoming action sequences.
 First-steps delivery, outcome-verification gates, and record-backed startup
 remain required.
 
+The pure first steps assembler now wraps the real bootstrap fragment with
+standard help under [0280](../decisions/0280-first-steps-help-and-sources.md).
+Read-only section walker views separate applicability, new-attempt waiting,
+held outcomes and actual-definition comparisons. Neither component delivers
+an invitation, saves an outcome or starts a record-backed command session.
+
 Build the guided flow using the same preparation format and editor, then add
 the archive writer and reader. The allowed entry layout must include preparation
 and satisfy 0090's bounded-entry, size, and untrusted-path rules.

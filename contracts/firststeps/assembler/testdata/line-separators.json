@@ -1,0 +1,26 @@
+[
+  {
+    "name": "lone-carriage-return",
+    "source": "First steps assembler wrapper rule: lone CR is one ordinary space, not deleted or preserved",
+    "planUrl": "before\rafter",
+    "expectedLine": "Plan location: before after"
+  },
+  {
+    "name": "unicode-line-separator",
+    "source": "First steps assembler wrapper rule: U+2028 is one ordinary space",
+    "planUrl": "before\u2028after",
+    "expectedLine": "Plan location: before after"
+  },
+  {
+    "name": "unicode-paragraph-separator",
+    "source": "First steps assembler wrapper rule: U+2029 is one ordinary space",
+    "planUrl": "before\u2029after",
+    "expectedLine": "Plan location: before after"
+  },
+  {
+    "name": "adjacent-distinct-separators-stay-distinct-spaces",
+    "source": "First steps assembler wrapper rule: one space per separator; CRLF is one separator and a neighboring U+2028 remains another",
+    "planUrl": "a\r\u2028b\u2029c\r\nd",
+    "expectedLine": "Plan location: a  b c d"
+  }
+]
