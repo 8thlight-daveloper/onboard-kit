@@ -1,0 +1,32 @@
+{
+  "source": "ADR0260 full original plan, action order distinct from grouped question order; question finder contract Order of deciding/Order of questions; ADR0120 defaults are not answers",
+  "plan": {
+    "variables": [{"name":"accepted","type":"boolean","audience":"onboardee"}],
+    "answers": {"plan":{"accepted":false},"sections":{"b":{"ready":"ok"}}},
+    "sections": [
+      {"id":"a","timing":"week-one","requires":["b"],"variables":[
+        {"name":"first","required":true},
+        {"name":"dependent","audience":"onboardee","required":true,"askIf":{"all":[{"question":"b.ready","answer":{"is":"ok"}}]}},
+        {"name":"tail","audience":"onboardee","required":true,"default":"not accepted"},
+        {"name":"skip","required":true,"askIf":{"all":[{"question":"plan.accepted","answer":{"is":true}}]}}
+      ]},
+      {"id":"b","includeIf":{"all":[{"section":"hidden","enabled":false}]},"variables":[
+        {"name":"first","audience":"onboardee","required":true},
+        {"name":"ready","audience":"onboardee","required":true},
+        {"name":"last","required":true}
+      ]},
+      {"id":"hidden","enabled":false,"variables":[{"name":"unused","required":true}]}
+    ]
+  },
+  "sequence": ["b","a"],
+  "questions": [
+    {"id":"plan.accepted","audience":"onboardee","answer":false},
+    {"id":"a.first","audience":"onboarder"},
+    {"id":"a.tail","audience":"onboardee","declaredDefault":"not accepted"},
+    {"id":"b.first","audience":"onboardee"},
+    {"id":"b.ready","audience":"onboardee","answer":"ok"},
+    {"id":"a.dependent","audience":"onboardee"},
+    {"id":"b.last","audience":"onboarder"}
+  ],
+  "blockers": ["a.first","a.tail","b.first","a.dependent","b.last"]
+}

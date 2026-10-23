@@ -1,0 +1,19 @@
+{
+  "source": "ADR0260 complete declarations before filtering; literal renamed disjoint cases from structurevalidator parent-unknown-and-self, requires-unknown-and-self, after-unknown-and-self and bootstrap-after-contradiction; exact structure problem sorting, not plan validator sorting",
+  "plan": {"sections":[
+    {"id":"a","enabled":false,"requires":["private-required","a","private-required"],"after":["private-order","a"]},
+    {"id":"b","enabled":false,"parent":"b"},
+    {"id":"c","enabled":false,"parent":"private-parent"},
+    {"id":"d","enabled":false,"bootstrap":true,"after":["e","e"]},
+    {"id":"e","enabled":false}
+  ]},
+  "problems": [
+    {"code":"plan.after-self","severity":"error","message":"Remove the section's reference to itself in after.","question":"","section":"a","detail":{"field":"after","item":"1"}},
+    {"code":"plan.after-unknown","severity":"error","message":"Choose an existing section, or remove this after item.","question":"","section":"a","detail":{"field":"after","item":"0"}},
+    {"code":"plan.bootstrap-after-nonbootstrap","severity":"error","message":"Remove this ordering hint, or correct the bootstrap claim.","question":"","section":"d","detail":{"field":"after","item":"0"}},
+    {"code":"plan.parent-self","severity":"error","message":"Remove the section's reference to itself as parent.","question":"","section":"b","detail":{"field":"parent"}},
+    {"code":"plan.parent-unknown","severity":"error","message":"Choose an existing section as parent, or remove parent.","question":"","section":"c","detail":{"field":"parent"}},
+    {"code":"plan.requires-self","severity":"error","message":"Remove the section's reference to itself in requires.","question":"","section":"a","detail":{"field":"requires","item":"1"}},
+    {"code":"plan.requires-unknown","severity":"error","message":"Choose an existing prerequisite, or remove this requires item.","question":"","section":"a","detail":{"field":"requires","item":"0"}}
+  ]
+}
