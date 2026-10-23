@@ -1,0 +1,50 @@
+[
+  {
+    "name": "bootstrap-warning-and-onboardee-placeholder-propagate",
+    "source": "Literal actual document assembler fixture selected-gap-not-private-gap; wrapper retains Bootstrap warnings and fragment bytes without re-resolving",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "sections": [{"id": "private", "title": "PRIVATE", "summary": "PRIVATE $secret", "variables": [{"name": "secret"}]}, {"id": "access", "title": "Public access", "bootstrap": true, "summary": "Use $account.", "owner": "Onboarding owner", "timing": "week-one", "variables": [{"name": "account", "description": "Account name", "audience": "onboardee"}]}]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "fragment": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n| Account name | Onboarding owner | Week one |\n\n### Public access\n\nUse `<account>`.\n\nOwner: Onboarding owner. When: week one.\n",
+    "problems": [{"code": "gap.unanswered", "severity": "warning", "question": "access.account", "section": "access", "detail": {"audience": "onboardee"}}]
+  },
+  {
+    "name": "action-order-and-exact-parent-context-kept",
+    "source": "Literal actual document assembler parent-requires-child-action-order fixture; ADR0260 Parent adds no execution edge",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "sections": [{"id": "parent", "title": "Parent", "bootstrap": true, "requires": ["child"]}, {"id": "child", "title": "Child", "parent": "parent", "bootstrap": true}]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "fragment": "### Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |\n\n### Child\n\nWithin: `parent`.\n\n### Parent\n\nRequires: `child`.\n",
+    "problems": []
+  },
+  {
+    "name": "wrapper-values-cannot-inject-markdown-structure",
+    "source": "ADR0280 literal display literal wrapper display; root review requires account/path PII purpose and heading/command injection resistance",
+    "context": {"account": "newcomer", "generalHelp": [{"kind": "contact", "id": "helper"}]},
+    "plan": {"id": "planone", "planUrl": "repo\n# Injected", "answers": {"plan": {"organization": "# Injected\n[run](bad)"}}, "directory": {"contacts": [{"id": "owner", "name": "# Owner\n`command`"}, {"id": "helper", "name": "[Helper]", "slack": "route\r\n## Injected"}]}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone", "recipient": {"onboardingOwner": "owner"}},
+    "contains": ["Organization: \\# Injected \\[run\\]\\(bad\\)", "Onboarding owner: \\# Owner \\`command\\` (contact route not supplied)", "Plan location: repo \\# Injected", "- \\[Helper\\], route \\#\\# Injected"],
+    "absent": ["\n# Injected", "\n## Injected", "```command", "Organization: # Injected"],
+    "problems": []
+  },
+  {
+    "name": "wrapper-path-backtick-fence-is-literal",
+    "source": "Actual locator permits exact printable path punctuation; ADR0280 literal display variable-length inline code prevents wrapper fence breakout",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "resultsPath": "people/{account}/rec`ord.yaml"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "contains": ["Relative record destination: ``people/newcomer/rec`ord.yaml``.", "Relative preparation destination: `people/newcomer/preparation.obk.yaml`."],
+    "absent": ["Relative record destination: `people/newcomer/rec`ord.yaml`."],
+    "problems": []
+  },
+  {
+    "name": "whitespace-only-contact-name-and-route-are-labeled",
+    "source": "First-steps reference forbids empty names; ADR0280 missing sources and literal display explicitly define Unicode whitespace-only missing values",
+    "context": {"account": "newcomer", "generalHelp": [{"kind": "contact", "id": "blank"}]},
+    "plan": {"id": "planone", "directory": {"contacts": [{"id": "blank", "name": " \t\u2003", "slack": "\t", "email": "\u2003"}]}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone", "recipient": {"onboardingOwner": "blank"}},
+    "contains": ["Onboarding owner: Name not supplied (contact route not supplied)", "- Name not supplied (contact route not supplied)"],
+    "absent": ["\u2003", "\t"],
+    "problems": []
+  }
+]

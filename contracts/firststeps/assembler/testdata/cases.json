@@ -1,0 +1,101 @@
+[
+  {
+    "name": "missing-sources-still-useful",
+    "source": "first-steps reference missing-source rule; ADR0140 three owners; ADR0180 first use; ADR0250 no invented URL or unsupported commands; ADR0280 help and explicit sources",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "minimal.md",
+    "problems": []
+  },
+  {
+    "name": "early-timing-does-not-create-bootstrap-work",
+    "source": "ADR0250 explicit Bootstrap marker; actual document assembler contract empty projection",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "sections": [{"id": "early", "title": "PRIVATE early instructions", "timing": "before-day-one", "body": "PRIVATE omitted body"}]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "minimal.md",
+    "problems": []
+  },
+  {
+    "name": "unaccepted-organization-default-is-not-fact",
+    "source": "ADR0120 defaults require explicit acceptance; first-steps Welcome source",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "variables": [{"name": "organization", "default": "PRIVATE default organization"}]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "minimal.md",
+    "problems": []
+  },
+  {
+    "name": "non-displayed-personal-data-stays-out",
+    "source": "ADRs0140/0160/0180 ownership, data minimization and honest first-use meaning",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "unknownFields": {"firstOpenedAt": "PRIVATE fake event", "outcomes": "PRIVATE fake outcomes"}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone", "recipient": {"name": "PRIVATE recipient", "companyEmail": "private@example.invalid", "plannedStartDate": "2027-02-01", "workLocation": "remote", "timeZone": "PRIVATE zone"}, "unknownFields": {"distributionUrl": "PRIVATE fake location"}},
+    "golden": "minimal.md",
+    "problems": []
+  },
+  {
+    "name": "original-plan-real-bootstrap-renderer",
+    "source": "Actual document assembler bootstrap contract: original ancestor answer and omitted switch, flat exact-ID context, step/check rendering, original directory resolution; ADR0260",
+    "context": {"account": "newcomer", "generalHelp": [{"kind": "contact", "id": "helper"}, {"kind": "contact", "id": "helper"}]},
+    "plan": {
+      "id": "planone",
+      "answers": {"plan": {"organization": "Example organization"}, "sections": {"group": {"ready": true}, "access": {"owner": "owner"}}},
+      "directory": {"contacts": [{"id": "helper", "name": "Example helper", "slack": "@helper", "email": "ignored@example.invalid"}, {"id": "owner", "name": "Example owner", "email": "owner@example.invalid"}]},
+      "sections": [
+        {"id": "gate", "enabled": false, "body": "PRIVATE unmarked gate"},
+        {"id": "group", "title": "PRIVATE parent", "body": "PRIVATE parent body", "variables": [{"name": "ready", "type": "boolean"}, {"name": "secret"}], "summary": "PRIVATE $secret"},
+        {"id": "access", "parent": "group", "bootstrap": true, "title": "Public access", "includeIf": {"all": [{"question": "group.ready", "answer": {"is": true}}, {"section": "gate", "enabled": false}]}, "variables": [{"name": "owner", "type": "contact"}], "body": "Ask $owner.", "steps": [{"name": "Request access", "run": ["tool", "--check"], "checks": [{"run": ["tool", "verify"]}]}]}
+      ]
+    },
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone", "recipient": {"onboardingOwner": "owner"}},
+    "golden": "bootstrap.md",
+    "problems": []
+  },
+  {
+    "name": "archive-names-differ-from-custom-destinations-and-vacancy-is-visible",
+    "source": "ADR0240 fixed archive layout; actual locator contract custom filenames; directory role/team override convention; ADR0280 explicit help and destinations",
+    "context": {"account": "Member_2", "generalHelp": [{"kind": "role", "id": "support"}, {"kind": "contact", "id": "blank"}]},
+    "plan": {"id": "planone", "planUrl": "onboarding/plan.obk.yaml", "resultsPath": "people/person-{account}/progress.yaml", "provenance": {"generatedOn": "2026-10-23"}, "directory": {"contacts": [{"id": "org", "name": "PRIVATE global support"}, {"id": "blank", "name": ""}], "roles": [{"id": "support", "name": "Support", "holders": ["org"]}], "teams": [{"id": "blue", "name": "Blue", "holders": {"support": []}}]}},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "Member_2", "planId": "planone", "recipient": {"team": "blue"}},
+    "golden": "custom-vacant.md",
+    "problems": []
+  },
+  {
+    "name": "identity-refusal-precedes-help-and-path",
+    "source": "Actual preparation validator identity phase; Context.Account is explicit command identity, never copied from preparation",
+    "context": {"account": "newcomer", "generalHelp": [{"kind": "contact", "id": "PRIVATE unknown help"}]},
+    "plan": {"id": "planone", "resultsPath": "../PRIVATE"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "someoneelse", "planId": "planone"},
+    "golden": "empty.md",
+    "problems": [{"code": "preparation.account-mismatch", "path": "account", "severity": "error"}]
+  },
+  {
+    "name": "help-refusal-first-distinct-index-no-leak",
+    "source": "ADR0280 explicit help projection rule and ADR0110 ordinary references versus declarations",
+    "context": {"account": "newcomer", "generalHelp": [{"kind": "contact", "id": "PRIVATE unknown help"}, {"kind": "contact", "id": "PRIVATE unknown help"}]},
+    "plan": {"id": "planone"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "empty.md",
+    "problems": [{"code": "firststeps.help-reference", "severity": "error", "message": "Choose an existing contact or role for this help item, or remove it.", "detail": {"field": "generalHelp", "item": "0"}}]
+  },
+  {
+    "name": "invalid-results-path-does-not-fall-back",
+    "source": "Actual preparation locator contract rejects configured traversal without a fallback or partial path",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "resultsPath": "../PRIVATE/{account}/record.yaml"},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "empty.md",
+    "problems": [{"code": "preparation.results-path", "path": "resultsPath", "severity": "error"}]
+  },
+  {
+    "name": "inactive-unmarked-structural-error-refuses-whole-guide",
+    "source": "Actual AssembleBootstrap contract full scheduler validation; literal structure-validator requires-unknown diagnostic",
+    "context": {"account": "newcomer"},
+    "plan": {"id": "planone", "sections": [{"id": "a", "enabled": false, "requires": ["PRIVATE unknown"]}, {"id": "public", "title": "Do not partially render", "bootstrap": true}]},
+    "preparation": {"schemaVersion": 1, "kind": "preparation", "account": "newcomer", "planId": "planone"},
+    "golden": "empty.md",
+    "problems": [{"code": "plan.requires-unknown", "severity": "error", "message": "Choose an existing prerequisite, or remove this requires item.", "section": "a", "detail": {"field": "requires", "item": "0"}}]
+  }
+]
