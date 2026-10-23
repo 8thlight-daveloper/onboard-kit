@@ -14,6 +14,7 @@ func (c *collector) recordNode(record model.Record) node {
 	builder.add("kind", scalarNode(recordKind))
 	builder.add("account", stringField(record.Account))
 	builder.add("startDate", stringField(string(record.StartDate)))
+	builder.add("firstOpenedAt", stringField(string(record.FirstOpenedAt)))
 	builder.add("plan", planReferenceNode(record.Plan))
 	builder.add("answers", c.answersNode(record.Answers))
 	builder.add("outcomes", c.outcomeSequence(record.Outcomes))
@@ -31,7 +32,7 @@ func planReferenceNode(reference model.PlanReference) node {
 
 func isRecordKey(key string) bool {
 	switch key {
-	case "schemaVersion", "kind", "account", "startDate", "plan", "answers", "outcomes":
+	case "schemaVersion", "kind", "account", "startDate", "firstOpenedAt", "plan", "answers", "outcomes":
 		return true
 	}
 	return false

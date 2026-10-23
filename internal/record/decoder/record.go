@@ -17,6 +17,8 @@ func (c *collector) recordFrom(root *yaml.Node) model.Record {
 			record.Account = c.stringOf(found.value, found.at)
 		case "startDate":
 			record.StartDate = model.Date(c.stringOf(found.value, found.at))
+		case "firstOpenedAt":
+			record.FirstOpenedAt = model.Timestamp(c.stringOf(found.value, found.at))
 		case "plan":
 			record.Plan = c.planReferenceOf(found.value, found.at)
 		case "answers":
