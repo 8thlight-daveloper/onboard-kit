@@ -53,8 +53,9 @@ part of this one. No plan-only field or answer behavior is introduced here.
 4. After good version and kind, report all ordinary guards and field problems
    in source order, not alphabetical path order. At the same place retain the
    plan decoder table order: spelling, alias, duplicate, wrong type, unknown
-   field, empty item. An anchor is before the node's other problem, as specified
-   there. Duplicate values are still read; unknown nested values are not.
+   field, empty item, except that an anchor always precedes the node's other
+   problems, including a spelling problem. Duplicate values are still read;
+   unknown nested values are not.
 
 The inherited guards cover raw repeated mapping keys at every depth, anchors,
 aliases, merge keys, non-scalar keys, boolean spellings, number spellings, and

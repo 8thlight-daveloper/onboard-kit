@@ -48,6 +48,8 @@ The decoder can read an empty arrangement; that does not make it encodable.
 ### Unknown values and safety
 
 Write unknown top-level keys after known fields, sorted by raw UTF-8 byte order.
+Mapping keys follow the scalar quoting rules, but a key containing a newline
+is double-quoted with escaped newlines, never written as a literal block.
 Reject a collision with any of the six known root keys, even when that known
 field is empty. Do not inspect a colliding value. Nested maps are map[string]any;
 lists are []any; supported scalars are string, bool, int, int64, finite float64,

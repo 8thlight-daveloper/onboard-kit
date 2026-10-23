@@ -142,6 +142,15 @@ func TestSharedValuesAreNotCycles(t *testing.T) {
 	check(t, data, problems, "schemaVersion: 0\nkind: \"\"\na:\n  value: kept\nb:\n  value: kept\n", nil)
 }
 
+func TestSharedSlicePrefixIsNotACycle(t *testing.T) {
+	t.Parallel()
+	items := []any{"kept", nil}
+	items[1] = items[:1]
+	input := model.Preparation{UnknownFields: map[string]any{"items": items}}
+	data, problems := newEncoder().Encode(input)
+	check(t, data, problems, "schemaVersion: 0\nkind: \"\"\nitems:\n  - kept\n  - - kept\n", nil)
+}
+
 func TestProblemOrderAndCollisionShortCircuit(t *testing.T) {
 	t.Parallel()
 	input := model.Preparation{
