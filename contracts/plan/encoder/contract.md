@@ -39,7 +39,7 @@ A key is written in the order the tables below give. A key with a zero value is 
 | Condition | `all` |
 | Clause | `question`, `answer`, or `section`, `enabled`. A clause that names a section is written with `section` and `enabled` only, never `question` or `answer`. A clause that names no section is written with `question` and `answer` only, never `enabled` |
 | AnswerTest | `is`, `isNot`, `isOneOf`, `isNotOneOf`, `isSettled` |
-| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
+| Section | `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `enabled`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps`, `source`, then the unknown fields |
 | Source | `template`, `hash` |
 | Step | `id`, `name`, `notes`, `owner`, `timing`, `escalation`, `run`, `open`, `directory`, `env`, `checks` |
 | Check | `run`, `ask`, or `env`. Exactly one |
@@ -126,6 +126,25 @@ In Go, an integer is an `int` or an `int64`, and a decimal number is a `float64`
 
 A problem names the place it was found in `detail.path`. The path is the place's address in the plan, written with dots for fields and a number in brackets for a list item, such as `sections[1].steps[0].checks[0]`, `answers.plan.organization`, or `answers.sections.s.name`. An unknown field at the plan level is its key alone, such as `answers`. Problems come in the order their places occur in the canonical file.
 
+## Bootstrap
+
+Under [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md),
+write bootstrap: true after parent and before timing when Section.Bootstrap is
+true; omit false. Preserve every other field and all ordinary list ordering.
+Do not infer the marker from timing, answers, defaults, Enabled or hierarchy.
+Treat bootstrap as a known section key for unknown-field collisions, including
+when the held marker is false, and do not inspect a colliding value. At the
+plan root it remains an ordinary unknown field, not a new known root key.
+The [bootstrap fixtures](testdata/bootstrap.json) and [tests](bootstrap_test.go)
+pin canonical bytes and collision paths independently of the product decoder.
+
+The existing known-field collision rule applies even when a typed field is
+zero and omitted. [Known-section-key tests](section_collision_test.go) exercise
+every reserved section key with unsupported and scalar unknown values. Each
+must return only encode.unknown-field-collision at sections[0].<key> and no
+bytes, without inspecting the colliding value. Section ID is deliberately
+nonempty so an empty-item guard cannot hide the collision requirement.
+
 ## Properties
 
 These hold for every plan the contract tests use.
@@ -166,6 +185,8 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Forget a reserved section key when its typed field is zero, or traverse its colliding value | [all known section keys](section_collision_test.go) |
+| Drop true Bootstrap or emit bootstrap false instead of omitting it | [bootstrap fixtures](testdata/bootstrap.json) |
 | Map keys in iteration order, not sorted | The golden cases that have maps, and the determinism test |
 | `yes`, `no`, `on`, and other reserved words written plain | `strings`, `key-order`, `unknown-fields` |
 | Lists in flow style, `[a, b]` | `key-order`, `acme` |

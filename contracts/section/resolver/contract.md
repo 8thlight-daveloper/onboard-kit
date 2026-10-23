@@ -156,18 +156,29 @@ None, and it reads section content, the section's own answers, the directory, an
 ## Not covered
 
 - Whether the directory is valid: a duplicate id, a holder that is not a contact, a team entry for a role that does not exist. Two entries with one id are not covered. Those are for the validator.
+
 - That the plan has at most one `team` variable, and how the caller finds the team.
+
 - An answer of the wrong shape for a directory variable, such as a List for a `team`, or a Flag. A contact with an empty name, and a role with an empty name.
+
 - The same contact written twice in a List, or held by two roles in one List.
+
 - Reporting a vacant role. The assembler does.
 
 - The format of the document, such as Markdown escaping of `<name>` and `_deferred_`, one person to a line, and the gap table. Those are the assembler's.
+
 - Whether the answers fit the types, options, or patterns, whether a required question is answered, and whether a `$` is valid. Those are for the validators.
+
 - Two variables with the same name in one section.
+
 - A Flag for a `string`, a Flag for a `command`, or another mismatch of type and value, except Text for a `command` and the Lists that A command in `run` covers. The value is written by its kind, as the table says.
+
 - Text of only whitespace.
+
 - A name that does not follow the schema's name rule, in a declaration.
+
 - Which sections are active. The caller passes the section it wants filled.
+
 - That a `parent` names a section of the plan, that no chain of parents loops, and that an `includeIf` names only ancestors. The resolver is given one section and never sees the others, and it reads only the section's own answers, so an ancestor's answer is not read here. The plan validator's structure check covers the parent.
 
 ## Decisions to know
@@ -187,15 +198,15 @@ D10. **Escalation stays as held.** Its items name variables and are not text, so
 
 The choices below were made before the directory.
 
-1. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered onboarder variable is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
-2. **Unanswered is a visible marker and a gap, even with a default.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
-3. **Only stored answers resolve content.** A missing or deferred answer never authorizes using a suggestion. Source: 0045 and 0120. `hard`.
-4. **A list is joined with one space.** A List of a `command` is written in one string, in a sentence, a field, or a `run` item that is not exactly `$name`. Raised by: "joins with spaces in prose" for `command` in variables.md. `cheap`.
-5. **An onboardee variable is a blank only when it has no value.** Stored settled and deferred answers follow the general rules. The unanswered case becomes `<name>` and reports `gap.unanswered` with audience `onboardee`. Source: 0055; marker wording is preserved for compatibility. `hard`.
-6. **Which fields are filled.** Section and step text, `run`, and `env` values are filled. Ids, `timing`, `after`, `escalation`, `includeIf`, variable declarations, `source`, and unknown fields are not. A step's `name`, `open`, and `directory` are filled even though the docs name only `owner`, `run`, `env`, `notes`, and `body` as places for a variable. Raised by: "A variable ... is written `$name` where text uses it" and "`owner` ... May contain `$name`". `hard`.
-7. **An answer is not read again.** An answer that holds `$` comes out as typed. Raised by: "Variables fill at assembly." `hard`.
-8. **Only an exact `$name` item splices.** A command inside a longer `run` item is joined with spaces, and only a `command` variable splices. Raised by: "A variable of type `command` is written `[$name]` and expands to its arguments". `cheap`.
-9. **A name the section does not declare is left as written, with no problem.** The validators report it. Raised by: "A `$name` the section does not declare is a lint error, even when a plan variable has that name." `cheap`.
+01. **The markers wording.** A deferred answer is written `_deferred_`, an unanswered onboarder variable is written `_unanswered_`, and an onboarding variable with no value is written `<name>`. Raised by: "It renders as a visible gap with an owner and timing" and "The assembled document shows it as a blank, `<name>`." The ACME document shows `_deferred_` and `<account_name>`, and the docs do not give the wording for the unanswered one. The assembler does not find a marker in text. It reads the problems. `hard`.
+02. **Unanswered is a visible marker and a gap, even with a default.** The variable is not left as `$name`, and it is not blank. Raised by: "Every variable is resolved or reported as a gap." `hard`.
+03. **Only stored answers resolve content.** A missing or deferred answer never authorizes using a suggestion. Source: 0045 and 0120. `hard`.
+04. **A list is joined with one space.** A List of a `command` is written in one string, in a sentence, a field, or a `run` item that is not exactly `$name`. Raised by: "joins with spaces in prose" for `command` in variables.md. `cheap`.
+05. **An onboardee variable is a blank only when it has no value.** Stored settled and deferred answers follow the general rules. The unanswered case becomes `<name>` and reports `gap.unanswered` with audience `onboardee`. Source: 0055; marker wording is preserved for compatibility. `hard`.
+06. **Which fields are filled.** Section and step text, `run`, and `env` values are filled. Ids, `timing`, `after`, `escalation`, `includeIf`, variable declarations, `source`, and unknown fields are not. A step's `name`, `open`, and `directory` are filled even though the docs name only `owner`, `run`, `env`, `notes`, and `body` as places for a variable. Raised by: "A variable ... is written `$name` where text uses it" and "`owner` ... May contain `$name`". `hard`.
+07. **An answer is not read again.** An answer that holds `$` comes out as typed. Raised by: "Variables fill at assembly." `hard`.
+08. **Only an exact `$name` item splices.** A command inside a longer `run` item is joined with spaces, and only a `command` variable splices. Raised by: "A variable of type `command` is written `[$name]` and expands to its arguments". `cheap`.
+09. **A name the section does not declare is left as written, with no problem.** The validators report it. Raised by: "A `$name` the section does not declare is a lint error, even when a plan variable has that name." `cheap`.
 10. **Problems are the model's Problem.** The gaps come back as `gap.deferred` and `gap.unanswered` warnings, only for variables the text uses, once each, in the order of the section's variables. No new type is added to the model. Raised by: "perhaps a list of variables it could not fill, so a caller can build a gap table". `cheap`.
 11. **The resolver reads only the section's own answers and does not evaluate `askIf`.** Raised by: "Filling reads one scope". `cheap`.
 12. **A default of any kind is only a suggestion.** Empty, settled, and deferred defaults do not change answer state. A stored answer equal to a suggestion remains independent of later default changes. Source: 0045 and 0120. `hard`.
@@ -267,3 +278,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | An item taken for an exact name when a character before the name sorts below `$` | `types-and-audience` |
 | A variable with `audience: onboarder` written as an onboarding blank | `types-and-audience` |
 | A condition's `is`, `isNot`, or `isNotOneOf` value sharing its list with the input | `condition-lists`, and the shares-nothing tests |
+
+## Bootstrap preservation
+
+[0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
+the source for the independently specified [preservation tests](bootstrap_test.go).
+Resolving text preserves the section's held Bootstrap value, whether true or false, while carrying out the real answer substitution. Never infer the marker from answers or mutate it during resolution.

@@ -123,22 +123,22 @@ None. It reads all three plans and returns a copy of `ours` with `origin`, `dire
 
 The docs left these open. Each is a choice a person can reverse.
 
-1. **`hard`. The directory is replaced by the directory of theirs, and ids are checked against it.** A refresh never merges directories and never reads the directory of ours or base. A kept contact, role, or team answer that names an id theirs does not list is removed and listed for review. Raised by 0075: "Content: sections, variables, the directory: taken from `theirs`" and "a team that no longer exists: marked as needing review".
-1. **`hard`. A multiple list that loses some ids keeps the rest and is listed for review.** The removed ids are not named in the report, since it holds question ids only. A list that loses every id is removed. Raised by 0080: "An answer that names an id that is not in the directory counts as unanswered".
-1. **`hard`. A team answer is text even when `multiple` is set.** Raised by the person's decision that a team question takes one id.
-1. **`hard`. The report has seven lists of ids and lives in `api.go`.** The model has no report type, and the brief did not allow one. A person may move `Report` into `internal/model`. Raised by 0075: "It returns a new personal plan and a report of what changed."
-1. **`hard`. A refresh replaces a section's switch.** The `enabled` setting of a section comes from theirs with the rest of the section, so a newcomer's own switch does not last. Raised by 0075: "Content: sections, variables, the directory: taken from `theirs`", and 0050 calling the switch "the plan's own setting".
-1. **`hard`. A kept answer that is no longer valid is removed and listed for review.** Valid means the right kind for the variable and, for a `choice`, a listed option. A pattern is not checked, and an answer that is not settled is always valid. Raised by 0075: "Marked as needing review and asked again. Never kept silently". The brief named options and kind only.
-1. **`hard`. A hidden answer comes back when the question returns.** Answers of a gone question or section stay in the file. When theirs declares the question again, the answer takes part like any stored answer. Raised by 0075: "kept but hidden, not deleted, in case it returns".
-1. **`hard`. An onboarder question that theirs does not answer is cleared in the personal plan.** The org wins, so removing an answer in the org plan removes it for everyone. Raised by 0075: "Taken from `theirs`. The org wins".
-1. **`cheap`. Equality is by kind and content.** Empty text, an empty list, and `false` differ from absent. A list is equal only in the same order. Raised by 0075: "that the newcomer has not changed from `base`".
-1. **`cheap`. A moved question is gone and new.** Its old answer stays hidden. The new question is not seeded from it. Raised by 0075: "Ids ... are permanent. Renaming means a new id."
-1. **`cheap`. New and removed are judged against ours, not base.** Ours is what the newcomer has. Raised by 0075: "A new onboardee question: appears unanswered".
-1. **`cheap`. Audience is read from theirs only.** A question that changes audience follows the new one at once. Raised by 0055: "The onboarder writes the question".
-1. **`cheap`. With an empty or stale base, every newcomer answer counts as changed.** The first refresh cannot tell a pre-seed from a choice. Raised by 0075: "Without `base`, a pre-seed ... could not be told from a choice the newcomer made."
-1. **`cheap`. A refusal with no theirs id reports only the missing id.** A refusal returns ours unchanged. Raised by the brief: refuse when `theirs.id` is empty.
-1. **`cheap`. The plan's own `unknownFields` come from theirs.** `id`, `schemaVersion`, and `provenance` stay as ours. Raised by 0075: "Content ... unknown fields".
-1. **`cheap`. `AnswersKept` lists a kept answer even when theirs holds the same value.** Raised by the brief: "answers kept".
+01. **`hard`. The directory is replaced by the directory of theirs, and ids are checked against it.** A refresh never merges directories and never reads the directory of ours or base. A kept contact, role, or team answer that names an id theirs does not list is removed and listed for review. Raised by 0075: "Content: sections, variables, the directory: taken from `theirs`" and "a team that no longer exists: marked as needing review".
+02. **`hard`. A multiple list that loses some ids keeps the rest and is listed for review.** The removed ids are not named in the report, since it holds question ids only. A list that loses every id is removed. Raised by 0080: "An answer that names an id that is not in the directory counts as unanswered".
+03. **`hard`. A team answer is text even when `multiple` is set.** Raised by the person's decision that a team question takes one id.
+04. **`hard`. The report has seven lists of ids and lives in `api.go`.** The model has no report type, and the brief did not allow one. A person may move `Report` into `internal/model`. Raised by 0075: "It returns a new personal plan and a report of what changed."
+05. **`hard`. A refresh replaces a section's switch.** The `enabled` setting of a section comes from theirs with the rest of the section, so a newcomer's own switch does not last. Raised by 0075: "Content: sections, variables, the directory: taken from `theirs`", and 0050 calling the switch "the plan's own setting".
+06. **`hard`. A kept answer that is no longer valid is removed and listed for review.** Valid means the right kind for the variable and, for a `choice`, a listed option. A pattern is not checked, and an answer that is not settled is always valid. Raised by 0075: "Marked as needing review and asked again. Never kept silently". The brief named options and kind only.
+07. **`hard`. A hidden answer comes back when the question returns.** Answers of a gone question or section stay in the file. When theirs declares the question again, the answer takes part like any stored answer. Raised by 0075: "kept but hidden, not deleted, in case it returns".
+08. **`hard`. An onboarder question that theirs does not answer is cleared in the personal plan.** The org wins, so removing an answer in the org plan removes it for everyone. Raised by 0075: "Taken from `theirs`. The org wins".
+09. **`cheap`. Equality is by kind and content.** Empty text, an empty list, and `false` differ from absent. A list is equal only in the same order. Raised by 0075: "that the newcomer has not changed from `base`".
+10. **`cheap`. A moved question is gone and new.** Its old answer stays hidden. The new question is not seeded from it. Raised by 0075: "Ids ... are permanent. Renaming means a new id."
+11. **`cheap`. New and removed are judged against ours, not base.** Ours is what the newcomer has. Raised by 0075: "A new onboardee question: appears unanswered".
+12. **`cheap`. Audience is read from theirs only.** A question that changes audience follows the new one at once. Raised by 0055: "The onboarder writes the question".
+13. **`cheap`. With an empty or stale base, every newcomer answer counts as changed.** The first refresh cannot tell a pre-seed from a choice. Raised by 0075: "Without `base`, a pre-seed ... could not be told from a choice the newcomer made."
+14. **`cheap`. A refusal with no theirs id reports only the missing id.** A refusal returns ours unchanged. Raised by the brief: refuse when `theirs.id` is empty.
+15. **`cheap`. The plan's own `unknownFields` come from theirs.** `id`, `schemaVersion`, and `provenance` stay as ours. Raised by 0075: "Content ... unknown fields".
+16. **`cheap`. `AnswersKept` lists a kept answer even when theirs holds the same value.** Raised by the brief: "answers kept".
 
 ## Wrong implementations tried
 
@@ -180,3 +180,9 @@ Each row names a plausible wrong implementation and the cases that fail it.
 | An answer of theirs, an unchanged answer, an onboarder answer, or a hidden answer checked against the directory | `only-a-kept-directory-answer-is-checked` |
 | A refusal that takes the directory of theirs | `refusal-keeps-our-directory` |
 | A refresh that is not idempotent | The refresh-again test |
+
+## Bootstrap preservation
+
+[0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
+the source for the independently specified [preservation tests](bootstrap_test.go).
+Bootstrap is onboarder-owned section content: a successful refresh takes the new organization's held marker, whether true or false. A refused refresh preserves the local marker exactly. Do not treat the marker as a newcomer answer or infer it from dates.

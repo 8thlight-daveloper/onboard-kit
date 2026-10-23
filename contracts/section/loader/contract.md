@@ -29,7 +29,7 @@ The known keys at each level. A key not listed is unknown.
 
 | Level | Keys |
 | -- | -- |
-| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `parent`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
+| Template | `schemaVersion`, `id`, `title`, `summary`, `includeIf`, `parent`, `bootstrap`, `timing`, `after`, `owner`, `escalation`, `verification`, `body`, `variables`, `steps` |
 | Variable | `name`, `description`, `example`, `type`, `multiple`, `options`, `pattern`, `patternHint`, `required`, `default`, `audience`, `askIf` |
 | Condition | `all` |
 | Clause, question form | `question`, `answer` |
@@ -94,7 +94,7 @@ A clause has one of two forms, and a key that belongs to the other form is not k
 
 ## Reading a parent
 
-`parent` is the id of the section that this one is a sub-section of (0070). A template is a section copied into a plan, so a template that names a parent is allowed. The loader reads `parent` exactly as it reads `title`: a plain or quoted string, with the spelling, wrong-type, anchor, duplicate-key, and empty-value rules of a text field and the same codes and paths, such as `parent`. A null, empty, or absent `parent` is the empty string, which is a root section. The text is not trimmed, resolved, or checked: ` access ` and `$parent` load as written, and a plain `deferred` is text. The loader does not check that the parent exists, that it is not the section itself, or that no chain of parents loops. A template alone cannot know. The plan validator checks them.
+`parent` is the id of the section that this one is a sub-section of (0070). A template is a section copied into a plan, so a template that names a parent is allowed. The loader reads `parent` exactly as it reads `title`: a plain or quoted string, with the spelling, wrong-type, anchor, duplicate-key, and empty-value rules of a text field and the same codes and paths, such as `parent`. A null, empty, or absent `parent` is the empty string, which is a root section. The text is not trimmed, resolved, or checked: `access` and `$parent` load as written, and a plain `deferred` is text. The loader does not check that the parent exists, that it is not the section itself, or that no chain of parents loops. A template alone cannot know. The plan validator checks them.
 
 ## Reading the file
 
@@ -163,12 +163,27 @@ Questions 2 to 4 are settled above so that the tests can run. A person decides w
 5. **Mixed clause.** The decoder contract has no code for a clause that holds keys of both forms. The loader follows it: the key of the other form is `format.unknown-field` at the key. A person may want a code of its own, such as `format.mixed-clause`. It would be a change to the decoder and the loader together.
 6. **Absent `enabled`.** The decoder contract refuses a section clause with no `enabled` as `format.wrong-type` at the clause, because `Clause.Enabled` cannot tell absent from `false`. The loader follows it. A person may prefer a model change that keeps the difference, such as a `*bool`, which would change both contracts.
 
+## Bootstrap
+
+Under [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md),
+bootstrap is also a known optional template boolean, copied into Section.Bootstrap.
+Absent, empty, null and false are false; only canonical plain true is true.
+Apply the existing boolean spelling/type, tag/style, duplicate-key, alias and
+source-order problem rules. Never infer it from timing, source, default answers,
+parent or descendants. `Bootstrap` with a capital B, other case variants, and
+a step's `bootstrap` remain unknown keys; the exact lowercase root key is the
+template marker only.
+The [bootstrap fixtures](testdata/bootstrap.json) and [tests](bootstrap_test.go)
+pin representational reading independently of product implementation.
+
 ## Wrong implementations tried
 
 Each row names a plausible wrong implementation and the groups of cases that fail it. How the contract was checked, and with what scores, is recorded in the issue, not here.
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Skip an anchor check on the root mapping or the supported schemaVersion value | anchored root and version [bootstrap fixtures](testdata/bootstrap.json) |
+| Drop the known Bootstrap value or accept quoted true as a boolean | [bootstrap fixtures](testdata/bootstrap.json) |
 | An unknown key kept or ignored at the top level, or only below it, or only at the top | `unknown-field-top`, `unknown-field-everywhere`, `unknown-field-repeated`, `many-problems` |
 | An unknown key accepted in a variable, condition, answer test, step, or check, or `schemaVersion` known inside a step | `unknown-field-everywhere` |
 | An `x-` key accepted | `unknown-field-top`, `unknown-field-repeated`, `many-problems` |

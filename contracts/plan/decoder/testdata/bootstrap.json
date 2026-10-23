@@ -1,0 +1,292 @@
+[
+  {
+    "name": "true",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: true\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "bootstrap": true
+        }
+      ]
+    }
+  },
+  {
+    "name": "false",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: false\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access"
+        }
+      ]
+    }
+  },
+  {
+    "name": "null",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: null\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access"
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap:\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access"
+        }
+      ]
+    }
+  },
+  {
+    "name": "quoted-true",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: \"true\"\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "tagged-quoted-true",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: !!bool \"true\"\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "number",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: 1\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "list",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: []\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "map",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: {}\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "yes",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: yes\n",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "on",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: on\n",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "capital-true",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: True\n",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "capital-false",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: FALSE\n",
+    "problems": [
+      {
+        "code": "format.boolean-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "old-null",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: ~\n",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "capital-null",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: NULL\n",
+    "problems": [
+      {
+        "code": "format.null-spelling",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "anchor",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: &mark true\n",
+    "problems": [
+      {
+        "code": "format.alias",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "absent-before-day-one",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    timing: before-day-one\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "timing": "before-day-one"
+        }
+      ]
+    }
+  },
+  {
+    "name": "key-position-is-free",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - bootstrap: true\n    id: access\n    parent: group\n    timing: anytime\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "parent": "group",
+          "bootstrap": true,
+          "timing": "anytime"
+        }
+      ]
+    }
+  },
+  {
+    "name": "repeated-agreeing-marker",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: true\n    bootstrap: true\n",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "repeated-conflicting-marker",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: false\n    bootstrap: true\n",
+    "problems": [
+      {
+        "code": "format.duplicate-key",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "source-order-errors",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    timing: []\n    bootstrap: \"true\"\n",
+    "problems": [
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].timing"
+      },
+      {
+        "code": "format.wrong-type",
+        "path": "sections[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "marker-on-step",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    steps:\n      - name: Step\n        bootstrap: true\n",
+    "problems": [
+      {
+        "code": "format.unknown-field",
+        "path": "sections[0].steps[0].bootstrap"
+      }
+    ]
+  },
+  {
+    "name": "root-is-unknown-not-marker",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nbootstrap: true\n",
+    "want": {
+      "schemaVersion": 1,
+      "unknownFields": {
+        "bootstrap": true
+      }
+    }
+  },
+  {
+    "name": "case-variant-is-unknown",
+    "source": "ADR0250 Bootstrap definition: known section boolean, strict YAML guards, no answers or timing inference",
+    "input": "schemaVersion: 1\nsections:\n  - id: access\n    Bootstrap: true\n",
+    "want": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "unknownFields": {
+            "Bootstrap": true
+          }
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "name": "true-between-parent-and-timing",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "parent": "group",
+          "bootstrap": true,
+          "timing": "week-one",
+          "enabled": false
+        }
+      ]
+    },
+    "output": "schemaVersion: 1\nsections:\n  - id: access\n    parent: group\n    bootstrap: true\n    timing: week-one\n    enabled: false\n",
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "false-is-omitted",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "bootstrap": false,
+          "timing": "before-day-one"
+        }
+      ]
+    },
+    "output": "schemaVersion: 1\nsections:\n  - id: access\n    timing: before-day-one\n",
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "marker-only-item-is-not-empty",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "bootstrap": true
+        }
+      ]
+    },
+    "output": "schemaVersion: 1\nsections:\n  - bootstrap: true\n",
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "root-and-casevariant-remain-unknown",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "bootstrap": true,
+          "unknownFields": {
+            "Bootstrap": false
+          }
+        }
+      ],
+      "unknownFields": {
+        "bootstrap": true
+      }
+    },
+    "output": "schemaVersion: 1\nsections:\n  - id: access\n    bootstrap: true\n    Bootstrap: false\nbootstrap: true\n",
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "false-collision",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "bootstrap": false,
+          "unknownFields": {
+            "bootstrap": true
+          }
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].bootstrap"
+      }
+    ],
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "true-collision",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "bootstrap": true,
+          "unknownFields": {
+            "bootstrap": false
+          }
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].bootstrap"
+      }
+    ],
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  },
+  {
+    "name": "collision-source-order",
+    "input": {
+      "schemaVersion": 1,
+      "sections": [
+        {
+          "id": "access",
+          "unknownFields": {
+            "bootstrap": null
+          }
+        },
+        {
+          "id": "other",
+          "unknownFields": {
+            "bootstrap": "held"
+          }
+        }
+      ]
+    },
+    "problems": [
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[0].bootstrap"
+      },
+      {
+        "code": "encode.unknown-field-collision",
+        "path": "sections[1].bootstrap"
+      }
+    ],
+    "source": "ADR0250 canonical section Bootstrap key after parent and before timing, false omission, exact known-key collision; hand-written YAML bytes"
+  }
+]

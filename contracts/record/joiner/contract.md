@@ -96,3 +96,9 @@ Each row is a plausible wrong implementation and the cases that fail it.
 | One nested part of the plan left uncopied, such as a variable default, an answer test of a condition, a step's escalation list, or a flag pointer | `nested-values` with the nothing shared test and the two changing anything tests |
 | An argument changed in place | the arguments not changed test, the changing the result test |
 | An empty list laid over as a nil list | `value-kinds` |
+
+## Bootstrap preservation
+
+[0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
+the source for the independently specified [preservation tests](bootstrap_test.go).
+Layering record answers preserves every section's Bootstrap definition value. No record answer changes that marker, and the deep-copied returned sections do not alias input section slots.

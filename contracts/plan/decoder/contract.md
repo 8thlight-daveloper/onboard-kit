@@ -28,10 +28,10 @@ The decoder reads `schemaVersion` before anything else, and the supported versio
 
 | Found | Problem | Path | Detail |
 | -- | -- | -- | -- |
-| Absent, or not a canonical integer: quoted, a decimal, a boolean, a list, `null`, any number spelling listed under Numbers, or an integer that does not fit in 64 bits | `version.invalid` | `schemaVersion` | |
+| Absent, or not a canonical integer: quoted, a decimal, a boolean, a list, `null`, any number spelling listed under Numbers, or an integer that does not fit in 64 bits | `version.invalid` | `schemaVersion` |  |
 | An integer below 1 | `version.too-old` | `schemaVersion` | `found`, `supported` |
 | An integer above 1 | `version.too-new` | `schemaVersion` | `found`, `supported` |
-| Two `schemaVersion` keys, whatever their values | `format.duplicate-key` | `schemaVersion` | |
+| Two `schemaVersion` keys, whatever their values | `format.duplicate-key` | `schemaVersion` |  |
 
 `found` is the integer's text as written, and `supported` is `1`. When there is a version problem, it is the only problem. A newer file may use anything, so the rest of the file is not read. `-0` is a canonical integer below 1. An anchor on a `schemaVersion` value that is a good version is a `format.alias` problem. An anchor or an alias on a bad version is only the version problem, and an alias in place of the value is `version.invalid`.
 
@@ -122,6 +122,17 @@ A Value is read in an answer, in a `default`, in `is` and `isNot`, and in each i
 The word `deferred` is the Deferred value only when it is a whole plain Value. Quoted, it is text. As an item of a list, or anywhere a string is read, such as a `title`, it is text.
 
 ### Known fields
+
+Under [0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md),
+bootstrap is a known optional boolean on saved sections. Read it into Bootstrap:
+absent, empty, null and false are false; only canonical plain true is true.
+Apply the existing boolean spelling/type, tag/style, anchor/alias, duplicate-key,
+path and source-order problem rules. Preserve the section's other fields.
+Do not retain a recognized marker in UnknownFields or infer it from timing,
+conditions, answers, defaults, source, parents or children. Root bootstrap and
+case-variant section keys remain ordinary preserved unknown data. A step's
+bootstrap is unknown, not a marker. [Bootstrap fixtures](testdata/bootstrap.json)
+and [tests](bootstrap_test.go) independently pin these distinctions.
 
 A string field takes text. A boolean field takes a plain `true` or `false`. A section's `enabled` is a boolean field that is none when it is absent, empty, or null, and a Flag pointer otherwise, so `enabled: true` is kept as on and is not the same as absent. A list field takes a list of strings. A key whose value is null, empty, or absent is the zero value. A list field with no items, empty or null or absent, is nil. A list keeps its items in file order and keeps repeats. The decoder never sorts a list, reverses it, or removes an item, whether it is a list of text, of values, or of sections, steps, checks, variables, or clauses. The List kind of a Value is different: an empty list there is a List with no items, not None.
 
@@ -216,15 +227,15 @@ These hold for every file the contract tests use.
 
 These are the choices the directory change and the team contact change made where the docs were silent.
 
-1. **hard.** A team's `holders` entry that is `[]` or null is kept in the map with no items, and the role is vacant for that team. 0080 says a team "may override who holds a role". Dropping the entry would hand the role back to the organization-wide holders, so a file that says "nobody" would read as "the usual people".
-2. **hard.** An unknown key inside `directory`, a contact, a role, or a team is `format.unknown-field`, with no `x-` exemption and no kept data. The task said to treat them like `provenance` and `origin`. A directory a person extends by hand therefore fails loudly.
-3. **hard.** A plain `42`, `007`, `yes`, or `true` as an id, a name, or a holder is a spelling or type problem, as for any string. A file quotes them. 0080 says ids are slugs, and a slug such as `42` starts with a digit.
-4. **hard.** A team's `contact` is read like any string: a plain `42`, `yes`, or `true` is a spelling or type problem, and a file quotes them. The decoder never checks that it names a contact or is a slug, so `design-oncall` with no such contact passes through. 0080 says a team "may name a `contact`, the id of a directory contact", and puts the check in the validator and the editor.
-5. **cheap.** A team's `holders: {}` is an empty map that is not nil, and an absent or null one is nil. The model tells them apart and the encoder writes neither.
-6. **cheap.** A null item of a directory list is `format.empty-item`, and an item that is not a map is `format.wrong-type` at the item. This matches the other lists.
-7. **cheap.** A contact, role, or team that is an empty map is a zero item and not a problem. This matches an empty section or step.
-8. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
-9. **cheap.** A team's `contact` is never read as a holder, and an empty or null one is the empty string, the same as an absent one. 0080 says it "never stands in for a role holder".
+01. **hard.** A team's `holders` entry that is `[]` or null is kept in the map with no items, and the role is vacant for that team. 0080 says a team "may override who holds a role". Dropping the entry would hand the role back to the organization-wide holders, so a file that says "nobody" would read as "the usual people".
+02. **hard.** An unknown key inside `directory`, a contact, a role, or a team is `format.unknown-field`, with no `x-` exemption and no kept data. The task said to treat them like `provenance` and `origin`. A directory a person extends by hand therefore fails loudly.
+03. **hard.** A plain `42`, `007`, `yes`, or `true` as an id, a name, or a holder is a spelling or type problem, as for any string. A file quotes them. 0080 says ids are slugs, and a slug such as `42` starts with a digit.
+04. **hard.** A team's `contact` is read like any string: a plain `42`, `yes`, or `true` is a spelling or type problem, and a file quotes them. The decoder never checks that it names a contact or is a slug, so `design-oncall` with no such contact passes through. 0080 says a team "may name a `contact`, the id of a directory contact", and puts the check in the validator and the editor.
+05. **cheap.** A team's `holders: {}` is an empty map that is not nil, and an absent or null one is nil. The model tells them apart and the encoder writes neither.
+06. **cheap.** A null item of a directory list is `format.empty-item`, and an item that is not a map is `format.wrong-type` at the item. This matches the other lists.
+07. **cheap.** A contact, role, or team that is an empty map is a zero item and not a problem. This matches an empty section or step.
+08. **cheap.** The decoder keeps two items with one id, and does no check of slugs, emails, or holders. 0080 puts these in the plan validator.
+09. **cheap.** A team's `contact` is never read as a holder, and an empty or null one is the empty string, the same as an absent one. 0080 says it "never stands in for a role holder".
 10. **cheap.** `contact` in a contact or a role is `format.unknown-field`, by the exact-keys rule for the directory.
 
 These are the choices the plan link and kind change made where the docs were silent.
@@ -244,6 +255,7 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 
 | Wrong implementation | Caught by |
 | -- | -- |
+| Drop the known Bootstrap value or accept quoted true as a boolean | [bootstrap fixtures](testdata/bootstrap.json) |
 | Unknown fields dropped, at the plan or at a section | `unknown-fields`, `hand-edited`, `zero-and-null` |
 | Plain `yes`, `no`, `on`, `off` read as booleans, or only some cases recognized | `boolean-spelling` |
 | Anchors, aliases, or merge keys accepted, inside unknown fields too | `alias` |

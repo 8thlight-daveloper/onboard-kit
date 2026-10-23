@@ -117,17 +117,17 @@ The templates of the ACME case are the section loader contract's fixtures for th
 
 The docs left these open, and this contract picked. The `hard` ones change what a new plan file holds or what a person sees. The `cheap` ones touch one fixture.
 
-1. **`hard`. Sections are in id order, not the order given.** The docs say a plan holds "every standard template as a section" and say nothing about order. The same template set should give the same plan file, whatever order the driver lists the files in, so the plan diff stays quiet. The selector orders sections for use.
-1. **`hard`. A section is its template with only `source` added.** No default is filled and no text is normalized. 0030 says "a section copies from a template file into a plan unchanged." A template with no `timing` stays without one in the plan file.
-1. **`hard`. The plan's variables are exactly the axis variables given.** The glossary says the default plan is "the axis variables and every standard template as a section". The ACME plan also lists `organization`, `team`, and `output_style` as plan variables. The contract does not say where they come from. If they are meant to be in every new plan, the built-in file holds them, or this contract changes.
-1. **`hard`. Two templates with one id are an error, and there is no plan.** 0030 says an id is "stable, never reused" and answers are kept by id. Keeping the first or the last would hide a template from the plan without a word.
-1. **`hard`. `schemaVersion` is `1`.** The components page marks it as created here, and 0030 says there is one schema version until the first breaking change.
-1. **`cheap`. A nameless axis variable is an error.** The docs say nothing about it. The alternative is to copy it and let the plan validator report it. A name is the key of an answer, and the instantiator does not create a plan it knows is unusable.
-1. **`cheap`. No templates, or no axis variables, is not an error.** The plan then holds what is left. The docs say "every template", and none is a valid case of every.
-1. **`cheap`. A `source` that the template already has is replaced.** The loader never gives one, so this only fixes what a caller who passes one gets.
-1. **`cheap`. The result shares nothing with the arguments.** The docs say plans are values and no component changes an argument. A shared list would let a later edit of the result change the loaded templates.
-1. **`cheap`. A sub-section is where its id puts it.** The plan lists sections in id order and the selector orders them for use, so a sub-section is not moved after its parent in the file. Raised by 0070, which keeps sections a flat list. Case: `sub-sections`.
-1. **`cheap`. The date and the template set are written as given, unchecked.** Time comes in as a parameter, and the validators judge the plan.
+01. **`hard`. Sections are in id order, not the order given.** The docs say a plan holds "every standard template as a section" and say nothing about order. The same template set should give the same plan file, whatever order the driver lists the files in, so the plan diff stays quiet. The selector orders sections for use.
+02. **`hard`. A section is its template with only `source` added.** No default is filled and no text is normalized. 0030 says "a section copies from a template file into a plan unchanged." A template with no `timing` stays without one in the plan file.
+03. **`hard`. The plan's variables are exactly the axis variables given.** The glossary says the default plan is "the axis variables and every standard template as a section". The ACME plan also lists `organization`, `team`, and `output_style` as plan variables. The contract does not say where they come from. If they are meant to be in every new plan, the built-in file holds them, or this contract changes.
+04. **`hard`. Two templates with one id are an error, and there is no plan.** 0030 says an id is "stable, never reused" and answers are kept by id. Keeping the first or the last would hide a template from the plan without a word.
+05. **`hard`. `schemaVersion` is `1`.** The components page marks it as created here, and 0030 says there is one schema version until the first breaking change.
+06. **`cheap`. A nameless axis variable is an error.** The docs say nothing about it. The alternative is to copy it and let the plan validator report it. A name is the key of an answer, and the instantiator does not create a plan it knows is unusable.
+07. **`cheap`. No templates, or no axis variables, is not an error.** The plan then holds what is left. The docs say "every template", and none is a valid case of every.
+08. **`cheap`. A `source` that the template already has is replaced.** The loader never gives one, so this only fixes what a caller who passes one gets.
+09. **`cheap`. The result shares nothing with the arguments.** The docs say plans are values and no component changes an argument. A shared list would let a later edit of the result change the loaded templates.
+10. **`cheap`. A sub-section is where its id puts it.** The plan lists sections in id order and the selector orders them for use, so a sub-section is not moved after its parent in the file. Raised by 0070, which keeps sections a flat list. Case: `sub-sections`.
+11. **`cheap`. The date and the template set are written as given, unchecked.** Time comes in as a parameter, and the validators judge the plan.
 
 ## Wrong implementations tried
 
@@ -182,3 +182,9 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 Found later by the mutation tool, and judged equivalent because empty and absent are the same: dropping the nil checks that keep an absent list or map absent in the result. The tests compare plans with empty lists and maps treated as absent, at every depth.
 
 No second independent build or differential run was made, because the issue is a draft.
+
+## Bootstrap preservation
+
+[0250](../../../docs/decisions/0250-bootstrap-content-and-projection.md) supplies
+the source for the independently specified [preservation tests](bootstrap_test.go).
+Copy each template's Bootstrap value exactly into the saved section and its definition hash. Neither false nor true is inferred from timing or answers. Both independent pinned hashes are checked while instantiating a real section; adding Source does not erase the marker.
