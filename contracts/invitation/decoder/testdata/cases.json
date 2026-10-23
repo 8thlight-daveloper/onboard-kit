@@ -1,0 +1,1349 @@
+[
+  {
+    "name": "store-control",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "deflate-control",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "method": 8
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "method": 8
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "method": 8
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 8
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "reverse-order",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "opaque-payloads",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "ff00"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": ""
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "00"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "e280a8"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "empty-payloads",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": ""
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": ""
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": ""
+      },
+      {
+        "name": "first-steps.md",
+        "data": ""
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "permission-variation",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "permissions": 493
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "permissions": 493
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "permissions": 493
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "permissions": 493
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "descriptors-control",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "method": 8,
+        "descriptor": true
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "method": 8,
+        "descriptor": true
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "method": 8,
+        "descriptor": true
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 8,
+        "descriptor": true
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "inert-local-name",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "localName": "../not-an-extraction-target"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "",
+    "path": ""
+  },
+  {
+    "name": "three-entries",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      }
+    ],
+    "code": "invitation.entries",
+    "path": ""
+  },
+  {
+    "name": "five-entries",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      },
+      {
+        "name": "extra.txt",
+        "data": "00"
+      }
+    ],
+    "code": "invitation.entries",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-0",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "../plan.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-1",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "/plan.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-2",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "PLAN.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-3",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/../record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-4",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records\\A_1.b-2\\record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-5",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/a%2fb/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-6",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records//record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-7",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/.a/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-8",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/Record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-9",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml/",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-10",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/x/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "invalid-name-11",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/private-person@example.invalid/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "duplicate-fixed-name",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "plan.obk.yaml",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "duplicate-account-name",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "different-account",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/B/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "case-different-account",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/a_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "type-directory",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "directory"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "type-symlink",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "symlink"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "type-socket",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "socket"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "type-fifo",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "fifo"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "type-character",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "character"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "type-block",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "type": "block"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "preparation"
+  },
+  {
+    "name": "encrypted-1",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "flags": 1
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.encrypted",
+    "path": "record"
+  },
+  {
+    "name": "encrypted-64",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "flags": 64
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.encrypted",
+    "path": "record"
+  },
+  {
+    "name": "encrypted-8192",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "flags": 8192
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.encrypted",
+    "path": "record"
+  },
+  {
+    "name": "method-1",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 1
+      }
+    ],
+    "code": "invitation.compression",
+    "path": "firstSteps"
+  },
+  {
+    "name": "method-9",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 9
+      }
+    ],
+    "code": "invitation.compression",
+    "path": "firstSteps"
+  },
+  {
+    "name": "method-99",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "method": 99
+      }
+    ],
+    "code": "invitation.compression",
+    "path": "firstSteps"
+  },
+  {
+    "name": "encrypted-before-method",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "flags": 1,
+        "method": 99
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.encrypted",
+    "path": "plan"
+  },
+  {
+    "name": "name-before-type",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "type": "symlink"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "../first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-name",
+    "path": ""
+  },
+  {
+    "name": "type-before-method",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "method": 99
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "type": "symlink"
+      }
+    ],
+    "code": "invitation.entry-type",
+    "path": "firstSteps"
+  },
+  {
+    "name": "declared-over-budget",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "declared": 1048577
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.too-large",
+    "path": ""
+  },
+  {
+    "name": "declared-sum-over-budget",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "declared": 524288
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "declared": 524288
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.too-large",
+    "path": ""
+  },
+  {
+    "name": "declared-uint64-max",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "declared": "18446744073709551615"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.too-large",
+    "path": ""
+  },
+  {
+    "name": "declared-longer-than-data",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "declared": 2
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "declared-shorter-than-data",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "declared": 0
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "preparation"
+  },
+  {
+    "name": "bad-crc-plan",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "badCRC": true
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "bad-crc-preparation",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51",
+        "badCRC": true
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "preparation"
+  },
+  {
+    "name": "bad-crc-record",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52",
+        "badCRC": true
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "record"
+  },
+  {
+    "name": "bad-crc-firstSteps",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "badCRC": true
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "firstSteps"
+  },
+  {
+    "name": "bad-deflate",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "method": 8,
+        "compressed": "ffffffff"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "bad-descriptor",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "descriptor": true,
+        "badDescriptor": true
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "payload-error-canonical-order",
+    "source": "ADR0240 invitation envelope profile; synthetic bytes only, not functional invitation documents",
+    "entries": [
+      {
+        "name": "first-steps.md",
+        "data": "53",
+        "badCRC": true
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "badCRC": true
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  },
+  {
+    "name": "zero-crc-nonempty-payload",
+    "source": "ADR0240 successful checksum verification including an advertised zero CRC; payload P has independent CRC b969be79",
+    "entries": [
+      {
+        "name": "plan.obk.yaml",
+        "data": "50",
+        "crc": 0
+      },
+      {
+        "name": "records/A_1.b-2/preparation.obk.yaml",
+        "data": "51"
+      },
+      {
+        "name": "records/A_1.b-2/record.obk.yaml",
+        "data": "52"
+      },
+      {
+        "name": "first-steps.md",
+        "data": "53"
+      }
+    ],
+    "code": "invitation.entry-data",
+    "path": "plan"
+  }
+]
