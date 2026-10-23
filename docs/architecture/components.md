@@ -117,6 +117,7 @@ flowchart TB
 | Preparation editor | Returns preparation with an explicitly replaced recipient, replaced or appended arrangement, or removed arrangement. Validates the requested change after identity and ambiguity guards while preserving unrelated details. Does not certify invitation readiness |
 | Preparation locator | Derives a person's relative record path and fixed preparation sibling from explicit account and results-path strings. Rejects ambiguous layouts, unsafe lexical forms, collisions, and oversized expansion. Does not inspect the filesystem or authorize writes |
 | Preparation command | Loads an explicit plan and one person's preparation, applies explicit edits through the preparation editor, or shows preparation beside read-only record outcomes. Writes only that preparation under the selected root. See [0220](../decisions/0220-preparation-command.md) |
+| Invitation command, planned | Validates explicit plan/preparation and handover readiness, builds an identity-only seed and real first-steps guide, then exclusively publishes one new ZIP. No delivery, import, first use or input writes. See [0300](../decisions/0300-explicit-invitation-export.md) |
 | Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
@@ -157,6 +158,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `preparation/editor` | None. Reads Preparation and trusted context; returns only Recipient or Arrangements changed. Changes no Plan, record, identity, or unknown-field data |
 | `preparation/locator` | None. Reads only supplied resultsPath and account strings, returning relative paths and problems. Reads or changes no Plan, preparation body, record, environment, or filesystem |
 | `command/prepare` | Reads an explicit plan, arguments, and preparation; show also reads the selected record. Writes stdout, stderr, and only the selected preparation plus its missing parent directories and temporary publication file. Changes no Plan or record bytes |
+| `command/invite`, planned | Reads explicit arguments, bounded local plan/preparation files and stable path metadata. Writes stdout/stderr and only a new explicit ZIP plus its owned temporary file in an existing parent. Changes no plan, preparation, record, index or preference bytes |
 | `invitation/encoder` | None. Reads InvitationFiles only and returns archive bytes or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
 

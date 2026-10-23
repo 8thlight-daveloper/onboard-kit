@@ -1,0 +1,6 @@
+{
+  "plan-url.yaml": "Independently written literal canonical Plan under plan/encoder key order; exact relative planUrl and unused onboardee preseed. ADR0300 retains original payload. System shasum independently pins c88a7e524717ff336fec6909dcc526b9a8173f14c6d412ed1716ae817b4f0e61; no product encoder used.",
+  "record-url.yaml": "Independent literal record/encoder canonical identity-only seed with exact original Plan.ID/URL and independently pinned canonical plan digest. ADR0240/0300 prohibit copying the unused onboardee preseed into Answers.",
+  "first-steps-url.md": "Literal full normative firststeps guide, copied by hand from the baseline specification with only Plan location replaced by exact escaped shared/plan.obk.yaml. No product assembler generated this oracle.",
+  "test": "Supplement to frozen eighteen table cases; actual command interface, independent ZIP reader, exact canonical payload/guide/seed equality, source snapshots; intentionally does not reuse URL-absent checkSeed helper."
+}

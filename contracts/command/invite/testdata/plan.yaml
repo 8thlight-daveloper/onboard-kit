@@ -1,0 +1,7 @@
+schemaVersion: 1
+id: planone
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+      email: owner@example.invalid

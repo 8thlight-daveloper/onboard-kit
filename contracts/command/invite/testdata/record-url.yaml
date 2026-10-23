@@ -1,0 +1,7 @@
+schemaVersion: 1
+kind: record
+account: newcomer
+plan:
+  id: planone
+  hash: c88a7e524717ff336fec6909dcc526b9a8173f14c6d412ed1716ae817b4f0e61
+  url: shared/plan.obk.yaml

@@ -1,0 +1,14 @@
+schemaVersion: 1
+id: planone
+planUrl: shared/plan.obk.yaml
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+      email: owner@example.invalid
+variables:
+  - name: personalanswer
+    audience: onboardee
+answers:
+  plan:
+    personalanswer: orgseed

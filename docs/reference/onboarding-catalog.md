@@ -182,6 +182,8 @@ Unknown partners and opportunities stay visibly unassigned.
 
 Catalog completeness, authored template content, embedding, repeated instances,
 and the three-file preparation workflow are distinct checks. This document
-alone does not deliver the library. The current format has no person-specific
-preparation ownership or list-driven expansion; those need approved contracts
-and model changes, not personal arrangements stored in shared answers.
+alone does not deliver the library. The [preparation format](preparation-format.md)
+and command now provide person-specific ownership. Embedded catalog content,
+selection relationships, template bindings, and list-driven expansion remain
+pending and need separate contracts. Personal arrangements must not be stored
+in shared answers.

@@ -79,8 +79,15 @@ remain required.
 The pure first steps assembler now wraps the real bootstrap fragment with
 standard help under [0280](../decisions/0280-first-steps-help-and-sources.md).
 Read-only section walker views separate applicability, new-attempt waiting,
-held outcomes and actual-definition comparisons. Neither component delivers
-an invitation, saves an outcome or starts a record-backed command session.
+held outcomes and actual-definition comparisons. The pure outcome recorder now
+rechecks direct verification prerequisites and updates only the returned record
+under [0290](../decisions/0290-explicit-outcome-recording.md). These components do
+not publish outcomes or start a record-backed command session.
+
+[0300](../decisions/0300-explicit-invitation-export.md) specifies a bounded export
+command with explicit pre-access help designation, identity-only seed and
+exclusive archive publication. Its implementation and binary checks remain
+pending; it does not settle confirmed import or preparation-answer bindings.
 
 Build the guided flow using the same preparation format and editor, then add
 the archive writer and reader. The allowed entry layout must include preparation
