@@ -1,0 +1,5 @@
+[
+  {"name":"access","source":"Section hasher canonical format; ADR0270 actual unresolved held definition, not Source.Hash","canonical":"{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\"}","hash":"6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc"},
+  {"name":"access-requires-a","source":"ADR0260 Requires sorted-set canonical position; ADR0270 new outcome uses current definition","canonical":"{\"id\":\"access\",\"title\":\"Access\",\"summary\":\"Request access\",\"timing\":\"anytime\",\"requires\":[\"a\"]}","hash":"7db6dbae189ea1177381c325d068dc9ec49fa17a61a6d2e2858db04acefd1978"},
+  {"name":"unresolved-bootstrap-requires","source":"ADR0250 true Bootstrap and ADR0260 Requires preserved in current hash; ADR0270 before resolution","canonical":"{\"id\":\"a\",\"bootstrap\":true,\"timing\":\"anytime\",\"requires\":[\"b\"],\"body\":\"Use $account.\",\"variables\":[{\"name\":\"account\",\"type\":\"string\",\"audience\":\"onboardee\"}]}","hash":"ac608743e3475f9e217496379b65365ed93cbe7bf91c0261dd440773437abf5a"}
+]
