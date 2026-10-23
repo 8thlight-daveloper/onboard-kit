@@ -1,0 +1,44 @@
+name: invite-export-url-identity-seed
+description: Export preserves the canonical plan URL and original pre-seed while the new record contains identity and the exact embedded-plan hash only.
+source: docs/decisions/0300-explicit-invitation-export.md; contracts/command/invite/testdata/url-sources.json; docs/reference/acceptance-zip-assertions.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-url-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      unrelated-record.obk.yaml: "PRIVATE_EXISTING_PERSONAL_WORK\n"
+    expect:
+      exit: 0
+      stdout: {equals: "Invitation archive written.\n"}
+      stderr:
+        json:
+          status: written
+          code: invite.written
+          message: Pre-access help availability has not been tested; deliver through an approved channel.
+          problems: []
+          blockers: []
+      files:
+        invitation.zip:
+          zip:
+            entries:
+              - name: plan.obk.yaml
+                same-as: contracts/command/invite/testdata/plan-url.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: records/newcomer/preparation.obk.yaml
+                same-as: contracts/command/invite/testdata/preparation.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: records/newcomer/record.obk.yaml
+                same-as: contracts/command/invite/testdata/record-url.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: first-steps.md
+                same-as: contracts/command/invite/testdata/first-steps-url.md
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated-record.obk.yaml]

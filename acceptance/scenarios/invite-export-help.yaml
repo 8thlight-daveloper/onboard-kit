@@ -1,0 +1,26 @@
+name: invite-export-help
+description: Initial and operation help take precedence over invalid arguments and unusable files without inspecting or changing them.
+source: contracts/command/invite/contract.md Arguments help precedence; docs/decisions/0300-explicit-invitation-export.md
+steps:
+  - run: [onboard-kit, invite, --help, --plan, PRIVATE_PLAN.obk.yaml, --out, existing.zip, --PRIVATE_UNKNOWN_FLAG]
+    files:
+      PRIVATE_PLAN.obk.yaml: "PRIVATE_NOT_A_PLAN\n"
+      PRIVATE_PREPARATION.obk.yaml: "PRIVATE_NOT_PREPARATION\n"
+      existing.zip: "PRIVATE_EXISTING_ARCHIVE_BYTES\n"
+    expect:
+      exit: 0
+      stdout:
+        equals: "Usage: onboard-kit invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID [--help-contact ID | --help-role ID ...]\n"
+      stderr: {equals: ""}
+      files:
+        never-created.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, existing.zip]
+  - run: [onboard-kit, invite, export, --help, --preparation, PRIVATE_PREPARATION.obk.yaml, --out, never-created.zip, --PRIVATE_UNKNOWN_FLAG]
+    expect:
+      exit: 0
+      stdout:
+        equals: "Usage: onboard-kit invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID [--help-contact ID | --help-role ID ...]\n"
+      stderr: {equals: ""}
+      files:
+        never-created.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, existing.zip]

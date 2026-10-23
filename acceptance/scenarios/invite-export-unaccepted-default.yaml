@@ -1,0 +1,22 @@
+name: invite-export-unaccepted-default
+description: A suggested required onboarder default does not make an invitation ready or produce an archive.
+source: docs/decisions/0120-defaults-require-acceptance.md; docs/decisions/0300-explicit-invitation-export.md; contracts/command/invite/contract.md Phases and readiness
+steps:
+  - run: [onboard-kit, invite, export, --plan, PRIVATE_PLAN.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      PRIVATE_PLAN.obk.yaml: {from: acceptance/testdata/invite-export-unaccepted-default.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      unrelated-record.obk.yaml: "PRIVATE_EXISTING_PERSONAL_WORK\n"
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.onboarder-blocked
+          message: Supply or deliberately defer the required onboarder answers before export.
+          problems: []
+          blockers: [plan.requiredfact]
+      files:
+        invitation.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, preparation.obk.yaml, unrelated-record.obk.yaml]

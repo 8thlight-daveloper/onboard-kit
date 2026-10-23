@@ -1,0 +1,15 @@
+# A canonical plan hash must include the preserved URL and original pre-seed.
+answers:
+  plan:
+    personalanswer: orgseed
+variables:
+  - audience: onboardee
+    name: personalanswer
+directory:
+  contacts:
+    - email: owner@example.invalid
+      name: Example owner
+      id: owner
+planUrl: shared/plan.obk.yaml
+id: planone
+schemaVersion: 1

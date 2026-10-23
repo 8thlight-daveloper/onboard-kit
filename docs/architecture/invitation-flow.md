@@ -1,6 +1,7 @@
 # Invitation and preparation flow
 
-Status: planned, not the current command implementation.
+Status: preparation editing and explicit export implemented; guided authoring,
+confirmed import and record-backed startup remain planned.
 
 Decisions [0140](../decisions/0140-person-specific-preparation.md) and
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) establish
@@ -73,8 +74,8 @@ Bootstrap markers, declared prerequisite validation, applicability, global actio
 scheduling, and flat contextual fragments are implemented under
 [0260](../decisions/0260-prerequisites-and-action-order.md). Ordinary reference
 documents also show explicit prerequisites without becoming action sequences.
-First-steps delivery, outcome-verification gates, and record-backed startup
-remain required.
+Export packages the first-steps guide. Outcome-verification gates in command
+sessions and record-backed startup remain required.
 
 The pure first steps assembler now wraps the real bootstrap fragment with
 standard help under [0280](../decisions/0280-first-steps-help-and-sources.md).
@@ -86,8 +87,9 @@ not publish outcomes or start a record-backed command session.
 
 [0300](../decisions/0300-explicit-invitation-export.md) specifies a bounded export
 command with explicit pre-access help designation, identity-only seed and
-exclusive archive publication. Its implementation and binary checks remain
-pending; it does not settle confirmed import or preparation-answer bindings.
+exclusive archive publication. The command and independent binary scenarios
+are implemented; see [invitation export](../reference/invitation-export.md).
+It does not settle confirmed import or preparation-answer bindings.
 
 Build the guided flow using the same preparation format and editor, then add
 the archive writer and reader. The allowed entry layout must include preparation

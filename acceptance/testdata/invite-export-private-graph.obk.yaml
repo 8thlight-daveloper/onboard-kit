@@ -1,0 +1,11 @@
+schemaVersion: 1
+id: planone
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+      email: owner@example.invalid
+sections:
+  - id: "off"
+    enabled: false
+    requires: [PRIVATE_UNKNOWN_PREREQUISITE]

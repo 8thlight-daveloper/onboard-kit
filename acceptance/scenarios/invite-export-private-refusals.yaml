@@ -1,0 +1,71 @@
+name: invite-export-private-refusals
+description: Refusals expose only the expected public diagnostic projection and preserve inputs without publishing an invitation.
+source: docs/decisions/0300-explicit-invitation-export.md; contracts/command/invite/contract.md Typed private reporting; contracts/command/invite/testdata/messages.json
+steps:
+  - run: [onboard-kit, invite, export, --plan, PRIVATE_PLAN.obk.yaml, --preparation, PRIVATE_PREPARATION.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, PRIVATE_UNKNOWN_HELPER]
+    files:
+      PRIVATE_PLAN.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      PRIVATE_PREPARATION.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      unrelated-record.obk.yaml: "PRIVATE_EXISTING_PERSONAL_WORK\n"
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.preaccess-help
+          message: Designate a known named business contact with a displayable pre-access help route.
+          problems: []
+          blockers: []
+      files:
+        invitation.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, unrelated-record.obk.yaml]
+  - run: [onboard-kit, invite, export, --plan, PRIVATE_PLAN.obk.yaml, --preparation, PRIVATE_PREPARATION.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner, --help-contact, PRIVATE_UNKNOWN_EXTRA_HELP]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.firststeps
+          message: Correct the help selection or first-steps inputs before export.
+          problems:
+            - code: firststeps.help-reference
+              severity: error
+          blockers: []
+      files:
+        invitation.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, unrelated-record.obk.yaml]
+  - run: [onboard-kit, invite, export, --plan, PRIVATE_PLAN.obk.yaml, --preparation, PRIVATE_PREPARATION.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      PRIVATE_PLAN.obk.yaml: {from: acceptance/testdata/invite-export-private-graph.obk.yaml}
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.plan-invalid
+          message: Inspect the plan with the supported stdio validate workflow and correct its validation errors before export.
+          problems:
+            - code: plan.requires-unknown
+              severity: error
+          blockers: []
+      files:
+        invitation.zip: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, unrelated-record.obk.yaml]
+  - run: [onboard-kit, invite, export, --plan, PRIVATE_MISSING_PLAN.obk.yaml, --preparation, PRIVATE_PREPARATION.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.plan-read
+          message: Supply a bounded local nonsymlink regular plan file.
+          problems: []
+          blockers: []
+      files:
+        invitation.zip: {absent: true}
+        PRIVATE_MISSING_PLAN.obk.yaml: {absent: true}
+      unchanged: [PRIVATE_PLAN.obk.yaml, PRIVATE_PREPARATION.obk.yaml, unrelated-record.obk.yaml]

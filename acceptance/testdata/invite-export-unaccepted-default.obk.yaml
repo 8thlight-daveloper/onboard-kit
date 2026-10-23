@@ -1,0 +1,11 @@
+schemaVersion: 1
+id: planone
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+      email: owner@example.invalid
+variables:
+  - name: requiredfact
+    required: true
+    default: PRIVATE_UNACCEPTED_DEFAULT

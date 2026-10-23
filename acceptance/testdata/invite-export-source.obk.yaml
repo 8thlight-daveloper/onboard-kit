@@ -1,0 +1,8 @@
+# Source spelling and comments are not the embedded canonical byte stream.
+directory:
+  contacts:
+    - email: owner@example.invalid
+      name: Example owner
+      id: owner
+id: planone
+schemaVersion: 1

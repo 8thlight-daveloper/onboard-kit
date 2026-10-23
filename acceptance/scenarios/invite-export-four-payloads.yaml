@@ -1,0 +1,56 @@
+name: invite-export-four-payloads
+description: Explicit invitation export publishes all four canonical payloads and refuses a repeat without changing existing work.
+source: docs/decisions/0300-explicit-invitation-export.md; contracts/command/invite/contract.md; contracts/command/invite/testdata/sources.json; docs/reference/acceptance-zip-assertions.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      unrelated-record.obk.yaml: "PRIVATE_EXISTING_PERSONAL_WORK\n"
+    expect:
+      exit: 0
+      stdout: {equals: "Invitation archive written.\n"}
+      stderr:
+        json:
+          status: written
+          code: invite.written
+          message: Pre-access help availability has not been tested; deliver through an approved channel.
+          problems: []
+          blockers: []
+      files:
+        invitation.zip:
+          zip:
+            entries:
+              - name: plan.obk.yaml
+                same-as: contracts/command/invite/testdata/plan.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: records/newcomer/preparation.obk.yaml
+                same-as: contracts/command/invite/testdata/preparation.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: records/newcomer/record.obk.yaml
+                same-as: contracts/command/invite/testdata/record.yaml
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+              - name: first-steps.md
+                same-as: contracts/command/invite/testdata/first-steps.md
+                method: store
+                mode: '0600'
+                modified: '1980-01-01T00:00:00Z'
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated-record.obk.yaml]
+  - run: [onboard-kit, invite, export, --account=newcomer, --out=invitation.zip, --plan=source.obk.yaml, --preparation=preparation.obk.yaml, --preaccess-help-contact=owner]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.output-exists
+          message: Choose a new archive pathname; existing output is never replaced.
+          problems: []
+          blockers: []
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated-record.obk.yaml, invitation.zip]
