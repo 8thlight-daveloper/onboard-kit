@@ -83,8 +83,13 @@ recipient-only slice supplies no general-help selection rather than guessing
 one. Its guide retains honest missing-help wording. Export still requires its
 own explicit help selection and pre-access assertion.
 
-Before offering save, encode the accepted draft with the actual preparation
-encoder and enforce the existing 1 MiB bound in memory. Displaying review must
+For a changed draft or absent preparation, encode the accepted draft with the
+actual preparation encoder and enforce the existing 1 MiB bound before offering
+save. An unchanged existing value instead freezes the original bounded bytes
+for a no-op, with no regeneration or encoder-validity gate. A decoder-accepted
+empty arrangement can be unencodable; merely reviewing it must still permit
+the byte-preserving no-op. Both branches recheck original bytes and paths.
+Displaying review must
 succeed before reading save consent. Recognize an explicit save action only
 at that current Review prompt; empty input never saves. Any accepted edit
 invalidates prior review. Do not regenerate different bytes after consent.
