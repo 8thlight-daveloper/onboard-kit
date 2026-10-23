@@ -63,6 +63,7 @@ type FileExpectation struct {
 	SameAs *string
 	JSON   *Expected
 	Absent bool
+	ZIP    *zipExpectation
 }
 
 func Load(path string) (Scenario, error) {
@@ -176,7 +177,8 @@ func (expectation *OutputExpectation) UnmarshalYAML(node *yaml.Node) error {
 }
 
 func (expectation *FileExpectation) UnmarshalYAML(node *yaml.Node) error {
-	return decodeFields(node, map[string]func(*yaml.Node) error{
+	absentHeld := false
+	err := decodeFields(node, map[string]func(*yaml.Node) error{
 		"same-as": func(value *yaml.Node) error {
 			expectation.SameAs = &value.Value
 			return nil
@@ -187,9 +189,25 @@ func (expectation *FileExpectation) UnmarshalYAML(node *yaml.Node) error {
 			return err
 		},
 		"absent": func(value *yaml.Node) error {
+			absentHeld = true
 			return value.Decode(&expectation.Absent)
 		},
+		"zip": func(value *yaml.Node) error {
+			if expectation.ZIP != nil {
+				return errors.New("duplicate zip field")
+			}
+			parsed, err := decodeZIP(value)
+			expectation.ZIP = parsed
+			return err
+		},
 	})
+	if err != nil {
+		return err
+	}
+	if expectation.ZIP != nil && (expectation.SameAs != nil || expectation.JSON != nil || absentHeld) {
+		return errors.New("zip cannot be combined with same-as, json or absent")
+	}
+	return nil
 }
 
 func decodeFields(node *yaml.Node, handlers map[string]func(*yaml.Node) error) error {

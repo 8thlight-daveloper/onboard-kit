@@ -16,6 +16,12 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 - Time comes in as a parameter, so no test depends on the clock.
 - `just check` runs the dependency check, the architecture tests, and the full test suite, along with the format and lint checks. CI runs the same recipe.
 
+### Archive file assertions
+
+Whole-binary scenarios may inspect ordered ZIP payloads and metadata with the
+[ZIP file assertions](../reference/acceptance-zip-assertions.md). The checker
+reads bounded bytes and never extracts entries or imports product codecs.
+
 ### Accepted survivors
 
 [0130](../decisions/0130-survivor-risk-acceptance.md) authorizes agent-only risk

@@ -62,6 +62,9 @@ func jsonMismatch(expected any, content []byte) string {
 }
 
 func checkFile(path string, expectation FileExpectation, folder, repositoryRoot string) []Failure {
+	if expectation.ZIP != nil {
+		return checkZIPFile(path, *expectation.ZIP, folder, repositoryRoot)
+	}
 	label := "file " + path
 	state, err := readState(path, folder)
 	if err != nil {
