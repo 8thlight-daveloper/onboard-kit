@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"onboard-kit/internal/model"
+	"onboard-kit/internal/plan/structurevalidator"
 )
 
 var planWideSortKeys = map[string][]string{
@@ -23,7 +24,7 @@ func planWideProblems(plan model.Plan) []model.Problem {
 	problems := duplicateIDProblems(plan.Directory)
 	problems = append(problems, holderProblems(plan.Directory)...)
 	problems = append(problems, contactProblems(plan.Directory)...)
-	problems = append(problems, duplicateSectionProblems(plan)...)
+	problems = append(problems, structurevalidator.New().Validate(plan)...)
 	problems = append(problems, duplicateTeamVariableProblems(plan)...)
 	problems = append(problems, duplicateVariableProblems(planScope, "", plan.Variables)...)
 	for _, section := range plan.Sections {

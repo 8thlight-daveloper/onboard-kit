@@ -13,8 +13,8 @@ func New() Validator {
 }
 
 func (Validator) Validate(plan model.Plan) []model.Problem {
-	active := activeQuestions(plan)
 	problems := planWideProblems(plan)
+	active := activeQuestions(plan)
 	for _, stored := range storedAnswers(plan) {
 		problems = append(problems, validateStored(plan, active, stored)...)
 	}
