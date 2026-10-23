@@ -1,6 +1,5 @@
 # Catalog reader contract
 
-Status: independent agent-authored contract draft under ADR0320; no implementation.
 Component catalog/reader. New takes no arguments and uses only compiled data.
 
 Authority: ADR0005, ADR0015, ADR0020, ADR0025, ADR0100, ADR0110, ADR0120,

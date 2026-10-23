@@ -1,0 +1,30 @@
+[
+  {
+    "name": "show-separate-single-hyphen-prefix-is-literal",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax: only a following token beginning -- is missing; exact unknown ID returns1",
+    "args": ["show", "--id", "-private-selector"],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-separate-single-hyphen-prefix-is-literal",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax: only a following token beginning -- is missing; exact unknown ID returns1",
+    "args": ["export", "--id", "-private-selector"],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "show-separate-single-hyphen-is-literal",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax: a single hyphen is a nonempty literal value, not bare --; unknown exact ID returns1",
+    "args": ["show", "--id", "-"],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  },
+  {
+    "name": "export-separate-single-hyphen-is-literal",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax: a single hyphen is a nonempty literal value, not bare --; unknown exact ID returns1",
+    "args": ["export", "--id", "-"],
+    "exit": 1,
+    "code": "catalog.unknown-id"
+  }
+]

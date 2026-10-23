@@ -1,0 +1,7 @@
+{
+  "single-hyphen-arguments.json": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: only -- prefixes a missing separate value, all other nonempty values undergo exact lookup; no arbitrary selector echo",
+  "exact-argument-boundaries.json": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: separate values must be nonempty, operations/flags match exactly, only immediate recognized --help enables help, malformed argv returns usage2 without stdout",
+  "catalog_gaps_test.go:TestFullCountWriterErrorRefusesResultAndHelpSuccess": "contracts/command/catalog/contract.md, Error and writer behavior: check every writer error and short write independently; full-count+nonnil-error stdout returns1 with catalog.result-output or catalog.help-output",
+  "catalog_gaps_test.go:TestFullCountRefusalReportErrorReturnsOne": "contracts/command/catalog/contract.md, Error and writer behavior: every refusal stderr error returns1, including usage ordinarily returning2",
+  "catalog_gaps_test.go:TestUnusedFullCountErrorStderrDoesNotFailSuccess": "contracts/command/catalog/contract.md, Error and writer behavior: unused stderr is not a failure on successful stdout-only calls"
+}

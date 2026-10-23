@@ -1,6 +1,5 @@
 # Catalog command contract
 
-Status: independent agent-authored contract draft under ADR0320; no implementation.
 Component command/catalog. New takes no arguments. Run(args, stdout, stderr)
 receives tokens after catalog. This read-only driver uses the real catalog reader.
 

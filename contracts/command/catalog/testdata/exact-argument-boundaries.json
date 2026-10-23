@@ -1,0 +1,166 @@
+[
+  {
+    "name": "show-separate-empty-value",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "show",
+      "--id",
+      ""
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-missing-separate-value",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "show",
+      "--id"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-separate-empty-value",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "export",
+      "--id",
+      ""
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-missing-separate-value",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "export",
+      "--id"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "unknown-operation-before-known-names",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "a",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "empty-operation-is-not-inferred",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-unknown-flag-before-help",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "list",
+      "--aardvark"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-unknown-flag-before-help",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "show",
+      "--aardvark",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-unknown-flag-before-help",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "export",
+      "--aardvark",
+      "--id",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-exact-unknown-flag-aa",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "list",
+      "--aa",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "list-exact-unknown-flag-zz",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "list",
+      "--zz",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-exact-unknown-flag-aa",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "show",
+      "--aa",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "show-exact-unknown-flag-zz",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "show",
+      "--zz",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-exact-unknown-flag-aa",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "export",
+      "--aa",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  },
+  {
+    "name": "export-exact-unknown-flag-zz",
+    "source": "contracts/command/catalog/contract.md, Read-only operations and syntax plus Error and writer behavior: exact operations/flags and nonempty --id required; malformed argv is usage2 with fixed private catalog.usage report",
+    "args": [
+      "export",
+      "--zz",
+      "company-email"
+    ],
+    "exit": 2,
+    "code": "catalog.usage"
+  }
+]
