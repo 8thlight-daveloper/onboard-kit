@@ -1,0 +1,30 @@
+schemaVersion: 1
+provenance:
+  templateSet: requires-boundary
+  generatedOn: "2026-10-23"
+sections:
+  - id: prep
+    title: Preparation
+    summary: A declared bootstrap obligation.
+    bootstrap: true
+    enabled: false
+    requires: [ordinary, ordinary]
+  - id: dangling
+    title: Hidden declaration
+    summary: An inactive unknown reference is still invalid.
+    enabled: false
+    requires: [missing-private-target, missing-private-target]
+  - id: b
+    title: Second cycle member
+    summary: A declared cycle.
+    enabled: false
+    requires: [a]
+  - id: ordinary
+    title: Ordinary activity
+    summary: Not marked bootstrap.
+    enabled: false
+  - id: a
+    title: First cycle member
+    summary: A declared cycle.
+    enabled: false
+    requires: [b, b]

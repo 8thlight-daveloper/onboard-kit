@@ -1,0 +1,41 @@
+name: assemble-requires-remaining-structure-rejection
+description: Assembly refuses every remaining declared relationship error without replacing or creating output.
+source: docs/decisions/0260-prerequisites-and-action-order.md; contracts/plan/structurevalidator/testdata/cases.json; contracts/plan/validator/contract.md
+steps:
+  - run: [onboard-kit, assemble, --plan, invalid.obk.yaml, --out, existing.md]
+    files:
+      invalid.obk.yaml: {from: acceptance/testdata/requires-remaining-structure-invalid.obk.yaml}
+      existing.md: "Existing reviewed document.\nKeep these bytes.\n"
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        equals: |
+          invalid.obk.yaml: plan.after-cycle: Remove an after edge within the listed cycle members.
+          invalid.obk.yaml: plan.after-self: Remove the section's reference to itself in after.
+          invalid.obk.yaml: plan.after-unknown: Choose an existing section, or remove this after item.
+          invalid.obk.yaml: plan.bootstrap-after-nonbootstrap: Remove this ordering hint, or correct the bootstrap claim.
+          invalid.obk.yaml: plan.ordering-conflict: Change a requires or effective after edge within these members so both orders can coexist.
+          invalid.obk.yaml: plan.parent-cycle: Remove a parent link within the listed cycle members.
+          invalid.obk.yaml: plan.parent-self: Remove the section's reference to itself as parent.
+          invalid.obk.yaml: plan.parent-unknown: Choose an existing section as parent, or remove parent.
+          invalid.obk.yaml: plan.requires-self: Remove the section's reference to itself in requires.
+      unchanged: [invalid.obk.yaml, existing.md]
+  - run: [onboard-kit, assemble, --plan, invalid.obk.yaml, --out, new.md]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        equals: |
+          invalid.obk.yaml: plan.after-cycle: Remove an after edge within the listed cycle members.
+          invalid.obk.yaml: plan.after-self: Remove the section's reference to itself in after.
+          invalid.obk.yaml: plan.after-unknown: Choose an existing section, or remove this after item.
+          invalid.obk.yaml: plan.bootstrap-after-nonbootstrap: Remove this ordering hint, or correct the bootstrap claim.
+          invalid.obk.yaml: plan.ordering-conflict: Change a requires or effective after edge within these members so both orders can coexist.
+          invalid.obk.yaml: plan.parent-cycle: Remove a parent link within the listed cycle members.
+          invalid.obk.yaml: plan.parent-self: Remove the section's reference to itself as parent.
+          invalid.obk.yaml: plan.parent-unknown: Choose an existing section as parent, or remove parent.
+          invalid.obk.yaml: plan.requires-self: Remove the section's reference to itself in requires.
+      files:
+        new.md: {absent: true}
+      unchanged: [invalid.obk.yaml, existing.md]

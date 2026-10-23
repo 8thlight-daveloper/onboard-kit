@@ -1,0 +1,91 @@
+name: assemble-requires-reference-display
+description: Ordinary assembly shows exact distinct prerequisites while retaining nested reference order and the original plan bytes.
+source: docs/decisions/0260-prerequisites-and-action-order.md; contracts/document/assembler/contract.md, Sections and ordinary Assemble; contracts/section/selector/contract.md
+steps:
+  - run: [onboard-kit, assemble, --plan, plan.obk.yaml]
+    files:
+      plan.obk.yaml: {from: acceptance/testdata/requires-reference.obk.yaml}
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          # Onboarding
+
+          Generated 2026-10-23 from template set `requires-boundary`. A person must review this before it is sent.
+
+          ## Gaps to fill
+
+          | Gap | Who fills it | By when |
+          | --- | --- | --- |
+
+          ## Group
+
+          Requires: `z-second`, `a-child`, `z-first`.
+
+          Browse the group before its nested activity.
+
+          ### Nested activity
+
+          Containment is not a prerequisite.
+
+          ## First prerequisite
+
+          Keep the first prerequisite visible.
+
+          ## Second prerequisite
+
+          Keep the second prerequisite visible.
+      stderr: {equals: ""}
+      unchanged: [plan.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, plan.obk.yaml, --out, guide.md]
+    expect:
+      exit: 0
+      stdout: {equals: ""}
+      stderr: {equals: ""}
+      files:
+        guide.md: {same-as: acceptance/testdata/requires-reference.md}
+      unchanged: [plan.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, goals.obk.yaml]
+    files:
+      goals.obk.yaml: |
+        schemaVersion: 1
+        provenance:
+          templateSet: requires-boundary
+          generatedOn: "2026-10-23"
+        sections:
+          - id: early
+            title: Early goal
+            summary: A later target is still a valid prerequisite.
+            timing: week-one
+            after: [late]
+            requires: [late]
+            body: "Note: $setup_note."
+            variables:
+              - name: setup_note
+                description: Setup note
+                required: true
+          - id: late
+            title: Later goal
+            summary: Dates are goals rather than permission.
+            timing: days-31-to-90
+        answers:
+          sections:
+            early:
+              legacy: Retained undeclared answer
+    expect:
+      exit: 0
+      stdout:
+        contains: |
+          ## Early goal
+
+          Requires: `late`.
+
+          A later target is still a valid prerequisite.
+
+          Note: _unanswered_.
+
+          When: week one.
+
+          ## Later goal
+      stderr: {contains: early.setup_note}
+      unchanged: [goals.obk.yaml]

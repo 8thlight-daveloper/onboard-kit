@@ -1,0 +1,20 @@
+schemaVersion: 1
+provenance:
+  templateSet: requires-boundary
+  generatedOn: "2026-10-23"
+sections:
+  - id: z-second
+    title: Second prerequisite
+    summary: Keep the second prerequisite visible.
+  - id: a-child
+    parent: a
+    title: Nested activity
+    summary: Containment is not a prerequisite.
+    after: [z-first]
+  - id: a
+    title: Group
+    summary: Browse the group before its nested activity.
+    requires: [z-second, a-child, z-second, z-first]
+  - id: z-first
+    title: First prerequisite
+    summary: Keep the first prerequisite visible.

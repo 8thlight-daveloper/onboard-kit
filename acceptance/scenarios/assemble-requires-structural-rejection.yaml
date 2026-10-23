@@ -1,0 +1,29 @@
+name: assemble-requires-structural-rejection
+description: Assembly rejects invalid declared prerequisites even when every section is switched off, without changing files.
+source: docs/decisions/0260-prerequisites-and-action-order.md; contracts/plan/structurevalidator/contract.md; contracts/plan/validator/contract.md
+steps:
+  - run: [onboard-kit, assemble, --plan, invalid.obk.yaml, --out, existing.md]
+    files:
+      invalid.obk.yaml: {from: acceptance/testdata/requires-declared-invalid.obk.yaml}
+      existing.md: "Existing reviewed document.\nDo not replace these bytes.\n"
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        equals: |
+          invalid.obk.yaml: plan.bootstrap-requires-nonbootstrap: Make this prerequisite bootstrap, or correct the bootstrap claim.
+          invalid.obk.yaml: plan.requires-cycle: Remove a requires edge within the listed cycle members.
+          invalid.obk.yaml: plan.requires-unknown: Choose an existing prerequisite, or remove this requires item.
+      unchanged: [invalid.obk.yaml, existing.md]
+  - run: [onboard-kit, assemble, --plan, invalid.obk.yaml, --out, new.md]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        equals: |
+          invalid.obk.yaml: plan.bootstrap-requires-nonbootstrap: Make this prerequisite bootstrap, or correct the bootstrap claim.
+          invalid.obk.yaml: plan.requires-cycle: Remove a requires edge within the listed cycle members.
+          invalid.obk.yaml: plan.requires-unknown: Choose an existing prerequisite, or remove this requires item.
+      files:
+        new.md: {absent: true}
+      unchanged: [invalid.obk.yaml, existing.md]

@@ -1,0 +1,111 @@
+name: stdio-requires-remaining-structure-rejection
+description: Stdio exposes and refuses all remaining structural errors even when every activity is off.
+source: docs/decisions/0260-prerequisites-and-action-order.md; contracts/plan/structurevalidator/testdata/cases.json; contracts/plan/validator/contract.md; docs/reference/acceptance-scenarios.md
+steps:
+  - run: [onboard-kit, stdio, --plan, invalid.obk.yaml]
+    files:
+      invalid.obk.yaml: {from: acceptance/testdata/requires-remaining-structure-invalid.obk.yaml}
+    talk:
+      - send: {command: validate}
+        expect:
+          ok: true
+          problems:
+            - code: plan.after-cycle
+              severity: error
+              section: after-cycle-a
+              message: Remove an after edge within the listed cycle members.
+              detail: {field: after, members: '["after-cycle-a","after-cycle-b"]'}
+            - code: plan.after-self
+              severity: error
+              section: after-self
+              message: Remove the section's reference to itself in after.
+              detail: {field: after, item: "0"}
+            - code: plan.after-unknown
+              severity: error
+              section: after-unknown
+              message: Choose an existing section, or remove this after item.
+              detail: {field: after, item: "0"}
+            - code: plan.bootstrap-after-nonbootstrap
+              severity: error
+              section: bootstrap-a
+              message: Remove this ordering hint, or correct the bootstrap claim.
+              detail: {field: after, item: "0"}
+            - code: plan.ordering-conflict
+              severity: error
+              section: mixed-a
+              message: Change a requires or effective after edge within these members so both orders can coexist.
+              detail: {field: ordering, members: '["mixed-a","mixed-b"]'}
+            - code: plan.parent-cycle
+              severity: error
+              section: parent-cycle-a
+              message: Remove a parent link within the listed cycle members.
+              detail: {field: parent, members: '["parent-cycle-a","parent-cycle-b"]'}
+            - code: plan.parent-self
+              severity: error
+              section: parent-self
+              message: Remove the section's reference to itself as parent.
+              detail: {field: parent}
+            - code: plan.parent-unknown
+              severity: error
+              section: parent-unknown
+              message: Choose an existing section as parent, or remove parent.
+              detail: {field: parent}
+            - code: plan.requires-self
+              severity: error
+              section: requires-self
+              message: Remove the section's reference to itself in requires.
+              detail: {field: requires, item: "0"}
+      - send: {command: assemble}
+        expect:
+          ok: false
+          error: {code: invalid_plan}
+          problems:
+            - code: plan.after-cycle
+              severity: error
+              section: after-cycle-a
+              message: Remove an after edge within the listed cycle members.
+              detail: {field: after, members: '["after-cycle-a","after-cycle-b"]'}
+            - code: plan.after-self
+              severity: error
+              section: after-self
+              message: Remove the section's reference to itself in after.
+              detail: {field: after, item: "0"}
+            - code: plan.after-unknown
+              severity: error
+              section: after-unknown
+              message: Choose an existing section, or remove this after item.
+              detail: {field: after, item: "0"}
+            - code: plan.bootstrap-after-nonbootstrap
+              severity: error
+              section: bootstrap-a
+              message: Remove this ordering hint, or correct the bootstrap claim.
+              detail: {field: after, item: "0"}
+            - code: plan.ordering-conflict
+              severity: error
+              section: mixed-a
+              message: Change a requires or effective after edge within these members so both orders can coexist.
+              detail: {field: ordering, members: '["mixed-a","mixed-b"]'}
+            - code: plan.parent-cycle
+              severity: error
+              section: parent-cycle-a
+              message: Remove a parent link within the listed cycle members.
+              detail: {field: parent, members: '["parent-cycle-a","parent-cycle-b"]'}
+            - code: plan.parent-self
+              severity: error
+              section: parent-self
+              message: Remove the section's reference to itself as parent.
+              detail: {field: parent}
+            - code: plan.parent-unknown
+              severity: error
+              section: parent-unknown
+              message: Choose an existing section as parent, or remove parent.
+              detail: {field: parent}
+            - code: plan.requires-self
+              severity: error
+              section: requires-self
+              message: Remove the section's reference to itself in requires.
+              detail: {field: requires, item: "0"}
+    expect:
+      exit: 0
+      stderr: {equals: ""}
+      unchanged: [invalid.obk.yaml]

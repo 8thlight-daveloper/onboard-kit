@@ -1,0 +1,67 @@
+schemaVersion: 1
+sections:
+  - id: after-cycle-a
+    title: First order member
+    summary: A declared order cycle remains invalid when hidden.
+    enabled: false
+    after: [after-cycle-b]
+  - id: after-cycle-b
+    title: Second order member
+    summary: Complete the same effective sibling cycle.
+    enabled: false
+    after: [after-cycle-a]
+  - id: after-self
+    title: Self ordering
+    summary: A self reference is not a separate cycle diagnostic.
+    enabled: false
+    after: [after-self]
+  - id: after-unknown
+    title: Unknown ordering
+    summary: Repeated references report their first held location.
+    enabled: false
+    after: [missing-order-target, missing-order-target]
+  - id: bootstrap-a
+    title: Pre-access activity
+    summary: Ordinary work cannot be ordered before this first stage.
+    enabled: false
+    bootstrap: true
+    after: [bootstrap-b, bootstrap-b]
+  - id: bootstrap-b
+    title: Ordinary predecessor
+    summary: This content has no bootstrap marker.
+    enabled: false
+  - id: mixed-a
+    title: First mixed member
+    summary: Its reading hint conflicts with an explicit prerequisite.
+    enabled: false
+    after: [mixed-b]
+  - id: mixed-b
+    title: Second mixed member
+    summary: Each pure graph is acyclic but the union is not.
+    enabled: false
+    requires: [mixed-a]
+  - id: parent-cycle-a
+    title: First containment member
+    summary: Containment is independently checked.
+    enabled: false
+    parent: parent-cycle-b
+  - id: parent-cycle-b
+    title: Second containment member
+    summary: Complete the containment cycle.
+    enabled: false
+    parent: parent-cycle-a
+  - id: parent-self
+    title: Self containment
+    summary: A section cannot contain itself.
+    enabled: false
+    parent: parent-self
+  - id: parent-unknown
+    title: Missing containment
+    summary: The author must identify a real parent.
+    enabled: false
+    parent: missing-parent-target
+  - id: requires-self
+    title: Self prerequisite
+    summary: Repeated self references remain one direct error.
+    enabled: false
+    requires: [requires-self, requires-self]

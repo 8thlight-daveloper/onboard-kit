@@ -1,0 +1,76 @@
+name: stdio-requires-declared-validation
+description: Stdio validation returns all declared prerequisite diagnostics with their exact locations and preserves the input bytes.
+source: contracts/plan/structurevalidator/contract.md; contracts/plan/validator/contract.md; docs/reference/acceptance-scenarios.md
+steps:
+  - run: [onboard-kit, stdio, --plan, invalid.obk.yaml]
+    files:
+      invalid.obk.yaml: {from: acceptance/testdata/requires-declared-invalid.obk.yaml}
+    talk:
+      - send: {command: validate}
+        expect:
+          ok: true
+          problems:
+            - code: plan.bootstrap-requires-nonbootstrap
+              severity: error
+              section: prep
+              message: Make this prerequisite bootstrap, or correct the bootstrap claim.
+              detail: {field: requires, item: "0"}
+            - code: plan.requires-cycle
+              severity: error
+              section: a
+              message: Remove a requires edge within the listed cycle members.
+              detail: {field: requires, members: '["a","b"]'}
+            - code: plan.requires-unknown
+              severity: error
+              section: dangling
+              message: Choose an existing prerequisite, or remove this requires item.
+              detail: {field: requires, item: "0"}
+      - send: {command: assemble}
+        expect:
+          ok: false
+          error: {code: invalid_plan}
+          problems:
+            - code: plan.bootstrap-requires-nonbootstrap
+              severity: error
+              section: prep
+              message: Make this prerequisite bootstrap, or correct the bootstrap claim.
+              detail: {field: requires, item: "0"}
+            - code: plan.requires-cycle
+              severity: error
+              section: a
+              message: Remove a requires edge within the listed cycle members.
+              detail: {field: requires, members: '["a","b"]'}
+            - code: plan.requires-unknown
+              severity: error
+              section: dangling
+              message: Choose an existing prerequisite, or remove this requires item.
+              detail: {field: requires, item: "0"}
+    expect:
+      exit: 0
+      stderr: {equals: ""}
+      unchanged: [invalid.obk.yaml]
+  - run: [onboard-kit, stdio, --plan, duplicate.obk.yaml]
+    files:
+      duplicate.obk.yaml: |
+        schemaVersion: 1
+        sections:
+          - id: repeated
+            title: First declaration
+            summary: Duplicate identities are still ambiguity.
+          - id: repeated
+            title: Second declaration
+            summary: Do not resolve this graph by choosing one.
+    talk:
+      - send: {command: assemble}
+        expect:
+          ok: false
+          error: {code: ambiguous_plan}
+          problems:
+            - code: plan.duplicate-section-id
+              severity: error
+              section: repeated
+              message: Give each section a unique ID before checking relationships.
+    expect:
+      exit: 0
+      stderr: {equals: ""}
+      unchanged: [duplicate.obk.yaml]
