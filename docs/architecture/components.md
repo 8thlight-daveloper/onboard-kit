@@ -106,8 +106,8 @@ flowchart TB
 | Preparation editor | Returns preparation with an explicitly replaced recipient, replaced or appended arrangement, or removed arrangement. Validates the requested change after identity and ambiguity guards while preserving unrelated details. Does not certify invitation readiness |
 | Preparation locator | Derives a person's relative record path and fixed preparation sibling from explicit account and results-path strings. Rejects ambiguous layouts, unsafe lexical forms, collisions, and oversized expansion. Does not inspect the filesystem or authorize writes |
 | Preparation command | Loads an explicit plan and one person's preparation, applies explicit edits through the preparation editor, or shows preparation beside read-only record outcomes. Writes only that preparation under the selected root. See [0220](../decisions/0220-preparation-command.md) |
-| Invitation encoder | Planned pure encoder of four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
-| Invitation decoder | Planned pure decoder of a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
+| Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
+| Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections of a plan: each section's `includeIf` and `enabled` setting, ordered by `timing`, then `after`, then `id` |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |

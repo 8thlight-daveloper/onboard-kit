@@ -2,13 +2,7 @@ package decoder_test
 
 import (
 	contract "onboard-kit/contracts/invitation/decoder"
-	"onboard-kit/internal/model"
+	implementation "onboard-kit/internal/invitation/decoder"
 )
 
-type stubDecoder struct{}
-
-func (stubDecoder) Decode([]byte) (model.InvitationFiles, []model.Problem) {
-	return model.InvitationFiles{}, nil
-}
-
-func newDecoder() contract.Decoder { return stubDecoder{} }
+func newDecoder() contract.Decoder { return implementation.New() }

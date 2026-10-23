@@ -190,8 +190,8 @@ the payload bytes without decoding the artifacts or authorizing their import.
 
 Each result owns its byte sequences. Drivers separately check artifact identity,
 format, readiness, and existing work before writing. A successful archive decode
-does not establish that any payload is usable. Encoding and decoding are planned;
-the type alone implements no invitation command.
+does not establish that any payload is usable. Envelope encoding and decoding
+are implemented; invitation commands and confirmed import remain pending.
 
 ## Onboarding record
 

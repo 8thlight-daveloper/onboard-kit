@@ -7,8 +7,8 @@ Component: `invitation/encoder`. Agent-authored contract; not human-reviewed.
 `Encode(InvitationFiles) -> bytes, problems` packages four opaque payloads for
 one explicit account. The [API](api.go), [tests](encoder_test.go),
 [fixtures](testdata/cases.json), and [binding](wire_test.go) complete the
-four-part contract. The initial binding is an empty stub. A separate contract-only
-binding increment selects the independent implementation's New constructor.
+four-part contract. The binding selects the independent implementation's New
+constructor. Stub checks replace that binding without changing assertions.
 The transport model and envelope profile come from
 [0240](../../../docs/decisions/0240-invitation-archive-envelope.md), extending
 [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md) and

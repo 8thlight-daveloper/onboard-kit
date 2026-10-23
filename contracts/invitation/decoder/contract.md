@@ -7,9 +7,9 @@ Component: `invitation/decoder`. Agent-authored contract; not human-reviewed.
 `Decode(bytes) -> InvitationFiles, problems` reads the bounded invitation ZIP
 envelope of [0240](../../../docs/decisions/0240-invitation-archive-envelope.md).
 The [API](api.go), [tests](decoder_test.go), [fixtures](testdata/cases.json),
-and [binding](wire_test.go) complete the four-part contract. The initial binding
-is an empty stub. A separate contract-only binding increment selects the
-independently authored implementation's New constructor.
+and [binding](wire_test.go) complete the four-part contract. The binding selects
+the independently authored implementation's New constructor. Stub checks replace
+that binding without changing assertions.
 
 Reads: the supplied bytes only. Writes: none. No plan access, extraction,
 filesystem, process, network, clock, environment, or artifact-codec calls.
