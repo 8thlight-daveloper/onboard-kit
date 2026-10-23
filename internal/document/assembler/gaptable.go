@@ -6,10 +6,15 @@ import (
 	"onboard-kit/internal/model"
 )
 
-const gapTableHeader = "## Gaps to fill\n\n| Gap | Who fills it | By when |\n| --- | --- | --- |"
+const gapTableColumns = "| Gap | Who fills it | By when |\n| --- | --- | --- |"
 
 func gapTable(sections []filledSection) string {
-	lines := []string{gapTableHeader}
+	return gapTableAtLevel(sections, rootHeadingLevel)
+}
+
+func gapTableAtLevel(sections []filledSection, level int) string {
+	header := strings.Repeat("#", level) + " Gaps to fill" + blockSeparator + gapTableColumns
+	lines := []string{header}
 	for _, section := range sections {
 		for _, problem := range section.problems {
 			lines = append(lines, gapRow(section, problem))
