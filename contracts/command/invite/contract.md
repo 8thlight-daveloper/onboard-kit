@@ -65,9 +65,11 @@ Traverse every nontrivial component using stable nonsymlink directory handles.
 Each source's final object must be a nonsymlink regular file; refuse FIFO,
 device, socket, directory and dangling symlink without blocking. The output
 parent must already be a nonsymlink directory and remain the held publication
-parent. Its leaf must be absent, including no dangling symlink. Reject aliases
-of source paths/objects; an existing hardlink destination is existing output,
-never an inode to truncate. No root discovery or archive extraction.
+parent. Its leaf must be absent, including no dangling symlink. Reject output
+aliases of either source path/object; an existing hardlink destination is existing
+output, never an inode to truncate. Add no separate input-to-input alias phase:
+an input of the wrong kind follows the stated decoder refusal order. No root
+discovery or archive extraction.
 
 The command's symlink rule also applies to ambient argv aliases such as macOS
 /var. The caller may explicitly select a real resolved path; the command does
