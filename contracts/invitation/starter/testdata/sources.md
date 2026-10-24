@@ -105,3 +105,11 @@ Complete EOF-framed actions follow ordinary consent; incomplete EOF does not.
 NonEOF errors veto confirmation/begin and preserve completed truth after begin.
 Exact literal display, complete record bytes and original snapshots remain the
 oracles, not a simulated semantic dependency or an accepted alternate output.
+
+The Darwin observer confirms Wait4's exact owned PID and native SIGSTOP status
+before classifying persistent state. The installed SDK sys/wait.h defines a
+stopped low-seven-bit marker0177 and the high-byte stop signal; SIGSTOP is17,
+while SIGCONT19 is continuation. The observer checks the exact requested stop
+rather than relying on the shared BSD Go helper's different continuation rule.
+Bounded EINTR retries do not replace confirmation. No product or toolchain patch,
+signal-send-only assumption or generic cross-platform wait implementation is used.

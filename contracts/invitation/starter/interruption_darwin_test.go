@@ -514,8 +514,15 @@ func TestDarwinObservedProcessDeath(t *testing.T) {
 				t.Fatal("cannot stop owned native helper")
 			}
 			var status syscall.WaitStatus
-			pid, err := syscall.Wait4(c.command.Process.Pid, &status, syscall.WUNTRACED, nil)
-			if err != nil || pid != c.command.Process.Pid || !status.Stopped() {
+			var pid int
+			var waitError error
+			for attempt := 0; attempt < 4; attempt++ {
+				pid, waitError = syscall.Wait4(c.command.Process.Pid, &status, syscall.WUNTRACED, nil)
+				if waitError != syscall.EINTR {
+					break
+				}
+			}
+			if waitError != nil || pid != c.command.Process.Pid || status&0x7f != 0x7f || status>>8 != syscall.WaitStatus(syscall.SIGSTOP) {
 				t.Fatal("cannot confirm owned helper stopped before classification")
 			}
 			state := observeStoppedOpening(t, s, evidence)
