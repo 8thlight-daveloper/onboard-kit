@@ -100,7 +100,7 @@ flowchart TB
 | Section validator | Checks one section's own structure, whether it is a template or a section in a plan: variables declared and used, defaults that fit their type and pattern, reserved names, references within the section, the `$` rule, check shapes, and `escalation` references, with warnings for thin contacts and single points of failure. Lint rules for conditions, such as a one-entry `isOneOf`, live here |
 | Template linter | Checks the hygiene of template text against a rules file: client names, URLs, email addresses, and broken links. Takes parsed templates, returns findings. Voice rules are not here. Vale checks them, see [dev tooling](../stack/dev-tooling.md) |
 | Plan editor | Returns a copy of a plan with one answer applied, one section's switch changed, or one directory entry added, changed, or removed. An answer changes only `answers`, a switch only that section's `enabled`, and a directory edit only the directory. Removing an entry also clears the answers and holder entries that named it, and reports them. The plan it was given is not altered |
-| Document assembler | Renders ordinary grouped reference documents with explicit prerequisites, gap table and review marker. Its bootstrap operation validates and schedules the full original plan, then renders only marked activities as flat contextual fragments. Both operations share section and gap formatting under [0260](../decisions/0260-prerequisites-and-action-order.md); first-steps driver integration remains pending |
+| Document assembler | Renders ordinary grouped reference documents with explicit prerequisites, gap table and review marker. Its bootstrap operation validates and schedules the full original plan, then renders only marked activities as flat contextual fragments. Both operations share section and gap formatting under [0260](../decisions/0260-prerequisites-and-action-order.md). The first steps assembler uses its bootstrap fragment for invitation export |
 | First steps assembler | Wraps the real bootstrap fragment with standard help using explicit account/help references and validated preparation owner/team. Renders a preview only; no readiness, import, first-use or file writes. Boundary: [0280](../decisions/0280-first-steps-help-and-sources.md) |
 | Plan instantiator | Builds the default plan from the templates and the axis variables, once, when a new plan starts |
 | Plan refresher | Brings a personal plan up to date with a newer org plan, by a three-way comparison of the cached org plan, the new org plan, and the personal plan. Returns the new personal plan and a report of what changed |
@@ -131,13 +131,14 @@ flowchart TB
 | Catalog edit guide | Loads one explicit supported existing plan, stages whole-batch edits, displays exact original/proposed bytes and new-addition guidance, and replaces only that plan after current save consent. Preserves native metadata or refuses under [0450](../decisions/0450-reviewed-existing-catalog-edit.md) |
 | Record writer | Returns a record with one explicit newcomer answer override or follow-plan removal. Uses the actual joiner and plan editor, preserving all unrelated personal data and the shared plan. No outcomes or persistence |
 | Session reviewer | Admits explicit bounded three-file bytes, projects actual questions, support and outcome comparisons, proposes one answer or outcome change, and returns lossless finalized record bytes. No native consent, clock or publication |
+| Session editor | Owns explicit registered context, identity confirmation, complete review and separate save consent. Reads bounded selected bodies after identity consent and replaces only the selected record with preserved native controls or refuses. It never executes authored instructions |
 | Preparation reviewer | Returns preparation problems, actual onboarder blockers and the real first-steps preview separately, without a readiness claim or writes. See [0330](../decisions/0330-preparation-review.md) |
 | Preparation guide | Stages recipient and arrangement edits in memory, displays complete original/draft values and actual review results, then saves only the explicitly reviewed preparation. Cancel/EOF before save writes nothing. Export remains separate. See [0350](../decisions/0350-guided-support-arrangements.md) |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
 | Section selector | Finds the active sections from original conditions and switches, valid parent chains, and repeated Parent/Requires applicability removal. Returns held sections in grouped reference order, not action order; reads no outcomes |
 | Section scheduler | Validates all declared relationships, selects from the full original plan, and returns active activities in global prerequisite action order. Goals break ties between free activities, never override prerequisites or gate progress. Reads no outcomes and performs no writes |
-| Section walker | Reads an already composed effective plan and only the record's outcomes. Returns action rows, direct prerequisite waiting, resolved support, full finder questions and held history with actual-definition comparisons. Does not join answers, write outcomes or infer first use; driver integration remains pending |
-| Outcome recorder | Rechecks the real current walker and actual definition hash for an explicit active-section outcome. Returns a copied record or exact preserved refusal, changes only Outcomes and never records first use. Driver integration remains pending. Write profile: [0290](../decisions/0290-explicit-outcome-recording.md) |
+| Section walker | Reads an already composed effective plan and only the record's outcomes. Returns action rows, direct prerequisite waiting, resolved support, full finder questions and held history with actual-definition comparisons. Does not join answers, write outcomes or infer first use. Invitation and session reviewers compose its actual projections for their drivers |
+| Outcome recorder | Rechecks the real current walker and actual definition hash for an explicit active-section outcome. Returns a copied record or exact preserved refusal, changes only Outcomes and never records first use. The session reviewer composes it for explicit record-backed publication. Write profile: [0290](../decisions/0290-explicit-outcome-recording.md) |
 | Condition evaluator | Decides whether a condition holds, given the settled answers of the questions it names. Used for `askIf` and `includeIf`. Takes values and returns true or false |
 | Section resolver | Fills a section's variables from the plan's answers, and fills `contact`, `role`, and `team` variables from the directory and the answered team |
 | Section hasher | Computes the content hash recorded in a section's `source` |
@@ -219,17 +220,17 @@ A person editing a plan by hand can change anything, and the plan validator chec
 
 ## Dependency rules
 
-### Pending prerequisite and outcome integration
+### Prerequisite and outcome integration
 
 [0260](../decisions/0260-prerequisites-and-action-order.md) and
 [0270](../decisions/0270-outcome-definition-hashes.md) define the following
-target boundaries. The table includes implemented components and remaining
-targets; the status below distinguishes them. Existing behavior remains governed
+component boundaries. The table lists implemented components; the status below
+describes their integration. Existing behavior remains governed
 by each current contract until its independently tested replacement is integrated.
 
-| Component | Planned reads | Planned writes or returns | Position and project dependencies |
+| Component | Reads | Writes or returns | Position and project dependencies |
 | -- | -- | -- | -- |
-| Plan structure validator, new | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
+| Plan structure validator | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
 | Plan authoring validator | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
 | Invitation reviewer | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
 | Invitation starter | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
@@ -241,7 +242,7 @@ by each current contract until its independently tested replacement is integrate
 | Session reviewer | Bounded three-file bytes, trusted account/plan identity, explicit intent and supplied event | Owned session views, proposals and finalized record bytes | 7: record writer; outcome recorder; section walker; plan authoring validator and validator; plan, preparation and record decoders; preparation validator; record joiner and encoder; model; [contract](../../contracts/session/reviewer/contract.md) |
 | Session editor | Explicit registered context, borrowed streams, native controls and injected clock | Reviewed atomic record replacement and private staging; no companion-file changes | 8: session reviewer, plan decoder, preparation locator; [contract](../../contracts/session/editor/contract.md). The entry point grows to9 |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
-| Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
+| Section scheduler | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
 | First steps assembler | Original plan, explicit account/help references, preparation validation and owner/team, derived destinations | Standard help around the real bootstrap fragment, or refusal; no writes | 5: document assembler, preparation validator, preparation locator, model |
 | Section walker | Caller-composed effective plan and record.Outcomes only | Action, direct waiting, resolved support, finder questions/blockers, and complete held outcome history with actual-definition comparisons; no writes | 4: section scheduler, question finder, section resolver, section hasher, model |
@@ -269,8 +270,8 @@ specifies the starter's storage and interaction direction. The
 [starter contract](../../contracts/invitation/starter/contract.md) specifies the
 terminal and storage protocols. Its implementation uses that reviewer and is
 available through explicit invitation/recovery routing under0420. The session
-is read-only; native observation limits remain in the fixture scope. Binary
-wiring remains at8.
+is read-only; native observation limits remain in the fixture scope. The
+separate session editor below adds record writes, with binary wiring at9.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held
@@ -284,8 +285,8 @@ now applies Parent/Requires cascading against original answer and switch context
 without adding verification gates or changing grouped reference order. The
 read-only walker views, explicit outcome recorder and standard first-steps help
 are implemented. Invitation export packages the guide and confirmed start
-displays a read-only record-backed session. Record-backed answer editing and
-outcome publication remain pending. Requires format
+displays a read-only record-backed session. The separate session editor provides
+reviewed record-backed answer editing and outcome publication. Requires format
 preservation underlies the structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.
 
@@ -294,8 +295,9 @@ reads a clock or filesystem, runs commands, or holds state between calls.
 The preparation guide driver is at position 7, after the reviewer at 6.
 It may use actual plan decoder/validator and preparation decoder/encoder,
 locator/editor/reviewer, model and its own contract, never another driver or the
-legacy autosaving TUI. Binary wiring moves to 8 under
-[0340](../decisions/0340-guided-preparation-save.md).
+legacy autosaving TUI. Its original wiring boundary is specified by
+[0340](../decisions/0340-guided-preparation-save.md); the current entry point is
+at9 under0460.
 [0350](../decisions/0350-guided-support-arrangements.md) adds arrangement forms,
 ordered helpers and staged removal within the same reviewed-save boundary,
 without new saved fields or a readiness claim.
@@ -320,14 +322,14 @@ catalog materializer at position 5. It reads the actual compiled definitions and
 [authored relations](../reference/catalog-preparation-relations.md), uses real
 loading/hashing/validation, and creates only a returned new plan. Its contract and
 implementation are available. [0430](../decisions/0430-reviewed-catalog-creation.md)
-adds a separate creation driver at6, routed by the entry point at8. It creates
+adds a separate creation driver at6, routed by the entry point. It creates
 only new reviewed plans, using the actual encoder and private no-replace native
 publication. Existing catalog read/export commands, instantiator behavior and
 saved plans are unchanged. [0440](../decisions/0440-stable-catalog-instance-editing.md)
 adds a pure editor at6, composing actual materializer and plan editor operations
 without changing held identities or source baselines.
 [0450](../decisions/0450-reviewed-existing-catalog-edit.md) adds the distinct
-catalog edit guide at7, routed by the entry point at8. It safely loads one
+catalog edit guide at7, routed by the entry point. It safely loads one
 supported private plan, stages and reviews complete edits, and replaces only
 that plan after consent. It neither reads personal files nor transfers history.
 
