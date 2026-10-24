@@ -63,6 +63,15 @@ bounded metadata and selected bytes before use and again before publication.
 Cooperative root/home locks are released while waiting for input. Changed records
 use canonical YAML; a no-op retains the original bytes and inode.
 
+An unrelated registration may retain genuinely missing destinations, but missing
+paths are not automatically distinct. Case-aliasing or otherwise ambiguous
+destinations refuse before identity. Exact account identity remains unchanged.
+When missing tails share an existing native parent, the current build can prove
+name distinctions only on APFS using inspected native case capabilities and
+restricted ASCII components. Other comparison profiles or unequal unsupported
+names refuse when that proof is needed; distinct inspected native parents remain
+distinct. See [0510](../decisions/0510-missing-destination-names.md).
+
 Atomic replacement preserves inspected record permissions, ownership and native
 attributes, or refuses without replacing it. Unsupported controls can therefore
 require local repair. A private sibling stage shields unpublished bytes. Unknown

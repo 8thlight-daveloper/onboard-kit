@@ -105,6 +105,17 @@ zero object guard, root-string inequality, shared missing sentinel or lexical
 fallback proves absence or disjointness. Same missing basename under genuinely
 distinct native parents is not itself an alias.
 
+For missing destination tails under an existing native parent, disjointness
+requires a supported name-comparison proof derived from that held directory's
+actual native filesystem capability. Distinct bytes, including account case,
+do not by themselves establish distinct destination names. Account and plan
+identity equality remain exact and case-sensitive; native name equivalence
+does not merge identities or choose a registration winner. Demonstrably
+conflicting missing namespaces refuse before identity. Demonstrably disjoint
+missing branches remain eligible under the existing absence allowance. If the
+selected native profile cannot establish the required name comparison, refuse
+rather than guess from spelling or a process-wide filesystem assumption.
+
 Only actual ENOENT through a safely inspected no-follow prefix is absence here.
 A symlink, dangling symlink, ELOOP, ENOTDIR, permission error, unsupported/failed
 native inspection, unknown type or ambiguous namespace is NOT absence; preserve
@@ -259,3 +270,5 @@ No compilation, test, mutant, native crash timing or publication is claimed here
 | Present a fatal inspection's zero return as an empty actionable session | FatalInspectionDisplaysProblemsWithoutInventingAnActionableSession |
 | Hide usable activities because the separate support channel is stale | StaleSupportAloneStillDisplaysTheRealEditableSession |
 | Omit safe actual finalization diagnostics or reopen a session after failure | FatalFinalizationDisplaysActualSafeDiagnosticsWithoutAnotherSession |
+| Treat differing missing account spellings as disjoint without native name evidence, or refuse all missing branches sharing a parent | MissingUnrelatedCaseAliasedDestinationsRefuseBeforeIdentity, MissingUnrelatedCaseAliasedDestinationsRefuseWithReverseRegistrationOrder, DistinctMissingAccountsUnderOneNativeParentAllowSelectedSave |
+| Drop or reorder step instructions/checks, print Env in input/map order, invent an empty Env entry, or omit the full proposed session | ActualStepDisplayPreservesSortedEnvironmentAndEmptyControl |
