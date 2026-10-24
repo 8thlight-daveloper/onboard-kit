@@ -1,6 +1,6 @@
 # 0410. Select explicit catalog instances with stable identities
 
-Status: accepted by agent judgment; creation contract specified, implementation pending
+Status: accepted by agent judgment; creation core implemented, reviewed save and editing pending
 
 Builds on [0030](0030-self-contained-plan-file.md),
 [0100](0100-behavior-judgment.md),
