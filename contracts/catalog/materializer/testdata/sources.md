@@ -22,3 +22,34 @@ content, not product output or dynamically discovered expected relations.
 The SHA256 standard primitive hashes only hand-authored canonical fixture bytes
 in tests. Root must independently inspect those texts and compute/review the
 primitive hashes before adoption. No product canonicalizer supplies them.
+
+suggestion_gaps_test.go uses literal required declarations with distinct examples
+and defaults. ADR0045/0120 and the materializer binding phases require unanswered
+maps to remain empty unless an explicit binding supplies the exact held value.
+Explicit example/default/other/empty/None/Deferred controls distinguish deliberate
+acceptance from silent substitution.
+
+validation_gaps_test.go changes only the single literal canonical repository ID
+to1repo and hashes those authored bytes with standard SHA256. The declared ID
+grammar admits that digit-started value. Exact authoring errors come from the
+public authoring-validator contract; the multiple-contact answer's two unknown
+items follow the public plan-validator contract and directory-check-value case.
+Unspecified directory message wording remains unfixed, but must be useful and
+must not repeat rejected contact IDs. The complete ordered diagnostic structures
+and refusal outputs are independently specified, not copied from dependencies.
+
+ownership_gaps_test.go constructs separate literal request and expected values
+for nested allocated-empty lists/maps. The public team map is Team.Holders.
+Bidirectional caller/result and cross-result edits pin new storage without
+turning held defaults into answers. These tests use no catalog injection or
+implementation-derived expected data.
+
+admission_gaps_test.go independently pins1024/1025 valid repeated team holders,
+invalid UTF8 in inactive Value.List items and team-map keys,4096/4097 byte source
+and permanent IDs, and first unsupported-kind traversal paths. Exact own errors
+come from the admission table. The inclusive long source ID reaches the reader's
+public unknown-ID refusal, not an invented known catalog entry. The inclusive
+permanent ID succeeds with literal canonical-text substitution and standard
+SHA256, full plan equality and exact guidance reasons. Separate fresh factories
+and DeepEqual preserve invalid bytes that JSON snapshots would normalize. No
+boundary case relies on a later unrelated validation error to prove success.

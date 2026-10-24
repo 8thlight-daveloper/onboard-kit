@@ -262,6 +262,11 @@ also judged. Authoring the tests does not authorize this author to build the uni
 | Sort/rewrite held directory/variables or alias nested request values | Full plan equality and bidirectional ownership tests |
 | Call plan validation before authoring or run only one validator | Invalid type/pattern before invalid answer, and duplicate directory controls |
 | Truncate caps or ignore inactive Value payloads | Inclusive/exclusive instance/text/count guards and invalid inactive UTF8 |
+| Accept examples without bindings or reject explicit answers equal to suggestions | TestPlanExamplesRemainUnacceptedWithoutBindings and TestExplicitPlanBindingsRemainDistinctFromExamplesAndDefaults |
+| Reject a valid digit-started permanent identity | TestDigitStartedPermanentSectionIDRemainsExplicitAndValid independently changes only the literal canonical ID before SHA256 |
+| Return only the first problem from a failing dependency call | TestAuthoringRefusalPreservesTheCompleteOrderedBatch and TestBindingRefusalPreservesEveryMissingContactItem |
+| Collapse nested empty collections or share default backing storage | TestNestedAllocatedEmptyCollectionsKeepTheirHeldShapes and TestVariableDefaultListsDoNotAliasCallerOrOtherResults |
+| Tighten a team-holder or identity cap, skip held text validation or report the last bad value kind | admission_gaps_test.go isolates exact inclusive/exclusive guards, inactive lists, map keys and earliest traversal paths |
 
 Wrong-control, stub, mutation and independent-build results belong in review
 evidence outside this contract.
