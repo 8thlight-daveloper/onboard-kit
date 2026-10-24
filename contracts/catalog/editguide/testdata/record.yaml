@@ -1,0 +1,15 @@
+schemaVersion: 1
+kind: record
+account: example-account
+firstOpenedAt: '2026-01-02T03:04:05Z'
+outcomes:
+  - section: resource-old
+    outcome: verified
+    on: '2026-01-03T04:05:06Z'
+    sectionHash: held-definition-reference
+    note: Original independent resource verified.
+  - section: reserved-off
+    outcome: deferred
+    on: '2026-01-04T05:06:07Z'
+    sectionHash: legacy-unknown-basis
+    note: Preserve this history.

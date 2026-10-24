@@ -24,6 +24,9 @@ func (options Options) timeLimit() time.Duration {
 }
 
 func Run(scenario Scenario, options Options) []Failure {
+	if extensionEnabled(scenario) {
+		return runExtended(scenario, options)
+	}
 	folder, err := os.MkdirTemp(options.TemporaryRoot, "scenario-*")
 	if err != nil {
 		return []Failure{{Expectation: "setup", Message: err.Error()}}

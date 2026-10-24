@@ -1,0 +1,37 @@
+name: start-invitation-cancel
+description: Neither identity inspection nor a complete opening review publishes personal files when cancelled.
+source: docs/decisions/0360-confirmed-invitation-start.md; contracts/invitation/starter/terminal.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+  - run: [onboard-kit, start, --invitation, invitation.zip, --root, ., --home, state]
+    stdin: |
+      cancel
+    expect:
+      exit: 0
+      stdout: {contains: "Identity: choose confirm newcomer or cancel:\n"}
+      stderr:
+        equals: "{\"status\":\"cancelled\",\"code\":\"start.cancelled\",\"message\":\"Opening cancelled before begin; no files were changed.\",\"transaction\":\"\"}\n"
+      files:
+        state: {absent: true}
+        records/newcomer/record.obk.yaml: {absent: true}
+        records/newcomer/preparation.obk.yaml: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, invitation.zip]
+  - run: [onboard-kit, start, --root=., --home=state, --invitation=invitation.zip]
+    stdin: |
+      confirm newcomer
+      cancel
+    expect:
+      exit: 0
+      stdout: {contains: "Review complete. Choose begin or cancel:\n"}
+      stderr: {json: {status: cancelled, code: start.cancelled, transaction: ""}}
+      files:
+        state: {absent: true}
+        records/newcomer/record.obk.yaml: {absent: true}
+        records/newcomer/preparation.obk.yaml: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, invitation.zip]

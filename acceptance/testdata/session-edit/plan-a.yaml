@@ -1,0 +1,22 @@
+schemaVersion: 1
+id: plan-one
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+      email: owner@example.invalid
+answers:
+  sections:
+    personal:
+      choice: org-a
+sections:
+  - id: personal
+    title: Personal choices
+    summary: Use $choice.
+    variables:
+      - name: choice
+        type: string
+        audience: onboardee
+  - id: access
+    title: Access
+    summary: Request access

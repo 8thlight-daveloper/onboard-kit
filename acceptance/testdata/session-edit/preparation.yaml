@@ -1,0 +1,6 @@
+schemaVersion: 1
+kind: preparation
+account: newcomer
+planId: plan-one
+recipient:
+  onboardingOwner: owner

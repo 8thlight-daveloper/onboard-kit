@@ -15,6 +15,9 @@ import (
 var fakeBinaryPath string
 
 func TestMain(m *testing.M) {
+	if captureFixtureDispatch() {
+		return
+	}
 	directory, err := os.MkdirTemp("", "fake-binary-*")
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

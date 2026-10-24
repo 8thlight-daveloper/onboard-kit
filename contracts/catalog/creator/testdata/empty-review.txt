@@ -1,0 +1,11 @@
+Catalog review — not saved. Saving does not establish invitation readiness.
+Plan: "plan-one"
+Destination: @OUT@
+Problems: 0
+Plan file:
+  | "schemaVersion: 1"
+  | "id: plan-one"
+  | ""
+Preparation guidance: 0
+Preparation guidance is advisory; no personal arrangement or activity is completed.
+Review complete. Choose save, back, or cancel:

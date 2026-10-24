@@ -1,0 +1,6 @@
+Usage: onboard-kit session edit --root ABSROOT --home ABSHOME --session KEY
+
+Review one explicit newcomer answer, follow-plan choice, or outcome and separately save the selected record.
+No commands or checks run. Plan, preparation, registration and first-use data are retained.
+Interrupted private staging is preserved and requires repair; this command never replays or automatically deletes it.
+Native preservation may refuse unsupported metadata. Atomic record replacement is not power-loss or hostile-owner protection.

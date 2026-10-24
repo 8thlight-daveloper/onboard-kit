@@ -7,7 +7,9 @@ import (
 )
 
 type yamlScalarExpectation struct {
-	path []string
+	path   []string
+	kind   string
+	equals string
 }
 
 func decodeYAMLScalars(node *yaml.Node) ([]yamlScalarExpectation, error) {
@@ -36,28 +38,41 @@ func decodeYAMLScalar(node *yaml.Node) (yamlScalarExpectation, error) {
 	if node.Kind != yaml.MappingNode || len(node.Content) != 4 {
 		return yamlScalarExpectation{}, errors.New("a yaml-scalars predicate requires path and utc-timestamp")
 	}
-	var path, timestamp *yaml.Node
+	var path, predicate *yaml.Node
+	kind := ""
 	for index := 0; index < len(node.Content); index += 2 {
 		switch node.Content[index].Value {
 		case "path":
 			path = node.Content[index+1]
-		case "utc-timestamp":
-			timestamp = node.Content[index+1]
+		case "utc-timestamp", "equals", "absent":
+			if predicate != nil {
+				return yamlScalarExpectation{}, errors.New("multiple predicates")
+			}
+			kind, predicate = node.Content[index].Value, node.Content[index+1]
 		default:
 			return yamlScalarExpectation{}, errors.New("unknown yaml-scalars predicate field")
 		}
 	}
-	if path == nil || timestamp == nil {
+	if path == nil || predicate == nil {
 		return yamlScalarExpectation{}, errors.New("a yaml-scalars predicate requires path and utc-timestamp")
 	}
-	var enabled bool
-	if timestamp.Kind != yaml.ScalarNode || timestamp.ShortTag() != "!!bool" || timestamp.Decode(&enabled) != nil || !enabled {
-		return yamlScalarExpectation{}, errors.New("utc-timestamp must be the YAML boolean true")
+	if kind == "equals" {
+		if predicate.Kind != yaml.ScalarNode || predicate.ShortTag() != "!!str" {
+			return yamlScalarExpectation{}, errors.New("equals must be a YAML string")
+		}
+	} else {
+		var enabled bool
+		if predicate.Kind != yaml.ScalarNode || predicate.ShortTag() != "!!bool" || predicate.Decode(&enabled) != nil || !enabled {
+			return yamlScalarExpectation{}, errors.New("predicate must be the YAML boolean true")
+		}
 	}
 	if path.Kind != yaml.SequenceNode || len(path.Content) == 0 {
 		return yamlScalarExpectation{}, errors.New("path must be a nonempty sequence")
 	}
-	result := yamlScalarExpectation{path: make([]string, 0, len(path.Content))}
+	result := yamlScalarExpectation{path: make([]string, 0, len(path.Content)), kind: kind}
+	if kind == "equals" {
+		result.equals = predicate.Value
+	}
 	for _, item := range path.Content {
 		if item.Kind != yaml.ScalarNode || item.ShortTag() != "!!str" || item.Value == "" {
 			return yamlScalarExpectation{}, errors.New("path items must be nonempty YAML strings")

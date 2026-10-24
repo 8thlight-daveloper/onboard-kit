@@ -1,0 +1,53 @@
+name: start-invitation-fresh-reopen
+description: An exported invitation begins a read-only session and reopening preserves the existing personal record.
+source: docs/reference/acceptance-yaml-scalar-assertions.md; docs/decisions/0360-confirmed-invitation-start.md; docs/decisions/0400-invitation-start-protocol.md; contracts/invitation/starter/terminal.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      unrelated.txt: "UNRELATED WORK\n"
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+      files:
+        invitation.zip: {}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated.txt]
+  - run: [onboard-kit, start, --home=state, --root=., --invitation=invitation.zip]
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 0
+      stdout: {contains: "Read-only onboarding session.\n"}
+      stderr:
+        json:
+          status: opened
+          code: start.opened
+          message: Opening completed and the read-only session was displayed.
+      files:
+        records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - path: [firstOpenedAt]
+              utc-timestamp: true
+        records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+        state/import-pending/pending.json: {absent: true}
+        state/import-pending/owner.json: {absent: true}
+        state/import-pending/publication.json: {absent: true}
+        state/import-pending/complete.json: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated.txt, invitation.zip]
+  - run: [onboard-kit, start, --root, ., --invitation, invitation.zip, --home, state]
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 0
+      stdout: {contains: "First use: the existing event is preserved; an empty event stays unknown.\n"}
+      stderr: {json: {status: opened, code: start.opened}}
+      files:
+        records/newcomer/record.obk.yaml: {}
+        records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+        state/import-pending/pending.json: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, unrelated.txt, invitation.zip, records/newcomer/record.obk.yaml, records/newcomer/preparation.obk.yaml]

@@ -1,0 +1,26 @@
+name: start-invitation-existing-event
+description: Opening an existing record preserves its literal event, comments and unrelated owner data without canonicalization.
+source: docs/decisions/0230-first-use-record-compatibility.md; docs/decisions/0360-confirmed-invitation-start.md; contracts/invitation/starter/storage.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+      records/newcomer/record.obk.yaml: {from: acceptance/testdata/start-invitation/existing-event.yaml}
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+      unchanged: [records/newcomer/record.obk.yaml]
+  - run: [onboard-kit, start, --invitation, invitation.zip, --root, ., --home, state]
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 0
+      stdout: {contains: "First opened at: \"2026-10-01T09:30:00+00:00\"\n"}
+      stderr: {json: {status: opened, code: start.opened}}
+      files:
+        records/newcomer/record.obk.yaml: {same-as: acceptance/testdata/start-invitation/existing-event.yaml}
+        records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, invitation.zip, records/newcomer/record.obk.yaml]

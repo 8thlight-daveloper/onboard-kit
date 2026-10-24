@@ -1,0 +1,28 @@
+add
+repository-access
+repository-b
+add
+document-reading
+reading-b
+add
+repository-access
+repository-a
+add
+document-reading
+reading-a
+bind
+repository-a
+repository_scope
+text
+first repository
+bind
+repository-b
+repository_scope
+deferred
+bind
+reading-a
+reading_material
+text
+current guide
+review
+save

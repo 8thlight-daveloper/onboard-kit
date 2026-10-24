@@ -3,8 +3,9 @@
 Status: all eighty entries are compiled into the executable and available offline.
 
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) requires the
-full catalog in the binary. This reference specifies coverage and the read-only
-availability commands. Guided selection and record-backed workflows remain planned.
+full catalog in the binary. This reference specifies coverage, read-only
+availability, reviewed plan creation and existing-plan edits. Personal answers
+and outcomes use the separate [record editing command](session-edit.md).
 
 [0320](../decisions/0320-embedded-catalog-availability.md) divides offline
 availability into 59 section templates, 19 onboarder preparation guides and
@@ -40,6 +41,44 @@ Existing custom-template loading remains available through `new` and `walk`.
 Availability does not select activities, fill in organizational facts, generate
 personal preparation, or expand repeated activities. The onboarder still supplies
 the routes, contacts and policies requested by the section's questions.
+
+## Selecting and editing activities
+
+```sh
+onboard-kit catalog create --id team-onboarding --out plan.obk.yaml
+onboard-kit catalog edit --plan plan.obk.yaml
+```
+
+Creation stages explicit selections and shared facts in memory. Use add to select
+an exact section source and give it a permanent activity ID. Select a source more
+than once with different IDs for independent repositories, readings or other
+repeated activities. Bind supplies a known shared fact; unbind removes a draft
+binding. Remove discards a never-published draft selection. Review displays the
+actual complete plan bytes and relevant preparation guidance; save creates that
+new file exclusively. Cancel or incomplete consent publishes nothing. An existing
+destination is never overwritten. The command does not generate personal files.
+
+Editing loads only the explicitly selected plan. Stage add, submit, unset,
+retire or reactivate; drop removes a staged operation. Review judges the whole
+ordered batch and displays original and proposed bytes before save. Retirement
+disables the held activity without freeing its ID or deleting its facts or
+baseline. Reactivation restores that same identity, not a new resource. A new
+independent resource needs a new ID. Personal answers and outcomes are untouched.
+
+Only supported private existing plans may be replaced: an effective-owned,
+single-link0600 regular file in an owned directory without group/other write,
+with fully inspectable supported native metadata. The command refuses unsupported
+controls rather than changing permissions or stripping metadata to qualify.
+Ordinary0755 or0700 parents are supported. On the verified macOS profile, native
+provenance is retained exactly; other attributes, ACLs and file flags refuse.
+The current editing profile also refuses ACL-bearing ancestors. A standard
+macOS home directory can have an ACL, so an otherwise private plan below that
+directory may be refused. Do not remove existing ACLs to make editing work;
+support for those ancestors needs a separate contract decision and tests.
+An observed source change after review requires a fresh invocation and review.
+No-op saves retain original bytes and inode. Changed saves visibly canonicalize
+YAML through the actual encoder. Neither command executes authored instructions,
+grants access, records outcomes or certifies invitation readiness.
 
 ## Reading the catalog
 

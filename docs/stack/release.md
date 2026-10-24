@@ -37,6 +37,12 @@ runner receives the artifact's absolute path and does not rebuild it. Its
 SHA-256 checksum must be the same before and after the scenarios. A successful
 run prints that checksum. A failure exits nonzero without claiming verification.
 
+Runtime workspaces use the physical system temporary hierarchy outside the
+checkout, not an inherited temporary override pointing into it. The verifier
+establishes effective group ownership only on its own new empty private directory
+before writing anything inside it. Existing parent controls and application
+safety checks are unchanged. See [0490](../decisions/0490-release-runtime-workspace.md).
+
 To check an existing artifact without rebuilding it:
 
 ```sh

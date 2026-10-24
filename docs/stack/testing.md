@@ -22,6 +22,14 @@ Whole-binary scenarios may inspect ordered ZIP payloads and metadata with the
 [ZIP file assertions](../reference/acceptance-zip-assertions.md). The checker
 reads bounded bytes and never extracts entries or imports product codecs.
 
+### Captured values between steps
+
+[Bounded captures](../reference/acceptance-captures.md) let a later command use
+actual earlier output artifacts without product-specific test flags or imports.
+Only prior named values and the physical sandbox path are interpolated, once.
+Native paths remain local and no-follow; extension-enabled diagnostics omit
+captured personal values. See [0480](../decisions/0480-bounded-acceptance-captures.md).
+
 ### Accepted survivors
 
 [0130](../decisions/0130-survivor-risk-acceptance.md) authorizes agent-only risk

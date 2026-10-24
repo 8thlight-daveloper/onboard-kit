@@ -1,0 +1,5 @@
+Usage: onboard-kit catalog create --id ID --out FILE
+
+Stage explicit activity instances and shared facts, review, and save one new plan.
+Existing plans, preparation and newcomer records are not changed.
+Choose sources with catalog list and catalog show --id ID.

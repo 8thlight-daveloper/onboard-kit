@@ -1,0 +1,8 @@
+Catalog draft — not saved.
+Shared organization facts only; no personal preparation or records are read or changed.
+Do not enter secrets or unnecessary personal information. Terminal scrollback can retain entered facts.
+Interaction limit: 1048576 input bytes total; 65536 bytes per logical line. No partial save.
+Choose source IDs with catalog list; inspect content with catalog show --id ID.
+Plan: @ID@
+Destination: @OUT@
+Draft — not saved. Choose add, bind, unbind, remove, review, or cancel:

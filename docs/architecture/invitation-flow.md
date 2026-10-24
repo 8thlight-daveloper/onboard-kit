@@ -1,7 +1,8 @@
 # Invitation and preparation flow
 
-Status: guided recipient/support preparation and explicit export implemented;
-confirmed import and record-backed startup remain planned.
+Status: guided recipient/support preparation, explicit export, confirmed import
+and read-only record-backed startup implemented. A separate explicit registered
+session route saves personal answers and outcomes after review and consent.
 
 Decisions [0140](../decisions/0140-person-specific-preparation.md) and
 [0150](../decisions/0150-onboarding-library-and-preparation-flow.md) establish
@@ -39,7 +40,7 @@ the location beside the record, and which values are assignments rather than
 newcomer-owned answers. Decide how start date and existing invitation seeds
 relate to preparation without silently moving existing fields. Under
 [0180](../decisions/0180-first-onboarding-use.md), preparation uses plannedStartDate;
-first confirmed onboarding use will record firstOpenedAt without an actual-date
+first confirmed onboarding use records firstOpenedAt without an actual-date
 question. Existing record dates remain untouched in this increment.
 
 Specify serialization, validation, and the view that combines the three inputs.
@@ -54,7 +55,8 @@ wrong person or plan. Do not introduce an unrestricted generic overlay map.
 
 The pure editor, [command flow](../reference/preparation-command.md), combined
 preparation/outcome view and guided recipient/support forms are implemented.
-Guided export selection and invitation import remain later work.
+Guided export selection remains later work. Confirmed invitation opening is
+implemented as described below.
 Provide an onboarder view scoped to one person. Show missing assignments and
 requests separately from verified newcomer outcomes. Saving preparation must
 not rewrite the record or shared plan. Loading later preparation changes must
@@ -74,8 +76,9 @@ Bootstrap markers, declared prerequisite validation, applicability, global actio
 scheduling, and flat contextual fragments are implemented under
 [0260](../decisions/0260-prerequisites-and-action-order.md). Ordinary reference
 documents also show explicit prerequisites without becoming action sequences.
-Export packages the first-steps guide. Outcome-verification gates in command
-sessions and record-backed startup remain required.
+Export packages the first-steps guide. Record-backed startup is read-only;
+outcome publication and verification gates are implemented in the separate
+[record editing route](../reference/session-edit.md).
 
 The pure first steps assembler now wraps the real bootstrap fragment with
 standard help under [0280](../decisions/0280-first-steps-help-and-sources.md).
@@ -89,7 +92,7 @@ not publish outcomes or start a record-backed command session.
 command with explicit pre-access help designation, identity-only seed and
 exclusive archive publication. The command and independent binary scenarios
 are implemented; see [invitation export](../reference/invitation-export.md).
-It does not settle confirmed import or preparation-answer bindings.
+Export itself authorizes neither import nor preparation-answer bindings.
 
 The recipient guide uses the same preparation format and editor with an
 explicit reviewed save. The read-only
@@ -113,21 +116,25 @@ archives, missing company access, and existing records. Define stale or conflict
 preparation import behavior before implementing it; do not silently replace a
 newer preparation copy with an older invitation.
 
-[0360](../decisions/0360-confirmed-invitation-start.md) selects the next confirmed
+[0360](../decisions/0360-confirmed-invitation-start.md) selects the confirmed
 start boundary: retain local preparation, review actual record reconciliation,
 recover interrupted multi-file publication and enter a read-only record-backed
 session. First use belongs to that confirmed beginning, not archive inspection.
 The independent whole-plan declaration validator under
-[0370](../decisions/0370-plan-authoring-validation.md) is implemented. Confirmed
-import and startup composition remain pending; no import command is advertised.
+[0370](../decisions/0370-plan-authoring-validation.md) is implemented.
 [0380](../decisions/0380-invitation-review.md) separates pure content review from
-that starter's filesystem transaction. Its planned reviewer retains local
+that starter's filesystem transaction. Its implemented reviewer retains local
 preparation, guards held ownership/history, uses actual reconciliation and the
 real walker, and finalizes a supplied first-use event without reading a clock.
 Its independent contract covers content review and the exact conservative
 resource admission rules under [0390](../decisions/0390-invitation-resource-admission.md).
-Independent implementation and hardening remain pending. Publication work follows
-that prerequisite.
+The reviewer and separate starter have independent implementations and fixtures.
+The [opening command](../reference/invitation-start.md) uses explicit identity,
+review and begin before guarded publication. Its recovery route uses the frozen
+approved proposal without a ZIP or a new clock sample. Native observation limits
+remain in the starter fixture scope; successful ordinary tests do not prove
+every interruption window. Record-backed answer and outcome writes use the
+separate native editor under [0460](../decisions/0460-record-backed-session.md).
 
 Update standard first-steps wording to explain all three artifacts, initial help,
 and what works before company access. The person must not need access to the
@@ -148,14 +155,23 @@ Compiled availability and its read-only catalog command are implemented. Binary
 scenarios check all eighty exported entries without adjacent catalog files. This
 does not imply selected activities or generated personal preparation.
 
+The implemented pure creation core under
+[0410](../decisions/0410-explicit-catalog-instances.md) materializes explicit
+permanent instances and returns relevant advisory preparation. It performs no
+save or existing-plan edit. The separate reviewed creator publishes new plans;
+the reviewed catalog edit guide replaces existing supported private plans.
+
 Add organization and team selection through an approved format. Including a
 newcomer activity surfaces its preparation; unrelated preparation stays out.
 Do not ask newcomers to supply organizational facts merely to fill a template.
 
 ### 5. Repeated activities
 
-Define stable identities for configured repositories, documents, introductions,
-and other independent instances. Test reorder, add, and remove operations with
+Explicit stable identities and graph-free repeated creation are specified under
+0410\. Existing-plan editing, retirement and reviewed save are implemented under
+[0440](../decisions/0440-stable-catalog-instance-editing.md) and
+[0450](../decisions/0450-reviewed-existing-catalog-edit.md).
+Test reorder, add, and retire operations with
 existing outcomes. A list index or mutable display title must not reassign
 someone's progress to a different resource.
 

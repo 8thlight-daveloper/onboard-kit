@@ -1,0 +1,59 @@
+name: record-backed-session-explicit-ownership
+description: Actual binary creates registration, accepts equal ownership, follows a changed plan, and records an attestation.
+source: docs/decisions/0090-plan-and-onboarding-record.md; docs/decisions/0460-record-backed-session.md; contracts/session/editor/contract.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.yaml, --preparation, preparation.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.yaml: {from: acceptance/testdata/session-edit/plan-a.yaml}
+      preparation.yaml: {from: acceptance/testdata/session-edit/preparation.yaml}
+      root/.keep: "fixture root\n"
+    expect: {exit: 0}
+  - run: [onboard-kit, start, --invitation, '${SANDBOX}/invitation.zip', --root, '${SANDBOX}/root', --home, '${SANDBOX}/state']
+    stdin: "confirm newcomer\nbegin\nexit\n"
+    expect: {exit: 0}
+    capture:
+      SESSION: {unique-directory-entry: state/sessions}
+      FIRST: {yaml-scalar: {file: root/records/newcomer/record.obk.yaml, path: [firstOpenedAt]}}
+      REFERENCE: {yaml-scalar: {file: root/records/newcomer/record.obk.yaml, path: [plan, hash]}}
+  - run: [onboard-kit, session, edit, --root, '${SANDBOX}/root', --home, '${SANDBOX}/state', --session, '${SESSION}']
+    stdin: "confirm \"newcomer\"\nanswer personal.choice text \"org-a\"\nsave\n"
+    expect:
+      exit: 0
+      stdout: {contains: "Stored override after save: true\n"}
+      stderr: {json: {status: saved, code: edit.saved, message: The selected record change was saved., saved: true}}
+      unchanged: ['state/sessions/${SESSION}/plan.obk.yaml', 'state/sessions/${SESSION}/session.json', root/records/newcomer/preparation.obk.yaml]
+      files:
+        root/records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - {path: [answers, sections, personal, choice], equals: org-a}
+            - {path: [firstOpenedAt], equals: '${FIRST}'}
+            - {path: [plan, hash], equals: '${REFERENCE}'}
+  - run: [onboard-kit, session, edit, --root, '${SANDBOX}/root', --home, '${SANDBOX}/state', --session, '${SESSION}']
+    files:
+      'state/sessions/${SESSION}/plan.obk.yaml': {from: acceptance/testdata/session-edit/plan-b.yaml}
+    stdin: "confirm \"newcomer\"\nfollow-plan personal.choice\nsave\n"
+    expect:
+      exit: 0
+      stdout: {contains: 'After answer: text "org-b"'}
+      unchanged: ['state/sessions/${SESSION}/plan.obk.yaml', 'state/sessions/${SESSION}/session.json', root/records/newcomer/preparation.obk.yaml]
+      files:
+        root/records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - {path: [answers, sections, personal, choice], absent: true}
+            - {path: [firstOpenedAt], equals: '${FIRST}'}
+            - {path: [plan, hash], equals: '${REFERENCE}'}
+  - run: [onboard-kit, session, edit, --root, '${SANDBOX}/root', --home, '${SANDBOX}/state', --session, '${SESSION}']
+    stdin: "confirm \"newcomer\"\noutcome access verified \"\" \"\"\nsave\n"
+    expect:
+      exit: 0
+      stdout: {contains: 'New outcome time: sampled after save'}
+      unchanged: ['state/sessions/${SESSION}/plan.obk.yaml', 'state/sessions/${SESSION}/session.json', root/records/newcomer/preparation.obk.yaml]
+      files:
+        root/records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - {path: [outcomes, '0', section], equals: access}
+            - {path: [outcomes, '0', outcome], equals: verified}
+            - {path: [outcomes, '0', on], utc-timestamp: true}
+            - {path: [outcomes, '0', sectionHash], equals: 6c0301d995d0a3b0dab95a641a087120c5266746e59c50d934c575e135ca2fdc}
+            - {path: [firstOpenedAt], equals: '${FIRST}'}
+            - {path: [plan, hash], equals: '${REFERENCE}'}

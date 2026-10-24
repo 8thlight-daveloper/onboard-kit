@@ -7,6 +7,7 @@ import (
 	"io"
 	"os"
 	"regexp"
+	"strconv"
 	"time"
 	"unicode/utf8"
 
@@ -37,7 +38,7 @@ func checkYAMLScalarFile(path string, predicates []yamlScalarExpectation, folder
 	}
 	var failures []Failure
 	for index, predicate := range predicates {
-		if reason := yamlScalarMismatch(root, predicate.path); reason != "" {
+		if reason := yamlPredicateMismatch(root, predicate); reason != "" {
 			failures = append(failures, Failure{Expectation: label, Message: fmt.Sprintf("predicate %d: %s", index+1, reason)})
 		}
 	}
@@ -99,25 +100,71 @@ func decodeYAMLScalarDocument(content []byte) (*yaml.Node, error) {
 }
 
 func yamlScalarMismatch(root *yaml.Node, path []string) string {
+	return yamlPredicateMismatch(root, yamlScalarExpectation{path: path, kind: "utc-timestamp"})
+}
+
+func selectYAML(root *yaml.Node, path []string) (*yaml.Node, bool, error) {
 	selected := root
 	for _, part := range path {
-		if selected.Kind != yaml.MappingNode {
-			return "path requires a mapping"
-		}
-		var next *yaml.Node
-		for index := 0; index+1 < len(selected.Content); index += 2 {
-			if selected.Content[index].Value == part {
-				next = selected.Content[index+1]
-				break
+		switch selected.Kind {
+		case yaml.MappingNode:
+			var next *yaml.Node
+			for index := 0; index+1 < len(selected.Content); index += 2 {
+				if selected.Content[index].Value == part {
+					next = selected.Content[index+1]
+					break
+				}
 			}
+			if next == nil {
+				return nil, false, nil
+			}
+			selected = next
+		case yaml.SequenceNode:
+			if part == "" || (len(part) > 1 && part[0] == '0') {
+				return nil, false, errors.New("invalid sequence index")
+			}
+			for _, character := range part {
+				if character < '0' || character > '9' {
+					return nil, false, errors.New("invalid sequence index")
+				}
+			}
+			index, err := strconv.ParseUint(part, 10, 63)
+			if err != nil {
+				return nil, false, errors.New("invalid sequence index")
+			}
+			if index >= uint64(len(selected.Content)) {
+				return nil, false, nil
+			}
+			selected = selected.Content[int(index)]
+		default:
+			return nil, false, errors.New("invalid path traversal")
 		}
-		if next == nil {
-			return "missing path"
+	}
+	return selected, true, nil
+}
+
+func yamlPredicateMismatch(root *yaml.Node, predicate yamlScalarExpectation) string {
+	selected, present, err := selectYAML(root, predicate.path)
+	if err != nil {
+		return err.Error()
+	}
+	if predicate.kind == "absent" {
+		if !present {
+			return ""
 		}
-		selected = next
+		return "path is present"
+	}
+	if !present {
+		return "missing path"
 	}
 	if selected.Kind != yaml.ScalarNode || selected.ShortTag() != "!!str" {
 		return "selected value must be a YAML string scalar"
+	}
+	if predicate.kind == "equals" {
+		if selected.Value == predicate.equals {
+			return ""
+		}
+		return "selected value differs"
 	}
 	if !utcTimestampShape.MatchString(selected.Value) || selected.Value[:4] == "0000" {
 		return "invalid UTC timestamp"

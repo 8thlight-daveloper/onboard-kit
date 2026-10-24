@@ -1,0 +1,80 @@
+name: catalog-create-repeated
+description: Repeated reading and repository activities retain explicit permanent identities and independently bound shared facts in an ordinary plan.
+source: docs/decisions/0410-explicit-catalog-instances.md
+steps:
+  - run: [onboard-kit, catalog, list]
+    expect:
+      exit: 0
+      stdout: {contains: repository-access}
+  - run: [onboard-kit, catalog, show, --id, document-reading]
+    expect:
+      exit: 0
+      stdout: {contains: reading_material}
+  - run: [onboard-kit, catalog, create, --id, repeated, --out, repeated.obk.yaml]
+    files:
+      preparation.obk.yaml: "PRESERVE PREPARATION\n"
+      record.obk.yaml: "PRESERVE RECORD\n"
+    stdin: |
+      add
+      repository-access
+      repository-b
+      add
+      document-reading
+      reading-b
+      add
+      repository-access
+      repository-a
+      add
+      document-reading
+      reading-a
+      bind
+      repository-a
+      repository_scope
+      text
+      first repository
+      bind
+      repository-a
+      repository_grant_route
+      text
+      ask the first repository maintainer
+      bind
+      repository-b
+      repository_scope
+      text
+      second repository
+      bind
+      repository-b
+      repository_grant_route
+      text
+      ask the second repository maintainer
+      bind
+      reading-a
+      reading_material
+      text
+      first guide
+      bind
+      reading-a
+      reading_questions
+      text
+      discuss the first guide
+      bind
+      reading-b
+      reading_material
+      text
+      second guide
+      bind
+      reading-b
+      reading_questions
+      text
+      discuss the second guide
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: "Guide: \"resource-access-arrange\"\nInstance reasons: 2\n  - \"repository-a\"\n  - \"repository-b\""}
+      stderr: {json: {status: written, code: create.written}}
+      unchanged: [preparation.obk.yaml, record.obk.yaml]
+  - run: [onboard-kit, assemble, --plan, repeated.obk.yaml, --out, onboarding.md]
+    expect:
+      exit: 0
+      unchanged: [repeated.obk.yaml, preparation.obk.yaml, record.obk.yaml]

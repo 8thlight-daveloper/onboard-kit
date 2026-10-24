@@ -1,0 +1,9 @@
+Catalog edit review — not saved. No personal work or outcomes are changed.
+Plan: @PLAN@
+Operations: 1
+  - 1 Kind: "retire" Instance: "resource-old"
+@ORIGINAL@@PROPOSED@Save action: replace.
+Problems: 0
+Preparation guidance for newly added instances only: 0
+Advice includes retired new additions; no arrangement or activity is completed.
+Review complete. Choose save, back, or cancel:

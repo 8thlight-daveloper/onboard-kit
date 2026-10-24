@@ -1,0 +1,9 @@
+[
+  {"Stage":"add-plan","Path":"operations[0]","Code":"directory.contact-unreachable","Severity":"warning","Message":"Repair the indicated new instance or ask the catalog maintainer."},
+  {"Stage":"add-plan","Path":"operations[0]","Code":"directory.role-vacant","Severity":"warning","Message":"Repair the indicated new instance or ask the catalog maintainer."},
+  {"Stage":"add-plan","Path":"operations[1]","Code":"directory.contact-unreachable","Severity":"warning","Message":"Repair the indicated new instance or ask the catalog maintainer."},
+  {"Stage":"add-plan","Path":"operations[1]","Code":"directory.role-vacant","Severity":"warning","Message":"Repair the indicated new instance or ask the catalog maintainer."},
+  {"Stage":"final-plan","Path":"plan","Code":"directory.contact-unreachable","Severity":"warning","Message":"Repair the plan's reported structure or stored facts before editing."},
+  {"Stage":"final-plan","Path":"plan","Code":"directory.role-vacant","Severity":"warning","Message":"Repair the plan's reported structure or stored facts before editing."},
+  {"Stage":"final-plan","Path":"plan","Code":"answer.unknown-question","Severity":"warning","Message":"Preserve undeclared held answers for explicit history review; submit only declared local questions."}
+]

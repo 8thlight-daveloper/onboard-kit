@@ -1,0 +1,66 @@
+name: start-invitation-routing-arity
+description: Routing follows exact option positions, finite value arity and the standalone option terminator.
+source: docs/decisions/0420-invitation-start-routing.md; contracts/invitation/starter/terminal.md
+steps:
+  - run: [onboard-kit, start, -h, --org-plan=missing.obk.yaml, --invitation=missing.zip]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit start (--invitation FILE | --resume-import TOKEN) --root DIR [--home DIR]
+
+          Inspect an invitation, confirm identity, review, and explicitly begin a read-only session.
+          Existing work is retained or reconciled; no checks, answers, or outcomes are executed or saved.
+      stderr: {equals: ""}
+  - run: [onboard-kit, start, --root=., --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --unknown, --invitation=missing.zip, --org-plan=missing.obk.yaml, --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --, --org-plan=missing.obk.yaml, --home=state, --no-walk]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --no-walk, --invitation=missing.zip, --root=., --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --home=prefix=--org-plan, --root=., --invitation=missing.zip]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.source, transaction: ""}}
+      files:
+        prefix=--org-plan: {absent: true}
+  - run: [onboard-kit, start, -resume-import=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, --root=., --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, -home, --invitation, --org-plan=legacy.obk.yaml, --no-walk, --refreshed-on=2026-10-16]
+    files:
+      legacy.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    expect:
+      exit: 0
+      stdout: {contains: acme-corp.obk.yaml}
+      files:
+        --invitation/acme-corp.obk.yaml: {}
+        --invitation/acme-corp.org.obk.yaml: {}
+      unchanged: [legacy.obk.yaml]

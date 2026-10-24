@@ -1,0 +1,38 @@
+name: catalog-create-reviewed
+description: An explicit complete review creates one ordinary plan without touching personal artifacts or overwriting an existing plan.
+source: docs/decisions/0430-reviewed-catalog-creation.md
+steps:
+  - run: [onboard-kit, catalog, create, --id, plan-one, --out, created.obk.yaml]
+    files:
+      preparation.obk.yaml: "PRESERVE PREPARATION\n"
+      record.obk.yaml: "PRESERVE RECORD\n"
+    stdin: |
+      review
+      save
+      MUST NOT READ
+    expect:
+      exit: 0
+      stdout: {contains: "Review complete. Choose save, back, or cancel:"}
+      stderr: {json: {status: written, code: create.written, message: The reviewed organization plan was created.}}
+      files:
+        created.obk.yaml: {same-as: contracts/catalog/creator/testdata/empty-plan.yaml}
+      unchanged: [preparation.obk.yaml, record.obk.yaml]
+  - run: [onboard-kit, catalog, create, --id, different, --out, created.obk.yaml]
+    stdin: |
+      review
+      save
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: create.path}}
+      unchanged: [created.obk.yaml, preparation.obk.yaml, record.obk.yaml]
+  - run: [onboard-kit, catalog, create, --id, cancelled, --out, cancelled.obk.yaml]
+    stdin: |
+      review
+      cancel
+    expect:
+      exit: 0
+      stderr: {json: {status: cancelled, code: create.cancelled}}
+      files:
+        cancelled.obk.yaml: {absent: true}
+      unchanged: [created.obk.yaml, preparation.obk.yaml, record.obk.yaml]

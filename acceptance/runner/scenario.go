@@ -20,15 +20,35 @@ type Scenario struct {
 }
 
 type Step struct {
-	Run    []string              `yaml:"run"`
-	Files  map[string]FileSource `yaml:"files"`
-	Stdin  string                `yaml:"stdin"`
-	Talk   []Exchange            `yaml:"talk"`
-	Expect Expectation           `yaml:"expect"`
+	Run     []string              `yaml:"run"`
+	Files   map[string]FileSource `yaml:"files"`
+	Stdin   string                `yaml:"stdin"`
+	Talk    []Exchange            `yaml:"talk"`
+	Expect  Expectation           `yaml:"expect"`
+	Capture map[string]Capture    `yaml:"capture"`
 }
 
 func (step Step) IsStdio() bool {
 	return step.Talk != nil
+}
+
+func (step *Step) UnmarshalYAML(node *yaml.Node) error {
+	return decodeFields(node, map[string]func(*yaml.Node) error{
+		"run":    func(value *yaml.Node) error { return value.Decode(&step.Run) },
+		"files":  func(value *yaml.Node) error { return value.Decode(&step.Files) },
+		"stdin":  func(value *yaml.Node) error { return value.Decode(&step.Stdin) },
+		"talk":   func(value *yaml.Node) error { return value.Decode(&step.Talk) },
+		"expect": func(value *yaml.Node) error { return value.Decode(&step.Expect) },
+		"capture": func(value *yaml.Node) error {
+			if value.Kind != yaml.MappingNode || len(value.Content) == 0 {
+				return errors.New("Capture schema is invalid.")
+			}
+			if err := validateYAMLNodes(value); err != nil {
+				return errors.New("Capture schema is invalid.")
+			}
+			return value.Decode(&step.Capture)
+		},
+	})
 }
 
 type FileSource struct {
@@ -84,6 +104,14 @@ func Load(path string) (Scenario, error) {
 }
 
 func Parse(data []byte) (Scenario, error) {
+	scenario, err := parseScenario(data)
+	if err != nil && extensionInDocument(data) {
+		return Scenario{}, errors.New("Scenario schema is invalid.")
+	}
+	return scenario, err
+}
+
+func parseScenario(data []byte) (Scenario, error) {
 	var scenario Scenario
 	decoder := yaml.NewDecoder(bytes.NewReader(data))
 	decoder.KnownFields(true)
@@ -96,7 +124,31 @@ func Parse(data []byte) (Scenario, error) {
 	if err := validate(scenario); err != nil {
 		return Scenario{}, err
 	}
+	if extensionEnabled(scenario) {
+		var document yaml.Node
+		parser := yaml.NewDecoder(bytes.NewReader(data))
+		if parser.Decode(&document) != nil || validateYAMLNodes(&document) != nil {
+			return Scenario{}, errors.New("Scenario schema is invalid.")
+		}
+		var extra yaml.Node
+		if !errors.Is(parser.Decode(&extra), io.EOF) {
+			return Scenario{}, errors.New("Scenario schema is invalid.")
+		}
+	}
+	if err := validateCaptures(scenario); err != nil {
+		return Scenario{}, err
+	}
 	return scenario, nil
+}
+
+func (expectation *Expectation) UnmarshalYAML(node *yaml.Node) error {
+	return decodeFields(node, map[string]func(*yaml.Node) error{
+		"exit":      func(value *yaml.Node) error { return value.Decode(&expectation.Exit) },
+		"stdout":    func(value *yaml.Node) error { return value.Decode(&expectation.Stdout) },
+		"stderr":    func(value *yaml.Node) error { return value.Decode(&expectation.Stderr) },
+		"files":     func(value *yaml.Node) error { return value.Decode(&expectation.Files) },
+		"unchanged": func(value *yaml.Node) error { return value.Decode(&expectation.Unchanged) },
+	})
 }
 
 func validate(scenario Scenario) error {
@@ -114,7 +166,7 @@ func validate(scenario Scenario) error {
 			return fmt.Errorf("step %d: a step with talk cannot also have stdin", index+1)
 		}
 		for path := range step.Files {
-			if !filepath.IsLocal(path) {
+			if !strings.Contains(path, "${") && !filepath.IsLocal(path) {
 				return fmt.Errorf("step %d: file %q must stay inside the folder", index+1, path)
 			}
 		}

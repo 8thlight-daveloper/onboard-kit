@@ -1,0 +1,6 @@
+schemaVersion: 1
+kind: record
+account: newcomer
+plan:
+  id: other-plan
+  hash: e943f371cfbd4173c2530caf131c1b9cf5a760ae2c8556510fc1c2463c169363

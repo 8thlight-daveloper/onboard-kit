@@ -1,0 +1,86 @@
+name: catalog-edit-reviewed
+description: A normal creator-produced private plan supports explicit reviewed retirement and same-identity reactivation while preserving personal history.
+source: docs/decisions/0450-reviewed-existing-catalog-edit.md
+steps:
+  - run: [onboard-kit, catalog, create, --id, held-plan, --out, plan.obk.yaml]
+    files:
+      record.obk.yaml: {from: contracts/catalog/editguide/testdata/record.yaml}
+      preparation.obk.yaml: {from: contracts/catalog/editguide/testdata/preparation.yaml}
+    stdin: |
+      add
+      repository-access
+      resource-old
+      bind
+      resource-old
+      repository_scope
+      text
+      Original independent repository
+      bind
+      resource-old
+      repository_grant_route
+      text
+      Ask the original grantor
+      review
+      save
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: create.written}}
+      unchanged: [record.obk.yaml, preparation.obk.yaml]
+  - run: [onboard-kit, catalog, edit, --plan, plan.obk.yaml]
+    stdin: |
+      retire
+      resource-old
+      review
+      cancel
+    expect:
+      exit: 0
+      stderr: {json: {status: cancelled, code: edit.cancelled}}
+      unchanged: [plan.obk.yaml, record.obk.yaml, preparation.obk.yaml]
+  - run: [onboard-kit, catalog, edit, --plan, plan.obk.yaml]
+    stdin: |
+      retire
+      resource-old
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: "Save action: replace."}
+      stderr: {json: {status: written, code: edit.written}}
+      unchanged: [record.obk.yaml, preparation.obk.yaml]
+  - run: [onboard-kit, catalog, edit, --plan, plan.obk.yaml]
+    stdin: |
+      reactivate
+      resource-old
+      submit
+      resource-old
+      repository_scope
+      text
+      Same original repository
+      review
+      save
+    expect:
+      exit: 0
+      stdout: {contains: 'Instance: "resource-old"'}
+      stderr: {json: {status: written, code: edit.written}}
+      unchanged: [record.obk.yaml, preparation.obk.yaml]
+  - run: [onboard-kit, catalog, edit, --plan, plan.obk.yaml]
+    stdin: |
+      add
+      document-reading
+      resource-old
+      0
+      review
+      cancel
+    expect:
+      exit: 0
+      stdout: {contains: 'Code: "edit.reserved-id"'}
+      stderr: {json: {status: cancelled, code: edit.cancelled}}
+      unchanged: [plan.obk.yaml, record.obk.yaml, preparation.obk.yaml]
+  - run: [onboard-kit, catalog, edit, --plan, plan.obk.yaml]
+    stdin: |
+      review
+      save
+    expect:
+      exit: 0
+      stderr: {json: {status: unchanged, code: edit.unchanged}}
+      unchanged: [plan.obk.yaml, record.obk.yaml, preparation.obk.yaml]

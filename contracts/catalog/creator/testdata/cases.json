@@ -1,0 +1,12 @@
+[
+  {"name":"empty-save","input":"review\nsave\nTAIL","exit":0,"status":"written","code":"create.written","saved":true,"exactEmptyReview":true,"consumed":12},
+  {"name":"draft-cancel","input":"cancel\nTAIL","exit":0,"status":"cancelled","code":"create.cancelled","saved":false,"consumed":7},
+  {"name":"review-cancel","input":"review\ncancel\nTAIL","exit":0,"status":"cancelled","code":"create.cancelled","saved":false,"exactEmptyReview":true,"consumed":14},
+  {"name":"partial-save","input":"review\nsave","exit":0,"status":"cancelled","code":"create.cancelled","saved":false,"exactEmptyReview":true,"consumed":11},
+  {"name":"save-outside-review","input":"save\ncancel\n","exit":0,"status":"cancelled","code":"create.cancelled","saved":false,"contains":["Choose one of the displayed actions."],"consumed":12},
+  {"name":"back-invalidates-review","input":"review\nback\nsave\ncancel\n","exit":0,"status":"cancelled","code":"create.cancelled","saved":false,"contains":["Choose one of the displayed actions."],"consumed":24},
+  {"name":"carrier-refusal-preserves-empty","input":"add\ninvitation-prepare\nnot-an-activity\nreview\nsave\n","exit":0,"status":"written","code":"create.written","saved":true,"contains":["Change not applied.\nProblems: 1\n  - Stage: \"source\" Path: \"instances[0].sourceId\" Code: \"materialize.carrier\" Severity: \"error\" Repair: \"Select a section-template source for an activity.\"\n"],"consumed":-1},
+  {"name":"literal-empty-text-then-remove","input":"add\nrepository-access\nrepository-a\nbind\nrepository-a\nrepository_scope\ntext\n\nremove\nrepository-a\nreview\nsave\n","exit":0,"status":"written","code":"create.written","saved":true,"consumed":-1},
+  {"name":"invalid-utf8","inputBase64":"/wo=","exit":1,"status":"refused","code":"create.input","saved":false,"consumed":2},
+  {"name":"crlf-save","input":"review\r\nsave\r\nTAIL","exit":0,"status":"written","code":"create.written","saved":true,"exactEmptyReview":true,"consumed":14}
+]

@@ -1,0 +1,43 @@
+name: start-invitation-wrong-identity
+description: Existing records for another account or plan refuse instead of being rebound or overwritten.
+source: docs/decisions/0360-confirmed-invitation-start.md; contracts/invitation/reviewer/contract.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+  - run: [onboard-kit, start, --root, ., --home, state, --invitation, invitation.zip]
+    files:
+      records/newcomer/record.obk.yaml: {from: acceptance/testdata/start-invitation/wrong-account.yaml}
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 1
+      stdout: {contains: "Opening problems:"}
+      stderr: {json: {status: refused, code: start.review, transaction: ""}}
+      files:
+        state: {absent: true}
+        records/newcomer/record.obk.yaml: {same-as: acceptance/testdata/start-invitation/wrong-account.yaml}
+        records/newcomer/preparation.obk.yaml: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, invitation.zip, records/newcomer/record.obk.yaml]
+  - run: [onboard-kit, start, --invitation=invitation.zip, --root=., --home=state]
+    files:
+      records/newcomer/record.obk.yaml: {from: acceptance/testdata/start-invitation/wrong-plan.yaml}
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 1
+      stdout: {contains: "Opening problems:"}
+      stderr: {json: {status: refused, code: start.review, transaction: ""}}
+      files:
+        state: {absent: true}
+        records/newcomer/record.obk.yaml: {same-as: acceptance/testdata/start-invitation/wrong-plan.yaml}
+        records/newcomer/preparation.obk.yaml: {absent: true}
+      unchanged: [source.obk.yaml, preparation.obk.yaml, invitation.zip, records/newcomer/record.obk.yaml]

@@ -47,6 +47,8 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 | Command | Does |
 | -- | -- |
 | `start --org-plan FILE` | Legacy newcomer flow. Copies the organization's plan into their own plan file in a per-user folder (`OBK_HOME` or `--home` change it) and opens the onboardee walkthrough. Running it again reopens their file and refreshes from a changed organization plan |
+| `start --invitation FILE --root DIR [--home DIR]` | Reviews an invitation, confirms identity and publishes approved files only after begin, then displays a read-only record-backed session. See [invitation opening](docs/reference/invitation-start.md) |
+| `start --resume-import TOKEN --root DIR [--home DIR]` | Reviews and resumes or cleans an interrupted invitation opening in the same context; this is not a general onboarding resume command |
 | `walk --plan FILE [--templates DIR] [--audience onboarder\|onboardee]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `q` quits |
 | `assemble --plan FILE [--out FILE]` | Writes a Markdown document from a plan. Gaps go on standard error and in the document's gap table |
 | `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
@@ -54,11 +56,19 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 | `prepare guide --plan FILE --account ID [--root DIR]` | Stages recipient details and support arrangements, previews changes and saves only after explicit review |
 | `invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID` | Publishes a new invitation ZIP with the original plan, preparation, identity-only record seed and first-steps guide. See [invitation export](docs/reference/invitation-export.md) |
 | `catalog list`, `catalog show --id ID`, `catalog export --id ID` | Lists, displays or exports all eighty compiled catalog entries without reading or writing files. See [the catalog](docs/reference/onboarding-catalog.md#using-the-embedded-catalog) |
+| `catalog create --id ID --out FILE` | Selects embedded section templates, assigns permanent activity IDs and shared facts, then creates a new ordinary plan only after a complete review and save. Existing files are never overwritten |
+| `catalog edit --plan FILE` | Stages additions, shared-answer changes, retirement or reactivation in an existing supported private plan; displays the complete changes and saves only after review. Personal files are not read or changed |
+| `session edit --root ABS --home ABS --session KEY` | Reviews one explicit personal answer, follow-plan choice or outcome, then saves only the selected registered record after separate consent. See [record editing](docs/reference/session-edit.md) |
 | `stdio (--plan FILE \| --templates DIR)` | Answers line-delimited JSON requests about a plan, for scripts and tests |
 
 Preparation editing, explicit invitation export, embedded catalog availability and prerequisite graph validation are implemented.
-Invitation ZIP import and the record-backed walkthrough remain planned; start
-and walk still use the legacy plan-file flow, without outcome-verification gates.
+Confirmed invitation opening and its read-only record-backed session are implemented.
+Reviewed catalog creation supports repeated activities with independent identities.
+Reviewed existing-plan edits preserve held identities and reserve retired IDs.
+Record-backed answer editing and outcome publication use a separate explicit route.
+The invitation-to-record binary scenario verifies ownership and first-use preservation.
+The explicit
+legacy start route and walk still use the plan-file flow, without outcome-verification gates.
 
 `just acceptance` builds a development binary and runs the scenarios under
 `acceptance/scenarios/` against it.

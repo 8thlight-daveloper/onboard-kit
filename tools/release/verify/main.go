@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 	"time"
 )
 
@@ -77,11 +78,7 @@ func run(args []string, stdout, stderr io.Writer) error {
 	if err := command(ctx, root, os.Environ(), stdout, stderr, "/usr/bin/codesign", "--verify", "--strict", artifact); err != nil {
 		return err
 	}
-	scratchRoot := filepath.Join(root, ".scratch")
-	if err := os.MkdirAll(scratchRoot, 0o755); err != nil {
-		return err
-	}
-	scratch, err := os.MkdirTemp(scratchRoot, "release-check-")
+	scratch, err := verificationWorkspace(root)
 	if err != nil {
 		return err
 	}
@@ -108,6 +105,54 @@ func run(args []string, stdout, stderr io.Writer) error {
 	}
 	fmt.Fprintf(stdout, "Verified artifact: %s\nSHA-256: %s\n", artifact, after)
 	return nil
+}
+
+func verificationWorkspace(root string) (string, error) {
+	folder, err := os.MkdirTemp("/tmp", "onboard-kit-release-")
+	if err != nil {
+		return "", err
+	}
+	success := false
+	defer func() {
+		if !success {
+			_ = os.Remove(folder)
+		}
+	}()
+	workspace, err := os.Open(folder)
+	if err != nil {
+		return "", err
+	}
+	if err := workspace.Chown(-1, os.Getegid()); err != nil {
+		_ = workspace.Close()
+		return "", err
+	}
+	if err := workspace.Close(); err != nil {
+		return "", err
+	}
+	physical, err := filepath.EvalSymlinks(folder)
+	if err != nil {
+		return "", err
+	}
+	repository, err := filepath.EvalSymlinks(root)
+	if err != nil {
+		return "", err
+	}
+	relative, err := filepath.Rel(repository, physical)
+	if err != nil {
+		return "", err
+	}
+	if relative != ".." && !strings.HasPrefix(relative, ".."+string(os.PathSeparator)) {
+		return "", fmt.Errorf("verification workspace must be outside the repository")
+	}
+	info, err := os.Lstat(physical)
+	if err != nil {
+		return "", err
+	}
+	if !info.IsDir() || info.Mode()&os.ModeSymlink != 0 || info.Mode().Perm() != 0o700 {
+		return "", fmt.Errorf("verification workspace must be a private native directory")
+	}
+	success = true
+	return physical, nil
 }
 
 func isolatedEnvironment(scratch string) ([]string, error) {

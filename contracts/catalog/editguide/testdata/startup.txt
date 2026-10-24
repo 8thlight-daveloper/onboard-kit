@@ -1,0 +1,9 @@
+Catalog edit draft — not saved.
+Only this selected plan may be replaced after complete review and explicit save.
+No record or preparation is read; saved personal answers and outcomes are not edited.
+Existing Submit empty values clear; initial Add bindings retain exact empty values.
+Do not enter secrets or unnecessary personal information. Scrollback may retain shared facts.
+Input limit: 1048576 bytes total; 65536 bytes per logical line.
+Find source IDs with catalog list and catalog show --id ID.
+Plan: @PLAN@
+Edit draft — not saved. Choose add, submit, unset, retire, reactivate, drop, review, or cancel:

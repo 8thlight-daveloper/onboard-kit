@@ -1,0 +1,85 @@
+name: start-invitation-mode-discriminator
+description: Explicit routing rejects mixed modes and does not mistake selector-looking option values for mode selectors.
+source: docs/decisions/0420-invitation-start-routing.md; docs/decisions/0400-invitation-start-protocol.md
+steps:
+  - run: [onboard-kit, start, --invitation=missing.zip, --org-plan=missing.obk.yaml, --root=., --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --org-plan, missing.obk.yaml, --resume-import=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, --root, ., --home, state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --invitation, missing.zip, --root, ., --home, state, --no-walk]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --help, --org-plan=missing.obk.yaml, --invitation=missing.zip]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit start (--invitation FILE | --resume-import TOKEN) --root DIR [--home DIR]
+
+          Inspect an invitation, confirm identity, review, and explicitly begin a read-only session.
+          Existing work is retained or reconciled; no checks, answers, or outcomes are executed or saved.
+      stderr: {equals: ""}
+  - run: [onboard-kit, start]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+  - run: [onboard-kit, start, --unknown, --home, state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --home=--org-plan, --root=., --invitation=missing.zip]
+    expect:
+      exit: 1
+      stderr: {json: {status: refused, code: start.source}}
+      files:
+        --org-plan: {absent: true}
+  - run: [onboard-kit, start, --org-plan=--invitation, --home=legacy-state, --no-walk, --refreshed-on=2026-10-16]
+    files:
+      --invitation: {from: docs/reference/examples/acme/acme.obk.yaml}
+    expect:
+      exit: 0
+      stdout: {contains: acme-corp.obk.yaml}
+      files:
+        legacy-state/acme-corp.obk.yaml: {}
+      unchanged: [--invitation]
+  - run: [onboard-kit, start, --org-plan, --resume-import, --home=legacy-two, --no-walk]
+    files:
+      --resume-import: {from: docs/reference/examples/acme/acme.obk.yaml}
+    expect:
+      exit: 0
+      stdout: {contains: acme-corp.obk.yaml}
+      files:
+        legacy-two/acme-corp.obk.yaml: {}
+      unchanged: [--resume-import]
+  - run: [onboard-kit, start, -org-plan=--invitation, -home=legacy-three, -no-walk, -refreshed-on=2026-10-16]
+    expect:
+      exit: 0
+      stdout: {contains: acme-corp.obk.yaml}
+      files:
+        legacy-three/acme-corp.obk.yaml: {}
+      unchanged: [--invitation]
+  - run: [onboard-kit, start, -invitation=missing.zip, --root=., --home=state]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}

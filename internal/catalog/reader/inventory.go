@@ -955,19 +955,43 @@ func inventory() []definition {
 				"only the supported standalone tool supplied through your organization's\n" +
 				"approved route; this catalog invents no download address or installation command.\n" +
 				"\n" +
-				"Before any future import, the account must be confirmed as yours and proposed\n" +
-				"destinations reviewed. A ZIP entry name is not permission to extract over local\n" +
-				"files. If the account is wrong or you already have newer work, stop and ask the\n" +
-				"owner. Keep existing plan, preparation and record files rather than replacing\n" +
-				"them from an older invitation. Anyone who can read stored records can read\n" +
-				"their answers and notes; keep credentials and unnecessary personal data out.\n" +
+				"Open the invitation with an explicitly selected existing record root:\n" +
 				"\n" +
-				"The supported invite export operation creates a new archive for an onboarder\n" +
-				"to deliver through an approved external channel. It does not send the package,\n" +
-				"import it, confirm identity or record first use. Confirmed invitation import\n" +
-				"and record-backed startup remain staged work. The existing start command is\n" +
-				"a legacy organization-plan flow, not an invitation-ZIP importer. Do not pass\n" +
-				"the archive to it expecting this planned behavior.\n" +
+				"```text\n" +
+				"onboard-kit start --invitation FILE --root DIR [--home DIR]\n" +
+				"```\n" +
+				"\n" +
+				"Confirm the displayed account is yours, then review every proposed destination\n" +
+				"and action. Identity confirmation alone writes nothing. Only choose begin after\n" +
+				"the complete review if you want the proposed opening. Cancel before begin leaves\n" +
+				"your files unchanged. A ZIP entry name is not permission to extract over local\n" +
+				"files. If the account or destinations are wrong, stop and ask the owner.\n" +
+				"\n" +
+				"Existing matching preparation is retained. Existing records are reconciled with\n" +
+				"changes shown in review; their outcomes, notes and first-use history are preserved.\n" +
+				"A different local plan needs a separate explicit choice before replacement.\n" +
+				"No date decides which copy is newer. Anyone who can read stored records can read\n" +
+				"their answers and notes. Private recovery copies may temporarily exist in the\n" +
+				"state home and selected artifact parents;\n" +
+				"keep credentials and unnecessary personal data out.\n" +
+				"\n" +
+				"After begin, the tool opens a read-only record-backed session with instructions,\n" +
+				"questions, waiting work and available support. It saves no answers or outcomes\n" +
+				"and executes no commands or checks. Only a confirmed begin creating a genuinely\n" +
+				"new local record records firstOpenedAt. Existing events are preserved; an existing\n" +
+				"record without an event stays unknown. This is tool use, not an employment start\n" +
+				"date or completion of an activity.\n" +
+				"\n" +
+				"After leaving that view, the separate session edit command can review and save\n" +
+				"one personal answer, follow-plan choice or outcome in the registered context.\n" +
+				"Use the explicit absolute root, state home and registered session key described\n" +
+				"in Resume onboarding. Opening an invitation does not consent to those changes.\n" +
+				"\n" +
+				"If opening is interrupted, retain its recovery data and transaction token. Follow\n" +
+				"the interrupted-opening recovery instructions in Resume onboarding; recovery\n" +
+				"does not need the original ZIP. An invitation export alone sends nothing,\n" +
+				"confirms no identity and records no first use. The separate start --org-plan\n" +
+				"and walk routes retain their legacy plan-file behavior.\n" +
 				"\n" +
 				"Use the actual rendered first-steps help and selected business support route\n" +
 				"for bootstrap work before company access exists. This static catalog entry\n" +
@@ -1355,24 +1379,62 @@ func inventory() []definition {
 				"when instructions disagree. Do not replace newer preparation or personal work\n" +
 				"with an older invitation just to get back to a familiar screen.\n" +
 				"\n" +
+				"To recover an interrupted invitation opening, use its reported transaction token\n" +
+				"with the same selected record root and state home:\n" +
+				"\n" +
+				"```text\n" +
+				"onboard-kit start --resume-import TOKEN --root DIR [--home DIR]\n" +
+				"```\n" +
+				"\n" +
+				"Recovery does not need the original ZIP. Review the displayed pending actions\n" +
+				"before choosing resume. A completed opening awaiting cleanup instead offers\n" +
+				"clean; cleanup preserves later owner edits and may finish without displaying a\n" +
+				"session when its staged display is gone. Cancel retains recovery state. Keep\n" +
+				"recovery data until the tool confirms cleanup; do not guess another destination\n" +
+				"or delete unknown files to force progress. Ask the owner when context or stored\n" +
+				"work has changed. A reported token is a selector, not proof of valid recovery.\n" +
+				"\n" +
+				"The token applies only to interrupted opening or its cleanup. It is not a\n" +
+				"general command for returning to completed onboarding. The invitation route\n" +
+				"opens a read-only record-backed session: existing answers, outcomes and waiting\n" +
+				"work can be displayed, but answers and outcomes cannot be edited there and\n" +
+				"commands or checks are not executed. Only confirmed begin for a genuinely new\n" +
+				"local record records firstOpenedAt; existing events stay unchanged and an\n" +
+				"existing missing event stays unknown. Recovery uses its frozen event rather\n" +
+				"than sampling first use again.\n" +
+				"\n" +
+				"The separate start --org-plan route remains the legacy organization-plan flow.\n" +
 				"The existing walk command is a legacy plan-file question walkthrough: accepted\n" +
-				"answers are saved in that selected plan file. It is not the planned record-backed\n" +
-				"activity walker. Confirmed invitation import, saved activity outcomes, automatic\n" +
-				"verified-prerequisite gates and their reopening flow remain staged. This catalog\n" +
-				"does not invent a resume command or silently migrate your files.\n" +
+				"answers are saved in that selected plan file. Neither route silently becomes\n" +
+				"record-backed answer or outcome editing.\n" +
 				"\n" +
-				"In the planned activity model, verified means the required capability or result\n" +
-				"was actually established; failed means an attempted result did not work; deferred\n" +
+				"For a completed invitation session, use its registered session key and explicit\n" +
+				"absolute record root and state home:\n" +
+				"\n" +
+				"```text\n" +
+				"onboard-kit session edit --root ABS --home ABS --session KEY\n" +
+				"```\n" +
+				"\n" +
+				"Confirm the displayed account exactly, including its double quotes. Choose one\n" +
+				"answer, follow-plan choice or outcome, review the complete proposed effect, then\n" +
+				"choose save or cancel. Only the selected record changes; the plan, preparation,\n" +
+				"registration, first-use event and historical reference stay intact. Follow-plan\n" +
+				"removes one personal override and may reveal an existing shared answer. Defaults\n" +
+				"remain suggestions. Outcome verification still requires an explicit statement;\n" +
+				"the tool does not run checks. Pending imports and changed source files refuse\n" +
+				"rather than bypassing review. Ask the onboarding owner if the registered context\n" +
+				"is unknown; do not guess a key or move state to force acceptance.\n" +
+				"\n" +
+				"In the activity model, verified means the required capability or result was\n" +
+				"actually established; failed means an attempted result did not work; deferred\n" +
 				"means intentionally postponed. A request sent, an onboarder arrangement or a\n" +
-				"date passing is none of those verified outcomes. Do not claim that the current\n" +
-				"legacy question flow records or enforces that model.\n" +
+				"date passing is none of those verified outcomes. A displayed instruction or\n" +
+				"read-only session does not record that an activity was completed.\n" +
 				"\n" +
-				"Use the owner's guidance to continue useful supported work. Report blockers,\n" +
-				"incorrect instructions, missing files, a wrong account or an unsupported plan\n" +
-				"version without sharing credentials or complete private records. Ask for a safe\n" +
-				"recovery or update procedure before changing destinations. Reading this help,\n" +
-				"reopening a document or rendering a preview does not record first use or an\n" +
-				"employment start date, accept an unanswered default or complete an activity.\n",
+				"Report blockers, incorrect instructions, missing files, a wrong account or an\n" +
+				"unsupported plan version without sharing credentials or complete private records.\n" +
+				"Reading this help or rendering a preview records no first use or employment\n" +
+				"start date, accepts no unanswered default and completes no activity.\n",
 		},
 		{
 			summary: contract.Summary{

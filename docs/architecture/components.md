@@ -122,10 +122,15 @@ flowchart TB
 | Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
 | Invitation reviewer | Inspects content, proposes retained/reconciled local roles and the actual record-backed view, then finalizes a supplied first-use event. Pure source-based review, not consent or publication. See [0380](../decisions/0380-invitation-review.md) |
-| Invitation starter, planned | Owns confirmed interaction, safe selected paths, private recoverable publication and read-only session display under [0360](../decisions/0360-confirmed-invitation-start.md). No implementation or import command yet |
+| Invitation starter | Owns confirmed interaction, safe selected paths, private recoverable publication and read-only session display under [0360](../decisions/0360-confirmed-invitation-start.md). Explicit invitation and recovery routes preserve the separate legacy flow |
 | Catalog reader | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
 | Catalog command | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
 | Catalog materializer | Creates a new unresolved organization plan from explicit catalog selections, permanent instance IDs and shared bindings; returns advisory preparation guides with instance reasons under [0410](../decisions/0410-explicit-catalog-instances.md). No existing-plan editing or personal writes |
+| Catalog creator | Stages explicit catalog instances and shared bindings, displays the actual encoded plan and advisory guidance, and exclusively creates one new file after current review and save. No existing-plan editing, personal files or readiness claim. See [0430](../decisions/0430-reviewed-catalog-creation.md) |
+| Catalog editor | Returns an atomic proposal for explicit additions, shared-answer changes, retirement and same-identity reactivation. Reserves all held IDs and retains source baselines and personal history boundaries under [0440](../decisions/0440-stable-catalog-instance-editing.md). Does not load or save a file |
+| Catalog edit guide | Loads one explicit supported existing plan, stages whole-batch edits, displays exact original/proposed bytes and new-addition guidance, and replaces only that plan after current save consent. Preserves native metadata or refuses under [0450](../decisions/0450-reviewed-existing-catalog-edit.md) |
+| Record writer | Returns a record with one explicit newcomer answer override or follow-plan removal. Uses the actual joiner and plan editor, preserving all unrelated personal data and the shared plan. No outcomes or persistence |
+| Session reviewer | Admits explicit bounded three-file bytes, projects actual questions, support and outcome comparisons, proposes one answer or outcome change, and returns lossless finalized record bytes. No native consent, clock or publication |
 | Preparation reviewer | Returns preparation problems, actual onboarder blockers and the real first-steps preview separately, without a readiness claim or writes. See [0330](../decisions/0330-preparation-review.md) |
 | Preparation guide | Stages recipient and arrangement edits in memory, displays complete original/draft values and actual review results, then saves only the explicitly reviewed preparation. Cancel/EOF before save writes nothing. Export remains separate. See [0350](../decisions/0350-guided-support-arrangements.md) |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
@@ -171,11 +176,16 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `invitation/encoder` | None. Reads InvitationFiles only and returns archive bytes or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/reviewer` | None. Reads supplied bounded archive/local bytes, explicit choices and context, and supplied finalization event. Uses actual codecs, validation, reconciliation, joiner and walker; returns owned role proposals, session projections, diagnostics and bytes. Changes no input or outside state; reads no filesystem, configuration or clock |
-| `invitation/starter`, planned | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. [Driver contract](../../contracts/invitation/starter/contract.md) is complete; implementation is pending |
+| `invitation/starter` | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. The [driver contract](../../contracts/invitation/starter/contract.md) defines the implemented boundary |
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
 | `catalog/materializer` | None. Reads explicit creation context, selections/bindings, compiled catalog definitions and authored preparation relations. Returns a new plan, relevant guidance and diagnostics; changes no input, existing plan, preparation, record, filesystem, configuration or clock |
-| `record/writer` | None. Reads the shared plan, original personal record and explicit answer intent. Returns an owned record with only the selected answer override changed; never writes a plan, preparation, outcome, event or file |
+| `catalog/creator` | Reads explicit arguments, borrowed interaction, actual materializer/encoder results and selected native path/access metadata. Writes borrowed streams and, only after current reviewed save, one new private plan and owned same-parent temporary publication resources. No record/preparation reads, existing-file overwrite, environment identity, clock or command execution |
+| `catalog/editor` | None. Reads the held plan, ordered explicit operations and actual pure dependency results; returns an owned atomic plan proposal and private diagnostics. No record/preparation, persistence or outcomes |
+| `catalog/editguide` | Reads explicit arguments, borrowed interaction, selected plan bytes/native controls and actual editor/materializer/codec/validator results. Writes streams and, after current save only, one owned private same-parent temporary and selected plan replacement. No personal-file reads/writes, clock or command execution |
+| `record/writer` | None. Reads the original shared plan, personal record and explicit answer intent; returns an owned record with only the selected answer override changed. No plan/preparation, outcomes, metadata or external writes |
+| `session/reviewer` | None. Reads explicit raw plan/preparation/record bytes, trusted identity and an explicit intent/event; returns owned session views, proposals and finalized record bytes. Never reads native state or a clock, or publishes files |
+| `session/editor` | Reads explicit root, home and session key, bounded registration and selected three-file bytes, native controls, interaction and an injected event. After separate save consent, replaces only the selected record through private sibling staging. Never executes instructions or changes the plan, preparation, registration or first-use timestamp |
 | `preparation/reviewer` | Reads explicit account/help context, original Plan and proposed preparation through actual validation, finder and first-steps dependencies. Returns owned problems, blockers and guide only; no input, record, filesystem, clock or outside-state writes |
 | `preparation/guide` | Imperative driver: reads explicit arguments/interaction, bounded selected plan/preparation and safe path metadata. Writes stdout/stderr and only after reviewed save the selected preparation, private required directories and owned temporary resources. No record reads or writes, plan writes, archive, clock, network or command execution |
 
@@ -185,7 +195,9 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C |  | C |  |  | C | C | C | C |
 | `catalog/materializer` | C | C | C |  | C | C | C | C | C |
+| `catalog/editor` | R | R | R | R | R | R | W | W | C |
 | `record/writer` | R | R | R | R | R | R | R | R | R |
+| `session/reviewer` | R | R | R | R | R | R | R | R | R |
 | `plan/decoder` | C | C | C | C | C | C | C | C | C |
 | `plan/encoder` | R | R | R | R | R | R | R | R | R |
 | `plan/editor` |  |  |  |  | W |  | W | W |  |
@@ -219,10 +231,15 @@ by each current contract until its independently tested replacement is integrate
 | -- | -- | -- | -- |
 | Plan structure validator, new | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
 | Plan authoring validator | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
-| Invitation reviewer, planned | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
-| Invitation starter, planned | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
+| Invitation reviewer | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
+| Invitation starter | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
 | Catalog materializer | Explicit creation context, exact selections, permanent instance IDs and bindings; compiled definitions and preparation relations | New self-contained plan, relevant advisory guides with instance reasons and diagnostics only | 5: catalog reader, section loader, section hasher, plan authoring validator, plan validator, model |
-| Record writer | Shared plan, original personal record and explicit answer intent | Owned record with only the selected answer override changed | 6: record joiner, plan editor, model; [contract](../../contracts/record/writer/contract.md) |
+| Catalog creator | Explicit creation arguments/interaction and native destination guards; actual materializer and encoder results | Reviewed new plan file, owned temporary publication resources and streams only | 6: catalog materializer, plan encoder, model; [driver contract](../../contracts/catalog/creator/contract.md) |
+| Catalog editor | Held plan and ordered explicit instance operations | Atomic owned plan proposal and private diagnostics only | 6: catalog materializer, plan editor, plan validator, plan authoring validator, model; [contract](../../contracts/catalog/editor/contract.md) |
+| Catalog edit guide | Explicit selected plan/interaction, held native controls and actual pure dependency results | Reviewed plan replacement, owned temporary resources and streams only | 7: catalog editor, catalog materializer, plan decoder and encoder, plan authoring validator, plan validator, model; [driver contract](../../contracts/catalog/editguide/contract.md) |
+| Record writer | Original shared plan, personal record and one explicit answer intent | Owned record with only the selected answer override changed | 6: record joiner, plan editor, model; [contract](../../contracts/record/writer/contract.md) |
+| Session reviewer | Bounded three-file bytes, trusted account/plan identity, explicit intent and supplied event | Owned session views, proposals and finalized record bytes | 7: record writer; outcome recorder; section walker; plan authoring validator and validator; plan, preparation and record decoders; preparation validator; record joiner and encoder; model; [contract](../../contracts/session/reviewer/contract.md) |
+| Session editor | Explicit registered context, borrowed streams, native controls and injected clock | Reviewed atomic record replacement and private staging; no companion-file changes | 8: session reviewer, plan decoder, preparation locator; [contract](../../contracts/session/editor/contract.md). The entry point grows to9 |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
@@ -236,8 +253,8 @@ by each current contract until its independently tested replacement is integrate
 authoring validator as a prerequisite for confirmed start. It runs before the
 existing plan validator at that new boundary; declaration checks do not duplicate
 the latter's answer, identity, directory-integrity or structural diagnostics.
-Its independent contract and implementation are available; confirmed-start
-composition remains pending. Legacy validation boundaries are unchanged.
+Its independent contract and implementation are available and used by confirmed
+start. Legacy validation boundaries are unchanged.
 
 [0380](../decisions/0380-invitation-review.md) selects the pure invitation
 reviewer before the separate starter. Review reuses actual dependencies and
@@ -250,8 +267,10 @@ resource admission rules under [0390](../decisions/0390-invitation-resource-admi
 Further contract hardening continues. [0400](../decisions/0400-invitation-start-protocol.md)
 specifies the starter's storage and interaction direction. The
 [starter contract](../../contracts/invitation/starter/contract.md) specifies the
-terminal and storage protocols; implementation remains pending. Binary wiring
-can remain at 8.
+terminal and storage protocols. Its implementation uses that reviewer and is
+available through explicit invitation/recovery routing under0420. The session
+is read-only; native observation limits remain in the fixture scope. Binary
+wiring remains at8.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held
@@ -264,8 +283,9 @@ assembler at position 4 uses it for bootstrap fragments. The section selector
 now applies Parent/Requires cascading against original answer and switch context,
 without adding verification gates or changing grouped reference order. The
 read-only walker views, explicit outcome recorder and standard first-steps help
-are implemented. Invitation export packages the guide; record-backed command
-sessions and outcome publication remain pending. Requires format
+are implemented. Invitation export packages the guide and confirmed start
+displays a read-only record-backed session. Record-backed answer editing and
+outcome publication remain pending. Requires format
 preservation underlies the structural and runtime builds. No core component here
 reads a clock or filesystem, runs commands, or holds state between calls.
 
@@ -299,9 +319,28 @@ dispatch. Binary scenarios check all eighty exports without adjacent catalog fil
 catalog materializer at position 5. It reads the actual compiled definitions and
 [authored relations](../reference/catalog-preparation-relations.md), uses real
 loading/hashing/validation, and creates only a returned new plan. Its contract and
-implementation are available. Existing catalog commands, instantiator behavior
-and saved plans are unchanged; reviewed save and identity-preserving selection
-editing require separate driver contracts.
+implementation are available. [0430](../decisions/0430-reviewed-catalog-creation.md)
+adds a separate creation driver at6, routed by the entry point at8. It creates
+only new reviewed plans, using the actual encoder and private no-replace native
+publication. Existing catalog read/export commands, instantiator behavior and
+saved plans are unchanged. [0440](../decisions/0440-stable-catalog-instance-editing.md)
+adds a pure editor at6, composing actual materializer and plan editor operations
+without changing held identities or source baselines.
+[0450](../decisions/0450-reviewed-existing-catalog-edit.md) adds the distinct
+catalog edit guide at7, routed by the entry point at8. It safely loads one
+supported private plan, stages and reviews complete edits, and replaces only
+that plan after consent. It neither reads personal files nor transfers history.
+
+The record writer at6 makes personal answer ownership explicit without a generic
+splitter roundtrip. The session reviewer at7 composes it with the real recorder,
+walker, codecs and validators. Its bounded three-file projections and finalized
+record bytes are pure values, not proof of native freshness or user consent.
+[0460](../decisions/0460-record-backed-session.md) adds the native session editor
+at8 and grows the entry point to9. It binds the registered context before reading
+the selected bodies, requires identity confirmation and separate save consent,
+and preserves native metadata or refuses. Its native contract suite and the
+invitation-to-record whole-binary scenario pass. Release verification remains
+a separate gate.
 
 Written out in 0020. In short:
 
@@ -327,16 +366,6 @@ The invitation encoder and decoder depend only on the domain model and their
 own contract interfaces. Neither depends on the other, artifact codecs, the
 locator, or drivers. Artifact validation and filesystem publication are separate
 driver responsibilities.
-
-## Explicit personal answer writing
-
-The pure record writer at position6 composes the record joiner, plan editor
-and model. It stores an explicit personal answer even when equal to a shared
-answer, or removes only that override for an explicit follow-plan operation.
-It preserves unrelated record data and reads no filesystem or clock. See its
-[contract](../../contracts/record/writer/contract.md) and
-[0460](../decisions/0460-record-backed-session.md).
-The core alone does not publish a record or add a command route.
 
 ## Commands
 

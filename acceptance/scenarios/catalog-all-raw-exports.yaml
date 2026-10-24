@@ -888,27 +888,51 @@ steps:
       stdout:
         equals: |
           # Start from the invitation ZIP
-          
+
           An invitation contains the organization plan, onboarder-owned preparation,
           an identity-only newcomer record seed and first-steps.md. Read its first-steps
           document and contact the named onboarding owner if anything is missing. Use
           only the supported standalone tool supplied through your organization's
           approved route; this catalog invents no download address or installation command.
-          
-          Before any future import, the account must be confirmed as yours and proposed
-          destinations reviewed. A ZIP entry name is not permission to extract over local
-          files. If the account is wrong or you already have newer work, stop and ask the
-          owner. Keep existing plan, preparation and record files rather than replacing
-          them from an older invitation. Anyone who can read stored records can read
-          their answers and notes; keep credentials and unnecessary personal data out.
-          
-          The supported invite export operation creates a new archive for an onboarder
-          to deliver through an approved external channel. It does not send the package,
-          import it, confirm identity or record first use. Confirmed invitation import
-          and record-backed startup remain staged work. The existing start command is
-          a legacy organization-plan flow, not an invitation-ZIP importer. Do not pass
-          the archive to it expecting this planned behavior.
-          
+
+          Open the invitation with an explicitly selected existing record root:
+
+          ```text
+          onboard-kit start --invitation FILE --root DIR [--home DIR]
+          ```
+
+          Confirm the displayed account is yours, then review every proposed destination
+          and action. Identity confirmation alone writes nothing. Only choose begin after
+          the complete review if you want the proposed opening. Cancel before begin leaves
+          your files unchanged. A ZIP entry name is not permission to extract over local
+          files. If the account or destinations are wrong, stop and ask the owner.
+
+          Existing matching preparation is retained. Existing records are reconciled with
+          changes shown in review; their outcomes, notes and first-use history are preserved.
+          A different local plan needs a separate explicit choice before replacement.
+          No date decides which copy is newer. Anyone who can read stored records can read
+          their answers and notes. Private recovery copies may temporarily exist in the
+          state home and selected artifact parents;
+          keep credentials and unnecessary personal data out.
+
+          After begin, the tool opens a read-only record-backed session with instructions,
+          questions, waiting work and available support. It saves no answers or outcomes
+          and executes no commands or checks. Only a confirmed begin creating a genuinely
+          new local record records firstOpenedAt. Existing events are preserved; an existing
+          record without an event stays unknown. This is tool use, not an employment start
+          date or completion of an activity.
+
+          After leaving that view, the separate session edit command can review and save
+          one personal answer, follow-plan choice or outcome in the registered context.
+          Use the explicit absolute root, state home and registered session key described
+          in Resume onboarding. Opening an invitation does not consent to those changes.
+
+          If opening is interrupted, retain its recovery data and transaction token. Follow
+          the interrupted-opening recovery instructions in Resume onboarding; recovery
+          does not need the original ZIP. An invitation export alone sends nothing,
+          confirms no identity and records no first use. The separate start --org-plan
+          and walk routes retain their legacy plan-file behavior.
+
           Use the actual rendered first-steps help and selected business support route
           for bootstrap work before company access exists. This static catalog entry
           does not render a personal invitation, assert contact availability or duplicate
@@ -1265,30 +1289,68 @@ steps:
       stdout:
         equals: |
           # Resume onboarding
-          
+
           Return through the approved support and sharing procedure for your actual
           plan and tool version. Keep your own saved work and ask the onboarding owner
           when instructions disagree. Do not replace newer preparation or personal work
           with an older invitation just to get back to a familiar screen.
-          
+
+          To recover an interrupted invitation opening, use its reported transaction token
+          with the same selected record root and state home:
+
+          ```text
+          onboard-kit start --resume-import TOKEN --root DIR [--home DIR]
+          ```
+
+          Recovery does not need the original ZIP. Review the displayed pending actions
+          before choosing resume. A completed opening awaiting cleanup instead offers
+          clean; cleanup preserves later owner edits and may finish without displaying a
+          session when its staged display is gone. Cancel retains recovery state. Keep
+          recovery data until the tool confirms cleanup; do not guess another destination
+          or delete unknown files to force progress. Ask the owner when context or stored
+          work has changed. A reported token is a selector, not proof of valid recovery.
+
+          The token applies only to interrupted opening or its cleanup. It is not a
+          general command for returning to completed onboarding. The invitation route
+          opens a read-only record-backed session: existing answers, outcomes and waiting
+          work can be displayed, but answers and outcomes cannot be edited there and
+          commands or checks are not executed. Only confirmed begin for a genuinely new
+          local record records firstOpenedAt; existing events stay unchanged and an
+          existing missing event stays unknown. Recovery uses its frozen event rather
+          than sampling first use again.
+
+          The separate start --org-plan route remains the legacy organization-plan flow.
           The existing walk command is a legacy plan-file question walkthrough: accepted
-          answers are saved in that selected plan file. It is not the planned record-backed
-          activity walker. Confirmed invitation import, saved activity outcomes, automatic
-          verified-prerequisite gates and their reopening flow remain staged. This catalog
-          does not invent a resume command or silently migrate your files.
-          
-          In the planned activity model, verified means the required capability or result
-          was actually established; failed means an attempted result did not work; deferred
+          answers are saved in that selected plan file. Neither route silently becomes
+          record-backed answer or outcome editing.
+
+          For a completed invitation session, use its registered session key and explicit
+          absolute record root and state home:
+
+          ```text
+          onboard-kit session edit --root ABS --home ABS --session KEY
+          ```
+
+          Confirm the displayed account exactly, including its double quotes. Choose one
+          answer, follow-plan choice or outcome, review the complete proposed effect, then
+          choose save or cancel. Only the selected record changes; the plan, preparation,
+          registration, first-use event and historical reference stay intact. Follow-plan
+          removes one personal override and may reveal an existing shared answer. Defaults
+          remain suggestions. Outcome verification still requires an explicit statement;
+          the tool does not run checks. Pending imports and changed source files refuse
+          rather than bypassing review. Ask the onboarding owner if the registered context
+          is unknown; do not guess a key or move state to force acceptance.
+
+          In the activity model, verified means the required capability or result was
+          actually established; failed means an attempted result did not work; deferred
           means intentionally postponed. A request sent, an onboarder arrangement or a
-          date passing is none of those verified outcomes. Do not claim that the current
-          legacy question flow records or enforces that model.
-          
-          Use the owner's guidance to continue useful supported work. Report blockers,
-          incorrect instructions, missing files, a wrong account or an unsupported plan
-          version without sharing credentials or complete private records. Ask for a safe
-          recovery or update procedure before changing destinations. Reading this help,
-          reopening a document or rendering a preview does not record first use or an
-          employment start date, accept an unanswered default or complete an activity.
+          date passing is none of those verified outcomes. A displayed instruction or
+          read-only session does not record that an activity was completed.
+
+          Report blockers, incorrect instructions, missing files, a wrong account or an
+          unsupported plan version without sharing credentials or complete private records.
+          Reading this help or rendering a preview records no first use or employment
+          start date, accepts no unanswered default and completes no activity.
       stderr: {equals: ""}
       files:
         catalog-output.yaml: {absent: true}

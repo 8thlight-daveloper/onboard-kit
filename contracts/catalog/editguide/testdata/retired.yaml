@@ -1,0 +1,43 @@
+schemaVersion: 1
+id: held-plan
+provenance:
+  templateSet: held-set
+  generatedOn: "2026-01-01"
+planUrl: held-plan-location
+resultsPath: records/{account}/record.obk.yaml
+answers:
+  sections:
+    resource-old:
+      personal_note: Held newcomer fact
+      resource_name: Original shared resource
+sections:
+  - id: resource-old
+    title: Local resource instructions
+    summary: Preserve the original independent resource
+    enabled: false
+    body: |
+      Use $resource_name and preserve $personal_note.
+    variables:
+      - name: resource_name
+        description: Shared resource
+        example: Keep the example
+        default: Not accepted
+      - name: personal_note
+        description: Personal reflection
+        audience: onboardee
+    source:
+      template: repository-access
+      hash: legacy-original-id-baseline
+    extension:
+      old-note: Preserve this section metadata
+  - id: reserved-off
+    title: Reserved old activity
+    summary: Keep this held reservation
+    enabled: false
+extension:
+  empty-list: []
+  empty-map: {}
+  flag: false
+  null-value: null
+  number: 2.0
+  text: "002"

@@ -1,0 +1,55 @@
+name: start-invitation-help-routing
+description: Initial invitation help and invalid invitation syntax do not inspect missing input or create state.
+source: contracts/invitation/starter/terminal.md; contracts/invitation/starter/contract.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, start, --help, --invitation, missing.zip, --root, missing-root, --home, state]
+    expect:
+      exit: 0
+      stdout:
+        equals: |
+          Usage: onboard-kit start (--invitation FILE | --resume-import TOKEN) --root DIR [--home DIR]
+
+          Inspect an invitation, confirm identity, review, and explicitly begin a read-only session.
+          Existing work is retained or reconciled; no checks, answers, or outcomes are executed or saved.
+      stderr: {equals: ""}
+      files:
+        state: {absent: true}
+        missing-root: {absent: true}
+  - run: [onboard-kit, start, --invitation, missing.zip, --root, ., --home, state, --help]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --home=state, --invitation=missing.zip]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {json: {status: refused, code: start.usage, transaction: ""}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --root=., --home=state, --invitation=missing.zip]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: start.source
+          message: Read a bounded regular invitation or selected local file.
+          transaction: ""
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --home, state, --root, ., --resume-import, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"]
+    expect:
+      exit: 1
+      stderr: {json: {status: refused, code: start.context}}
+      files:
+        state: {absent: true}
+  - run: [onboard-kit, start, --resume-import=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, --root=., --home=state]
+    expect:
+      exit: 1
+      stderr: {json: {status: refused, code: start.context}}
+      files:
+        state: {absent: true}

@@ -1,5 +1,5 @@
 {
-  "source": "Independently computed with shasum -a 256 and wc -c over the eighty normative assets frozen by a separate content author under ADR0320; manifest SHA256 f365b32f98d4ba74e7bd482187c0cfce822d3bbeb637b8e8d1a5828fdd389d70. IDs/order come from the independently fixed catalog-table inventory, not asset discovery or product code.",
+  "source": "Independently computed with shasum -a 256 and wc -c over the eighty normative assets frozen by a separate content author under ADR0320; manifest SHA256 f365b32f98d4ba74e7bd482187c0cfce822d3bbeb637b8e8d1a5828fdd389d70. IDs/order come from the independently fixed catalog-table inventory, not asset discovery or product code. Invitation-start and onboarding-resume help were separately reauthored from the public confirmed-opening contracts under ADR0360/0380/0400/0420; their new sizes and SHA256 values were independently computed directly from those reviewed Markdown bytes, not product output. The other 78 payloads and manifest are unchanged.",
   "entries": [
     {
       "id": "application-local",
@@ -148,8 +148,8 @@
     },
     {
       "id": "invitation-start",
-      "size": 1704,
-      "sha256": "2f385d4e7517d0c66e3a637329bafb6c4b4d026d86e4df10d2414240feeb41af"
+      "size": 2952,
+      "sha256": "77bbbb06b659facbdf5eaac7a09dd69665a7ee126cfcc38644c112ed92cfbd64"
     },
     {
       "id": "knowledge-transfer",
@@ -208,8 +208,8 @@
     },
     {
       "id": "onboarding-resume",
-      "size": 1542,
-      "sha256": "717eb2cc55c84188e680e6b9bc8b2a3556d811a626cb59cf805152d33834ba1f"
+      "size": 3494,
+      "sha256": "1b336b81c89a40565b47660e659d9754c1671ac07980715a51fdda02d7503f9a"
     },
     {
       "id": "onboarding-welcome",

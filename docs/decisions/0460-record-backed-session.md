@@ -34,6 +34,12 @@ Initial registered paths are metadata-only/unverified; actual decode/locator
 occurs only after identity consent and bounded raw admission. Registry metadata
 and cooperative root/home exclusion establish pending/selection before sources.
 
+Exact matching plan and account identities retain the existing old-root
+continuity requirement. Genuine absence in an unrelated registration need not
+block a safe selected edit, but requires native no-follow prefix, absence and
+nonalias proofs through publication. A symlink or inspection failure is never
+absence. Unrelated files and registration stay untouched and undisclosed.
+
 Before/after ownership example:
 
 | Record state after Plan A choice=org-a | Plan B choice=org-b effective answer |

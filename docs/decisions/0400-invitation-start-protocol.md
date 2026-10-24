@@ -1,6 +1,6 @@
 # 0400. Freeze the confirmed invitation opening protocol
 
-Status: accepted by agent judgment; independent starter contract and implementation pending
+Status: accepted by agent judgment; independent starter contract and implementation available
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0100](0100-behavior-judgment.md),

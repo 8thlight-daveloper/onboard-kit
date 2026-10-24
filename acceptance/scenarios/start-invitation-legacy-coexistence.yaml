@@ -1,0 +1,40 @@
+name: start-invitation-legacy-coexistence
+description: Explicit legacy start still copies a personal plan while invitation start uses its separate record-backed route.
+source: acceptance/scenarios/start-onboardee.yaml; acceptance/scenarios/start-refresh.yaml; docs/decisions/0400-invitation-start-protocol.md; docs/decisions/0420-invitation-start-routing.md
+steps:
+  - run: [onboard-kit, start, --org-plan, legacy.obk.yaml, --home, legacy-state, --no-walk, --refreshed-on, "2026-10-16"]
+    files:
+      legacy.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    expect:
+      exit: 0
+      stdout: {contains: acme-corp.obk.yaml}
+      files:
+        legacy-state/acme-corp.obk.yaml: {}
+        legacy-state/acme-corp.org.obk.yaml: {}
+      unchanged: [legacy.obk.yaml]
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+      unchanged: [legacy.obk.yaml, legacy-state/acme-corp.obk.yaml, legacy-state/acme-corp.org.obk.yaml]
+  - run: [onboard-kit, start, --invitation, invitation.zip, --root, ., --home, invitation-state]
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 0
+      stdout: {contains: "Read-only onboarding session.\n"}
+      stderr: {json: {status: opened, code: start.opened}}
+      files:
+        records/newcomer/record.obk.yaml: {}
+      unchanged: [legacy.obk.yaml, legacy-state/acme-corp.obk.yaml, legacy-state/acme-corp.org.obk.yaml, source.obk.yaml, preparation.obk.yaml, invitation.zip]
+  - run: [onboard-kit, start, --org-plan=legacy.obk.yaml, --home=legacy-state, --no-walk, --refreshed-on=2026-10-17]
+    expect:
+      exit: 0
+      files:
+        legacy-state/acme-corp.obk.yaml: {}
+      unchanged: [legacy.obk.yaml, records/newcomer/record.obk.yaml, records/newcomer/preparation.obk.yaml, invitation.zip]

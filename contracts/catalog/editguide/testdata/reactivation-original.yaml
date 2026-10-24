@@ -1,0 +1,18 @@
+schemaVersion: 1
+id: held-plan
+answers:
+  sections:
+    resource-old:
+      resource_name: false
+sections:
+  - id: resource-old
+    title: Held inactive resource
+    summary: Reactivate only this same identity
+    enabled: false
+    body: Use $resource_name.
+    variables:
+      - name: resource_name
+        description: Shared resource
+    source:
+      template: repository-access
+      hash: stale-baseline-kept

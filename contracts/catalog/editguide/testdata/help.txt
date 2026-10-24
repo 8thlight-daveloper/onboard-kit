@@ -1,0 +1,5 @@
+Usage: onboard-kit catalog edit --plan FILE
+
+Stage explicit ordered edits, review original and proposed plan bytes, then save.
+Only the selected supported private plan may be replaced; personal files stay untouched.
+Find new source IDs with catalog list and catalog show --id ID.

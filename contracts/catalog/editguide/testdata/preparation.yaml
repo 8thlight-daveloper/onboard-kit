@@ -1,0 +1,10 @@
+schemaVersion: 1
+kind: preparation
+account: example-account
+planId: held-plan
+arrangements:
+  - id: preserved-assignment
+    section: resource-old
+    kind: access
+    status: requested
+    note: Preserve this independently owned support work.
