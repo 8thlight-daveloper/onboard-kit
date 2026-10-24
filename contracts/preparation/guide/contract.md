@@ -537,6 +537,11 @@ coverage limits in the hardening report, not in this regenerable contract.
 | Hide arrangement fields/removed values or display authored controls as live prompts | TestCompleteOriginalAndDraftArrangementReview; TestArrangementScalarDisplayRemainsLiteral |
 | Read beyond the interaction budget, charge runes instead of bytes, ignore CRLF framing or treat exhausted partial EOF as cancellation | TestTotalInteractionBudget; TestBudgetDoesNotInspectUnusedSuffixAndPreservesBelowLimitEOF |
 | Retain an owned inspection descriptor or close borrowed streams | TestOwnedInspectionDescriptorReleasedWithoutClosingBorrowedStreams |
+| Apply a valid helper proposal to the accepted draft before the enclosing arrangement apply | TestValidLocalArrangementChangesStayDiscardable |
+| Accept a padded, signed, leading-zero, non-ASCII or otherwise noncanonical ordinal because later actions hide early selection | TestNoncanonicalOrdinalsRetryBeforeAnyFurtherInput |
+| Count total input as runes and consume queued consent after 1 MiB of multibyte input | TestMultibyteBudgetEndsAtReviewBeforeQueuedSave |
+| Apply a later recipient against loaded original preparation, losing accepted arrangement changes | TestRecipientApplyPreservesPreviouslyAcceptedArrangement |
+| Hide actual preparation diagnostics or interleave dependency messages with the fixed triple projection | TestDependencyDiagnosticsUseOnlyAdjacentFixedTriples |
 
 The arrangement and interaction-budget fixtures extend these safeguards without
 replacing the recipient and native ACL regressions. Their source manifest cites
