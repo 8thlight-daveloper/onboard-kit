@@ -171,3 +171,13 @@ separate empty-transaction/no-report rules. Exact reader-call counts, untouched
 tails, zero clock calls and complete namespace snapshots pin absence of consent
 and changes. No recovery journal or report was captured to form an oracle, and
 no token in a refusal claims existing or authorized recovery state.
+
+namespace_gaps_test.go independently frames a valid old registration and retains
+its empty account directory while both final participant files are absent.
+Actual nonsymlink parent directories must have equal native device/inode for the
+case-alias refusal; unsupported volumes report a named gap. Distinct account
+keys remain distinct. Exact reports, zero input reads and clock calls, complete
+snapshots and native guards pin preconsent refusal. Separate actual directories
+must permit an independent opening without exposing or modifying the older
+account. Expected artifacts are literal fixtures and independently framed
+metadata, not starter output. The author read no starter implementation.

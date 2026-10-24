@@ -44,7 +44,7 @@ fixed four participants, bounded registrations/recovery data and streams.
    Call actual Review. If needed, ask use-incoming or cancel and rerun Review
    with that explicit choice. Show complete actual actions/reconciliation/
    unavailable-comparison/stale-support/privacy/recovery review. Before offering
-   begin, freeze purposeful literal-safe terminal session bytes <=8MiB from the
+   begin, freeze purposeful literal-safe terminal session bytes \<=8MiB from the
    actual Review session/support/guidance. A size refusal never reads begin.
    Finish every display write before reading any queued begin bytes.
 4. Only complete begin consents. Recheck all selected identities, bytes, security,
@@ -231,32 +231,32 @@ report. These rules grant no consent and create no recovery state.
 
 | Exit | Status | Code | Message |
 | -- | -- | -- | -- |
-|0|cancelled|start.cancelled|Opening cancelled before begin; no files were changed.|
-|0|retained|start.recovery-retained|Existing recovery state was retained.|
-|0|opened|start.opened|Opening completed and the read-only session was displayed.|
-|0|cleaned|start.cleaned|Completed recovery data was cleaned; no session was displayed.|
-|0|cleaned|start.staging-cleaned|Owned incomplete staging was cleaned; reopen the invitation to begin.|
-|2|refused|start.usage|Use one invitation or resume token, an explicit root, and an optional home.|
-|1|refused|start.source|Read a bounded regular invitation or selected local file.|
-|1|refused|start.context|Select a safe supported root, state home, and unchanged session context.|
-|1|refused|start.review|Resolve the displayed invitation review problem before beginning.|
-|1|refused|start.input|Use complete valid input lines within the displayed limits.|
-|1|refused|start.output|Required output could not be completed; opening did not begin.|
-|1|refused|start.limit|The opening or frozen display exceeds the supported limit.|
-|1|refused|start.commit|Artifacts were not published; approved empty directories or owned staging may need cleanup.|
-|1|pending|start.recovery-required|An approved opening is pending; resume its transaction before starting another.|
-|1|opened|start.cleanup-required|Opening is complete; clean its recovery state before starting another.|
-|1|pending|start.pending|Approved opening is incomplete; retain recovery data and resume this transaction.|
-|1|pending|start.cleanup-pending|Opening is incomplete and owned recovery cleanup needs repair.|
-|1|opened|start.cleanup-opened|Opening is complete, but owned recovery cleanup needs repair.|
-|1|opened|start.display-opened|Opening is complete, but the read-only session could not be fully displayed.|
-|1|opened|start.input-opened|Opening is complete; the read-only session ended with an input error.|
-|1|opened|start.limit-opened|Opening is complete; the read-only session reached its input limit.|
-|1|opened|start.report-opened|Opening is complete, but its final report could not be written.|
-|1|state-derived|start.recovery-input|Existing recovery state was retained after an input error.|
-|1|state-derived|start.recovery-limit|Existing recovery state was retained after reaching the input limit.|
-|1|state-derived|start.recovery-output|Existing recovery state was retained; required output could not be completed.|
-|1|cleaned|start.report-cleaned|Owned incomplete staging was cleaned, but its final report could not be written.|
+| 0 | cancelled | start.cancelled | Opening cancelled before begin; no files were changed. |
+| 0 | retained | start.recovery-retained | Existing recovery state was retained. |
+| 0 | opened | start.opened | Opening completed and the read-only session was displayed. |
+| 0 | cleaned | start.cleaned | Completed recovery data was cleaned; no session was displayed. |
+| 0 | cleaned | start.staging-cleaned | Owned incomplete staging was cleaned; reopen the invitation to begin. |
+| 2 | refused | start.usage | Use one invitation or resume token, an explicit root, and an optional home. |
+| 1 | refused | start.source | Read a bounded regular invitation or selected local file. |
+| 1 | refused | start.context | Select a safe supported root, state home, and unchanged session context. |
+| 1 | refused | start.review | Resolve the displayed invitation review problem before beginning. |
+| 1 | refused | start.input | Use complete valid input lines within the displayed limits. |
+| 1 | refused | start.output | Required output could not be completed; opening did not begin. |
+| 1 | refused | start.limit | The opening or frozen display exceeds the supported limit. |
+| 1 | refused | start.commit | Artifacts were not published; approved empty directories or owned staging may need cleanup. |
+| 1 | pending | start.recovery-required | An approved opening is pending; resume its transaction before starting another. |
+| 1 | opened | start.cleanup-required | Opening is complete; clean its recovery state before starting another. |
+| 1 | pending | start.pending | Approved opening is incomplete; retain recovery data and resume this transaction. |
+| 1 | pending | start.cleanup-pending | Opening is incomplete and owned recovery cleanup needs repair. |
+| 1 | opened | start.cleanup-opened | Opening is complete, but owned recovery cleanup needs repair. |
+| 1 | opened | start.display-opened | Opening is complete, but the read-only session could not be fully displayed. |
+| 1 | opened | start.input-opened | Opening is complete; the read-only session ended with an input error. |
+| 1 | opened | start.limit-opened | Opening is complete; the read-only session reached its input limit. |
+| 1 | opened | start.report-opened | Opening is complete, but its final report could not be written. |
+| 1 | state-derived | start.recovery-input | Existing recovery state was retained after an input error. |
+| 1 | state-derived | start.recovery-limit | Existing recovery state was retained after reaching the input limit. |
+| 1 | state-derived | start.recovery-output | Existing recovery state was retained; required output could not be completed. |
+| 1 | cleaned | start.report-cleaned | Owned incomplete staging was cleaned, but its final report could not be written. |
 
 Usage before all I/O/facts outranks runtime issues. Safe file/type/body failure is
 source; native path/home/alias/lock/registry/guard failure is context; actual
@@ -330,6 +330,7 @@ the starter or manufacture expected values through a product dependency.
 | Hide a successful opening after display/input/report failure | TestPostCompletionWriterAndInputFailuresRemainOpened and TestFinalReportFallbackPreservesCompletionAndToken pin authoritative bytes and exactly one accepted fallback. |
 | Follow environment fallback after bad explicit configuration or change cwd | TestConfigurationPrecedenceAndRelativeAnchoring and TestBadConfiguredHomeNeverFallsBack count exact runtime facts and compare the entire namespace. |
 | Reseed/move registered work or clone another context's first event | TestRegisteredContextDoesNotReseedOrMove and TestDistinctValidRootsRequireExplicitIndependentContextReview preserve old native objects and pin a different independent event. |
+| Release a different account's registered namespace when its final files are absent | TestNativeAccountParentAliasRefusesWithBothRegisteredFinalFilesMissing proves equal native parent objects and refuses before consent; TestDistinctNativeAccountParentsPermitAnIndependentPrivateOpening preserves disjoint-account privacy and permits a fresh opening. |
 | Escalate modes or rewrite hard-linked original in place | TestExistingPublicationControlsAndHardlinkAnchor pins0400/0600/0644 exact controls, replacement inode and old hard-link bytes. |
 | Treat all resource bounds as one generic failure or charge unused input | TestRawSourceBoundsRefuseBeforePublication, TestPendingRawAndDecodedDisplayBounds and TestTotalInputBudgetAndUnusedTrailingBytes distinguish physical sources, input and completed truth. |
 | Let an unrelated malformed entry mask the inclusive registry limit | TestRegistryInclusive128ValidEntries uses independently framed valid128/129metadata contexts with existing native roots and disjoint destinations. |

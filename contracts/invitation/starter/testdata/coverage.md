@@ -94,3 +94,11 @@ controls. Context-gap fixtures pin account-case privacy, changed incoming hash,
 native alias spelling reuse and disjoint nested root/home support. The native
 alias case reports a gap on case-sensitive volumes. These ordinary scenarios
 do not observe forbidden intermediate publication or completion-cleanup windows.
+
+The namespace-gap controls isolate a retained registered account parent with
+both final participant files absent. Actual case-alias directories require
+preconsent refusal; actual disjoint directories permit a private independent
+opening. Case-sensitive volumes explicitly skip the native-alias control and
+case-insensitive volumes skip the case-distinct disjoint-directory control;
+the other-person disjoint control runs on either profile. These cases do not
+establish reservation behavior for wholly absent parent chains or retirement.
