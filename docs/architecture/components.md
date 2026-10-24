@@ -93,7 +93,7 @@ flowchart TB
 
 | Component | Does |
 | -- | -- |
-| Plan authoring validator, planned | Checks whole-plan declaration and reference semantics, including actual default/environment secret checks. Combined with the existing plan validator at the new start boundary, not a replacement for answer/structure validation. See [0370](../decisions/0370-plan-authoring-validation.md) |
+| Plan authoring validator | Checks whole-plan declaration and reference semantics, including actual default/environment secret checks. Combined with the existing plan validator at the new start boundary, not a replacement for answer/structure validation. See [0370](../decisions/0370-plan-authoring-validation.md) |
 | Question finder | Finds a plan's active questions, one per section variable plus with their answers, groups, and suggestions, evaluates question conditions, and the required ones with no value. Reads only |
 | Plan validator | Checks answers, directory integrity, local variable/step/team identities, and all stored answers for secrets. Delegates complete declared section relationships to the real plan structure validator before applicability filtering; merges independent diagnostics without a global short circuit. CheckValue remains local. Condition-reference legality and section-template validation remain pending |
 | Plan structure validator | Reports duplicate section identities, invalid Parent/Requires/After references, true graph cycles, impossible combined ordering, and contradictory bootstrap claims. Checks complete declarations before activity filtering; returns problems only |
@@ -150,7 +150,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `question/finder`, `plan/validator`, `plan/editor`, `plan/refresher` | None. The editor and the refresher return a changed copy and the driver holds it |
 | `condition/evaluator`, `section/selector`, `section/resolver`, `section/hasher`, `section/validator`, `template/linter`, `secrets` | None |
 | `plan/structurevalidator` | None. Reads only section ID, Parent, Requires, After, Bootstrap, and Timing; returns fresh problems without changing any plan field |
-| `plan/authoringvalidator`, planned | None. Reads declarations, directory declarations and reference/ancestor context; returns owned diagnostics using the actual secrets checker for defaults/environment values. Reads no stored answers, source metadata, record or preparation; changes no input |
+| `plan/authoringvalidator` | None. Reads declarations, directory declarations and reference/ancestor context; returns owned diagnostics using the actual secrets checker for defaults/environment values. Reads no stored answers, source metadata, record or preparation; changes no input |
 | `section/scheduler` | None. Reads original section relationships, activity gates, answers, and held section values; returns copied action-order slots and fresh diagnostics without plan writes |
 | `section/walker` | None. Reads the caller-composed plan and record.Outcomes; returns independent action/waiting/history views and diagnostics without changing either input |
 | `firststeps/assembler` | None. Reads the original plan, explicit account/help selection and validated preparation; returns a guide or refusal, not files or readiness |
@@ -184,7 +184,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `question/finder` |  |  |  |  | R | R | R | R |  |
 | `plan/validator` |  |  |  |  | R | R | R | R |  |
 | `plan/structurevalidator` |  |  |  |  |  |  |  | R |  |
-| `plan/authoringvalidator`, planned |  |  |  |  | R | R |  | R |  |
+| `plan/authoringvalidator` |  |  |  |  | R | R |  | R |  |
 | `section/selector` |  |  |  |  |  |  | R | R |  |
 | `section/scheduler` |  |  |  |  |  |  | R | R |  |
 | `section/resolver` |  |  |  |  | R |  | R | R |  |
@@ -208,7 +208,7 @@ by each current contract until its independently tested replacement is integrate
 | Component | Planned reads | Planned writes or returns | Position and project dependencies |
 | -- | -- | -- | -- |
 | Plan structure validator, new | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
-| Plan authoring validator, planned | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
+| Plan authoring validator | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
@@ -218,11 +218,12 @@ by each current contract until its independently tested replacement is integrate
 | Plan validator | Existing authoring fields and declared section relationships | Problems only; no plan writes | 4: plan structure validator, question finder, section validator, secrets, model |
 | Record reconciler | Existing answer inputs plus actual current Section content | Existing copied record and reconciliation report; no plan writes or historical-outcome rewrites | 2: section hasher, model |
 
-[0370](../decisions/0370-plan-authoring-validation.md) selects the planned
+[0370](../decisions/0370-plan-authoring-validation.md) selects the implemented
 authoring validator as a prerequisite for confirmed start. It runs before the
 existing plan validator at that new boundary; declaration checks do not duplicate
 the latter's answer, identity, directory-integrity or structural diagnostics.
-Its contract and implementation remain pending.
+Its independent contract and implementation are available; confirmed-start
+composition remains pending. Legacy validation boundaries are unchanged.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held

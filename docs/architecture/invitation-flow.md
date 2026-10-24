@@ -117,8 +117,9 @@ newer preparation copy with an older invitation.
 start boundary: retain local preparation, review actual record reconciliation,
 recover interrupted multi-file publication and enter a read-only record-backed
 session. First use belongs to that confirmed beginning, not archive inspection.
-Missing declaration validation is an explicit delivery prerequisite. These
-contracts and implementations remain pending; no import command is advertised.
+The independent whole-plan declaration validator under
+[0370](../decisions/0370-plan-authoring-validation.md) is implemented. Confirmed
+import and startup composition remain pending; no import command is advertised.
 
 Update standard first-steps wording to explain all three artifacts, initial help,
 and what works before company access. The person must not need access to the

@@ -1,6 +1,6 @@
 # Plan authoring validator contract
 
-Status: agent-authored contract; implementation pending.
+Status: agent-authored contract; independent implementation available.
 
 `plan/authoringvalidator` checks declarations in a decoded whole plan. It does
 not judge stored answers, readiness, record history or preparation. The new

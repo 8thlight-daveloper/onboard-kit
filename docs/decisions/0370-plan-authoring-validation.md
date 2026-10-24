@@ -1,6 +1,6 @@
 # 0370. Validate declarations before record-backed onboarding
 
-Status: accepted by agent judgment; independent contract and implementation pending
+Status: accepted by agent judgment; independent contract and implementation available
 
 Builds on [0010](0010-plan-editor.md), [0040](0040-blank-text-and-variable-name-length.md),
 [0055](0055-variable-audience.md), [0070](0070-sub-sections.md),

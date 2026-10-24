@@ -1,6 +1,6 @@
 # 0360. Confirm an invitation before starting a local session
 
-Status: accepted by agent judgment; prerequisite validation and startup implementation pending
+Status: accepted by agent judgment; declaration validation available, startup pending
 
 ## Context
 
