@@ -121,7 +121,7 @@ flowchart TB
 | Invitation command | Validates explicit plan/preparation and handover readiness, builds an identity-only seed and real first-steps guide, then exclusively publishes one new ZIP. No delivery, import, first use or input writes. See [0300](../decisions/0300-explicit-invitation-export.md) |
 | Invitation encoder | Encodes four opaque payloads into a deterministic bounded ZIP envelope. Does not decode artifacts or create a record seed. See [0240](../decisions/0240-invitation-archive-envelope.md) |
 | Invitation decoder | Decodes a bounded untrusted ZIP envelope into four owned opaque payloads and their account namespace. Does not extract files or authorize import |
-| Invitation reviewer, planned | Inspects content, proposes retained/reconciled local roles and the actual record-backed view, then finalizes a supplied first-use event. Pure source-based review, not consent or publication. See [0380](../decisions/0380-invitation-review.md) |
+| Invitation reviewer | Inspects content, proposes retained/reconciled local roles and the actual record-backed view, then finalizes a supplied first-use event. Pure source-based review, not consent or publication. See [0380](../decisions/0380-invitation-review.md) |
 | Invitation starter, planned | Owns confirmed interaction, safe selected paths, private recoverable publication and read-only session display under [0360](../decisions/0360-confirmed-invitation-start.md). No implementation or import command yet |
 | Catalog reader | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
 | Catalog command | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
@@ -169,7 +169,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `command/invite` | Reads explicit arguments, bounded local plan/preparation files and stable path metadata. Writes stdout/stderr and only a new explicit ZIP plus its owned temporary file in an existing parent. Changes no plan, preparation, record, index or preference bytes |
 | `invitation/encoder` | None. Reads InvitationFiles only and returns archive bytes or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
-| `invitation/reviewer`, planned | None. Reads supplied bounded archive/local bytes, explicit choices and context, and supplied finalization event. Uses actual codecs, validation, reconciliation, joiner and walker; returns owned role proposals, session projections, diagnostics and bytes. Changes no input or outside state; reads no filesystem, configuration or clock |
+| `invitation/reviewer` | None. Reads supplied bounded archive/local bytes, explicit choices and context, and supplied finalization event. Uses actual codecs, validation, reconciliation, joiner and walker; returns owned role proposals, session projections, diagnostics and bytes. Changes no input or outside state; reads no filesystem, configuration or clock |
 | `invitation/starter`, planned | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. Exact driver contract pending |
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
@@ -189,7 +189,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | `plan/validator` |  |  |  |  | R | R | R | R |  |
 | `plan/structurevalidator` |  |  |  |  |  |  |  | R |  |
 | `plan/authoringvalidator` |  |  |  |  | R | R |  | R |  |
-| `invitation/reviewer`, planned | R | R | R | R | R | R | R | R | R |
+| `invitation/reviewer` | R | R | R | R | R | R | R | R | R |
 | `section/selector` |  |  |  |  |  |  | R | R |  |
 | `section/scheduler` |  |  |  |  |  |  | R | R |  |
 | `section/resolver` |  |  |  |  | R |  | R | R |  |
@@ -236,12 +236,13 @@ composition remains pending. Legacy validation boundaries are unchanged.
 reviewer before the separate starter. Review reuses actual dependencies and
 returns its own model-only contract projections, with fully owned nested data.
 Finalization re-derives the same source-bound proposal before adding a supplied
-new event; recovery uses only already frozen publication bytes. Neither new
-component is implemented yet. The reviewer has an independent
+new event; recovery uses only already frozen publication bytes. The reviewer
+has an independent implementation and
 [contract](../../contracts/invitation/reviewer/contract.md), including the exact
 resource admission rules under [0390](../decisions/0390-invitation-resource-admission.md).
-Independent implementation and hardening follow. The starter contract remains
-pending. Binary wiring can remain at 8.
+Further contract hardening continues. [0400](../decisions/0400-invitation-start-protocol.md)
+specifies the starter's storage and interaction direction; its contract and
+implementation remain pending. Binary wiring can remain at 8.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held

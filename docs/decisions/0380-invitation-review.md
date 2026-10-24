@@ -1,6 +1,6 @@
 # 0380. Review an invitation as a pure proposal
 
-Status: accepted by agent judgment; independent contract available, implementation pending
+Status: accepted by agent judgment; independent contract and implementation available
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0090](0090-plan-and-onboarding-record.md),
