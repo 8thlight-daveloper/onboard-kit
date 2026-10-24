@@ -28,6 +28,401 @@ type observationEvidence struct {
 	initialBytes map[string][]byte
 }
 
+type observedRoleFact uint8
+
+const (
+	roleIndeterminate observedRoleFact = iota
+	rolePreimage
+	rolePublished
+	roleRetained
+)
+
+type observationLineage struct {
+	root, home, namespace guard
+	token, pendingHash    string
+	roles                 [4]guard
+	allPublished          bool
+	sawReceipt            bool
+	pendingGuard          guard
+	pendingRaw            []byte
+	payload               *pending
+	ownerGuard            guard
+	ownerRaw              []byte
+	claimsGuard           guard
+	claimsRaw             []byte
+	parents               map[string]guard
+}
+
+type observedInvariant struct {
+	violation, gap string
+	facts          [4]observedRoleFact
+}
+
+func forbiddenRoleOrder(facts [4]observedRoleFact) bool {
+	for i, fact := range facts {
+		if fact != rolePublished {
+			continue
+		}
+		for _, earlier := range facts[:i] {
+			if earlier == rolePreimage {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func canonicalObservation(body []byte, value any) bool {
+	if json.Unmarshal(body, value) != nil {
+		return false
+	}
+	canonical, err := json.Marshal(value)
+	return err == nil && bytes.Equal(append(canonical, '\n'), body)
+}
+
+func stableObservedFile(t *testing.T, path string, limit int) ([]byte, guard, bool) {
+	t.Helper()
+	before, ok := observedGuard(t, path, "regular")
+	if !ok {
+		return nil, guard{}, false
+	}
+	fd, err := syscall.Open(path, syscall.O_RDONLY|syscall.O_NOFOLLOW|syscall.O_NONBLOCK, 0)
+	if err != nil {
+		return nil, guard{}, false
+	}
+	f := os.NewFile(uintptr(fd), path)
+	info, err := f.Stat()
+	if err != nil || !info.Mode().IsRegular() || info.Size() > int64(limit) {
+		_ = f.Close()
+		return nil, guard{}, false
+	}
+	stat, ok := info.Sys().(*syscall.Stat_t)
+	if !ok || fmt.Sprint(stat.Dev) != before.Device || fmt.Sprint(stat.Ino) != before.Inode {
+		_ = f.Close()
+		return nil, guard{}, false
+	}
+	body, readError := io.ReadAll(io.LimitReader(f, int64(limit)+1))
+	afterInfo, statError := f.Stat()
+	closeError := f.Close()
+	after, present := observedGuard(t, path, "regular")
+	if readError != nil || statError != nil || closeError != nil || !present || after != before || len(body) > limit || int64(len(body)) != info.Size() || !os.SameFile(info, afterInfo) || info.Size() != afterInfo.Size() {
+		return nil, guard{}, false
+	}
+	return body, before, true
+}
+
+func definitelyAbsent(path string) bool {
+	_, err := os.Lstat(path)
+	return os.IsNotExist(err)
+}
+
+func validObservationSources(t *testing.T, s sandbox, e observationEvidence, p pending, raw []byte, o owner, root, home, namespace, pendingGuard guard) bool {
+	t.Helper()
+	if p.Version != 1 || o.Version != 1 || !regexp.MustCompile(`^[0-9a-f]{64}$`).MatchString(p.Transaction) || o.Transaction != p.Transaction || o.RootDevice != root.Device || o.RootInode != root.Inode || o.Namespace != namespace || o.PendingSHA256 != digest(raw) || p.SessionKey != key(s.root) || p.PlanIDBase64 != "cGxhbi1h" || p.Account != "jules" || p.Root != s.root || p.Home != s.home || p.RootGuard != root || p.HomeGuard != home || p.Record != "records/jules/record.obk.yaml" || p.Preparation != "records/jules/preparation.obk.yaml" || len(p.Roles) != 4 || p.SessionDisplayBase64 != encoded(fixture(t, "session.txt")) {
+		return false
+	}
+	if o.PendingTemporary != nil && *o.PendingTemporary != pendingGuard {
+		return false
+	}
+	event := string(openedAt)
+	if e.profile == "retained-record" {
+		event = ""
+	}
+	if p.FirstOpenedAt != event {
+		return false
+	}
+	paths, bodies, actions := observationArtifacts(t, s, e, p.Transaction)
+	for i, r := range p.Roles {
+		if r.Role != []string{"local-plan", "preparation", "session-metadata", "record"}[i] || r.Action != actions[i] || r.AfterBase64 != encoded(bodies[i]) || r.AfterSHA256 != digest(bodies[i]) || len(r.Parents) != 2 {
+			return false
+		}
+		original, present := e.initial[paths[i]]
+		if present != r.BeforePresent {
+			return false
+		}
+		if present {
+			if r.BeforeGuard == nil || *r.BeforeGuard != original || r.BeforeBase64 != encoded(e.initialBytes[paths[i]]) || r.BeforeSHA256 != digest(e.initialBytes[paths[i]]) {
+				return false
+			}
+		} else if r.BeforeGuard != nil || r.BeforeBase64 != "" || r.BeforeSHA256 != "" {
+			return false
+		}
+		base, parts := observationParentPath(s, i)
+		for j, part := range parts {
+			base = filepath.Join(base, part)
+			original, existed := e.initial[base]
+			parent := r.Parents[j]
+			if parent.Ordinal != fmt.Sprint(j) || parent.Present != existed || existed && (parent.Guard == nil || *parent.Guard != original) || !existed && parent.Guard != nil {
+				return false
+			}
+		}
+	}
+	return true
+}
+
+func observationParentPath(s sandbox, i int) (string, []string) {
+	if i == 1 || i == 3 {
+		return s.root, []string{"records", "jules"}
+	}
+	return s.home, []string{"sessions", key(s.root)}
+}
+
+func observedCreationClaims(t *testing.T, s sandbox, e observationEvidence, claims publication) map[string]guard {
+	t.Helper()
+	created := map[string]guard{}
+	invalid := map[string]bool{}
+	for i, role := range claims.Roles {
+		base, parts := observationParentPath(s, i)
+		last := -1
+		for _, entry := range role.NewParents {
+			ordinal, err := strconv.Atoi(entry.Ordinal)
+			if err != nil || ordinal < 0 || ordinal >= len(parts) || entry.Ordinal != fmt.Sprint(ordinal) || ordinal <= last {
+				continue
+			}
+			last = ordinal
+			path := base
+			for _, part := range parts[:ordinal+1] {
+				path = filepath.Join(path, part)
+			}
+			g, ok := observedGuard(t, path, "directory")
+			_, existed := e.initial[path]
+			_, duplicate := created[path]
+			if !ok || existed || duplicate || g != entry.Guard || !observerPrivate(g, "directory") {
+				invalid[path] = true
+				continue
+			}
+			created[path] = g
+		}
+	}
+	for path := range invalid {
+		delete(created, path)
+	}
+	return created
+}
+
+func observeRoleFacts(t *testing.T, s sandbox, e observationEvidence, p pending, claims *publication) ([4]observedRoleFact, [4]guard) {
+	t.Helper()
+	var facts [4]observedRoleFact
+	var guards [4]guard
+	created := map[string]guard{}
+	if claims != nil {
+		created = observedCreationClaims(t, s, e, *claims)
+	}
+	paths, bodies, _ := observationArtifacts(t, s, e, p.Transaction)
+	for i, r := range p.Roles {
+		facts[i], guards[i] = func() (observedRoleFact, guard) {
+			base, parts := observationParentPath(s, i)
+			for _, part := range parts {
+				base = filepath.Join(base, part)
+				original, existed := e.initial[base]
+				current, present := observedGuard(t, base, "directory")
+				if existed {
+					if !present || current != original {
+						return roleIndeterminate, guard{}
+					}
+				} else if present {
+					claimed, ok := created[base]
+					if !ok || current != claimed {
+						return roleIndeterminate, guard{}
+					}
+				} else if !definitelyAbsent(base) {
+					return roleIndeterminate, guard{}
+				}
+			}
+			original, existed := e.initial[paths[i]]
+			body, current, present := stableObservedFile(t, paths[i], 2097152)
+			if r.Action == "retain" {
+				if existed && present && current == original && bytes.Equal(body, e.initialBytes[paths[i]]) && bytes.Equal(body, bodies[i]) && (claims == nil || claims.Roles[i].Staging == nil && claims.Roles[i].Temporary == nil) {
+					return roleRetained, current
+				}
+				return roleIndeterminate, guard{}
+			}
+			if existed && present && current == original && bytes.Equal(body, e.initialBytes[paths[i]]) || !existed && definitelyAbsent(paths[i]) {
+				return rolePreimage, current
+			}
+			if !present || !bytes.Equal(body, bodies[i]) || claims == nil {
+				return roleIndeterminate, guard{}
+			}
+			claim := claims.Roles[i]
+			if claim.Staging == nil || claim.Temporary == nil || !observerPrivate(*claim.Staging, "directory") || !observerPrivate(*claim.Temporary, "regular") || current.Device != claim.Temporary.Device || current.Inode != claim.Temporary.Inode {
+				return roleIndeterminate, guard{}
+			}
+			if existed && current.Security != original.Security || !existed && !observerPrivate(current, "regular") {
+				return roleIndeterminate, guard{}
+			}
+			stage := filepath.Join(filepath.Dir(paths[i]), ".obk-start-"+p.Transaction+"-"+r.Role)
+			stageGuard, ok := observedGuard(t, stage, "directory")
+			if !ok || stageGuard != *claim.Staging || !definitelyAbsent(filepath.Join(stage, "payload")) {
+				return roleIndeterminate, guard{}
+			}
+			entries, err := os.ReadDir(stage)
+			if err != nil || len(entries) != 0 {
+				return roleIndeterminate, guard{}
+			}
+			return rolePublished, current
+		}()
+	}
+	return facts, guards
+}
+
+func allObservedRoles(facts [4]observedRoleFact) bool {
+	for _, fact := range facts {
+		if fact != rolePublished && fact != roleRetained {
+			return false
+		}
+	}
+	return true
+}
+
+func matchesSavedPublication(t *testing.T, s sandbox, e observationEvidence, history observationLineage) bool {
+	t.Helper()
+	if !history.allPublished || history.payload == nil {
+		return false
+	}
+	for path, original := range history.parents {
+		current, ok := observedGuard(t, path, "directory")
+		if !ok || current != original {
+			return false
+		}
+	}
+	paths, bodies, _ := observationArtifacts(t, s, e, history.token)
+	for i, path := range paths {
+		body, g, ok := stableObservedFile(t, path, 2097152)
+		if !ok || g != history.roles[i] || !bytes.Equal(body, bodies[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+func sameObservationLineage(history observationLineage, root, home, namespace guard, token, pendingHash string) bool {
+	return history.token == "" || history.root == root && history.home == home && history.namespace == namespace && history.token == token && history.pendingHash == pendingHash
+}
+
+func observedReceiptProof(t *testing.T, s sandbox, e observationEvidence, receipt complete, p pending, raw []byte, root, home, namespace guard, facts [4]observedRoleFact, guards [4]guard) (bool, bool) {
+	t.Helper()
+	securityRaw, err := json.Marshal(namespace.Security)
+	if err != nil {
+		return false, false
+	}
+	if receipt.Version != 1 || receipt.Transaction != p.Transaction || receipt.SessionKey != key(s.root) || receipt.PendingSHA256 != digest(raw) || receipt.RootDevice != root.Device || receipt.RootInode != root.Inode || receipt.HomeDevice != home.Device || receipt.HomeInode != home.Inode || receipt.NamespaceDevice != namespace.Device || receipt.NamespaceInode != namespace.Inode || receipt.NamespaceSecuritySHA256 != digest(securityRaw) || len(receipt.Roles) != 4 {
+		return true, false
+	}
+	_, bodies, _ := observationArtifacts(t, s, e, p.Transaction)
+	verified := true
+	for i, role := range receipt.Roles {
+		if role.Role != p.Roles[i].Role || role.SHA256 != digest(bodies[i]) {
+			return true, false
+		}
+		switch facts[i] {
+		case rolePreimage:
+			return true, false
+		case roleIndeterminate:
+			verified = false
+		case rolePublished, roleRetained:
+			securityRaw, err := json.Marshal(guards[i].Security)
+			if err != nil {
+				return false, false
+			}
+			if role.Device != guards[i].Device || role.Inode != guards[i].Inode || role.SecuritySHA256 != digest(securityRaw) {
+				return true, false
+			}
+		}
+	}
+	return false, verified
+}
+
+func observeNativeInvariants(t *testing.T, s sandbox, e observationEvidence, history *observationLineage) observedInvariant {
+	t.Helper()
+	root, rootOK := observedGuard(t, s.root, "directory")
+	home, homeOK := observedGuard(t, s.home, "directory")
+	namespace, namespaceOK := observedGuard(t, s.pending(), "directory")
+	if !rootOK || root != e.initial[s.root] || !homeOK || !observerPrivate(home, "directory") || !namespaceOK || !observerPrivate(namespace, "directory") {
+		return observedInvariant{gap: "native-root-home-namespace-unproved"}
+	}
+	if original, existed := e.initial[s.home]; existed && home != original {
+		return observedInvariant{gap: "original-home-changed"}
+	}
+	if history.token != "" && (history.root != root || history.home != home || history.namespace != namespace) {
+		return observedInvariant{gap: "native-lineage-changed"}
+	}
+	pendingPath, receiptPath := filepath.Join(s.pending(), "pending.json"), filepath.Join(s.pending(), "complete.json")
+	ownerRaw, ownerGuard, ownerOK := stableObservedFile(t, filepath.Join(s.pending(), "owner.json"), 16384)
+	claimRaw, claimGuard, claimOK := stableObservedFile(t, filepath.Join(s.pending(), "publication.json"), 16384)
+	if history.token != "" && definitelyAbsent(receiptPath) {
+		pendingRaw, pendingGuard, pendingOK := stableObservedFile(t, pendingPath, 33554432)
+		if history.sawReceipt && pendingOK && pendingGuard == history.pendingGuard && bytes.Equal(pendingRaw, history.pendingRaw) {
+			return observedInvariant{violation: "completion-proof-lost-with-personal-pending"}
+		}
+		ownedRemainder := ownerOK && ownerGuard == history.ownerGuard && bytes.Equal(ownerRaw, history.ownerRaw) || claimOK && claimGuard == history.claimsGuard && bytes.Equal(claimRaw, history.claimsRaw)
+		if definitelyAbsent(pendingPath) && ownedRemainder && matchesSavedPublication(t, s, e, *history) {
+			return observedInvariant{violation: "published-cleanup-lost-pending-and-receipt"}
+		}
+	}
+	var p pending
+	var o owner
+	raw, pendingGuard, hasPending := stableObservedFile(t, pendingPath, 33554432)
+	if !hasPending || !canonicalObservation(raw, &p) || !ownerOK || !observerPrivate(ownerGuard, "regular") || !canonicalObservation(ownerRaw, &o) || !observerPrivate(pendingGuard, "regular") || !validObservationSources(t, s, e, p, raw, o, root, home, namespace, pendingGuard) {
+		return observedInvariant{gap: "complete-pending-lineage-unproved"}
+	}
+	if !sameObservationLineage(*history, root, home, namespace, p.Transaction, digest(raw)) {
+		return observedInvariant{gap: "transaction-or-pending-lineage-changed"}
+	}
+	var claims *publication
+	var claim publication
+	if claimOK && observerPrivate(claimGuard, "regular") && canonicalObservation(claimRaw, &claim) && claim.Version == 1 && claim.Transaction == p.Transaction && claim.PendingSHA256 == digest(raw) && len(claim.Roles) == 4 {
+		valid := true
+		for i, role := range claim.Roles {
+			valid = valid && role.Role == p.Roles[i].Role && role.NewParents != nil
+		}
+		if valid {
+			claims = &claim
+		}
+	}
+	facts, guards := observeRoleFacts(t, s, e, p, claims)
+	history.root, history.home, history.namespace = root, home, namespace
+	history.token, history.pendingHash = p.Transaction, digest(raw)
+	history.pendingGuard, history.pendingRaw, history.payload = pendingGuard, raw, &p
+	history.ownerGuard, history.ownerRaw = ownerGuard, ownerRaw
+	if forbiddenRoleOrder(facts) {
+		return observedInvariant{violation: "forbidden-published-role-subset", facts: facts}
+	}
+	if claims != nil {
+		history.claimsGuard, history.claimsRaw = claimGuard, claimRaw
+	}
+	if allObservedRoles(facts) {
+		history.allPublished, history.roles = true, guards
+		history.parents = map[string]guard{}
+		for i := range p.Roles {
+			base, parts := observationParentPath(s, i)
+			for _, part := range parts {
+				base = filepath.Join(base, part)
+				history.parents[base] = objectGuard(t, base)
+			}
+		}
+	}
+	receiptRaw, receiptGuard, receiptOK := stableObservedFile(t, receiptPath, 16384)
+	if !receiptOK {
+		return observedInvariant{facts: facts, gap: "no-stable-final-receipt-observed"}
+	}
+	if !observerPrivate(receiptGuard, "regular") {
+		return observedInvariant{facts: facts, gap: "final-receipt-native-controls-unproved"}
+	}
+	var receipt complete
+	if !canonicalObservation(receiptRaw, &receipt) {
+		return observedInvariant{violation: "attributable-final-receipt-malformed", facts: facts}
+	}
+	invalid, verified := observedReceiptProof(t, s, e, receipt, p, raw, root, home, namespace, facts, guards)
+	if invalid {
+		return observedInvariant{violation: "attributable-final-receipt-invalid", facts: facts}
+	}
+	if !verified {
+		return observedInvariant{facts: facts, gap: "final-receipt-role-native-proof-incomplete"}
+	}
+	history.sawReceipt = true
+	return observedInvariant{facts: facts}
+}
+
 func captureObservation(t *testing.T, s sandbox, profile string) observationEvidence {
 	t.Helper()
 	e := observationEvidence{profile: profile, initial: map[string]guard{}, initialBytes: map[string][]byte{}}
@@ -487,9 +882,10 @@ func TestDarwinObservedProcessDeath(t *testing.T) {
 	}
 	desired := []string{"idle", "unclaimed-empty", "claimed-incomplete", "pending-no-role", "after-local-plan", "after-preparation", "after-session-metadata", "retained-record/pending-no-role", "retained-record/after-local-plan", "retained-record/after-preparation", "payload-final-controls", "all-roles-no-receipt", "receipt-pending", "receipt-only"}
 	seen := map[string]bool{}
+	gaps := map[string]int{}
 	delays := []time.Duration{0, time.Microsecond, 5 * time.Microsecond, 25 * time.Microsecond, 100 * time.Microsecond, 500 * time.Microsecond, time.Millisecond, 2 * time.Millisecond, 5 * time.Millisecond, 10 * time.Millisecond, 20 * time.Millisecond, 50 * time.Millisecond}
 	for _, profile := range []string{"fresh", "reconcile", "retained-record"} {
-		for _, delay := range delays {
+		for delayIndex, delay := range delays {
 			s := setup(t)
 			if profile == "reconcile" {
 				put(t, s.record(), bytes.ReplaceAll(fixture(t, "begun.yaml"), []byte(rawPlanHash), []byte(strings.Repeat("0", 64))))
@@ -506,26 +902,56 @@ func TestDarwinObservedProcessDeath(t *testing.T) {
 			c.send(t, "confirm jules\n")
 			c.until(t, "Review complete. Choose begin or cancel:")
 			c.send(t, "begin\n")
-			if delay > 0 {
-				timer := time.NewTimer(delay)
-				<-timer.C
-			}
-			if err := c.command.Process.Signal(syscall.SIGSTOP); err != nil {
-				t.Fatal("cannot stop owned native helper")
-			}
-			var status syscall.WaitStatus
-			var pid int
-			var waitError error
-			for attempt := 0; attempt < 4; attempt++ {
-				pid, waitError = syscall.Wait4(c.command.Process.Pid, &status, syscall.WUNTRACED, nil)
-				if waitError != syscall.EINTR {
-					break
+			var state stoppedOpening
+			history := observationLineage{}
+			for observation := 0; observation < 8; observation++ {
+				pause := delay
+				if observation > 0 {
+					pause = []time.Duration{0, time.Microsecond, 5 * time.Microsecond, 25 * time.Microsecond, 100 * time.Microsecond, 500 * time.Microsecond, time.Millisecond, 2 * time.Millisecond}[observation]
 				}
+				if pause > 0 {
+					timer := time.NewTimer(pause)
+					<-timer.C
+				}
+				if err := c.command.Process.Signal(syscall.SIGSTOP); err != nil {
+					t.Fatal("cannot stop owned native helper")
+				}
+				var status syscall.WaitStatus
+				var pid int
+				var waitError error
+				for attempt := 0; attempt < 4; attempt++ {
+					pid, waitError = syscall.Wait4(c.command.Process.Pid, &status, syscall.WUNTRACED, nil)
+					if waitError != syscall.EINTR {
+						break
+					}
+				}
+				if waitError != nil || pid != c.command.Process.Pid || status&0x7f != 0x7f || status>>8 != syscall.WaitStatus(syscall.SIGSTOP) {
+					t.Fatal("cannot confirm owned helper stopped before classification")
+				}
+				invariant := observeNativeInvariants(t, s, evidence, &history)
+				if invariant.violation != "" {
+					if err := c.command.Process.Kill(); err != nil {
+						t.Fatal("cannot kill owned helper after proved forbidden state")
+					}
+					_ = c.input.Close()
+					_ = c.command.Wait()
+					c.waited = true
+					c.cancel()
+					t.Fatalf("proved forbidden native state: %s profile=%s pid=%d sample=%d facts=%v token=%s pending=%s root=%s:%s home=%s:%s namespace=%s:%s", invariant.violation, profile, pid, observation, invariant.facts, history.token, history.pendingHash, history.root.Device, history.root.Inode, history.home.Device, history.home.Inode, history.namespace.Device, history.namespace.Inode)
+				}
+				if invariant.gap != "" {
+					gaps[invariant.gap]++
+				}
+				state = observeStoppedOpening(t, s, evidence)
+				t.Logf("native observation profile=%s attempt=%d sample=%d phase=%s facts=%v invariant-gap=%q", profile, delayIndex, observation, state.phase, invariant.facts, invariant.gap)
+				if observation < 7 && delayIndex%3 == 0 && state.phase != "idle" && state.phase != "unclaimed-empty" && state.phase != "claimed-incomplete" {
+					if err := c.command.Process.Signal(syscall.SIGCONT); err != nil {
+						t.Fatal("cannot continue owned helper between bounded observations")
+					}
+					continue
+				}
+				break
 			}
-			if waitError != nil || pid != c.command.Process.Pid || status&0x7f != 0x7f || status>>8 != syscall.WaitStatus(syscall.SIGSTOP) {
-				t.Fatal("cannot confirm owned helper stopped before classification")
-			}
-			state := observeStoppedOpening(t, s, evidence)
 			if state.phase == "unclassified" || state.phase == "pre-namespace" || seen[state.phase] {
 				if err := c.command.Process.Signal(syscall.SIGCONT); err != nil {
 					t.Fatal(err)
@@ -604,6 +1030,14 @@ func TestDarwinObservedProcessDeath(t *testing.T) {
 		if !seen[phase] {
 			t.Logf("UNOBSERVED native interruption phase gap: %s", phase)
 		}
+	}
+	for _, reason := range []string{"native-root-home-namespace-unproved", "original-home-changed", "native-lineage-changed", "complete-pending-lineage-unproved", "transaction-or-pending-lineage-changed", "no-stable-final-receipt-observed", "final-receipt-native-controls-unproved", "final-receipt-role-native-proof-incomplete"} {
+		if gaps[reason] > 0 {
+			t.Logf("INCONCLUSIVE native invariant observations: %s count=%d", reason, gaps[reason])
+		}
+	}
+	for _, witness := range []string{"forbidden-published-role-subset", "attributable-final-receipt-malformed", "attributable-final-receipt-invalid", "completion-proof-lost-with-personal-pending", "published-cleanup-lost-pending-and-receipt"} {
+		t.Logf("UNREACHED forbidden-state witness is not equivalence or a mutant kill: %s", witness)
 	}
 	if len(seen) == 0 {
 		t.Skip(fmt.Sprintf("no required persistent phase observed in %d finite attempts across three profiles", 3*len(delays)))

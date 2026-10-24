@@ -67,16 +67,27 @@ process descriptors.
 interruption_darwin_test.go is a separately selected native observation layer.
 Its twelve finite attempts per fresh, canonical0400reconciliation and retained
 record profile SIGSTOP before independent persistent-state classification and
-SIGKILL only a newly reached strictly verified intended phase. Expected final
+SIGKILL a newly reached strictly verified intended phase or a proved invariant
+violation. Expected final
 bytes are the original literal fixtures and independently specified registration,
 not newly interpreted product output. Original native preimage/parent guards are
 captured before the child starts. Each fixed-role prefix is distinguished;
-out-of-order nonretained application is unclassified, and the no-op record with
+out-of-order nonretained application is checked separately, and the no-op record with
 unfinished companions has separately named coverage. Exact receipt role bodies,
 native identities/security hashes and namespace binding are checked, not merely
 version/length fields. A partial or unproved schema/guard is unclassified and
 resumed, never killed as strict evidence. Unobserved phases remain explicitly
 named gaps; no execution or process-death result is claimed by authorship.
+
+The independent negative observer first proves role facts without requiring a
+legal prefix. A later published role with a definite earlier preimage fails.
+An attributed final receipt must have the exact public shape and proven native
+facts; partial temporary receipts remain inconclusive. Completion-proof loss
+requires unchanged same-child lineage and previously observed publication or
+receipt facts, not a guessed history. Unknown native facts remain proof gaps.
+observer_classification_darwin_test.go uses small owned-file data controls for
+these distinctions. Those controls never call the starter and cannot establish
+that a product variant reaches a forbidden state.
 
 The existing-state supplementary-group fixture extends the same actual
 Getgroups/Chown boundary as the record control. It preserves the exact preexisting

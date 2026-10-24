@@ -53,6 +53,17 @@ not proved is unclassified: resume the child normally, do not kill and label it
 verified. This deliberately underreports some transient cleanup/claim-update
 windows rather than trusting canonical JSON alone as ownership proof.
 
+A separate negative observer checks independently proven role facts before
+legal-prefix selection. It fails a definite earlier preimage followed by a
+published later nonretained role, an attributable invalid final receipt, or
+loss of completion proof established through unchanged same-child history.
+Partial temporary receipts, uncertain native identities and unknown history
+remain inconclusive. Repeated samples retain exact owned-child PID, root/home/
+namespace identities and pending digest; lineage is never shared across children.
+At most eight stops per child and thirty-six children bound the observation.
+Classifier data controls establish these distinctions, not product reachability.
+An unobserved forbidden state is not evidence that an applied variant is harmless.
+
 ## Not separately isolated in this first suite
 
 The normative limits remain mandatory, including inclusive10MiB/18MiB combined
