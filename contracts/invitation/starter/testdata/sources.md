@@ -7,14 +7,15 @@ specify expected behavior, not captured command output. Execution is pending.
 | -- | -- |
 | plan.yaml, preparation.yaml, seed.yaml | Literal small public invitation-reviewer fixtures, transcribed under0380. The raw plan hash is the reviewed reviewer-contract literal, not calculated from starter output. One required onboardee question deliberately remains unanswered. |
 | begun.yaml | Record encoder field order/scalar rules and0230 event semantics; independently held fixed clock value2026-10-23T12:34:56.123Z. |
-| existing.yaml |0090/0380 exact no-op preservation; hand-ordered fields/comment/unknown notes and absent first event are intentional. It is not canonical encoder output. |
+| existing.yaml | 0090/0380 exact no-op preservation; hand-ordered fields/comment/unknown notes and absent first event are intentional. It is not canonical encoder output. |
 | first-steps.md | Literal original invitation guidance, not regenerated current guidance. |
 | help.txt | Exact four-line terminal.md help grammar. |
 | identity.txt | Exact terminal.md identity/privacy/destination block. At-sign placeholders substitute only owned ASCII sandbox paths; they are not arbitrary user-text escaping or a second display renderer. |
 | fresh-review.txt | Exact terminal.md complete action/reconciliation/privacy block. The actual reconciler zero previous context supplies empty comparison lists, not fabricated new activity/question claims. Fixed Previous comparison problems label is the root-selected bounded P3/P7 presentation clarification. |
 | session.txt | terminal.md full purposeful projection, reviewer TestLiteralNewSession independent section-hash/question/blocker/wrapped-warning literals, and0045/0120 unanswered marker. No renderer output was read. |
 | full.plan.yaml, full.preparation.yaml | Independently authored schema-driven coverage for meaningful actual activity/step/check/environment/question/default/list/support fields, waiting Requires, goal dates and repeated helpers. Runtime placeholders name only the owned sandbox; source hashes are computed with standard SHA256 when framing the seed, never by a product dependency. Terminal-control payloads must be escaped, not executed or deleted. |
-| stale.preparation.yaml |0190/0380 retained stale support is preserved and marked unavailable, not passed to valid-only support use or silently replaced. Unknown personal markers must not be displayed. |
+| stale.preparation.yaml | 0190/0380 retained stale support is preserved and marked unavailable, not passed to valid-only support use or silently replaced. Unknown personal markers must not be displayed. |
+| stale-session.txt | Exact terminal.md session projection with stale.preparation.yaml's five ordered repair errors, derived from the reviewer contract rather than captured output. Support is false, with no contradictory true claim. |
 
 Archive helpers use standard ZIP Store solely to frame these independent bytes.
 Runtime-dependent absolute paths, native identities and cryptographic transaction
@@ -113,3 +114,19 @@ while SIGCONT19 is continuation. The observer checks the exact requested stop
 rather than relying on the shared BSD Go helper's different continuation rule.
 Bounded EINTR retries do not replace confirmation. No product or toolchain patch,
 signal-send-only assumption or generic cross-platform wait implementation is used.
+
+session_gaps_test.go pins the complete held step/check projection, including
+escaped nonempty directory, argument lists, repeated escalation references and
+multiline Ask with a trailing empty line. Its added contact declaration remains
+in the full question list with onboarder audience; the walker and finder
+contracts require both audiences in declaration order. The stale-support case
+compares the entire completed session against stale-session.txt. Exact event,
+session header and final prompt delimit that projection from the earlier review.
+
+input_gaps_test.go distinguishes zero-byte/nil-error reads from ordinary EOF at
+identity, review and completed-session boundaries. Literal padded/case-changed
+confirm/begin/exit actions must repeat the current prompt, not gain consent.
+Incomplete EOF fragments never count as actions. Independent reader counts and
+untouched tails pin consumption; prebegin snapshots and complete postbegin bytes
+pin effects. A64KiB bounded output writer prevents a wrong repeated-prompt loop
+from turning captured output into unbounded memory growth.

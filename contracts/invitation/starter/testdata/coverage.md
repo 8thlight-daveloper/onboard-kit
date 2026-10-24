@@ -70,3 +70,9 @@ identity/begin/exit boundaries. Those cases do not establish combined total-byte
 budget/known-EOF precedence or paired errors at recovery prompts. Those distinct
 conditions remain first-build hardening work; ordinary strings.Reader inputs
 are not evidence for simultaneous positive-count/error returns.
+
+The independent session-gap fixtures pin the complete nonempty held step/check
+block and the full stale-support session. The independent input-gap fixtures
+isolate zero-progress reads, exact action spelling and incomplete EOF at all
+three ordinary interaction states with bounded output observation. These do not
+establish recovery-prompt or native publication-window coverage.
