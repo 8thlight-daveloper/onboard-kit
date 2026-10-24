@@ -79,10 +79,16 @@ Files also support the exclusive bounded structural [YAML scalar predicate](acce
 
 ## How the runner treats a run
 
-- Each scenario gets its own temporary folder, removed afterward.
+- Each scenario gets its own temporary folder, removed afterward. Resolve that newly owned folder to its physical absolute path before file setup or child execution. Every step uses that same physical working directory, even when the selected temporary parent is reached through a symlink.
 - A run that does not finish within a time limit is killed, and the scenario fails with what was captured.
 - A scenario fails when any expectation is not met. The failure names the step and the expectation.
 - Scenarios do not depend on each other, and may run in parallel.
+
+Physical sandbox resolution is test setup, not normalization of product paths
+or command arguments. Preserve the selected parent, its unrelated files, ambient
+working directory, TMPDIR and PWD. Do not strip ACLs, change groups or relax the
+product's path rules. Remove only the scenario's new folder after success or an
+ordinary failure.
 
 ## Choices the first runner made
 

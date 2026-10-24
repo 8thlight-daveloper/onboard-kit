@@ -29,6 +29,11 @@ func Run(scenario Scenario, options Options) []Failure {
 		return []Failure{{Expectation: "setup", Message: err.Error()}}
 	}
 	defer os.RemoveAll(folder)
+	physical, err := filepath.EvalSymlinks(folder)
+	if err != nil {
+		return []Failure{{Expectation: "setup", Message: err.Error()}}
+	}
+	folder = physical
 	for index, step := range scenario.Steps {
 		failures := runStep(step, folder, options)
 		if len(failures) > 0 {
