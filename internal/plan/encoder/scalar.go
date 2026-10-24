@@ -53,6 +53,7 @@ func isPlain(text string) bool {
 		!strings.HasSuffix(text, " ") &&
 		!strings.HasSuffix(text, ":") &&
 		!strings.ContainsFunc(text, unicode.IsControl) &&
+		!strings.ContainsAny(text, "\u2028\u2029") &&
 		!strings.Contains(text, ": ") &&
 		!strings.Contains(text, " #") &&
 		!isReservedWord(text)
@@ -96,6 +97,10 @@ func escaped(character rune) string {
 		return `\t`
 	case '\r':
 		return `\r`
+	case '\u2028':
+		return `\u2028`
+	case '\u2029':
+		return `\u2029`
 	}
 	if unicode.IsControl(character) {
 		return fmt.Sprintf(`\x%02X`, character)
@@ -104,7 +109,7 @@ func escaped(character rune) string {
 }
 
 func literalBlock(text string) (string, []string, bool) {
-	if !strings.Contains(text, "\n") || strings.HasSuffix(text, "\n\n") || hasControlOtherThanNewline(text) {
+	if !strings.Contains(text, "\n") || strings.HasSuffix(text, "\n\n") || hasControlOtherThanNewline(text) || strings.ContainsAny(text, "\u2028\u2029") {
 		return "", nil, false
 	}
 	chomp := "-"

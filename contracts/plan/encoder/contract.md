@@ -75,7 +75,7 @@ Unknown fields are written after the known keys, as siblings of them, in ascendi
 - A string is written plain only when all of these hold. Otherwise it is written in double quotes.
   - It is not empty, and does not start or end with a space.
   - Its first character is an ASCII letter, `$`, `/`, or `<`. A string that starts with any other character, such as `ü`, is quoted, and its characters are still written as they are.
-  - It has no control character and no newline.
+  - It has no control character, newline, U+2028 LINE SEPARATOR, or U+2029 PARAGRAPH SEPARATOR.
   - It does not contain `: ` or ` #`, and does not end with `:`.
   - It is not, ignoring case, one of `y`, `n`, `yes`, `no`, `true`, `false`, `on`, `off`, `null`, `inf`, `nan`.
   - It is not the Text value `deferred`.
@@ -87,11 +87,13 @@ Unknown fields are written after the known keys, as siblings of them, in ascendi
 A string with a newline is written as a literal block when all of these hold, and otherwise in double quotes.
 
 - No line has trailing whitespace or a tab.
-- No character is a control character, other than the newlines.
+- No character is a control character, other than the newlines, and neither U+2028 nor U+2029 occurs.
 - The first line is not empty and does not start with a space.
 - The text ends with no newline or with exactly one.
 
 The marker is `|-` when the text has no final newline, and `|` when it has exactly one. A block's lines are indented two spaces more than their key, and an empty line inside the text is an empty line in the file.
+
+Every string and mapping key containing U+2028 or U+2029 uses double quotes and the exact lowercase six-ASCII-byte backslash-u-2028 or backslash-u-2029 escape. This explicitly overrides the inherited every-other-character literal rule for these two characters, including when ordinary LF also occurs. It applies to known and unknown fields at every supported depth. Preserve original text and sort keys by held bytes, not escaped spelling. See [0470](../../../docs/decisions/0470-plan-unicode-separators.md).
 
 ### Lists
 
@@ -295,3 +297,5 @@ Each row names a plausible wrong implementation and the groups of cases that fai
 | The collision value examined | the reserved key test |
 | `planUrl`, `resultsPath`, or `kind` as an unknown field of a section reported, or dropped | `plan-links-section-unknown` |
 | A variable or an answer named `planUrl`, `resultsPath`, or `kind` treated as a collision or changed | `plan-links-answers-named-alike` |
+| Unicode line separators emitted literally, normalized, double-escaped, or retained in LF literal blocks; keys sorted by escaped spelling | `TestPlanUnicodeSeparatorsHaveExactCanonicalBytesAndDecodedText`, `TestPlanUnicodeKeyOrderUsesHeldBytesNotEscapedSpelling` |
+| Unrelated printable Unicode escaped or ordinary LF literal blocks changed | `TestPlanOtherPrintableUnicodeAndOrdinaryLFKeepPriorCanonicalRules` |
