@@ -55,9 +55,10 @@ type context struct {
 }
 
 type absence struct {
-	ParentPath string
-	Parent     nativeGuard
-	Remaining  []string
+	ParentPath        string
+	Parent            nativeGuard
+	Remaining         []string
+	ComparisonProfile int
 }
 
 type registryEntry struct {

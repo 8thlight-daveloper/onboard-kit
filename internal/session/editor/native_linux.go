@@ -37,3 +37,5 @@ func setNativeFlags(fd int, flags uint32) bool {
 	actual, err := unix.IoctlGetInt(fd, unix.FS_IOC_GETFLAGS)
 	return err == nil && uint32(actual) == flags
 }
+
+func nativeComparisonProfile(fd int) int { return 0 }

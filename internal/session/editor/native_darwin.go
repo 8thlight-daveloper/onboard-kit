@@ -2,6 +2,7 @@ package editor
 
 import (
 	"encoding/binary"
+	"strings"
 	"unsafe"
 
 	"golang.org/x/sys/unix"
@@ -52,3 +53,24 @@ func replaceableFlags(flags uint32) bool {
 	return flags&(unix.UF_IMMUTABLE|unix.UF_APPEND|unix.SF_IMMUTABLE|unix.SF_APPEND|unix.SF_RESTRICTED|unix.SF_NOUNLINK) == 0
 }
 func setNativeFlags(fd int, flags uint32) bool { return unix.Fchflags(fd, int(flags)) == nil }
+
+func nativeComparisonProfile(fd int) int {
+	const caseSensitiveSelector = 11
+	const casePreservingSelector = 12
+	var filesystem unix.Statfs_t
+	if unix.Fstatfs(fd, &filesystem) != nil || strings.TrimRight(string(filesystem.Fstypename[:]), "\x00") != "apfs" {
+		return 0
+	}
+	sensitive, err := unix.Fpathconf(fd, caseSensitiveSelector)
+	if err != nil || sensitive != 0 && sensitive != 1 {
+		return 0
+	}
+	preserving, err := unix.Fpathconf(fd, casePreservingSelector)
+	if err != nil || preserving != 1 {
+		return 0
+	}
+	if sensitive == 1 {
+		return 1
+	}
+	return 2
+}

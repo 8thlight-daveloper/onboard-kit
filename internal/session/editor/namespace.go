@@ -70,16 +70,48 @@ func (c *context) optionalParticipant(base *os.File, relative string) (snapshot,
 }
 
 func sameNative(a, b nativeGuard) bool { return a.Device == b.Device && a.Inode == b.Inode }
-func prefixNames(a, b []string) bool {
-	if len(a) > len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
+func disjointNames(a, b []string, profile int) bool {
+	for i := 0; i < len(a) && i < len(b); i++ {
+		if a[i] == b[i] {
+			continue
+		}
+		if !comparisonName(a[i]) || !comparisonName(b[i]) {
 			return false
 		}
+		if profile == 1 {
+			return true
+		}
+		if profile != 2 {
+			return false
+		}
+		if !strings.EqualFold(a[i], b[i]) {
+			return true
+		}
+	}
+	return false
+}
+
+func comparisonName(s string) bool {
+	if s == "" || s[0] == '.' || s[len(s)-1] == '.' {
+		return false
+	}
+	for _, c := range []byte(s) {
+		if c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c >= '0' && c <= '9' || c == '_' || c == '-' || c == '.' {
+			continue
+		}
+		return false
 	}
 	return true
+}
+
+func (c *context) comparisonProfile(missing absence) int {
+	probe := &context{guards: map[string]nativeGuard{}, groups: c.groups}
+	defer probe.close()
+	parent, ok := probe.absolute(missing.ParentPath)
+	if !ok || !reflect.DeepEqual(probe.guards[parent.Name()], missing.Parent) {
+		return 0
+	}
+	return nativeComparisonProfile(int(parent.Fd()))
 }
 
 func (c *context) disjointAbsences(participants []snapshot) bool {
@@ -87,9 +119,14 @@ func (c *context) disjointAbsences(participants []snapshot) bool {
 		if len(missing.Remaining) == 0 {
 			return false
 		}
-		for _, other := range c.absences[:i] {
-			if sameNative(missing.Parent, other.Parent) && (prefixNames(missing.Remaining, other.Remaining) || prefixNames(other.Remaining, missing.Remaining)) {
-				return false
+		for j, other := range c.absences[:i] {
+			if sameNative(missing.Parent, other.Parent) {
+				profile := c.comparisonProfile(missing)
+				if profile == 0 || !disjointNames(missing.Remaining, other.Remaining, profile) {
+					return false
+				}
+				c.absences[i].ComparisonProfile = profile
+				c.absences[j].ComparisonProfile = profile
 			}
 		}
 		missingPath := filepath.Join(append([]string{missing.ParentPath}, missing.Remaining...)...)
@@ -114,6 +151,9 @@ func (c *context) absencesFresh() bool {
 		}
 		parent, ok := probe.absolute(missing.ParentPath)
 		if !ok || !reflect.DeepEqual(probe.guards[parent.Name()], missing.Parent) {
+			return false
+		}
+		if missing.ComparisonProfile != 0 && nativeComparisonProfile(int(parent.Fd())) != missing.ComparisonProfile {
 			return false
 		}
 		var stat unix.Stat_t
