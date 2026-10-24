@@ -1,0 +1,13 @@
+Invitation opening is explicit.
+Organization plan and preparation may be shared. Personal records and recovery copies contain personal data.
+Terminal output may remain in scrollback. Viewing accepts no defaults and saves no answers or outcomes.
+Input limit: 1048576 bytes total; 65536 bytes per logical line.
+Account: "jules"
+Plan: "plan-a"
+Selected root: "@ROOT@"
+State home: "@HOME@"
+Local plan: "@LOCAL_PLAN@"
+Preparation: "@PREPARATION@"
+Record: "@RECORD@"
+Recovery: "@PENDING@"
+Identity: choose confirm jules or cancel:

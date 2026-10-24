@@ -1,0 +1,25 @@
+schemaVersion: 1
+kind: preparation
+account: jules
+planId: plan-a
+recipient:
+  name: " Jules "
+  companyEmail: jules@company.example
+  plannedStartDate: "2026-11-02"
+  team: platform
+  manager: helper
+  onboardingOwner: helper
+  buddy: helper
+  workLocation: remote
+  timeZone: Europe/Paris
+arrangements:
+  - id: pairing
+    section: setup
+    kind: support
+    owner: helper
+    contacts: [helper, helper]
+    reference: Pair with the assigned teammate
+    targetDate: "2026-11-03"
+    status: arranged
+    note: "line one\nline two"
+private-note: NEVER_DISPLAY_THIS_UNKNOWN_PERSONAL_NOTE

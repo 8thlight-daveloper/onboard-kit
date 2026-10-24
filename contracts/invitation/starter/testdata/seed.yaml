@@ -1,0 +1,6 @@
+schemaVersion: 1
+kind: record
+account: jules
+plan:
+  id: plan-a
+  hash: "00d6473bd698e40caca271f61af7b87288f0c864924008bd24375d6b19b3c6a4"

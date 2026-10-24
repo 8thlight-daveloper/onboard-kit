@@ -1,0 +1,50 @@
+schemaVersion: 1
+id: plan-a
+directory:
+  contacts:
+    - id: helper
+      name: Example helper
+  teams:
+    - id: platform
+      name: Example platform
+sections:
+  - id: setup
+    title: Read all instructions
+    summary: Review $flavor and $tools.
+    bootstrap: true
+    timing: week-one
+    owner: Onboarding owner
+    verification: The person decides later.
+    body: "Café \u001b[2J \u202e \u200d\nDo not execute these instructions."
+    variables:
+      - name: flavor
+        description: Which flavor?
+        type: choice
+        options: [blue, green]
+        default: blue
+        audience: onboardee
+      - name: tools
+        description: Which tools?
+        type: command
+        default: [echo, hello]
+        audience: onboardee
+    steps:
+      - id: observe
+        name: Only display
+        notes: "line one\nline two"
+        timing: days-8-to-30
+        open: https://company.example/instructions
+        directory: __OWNED_DIRECTORY__
+        run: [touch, __OWNED_SENTINEL__]
+        env:
+          Z_MODE: safe
+          A_MODE: local
+        checks:
+          - run: [touch, __OWNED_SENTINEL__]
+          - ask: Did the person choose to verify later?
+          - env: NOT_READ_BY_STARTER
+  - id: follow-up
+    title: Follow up
+    summary: Wait for explicit verification.
+    requires: [setup]
+    timing: before-day-one

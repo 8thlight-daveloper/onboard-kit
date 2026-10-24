@@ -1,0 +1,12 @@
+schemaVersion: 1
+id: plan-a
+sections:
+  - id: setup
+    title: Set up
+    summary: Use $account_name.
+    bootstrap: true
+    variables:
+      - name: account_name
+        description: Which account?
+        required: true
+        audience: onboardee

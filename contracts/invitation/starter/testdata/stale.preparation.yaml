@@ -1,0 +1,16 @@
+# Retain this organizational source exactly, even when its support is unavailable.
+schemaVersion: 1
+kind: preparation
+account: jules
+planId: plan-a
+recipient:
+  name: Jules
+  team: removed-team
+  manager: removed-contact
+arrangements:
+  - id: support-a
+    section: removed-section
+    kind: support
+    status: pending
+    contacts: [removed-contact, removed-contact]
+private-note: NEVER_DISPLAY_THIS_STALE_UNKNOWN_PERSONAL_NOTE

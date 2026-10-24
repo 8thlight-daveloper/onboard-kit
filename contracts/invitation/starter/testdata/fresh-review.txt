@@ -1,0 +1,27 @@
+Opening review — not begun.
+Account: "jules"
+Plan: "plan-a"
+Role: "local-plan" Action: "install" Path: "@LOCAL_PLAN@"
+Role: "preparation" Action: "install" Path: "@PREPARATION@"
+Role: "session-metadata" Action: "install" Path: "@METADATA@"
+Role: "record" Action: "create" Path: "@RECORD@"
+Other matching contexts: 0
+Previous comparison: "absent"
+Previous comparison problems: 0
+New questions: 0
+Removed questions: 0
+Answers to review: 0
+New activities: 0
+Removed activities: 0
+Different recorded definitions: 0
+Incoming warnings: 0
+Effective plan warnings: 0
+Support problems: 0
+Session problems: 1
+  - Severity: "warning" Repair: "Resolve the session's activity or history problem before opening."
+Support available: true
+First use: a new begin event will be sampled only after begin.
+Private recovery copies may temporarily exist in the state home and selected artifact parents.
+Recovery: "@PENDING@"
+Begin enters a read-only onboarding view. It does not verify activities, run commands, or accept answers.
+Review complete. Choose begin or cancel:

@@ -170,7 +170,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `invitation/encoder` | None. Reads InvitationFiles only and returns archive bytes or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/decoder` | None. Reads archive bytes only and returns owned InvitationFiles or problems; reads or changes no Plan, Preparation, or Record fields |
 | `invitation/reviewer` | None. Reads supplied bounded archive/local bytes, explicit choices and context, and supplied finalization event. Uses actual codecs, validation, reconciliation, joiner and walker; returns owned role proposals, session projections, diagnostics and bytes. Changes no input or outside state; reads no filesystem, configuration or clock |
-| `invitation/starter`, planned | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. Exact driver contract pending |
+| `invitation/starter`, planned | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. [Driver contract](../../contracts/invitation/starter/contract.md) is complete; implementation is pending |
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
 | `preparation/reviewer` | Reads explicit account/help context, original Plan and proposed preparation through actual validation, finder and first-steps dependencies. Returns owned problems, blockers and guide only; no input, record, filesystem, clock or outside-state writes |
@@ -215,7 +215,7 @@ by each current contract until its independently tested replacement is integrate
 | Plan structure validator, new | Section IDs, Parent, After, Requires, Bootstrap, Timing | Relationship problems only; no plan writes | 1: model |
 | Plan authoring validator | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
 | Invitation reviewer, planned | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
-| Invitation starter, planned | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; exact contract pending |
+| Invitation starter, planned | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
@@ -241,8 +241,10 @@ has an independent implementation and
 [contract](../../contracts/invitation/reviewer/contract.md), including the exact
 resource admission rules under [0390](../decisions/0390-invitation-resource-admission.md).
 Further contract hardening continues. [0400](../decisions/0400-invitation-start-protocol.md)
-specifies the starter's storage and interaction direction; its contract and
-implementation remain pending. Binary wiring can remain at 8.
+specifies the starter's storage and interaction direction. The
+[starter contract](../../contracts/invitation/starter/contract.md) specifies the
+terminal and storage protocols; implementation remains pending. Binary wiring
+can remain at 8.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held

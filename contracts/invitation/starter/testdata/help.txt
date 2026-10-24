@@ -1,0 +1,4 @@
+Usage: onboard-kit start (--invitation FILE | --resume-import TOKEN) --root DIR [--home DIR]
+
+Inspect an invitation, confirm identity, review, and explicitly begin a read-only session.
+Existing work is retained or reconciled; no checks, answers, or outcomes are executed or saved.

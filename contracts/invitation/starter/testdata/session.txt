@@ -1,0 +1,57 @@
+Read-only onboarding session.
+Instructions are displayed, not executed. Dates are goals, not completion evidence.
+Defaults and suggestions are not accepted answers.
+Activities: 1
+Activity: 1
+ID: "setup"
+Title: "Set up"
+Summary: "Use <account_name>."
+Parent: ""
+Owner: ""
+Timing: ""
+Verification: ""
+Current definition hash: "5631a3d34e963b37019b9ae53b12907c3bdef3d17c6642f1462784d178c3f4ad"
+Body:
+  | ""
+Requires: 0
+After: 0
+Waiting on: 0
+Escalation: 0
+Steps: 0
+Questions: 1
+Question: 1
+ID: "setup.account_name"
+Scope: "setup"
+Name: "account_name"
+Description: "Which account?"
+Example: ""
+Type: "string"
+Audience: "onboardee"
+Required: true
+Multiple: false
+Answer: none
+Default suggestion: none
+Options: 0
+Choices: 0
+Suggestions: 0
+Blockers: 1
+  - "setup.account_name"
+Recorded outcomes: 0
+Support available: true
+Name: ""
+Company email: ""
+Planned start date (goal): ""
+Team ID: ""
+Manager contact ID: ""
+Onboarding owner contact ID: ""
+Buddy contact ID: ""
+Work location: ""
+Time zone: ""
+Arrangements: 0
+Session problems: 1
+  - Severity: "warning" Repair: "Resolve the session's activity or history problem before opening."
+Invitation-time guidance:
+  | "# Start here"
+  | ""
+  | "Open your invitation and ask your onboarding owner when blocked."
+  | ""
