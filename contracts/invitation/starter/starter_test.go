@@ -94,6 +94,9 @@ func setup(t *testing.T) sandbox {
 	if err != nil {
 		t.Fatal(err)
 	}
+	if err := os.Chown(base, -1, os.Getegid()); err != nil {
+		t.Fatal("cannot establish effective group on the owned fresh sandbox")
+	}
 	s := sandbox{base: base, root: filepath.Join(base, "root"), home: filepath.Join(base, "home"), invitation: filepath.Join(base, "invitation.zip")}
 	if err := os.Mkdir(s.root, 0700); err != nil {
 		t.Fatal(err)

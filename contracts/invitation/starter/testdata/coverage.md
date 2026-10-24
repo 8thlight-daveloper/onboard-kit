@@ -64,7 +64,9 @@ shape/native controls; do not report such a refusal as isolated arithmetic proof
 Custom-resultsPath nested namespace/case-folding collisions and real cross-volume
 publication need further native/profile-specific reachability controls. These
 are known coverage work, not waived requirements or accepted survivors.
-Borrowed io.Closer stream preservation and readers returning n>0 together with
-io.EOF or another error are normative but not separately isolated in this first
-suite. The existing ordinary strings.Reader cases do not establish those exact
-reader-return combinations. These remain explicit first-build hardening work.
+The independent streams fixture isolates borrowed io.Closer preservation and
+readers returning n>0 together with io.EOF or a nonEOF error at ordinary
+identity/begin/exit boundaries. Those cases do not establish combined total-byte
+budget/known-EOF precedence or paired errors at recovery prompts. Those distinct
+conditions remain first-build hardening work; ordinary strings.Reader inputs
+are not evidence for simultaneous positive-count/error returns.

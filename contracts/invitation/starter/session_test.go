@@ -47,7 +47,12 @@ func TestPurposefulFullSessionAndSupportRemainReadOnly(t *testing.T) {
 	if _, err := os.Stat(sentinel); !os.IsNotExist(err) {
 		t.Error("display executed a command/check")
 	}
-	want := strings.Replace(string(fixture(t, "begun.yaml")), rawPlanHash, digest(plan), 1)
+	hash := digest(plan)
+	hashScalar := hash
+	if hash[0] >= '0' && hash[0] <= '9' {
+		hashScalar = `"` + hash + `"`
+	}
+	want := strings.Replace(string(fixture(t, "begun.yaml")), `"`+rawPlanHash+`"`, hashScalar, 1)
 	assertBytes(t, s.record(), []byte(want))
 	assertBytes(t, s.prep(), prep)
 	assertIdle(t, s)

@@ -82,3 +82,26 @@ Getgroups/Chown boundary as the record control. It preserves the exact preexisti
 HOME/idle guards and separately requires new record/session objects to use the
 effective native UID/GID. Ownership profile is the root-selected P4/P7 bounded
 agent judgment, not human approval or normalization of original record controls.
+
+The disposable setup base explicitly adopts the caller's effective GID before
+creating its children. Darwin directory creation can inherit a parent group
+outside the caller's permitted group set even when the caller owns the new
+directory. This changes only the newly owned temporary base, not ambient TMPDIR,
+ancestors, ACLs or the product's private-state admission rules. A failed Chown
+fails fixture setup rather than skipping a positive control.
+
+The full-session expected record retains the literal begun.yaml field order,
+event and all other bytes. Its dynamic plan hash uses standard SHA256; only
+that complete scalar's framing changes under the record encoder's public rule:
+digit-leading hexadecimal is quoted, a-through-f-leading hexadecimal is plain.
+Quoted seed input is valid even when noncanonical and remains unchanged. This
+is a finite hexadecimal-scalar rule, not a product encoder oracle.
+
+streams_test.go independently counts forbidden Close calls on borrowed input
+and writers and verifies unused tails and continued caller use. Its paired
+reader returns a positive count together with EOF or a nonEOF error at exact
+identity/begin/exit boundaries, then proves that return was actually reached.
+Complete EOF-framed actions follow ordinary consent; incomplete EOF does not.
+NonEOF errors veto confirmation/begin and preserve completed truth after begin.
+Exact literal display, complete record bytes and original snapshots remain the
+oracles, not a simulated semantic dependency or an accepted alternate output.
