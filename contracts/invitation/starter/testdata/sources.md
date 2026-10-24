@@ -161,3 +161,13 @@ Complete held record/history bytes, old first-use event, scoped deferred answers
 and unknown notes are preserved except the reviewed plan-reference hash. Native
 guards, actual participant hard-link collision and cancellation snapshots pin
 effects; expected metadata uses public length framing and standard JSON/SHA256.
+
+resume_token_gaps_test.go uses two authored valid selector tokens and the existing
+fixed report literals. A complete syntax-valid resume request retains its token
+when no stored transaction has been identified and context verification refuses.
+Missing home/namespace/root, symlink root and regular-file root controls use only
+owned native fixtures. Invalid whole-CLI and initial-help controls preserve their
+separate empty-transaction/no-report rules. Exact reader-call counts, untouched
+tails, zero clock calls and complete namespace snapshots pin absence of consent
+and changes. No recovery journal or report was captured to form an oracle, and
+no token in a refusal claims existing or authorized recovery state.

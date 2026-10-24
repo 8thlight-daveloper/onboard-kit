@@ -219,6 +219,16 @@ status/code/message/transaction and final LF. Strings use storage.md JSON rules.
 All messages below are exact. Transaction is empty until known, otherwise the
 known64hex recovery token. Never include raw OS/parser text or paths/accounts.
 
+A supplied resume token becomes known after the entire CLI passes syntax
+validation. Before any stored transaction has been independently identified,
+retain that exact supplied token on a subsequent context refusal, including a
+missing or unsafe root, home or recovery namespace. This identifies the caller's
+selector; it does not establish that recovery state exists, is authorized or is
+complete. Reports derived from an identified stored transaction keep their
+existing state/token rules. Syntax-invalid requests report an empty transaction,
+even when an earlier argument contained a valid token. Initial help emits no
+report. These rules grant no consent and create no recovery state.
+
 | Exit | Status | Code | Message |
 | -- | -- | -- | -- |
 |0|cancelled|start.cancelled|Opening cancelled before begin; no files were changed.|
@@ -329,6 +339,7 @@ the starter or manufacture expected values through a product dependency.
 | Reject or normalize an existing permitted private app group, or inherit that group into new private objects | TestExistingPrivateStatePermittedGroupIsPreserved preserves exact original HOME/idle guards; fresh publication separately pins effective UID/GID on new objects. |
 | Treat explicit empty ACL as absence, strip a held ACL or inherit grants through nominal0600/0700 | TestDarwinExistingACLNoopAndReplacement, TestDarwinInheritedGrantCannotBroadenPrivateStagingOrPublication and TestDarwinIdleExplicitEmptyACLIsNotSafeAbsence use actual native presence/payload facts. |
 | Use an in-memory mutex or retain native locks/inspection handles during the session | TestActualTwoProcessExclusionAndSessionRelease and TestDarwinOwnedDescriptorsReleasedBeforeSessionInputAndReturn use actual separate processes and unique owned inode descriptor counts. |
+| Drop a valid supplied resume token before context verification, retain it from invalid CLI or report it during help | TestValidResumeTokenIsKnownBeforeContextVerification, TestResumeTokenRemainsUnknownUntilTheWholeCLIIsValid and TestInitialHelpDoesNotReportASuppliedResumeToken pin exact reports and untouched inputs/artifacts. |
 
 The optional TestDarwinObservedProcessDeath layer uses test-binary subprocesses
 and test-only environment selection, never production hooks. It SIGSTOPs and
