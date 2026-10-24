@@ -114,15 +114,23 @@ func (d Driver) Run(arguments []string, streams contract.Streams) contract.Resul
 	}
 	core := reviewer.New()
 	session, problems := core.Inspect(source)
+	if fatal(problems) {
+		block = builder{}
+		block.diagnostics("Session problems", problems)
+		if block.failed {
+			return report(streams.Error, "limit", false)
+		}
+		if !writeBlock(streams.Output, block.String()) {
+			return report(streams.Error, "output", false)
+		}
+		return report(streams.Error, reviewCode(problems), false)
+	}
 	block = displayCurrent(session, problems)
 	if block.failed {
 		return report(streams.Error, "limit", false)
 	}
 	if !writeBlock(streams.Output, block.String()) {
 		return report(streams.Error, "output", false)
-	}
-	if fatal(problems) {
-		return report(streams.Error, reviewCode(problems), false)
 	}
 	line, complete, valid = input.line()
 	if !valid {
@@ -173,6 +181,14 @@ func (d Driver) Run(arguments []string, streams contract.Streams) contract.Resul
 	}
 	publication, problems := core.Finalize(proposal, event)
 	if fatal(problems) {
+		block = builder{}
+		block.diagnostics("Session problems", problems)
+		if block.failed {
+			return report(streams.Error, "limit", false)
+		}
+		if !writeBlock(streams.Output, block.String()) {
+			return report(streams.Error, "output", false)
+		}
 		return report(streams.Error, reviewCode(problems), false)
 	}
 	if !publication.Changed {

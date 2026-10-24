@@ -150,6 +150,9 @@ edit.context for differing stored destinations. No other YAML parser, invented
 path interpolation, fallback to metadata after locator refusal or hidden move.
 Use actual reviewer Inspect with all3 exact bodies and trusted identity. Its
 fatal errors refuse after safe problem display; its resource error maps edit.limit.
+On that fatal Inspect branch, display only the complete safe Session problems
+block and fixed repair instruction from terminal.md, never a zero current
+Session, reference comparison or action menu. Read no action and sample no event.
 Keep old FirstOpenedAt/On/reference opaque under its contract. Release locks;
 fully build/display actual current session before any action byte.
 
@@ -173,6 +176,8 @@ historical registration context, not equality with live edited plan bytes.
 Now and ONLY when actual Proposal.NeedsEvent call Clock.Now ONCE, convert inside
 driver to timestamp and call actual Finalize. Answers/follow-plan Clock0. Actual
 invalid clock text refuses through reviewer, no normalization/fallback/resample.
+Display any fatal Finalize diagnostics through the same complete safe Session
+problems block and repair instruction, without rendering another session or menu.
 Finalize may refuse actual candidate resource charge; review never guaranteed
 every event length would fit. No staging before final successful encoded bytes.
 A final model no-op keeps exact raw record bytes, native inode and metadata;
@@ -248,3 +253,9 @@ Stub/production bindings are separate. Binary scenarios REALLY invoke the
 provided binary, but proposed generic capture capability is separately reviewed
 before those new-format data scenarios can run. Native Run is not binary proof.
 No compilation, test, mutant, native crash timing or publication is claimed here.
+
+| Plausible wrong behavior | Independent fixture discriminator |
+| -- | -- |
+| Present a fatal inspection's zero return as an empty actionable session | FatalInspectionDisplaysProblemsWithoutInventingAnActionableSession |
+| Hide usable activities because the separate support channel is stale | StaleSupportAloneStillDisplaysTheRealEditableSession |
+| Omit safe actual finalization diagnostics or reopen a session after failure | FatalFinalizationDisplaysActualSafeDiagnosticsWithoutAnotherSession |

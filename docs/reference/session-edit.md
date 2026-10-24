@@ -20,7 +20,14 @@ confirm "newcomer"
 ```
 
 The command then displays current activities, questions, recorded outcomes and
-support. Choose one explicit change:
+support.
+
+If source inspection fails, it shows safe diagnostics and repair guidance
+instead of an empty session or an action menu. No action is read and nothing
+is saved. A valid session with stale support still displays its actual work;
+unavailable support does not mean there are no activities.
+
+Choose one explicit change:
 
 ```text
 answer personal.choice text "my answer"

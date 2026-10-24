@@ -27,7 +27,16 @@ Only the EXACT `confirm ` followed by the displayed Q(account) spelling accepts
 identity. For newcomer: `confirm "newcomer"`. This is not save. Cancel or ordinary
 valid incomplete EOF cancels; malformed/UTF8/oversized/error input refuses.
 
-After identity and actual safe source/reviewer checks print:
+Initial actual reviewer inspection has two display paths.
+
+If the initial actual reviewer Inspect returns fatal diagnostics, print only
+their complete safe Session problems block and fixed repair instruction, then
+refuse. Do not print a current-session header, derived session fields, reference
+comparison, action menu or save prompt. Consume no action input and sample no
+event. A zero failed Session is not an empty successful session. The separate
+nonfatal stale-support channel does not trigger this refusal branch.
+
+After successful inspection, print:
 
 ```text
 Current record-backed session.
