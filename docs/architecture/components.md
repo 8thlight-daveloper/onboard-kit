@@ -125,6 +125,7 @@ flowchart TB
 | Invitation starter, planned | Owns confirmed interaction, safe selected paths, private recoverable publication and read-only session display under [0360](../decisions/0360-confirmed-invitation-start.md). No implementation or import command yet |
 | Catalog reader | Returns the exact eighty compiled catalog summaries or one entry's owned content. Contracts distinguish section templates, onboarder guidance and tool help; no plan selection or runtime file reads. See [0320](../decisions/0320-embedded-catalog-availability.md) |
 | Catalog command | Lists, displays or exports actual compiled catalog content through stdout only. No selection, generated preparation, custom-template fallback or file writes |
+| Catalog materializer, planned | Creates a new unresolved organization plan from explicit catalog selections, permanent instance IDs and shared bindings; returns advisory preparation guides with instance reasons under [0410](../decisions/0410-explicit-catalog-instances.md). No existing-plan editing or personal writes |
 | Preparation reviewer | Returns preparation problems, actual onboarder blockers and the real first-steps preview separately, without a readiness claim or writes. See [0330](../decisions/0330-preparation-review.md) |
 | Preparation guide | Stages recipient and arrangement edits in memory, displays complete original/draft values and actual review results, then saves only the explicitly reviewed preparation. Cancel/EOF before save writes nothing. Export remains separate. See [0350](../decisions/0350-guided-support-arrangements.md) |
 | Section loader | Turns template file bytes into sections, decoding strictly. A driver supplies the bytes |
@@ -173,6 +174,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `invitation/starter`, planned | Reads explicit interaction, chosen home configuration, bounded selected archive/artifacts/session/recovery files and path/access-control metadata. After accepted begin, writes only approved local plan, preparation/record, private session/recovery resources and streams; samples injected clock only for a genuinely new record. [Driver contract](../../contracts/invitation/starter/contract.md) is complete; implementation is pending |
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
+| `catalog/materializer`, planned | None. Reads explicit creation context, selections/bindings, compiled catalog definitions and authored preparation relations. Returns a new plan, relevant guidance and diagnostics; changes no input, existing plan, preparation, record, filesystem, configuration or clock |
 | `preparation/reviewer` | Reads explicit account/help context, original Plan and proposed preparation through actual validation, finder and first-steps dependencies. Returns owned problems, blockers and guide only; no input, record, filesystem, clock or outside-state writes |
 | `preparation/guide` | Imperative driver: reads explicit arguments/interaction, bounded selected plan/preparation and safe path metadata. Writes stdout/stderr and only after reviewed save the selected preparation, private required directories and owned temporary resources. No record reads or writes, plan writes, archive, clock, network or command execution |
 
@@ -181,6 +183,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | Component | `schemaVersion` | `id` | `provenance` | `origin` | `directory` | `variables` | `answers` | section content | `source` |
 | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C |  | C |  |  | C | C | C | C |
+| `catalog/materializer`, planned | C | C | C |  | C | C | C | C | C |
 | `plan/decoder` | C | C | C | C | C | C | C | C | C |
 | `plan/encoder` | R | R | R | R | R | R | R | R | R |
 | `plan/editor` |  |  |  |  | W |  | W | W |  |
@@ -216,6 +219,7 @@ by each current contract until its independently tested replacement is integrate
 | Plan authoring validator | Whole-plan declarations, directory declarations and reference context, excluding stored answers/source metadata | Owned declaration/secret diagnostics only; no repairs or writes | 2: secrets, model |
 | Invitation reviewer, planned | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
 | Invitation starter, planned | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
+| Catalog materializer, planned | Explicit creation context, exact selections, permanent instance IDs and bindings; compiled definitions and preparation relations | New self-contained plan, relevant advisory guides with instance reasons and diagnostics only | 5: catalog reader, section loader, section hasher, plan authoring validator, plan validator, model |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
@@ -287,6 +291,14 @@ reader and its contract types plus its own command interface. It may not depend
 on other command drivers, model calls, selection, preparation generation or
 filesystem loading. Both implementations are available through root command
 dispatch. Binary scenarios check all eighty exports without adjacent catalog files.
+
+[0410](../decisions/0410-explicit-catalog-instances.md) declares the separate pure
+catalog materializer at position 5. It reads the actual compiled definitions and
+[authored relations](../reference/catalog-preparation-relations.md), uses real
+loading/hashing/validation, and creates only a returned new plan. Its contract and
+implementation remain pending. Existing catalog commands, instantiator behavior
+and saved plans are unchanged; reviewed save and identity-preserving selection
+editing require separate driver contracts.
 
 Written out in 0020. In short:
 
