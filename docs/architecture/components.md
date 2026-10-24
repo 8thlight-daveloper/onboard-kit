@@ -238,11 +238,10 @@ returns its own model-only contract projections, with fully owned nested data.
 Finalization re-derives the same source-bound proposal before adding a supplied
 new event; recovery uses only already frozen publication bytes. Neither new
 component is implemented yet. The reviewer has an independent
-[contract draft](../../contracts/invitation/reviewer/contract.md);
-[0390](../decisions/0390-invitation-resource-admission.md) selects resource
-admission, but its exact contract increment remains pending, so the reviewer is
-not build-ready. The starter contract remains pending. Binary wiring can remain
-at 8.
+[contract](../../contracts/invitation/reviewer/contract.md), including the exact
+resource admission rules under [0390](../decisions/0390-invitation-resource-admission.md).
+Independent implementation and hardening follow. The starter contract remains
+pending. Binary wiring can remain at 8.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held

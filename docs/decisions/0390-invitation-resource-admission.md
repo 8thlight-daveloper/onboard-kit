@@ -1,6 +1,6 @@
 # 0390. Admit invitation content before expanding it
 
-Status: accepted by agent judgment; independent contract increment and implementation pending
+Status: accepted by agent judgment; independent contract available, implementation pending
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0100](0100-behavior-judgment.md),

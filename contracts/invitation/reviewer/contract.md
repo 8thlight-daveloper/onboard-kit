@@ -1,8 +1,8 @@
 # Invitation reviewer contract
 
-Status: draft unaffected contract against accepted agent direction0380. Resource
-admission is pending; this contract is not build-ready. Public API, prose and
-independent tests do not constitute an implemented component.
+Status: agent-authored contract against accepted agent directions0380/0390;
+implementation pending. Public API, prose and independent tests are not an
+implementation or human approval.
 
 ## Interface, effects and dependencies
 
@@ -37,8 +37,11 @@ paths or parser text. Display carries the fixed safe repair meaning below;
 the starter applies bounded literal-safe terminal framing and never blindly
 prints dependency Message/Detail/Question. Only own diagnostics have the
 no-value-echo promise. Display is not produced by sanitizing a raw error string.
+The normative [admission rules](admission.md) define exact resource contexts,
+weights, caps, placement and fixed diagnostics. They add no estimator API.
 Within an actual phase preserve dependency problem order. Never globally sort
-or deduplicate different phases. Own diagnostics have severity error, empty
+or deduplicate different phases. Own diagnostics have severity error except the
+explicit previous-resource comparison warning; they have empty
 Question/Section, exact fixed Message from the table, and Detail exactly
 `{"path":PATH}`. They never repeat rejected values, notes, timestamps or secrets.
 For an own diagnostic Display is exactly its fixed Message. Dependency Display
@@ -97,6 +100,8 @@ a provisional publication. Begin never accepts an incomplete reconstruction.
 | invitation.proposal | Use the complete proposal derived from its exact source evidence. |
 | invitation.event | Supply one supported begin event only for a new record. |
 | invitation.output-size | Keep the encoded record within the supported byte limit. |
+| invitation.resource | Use a smaller onboarding plan or fewer repeated values. |
+| invitation.previous-resource | Previous plan comparison is unavailable within the resource limit. |
 
 Exact Stage names and path locations are specified by the phases below; these
 are finite literal strings, not dynamic account/plan/section/path projections.
@@ -109,17 +114,21 @@ Inspect performs these stages in order, stopping as described above:
    Its2MiB raw and1MiB aggregate payload limits apply unchanged. Returned role
    payloads remain exact, including noncanonical but accepted archive framing.
 2. `inspect.plan-decode`: actual plan decoder on Files.Plan.
-3. `inspect.plan-authoring`: actual authoring validator on the complete plan.
-4. `inspect.plan-validation`: actual plan validator on that unchanged plan.
-5. `inspect.plan-identity`: empty Plan.ID gives invitation.plan-id at `plan.id`.
-6. `inspect.preparation-decode`: actual preparation decoder.
-7. `inspect.record-decode`: actual record decoder on the identity seed bytes.
-8. `inspect.seed`: the strict profile below, with own seed diagnostics.
-9. `inspect.locator`: actual locator on Plan.ResultsPath and envelope account.
-10. `inspect.preparation-validation`: actual preparation validator using the
+3. `inspect.plan-admission`: full admission with incoming Plan, zero Record,
+   nil Preparation and raw archive length, before expanding plan dependencies.
+4. `inspect.plan-authoring`: actual authoring validator on the complete plan.
+5. `inspect.plan-validation`: actual plan validator on that unchanged plan.
+6. `inspect.plan-identity`: empty Plan.ID gives invitation.plan-id at `plan.id`.
+7. `inspect.preparation-decode`: actual preparation decoder.
+8. `inspect.record-decode`: actual record decoder on the identity seed bytes.
+9. `inspect.payload-admission`: full incoming Plan/seed/Preparation admission
+   using raw archive length, before semantic seed inspection.
+10. `inspect.seed`: the strict profile below, with own seed diagnostics.
+11. `inspect.locator`: actual locator on Plan.ResultsPath and envelope account.
+12. `inspect.preparation-validation`: actual preparation validator using the
     envelope account, validated plan ID, every declared contact/team/section ID
     including inactive sections, and nil Record context. No stale allowance.
-11. `inspect.first-steps`: zero bytes or invalid UTF8 gives invitation.first-steps
+13. `inspect.first-steps`: zero bytes or invalid UTF8 gives invitation.first-steps
     at `firstSteps`. Preserve all other whitespace/control bytes as document data.
 
 Actual decoder/authoring/plan warnings from successful phases enter Incoming.Warnings
@@ -179,6 +188,11 @@ local plan is absent or identical, but does not force an unnecessary replacement
 ## Previous comparison context
 
 Absent local plan sets Comparison.Reason `absent`, Available false, no problems.
+After successful actual previous decode and before either previous validator,
+`previous.plan-admission` applies full admission to previous Plan/zero Record/
+nil Preparation and that exact previous source length. Failure is comparison
+unavailable with Reason `resource` and the exact own warning in admission.md;
+retain successful preceding decoder warnings and do not run later validators.
 For present plan, perform actual decode, authoring and plan validation with
 Stages `previous.plan-decode`, `previous.plan-authoring`, `previous.plan-validation`.
 Errors make comparison unavailable, with Reason `decode`, `authoring` or
@@ -199,7 +213,9 @@ claim unavailable means unchanged. The exact original local bytes remain evidenc
 
 If preparation is absent, choose validated incoming preparation and preserve its
 received bytes for install. Otherwise Stage `review.preparation-decode` uses the
-actual decoder. Stage `review.preparation-validation` uses the same trusted
+actual decoder. Immediately then `review.preparation-admission` applies cheap
+shared-forest guards to incoming Plan/zero Record/selected Preparation, before
+the actual validator. Stage `review.preparation-validation` uses the same trusted
 incoming context as Inspect, still with nil Record context; record is checked
 separately so an explicitly unbound record is not rejected by a prep context.
 
@@ -221,7 +237,10 @@ InvitationFirstSteps remains original Files.FirstSteps even with stale support.
 ## Record guards and actual composition
 
 If local record is absent, use the validated seed as the new proposed record.
-Otherwise `review.record-decode` calls actual decoder. In `review.record-identity`,
+Otherwise `review.record-decode` calls actual decoder. Immediately after decode,
+`review.record-admission` applies cheap shared-forest guards to incoming Plan/
+decoded Record/selected Preparation, before any identity/ownership/history
+loop, reconciliation or join. In `review.record-identity`,
 check account then plan ID, reporting invitation.record-account at `record.account`
 and invitation.record-plan at `record.plan.id` when applicable. Empty ID is
 permitted and marks the derived bind action; different nonempty ID refuses.
@@ -252,6 +271,10 @@ hash spelling are preserved and not interpreted. Source size bounds fractions.
 actual available previous or zero Plan, accepted incoming plan and derived
 Reference. Preserve all six real reconciliation lists. No second answer-removal
 algorithm is permitted. Then actual joiner on incoming plan and reconciled record.
+`review.effective-admission` applies full admission to that actual joined Plan,
+proposed Record and selected Preparation, using archive plus each present local
+body length once. Only then call effective validator/walker. No rendering charge
+uses a fabricated pre-join answer set; cheap source guards are not full scores.
 `review.effective-validation`: actual plan validator on that effective plan.
 Errors refuse intact, including pattern/secrets failures that reconciliation
 does not remove. Warnings enter EffectivePlanWarnings; required missing answers
@@ -349,9 +372,9 @@ this draft makes no claim of verified safeguards or a passing implementation.
 
 ## Plausible wrong implementations
 
-The independent tests below are drafted safeguards, not executed evidence. The
-stub and deliberate wrong variants remain root verification work. Admission
-limits are being reviewed separately; this is not a final build-ready freeze.
+The tests below specify required safeguards. Execution, independent builds,
+wrong-variant evidence and remaining hardening gaps belong in working reports,
+not this contract.
 
 | Wrong behavior | Independent observable control |
 | -- | -- |
@@ -370,3 +393,9 @@ limits are being reviewed separately; this is not a final build-ready freeze.
 | Reseed an unbound existing record or erase legacy fields | TestUnboundRecordUsesActualBindAndPreservesLegacyData pins handwritten binding bytes and no first-use insertion. |
 | Drop hidden answers, silently fix pattern failures, or accept defaults as answers | TestChoicesReconciliationAndDeepQuestionOwnership preserves hidden scope while removing a bad current choice; TestPostJoinPatternFailureRemainsFatal rejects the unreconciled pattern error. |
 | Truncate history, make definition mismatch invalidate verification, or choose a duplicate-outcome winner | TestCompleteOutcomeHistoryAndDuplicateRefusal pins full fields, unknown/different comparisons, held source order and actual duplicate refusal; TestHistoryGuardCollectsInHeldFieldOrder pins earlier own guard ordering. |
+| Use an exclusive B limit or forget exact carried archive bytes | TestAdmissionExactPublicBoundaryAndPayloadRefusal admits independently derived B and refuses the same models with one inert archive byte at full payload admission. |
+| Skip disabled/literal-dollar declarations or expand before early plan refusal | TestAdmissionEarlyPlanPrecedesSemanticValidation requires early resource errors for admitted-size hostile charges, even disabled or independently invalid semantic data. Output alone does not establish check timing; actual dependency placement also needs independent source review. |
+| Deduplicate identical present local source bytes | TestAdmissionCountsIdenticalPresentLocalSource requires effective-only refusal after exact-B incoming succeeds. |
+| Treat over-budget previous context as fatal, discard preimage or bypass choice | TestAdmissionPreviousResourceWarningAndChoiceOrder pins choice first, warning/reason resource and retained source evidence. |
+| Omit preparation pointer/known-root depth, delay cheap guards or reset per-root counters | TestAdmissionLocalDepthGuardsBeforeSemanticErrors pins128/129 and semantic precedence; TestAdmissionSharedUnknownCounterAcrossRoots pins65536/65537 combined unknown occurrences. |
+| Budget only rendered body text or truncate candidate lists | TestAdmissionDirectoryChoiceFanoutWithoutLargeRendering refuses512-contact fanout while preserving all200 choices for each of64 questions in its smaller positive control. |

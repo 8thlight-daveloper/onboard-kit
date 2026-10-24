@@ -124,10 +124,10 @@ import and startup composition remain pending; no import command is advertised.
 that starter's filesystem transaction. Its planned reviewer retains local
 preparation, guards held ownership/history, uses actual reconciliation and the
 real walker, and finalizes a supplied first-use event without reading a clock.
-Its independent contract draft covers content review. [0390](../decisions/0390-invitation-resource-admission.md)
-selects conservative resource admission before expanding dependencies; its exact
-contract increment remains pending, so the reviewer is not build-ready.
-Publication work follows that prerequisite.
+Its independent contract covers content review and the exact conservative
+resource admission rules under [0390](../decisions/0390-invitation-resource-admission.md).
+Independent implementation and hardening remain pending. Publication work follows
+that prerequisite.
 
 Update standard first-steps wording to explain all three artifacts, initial help,
 and what works before company access. The person must not need access to the
