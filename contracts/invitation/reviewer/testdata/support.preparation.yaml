@@ -1,0 +1,29 @@
+# Preserve the organizational source exactly.
+schemaVersion: 1
+kind: preparation
+account: jules
+planId: plan-a
+recipient:
+  name: " Jules "
+  companyEmail: jules@company.example
+  plannedStartDate: "2026-11-02"
+  team: platform
+  manager: helper
+  onboardingOwner: helper
+  buddy: helper
+  workLocation: remote
+  timeZone: Europe/Paris
+arrangements:
+  - id: support-a
+    section: setup
+    kind: support
+    owner: helper
+    contacts:
+      - helper
+      - helper
+    reference: Read the deployment notes
+    targetDate: "2026-11-03"
+    status: arranged
+    note: Ask when blocked
+private-note:
+  held: never projected into support

@@ -1,0 +1,18 @@
+# Organizational facts remain separate from personal answers.
+schemaVersion: 1
+kind: preparation
+account: jules
+planId: plan-a
+recipient:
+  name: Jules
+  team: removed-team
+  manager: removed-contact
+arrangements:
+  - id: support-a
+    section: removed-section
+    kind: support
+    status: pending
+    contacts:
+      - removed-contact
+      - removed-contact
+private-note: preserve source

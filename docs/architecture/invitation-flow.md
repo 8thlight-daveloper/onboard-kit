@@ -124,7 +124,8 @@ import and startup composition remain pending; no import command is advertised.
 that starter's filesystem transaction. Its planned reviewer retains local
 preparation, guards held ownership/history, uses actual reconciliation and the
 real walker, and finalizes a supplied first-use event without reading a clock.
-Its independent contract and implementation remain next, before publication work.
+Its independent contract draft covers content review; resource admission remains
+to be specified before implementation. Publication work follows that prerequisite.
 
 Update standard first-steps wording to explain all three artifacts, initial help,
 and what works before company access. The person must not need access to the

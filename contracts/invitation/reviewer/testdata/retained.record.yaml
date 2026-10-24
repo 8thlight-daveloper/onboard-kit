@@ -1,0 +1,8 @@
+# Keep this exact personal source, not canonical output.
+kind: record
+schemaVersion: 1
+account: jules
+plan:
+  hash: "00d6473bd698e40caca271f61af7b87288f0c864924008bd24375d6b19b3c6a4"
+  id: plan-a
+notes: preserve me

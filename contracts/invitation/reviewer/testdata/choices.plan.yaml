@@ -1,0 +1,26 @@
+schemaVersion: 1
+id: plan-a
+sections:
+  - id: setup
+    title: Set up
+    summary: Use $flavors and $tools.
+    bootstrap: true
+    variables:
+      - name: flavors
+        description: Which flavors?
+        type: choice
+        options:
+          - blue
+          - green
+        default: blue
+        audience: onboardee
+      - name: tools
+        description: Which command?
+        type: command
+        default:
+          - echo
+          - hello
+        audience: onboardee
+    custom:
+      rows:
+        - held

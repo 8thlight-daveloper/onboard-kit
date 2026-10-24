@@ -237,7 +237,10 @@ reviewer before the separate starter. Review reuses actual dependencies and
 returns its own model-only contract projections, with fully owned nested data.
 Finalization re-derives the same source-bound proposal before adding a supplied
 new event; recovery uses only already frozen publication bytes. Neither new
-component has a contract or implementation yet. Binary wiring can remain at 8.
+component is implemented yet. The reviewer has an independent
+[contract draft](../../contracts/invitation/reviewer/contract.md);
+resource admission is unresolved, so it is not build-ready. The starter contract
+remains pending. Binary wiring can remain at 8.
 
 The reconciler comparison increment under ADR 0270 now uses the section hasher
 directly at dependency position 2. Its contract and implementation replace held

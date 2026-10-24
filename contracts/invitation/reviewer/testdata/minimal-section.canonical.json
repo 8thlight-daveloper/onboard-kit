@@ -1,0 +1,1 @@
+{"id":"setup","title":"Set up","summary":"Use $account_name.","bootstrap":true,"timing":"anytime","variables":[{"name":"account_name","description":"Which account?","type":"string","required":true,"audience":"onboardee"}]}

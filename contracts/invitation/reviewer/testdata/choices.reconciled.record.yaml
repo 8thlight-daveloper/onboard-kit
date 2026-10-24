@@ -1,0 +1,10 @@
+schemaVersion: 1
+kind: record
+account: jules
+plan:
+  id: plan-a
+  hash: cb1f0be905bb0c1d742c2dea3c314786d5cf7f3199bbadf89b55c742e2e6b787
+answers:
+  sections:
+    removed:
+      hidden: old
