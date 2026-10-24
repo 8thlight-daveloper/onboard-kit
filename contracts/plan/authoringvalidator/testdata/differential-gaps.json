@@ -1,0 +1,110 @@
+[
+  {
+    "Name": "duplicate-own-scope-suppresses-bare-and-qualified-targets",
+    "Plan": {"Sections": [
+      {"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"alpha","AskIf":{"All":[{"Question":"alpha","Answer":{"Is":{"Kind":4}}},{"Question":"missing"},{"Question":"access.alpha","Answer":{"IsOneOf":[]}}]}}]},
+      {"ID":"access","Title":"Other access","Summary":"Summary","Variables":[{"Name":"alpha"}]}
+    ]},
+    "Want": []
+  },
+  {
+    "Name": "duplicate-own-scope-keeps-independent-clause-shape",
+    "Plan": {"Sections": [
+      {"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"alpha","AskIf":{"All":[{"Question":"alpha","Section":"access"}]}}]},
+      {"ID":"access","Title":"Other access","Summary":"Summary"}
+    ]},
+    "Want": [{"Code":"authoring.clause","Path":"sections[0].variables[0].askIf.all[0]","Question":"access.alpha","Section":"access"}]
+  },
+  {
+    "Name": "duplicate-own-scope-keeps-explicit-plan-predicate",
+    "Plan": {"Variables":[{"Name":"axis","Type":"boolean"}],"Sections": [
+      {"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"alpha","AskIf":{"All":[{"Question":"plan.axis","Answer":{"Is":{"Kind":1,"Text":"true"}}}]}}]},
+      {"ID":"access","Title":"Other access","Summary":"Summary"}
+    ]},
+    "Want": [{"Code":"authoring.predicate-value","Path":"sections[0].variables[0].askIf.all[0].answer.is","Question":"access.alpha","Section":"access"}]
+  },
+  {
+    "Name": "invalid-section-id-keeps-unused-check",
+    "Plan": {"Sections":[{"ID":"Bad","Title":"Title","Summary":"Summary","Variables":[{"Name":"alpha","Audience":"onboardee"}]}]},
+    "Want": [{"Code":"authoring.section-id","Path":"sections[0].id"},{"Code":"authoring.unused-onboardee","Path":"sections[0].variables[0]"}]
+  },
+  {
+    "Name": "invalid-section-id-keeps-real-local-use",
+    "Plan": {"Sections":[{"ID":"Bad","Title":"Title","Summary":"Use $alpha","Variables":[{"Name":"alpha","Audience":"onboardee"}]}]},
+    "Want": [{"Code":"authoring.section-id","Path":"sections[0].id"}]
+  },
+  {
+    "Name": "exact-wrong-type-escalation-still-uses-question",
+    "Plan": {"Sections":[{"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"helper","Audience":"onboardee","Type":"string"}],"Escalation":["$helper"]}]},
+    "Want": [{"Code":"authoring.escalation","Path":"sections[0].escalation[0]","Section":"access"}]
+  },
+  {
+    "Name": "exact-unknown-type-escalation-still-uses-question",
+    "Plan": {"Sections":[{"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"helper","Audience":"onboardee","Type":"future"}],"Escalation":["$helper"]}]},
+    "Want": [{"Code":"authoring.variable-type","Path":"sections[0].variables[0].type","Question":"access.helper","Section":"access"}]
+  },
+  {
+    "Name": "malformed-escalation-does-not-use-question",
+    "Plan": {"Sections":[{"ID":"access","Title":"Access","Summary":"Summary","Variables":[{"Name":"helper","Audience":"onboardee","Type":"string"}],"Escalation":["$helper suffix"]}]},
+    "Want": [{"Code":"authoring.escalation","Path":"sections[0].escalation[0]","Section":"access"},{"Code":"authoring.unused-onboardee","Path":"sections[0].variables[0]","Question":"access.helper","Section":"access"}]
+  },
+  {
+    "Name": "self-include-forbidden-despite-missing-parent",
+    "Plan": {"Sections":[{"ID":"access","Title":"Access","Summary":"Summary","Parent":"missing","Variables":[{"Name":"alpha"}],"IncludeIf":{"All":[{"Question":"alpha","Answer":{"IsSettled":true}}]}}]},
+    "Want": [{"Code":"authoring.include-scope","Path":"sections[0].includeIf.all[0].question","Section":"access"}]
+  },
+  {
+    "Name": "self-include-forbidden-despite-self-parent",
+    "Plan": {"Sections":[{"ID":"access","Title":"Access","Summary":"Summary","Parent":"access","Variables":[{"Name":"alpha"}],"IncludeIf":{"All":[{"Question":"access.alpha","Answer":{"IsSettled":true}}]}}]},
+    "Want": [{"Code":"authoring.include-scope","Path":"sections[0].includeIf.all[0].question","Section":"access"}]
+  },
+  {
+    "Name": "self-include-independent-of-cyclic-ancestor-chain",
+    "Plan": {"Sections":[
+      {"ID":"access","Title":"Access","Summary":"Summary","Parent":"other","Variables":[{"Name":"alpha"}],"IncludeIf":{"All":[{"Question":"alpha","Answer":{"IsSettled":true}},{"Question":"other.beta","Answer":{"IsSettled":true}}]}},
+      {"ID":"other","Title":"Other","Summary":"Summary","Parent":"access","Variables":[{"Name":"beta"}]}
+    ]},
+    "Want": [{"Code":"authoring.include-scope","Path":"sections[0].includeIf.all[0].question","Section":"access"}]
+  },
+  {
+    "Name": "bare-name-in-invalid-plan-section-is-positional-local",
+    "Plan": {"Variables":[{"Name":"beta","Type":"boolean"}],"Sections":[{"ID":"plan","Title":"Title","Summary":"Summary","Variables":[{"Name":"beta","Type":"string"},{"Name":"trigger","AskIf":{"All":[{"Question":"beta","Answer":{"Is":{"Kind":2,"Flag":true}}}]}}]}]},
+    "Want": [{"Code":"authoring.section-id","Path":"sections[0].id"},{"Code":"authoring.predicate-value","Path":"sections[0].variables[1].askIf.all[0].answer.is"}]
+  },
+  {
+    "Name": "explicit-plan-prefix-wins-over-duplicated-invalid-plan-sections",
+    "Plan": {"Variables":[{"Name":"beta","Type":"boolean"}],"Sections":[
+      {"ID":"plan","Title":"Title","Summary":"Summary","Variables":[{"Name":"beta","Type":"string"},{"Name":"trigger","AskIf":{"All":[{"Question":"plan.beta","Answer":{"Is":{"Kind":1,"Text":"true"}}},{"Question":"beta","Answer":{"Is":{"Kind":4}}}]}}]},
+      {"ID":"plan","Title":"Other title","Summary":"Summary","Variables":[{"Name":"beta","Type":"string"}]}
+    ]},
+    "Want": [{"Code":"authoring.section-id","Path":"sections[0].id"},{"Code":"authoring.predicate-value","Path":"sections[0].variables[1].askIf.all[0].answer.is"},{"Code":"authoring.section-id","Path":"sections[1].id"}]
+  },
+  {
+    "Name": "unrelated-duplicate-keeps-unique-switch-contradiction",
+    "Plan": {"Sections":[
+      {"ID":"duplicate","Title":"One","Summary":"Summary"},
+      {"ID":"duplicate","Title":"Two","Summary":"Summary"},
+      {"ID":"access","Title":"Access","Summary":"Summary","IncludeIf":{"All":[{"Section":"target","Enabled":true},{"Section":"target","Enabled":false}]}},
+      {"ID":"target","Title":"Target","Summary":"Summary"}
+    ]},
+    "Want": [{"Code":"authoring.contradiction","Path":"sections[2].includeIf","Section":"access"}]
+  },
+  {
+    "Name": "duplicated-switch-target-suppresses-contradiction",
+    "Plan": {"Sections":[
+      {"ID":"target","Title":"One","Summary":"Summary"},
+      {"ID":"target","Title":"Two","Summary":"Summary"},
+      {"ID":"access","Title":"Access","Summary":"Summary","IncludeIf":{"All":[{"Section":"target","Enabled":true},{"Section":"target","Enabled":false}]}}
+    ]},
+    "Want": []
+  },
+  {
+    "Name": "unrelated-duplicate-keeps-missing-switch-diagnostic",
+    "Plan": {"Sections":[
+      {"ID":"duplicate","Title":"One","Summary":"Summary"},
+      {"ID":"duplicate","Title":"Two","Summary":"Summary"},
+      {"ID":"access","Title":"Access","Summary":"Summary","IncludeIf":{"All":[{"Section":"missing","Enabled":true}]}}
+    ]},
+    "Want": [{"Code":"authoring.section-reference","Path":"sections[2].includeIf.all[0].section","Section":"access"}]
+  }
+]

@@ -1,0 +1,1665 @@
+[
+  {
+    "Name": "empty",
+    "Plan": {},
+    "Want": []
+  },
+  {
+    "Name": "ignored-held-data",
+    "Plan": {
+      "ID": "",
+      "SchemaVersion": 900,
+      "URL": "not a URL",
+      "ResultsPath": "../ignored",
+      "Answers": {
+        "Plan": {
+          "x": {
+            "Kind": 2,
+            "Text": "-----BEGIN PRIVATE KEY-----"
+          }
+        },
+        "Sections": {
+          "absent": {
+            "abc": {
+              "Kind": 3,
+              "List": [
+                "bad"
+              ]
+            }
+          }
+        }
+      },
+      "UnknownFields": {
+        "body": "$Missing",
+        "secret": "-----BEGIN PRIVATE KEY-----",
+        "nested": [
+          {
+            "x": 1
+          }
+        ]
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "valid-declarations",
+    "Plan": {
+      "Directory": {
+        "Contacts": [
+          {
+            "ID": "0-help",
+            "Name": "Help"
+          }
+        ],
+        "Roles": [
+          {
+            "ID": "helper",
+            "Name": "Helper",
+            "Holders": [
+              "0-help"
+            ]
+          }
+        ],
+        "Teams": [
+          {
+            "ID": "team-a",
+            "Name": "Team A"
+          }
+        ]
+      },
+      "Variables": [
+        {
+          "Name": "string_value",
+          "Default": {
+            "Kind": 1,
+            "Text": " spaced "
+          },
+          "Options": [
+            "ignored"
+          ]
+        },
+        {
+          "Name": "flag_value",
+          "Type": "boolean",
+          "Default": {
+            "Kind": 2,
+            "Flag": false
+          }
+        },
+        {
+          "Name": "choice_value",
+          "Type": "choice",
+          "Options": [
+            "a",
+            "a",
+            " "
+          ],
+          "Pattern": "[",
+          "Default": {
+            "Kind": 1,
+            "Text": " "
+          }
+        },
+        {
+          "Name": "command_value",
+          "Type": "command",
+          "Default": {
+            "Kind": 3,
+            "List": [
+              "echo",
+              "",
+              "echo"
+            ]
+          }
+        },
+        {
+          "Name": "contact_value",
+          "Type": "contact",
+          "Multiple": true,
+          "Default": {
+            "Kind": 3,
+            "List": [
+              "0-help",
+              "0-help"
+            ]
+          }
+        },
+        {
+          "Name": "role_value",
+          "Type": "role",
+          "Default": {
+            "Kind": 1,
+            "Text": "helper"
+          }
+        },
+        {
+          "Name": "team_value",
+          "Type": "team",
+          "Default": {
+            "Kind": 1,
+            "Text": "team-a"
+          }
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Ask $helper.",
+          "Owner": "Ask $helper",
+          "Variables": [
+            {
+              "Name": "helper",
+              "Type": "contact",
+              "Required": true
+            },
+            {
+              "Name": "string_value",
+              "Pattern": "[0-9]+",
+              "Default": {
+                "Kind": 1,
+                "Text": "id42"
+              }
+            }
+          ],
+          "Escalation": [
+            "$helper",
+            "$helper"
+          ],
+          "Steps": [
+            {
+              "Run": [
+                "echo",
+                "",
+                "echo"
+              ],
+              "Open": "https://docs.example/",
+              "Env": {
+                "APP_ENV": ""
+              },
+              "Checks": [
+                {
+                  "Run": [
+                    ""
+                  ]
+                },
+                {
+                  "Ask": "Continue?"
+                },
+                {
+                  "Env": "TOKEN_2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "required-prose-slugs",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "plan",
+          "Title": " \t ",
+          "Summary": " "
+        },
+        {
+          "ID": "UPPER",
+          "Title": "Title",
+          "Summary": "Summary",
+          "Steps": [
+            {
+              "ID": "bad_id"
+            },
+            {
+              "ID": ""
+            },
+            {
+              "ID": "plan"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.section-id",
+        "Path": "sections[0].id"
+      },
+      {
+        "Code": "authoring.required-prose",
+        "Path": "sections[0].summary"
+      },
+      {
+        "Code": "authoring.required-prose",
+        "Path": "sections[0].title"
+      },
+      {
+        "Code": "authoring.section-id",
+        "Path": "sections[1].id"
+      },
+      {
+        "Code": "authoring.step-id",
+        "Path": "sections[1].steps[0].id"
+      }
+    ]
+  },
+  {
+    "Name": "variable-name-enums",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "ab",
+          "Type": "String",
+          "Audience": "Onboardee",
+          "Multiple": true,
+          "Pattern": "[",
+          "Default": {
+            "Kind": 99
+          }
+        },
+        {
+          "Name": "enabled"
+        },
+        {
+          "Name": "yes"
+        },
+        {
+          "Name": "true"
+        },
+        {
+          "Name": "false"
+        },
+        {
+          "Name": "off"
+        },
+        {
+          "Name": "null"
+        },
+        {
+          "Name": "a0_",
+          "Description": "",
+          "PatternHint": " \t"
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.variable-audience",
+        "Path": "variables[0].audience"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[0].name"
+      },
+      {
+        "Code": "authoring.variable-type",
+        "Path": "variables[0].type"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[1].name"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[2].name"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[3].name"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[4].name"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[5].name"
+      },
+      {
+        "Code": "authoring.variable-name",
+        "Path": "variables[6].name"
+      }
+    ]
+  },
+  {
+    "Name": "multiple-choice-pattern",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "choice_value",
+          "Type": "choice",
+          "Multiple": true,
+          "Options": []
+        },
+        {
+          "Name": "string_value",
+          "Multiple": true,
+          "Pattern": "[",
+          "Default": {
+            "Kind": 1,
+            "Text": "anything"
+          }
+        },
+        {
+          "Name": "team_value",
+          "Type": "team",
+          "Multiple": true
+        },
+        {
+          "Name": "bad_option",
+          "Type": "choice",
+          "Options": [
+            "a",
+            ""
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.multiple",
+        "Path": "variables[0].multiple",
+        "Question": "plan.choice_value"
+      },
+      {
+        "Code": "authoring.choice-options",
+        "Path": "variables[0].options",
+        "Question": "plan.choice_value"
+      },
+      {
+        "Code": "authoring.multiple",
+        "Path": "variables[1].multiple",
+        "Question": "plan.string_value"
+      },
+      {
+        "Code": "authoring.pattern",
+        "Path": "variables[1].pattern",
+        "Question": "plan.string_value"
+      },
+      {
+        "Code": "authoring.multiple",
+        "Path": "variables[2].multiple",
+        "Question": "plan.team_value"
+      },
+      {
+        "Code": "authoring.choice-options",
+        "Path": "variables[3].options",
+        "Question": "plan.bad_option"
+      }
+    ]
+  },
+  {
+    "Name": "directory-declarations",
+    "Plan": {
+      "Directory": {
+        "Contacts": [
+          {
+            "ID": "Bad_id",
+            "Name": " "
+          },
+          {
+            "ID": "0-a--",
+            "Name": " Name "
+          }
+        ],
+        "Roles": [
+          {
+            "ID": "",
+            "Name": ""
+          }
+        ],
+        "Teams": [
+          {
+            "ID": "-bad",
+            "Name": "Valid"
+          }
+        ]
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.directory-id",
+        "Path": "directory.contacts[0].id"
+      },
+      {
+        "Code": "authoring.directory-name",
+        "Path": "directory.contacts[0].name"
+      },
+      {
+        "Code": "authoring.directory-id",
+        "Path": "directory.roles[0].id"
+      },
+      {
+        "Code": "authoring.directory-name",
+        "Path": "directory.roles[0].name"
+      },
+      {
+        "Code": "authoring.directory-id",
+        "Path": "directory.teams[0].id"
+      }
+    ]
+  },
+  {
+    "Name": "timing-all-declarations",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "inactive",
+          "Title": "Inactive",
+          "Summary": "Still validate",
+          "Enabled": false,
+          "Timing": "tomorrow",
+          "Steps": [
+            {
+              "Timing": "late"
+            },
+            {
+              "Timing": "before-day-one"
+            },
+            {
+              "Timing": "week-one"
+            },
+            {
+              "Timing": "days-8-to-30"
+            },
+            {
+              "Timing": "days-31-to-90"
+            },
+            {
+              "Timing": "anytime"
+            },
+            {
+              "Timing": ""
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.timing",
+        "Path": "sections[0].steps[0].timing",
+        "Section": "inactive"
+      },
+      {
+        "Code": "authoring.timing",
+        "Path": "sections[0].timing",
+        "Section": "inactive"
+      }
+    ]
+  },
+  {
+    "Name": "short-escaped-longest-dollars",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "plan_only"
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "$x $ab $5 $500 $$HOME $$${abc}",
+          "Summary": "$abcA $abc.git",
+          "Body": "$abcx $plan_only $Missing ${abc} $",
+          "Variables": [
+            {
+              "Name": "abc"
+            }
+          ],
+          "Source": {
+            "Template": "$Missing"
+          },
+          "UnknownFields": {
+            "body": "$Missing"
+          }
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].body",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].title",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "dollar-fields",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "$unknown",
+          "Summary": "$unknown",
+          "Owner": "$unknown",
+          "Verification": "$unknown",
+          "Body": "$unknown",
+          "Steps": [
+            {
+              "Name": "$unknown",
+              "Notes": "$unknown",
+              "Owner": "$unknown",
+              "Open": "$unknown",
+              "Directory": "$unknown",
+              "Run": [
+                "$unknown",
+                "$unknown"
+              ],
+              "Env": {
+                "APP_ENV": "$unknown"
+              },
+              "Checks": [
+                {
+                  "Run": [
+                    "$unknown"
+                  ]
+                },
+                {
+                  "Ask": "$unknown"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].body",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].owner",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].checks[0].run[0]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].checks[1].ask",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].directory",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].env[0]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].name",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].notes",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].open",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].owner",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].run[0]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].steps[0].run[1]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].summary",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].title",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.dollar",
+        "Path": "sections[0].verification",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "owners-escalation",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Summary",
+          "Owner": "Ask $label and $person",
+          "Variables": [
+            {
+              "Name": "label"
+            },
+            {
+              "Name": "person",
+              "Type": "contact"
+            },
+            {
+              "Name": "helper",
+              "Type": "role"
+            }
+          ],
+          "Escalation": [
+            "$person",
+            "$helper",
+            "$helper",
+            "person",
+            " $person",
+            "$label",
+            "$absent",
+            "$$person"
+          ],
+          "Steps": [
+            {
+              "Owner": "Literal team"
+            },
+            {
+              "Owner": "$label",
+              "Escalation": [
+                "$person suffix"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].escalation[3]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].escalation[4]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].escalation[5]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].escalation[6]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].escalation[7]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.owner-type",
+        "Path": "sections[0].owner",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.escalation",
+        "Path": "sections[0].steps[1].escalation[0]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.owner-type",
+        "Path": "sections[0].steps[1].owner",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "checks-environment",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Summary",
+          "Steps": [
+            {
+              "Env": {
+                "BAD-NAME": "",
+                "APP_ENV": "",
+                "_BAD": "x",
+                "a": "x"
+              },
+              "Checks": [
+                {},
+                {
+                  "Run": [],
+                  "Ask": "  "
+                },
+                {
+                  "Run": [
+                    ""
+                  ],
+                  "Ask": "Yes?",
+                  "Env": "TOKEN"
+                },
+                {
+                  "Env": "Bad"
+                },
+                {
+                  "Env": "A0_"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.check",
+        "Path": "sections[0].steps[0].checks[0]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.check",
+        "Path": "sections[0].steps[0].checks[1]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.check",
+        "Path": "sections[0].steps[0].checks[2]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.environment-name",
+        "Path": "sections[0].steps[0].checks[3].env",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.environment-name",
+        "Path": "sections[0].steps[0].env[1]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.environment-name",
+        "Path": "sections[0].steps[0].env[2]",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.environment-name",
+        "Path": "sections[0].steps[0].env[3]",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "condition-shapes",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "axis",
+          "AskIf": {
+            "All": []
+          }
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Summary",
+          "IncludeIf": {
+            "All": []
+          },
+          "Variables": [
+            {
+              "Name": "abc",
+              "AskIf": {
+                "All": [
+                  {},
+                  {
+                    "Question": "abc",
+                    "Section": "access"
+                  },
+                  {
+                    "Section": "access",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  },
+                  {
+                    "Question": "abc"
+                  },
+                  {
+                    "Section": "missing"
+                  },
+                  {
+                    "Question": "missing"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.condition-empty",
+        "Severity": "warning",
+        "Path": "sections[0].includeIf",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.condition-cycle",
+        "Path": "sections[0].variables[0]",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.clause",
+        "Path": "sections[0].variables[0].askIf.all[0]",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.clause",
+        "Path": "sections[0].variables[0].askIf.all[1]",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.clause",
+        "Path": "sections[0].variables[0].askIf.all[2]",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.predicate",
+        "Path": "sections[0].variables[0].askIf.all[3].answer",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.section-reference",
+        "Path": "sections[0].variables[0].askIf.all[4].section",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.question-reference",
+        "Path": "sections[0].variables[0].askIf.all[5].question",
+        "Question": "access.abc",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.plan-ask-if",
+        "Path": "variables[0].askIf",
+        "Question": "plan.axis"
+      }
+    ]
+  },
+  {
+    "Name": "ancestor-and-cross-ask-valid",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "axis",
+          "Type": "boolean"
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "child",
+          "Title": "Child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "parent.mode",
+                "Answer": {
+                  "Is": {
+                    "Kind": 1,
+                    "Text": "yes"
+                  }
+                }
+              },
+              {
+                "Question": "plan.axis",
+                "Answer": {
+                  "Is": {
+                    "Kind": 2,
+                    "Flag": false
+                  }
+                }
+              },
+              {
+                "Section": "later",
+                "Enabled": false
+              }
+            ]
+          },
+          "Variables": [
+            {
+              "Name": "abc",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "later.value",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ID": "parent",
+          "Title": "Parent",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "mode"
+            }
+          ]
+        },
+        {
+          "ID": "later",
+          "Title": "Later",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "include-scope",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "child",
+          "Title": "Child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ],
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              },
+              {
+                "Question": "other.value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              },
+              {
+                "Question": "absent.value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ID": "parent",
+          "Title": "Parent",
+          "Summary": "Summary"
+        },
+        {
+          "ID": "other",
+          "Title": "Other",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.include-scope",
+        "Path": "sections[0].includeIf.all[0].question",
+        "Section": "child"
+      },
+      {
+        "Code": "authoring.include-scope",
+        "Path": "sections[0].includeIf.all[1].question",
+        "Section": "child"
+      },
+      {
+        "Code": "authoring.question-reference",
+        "Path": "sections[0].includeIf.all[2].question",
+        "Section": "child"
+      }
+    ]
+  },
+  {
+    "Name": "inactive-cross-cycle",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "first",
+          "Title": "First",
+          "Summary": "Summary",
+          "Enabled": false,
+          "Variables": [
+            {
+              "Name": "alpha",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "second.beta",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ID": "second",
+          "Title": "Second",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "beta",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "first.alpha",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Name": "tail",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "first.alpha",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.condition-cycle",
+        "Path": "sections[0].variables[0]",
+        "Question": "first.alpha",
+        "Section": "first"
+      },
+      {
+        "Code": "authoring.condition-cycle",
+        "Path": "sections[1].variables[0]",
+        "Question": "second.beta",
+        "Section": "second"
+      }
+    ]
+  },
+  {
+    "Name": "inherited-eligibility-cycle",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "parent",
+          "Title": "Parent",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "alpha",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "child.beta",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "ID": "child",
+          "Title": "Child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "parent.alpha",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          },
+          "Variables": [
+            {
+              "Name": "beta"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.condition-cycle",
+        "Path": "sections[0].variables[0]",
+        "Question": "parent.alpha",
+        "Section": "parent"
+      },
+      {
+        "Code": "authoring.condition-cycle",
+        "Path": "sections[1].variables[0]",
+        "Question": "child.beta",
+        "Section": "child"
+      }
+    ]
+  },
+  {
+    "Name": "duplicate-and-graph-delegation",
+    "Plan": {
+      "Directory": {
+        "Contacts": [
+          {
+            "ID": "help",
+            "Name": "Help"
+          },
+          {
+            "ID": "help",
+            "Name": "Help again"
+          }
+        ],
+        "Roles": [
+          {
+            "ID": "role",
+            "Name": "Role",
+            "Holders": [
+              "absent"
+            ]
+          }
+        ]
+      },
+      "Variables": [
+        {
+          "Name": "dup",
+          "Type": "choice",
+          "Options": [
+            "a"
+          ]
+        },
+        {
+          "Name": "dup",
+          "Type": "boolean"
+        },
+        {
+          "Name": "contact_value",
+          "Type": "contact",
+          "Default": {
+            "Kind": 1,
+            "Text": "help"
+          }
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "$value",
+          "Parent": "missing",
+          "Requires": [
+            "access"
+          ],
+          "After": [
+            "missing"
+          ],
+          "Variables": [
+            {
+              "Name": "value"
+            },
+            {
+              "Name": "value",
+              "Type": "boolean"
+            },
+            {
+              "Name": "target",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "value",
+                    "Answer": {
+                      "Is": {
+                        "Kind": 1,
+                        "Text": "anything"
+                      }
+                    }
+                  },
+                  {
+                    "Question": "plan.dup",
+                    "Answer": {
+                      "Is": {
+                        "Kind": 1,
+                        "Text": "anything"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "Steps": [
+            {
+              "ID": "same"
+            },
+            {
+              "ID": "same"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "missing-parent-scope-suppression",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "first",
+          "Title": "First",
+          "Summary": "Summary",
+          "Parent": "missing",
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "second.value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ID": "second",
+          "Title": "Second",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "use-closure",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "axis",
+          "Audience": "onboardee"
+        },
+        {
+          "Name": "unused",
+          "Audience": "onboardee"
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "$result",
+          "Enabled": false,
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "plan.axis",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          },
+          "Variables": [
+            {
+              "Name": "source",
+              "Audience": "onboardee"
+            },
+            {
+              "Name": "result",
+              "Audience": "onboardee",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "source",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "Name": "example_only",
+              "Audience": "onboardee",
+              "Example": "$example_only"
+            },
+            {
+              "Name": "organizer"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.unused-onboardee",
+        "Path": "sections[0].variables[2]",
+        "Question": "access.example_only",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.unused-onboardee",
+        "Path": "variables[1]",
+        "Question": "plan.unused"
+      }
+    ]
+  },
+  {
+    "Name": "secret-projection",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "default_value",
+          "Default": {
+            "Kind": 1,
+            "Text": "-----BEGIN PRIVATE KEY-----"
+          }
+        },
+        {
+          "Name": "list_value",
+          "Type": "command",
+          "Default": {
+            "Kind": 3,
+            "List": [
+              "safe",
+              "-----BEGIN PRIVATE KEY-----",
+              "-----BEGIN PRIVATE KEY-----"
+            ]
+          }
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "inactive",
+          "Title": "Inactive",
+          "Summary": "Summary",
+          "Enabled": false,
+          "Steps": [
+            {
+              "Env": {
+                "PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "secret.private-key",
+        "Path": "sections[0].steps[0].env[0]",
+        "Section": "inactive"
+      },
+      {
+        "Code": "secret.private-key",
+        "Path": "variables[0].default",
+        "Question": "plan.default_value"
+      },
+      {
+        "Code": "secret.private-key",
+        "Path": "variables[1].default",
+        "Question": "plan.list_value",
+        "Item": "1"
+      },
+      {
+        "Code": "secret.private-key",
+        "Path": "variables[1].default",
+        "Question": "plan.list_value",
+        "Item": "2"
+      }
+    ]
+  },
+  {
+    "Name": "duplicate-sections-suppress-reference-analysis",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Summary",
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "missing.value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          },
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        },
+        {
+          "ID": "access",
+          "Title": "Other access",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "parent-cycle-suppresses-scope-only",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "first",
+          "Title": "First",
+          "Summary": "Summary",
+          "Parent": "second",
+          "IncludeIf": {
+            "All": [
+              {
+                "Question": "third.value",
+                "Answer": {
+                  "IsSettled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "ID": "second",
+          "Title": "Second",
+          "Summary": "Summary",
+          "Parent": "first"
+        },
+        {
+          "ID": "third",
+          "Title": "Third",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "Want": []
+  },
+  {
+    "Name": "malformed-qualified-questions",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "target"
+        }
+      ],
+      "Sections": [
+        {
+          "ID": "access",
+          "Title": "Access",
+          "Summary": "Summary",
+          "Variables": [
+            {
+              "Name": "trigger",
+              "AskIf": {
+                "All": [
+                  {
+                    "Question": "plan.",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  },
+                  {
+                    "Question": ".target",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  },
+                  {
+                    "Question": "plan.target.more",
+                    "Answer": {
+                      "IsSettled": true
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.question-reference",
+        "Path": "sections[0].variables[0].askIf.all[0].question",
+        "Question": "access.trigger",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.question-reference",
+        "Path": "sections[0].variables[0].askIf.all[1].question",
+        "Question": "access.trigger",
+        "Section": "access"
+      },
+      {
+        "Code": "authoring.question-reference",
+        "Path": "sections[0].variables[0].askIf.all[2].question",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "errors-do-not-hide-declaration-secrets",
+    "Plan": {
+      "Variables": [
+        {
+          "Name": "value",
+          "Type": "wrong",
+          "Default": {
+            "Kind": 1,
+            "Text": "-----BEGIN PRIVATE KEY-----"
+          }
+        }
+      ]
+    },
+    "Want": [
+      {
+        "Code": "secret.private-key",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      },
+      {
+        "Code": "authoring.variable-type",
+        "Path": "variables[0].type",
+        "Question": "plan.value"
+      }
+    ]
+  }
+]

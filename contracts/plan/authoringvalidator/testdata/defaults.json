@@ -1,0 +1,473 @@
+[
+  {
+    "Name": "absent-ignores-inactive-payload",
+    "Variable": {
+      "Name": "value",
+      "Default": {
+        "Kind": 0,
+        "Text": "-----BEGIN PRIVATE KEY-----",
+        "List": [
+          "x"
+        ]
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "deferred",
+    "Variable": {
+      "Name": "value",
+      "Type": "boolean",
+      "Default": {
+        "Kind": 4
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "false",
+    "Variable": {
+      "Name": "value",
+      "Type": "boolean",
+      "Default": {
+        "Kind": 2,
+        "Flag": false
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "empty-string",
+    "Variable": {
+      "Name": "value",
+      "Default": {
+        "Kind": 1,
+        "Text": ""
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "space-pattern-search",
+    "Variable": {
+      "Name": "value",
+      "Pattern": "x",
+      "Default": {
+        "Kind": 1,
+        "Text": " x "
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "anchored-pattern",
+    "Variable": {
+      "Name": "value",
+      "Pattern": "^x$",
+      "Default": {
+        "Kind": 1,
+        "Text": " x "
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "empty-pattern-mismatch",
+    "Variable": {
+      "Name": "value",
+      "Pattern": "x+",
+      "Default": {
+        "Kind": 1
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "choice-exact-case",
+    "Variable": {
+      "Name": "value",
+      "Type": "choice",
+      "Options": [
+        "blue"
+      ],
+      "Default": {
+        "Kind": 1,
+        "Text": "Blue"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "boolean-text",
+    "Variable": {
+      "Name": "value",
+      "Type": "boolean",
+      "Default": {
+        "Kind": 1,
+        "Text": "false"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "command-text",
+    "Variable": {
+      "Name": "value",
+      "Type": "command",
+      "Default": {
+        "Kind": 1,
+        "Text": "echo test"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "command-empty-list",
+    "Variable": {
+      "Name": "value",
+      "Type": "command",
+      "Default": {
+        "Kind": 3,
+        "List": []
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "unknown-kind",
+    "Variable": {
+      "Name": "value",
+      "Default": {
+        "Kind": 99
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "contact-exact-id",
+    "Directory": {
+      "Contacts": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "contact",
+      "Default": {
+        "Kind": 1,
+        "Text": "help"
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "contact-no-name-lookup",
+    "Directory": {
+      "Contacts": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "contact",
+      "Default": {
+        "Kind": 1,
+        "Text": "Help"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "contact-no-namespace-fallback",
+    "Directory": {
+      "Roles": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "contact",
+      "Default": {
+        "Kind": 1,
+        "Text": "help"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "contact-empty-id",
+    "Variable": {
+      "Name": "value",
+      "Type": "contact",
+      "Default": {
+        "Kind": 1
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "role-list-repeats",
+    "Directory": {
+      "Roles": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "role",
+      "Multiple": true,
+      "Default": {
+        "Kind": 3,
+        "List": [
+          "help",
+          "help"
+        ]
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "role-list-empty-item",
+    "Directory": {
+      "Roles": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "role",
+      "Multiple": true,
+      "Default": {
+        "Kind": 3,
+        "List": [
+          "help",
+          ""
+        ]
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "role-list-wrong-shape",
+    "Directory": {
+      "Roles": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "role",
+      "Multiple": true,
+      "Default": {
+        "Kind": 1,
+        "Text": "help"
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "team-scalar",
+    "Directory": {
+      "Teams": [
+        {
+          "ID": "team-a",
+          "Name": "Team A"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "team",
+      "Default": {
+        "Kind": 1,
+        "Text": "team-a"
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "team-list",
+    "Directory": {
+      "Teams": [
+        {
+          "ID": "team-a",
+          "Name": "Team A"
+        }
+      ]
+    },
+    "Variable": {
+      "Name": "value",
+      "Type": "team",
+      "Default": {
+        "Kind": 3,
+        "List": [
+          "team-a"
+        ]
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "inactive-flag-payload-ignored",
+    "Variable": {
+      "Name": "value",
+      "Type": "boolean",
+      "Default": {
+        "Kind": 2,
+        "Flag": false,
+        "Text": "-----BEGIN PRIVATE KEY-----",
+        "List": [
+          "-----BEGIN PRIVATE KEY-----"
+        ]
+      }
+    },
+    "Want": []
+  },
+  {
+    "Name": "url-secret-default",
+    "Variable": {
+      "Name": "value",
+      "Default": {
+        "Kind": 1,
+        "Text": "https://somebody:FAKE-ONLY@host.example/"
+      }
+    },
+    "Want": [
+      {
+        "Code": "secret.url-credential",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "random-secret-default",
+    "Variable": {
+      "Name": "value",
+      "Default": {
+        "Kind": 1,
+        "Text": "Aa0Aa0Aa0Aa0Aa0Aa0Aa0Aa0Aa0Aa0Aa0Aa0"
+      }
+    },
+    "Want": [
+      {
+        "Code": "secret.random-string",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      }
+    ]
+  },
+  {
+    "Name": "bad-pattern-retains-kind-error",
+    "Variable": {
+      "Name": "value",
+      "Pattern": "[",
+      "Default": {
+        "Kind": 2,
+        "Flag": false
+      }
+    },
+    "Want": [
+      {
+        "Code": "authoring.default",
+        "Path": "variables[0].default",
+        "Question": "plan.value"
+      },
+      {
+        "Code": "authoring.pattern",
+        "Path": "variables[0].pattern",
+        "Question": "plan.value"
+      }
+    ]
+  }
+]

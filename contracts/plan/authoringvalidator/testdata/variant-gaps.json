@@ -1,0 +1,190 @@
+[
+  {
+    "Name": "environment-digit-start-is-invalid",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Steps": [{"Env": {"1TOKEN": ""}}]}]},
+    "Want": [{"Code": "authoring.environment-name", "Path": "sections[0].steps[0].env[0]", "Section": "access"}]
+  },
+  {
+    "Name": "multiple-team-still-takes-text-default",
+    "Plan": {"Directory": {"Teams": [{"ID": "team", "Name": "Example team"}]}, "Variables": [{"Name": "team_choice", "Type": "team", "Multiple": true, "Default": {"Kind": 1, "Text": "team"}}]},
+    "Want": [{"Code": "authoring.multiple", "Path": "variables[0].multiple", "Question": "plan.team_choice"}]
+  },
+  {
+    "Name": "multiple-team-list-default-has-independent-shape-error",
+    "Plan": {"Directory": {"Teams": [{"ID": "team", "Name": "Example team"}]}, "Variables": [{"Name": "team_choice", "Type": "team", "Multiple": true, "Default": {"Kind": 3, "List": ["team"]}}]},
+    "Want": [
+      {"Code": "authoring.default", "Path": "variables[0].default", "Question": "plan.team_choice"},
+      {"Code": "authoring.multiple", "Path": "variables[0].multiple", "Question": "plan.team_choice"}
+    ]
+  },
+  {
+    "Name": "active-text-stored-answer-is-not-scanned",
+    "Plan": {"Variables": [{"Name": "response"}], "Answers": {"Plan": {"response": {"Kind": 1, "Text": "-----BEGIN PRIVATE KEY-----"}}}},
+    "Want": []
+  },
+  {
+    "Name": "escaped-dollar-alone-is-literal",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Body": "$$ghost"}]},
+    "Want": []
+  },
+  {
+    "Name": "single-letter-dollar-alone-is-literal",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Body": "$a"}]},
+    "Want": []
+  },
+  {
+    "Name": "two-letter-dollar-alone-is-literal",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Body": "$ab"}]},
+    "Want": []
+  },
+  {
+    "Name": "digit-dollar-alone-is-literal",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Body": "$1abc"}]},
+    "Want": []
+  },
+  {
+    "Name": "trailing-dollar-alone-is-malformed",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Body": "$"}]},
+    "Want": [{"Code": "authoring.dollar", "Path": "sections[0].body", "Section": "access"}]
+  },
+  {
+    "Name": "role-variable-is-valid-owner",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Owner": "$responder", "Variables": [{"Name": "responder", "Type": "role"}]}]},
+    "Want": []
+  },
+  {
+    "Name": "qualified-reference-first-dot-keeps-invalid-scope-independent",
+    "Plan": {"Sections": [
+      {"ID": "foo.bar", "Title": "Invalid scope", "Summary": "Summary", "Variables": [{"Name": "baz"}]},
+      {"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [{"Question": "foo.bar.baz", "Answer": {"IsSettled": true}}]}}]}
+    ]},
+    "Want": [
+      {"Code": "authoring.section-id", "Path": "sections[0].id"},
+      {"Code": "authoring.question-reference", "Path": "sections[1].variables[0].askIf.all[0].question", "Question": "access.trigger", "Section": "access"}
+    ]
+  },
+  {
+    "Name": "qualified-plan-reference-first-dot-survives-unrelated-duplicate-sections",
+    "Plan": {"Variables": [{"Name": "target"}], "Sections": [
+      {"ID": "repeated", "Title": "One", "Summary": "Summary"},
+      {"ID": "repeated", "Title": "Two", "Summary": "Summary"},
+      {"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [{"Question": "plan.target.more", "Answer": {"IsSettled": true}}]}}]}
+    ]},
+    "Want": [{"Code": "authoring.question-reference", "Path": "sections[2].variables[0].askIf.all[0].question", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "condition-reference-retains-surrounding-space",
+    "Plan": {"Variables": [{"Name": "target"}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [{"Question": " plan.target ", "Answer": {"IsSettled": true}}]}}]}]},
+    "Want": [{"Code": "authoring.question-reference", "Path": "sections[0].variables[0].askIf.all[0].question", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "unknown-target-type-suppresses-predicate-membership-and-list-checks",
+    "Plan": {"Variables": [{"Name": "target", "Type": "unfamiliar"}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [{"Question": "plan.target", "Answer": {"Is": {"Kind": 2, "Flag": true}, "IsOneOf": [{"Kind": 2, "Flag": true}]}}]}}]}]},
+    "Want": [{"Code": "authoring.variable-type", "Path": "variables[0].type", "Question": "plan.target"}]
+  },
+  {
+    "Name": "negative-list-excludes-required-scalar",
+    "Plan": {"Variables": [{"Name": "target"}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [
+      {"Question": "plan.target", "Answer": {"Is": {"Kind": 1, "Text": "alpha"}}},
+      {"Question": "plan.target", "Answer": {"IsNotOneOf": [{"Kind": 1, "Text": "alpha"}, {"Kind": 1, "Text": "bravo"}]}}
+    ]}}]}]},
+    "Want": [{"Code": "authoring.contradiction", "Path": "sections[0].variables[0].askIf", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "individual-exclusions-exhaust-choice-domain",
+    "Plan": {"Variables": [{"Name": "target", "Type": "choice", "Options": ["red", "blue", "green"]}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 1, "Text": "red"}}},
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 1, "Text": "blue"}}},
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 1, "Text": "green"}}}
+    ]}}]}]},
+    "Want": [{"Code": "authoring.contradiction", "Path": "sections[0].variables[0].askIf", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "text-comparison-ignores-inactive-flag",
+    "Plan": {"Variables": [{"Name": "target"}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [
+      {"Question": "plan.target", "Answer": {"Is": {"Kind": 1, "Text": "alpha", "Flag": false}}},
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 1, "Text": "alpha", "Flag": true}}}
+    ]}}]}]},
+    "Want": [{"Code": "authoring.contradiction", "Path": "sections[0].variables[0].askIf", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "flag-comparison-ignores-inactive-text",
+    "Plan": {"Variables": [{"Name": "target", "Type": "boolean"}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [
+      {"Question": "plan.target", "Answer": {"Is": {"Kind": 2, "Flag": true, "Text": "alpha"}}},
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 2, "Flag": true, "Text": "bravo"}}}
+    ]}}]}]},
+    "Want": [{"Code": "authoring.contradiction", "Path": "sections[0].variables[0].askIf", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "disabled-section-still-has-question-cycle",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Enabled": false, "Variables": [
+      {"Name": "alpha", "AskIf": {"All": [{"Question": "bravo", "Answer": {"IsSettled": true}}]}},
+      {"Name": "bravo", "AskIf": {"All": [{"Question": "alpha", "Answer": {"IsSettled": true}}]}}
+    ]}]},
+    "Want": [
+      {"Code": "authoring.condition-cycle", "Path": "sections[0].variables[0]", "Question": "access.alpha", "Section": "access"},
+      {"Code": "authoring.condition-cycle", "Path": "sections[0].variables[1]", "Question": "access.bravo", "Section": "access"}
+    ]
+  },
+  {
+    "Name": "descendant-inherits-ancestor-include-dependency",
+    "Plan": {"Sections": [
+      {"ID": "top", "Title": "Top", "Summary": "Summary", "Variables": [{"Name": "alpha", "AskIf": {"All": [{"Question": "leaf.bravo", "Answer": {"IsSettled": true}}]}}]},
+      {"ID": "middle", "Title": "Middle", "Summary": "Summary", "Parent": "top", "IncludeIf": {"All": [{"Question": "top.alpha", "Answer": {"IsSettled": true}}]}},
+      {"ID": "leaf", "Title": "Leaf", "Summary": "Summary", "Parent": "middle", "Variables": [{"Name": "bravo"}]}
+    ]},
+    "Want": [
+      {"Code": "authoring.condition-cycle", "Path": "sections[0].variables[0]", "Question": "top.alpha", "Section": "top"},
+      {"Code": "authoring.condition-cycle", "Path": "sections[2].variables[0]", "Question": "leaf.bravo", "Section": "leaf"}
+    ]
+  },
+  {
+    "Name": "duplicate-section-identity-suppresses-all-cycle-analysis",
+    "Plan": {"Sections": [
+      {"ID": "repeated", "Title": "One", "Summary": "Summary"},
+      {"ID": "repeated", "Title": "Two", "Summary": "Summary"},
+      {"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [
+        {"Name": "alpha", "AskIf": {"All": [{"Question": "bravo", "Answer": {"IsSettled": true}}]}},
+        {"Name": "bravo", "AskIf": {"All": [{"Question": "alpha", "Answer": {"IsSettled": true}}]}}
+      ]}
+    ]},
+    "Want": []
+  },
+  {
+    "Name": "duplicate-source-declarations-have-no-unused-judgment",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [
+      {"Name": "response", "Audience": "onboardee"},
+      {"Name": "response", "Audience": "onboardee"}
+    ]}]},
+    "Want": []
+  },
+  {
+    "Name": "self-only-cycle-does-not-make-onboardee-useful",
+    "Plan": {"Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [
+      {"Name": "response", "Audience": "onboardee", "AskIf": {"All": [{"Question": "response", "Answer": {"IsSettled": true}}]}}
+    ]}]},
+    "Want": [
+      {"Code": "authoring.condition-cycle", "Path": "sections[0].variables[0]", "Question": "access.response", "Section": "access"},
+      {"Code": "authoring.unused-onboardee", "Path": "sections[0].variables[0]", "Question": "access.response", "Section": "access"}
+    ]
+  },
+  {
+    "Name": "negative-subset-list-and-scalar-exhaust-choice-domain",
+    "Plan": {"Variables": [{"Name": "target", "Type": "choice", "Options": ["alpha", "bravo", "charlie"]}], "Sections": [{"ID": "access", "Title": "Access", "Summary": "Summary", "Variables": [{"Name": "trigger", "AskIf": {"All": [
+      {"Question": "plan.target", "Answer": {"IsNotOneOf": [{"Kind": 1, "Text": "alpha"}, {"Kind": 1, "Text": "bravo"}]}},
+      {"Question": "plan.target", "Answer": {"IsNot": {"Kind": 1, "Text": "charlie"}}}
+    ]}}]}]},
+    "Want": [{"Code": "authoring.contradiction", "Path": "sections[0].variables[0].askIf", "Question": "access.trigger", "Section": "access"}]
+  },
+  {
+    "Name": "disabled-own-include-dependency-closes-question-cycle",
+    "Plan": {"Sections": [
+      {"ID": "parent", "Title": "Parent", "Summary": "Summary", "Variables": [{"Name": "alpha", "AskIf": {"All": [{"Question": "child.bravo", "Answer": {"IsSettled": true}}]}}]},
+      {"ID": "child", "Title": "Child", "Summary": "Summary", "Parent": "parent", "Enabled": false, "IncludeIf": {"All": [{"Question": "parent.alpha", "Answer": {"IsSettled": true}}]}, "Variables": [{"Name": "bravo"}]}
+    ]},
+    "Want": [
+      {"Code": "authoring.condition-cycle", "Path": "sections[0].variables[0]", "Question": "parent.alpha", "Section": "parent"},
+      {"Code": "authoring.condition-cycle", "Path": "sections[1].variables[0]", "Question": "child.bravo", "Section": "child"}
+    ]
+  }
+]

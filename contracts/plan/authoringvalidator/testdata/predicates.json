@@ -1,0 +1,728 @@
+[
+  {
+    "Name": "scalar-false",
+    "Target": {
+      "Name": "target",
+      "Type": "boolean"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 2,
+            "Flag": false
+          }
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "settled-list",
+    "Target": {
+      "Name": "target",
+      "Type": "command"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsSettled": false
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "list-target-comparison",
+    "Target": {
+      "Name": "target",
+      "Type": "command"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "x"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate",
+        "Path": "sections[0].variables[0].askIf.all[0].answer",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "deferred-test",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 4
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.is",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "empty-text-test",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsNot": {
+            "Kind": 1
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isNot",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "space-text-test",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": " "
+          }
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "wrong-kind",
+    "Target": {
+      "Name": "target",
+      "Type": "boolean"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "true"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.is",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "choice-membership",
+    "Target": {
+      "Name": "target",
+      "Type": "choice",
+      "Options": [
+        "a",
+        "b",
+        "c"
+      ]
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "A"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.is",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "pattern-search",
+    "Target": {
+      "Name": "target",
+      "Pattern": "[0-9]"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "id9"
+          }
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "empty-set-present",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": []
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-list",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isOneOf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "singleton-set",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsNotOneOf": [
+            {
+              "Kind": 1,
+              "Text": "x"
+            }
+          ]
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-list",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isNotOneOf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "boolean-set",
+    "Target": {
+      "Name": "target",
+      "Type": "boolean"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 2,
+              "Flag": true
+            },
+            {
+              "Kind": 2,
+              "Flag": false
+            }
+          ]
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-list",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isOneOf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "all-choice-options",
+    "Target": {
+      "Name": "target",
+      "Type": "choice",
+      "Options": [
+        "a",
+        "b",
+        "a"
+      ]
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 1,
+              "Text": "b"
+            },
+            {
+              "Kind": 1,
+              "Text": "a"
+            },
+            {
+              "Kind": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-list",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isOneOf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "ordinary-repeated-set-values",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 1,
+              "Text": "a"
+            },
+            {
+              "Kind": 1,
+              "Text": "a"
+            }
+          ]
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "list-comparison-value",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 1,
+              "Text": "a"
+            },
+            {
+              "Kind": 3,
+              "List": [
+                "b"
+              ]
+            }
+          ]
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.isOneOf[1]",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "same-value-excluded",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "a"
+          },
+          "IsNot": {
+            "Kind": 1,
+            "Text": "a"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "different-values-required",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "a"
+          }
+        }
+      },
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "b"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "positive-intersection-excluded",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 1,
+              "Text": "a"
+            },
+            {
+              "Kind": 1,
+              "Text": "b"
+            }
+          ]
+        }
+      },
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsOneOf": [
+            {
+              "Kind": 1,
+              "Text": "b"
+            },
+            {
+              "Kind": 1,
+              "Text": "c"
+            }
+          ],
+          "IsNot": {
+            "Kind": 1,
+            "Text": "b"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "settled-false-and-value",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsSettled": false,
+          "IsNot": {
+            "Kind": 1,
+            "Text": "a"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "settled-both",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsSettled": true
+        }
+      },
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsSettled": false
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "boolean-exhausted",
+    "Target": {
+      "Name": "target",
+      "Type": "boolean"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsNot": {
+            "Kind": 2,
+            "Flag": true
+          }
+        }
+      },
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "IsNot": {
+            "Kind": 2,
+            "Flag": false
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "switch-contradiction",
+    "Target": {
+      "Name": "target"
+    },
+    "Clauses": [
+      {
+        "Section": "access",
+        "Enabled": true
+      },
+      {
+        "Section": "access",
+        "Enabled": false
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.contradiction",
+        "Path": "sections[0].variables[0].askIf",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "pattern-value-mismatch",
+    "Target": {
+      "Name": "target",
+      "Pattern": "^x$"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": " x "
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.is",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "directory-value-exact",
+    "Directory": {
+      "Contacts": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Target": {
+      "Name": "target",
+      "Type": "contact"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "help"
+          }
+        }
+      }
+    ],
+    "Want": []
+  },
+  {
+    "Name": "directory-value-wrong-namespace",
+    "Directory": {
+      "Roles": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        }
+      ]
+    },
+    "Target": {
+      "Name": "target",
+      "Type": "contact"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "help"
+          }
+        }
+      }
+    ],
+    "Want": [
+      {
+        "Code": "authoring.predicate-value",
+        "Path": "sections[0].variables[0].askIf.all[0].answer.is",
+        "Question": "access.trigger",
+        "Section": "access"
+      }
+    ]
+  },
+  {
+    "Name": "duplicate-directory-suppresses-membership",
+    "Directory": {
+      "Contacts": [
+        {
+          "ID": "help",
+          "Name": "Help"
+        },
+        {
+          "ID": "help",
+          "Name": "Other help"
+        }
+      ]
+    },
+    "Target": {
+      "Name": "target",
+      "Type": "contact"
+    },
+    "Clauses": [
+      {
+        "Question": "plan.target",
+        "Answer": {
+          "Is": {
+            "Kind": 1,
+            "Text": "help"
+          }
+        }
+      }
+    ],
+    "Want": []
+  }
+]
