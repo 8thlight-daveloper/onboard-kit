@@ -130,3 +130,23 @@ Incomplete EOF fragments never count as actions. Independent reader counts and
 untouched tails pin consumption; prebegin snapshots and complete postbegin bytes
 pin effects. A64KiB bounded output writer prevents a wrong repeated-prompt loop
 from turning captured output into unbounded memory growth.
+
+protocol_gaps_test.go independently changes one inner recovery requirement while
+updating the exact raw pending digests in owner/publication metadata. It pins
+required empty keys, integer version, surrogate validity, base64 whitespace,
+present-preimage digest, retained-proposal identity, parent ordinals and absent
+ancestor closure. Malformed inputs must refuse before consuming consent, with
+the whole namespace and every original native guard preserved. Canonical install,
+retain, all-missing-parent and actual supplementary-Unicode root controls keep
+those refusals distinct from rejecting every recovery. Expected bodies remain
+literal fixtures and independently framed native metadata, not decoded output.
+
+context_gaps_test.go pins exact account-case isolation, physical case-alias
+reuse, explicitly reviewed incoming raw-hash changes and nested disjoint root/
+home namespaces. The case-alias control must actually prove equal device/inode;
+a case-sensitive volume explicitly reports unavailable coverage. A literal YAML
+comment changes the incoming plan's raw hash without changing section semantics.
+Complete held record/history bytes, old first-use event, scoped deferred answers
+and unknown notes are preserved except the reviewed plan-reference hash. Native
+guards, actual participant hard-link collision and cancellation snapshots pin
+effects; expected metadata uses public length framing and standard JSON/SHA256.

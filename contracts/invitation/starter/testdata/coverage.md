@@ -76,3 +76,10 @@ block and the full stale-support session. The independent input-gap fixtures
 isolate zero-progress reads, exact action spelling and incomplete EOF at all
 three ordinary interaction states with bounded output observation. These do not
 establish recovery-prompt or native publication-window coverage.
+
+Protocol-gap fixtures pin coherent inner-format refusal before recovery consent
+and changes, alongside canonical installation/retention/missing-parent/Unicode
+controls. Context-gap fixtures pin account-case privacy, changed incoming hash,
+native alias spelling reuse and disjoint nested root/home support. The native
+alias case reports a gap on case-sensitive volumes. These ordinary scenarios
+do not observe forbidden intermediate publication or completion-cleanup windows.
