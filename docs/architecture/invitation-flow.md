@@ -113,6 +113,13 @@ archives, missing company access, and existing records. Define stale or conflict
 preparation import behavior before implementing it; do not silently replace a
 newer preparation copy with an older invitation.
 
+[0360](../decisions/0360-confirmed-invitation-start.md) selects the next confirmed
+start boundary: retain local preparation, review actual record reconciliation,
+recover interrupted multi-file publication and enter a read-only record-backed
+session. First use belongs to that confirmed beginning, not archive inspection.
+Missing declaration validation is an explicit delivery prerequisite. These
+contracts and implementations remain pending; no import command is advertised.
+
 Update standard first-steps wording to explain all three artifacts, initial help,
 and what works before company access. The person must not need access to the
 organization's repository to learn how to obtain that access.
