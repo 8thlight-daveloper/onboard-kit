@@ -62,6 +62,9 @@ func jsonMismatch(expected any, content []byte) string {
 }
 
 func checkFile(path string, expectation FileExpectation, folder, repositoryRoot string) []Failure {
+	if expectation.yamlScalars != nil {
+		return checkYAMLScalarFile(path, expectation.yamlScalars, folder)
+	}
 	if expectation.ZIP != nil {
 		return checkZIPFile(path, *expectation.ZIP, folder, repositoryRoot)
 	}

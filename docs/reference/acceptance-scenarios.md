@@ -73,6 +73,8 @@ The runner writes one request per line, reads one response per line, and closes 
 | `files` | For each path, `{same-as: <file>}` compares the bytes exactly, and `{json: <value>}` compares by subset. `{absent: true}` says the file must not exist |
 | `unchanged` | Paths whose bytes must be the same as before the step |
 
+Files also support the exclusive bounded structural [YAML scalar predicate](acceptance-yaml-scalar-assertions.md), for example to require a stored nonempty UTC timestamp without guessing its value. Its strict YAML and timestamp profile applies only to that new assertion.
+
 **Subset comparison of JSON.** An expected object matches when every key it names is present and matches. Extra keys in the actual object are fine, and key order does not matter. An expected list matches when it has the same items in the same order. An expected value of `null` matches `null`. This lets a scenario say only what it cares about, so an added field does not break it.
 
 ## How the runner treats a run

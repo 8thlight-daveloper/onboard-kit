@@ -60,10 +60,11 @@ type OutputExpectation struct {
 }
 
 type FileExpectation struct {
-	SameAs *string
-	JSON   *Expected
-	Absent bool
-	ZIP    *zipExpectation
+	SameAs      *string
+	JSON        *Expected
+	Absent      bool
+	ZIP         *zipExpectation
+	yamlScalars []yamlScalarExpectation
 }
 
 func Load(path string) (Scenario, error) {
@@ -177,6 +178,13 @@ func (expectation *OutputExpectation) UnmarshalYAML(node *yaml.Node) error {
 }
 
 func (expectation *FileExpectation) UnmarshalYAML(node *yaml.Node) error {
+	for index := 0; index+1 < len(node.Content); index += 2 {
+		if node.Content[index].Value == "yaml-scalars" {
+			parsed, err := decodeYAMLScalars(node)
+			expectation.yamlScalars = parsed
+			return err
+		}
+	}
 	absentHeld := false
 	err := decodeFields(node, map[string]func(*yaml.Node) error{
 		"same-as": func(value *yaml.Node) error {
