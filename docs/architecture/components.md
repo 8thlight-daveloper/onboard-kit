@@ -175,6 +175,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `catalog/reader` | None. Reads only compiled normative metadata/content and an exact lookup ID. Returns owned summaries, bytes or problems; reads or changes no Plan, preparation, record, filesystem or environment |
 | `command/catalog` | Reads arguments, the actual catalog reader and supplied writer results. Writes only stdout/stderr. Reads or changes no files, plan, preparation, record, environment, selection or index |
 | `catalog/materializer` | None. Reads explicit creation context, selections/bindings, compiled catalog definitions and authored preparation relations. Returns a new plan, relevant guidance and diagnostics; changes no input, existing plan, preparation, record, filesystem, configuration or clock |
+| `record/writer` | None. Reads the shared plan, original personal record and explicit answer intent. Returns an owned record with only the selected answer override changed; never writes a plan, preparation, outcome, event or file |
 | `preparation/reviewer` | Reads explicit account/help context, original Plan and proposed preparation through actual validation, finder and first-steps dependencies. Returns owned problems, blockers and guide only; no input, record, filesystem, clock or outside-state writes |
 | `preparation/guide` | Imperative driver: reads explicit arguments/interaction, bounded selected plan/preparation and safe path metadata. Writes stdout/stderr and only after reviewed save the selected preparation, private required directories and owned temporary resources. No record reads or writes, plan writes, archive, clock, network or command execution |
 
@@ -184,6 +185,7 @@ R means reads. W means returns the field changed, in a copy. C means creates the
 | -- | -- | -- | -- | -- | -- | -- | -- | -- | -- |
 | `plan/instantiator` | C |  | C |  |  | C | C | C | C |
 | `catalog/materializer` | C | C | C |  | C | C | C | C | C |
+| `record/writer` | R | R | R | R | R | R | R | R | R |
 | `plan/decoder` | C | C | C | C | C | C | C | C | C |
 | `plan/encoder` | R | R | R | R | R | R | R | R | R |
 | `plan/editor` |  |  |  |  | W |  | W | W |  |
@@ -220,6 +222,7 @@ by each current contract until its independently tested replacement is integrate
 | Invitation reviewer, planned | Bounded archive/local bytes, exact content choices/context and supplied begin event | Owned content proposal, actual reconciliation and session projection, finalized per-role bytes; no outside writes | 5: invitation decoder; plan decoder, authoring validator and validator; preparation decoder, validator and locator; record decoder, reconciler, joiner and encoder; section walker; model |
 | Invitation starter, planned | Selected interaction/configuration, bounded files, guarded paths/access controls and injected clock | Approved local roles, private session/recovery resources and streams only | 6: invitation reviewer, model; [driver contract](../../contracts/invitation/starter/contract.md) |
 | Catalog materializer | Explicit creation context, exact selections, permanent instance IDs and bindings; compiled definitions and preparation relations | New self-contained plan, relevant advisory guides with instance reasons and diagnostics only | 5: catalog reader, section loader, section hasher, plan authoring validator, plan validator, model |
+| Record writer | Shared plan, original personal record and explicit answer intent | Owned record with only the selected answer override changed | 6: record joiner, plan editor, model; [contract](../../contracts/record/writer/contract.md) |
 | Section selector | Full-plan answers, conditions, switches, Parent, Requires | Copied active sections in grouped reference order; no plan writes | 2: condition evaluator, model |
 | Section scheduler, new | Full plan, structural validation, selected reference order | Copied action-ordered sections and problems; no plan writes | 3: plan structure validator, section selector, model |
 | Document assembler | Full plan, reference or action order, resolved sections | Documents or bootstrap fragments; no plan writes | 4: section scheduler, section selector, section resolver, model |
@@ -324,6 +327,16 @@ The invitation encoder and decoder depend only on the domain model and their
 own contract interfaces. Neither depends on the other, artifact codecs, the
 locator, or drivers. Artifact validation and filesystem publication are separate
 driver responsibilities.
+
+## Explicit personal answer writing
+
+The pure record writer at position6 composes the record joiner, plan editor
+and model. It stores an explicit personal answer even when equal to a shared
+answer, or removes only that override for an explicit follow-plan operation.
+It preserves unrelated record data and reads no filesystem or clock. See its
+[contract](../../contracts/record/writer/contract.md) and
+[0460](../decisions/0460-record-backed-session.md).
+The core alone does not publish a record or add a command route.
 
 ## Commands
 
