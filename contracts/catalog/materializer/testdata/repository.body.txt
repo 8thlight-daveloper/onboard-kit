@@ -1,0 +1,9 @@
+Confirm the repository and required capability: $repository_scope
+Request and verify it through $repository_grant_route.
+
+Use your intended account to perform a permitted operation that proves
+the required capability. Reading does not prove write or merge authority;
+a request does not prove access. Do not push a test change or grant broad
+permissions without approval. Configure separate section instances for
+repositories with independent outcomes. Report wrong-account access or
+excessive permissions to the grantor.
