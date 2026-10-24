@@ -237,6 +237,10 @@ must terminate and existing structure diagnostics remain sole graph reports.
 Self IncludeIf remains forbidden after unique target resolution even under a
 missing or cyclic Parent chain: that known self relation needs no ancestor
 traversal. Duplicate-target ambiguity still suppresses the dependent judgment.
+An unrelated duplicate ID does not suppress this known bare-local self relation
+in a uniquely identified containing section. Qualified nonplan references still
+follow the earlier global resolution suppression, even when their prefix equals
+the containing section ID. Do not infer a qualified self exception before lookup.
 Question edges requiring unknown ancestor eligibility are suppressed. Duplicate
 source variable declarations contribute no question graph node or unused check.
 
@@ -365,3 +369,4 @@ in the working hardening review, not this contract.
 | Lose negative-list finite exhaustion or disabled/inherited inclusion dependencies | `TestIndependentVariantGaps` |
 | Guess a duplicate enclosing scope, hide independent invalid-ID purpose errors or reinterpret a bare name through an invalid plan section | `TestDifferentialGapRegressions` |
 | Count only well-typed escalation as purpose, suppress known self inclusion under broken parents or hide unique-switch contradictions | `TestDifferentialGapRegressions` |
+| Hide a unique bare self-inclusion error because an unrelated ancestor ID is duplicated, or guess a duplicated own scope | `TestSecondDifferentialGapRegressions` |

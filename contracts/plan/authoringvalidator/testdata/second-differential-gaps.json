@@ -1,0 +1,67 @@
+[
+  {
+    "Name": "unique-bare-self-include-survives-unrelated-duplicate-parent",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "child",
+          "Title": "Child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "Variables": [{"Name": "alpha"}],
+          "IncludeIf": {
+            "All": [
+              {"Question": "alpha", "Answer": {"IsSettled": true}},
+              {"Question": "child.alpha", "Answer": {"IsSettled": true}}
+            ]
+          }
+        },
+        {"ID": "parent", "Title": "One parent", "Summary": "Summary"},
+        {"ID": "parent", "Title": "Other parent", "Summary": "Summary"}
+      ]
+    },
+    "Want": [
+      {
+        "Code": "authoring.include-scope",
+        "Path": "sections[0].includeIf.all[0].question",
+        "Section": "child"
+      }
+    ]
+  },
+  {
+    "Name": "duplicate-own-child-scope-suppresses-both-self-spellings",
+    "Plan": {
+      "Sections": [
+        {
+          "ID": "child",
+          "Title": "One child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "Variables": [{"Name": "alpha"}],
+          "IncludeIf": {
+            "All": [
+              {"Question": "alpha", "Answer": {"IsSettled": true}},
+              {"Question": "child.alpha", "Answer": {"IsSettled": true}}
+            ]
+          }
+        },
+        {"ID": "parent", "Title": "One parent", "Summary": "Summary"},
+        {"ID": "parent", "Title": "Other parent", "Summary": "Summary"},
+        {
+          "ID": "child",
+          "Title": "Other child",
+          "Summary": "Summary",
+          "Parent": "parent",
+          "Variables": [{"Name": "alpha"}],
+          "IncludeIf": {
+            "All": [
+              {"Question": "alpha", "Answer": {"IsSettled": true}},
+              {"Question": "child.alpha", "Answer": {"IsSettled": true}}
+            ]
+          }
+        }
+      ]
+    },
+    "Want": []
+  }
+]

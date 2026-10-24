@@ -95,3 +95,12 @@ implementation-derived expected output. They change neither ownership nor the
 defensive contracts of finder/evaluator. `variant-gap-sources.md` separately
 records the isolated existing-rule controls in `variant-gaps.json` and the
 remaining direct dependency-message oracle limitation.
+
+`second-differential-gaps.json` pins the priority between independently known
+bare-local self inclusion under 0070 and global qualified-question suppression
+under 0110. A unique child remains its own nonancestor even when its Parent ID is
+duplicated. A qualified child reference still follows earlier global resolution
+suppression; a duplicated own child scope suppresses both forms. These are
+agent-reviewed diagnostic priorities under P3, not accepted invalid plans or
+implementation-derived expectations. Structural duplicate errors stay with the
+existing validator.
