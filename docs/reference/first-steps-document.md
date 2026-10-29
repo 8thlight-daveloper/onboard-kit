@@ -10,8 +10,9 @@ ownership alongside the plan and the newcomer's record. The
 [guided preparation flow](../decisions/0150-onboarding-library-and-preparation-flow.md#guide-invitation-preparation)
 uses the same preparation data as later updates. Preparation editing and
 [explicit export](invitation-export.md) are implemented. A
-[recipient guide](preparation-command.md#review-before-saving) stages details
-before saving; guided arrangements remain planned. The pure
+guided preparation is being rebuilt as a terminal screen under
+[0520](../decisions/0520-preparation-screen.md); until then the
+[explicit commands](preparation-command.md#supply-recipient-details) supply details. The pure
 [preparation reviewer](../decisions/0330-preparation-review.md)
 combines validation, blockers and preview; it is not a new command, readiness gate
 or save operation.

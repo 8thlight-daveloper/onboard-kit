@@ -2,6 +2,10 @@
 
 Status: accepted by agent judgment; recipient-only implementation available
 
+Retired as an interface by [0520](0520-preparation-screen.md). The text guide, its
+contract and its scenarios are removed. The save rules below still apply to the
+screen that replaces it.
+
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),
 [0160](0160-personal-data-and-preparation-approval.md),
@@ -181,8 +185,8 @@ filesystem context, not acceptance of a question default.
 
 ## Verification and delivery
 
-The [four-part driver contract](../../contracts/preparation/guide/contract.md)
-specifies the recipient-only interaction. Independent binary data scenarios
+The four-part driver contract, since removed under
+[0520](0520-preparation-screen.md), specified the recipient-only interaction. Independent binary data scenarios
 and a separately authored implementation are available. Pin exact prompt grammar, input limits,
 literal display, cancellation, save consent, scoped preservation and truthful
 commit/cleanup reports. Use frozen literal payloads, not the product encoder

@@ -15,7 +15,6 @@ import (
 	"onboard-kit/internal/command/prepare"
 	"onboard-kit/internal/command/stdio"
 	"onboard-kit/internal/command/walk"
-	"onboard-kit/internal/preparation/guide"
 	sessioneditor "onboard-kit/internal/session/editor"
 )
 
@@ -36,9 +35,6 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	case "start":
 		return startCommand(args[1:], stdin, stdout, stderr)
 	case "prepare":
-		if len(args) > 1 && args[1] == "guide" {
-			return guide.New().Run(args[2:], stdin, stdout, stderr)
-		}
 		return prepare.New().Run(args[1:], stdout, stderr)
 	case "invite":
 		return invite.New().Run(args[1:], stdout, stderr)

@@ -2,6 +2,10 @@
 
 Status: accepted by agent judgment; contract and implementation available
 
+Retired as an interface by [0520](0520-preparation-screen.md). The text guide, its
+contract and its scenarios are removed. The save rules below still apply to the
+screen that replaces it.
+
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),
 [0160](0160-personal-data-and-preparation-approval.md),

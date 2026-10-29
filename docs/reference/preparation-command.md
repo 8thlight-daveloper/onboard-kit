@@ -1,7 +1,7 @@
 # Preparing one person's onboarding
 
 Status: implemented, experimental. Explicit [invitation export](invitation-export.md)
-is available. Guided recipient and arrangement preparation are implemented.
+is available. Guided preparation is being rebuilt as a terminal screen.
 
 Preparation is the onboarder's file for one person. It holds supplied details
 and arrangements, not the newcomer's answers or proof that they completed work.
@@ -28,41 +28,11 @@ record's outcomes. A missing record is normal. A malformed or mismatched record
 refuses the combined view, but does not block a preparation edit. Show writes no
 files and does not display private answers or preserved unknown data.
 
-## Review before saving
+## Guided preparation
 
-```sh
-onboard-kit prepare guide --plan plan.obk.yaml --account newcomer-one
-```
-
-The guide stages recipient details and arrangements in memory. Choose recipient to edit the nine
-fields, then apply the complete form to the draft. Each field offers keep,
-change, clear and back. Empty input selects nothing. Values such as save and q
-are literal text at a value prompt; directory fields require exact declared IDs.
-A refused form stays editable, including corrections already entered.
-
-Choose review to see old and proposed values, preparation problems, organizational
-blockers and the actual first-steps preview. A preview does not certify readiness.
-Only save at that complete Review prompt publishes preparation. Cancel or EOF
-before save discards the draft without creating files. An unchanged existing
-preparation keeps its original bytes and inode, even when its YAML is not canonical.
-If either source changed during editing, reload and review before saving.
-
-Choose arrangements to create, edit or remove support. New arrangements require
-an unused permanent ID and explicit section, kind and status. Existing IDs stay
-fixed. Assigned contacts form an ordered list: add or remove one occurrence,
-clear, apply to the local arrangement, or back out. Back from the arrangement
-discards its local changes too. Removal requires selection and confirmation;
-it remains staged until reviewed save. Review shows complete original and
-proposed arrangements, including removed items and empty fields.
-
-The guide reads no record and preserves unrelated arrangements and unknown data.
-It does not export an invitation or select general-help contacts;
-export remains separate. Recipient facts appear intentionally on screen and may
-remain in terminal scrollback. Restrictive access controls are preserved, or the
-save refuses rather than silently weakening them. The interaction consumes at
-most 1 MiB per run, including line endings, with a 64 KiB logical-line limit.
-Exhaustion refuses without a partial save. Export separately with an explicitly
-selected help route; the direct editing commands below also remain available.
+The text guide, `prepare guide`, is retired. Guided preparation moves into the
+onboarder's terminal screens under [0520](../decisions/0520-preparation-screen.md).
+Until that screen ships, supply details with the commands below.
 
 ## Supply recipient details
 
