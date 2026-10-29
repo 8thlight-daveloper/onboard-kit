@@ -18,6 +18,12 @@ know each exact ID and add it by hand.
 A manual test therefore borrows a folder of example files, and the plan it
 builds has five sections. That is not what a real onboarder starts from.
 
+The purpose of the kit is to let a team stop keeping developer onboarding in a
+shared document that goes out of date: getting the application running, running
+the tests, getting access to systems, and learning how the team works. It
+should also make sure the team does its part. Running commands and sending
+messages for the newcomer are goals, and this decision does not rely on them.
+
 Starting from nothing asks a person to choose from a long list before they know
 what the plan looks like. Trimming a plan that is already useful is easier than
 building one from a blank page. A starting plan also shows how sections fit
@@ -44,24 +50,38 @@ what they do, and saves. Nothing is written before the save at the review.
 - **An empty start stays available.** `catalog create` keeps its empty draft for
   a person who wants to choose every section. `new` with `--templates` is
   unchanged.
-- **The core set.** It holds the sections that suit any newcomer in any
-  discipline, so no one starts with software or design work they do not do. The
-  first proposal:
-  - `onboarding-welcome`
-  - `onboarding-help`
-  - `onboarding-owner-meeting`
-  - `onboarding-buddy-meeting`
-  - `people-map`
-  - `working-agreements`
-  - `company-email`
-  - `company-identity`
-  - `team-chat`
-  - `working-hours`
-  - `security-orientation`
-  - `week-one-check-in`
-- **Groups to add.** A person adds software work, tools and repositories, or
-  design work as a group, by the same add action. A group is a list of catalog
-  IDs and selects nothing on its own.
+- **The core set.** It is a developer onboarding path. It holds what a
+  developer's team owns: team orientation and culture, access and setup,
+  learning the code and contributing, practice, and feedback with
+  accountability. It leaves out what HR and IT already run, so a newcomer does
+  not get two sets of instructions that can disagree. The first proposal, with
+  `ticket-pairing` staged twice, once as navigator and once as driver:
+  - **Team and culture:** `onboarding-welcome`, `onboarding-help`,
+    `onboarding-owner-meeting`, `onboarding-buddy-meeting`, `people-map`,
+    `working-agreements`, `regular-meetings`, `team-chat`, and
+    `standup-attendance` (new in [0550](0550-developer-onboarding-catalog-additions.md)).
+  - **Access and setup:** `source-host-account`, `repository-access`,
+    `ticket-system-access`, `ci-access`, `environment-access`,
+    `documentation-access`, `project-dependencies`, `application-local`,
+    `project-tests`.
+  - **Learn the code and contribute:** `codebase-tutor` (new), `contribution-practices`,
+    `ticket-pairing` twice, `pr-post`, and `ai-tool-policy` (new).
+  - **Practice:** `deploy-shadow`, `deploy-lead`, `retrospective-participation`.
+  - **Feedback and accountability:** `week-one-check-in`, `day-thirty-review`,
+    `day-ninety-review`, `onboarding-correction`.
+- **Groups to add.** A group is a list of catalog IDs that selects nothing on its
+  own. A person adds one by the same add action.
+  - **Company setup, usually handled by HR or IT:** `company-email`,
+    `company-identity`, `company-calendar`, `video-meetings`, `working-device`,
+    `working-hours`, `security-orientation`, `office-access`, `internal-network`.
+    Organizations with no HR or IT process for these add the group.
+  - **Systems access:** `hosting-access`, `observability-access`,
+    `secrets-access`, `artifact-access`.
+  - **AI-assisted development:** `ai-workflow-walkthrough`,
+    `ai-work-walkthrough-before-pr`, `spec-pairing`, `agent-conventions-tour`.
+  - **Team practices:** `ticket-writing-session`, `prioritization-session`,
+    `teammate-introduction`, `product-orientation`.
+  - **Design work:** the existing design sections.
 - **Select all and deselect all.** The draft offers both, for the whole list
   and for each group. Select all stages every section template in scope that is
   not already staged, once each, with no exceptions. A person can add a
@@ -106,9 +126,10 @@ for a person to authorize.
 1. **Sub-sections.** [0540](0540-adding-and-removing-sections.md) decides how a
    person adds and removes them. How a person writes a custom section is a
    later decision.
-2. **The final core list.** The twelve above are a proposal. The onboarder
-   should confirm them, and a person should decide whether a calendar, video
-   meetings, and device entry belong.
+2. **The final core list.** The list above is a proposal of 31 sections. A
+   person should confirm it. The new entries it names need
+   [0550](0550-developer-onboarding-catalog-additions.md) first, so a first
+   build can stage only the entries that exist.
 3. **The plan identity.** Decided in 0540: the first run suggests it from the
    organization name, and the person confirms it.
 4. **Group names.** The groups above follow the catalog categories. Whether they
