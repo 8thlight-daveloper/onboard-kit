@@ -93,6 +93,40 @@ waits for text and never for a fixed time. Traces and failure artifacts go under
 `output/`, are never committed, and are reviewed before anyone uploads them,
 because they can hold screen text.
 
+**Trial results.** A trial program ran `walk` in a pseudo-terminal with the tool,
+on macOS. It confirmed the reports above and measured how this tool behaves today.
+
+- **Screen, keys, and modes work.** The screen text read back correctly. `r`, `s`,
+  `c`, and `o` moved between tabs. While running, the alternate screen is on, the
+  cursor is hidden, and bracketed paste is on. After `q` or `Ctrl+C` the exit
+  code is 0 and all three modes are restored.
+- **Colors match 0560.** Reading every cell of the Review screen found only the
+  default color and index 2 (green), with the default background. Bold was on
+  for 109 cells and faint for 103. With `NO_COLOR` set, every cell is the default
+  color with no bold or faint.
+- **`TERM` works.** `TERM=dumb` and `TERM=vt100` give plain text with no color
+  and no styling. `TERM=xterm-256color` gives the green accent and the styling.
+- **Real signals** sent to the child process:
+
+| Signal | Exit code today | Terminal restored | Target |
+| -- | -- | -- | -- |
+| `SIGINT` | 1 | yes | 130 |
+| `SIGTERM` | 0 | yes | 143 |
+| `SIGHUP` | killed by the signal, so 129 to a shell | not applicable | 129 |
+
+The two gaps are the exit codes for `SIGINT` and `SIGTERM`. `SIGTERM` exits 0, so
+a script cannot tell a stop request from a normal exit. `SIGHUP` already ends
+the process with the right status. These runs made no edits, so they did not
+test a signal in the middle of a save.
+
+- **Signals sent through the tool** again did not match real ones: `INT` exited
+  0, `TERM` exited 1, and `HUP` was unsupported.
+- **The cell-reading crash is real and has a simple fix.** 200 repeated reads of
+  the screen crashed the test process with `invalid pointer found on stack`.
+  Running the tests with `GODEBUG=gcshrinkstackoff=1` made the same 200 reads
+  pass, and so did forcing a collection around each read. The setting is the
+  simpler fix, since it is one environment variable on the test command.
+
 **Signals come from the runner, not the tool.** A `send signal` action is carried
 out by the runner, which starts the child itself, keeps its process id, and sends
 a real signal with the operating system. Signals sent through the terminal tool
@@ -159,8 +193,9 @@ has one.
 
 1. **The scenario fields** for a terminal step. They are defined when the runner
    is built and recorded in the acceptance scenarios reference.
-2. **Whether setting `TERM` works** with the tool. The reports did not try it.
-3. **Running on the macOS runners** in addition to Linux. The first target is
+2. **Running on the macOS runners** in addition to Linux. The first target is
    macOS, and CI runs on Linux.
-4. **How the runner reads cells without the crash,** by the workaround above or by
-   reading once per screen.
+3. **Whether the crash setting can live in the repository,** so the test command
+   does not depend on someone remembering it, or must be set by the runner.
+4. **A signal in the middle of a save.** The trial did not test that no file is
+   left half written. The first scenarios do.

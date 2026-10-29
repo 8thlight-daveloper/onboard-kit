@@ -41,8 +41,9 @@ Draw every screen with the terminal's own colors and none of ours.
 - **A warning** is the terminal's yellow, and a **problem** is the terminal's
   red. Each always carries words, as the Colour section already requires:
   `warning:` and `! problem:`.
-- **With `NO_COLOR` set** or on a terminal with no color, only attributes are
-  used: bold, faint, and brackets. This is today's rule.
+- **With `NO_COLOR` set** or on a terminal with no color, the screens are plain
+  text. There is no bold or faint either, so the marks, brackets, and words carry
+  all the meaning. This is today's behavior, measured in a real terminal.
 - **Meaning never rests on color alone.** The marks, brackets, and words stay as
   they are.
 
