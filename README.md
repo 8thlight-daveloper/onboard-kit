@@ -107,3 +107,11 @@ Filled-in docs belong to the client. See `CONTRIBUTING.md` for the sanitizing ru
 | First consultants on site | Outline |
 | Software development | First draft |
 | Design | Outline |
+
+## License
+
+Copyright © 2026 8th Light, LLC. Licensed under the MIT License. See [LICENSE](LICENSE).
+
+8th Light® and the 8th Light logo are trademarks of 8th Light, LLC and are not covered by the MIT License.
+
+<a href="https://8thlight.com"><img src="images/8th-light-logo.svg" alt="8th Light" width="64"></a>
