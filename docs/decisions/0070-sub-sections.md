@@ -20,7 +20,7 @@ A section may name a **parent** section with `parent: <section id>`. A section w
 
 - **A sub-section is active only if its parent is active.** The parent is active by its own `includeIf` and switch, and its own parent in turn if it has one. A sub-section is then active by its own `includeIf` and switch.
 - **A sub-section's `includeIf` may name questions of its ancestors.** It names them by their ids, such as `access.self_service`. It may still name plan variables. It may not name a question of a sibling, a descendant, or an unrelated section. The relationship is a tree, so a reference can only point up it, and no cycle is possible.
-- **Switches cascade.** Turning a section off turns off its sub-sections. A sub-section can be turned off alone.
+- **Switches cascade.** Turning a section off turns off its sub-sections. A sub-section can be turned off alone. The cascade is computed when the plan is read and never stored: each sub-section keeps the switch a person set, so turning the parent back on restores a sub-section that was turned off alone.
 - **Order.** A sub-section comes directly after its parent and its earlier siblings, in the order the selector gives, and takes its parent's timing when it has none of its own. Its questions are asked after its parent's.
 - **The document nests it.** A sub-section is written one heading level below its parent.
 - **Its answers stay its own.** They live under the sub-section's id, as for any section.
