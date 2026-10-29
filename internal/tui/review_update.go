@@ -74,6 +74,9 @@ func (app App) openReviewItem() App {
 	if !ok {
 		return app
 	}
+	if item.hasEntry {
+		return app.openReviewEntry(item.entry)
+	}
 	index := app.indexOf(item.questionID)
 	if index < 0 {
 		app.status = line{text: "no question to open for this item", tone: toneWarning}
@@ -89,4 +92,13 @@ func (app App) walkFromReview() App {
 	}
 	app.returnTo = screenReview
 	return app.openQuestion(app.firstUnanswered())
+}
+
+func (app App) openReviewEntry(key entryKey) App {
+	if !app.canEditDirectory() {
+		app.status = line{text: "only the onboarder can edit contacts", tone: toneWarning}
+		return app
+	}
+	app.contacts = app.contacts.pointedAt(app.plan.Directory, key.kind, key.id)
+	return app.openContacts()
 }

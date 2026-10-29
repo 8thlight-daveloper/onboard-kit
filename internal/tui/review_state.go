@@ -20,6 +20,8 @@ type reviewItem struct {
 	text       string
 	questionID string
 	severity   model.Severity
+	entry      entryKey
+	hasEntry   bool
 }
 
 type reviewState struct {
@@ -69,7 +71,12 @@ func reviewItems(backend Backend, plan model.Plan, audience model.Audience, ques
 		}
 	}
 	for _, problem := range backend.Validate(plan) {
-		items = append(items, reviewItem{kind: reviewProblem, label: string(problem.Severity), text: problemText(problem), questionID: problem.Question, severity: problem.Severity})
+		item := reviewItem{kind: reviewProblem, label: string(problem.Severity), text: problemText(problem), questionID: problem.Question, severity: problem.Severity}
+		if key, ok := flagKey(problem); ok && problem.Question == "" && strings.HasPrefix(problem.Code, "directory.") {
+			item.entry, item.hasEntry = key, true
+			item.text = entryName(plan.Directory, key) + ": " + problem.Message
+		}
+		items = append(items, item)
 	}
 	return items
 }

@@ -71,6 +71,15 @@ func entriesOf(directory model.Directory, kind directoryKind) []directoryEntry {
 	return entries
 }
 
+func entryName(directory model.Directory, key entryKey) string {
+	for _, entry := range entriesOf(directory, key.kind) {
+		if entry.id == key.id {
+			return entry.name
+		}
+	}
+	return key.id
+}
+
 func idsOf(entries []directoryEntry) []string {
 	ids := make([]string, 0, len(entries))
 	for _, entry := range entries {

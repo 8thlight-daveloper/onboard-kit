@@ -255,7 +255,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 
 | Key | Walk, choosing | Walk, typing | Overview | Review | Sections |
 | -- | -- | -- | -- | -- | -- |
-| enter | Pick, move on. On a several-answers list, confirm the picks | Accept, move on | Open the question | Open the question | Switch on or off |
+| enter | Pick, move on. On a several-answers list, confirm the picks | Accept, move on | Open the question | Open the question, or the Contacts entry of a directory problem | Switch on or off |
 | up, down, `k`, `j` | Move the choice |  | Move | Move | Move |
 | space | Pick or unpick on a several-answers list |  |  |  | Switch on or off |
 | `p`, left, shift+tab | Back | shift+tab, ctrl+p |  |  |  |
@@ -272,6 +272,24 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 On the Review, `h` shows the answers left over from questions the plan no longer asks, see Left over answers. It is free on every other screen and is not a screen key, so the tab strip does not list it. The key hint line shows `h left over` only while something is left over.
 
 `s`, `c`, the Sections screen, and the Contacts screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
+
+## The status line
+
+Decided. The status line stays the row above the key hint line on every screen. It reports the result of the last action: a save, a refusal, a notice. The next key clears it.
+
+A person who presses a key on an item at the top of the screen is looking at the item, not at the bottom row. A message there can go unseen. This was found when enter on a validator problem of the directory did nothing visible. The choice was between moving the status line, making it louder, and removing the cases that need it.
+
+- **Remove the dead end first.** An action that cannot work should not be offered, so the status line is not the only place the person learns it. This is the chosen move.
+- **Say where the item leads.** A validator problem of the directory names its entry, such as "Onboarding owner: This role has no holder.", and enter opens that entry on the Contacts screen. Escape returns to the Review. In the onboardee mode there is no Contacts screen, so enter says so in the status line. A problem that names a question still opens the question.
+- **Direction, not built.** The key hint line shows `enter open` on the Review only when the chosen item opens something. A problem that names a question the plan no longer asks opens nothing.
+- **Direction, not built.** A warning in the status line starts with an exclamation mark and is bold, so it is not read as a quiet note. Colour stays a second signal, see Colour.
+
+### Rejected for the status line
+
+- Moving it to the top of the screen. It only changes the distance, and it shifts the layout of every screen and every wireframe.
+- A banner or a modal. A banner shifts the layout, and a modal asks for a decision the message does not need.
+- A timed toast. The tool makes no motion and keeps no timers, see Accessibility, and the next key already clears the line.
+- A faint second line under the chosen item for the reason. It is the most direct signal but needs wrapping and height rules in the list. Revisit it if the two directions above prove too quiet.
 
 ## Accessibility
 
