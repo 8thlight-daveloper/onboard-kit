@@ -30,8 +30,9 @@ func run(args []string) int {
 	timeout := options.Int("timeout", 30, "seconds a test run may take for one mutant")
 	gomu := options.String("gomu", ".direnv/bin/gomu", "path of the gomu program")
 	short := options.Bool("short", false, "run the tests with -short, which skips the slow ones")
+	cached := options.Bool("cached", false, "reuse the results of source files whose text and contract suite have not changed")
 	if options.Parse(args) != nil || options.NArg() != 1 {
-		fmt.Fprintln(os.Stderr, "usage: gomurun [--workers N] [--timeout S] [--short] <noun>/<role>")
+		fmt.Fprintln(os.Stderr, "usage: gomurun [--workers N] [--timeout S] [--short] [--cached] <noun>/<role>")
 		return exitUsage
 	}
 	component := options.Arg(0)
@@ -44,13 +45,71 @@ func run(args []string) int {
 		fmt.Fprintln(os.Stderr, problem)
 		return exitUsage
 	}
-	if err := runGomu(*gomu, component, *workers, *timeout, *short); err != nil {
+	defer os.Remove(filepath.Join(root, reportFile))
+	defer os.Remove(filepath.Join(root, historyFile))
+	var results []result
+	if *cached {
+		results, err = cachedResults(root, component, func(target string) error {
+			return runGomu(*gomu, target, component, *workers, *timeout, *short)
+		}, *short)
+	} else {
+		err = runGomu(*gomu, "./internal/"+component, component, *workers, *timeout, *short)
+		if err == nil {
+			results, err = freshResults(root)
+		}
+	}
+	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return exitProblem
 	}
-	defer os.Remove(filepath.Join(root, reportFile))
-	defer os.Remove(filepath.Join(root, historyFile))
-	return summarize(root, component)
+	return summarize(root, component, results)
+}
+
+func freshResults(root string) ([]result, error) {
+	parsed, err := readReport(filepath.Join(root, reportFile))
+	if err != nil {
+		return nil, err
+	}
+	return parsed.Results, nil
+}
+
+func cachedResults(root string, component string, mutate func(target string) error, short bool) ([]result, error) {
+	names, err := sourceFiles(root, component)
+	if err != nil {
+		return nil, err
+	}
+	suite, err := suiteDigest(root, component)
+	if err != nil {
+		return nil, err
+	}
+	var all []result
+	for _, name := range names {
+		source, err := os.ReadFile(filepath.Join(root, "internal", component, name))
+		if err != nil {
+			return nil, err
+		}
+		path := cachePath(root, component, name, cacheKey(source, suite, short))
+		if results, ok := readCached(path); ok {
+			fmt.Fprintf(os.Stderr, "%s: reused %d results\n", name, len(results))
+			all = append(all, results...)
+			continue
+		}
+		fmt.Fprintf(os.Stderr, "%s: mutating\n", name)
+		if err := mutate("./internal/" + component + "/" + name); err != nil {
+			return nil, err
+		}
+		results, err := freshResults(root)
+		if err != nil {
+			return nil, err
+		}
+		os.Remove(filepath.Join(root, reportFile))
+		if err := writeCached(path, results); err != nil {
+			return nil, err
+		}
+		forgetStale(root, component, name, path)
+		all = append(all, results...)
+	}
+	return all, nil
 }
 
 func checkComponent(root string, component string) error {
@@ -67,13 +126,13 @@ func contractPathFrom(component string) string {
 	return strings.Repeat("../", depth) + "contracts/" + component + "/"
 }
 
-func gomuArguments(gomu string, component string, workers int, timeout int, short bool) []string {
-	testFlags := []string{"-count=1", fmt.Sprintf("-timeout=%ds", timeout)}
+func gomuArguments(gomu string, target string, component string, workers int, timeout int, short bool) []string {
+	testFlags := []string{"-count=1", "-failfast", fmt.Sprintf("-timeout=%ds", timeout)}
 	if short {
 		testFlags = append(testFlags, "-short")
 	}
 	arguments := []string{
-		"-n", "10", gomu, "run", "./internal/" + component,
+		"-n", "10", gomu, "run", target,
 		"--incremental=false", "--threshold", "0", "--output", "json",
 		"--workers", fmt.Sprint(workers), "--timeout", fmt.Sprint(timeout + gomuGraceSeconds),
 		"--",
@@ -82,8 +141,8 @@ func gomuArguments(gomu string, component string, workers int, timeout int, shor
 	return append(arguments, contractPathFrom(component))
 }
 
-func runGomu(gomu string, component string, workers int, timeout int, short bool) error {
-	command := exec.Command("nice", gomuArguments(gomu, component, workers, timeout, short)...)
+func runGomu(gomu string, target string, component string, workers int, timeout int, short bool) error {
+	command := exec.Command("nice", gomuArguments(gomu, target, component, workers, timeout, short)...)
 	command.Env = append(os.Environ(), "GOFLAGS="+limitedGoFlags(os.Getenv("GOFLAGS")))
 	command.Stdout = os.Stderr
 	command.Stderr = os.Stderr
@@ -97,13 +156,8 @@ func limitedGoFlags(existing string) string {
 	return strings.TrimSpace(existing + " -p=2")
 }
 
-func summarize(root string, component string) int {
-	parsed, err := readReport(filepath.Join(root, reportFile))
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return exitProblem
-	}
-	survivors, err := survivorsOf(parsed.Results, root)
+func summarize(root string, component string, results []result) int {
+	survivors, err := survivorsOf(results, root)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return exitProblem
@@ -113,7 +167,7 @@ func summarize(root string, component string) int {
 		fmt.Fprintln(os.Stderr, err)
 		return exitProblem
 	}
-	counts, unreviewed := tallyOf(parsed.Results, survivors, accepted)
+	counts, unreviewed := tallyOf(results, survivors, accepted)
 	printSurvivors(os.Stdout, unreviewed)
 	printScore(os.Stdout, counts)
 	return exitSuccess
