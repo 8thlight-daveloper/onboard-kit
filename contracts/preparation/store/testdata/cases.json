@@ -1,0 +1,266 @@
+[
+  {
+    "name": "default-layout-lists-only-people-with-a-preparation",
+    "source": "ADR 0210 default records/{account}/ layout; ADR 0520 the tab lists people who have a preparation. A record without a preparation, an empty directory and a stray file are not people with a preparation.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/beta/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/alpha/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/gamma/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/gamma/record.obk.yaml", "text": "schemaVersion: 1\n"},
+      {"path": "records/delta/record.obk.yaml", "text": "schemaVersion: 1\n"},
+      {"path": "records/epsilon", "kind": "dir"},
+      {"path": "records/README.txt", "text": "not a person\n"}
+    ],
+    "code": "store.listed",
+    "accounts": ["alpha", "beta", "gamma"]
+  },
+  {
+    "name": "people-are-sorted-bytewise",
+    "source": "Stated rule: the list is stable, ascending by account bytes, so the tab does not reorder between runs. Account spelling follows the ADR 0210 identity rule and is not case folded.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/m/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/a2/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/Z9/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/a10/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/B1/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/a1/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/k.j-i_h/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/0/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/z/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/c3/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/b/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/y/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["0", "B1", "Z9", "a1", "a10", "a2", "b", "c3", "k.j-i_h", "m", "y", "z"]
+  },
+  {
+    "name": "bodies-are-not-read",
+    "source": "Stated rule: listing checks that a regular preparation file exists and never opens it, so a damaged or foreign file is still shown and can be inspected by Load, which reports the problem.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/broken/preparation.obk.yaml", "fixture": "malformed.yaml"},
+      {"path": "records/empty/preparation.obk.yaml", "text": ""},
+      {"path": "records/foreign/preparation.obk.yaml", "fixture": "other-account.yaml"},
+      {"path": "records/binary/preparation.obk.yaml", "fixture": "invalid-utf8.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["binary", "broken", "empty", "foreign"]
+  },
+  {
+    "name": "symlinks-are-not-people",
+    "source": "ADR 0220 filesystem boundary: reject a symlink for any preparation path component. A symlinked person directory or preparation is skipped, not followed and not an error.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/real/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/linked-file", "kind": "dir"},
+      {"path": "records/linked-file/preparation.obk.yaml", "kind": "symlink", "target": "outside/held.yaml"},
+      {"path": "records/linked-directory", "kind": "symlink", "target": "outside"},
+      {"path": "records/dangling", "kind": "dir"},
+      {"path": "records/dangling/preparation.obk.yaml", "kind": "symlink", "target": "outside/absent.yaml"}
+    ],
+    "outside": [
+      {"path": "held.yaml", "fixture": "identity.yaml"},
+      {"path": "preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["real"]
+  },
+  {
+    "name": "non-regular-preparations-are-not-people",
+    "source": "ADR 0220 filesystem boundary: reject non-regular artifact files, including directories and special files. Listing must not block on a pipe.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/real/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/directory/preparation.obk.yaml", "kind": "dir"},
+      {"path": "records/pipe", "kind": "dir"},
+      {"path": "records/pipe/preparation.obk.yaml", "kind": "fifo"}
+    ],
+    "code": "store.listed",
+    "accounts": ["real"]
+  },
+  {
+    "name": "names-that-are-not-accounts-are-skipped",
+    "source": "ADR 0210 account identity rule [A-Za-z0-9][A-Za-z0-9._-]* via the locator contract. Directory names outside it are not people. The valid names show the boundary characters.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/_hidden/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/.dot/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/-dash/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/has space/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/é/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/a.b-c_d/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/A1/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["A1", "a.b-c_d"]
+  },
+  {
+    "name": "no-records-directory-is-an-empty-list",
+    "source": "ADR 0220: a new organization has no preparation yet. An absent directory is normal, not an error; the root itself must exist.",
+    "plan": "plan.yaml",
+    "entries": [],
+    "code": "store.listed",
+    "accounts": []
+  },
+  {
+    "name": "empty-records-directory-is-an-empty-list",
+    "source": "ADR 0220: the same as no directory.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records", "kind": "dir"}
+    ],
+    "code": "store.listed",
+    "accounts": []
+  },
+  {
+    "name": "records-directory-as-symlink-is-refused",
+    "source": "ADR 0220 filesystem boundary: reject any symlink component used for a preparation path.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records", "kind": "symlink", "target": "outside"}
+    ],
+    "outside": [
+      {"path": "alpha/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.path",
+    "accounts": []
+  },
+  {
+    "name": "records-as-a-file-is-refused",
+    "source": "ADR 0220 filesystem boundary: a component that is not a directory cannot hold preparation.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records", "text": "not a directory\n"}
+    ],
+    "code": "store.path",
+    "accounts": []
+  },
+  {
+    "name": "custom-layout-with-prefix-and-depth",
+    "source": "ADR 0210 allows a token as part of a component and deeper directories: people/person-{account}/notes/record.obk.yaml puts the preparation in the same directory as the record.",
+    "plan": "plan-people.yaml",
+    "entries": [
+      {"path": "people/person-ann/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person-bob/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/other-cy/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person-dee/notes/record.obk.yaml", "text": "schemaVersion: 1\n"},
+      {"path": "people/person-eve/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/fay/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["ann", "bob"],
+    "destination": "people/person-{account}/notes/preparation.obk.yaml"
+  },
+  {
+    "name": "token-used-in-directory-and-file-name",
+    "source": "ADR 0210: repeated placeholders are allowed and all are replaced. The preparation sibling name stays fixed.",
+    "plan": "plan-twice.yaml",
+    "entries": [
+      {"path": "ann/files/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "bob/files/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "cy/other/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["ann", "bob"],
+    "destination": "{account}/files/preparation.obk.yaml"
+  },
+  {
+    "name": "token-repeated-in-one-component-must-match-every-time",
+    "source": "ADR 0210: all tokens are replaced by the same account. Only a directory whose name is the account twice belongs to that account.",
+    "plan": "plan-pair.yaml",
+    "entries": [
+      {"path": "ann-ann/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "bo-bo/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "ann-bob/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "ab-ab-ab/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "-/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["ann", "bo"],
+    "destination": "{account}-{account}/preparation.obk.yaml"
+  },
+  {
+    "name": "flat-results-path-is-refused",
+    "source": "ADR 0210: a path with the account only in the filename cannot isolate a preparation; the locator rejects it and listing reports the path problem.",
+    "plan": "plan-flat.yaml",
+    "entries": [
+      {"path": "records/ann.obk.yaml", "text": "schemaVersion: 1\n"}
+    ],
+    "code": "store.path",
+    "accounts": []
+  },
+  {
+    "name": "plan-without-an-id-is-refused",
+    "source": "ADR 0340 and the retired guide contract: a missing plan ID cannot supply a person-specific identity.",
+    "plan": "plan-no-id.yaml",
+    "entries": [
+      {"path": "records/alpha/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.plan",
+    "accounts": []
+  },
+  {
+    "name": "plan-that-is-not-yaml-is-refused",
+    "source": "ADR 0220: input artifacts must decode through the real decoder.",
+    "plan": "malformed.yaml",
+    "entries": [
+      {"path": "records/alpha/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.source",
+    "accounts": []
+  },
+  {
+    "name": "records-directory-as-a-pipe-is-refused-without-blocking",
+    "source": "ADR 0220 filesystem boundary: a component that is not a directory cannot hold preparation, and a special file must never be opened for reading in a way that blocks.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records", "kind": "fifo"}
+    ],
+    "code": "store.path",
+    "accounts": []
+  },
+  {
+    "name": "person-directory-as-a-pipe-is-skipped-without-blocking",
+    "source": "ADR 0220 filesystem boundary: a candidate that is not a directory is not a person, and listing must not block on a pipe in the place of a directory.",
+    "plan": "plan.yaml",
+    "entries": [
+      {"path": "records/real/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "records/piped", "kind": "fifo"}
+    ],
+    "code": "store.listed",
+    "accounts": ["real"]
+  },
+  {
+    "name": "names-that-only-look-like-the-pattern-are-skipped",
+    "source": "ADR 0210: the literal parts around the token must match exactly and every token reads the same account. person-ann is the only name for ann; aerson-ann and person-x differ in one literal byte, x and person- are shorter than the literal prefix person-, and person-ann-extra has a tail the pattern does not allow.",
+    "plan": "plan-people.yaml",
+    "entries": [
+      {"path": "people/person-ann/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/aerson-ann/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/x/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person-/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person-bob/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/xerson-bob/notes/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["ann", "bob"],
+    "destination": "people/person-{account}/notes/preparation.obk.yaml"
+  },
+  {
+    "name": "names-shorter-than-the-pattern-do-not-stop-the-listing",
+    "source": "ADR 0210: a directory name shorter than the literal prefix cannot hold an account. It is skipped and the people after it in byte order are still listed.",
+    "plan": "plan-people.yaml",
+    "entries": [
+      {"path": "people/p/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/pe/notes/preparation.obk.yaml", "fixture": "identity.yaml"},
+      {"path": "people/person-zed/notes/preparation.obk.yaml", "fixture": "identity.yaml"}
+    ],
+    "code": "store.listed",
+    "accounts": ["zed"],
+    "destination": "people/person-{account}/notes/preparation.obk.yaml"
+  }
+]

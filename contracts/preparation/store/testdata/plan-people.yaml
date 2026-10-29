@@ -1,0 +1,3 @@
+schemaVersion: 1
+id: planone
+resultsPath: people/person-{account}/notes/record.obk.yaml

@@ -1,0 +1,3 @@
+schemaVersion: 1
+id: planone
+resultsPath: "{account}/files/{account}-record.obk.yaml"

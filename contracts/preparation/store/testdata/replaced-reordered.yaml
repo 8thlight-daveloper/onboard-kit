@@ -1,0 +1,7 @@
+# Reviewed by hand, keys deliberately out of encoder order.
+recipient:
+  name: Second newcomer
+planId: planone
+account: newcomer
+kind: preparation
+schemaVersion: 1

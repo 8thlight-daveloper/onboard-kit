@@ -1,0 +1,17 @@
+schemaVersion: 1
+id: planone
+directory:
+  contacts:
+    - id: owner
+      name: Example owner
+    - id: helper
+      name: Example helper
+    - id: manager
+      name: Example manager
+  teams:
+    - id: team
+      name: Example team
+sections:
+  - id: inactive
+    title: Optional support
+    enabled: false
