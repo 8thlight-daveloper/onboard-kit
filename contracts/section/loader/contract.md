@@ -1,6 +1,6 @@
 # Section loader contract
 
-Status: draft accepted by a person. A hardening pass, #65, comes before the first build. Component: `section/loader`. Issue: [#64](https://github.com/8thlight-daveloper/onboard-kit/issues/64).
+Status: draft accepted by a person. A hardening pass comes before the first build. Component: `section/loader`.
 
 The section loader turns the bytes of one template file into a Section. It is a pure function. It reads no file, writes no file, and does not change its argument. The same bytes always give the same result. A driver reads the files. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [section template schema](../../../docs/reference/section-template-schema/README.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
@@ -150,7 +150,7 @@ These hold for every file the contract tests use.
 - `%YAML` directives, a document end marker `...`, and escaping in a path, as in the decoder contract.
 - A plain scalar that ends in `?` inside a flow list or map, such as `{ask: Done?}`. One YAML library cannot read it. Quote it.
 - A number too small for a 64-bit float, as in the decoder contract.
-- The rest of the decoder's edge rules are inherited by reference and are tested only where a case below names them. The hardening pass, [#65](https://github.com/8thlight-daveloper/onboard-kit/issues/65), finds which of them need a case of their own for a template.
+- The rest of the decoder's edge rules are inherited by reference and are tested only where a case below names them. The hardening pass finds which of them need a case of their own for a template.
 
 ## Open questions
 

@@ -1,8 +1,8 @@
 # Secrets check contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `secrets`. Issue: [#48](https://github.com/8thlight-daveloper/onboard-kit/issues/48).
+Status: draft by an agent. Not reviewed by a person. Component: `secrets`.
 
-The secrets check decides whether a value looks like a secret, and says what kind it looked like. It is a pure function. It reads no file, keeps no state, and does not change its argument. The plan validator calls it when an answer is submitted and when a plan is validated, so a secret typed in or added by hand is caught. See [0010](../../docs/decisions/0010-plan-editor.md), [0030](../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../docs/reference/domain-model.md), and [0015](../../docs/decisions/0015-functional-core-and-imperative-shell.md). Issue [#7](https://github.com/8thlight-daveloper/onboard-kit/issues/7) asks that obvious secrets such as tokens are rejected with a message.
+The secrets check decides whether a value looks like a secret, and says what kind it looked like. It is a pure function. It reads no file, keeps no state, and does not change its argument. The plan validator calls it when an answer is submitted and when a plan is validated, so a secret typed in or added by hand is caught. See [0010](../../docs/decisions/0010-plan-editor.md), [0030](../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../docs/reference/domain-model.md), and [0015](../../docs/decisions/0015-functional-core-and-imperative-shell.md). Obvious secrets such as tokens are rejected with a message.
 
 The fixtures are made up. Every secret in `testdata/` is a plain shape filled with repeated or invented characters, such as a prefix followed by `FAKE` many times. None is a real credential, and none may become one. Each prefix of a well-known token in a fixture is followed by the character `¤`, which the tests remove, so no file holds a whole token and a secret scanner has nothing to match.
 

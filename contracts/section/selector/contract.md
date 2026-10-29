@@ -1,6 +1,6 @@
 # Section selector contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `section/selector`. Issue: [#66](https://github.com/8thlight-daveloper/onboard-kit/issues/66).
+Status: draft by an agent. Not reviewed by a person. Component: `section/selector`.
 
 The section selector finds the active sections of a plan and puts them in reading order. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0070](../../../docs/decisions/0070-sub-sections.md) for sub-sections, [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), [ordering](../../../docs/reference/section-template-schema/ordering.md), [0050](../../../docs/decisions/0050-section-switch.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

@@ -1,6 +1,6 @@
 # Condition evaluator contract
 
-Status: approved. Component: `condition/evaluator`. Issue: [#61](https://github.com/8thlight-daveloper/onboard-kit/issues/61).
+Status: approved. Component: `condition/evaluator`.
 
 The condition evaluator decides whether a condition holds, given the answers and the section switches it is passed. It is a pure function. It reads no file, keeps no state, and does not change its arguments. A condition is used for `askIf` and `includeIf`. See [conditions](../../../docs/reference/section-template-schema/conditions.md), the [domain model](../../../docs/reference/domain-model.md), [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md), and [0050](../../../docs/decisions/0050-section-switch.md).
 

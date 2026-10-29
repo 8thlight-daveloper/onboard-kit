@@ -1,6 +1,6 @@
 # Section resolver contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `section/resolver`. Issue: [#63](https://github.com/8thlight-daveloper/onboard-kit/issues/63).
+Status: draft by an agent. Not reviewed by a person. Component: `section/resolver`.
 
 The section resolver fills the variables in a section's text from the answers and the directory. It takes a Section, the plan's answers, the plan's directory, and the id of the plan's team, and returns a new Section with its text filled, and a list of the variables it could not fill. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its arguments. See [variables](../../../docs/reference/section-template-schema/variables.md), [steps](../../../docs/reference/section-template-schema/steps.md), [0030](../../../docs/decisions/0030-self-contained-plan-file.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0080](../../../docs/decisions/0080-directory.md), and the [domain model](../../../docs/reference/domain-model.md).
 

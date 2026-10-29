@@ -1,6 +1,6 @@
 # Plan encoder contract
 
-Status: approved. Component: `plan/encoder`. Issue: [#39](https://github.com/8thlight-daveloper/onboard-kit/issues/39).
+Status: approved. Component: `plan/encoder`.
 
 The plan encoder turns a Plan into the bytes of a plan file. It is a pure function. It reads no file, writes no file, and does not change its argument. The same Plan always gives the same bytes. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

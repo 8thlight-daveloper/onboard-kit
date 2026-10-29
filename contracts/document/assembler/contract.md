@@ -1,6 +1,6 @@
 # Document assembler contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `document/assembler`. Issue: [#69](https://github.com/8thlight-daveloper/onboard-kit/issues/69).
+Status: draft by an agent. Not reviewed by a person. Component: `document/assembler`.
 
 The document assembler turns a plan into a Markdown document. It asks the section selector for the active sections in reading order, asks the section resolver to fill each one, and writes a title, a review line, a gap table, and each section. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), [0010](../../../docs/decisions/0010-plan-editor.md), the [domain model](../../../docs/reference/domain-model.md), [variables](../../../docs/reference/section-template-schema/variables.md), [steps](../../../docs/reference/section-template-schema/steps.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

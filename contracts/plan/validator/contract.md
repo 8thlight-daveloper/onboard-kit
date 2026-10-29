@@ -1,6 +1,6 @@
 # Plan validator contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `plan/validator`. Issue: [#49](https://github.com/8thlight-daveloper/onboard-kit/issues/49).
+Status: draft by an agent. Not reviewed by a person. Component: `plan/validator`.
 
 The plan validator checks whether the answers in a plan are acceptable. `Validate` checks every answer stored in a plan, for example after a hand edit. `CheckValue` checks one proposed value for one question, so the editor can refuse a bad answer before it applies it. Both are pure functions. They read no file, keep no state between calls, and change no argument. See [0080](../../../docs/decisions/0080-directory.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), the [domain model](../../../docs/reference/domain-model.md), and the [variables reference](../../../docs/reference/section-template-schema/variables.md).
 

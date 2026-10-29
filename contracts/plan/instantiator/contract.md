@@ -1,6 +1,6 @@
 # Plan instantiator contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `plan/instantiator`. Issue: [#67](https://github.com/8thlight-daveloper/onboard-kit/issues/67).
+Status: draft by an agent. Not reviewed by a person. Component: `plan/instantiator`.
 
 The plan instantiator builds the default plan when a new plan starts. It takes the loaded templates and the axis variables, and returns a Plan that holds the axis variables and every template as a section, with no answers. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its arguments. A driver loads the templates, reads the date, and saves the plan. See [0030](../../../docs/decisions/0030-self-contained-plan-file.md), the [domain model](../../../docs/reference/domain-model.md), the [components](../../../docs/architecture/components.md) page, and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

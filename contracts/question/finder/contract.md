@@ -1,6 +1,6 @@
 # Question finder contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `question/finder`. Issue: [#68](https://github.com/8thlight-daveloper/onboard-kit/issues/68).
+Status: draft by an agent. Not reviewed by a person. Component: `question/finder`.
 
 The question finder reads a plan and says what it asks. It returns every active question with the answer stored for it, its declared default, its group, and its suggestions. It also returns the blockers, which are the required questions that have no answer. Both take an audience, the person who answers: the onboarder, the onboardee, or both. It is a pure function. It reads no file, reads no clock, keeps no state between calls, and does not change its argument. See [0055](../../../docs/decisions/0055-variable-audience.md), [0010](../../../docs/decisions/0010-plan-editor.md), [0045](../../../docs/decisions/0045-defaults-are-suggestions.md), [0050](../../../docs/decisions/0050-section-switch.md), [0070](../../../docs/decisions/0070-sub-sections.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), [0080](../../../docs/decisions/0080-directory.md), the [domain model](../../../docs/reference/domain-model.md), and the [section template schema](../../../docs/reference/section-template-schema/README.md).
 

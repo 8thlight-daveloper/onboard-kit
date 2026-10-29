@@ -49,14 +49,12 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 
 ## Open decisions
 
-Each open decision has its own issue.
+These decisions are open:
 
-| Decision | Issue |
-| -- | -- |
-| Hosting and distribution | [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4) |
-| Dependency check extractor and the banned packages | [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33) |
-| Update action conflict handling, deferred past the MVP | [#32](https://github.com/8thlight-daveloper/onboard-kit/issues/32) |
-| Keep the contract-strength checks after the first builds | [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37) |
+- Hosting and distribution.
+- The dependency check extractor and the banned packages.
+- Update action conflict handling, deferred past the MVP.
+- Whether to keep the contract-strength checks after the first builds.
 
 The [invitation flow](invitation-flow.md) orders the remaining delivery work.
 
