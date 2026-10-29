@@ -35,7 +35,11 @@ lint-prose:
 
 # Go formatting and vet. A no-op until the Go module exists.
 lint-go:
-    if [ -f go.mod ]; then test -z "$(git ls-files -z --cached --others --exclude-standard '*.go' | xargs -0 gofmt -l)" && go vet $(just _go-packages); else echo "no Go module yet"; fi
+    if [ -f go.mod ]; then \
+      tracked_and_new_go_files=$(git ls-files --cached --others --exclude-standard '*.go'); \
+      unformatted=$(echo "$tracked_and_new_go_files" | xargs gofmt -l); \
+      test -z "$unformatted" && go vet $(just _go-packages); \
+    else echo "no Go module yet"; fi
 
 # Go tests. A no-op until the Go module exists.
 test:
