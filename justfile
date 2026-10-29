@@ -56,6 +56,52 @@ release-check *flags:
 run *args:
     if [ -f go.mod ]; then go run ./binary {{ args }}; else echo "no Go module yet"; fi
 
+# Build a separate manual-test binary, leaving the verified release alone.
+demo-build:
+    test -d output && test ! -L output
+    if [ ! -e output/demo-bin ]; then mkdir -m 700 output/demo-bin; fi
+    test -d output/demo-bin && test ! -L output/demo-bin && test ! -L output/demo-bin/onboard-kit
+    GOMAXPROCS=2 GOMEMLIMIT=128MiB go build -p=1 -o output/demo-bin/onboard-kit ./binary
+
+# Create an unanswered Acme-template plan, or retain the existing manual plan.
+demo-init: demo-build
+    go run ./tools/demo/run init
+
+# Edit the shared organization plan, saving only the manual copy.
+demo-plan: demo-build
+    go run ./tools/demo/run plan
+
+# Review and save one fictional recipient's preparation, named by ACCOUNT.
+[positional-arguments]
+demo-prepare account="": demo-build
+    go run ./tools/demo/run prepare "$1"
+
+# Export an invitation using an explicitly selected pre-access contact ID.
+[positional-arguments]
+demo-invite contact: demo-build
+    go run ./tools/demo/run invite "$1"
+
+# Open the invitation in the separate onboardee workspace.
+demo-onboardee: demo-build
+    go run ./tools/demo/run onboardee
+
+# Edit answers or outcomes in the one registered demo session.
+demo-progress: demo-build
+    go run ./tools/demo/run progress
+
+# View current preparation and returned outcomes through read-only JSON.
+demo-results: demo-build
+    go run ./tools/demo/run results
+
+# Print every manual-test input/output path without changing data.
+demo-status:
+    go run ./tools/demo/run status
+
+# Archive one stage, or all five, without deleting recoverable test work.
+[positional-arguments]
+demo-reset stage:
+    go run ./tools/demo/run reset "$1"
+
 # Link the dev shell's Go at .direnv/go, so an IDE can use a path that does not change. Point GoLand's GOROOT at .direnv/go/share/go.
 ide:
     nix build .#go --out-link .direnv/go

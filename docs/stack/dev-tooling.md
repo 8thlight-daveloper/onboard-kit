@@ -18,14 +18,19 @@ Both actions are pinned by commit SHA.
 
 ## Trying the tool by hand
 
-The walk saves every answer to the plan file it opens, so never point it at a file under `docs/`. These recipes work on copies in `output/try`, which git ignores.
+The walk saves every answer to the plan file it opens, so never point it at a file under docs/. The [manual stage recipes](../reference/manual-testing.md) keep each role's test data in output/manual-test/, which Git ignores. Stage resets archive only selected data and never delete another stage's work.
 
 | Recipe | Does |
 | -- | -- |
-| `just try-onboarder` | Walks a new ACME plan with an empty directory. Reuses the plan on later runs |
-| `just try-acme` | Walks a copy of the finished ACME example, with its directory |
-| `just try-onboardee` | Starts as a newcomer from the ACME copy, with the newcomer's files in `output/try/home` |
-| `just try-reset` | Deletes `output/try` |
+| `just demo-init` | Creates an unanswered Acme-template plan, or retains the existing plan |
+| `just demo-plan` | Edits the shared organization plan |
+| `just demo-prepare ACCOUNT` | Reviews and saves one fictional recipient's preparation |
+| `just demo-invite CONTACT` | Exports with an explicitly chosen pre-access helper |
+| `just demo-onboardee` | Opens the invitation in a separate personal workspace |
+| `just demo-progress` | Edits one explicit personal answer or outcome |
+| `just demo-results` | Shows current preparation and returned outcomes as JSON |
+| `just demo-status` | Lists all selected file paths without changing data |
+| `just demo-reset STAGE` | Archives only the chosen stage, or explicitly all five |
 
 ## Retired
 
