@@ -7,7 +7,7 @@ Part of the [stack](README.md). Every choice must satisfy [0005](../decisions/00
 | Choice | Current | Why | Since | Replace when |
 | -- | -- | -- | -- | -- |
 | Language | Go | Builds one static binary, which meets 0005 with no extra work. The compiler and `internal/` visibility check regenerated components. | 2026-10-15 | A bundled build in another language passes the 0005 checks and the team maintains it more easily. Maintaining the Go code proves harder than expected. |
-| TUI toolkit | Bubble Tea and Huh | Huh covers selects, multi-selects, text input, validation, and step groups. | 2026-10-15 | The walkthrough needs heavy custom rendering, or structured records need a pick-or-add flow that Huh cannot compose. See [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46). |
+| TUI toolkit | Bubble Tea and Huh | Huh covers selects, multi-selects, text input, validation, and step groups. | 2026-10-15 | The walkthrough needs heavy custom rendering, or structured records need a pick-or-add flow that Huh cannot compose. |
 
 ## Retired
 

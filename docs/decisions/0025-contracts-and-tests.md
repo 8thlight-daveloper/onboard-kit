@@ -6,7 +6,7 @@ Status: accepted
 acceptance of the remaining mutation-survivor batch. Other approval rules stay
 in force.
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20). Builds on [0015](0015-functional-core-and-imperative-shell.md) and [0020](0020-binary-structure-and-regenerative-components.md).
+Builds on [0015](0015-functional-core-and-imperative-shell.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 
 ## Context
 
@@ -120,5 +120,5 @@ The dependency check tool is a stack choice, listed in [dependency check](../sta
 
 ## Open questions
 
-- Which mutation tool do we use? A stack choice, see [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
-- Do we keep both contract-strength checks after the first builds? Decide after seeing what they catch, see [#37](https://github.com/8thlight-daveloper/onboard-kit/issues/37).
+- Which mutation tool do we use? A stack choice.
+- Do we keep both contract-strength checks after the first builds? Decide after seeing what they catch.

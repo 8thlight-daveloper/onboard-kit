@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Builds on [0010](0010-plan-editor.md), [0050](0050-section-switch.md), [0055](0055-variable-audience.md), and [0060](0060-personal-plan.md). It prepares the action runner, [#29](https://github.com/8thlight-daveloper/onboard-kit/issues/29), and the onboardee runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+Builds on [0010](0010-plan-editor.md), [0050](0050-section-switch.md), [0055](0055-variable-audience.md), and [0060](0060-personal-plan.md). It prepares the action runner and the onboardee runtime.
 
 ## Context
 

@@ -52,7 +52,7 @@ The words in older documents change as follows.
 ```yaml
 schemaVersion: 1
 kind: record
-account: dnawara
+account: johndoe
 startDate: "2026-10-22"
 plan:
   id: 6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5
@@ -64,7 +64,7 @@ answers:
     team: platform
   sections:
     access:
-      account_name: dnawara
+      account_name: johndoe
 outcomes:
   - section: access
     outcome: verified

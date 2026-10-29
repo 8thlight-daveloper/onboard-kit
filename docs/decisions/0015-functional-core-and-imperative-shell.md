@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). Underlies [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
+Underlies [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 
 ## Context
 
@@ -73,5 +73,5 @@ A returned value may share unchanged parts with its input. Nothing is ever mutat
 
 ## Open questions
 
-- Which standard library packages does the dependency check forbid in core components? A stack decision, see [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
+- Which standard library packages does the dependency check forbid in core components? A stack decision.
 - Does the property test snapshot cover unexported fields, or only the serialized form? The serialized form is the contract, and it is enough to start.

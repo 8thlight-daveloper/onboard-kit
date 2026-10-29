@@ -36,4 +36,4 @@ A consultant joins ACME's Platform team, an established team, as a developer. Th
 - **Prose fields hold Markdown.** `body` and `notes` are literal blocks, hard-wrapped.
 - **Booleans are lowercase `true` and `false`.** Quote anything else that would read as a boolean.
 
-Nothing here runs. The schema is not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3).
+Nothing here runs. The schema is not final.

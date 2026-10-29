@@ -7,7 +7,7 @@ prerequisite scheduling and outcome operations. [0270](0270-outcome-definition-h
 moves the record reconciler to position 2 with a section hasher dependency;
 its current contract and architecture view carry that boundary.
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#20](https://github.com/8thlight-daveloper/onboard-kit/issues/20), [#25](https://github.com/8thlight-daveloper/onboard-kit/issues/25). Builds on [0015](0015-functional-core-and-imperative-shell.md), [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md). The contract and test rules are in [0025](0025-contracts-and-tests.md).
+Builds on [0015](0015-functional-core-and-imperative-shell.md), [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md). The contract and test rules are in [0025](0025-contracts-and-tests.md).
 
 ## Context
 
@@ -149,7 +149,7 @@ A dependency points from a faster thing to a slower thing, never the other way. 
 
 Each component has one job and a failure mode of its own, and its contract is not a restatement of its neighbors'. The current list and each component's responsibility are in [components](../architecture/components.md#responsibilities), so changes to a component do not need an ADR.
 
-Variables stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers the open question in [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3): the section resolver is separate from the document assembler, which calls it.
+Variables stay in the plan and fill at assembly, as [0030](0030-self-contained-plan-file.md) decides. This answers an earlier open question: the section resolver is separate from the document assembler, which calls it.
 
 ### Side effects and plan access
 
@@ -161,7 +161,7 @@ The current declarations are in [components](../architecture/components.md#side-
 
 ### Output styles
 
-An output style is a way of assembling a plan into a document. It is not a variant of a template, because a plan can hold content that no template has. The document assembler takes the plan and a chosen style, and one plan can produce several. The style is an option when assembling, with an optional stored default. The MVP supports one style, Markdown. Each later style is another small component behind the same contract. This answers [#8](https://github.com/8thlight-daveloper/onboard-kit/issues/8).
+An output style is a way of assembling a plan into a document. It is not a variant of a template, because a plan can hold content that no template has. The document assembler takes the plan and a chosen style, and one plan can produce several. The style is an option when assembling, with an optional stored default. The MVP supports one style, Markdown. Each later style is another small component behind the same contract.
 
 ## Consequences
 

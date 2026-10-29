@@ -8,8 +8,6 @@ Part of the [stack](README.md). The rules are data in `architecture.yaml`, as de
 | -- | -- | -- | -- | -- |
 | Dependency check | Rules in `architecture.yaml`. Extractor to decide, spiking ArchUnitGo | Needed for the dependency rules in 0020. The rules are data and the extractor is an adapter. |  |  |
 
-Decision issue: [#33](https://github.com/8thlight-daveloper/onboard-kit/issues/33).
-
 ## Banned categories in core components
 
 Core components may not use these categories, see [0015](../decisions/0015-functional-core-and-imperative-shell.md). The packages below are candidates and not final. Deciding the list is part of the spike.

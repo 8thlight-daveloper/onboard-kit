@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Relates to [#91](https://github.com/8thlight-daveloper/onboard-kit/issues/91), [#92](https://github.com/8thlight-daveloper/onboard-kit/issues/92). Builds on [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
+Builds on [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
 
 ## Context
 

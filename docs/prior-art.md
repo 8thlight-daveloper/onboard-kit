@@ -1,6 +1,6 @@
 # Prior art
 
-Status: first pass, in progress. Tracked in [#30](https://github.com/8thlight-daveloper/onboard-kit/issues/30).
+Status: first pass, in progress.
 
 What already exists, what we can learn from it, and how onboard-kit differs. The first pass was shallow: four web searches and two page reads. It did not cover GitHub topic search or package registries. Treat every gap claim below as unconfirmed.
 
@@ -10,7 +10,7 @@ What already exists, what we can learn from it, and how onboard-kit differs. The
 
 Copier asks questions, renders a template, and saves the answers in `.copier-answers.yml`. Running `copier update` re-renders the template with the saved answers, compares it with the version the project came from, and merges the changes while keeping local edits. Conflicts go to `.rej` files by default, with an inline mode available. The docs warn against editing the answers file by hand, because Copier then assumes those answers produced the project.
 
-What it means for us: this is the closest match to our generation side and to the regeneration question in [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24). It handles template changes over hand-edited output, which we assumed was too complex to try.
+What it means for us: this is the closest match to our generation side and to the regeneration question. It handles template changes over hand-edited output, which we assumed was too complex to try.
 
 Caveat: docs differ across versions. Check the current one before borrowing anything.
 

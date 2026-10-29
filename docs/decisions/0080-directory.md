@@ -6,7 +6,7 @@ The resolver's directory-default fallback under Integrity is superseded by
 [0120](0120-defaults-require-acceptance.md). Defaults require explicit acceptance
 for directory variables too.
 
-Builds on [0055](0055-variable-audience.md), [0065](0065-messages-and-evidence.md), and [0075](0075-refreshing-a-personal-plan.md). It answers [#46](https://github.com/8thlight-daveloper/onboard-kit/issues/46).
+Builds on [0055](0055-variable-audience.md), [0065](0065-messages-and-evidence.md), and [0075](0075-refreshing-a-personal-plan.md). It answers the question of structured records for people.
 
 ## Context
 

@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23), [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6), [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3). Builds on [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
+Builds on [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 
 ## Context
 
@@ -18,7 +18,7 @@ The saved file is the plan. There is no separate configuration file. A plan is n
 - `answers`: the answers, kept by scope. `plan` holds the answers to plan variables, and each section has its own scope
 - `sections`: all the content, with variables left in place
 
-Sketch. Field names are not final, see [#3](https://github.com/8thlight-daveloper/onboard-kit/issues/3):
+Sketch. Field names are not final:
 
 ```yaml
 schemaVersion: 1
@@ -81,7 +81,7 @@ A question belongs to a scope: the plan, or one section. Its id is `<scope>.<nam
 - **No coordination between templates.** Two sections that both declare `repo_url` have two questions and two answers. A template author never needs to know another template's names.
 - **Asking once is a convenience.** The finder groups questions with the same name, type, options, and `multiple`. A user interface can ask a group once and apply the answer to every member, and a person can split it. The finder also offers `suggestions`: the distinct declared defaults and the answers already given for that name in any scope, the plan's and every section's, including inactive ones. See [0010](0010-plan-editor.md).
 - **Filling reads one scope.** A variable takes its own section's answer. A default is only a suggestion and is never filled in, see [0045](0045-defaults-are-suggestions.md).
-- **Newcomer answers are outside the plan.** A variable with `audience: onboardee` is answered by each newcomer, so the plan holds no answer for it. Planning skips it. Where those answers live belongs to the onboarding runtime, [#28](https://github.com/8thlight-daveloper/onboard-kit/issues/28).
+- **Newcomer answers are outside the plan.** A variable with `audience: onboardee` is answered by each newcomer, so the plan holds no answer for it. Planning skips it. Where those answers live belongs to the later onboarding runtime.
 
 ### The default plan
 

@@ -38,5 +38,5 @@ flowchart LR
 
 ## Open questions
 
-- Who reviews, and what do they check? See [#12](https://github.com/8thlight-daveloper/onboard-kit/issues/12).
-- If we host a web version, this picture changes. See [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
+- Who reviews, and what do they check?
+- If we host a web version, this picture changes.

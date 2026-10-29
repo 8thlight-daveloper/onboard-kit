@@ -53,7 +53,7 @@ Every onboardee question must exist for a reason: some section's `includeIf` or 
 - **Blockers are per audience.** A plan is ready to hand over when its required onboarder questions are settled. An onboardee's plan is complete when its required onboardee questions are settled. A required onboardee question does not block the onboarder.
 - **An answer already in the file is respected.** An onboarder who knows a person's team can put the answer in before handing the plan over, and the onboardee is not asked again. The onboardee cannot change an answer to an onboarder variable.
 - **Conditions are unchanged.** A condition on an unanswered question is false, so sections that depend on an onboardee answer stay out until the answer exists. The evaluator needs no change.
-- **A gap names its audience.** The section resolver reports every unanswered or deferred variable the text uses, with its audience in the problem. Whether that is a warning is the caller's decision, because only the caller knows if the plan is an org plan or an onboardee's. This replaces the rule that an onboarding variable with no value is not a gap. It lands with the resolver change in [#112](https://github.com/8thlight-daveloper/onboard-kit/issues/112), together with the marker wording.
+- **A gap names its audience.** The section resolver reports every unanswered or deferred variable the text uses, with its audience in the problem. Whether that is a warning is the caller's decision, because only the caller knows if the plan is an org plan or an onboardee's. This replaces the rule that an onboarding variable with no value is not a gap.
 
 ### Ownership below the organization
 

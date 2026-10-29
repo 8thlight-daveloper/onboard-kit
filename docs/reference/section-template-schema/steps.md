@@ -2,7 +2,7 @@
 
 Part of the [section template schema](README.md).
 
-Steps are plain YAML with a vocabulary borrowed from CI files. They are optional. The MVP renders them as a checklist. A later walkthrough runtime acts on them, under the trust rules in [#29](https://github.com/8thlight-daveloper/onboard-kit/issues/29).
+Steps are plain YAML with a vocabulary borrowed from CI files. They are optional. The MVP renders them as a checklist. A later walkthrough runtime acts on them, under trust rules defined later.
 
 | Field | Meaning |
 | -- | -- |

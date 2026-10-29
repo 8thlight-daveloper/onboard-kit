@@ -13,7 +13,7 @@ Part of the [stack](README.md). The constraints and channel order are in [0005](
 | Homebrew channel | A tap holding one formula, with a release URL and hash per platform | First channel in 0005. | 2026-10-16 |  |
 | Nix channel | A flake that fetches the release binary, with a URL and hash per platform | Second channel in 0005. | 2026-10-16 |  |
 
-Release assets need authentication while the repository is private, see 0005 and [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
+Release assets need authentication while the repository is private, see 0005.
 
 ## Local verification
 

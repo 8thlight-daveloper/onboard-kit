@@ -57,6 +57,6 @@ A plan is self-contained, so a new template set reaches it only through the upda
 
 ## Open questions
 
-- When do we prompt consultants for feedback, for example at the 30 and 90 day marks? See [#11](https://github.com/8thlight-daveloper/onboard-kit/issues/11).
-- How do we release template updates to consultants? Depends on hosting and distribution, see [#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4).
-- What may an agent change without a person asking for it? See [#10](https://github.com/8thlight-daveloper/onboard-kit/issues/10).
+- When do we prompt consultants for feedback, for example at the 30 and 90 day marks?
+- How do we release template updates to consultants? Depends on hosting and distribution.
+- What may an agent change without a person asking for it?

@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Relates to [#24](https://github.com/8thlight-daveloper/onboard-kit/issues/24), [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6), [#23](https://github.com/8thlight-daveloper/onboard-kit/issues/23). The plan file it works on is defined in [0030](0030-self-contained-plan-file.md).
+The plan file it works on is defined in [0030](0030-self-contained-plan-file.md).
 
 ## Context
 
@@ -127,7 +127,7 @@ The adapter holds no logic of its own. Each command maps to one editor function,
 
 The finder owns what is asked, the validator owns what is acceptable, and the editor owns applying an answer.
 
-- **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no answer, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates. This settles the architecture side of [#6](https://github.com/8thlight-daveloper/onboard-kit/issues/6).
+- **Optional, required, and default.** A variable carries `required` and `default`. `Blockers()` lists active required planning questions with no answer, each judged by its own definition. Which questions are required is content, set by each template, including engagement-specific templates.
 - **Conditions.** The finder evaluates them, and the validators check them. See above.
 - **Secrets.** The check runs in `Submit` and in `Validate`, so a secret added to a plan by hand is reported as a problem.
 - **Deferred answers.** The value `deferred` lets a person move past a question they cannot answer yet and return to it later. It is a deferred answer. It satisfies a required question, becomes a gap when assembling, and a user interface can list these questions on the review screen.
@@ -374,4 +374,4 @@ sequenceDiagram
 - **A mutating editor.** `Submit` changes the plan in place. Simpler to write, but "go back" needs undo logic, tests cannot fork from a shared point, and concurrent reads need locks. Rejected.
 - **Opening a plan against the template set and reporting drift.** An earlier design. It tied every saved plan to templates that may be missing or changed at the organization that holds it. Replaced by the self-contained plan in [0030](0030-self-contained-plan-file.md).
 - **Scanning for orphaned stdio processes at startup.** Rejected. The process holds no ports, locks, or files, and exits on stdin EOF, so orphans need a hung child, which is a bug. A scan cannot tell a stray from a parallel test run or a consultant's live run, so it risks killing the wrong process, and PID files add state to a stateless tool. If a stuck process is ever observed, add an opt-in `--max-lifetime` flag that the test helper sets just above the test timeout, or kill the process group from the helper.
-- **A local server with the TUI as a client.** Gives independent clients and a permanent API contract. Costs process lifecycle, socket auth, and wire versioning for a single short-lived client. The stdio adapter above takes the useful part, a black-box protocol, without the network. Revisit a network server if a second concurrent client appears or hosting ([#4](https://github.com/8thlight-daveloper/onboard-kit/issues/4)) becomes real.
+- **A local server with the TUI as a client.** Gives independent clients and a permanent API contract. Costs process lifecycle, socket auth, and wire versioning for a single short-lived client. The stdio adapter above takes the useful part, a black-box protocol, without the network. Revisit a network server if a second concurrent client appears or hosting becomes real.
