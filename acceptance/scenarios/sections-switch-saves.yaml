@@ -1,0 +1,23 @@
+name: sections-switch-saves
+description: Switching a section off on the Sections screen saves the plan file at once, and the other sections stay on.
+source: docs/reference/tui.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: s
+        - wait-for: "Sections the plan can include"
+        - press: space
+        - wait-for: "[ ] Access"
+        - wait-for: "saved"
+        - press: Ctrl+C
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      files:
+        acme.obk.yaml: {same-as: acceptance/testdata/acme-access-off.obk.yaml}

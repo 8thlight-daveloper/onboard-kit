@@ -1,0 +1,19 @@
+name: walk-ctrl-c-quits-cleanly
+description: The walk draws its screen in the terminal's own colors and gives the terminal back when the person presses Ctrl+C.
+source: docs/reference/tui.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {COLORTERM: truecolor}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - expect-modes: {alternate_screen: true, cursor_visible: false, bracketed_paste: true}
+        - expect-colors: terminal-only
+        - press: Ctrl+C
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0

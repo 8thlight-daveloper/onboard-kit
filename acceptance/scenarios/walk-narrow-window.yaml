@@ -1,0 +1,29 @@
+name: walk-narrow-window
+description: A window below 60 by 12 shows only a message asking for more room, and the screen comes back when the window grows.
+source: docs/reference/tui.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - resize: {columns: 60, rows: 12}
+        - wait-for: "Onboarding plan Walk Overview Review Sections Contacts"
+        - resize: {columns: 59, rows: 12}
+        - wait-for: "Please make the window larger"
+        - wait-gone: "Answered 13 of 13"
+        - resize: {columns: 60, rows: 12}
+        - wait-for: "Answered 13 of 13"
+        - resize: {columns: 60, rows: 11}
+        - wait-for: "Please make the window larger"
+        - wait-gone: "Answered 13 of 13"
+        - resize: {columns: 110, rows: 32}
+        - wait-for: "Walk w  Overview o"
+        - wait-for: "Answered 13 of 13"
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0

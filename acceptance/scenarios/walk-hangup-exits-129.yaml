@@ -1,0 +1,16 @@
+name: walk-hangup-exits-129
+description: When the terminal window closes, the walk ends with exit code 129 and leaves the plan file as it was.
+source: docs/decisions/0570-test-the-terminal-screens-in-a-real-terminal.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - signal: HUP
+        - wait-exit: true
+    expect:
+      exit: 129
+      unchanged: [acme.obk.yaml]

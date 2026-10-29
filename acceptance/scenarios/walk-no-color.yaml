@@ -1,0 +1,21 @@
+name: walk-no-color
+description: With NO_COLOR set the walk runs, draws only the terminal's own colors, and quits cleanly.
+source: docs/decisions/0560-use-the-terminal-colors.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {NO_COLOR: "1", COLORTERM: truecolor}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - expect-colors: terminal-only
+        - press: o
+        - wait-for: "[x] * What is the organization's name?"
+        - expect-colors: terminal-only
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0

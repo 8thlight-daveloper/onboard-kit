@@ -1,0 +1,28 @@
+name: tab-keys-open-screens
+description: The keys r, s, c, and o each open their own screen from the Review.
+source: docs/reference/tui.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: s
+        - wait-for: "Sections the plan can include"
+        - wait-gone: "Answered 13 of 13"
+        - press: r
+        - wait-for: "Answered 13 of 13"
+        - wait-gone: "Sections the plan can include"
+        - press: c
+        - wait-for: "Contacts 4"
+        - wait-gone: "Answered 13 of 13"
+        - press: o
+        - wait-for: "[x] * What is the organization's name?"
+        - wait-gone: "Contacts 4"
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0

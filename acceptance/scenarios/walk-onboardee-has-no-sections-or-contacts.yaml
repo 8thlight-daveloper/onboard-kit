@@ -1,0 +1,33 @@
+name: walk-onboardee-has-no-sections-or-contacts
+description: The newcomer's walk shows no Sections or Contacts tab, and the keys s and c open nothing.
+source: docs/reference/tui.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml, --audience, onboardee]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Your onboarding"
+        - press: o
+        - wait-for: "esc walk  q quit"
+        - wait-for: "Walk w"
+        - wait-gone: "Sections"
+        - wait-gone: "Contacts"
+        - press: s
+        - resize: {columns: 50, rows: 10}
+        - wait-for: "Please make the window larger"
+        - resize: {columns: 110, rows: 32}
+        - wait-for: "esc walk  q quit"
+        - wait-gone: "Sections"
+        - press: c
+        - resize: {columns: 50, rows: 10}
+        - wait-for: "Please make the window larger"
+        - resize: {columns: 110, rows: 32}
+        - wait-for: "esc walk  q quit"
+        - wait-gone: "Contacts"
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0

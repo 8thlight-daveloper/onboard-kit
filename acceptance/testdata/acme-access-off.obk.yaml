@@ -1,0 +1,284 @@
+schemaVersion: 1
+id: "6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5"
+provenance:
+  templateSet: example
+  generatedOn: "2026-10-15"
+directory:
+  contacts:
+    - id: alex-rivera
+      name: Alex Rivera
+      email: alex.rivera@acme.example
+      slack: "@alex"
+    - id: sam-okafor
+      name: Sam Okafor
+      email: sam.okafor@acme.example
+      slack: "@sam"
+    - id: it-help
+      name: IT service desk
+      email: help@acme.example
+      slack: "#it-help"
+    - id: platform-team
+      name: Platform team channel
+      email: platform@acme.example
+      slack: "#platform-team"
+  roles:
+    - id: engineering-manager
+      name: Engineering manager
+      holders:
+        - sam-okafor
+    - id: it-contact
+      name: IT contact
+      holders:
+        - it-help
+    - id: platform-team-lead
+      name: Platform team lead
+      holders:
+        - alex-rivera
+  teams:
+    - id: platform
+      name: Platform team
+      contact: platform-team
+    - id: design
+      name: Design team
+      holders:
+        engineering-manager:
+          - alex-rivera
+variables:
+  - name: organization
+    description: What is the organization's name?
+    example: ACME Corp
+    required: true
+  - name: team
+    description: Which team are you joining?
+    type: team
+    required: true
+    audience: onboardee
+  - name: team_state
+    description: Is the team established, or are we the first consultants?
+    type: choice
+    options:
+      - established
+      - first-consultants
+    required: true
+  - name: discipline
+    description: What kind of work will you do?
+    type: choice
+    options:
+      - software
+      - design
+    required: true
+    audience: onboardee
+answers:
+  plan:
+    discipline: software
+    organization: ACME Corp
+    team: platform
+    team_state: established
+  sections:
+    access:
+      access_request_url: https://access.acme.example/request
+      ci_grantor: platform-team-lead
+      onboarding_owner_role: engineering-manager
+      repo_url: git@git.acme.example:platform/widget-service.git
+      source_control_grantor: it-contact
+      tracker_grantor: deferred
+    clone-and-run-tests:
+      repo_dir: widget-service
+      repo_url: git@git.acme.example:platform/widget-service.git
+      setup_command:
+        - make
+        - setup
+      test_command:
+        - make
+        - test
+    stuck-general:
+      general_contacts:
+        - alex-rivera
+        - sam-okafor
+sections:
+  - id: access
+    title: Access
+    summary: Request the accounts and permissions you need, and record who grants each.
+    timing: before-day-one
+    enabled: false
+    owner: $onboarding_owner_role
+    verification: You can open the repository, the CI dashboard, and the work tracker.
+    body: |
+      Request each system on day minus five if you can. Record who grants it and when
+      you asked.
+    variables:
+      - name: onboarding_owner_role
+        description: Which role owns onboarding here? It appears as the owner of the Access section.
+        type: role
+        required: true
+        default: engineering-manager
+      - name: access_request_url
+        description: Where do people request source control access?
+        example: https://access.example.test/request
+        required: true
+      - name: repo_url
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
+        pattern: "^(git@|https://)\\S+$"
+        patternHint: A clone URL, starting with git@ or https://
+        required: true
+      - name: source_control_grantor
+        description: Which role grants source control access?
+        type: role
+        required: true
+        askIf:
+          all:
+            - question: repo_url
+              answer:
+                isSettled: true
+      - name: ci_grantor
+        description: Which role grants CI dashboard access?
+        type: role
+        required: true
+      - name: tracker_grantor
+        description: Which role grants work tracker access?
+        type: role
+        required: true
+      - name: account_name
+        description: What is your account name at the organization?
+        example: arivera
+        audience: onboardee
+    steps:
+      - id: source-control
+        name: Source control
+        owner: $source_control_grantor
+        open: $access_request_url
+        checks:
+          - run:
+              - git
+              - ls-remote
+              - $repo_url
+      - id: ci-dashboard
+        name: CI dashboard
+        notes: Sign in as $account_name.
+        owner: $ci_grantor
+        checks:
+          - ask: Can you open the CI dashboard?
+      - id: work-tracker
+        name: Work tracker
+        owner: $tracker_grantor
+        checks:
+          - ask: Can you open the work tracker?
+    source:
+      template: access
+      hash: "7d29acbae0bc0dfd7d9a7c4692a757fded62e6dace674b36ddf09d8e5c413d62"
+  - id: clone-and-run-tests
+    title: Clone the project and run the tests
+    summary: Get a working copy of the project and a passing test run on your machine.
+    includeIf:
+      all:
+        - question: plan.discipline
+          answer:
+            is: software
+    timing: week-one
+    owner: newcomer
+    verification: $test_command passes on a fresh clone.
+    body: |
+      If a test fails on a fresh clone, write down the failure and ask the team before
+      changing anything.
+    variables:
+      - name: repo_url
+        description: What is the clone URL of the main repository?
+        example: git@git.example.test:team/service.git
+        pattern: "^(git@|https://)\\S+$"
+        patternHint: A clone URL, starting with git@ or https://
+        required: true
+      - name: repo_dir
+        description: What should the clone's folder be called?
+        example: service
+        default: project
+      - name: setup_command
+        description: Which command installs the dependencies?
+        example: make setup
+        type: command
+        required: true
+      - name: test_command
+        description: Which command runs the test suite?
+        example: make test
+        type: command
+        required: true
+    steps:
+      - id: clone
+        name: Clone the repository
+        run:
+          - git
+          - clone
+          - $repo_url
+          - $repo_dir
+        checks:
+          - run:
+              - test
+              - "-d"
+              - $repo_dir/.git
+      - id: install
+        name: Install dependencies
+        run:
+          - $setup_command
+        directory: $repo_dir
+      - id: run-tests
+        name: Run the tests
+        run:
+          - $test_command
+        directory: $repo_dir
+    source:
+      template: clone-and-run-tests
+      hash: c41d0df0aad1fe56eeaa2a0cc2d17a19ba3bc92b022a41342a0e37482d8195a6
+  - id: review-design-system
+    title: Review the design system
+    summary: Find the design system and the main design file, and note what you cannot open.
+    includeIf:
+      all:
+        - question: plan.discipline
+          answer:
+            is: design
+    timing: week-one
+    owner: newcomer
+    verification: You can open the design system and the main design file.
+    body: |
+      Look at the design system before you start work. Write down anything that is
+      missing or out of date, and tell the team.
+    variables:
+      - name: design_system_url
+        description: Where does the design system live?
+        example: https://design.example.test/system
+        required: true
+      - name: design_file_url
+        description: Which is the main design file for the product?
+        example: https://design.example.test/files/main
+        required: true
+    steps:
+      - id: design-system
+        name: Open the design system
+        open: $design_system_url
+        checks:
+          - ask: Can you open the design system?
+      - id: main-file
+        name: Open the main design file
+        open: $design_file_url
+        checks:
+          - ask: Can you open the main design file?
+    source:
+      template: review-design-system
+      hash: cc51afd7c908815771c0be4cff508754c8ddeafd7b835e0234219c82d3d96fb9
+  - id: stuck-general
+    title: If you are stuck
+    summary: Who to ask when something is blocked and nobody named in a section can help.
+    timing: anytime
+    body: |
+      If a step is blocked and the people named in its section cannot help, ask these people
+      first: $general_contacts.
+      Say what you tried and what you need. They will point you to someone else to try.
+    variables:
+      - name: general_contacts
+        description: Who can anyone ask for help with anything?
+        type: contact
+        multiple: true
+        required: true
+    source:
+      template: stuck-general
+      hash: "0420947b44baa1c2f07cbacb3e0666cc54f79c7faf591aaa4d6f271e1bdfb79b"
