@@ -62,7 +62,11 @@ func run(args []string) int {
 		fmt.Fprintln(os.Stderr, err)
 		return exitProblem
 	}
-	return summarize(root, component, results)
+	code := summarize(root, component, results)
+	if *short {
+		fmt.Fprintln(os.Stdout, "Short run: a mutant that only a skipped test kills is listed as a survivor. Check each survivor against the full suite before you accept or report it.")
+	}
+	return code
 }
 
 func freshResults(root string) ([]result, error) {

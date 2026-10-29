@@ -44,6 +44,20 @@ The accepted lists that existed before 2026-10-21 hold the earlier tool's checks
 
 Identical mutations are numbered in source order across the full report, including killed mutants. Killing an earlier identical mutant must not change a later survivor's key or give it an exception meant for the earlier one. Keys from a run before this rule need a fresh match when identical mutations occur in the same file.
 
+### Mutation cadence
+
+A full run of a large component takes tens of minutes, and with slow tests it takes hours. Run it at these points and no more often:
+
+| When | What | Cost |
+| -- | -- | -- |
+| Editing a source file | The component's contract tests only | Seconds |
+| Before a commit | `just check` | Minutes |
+| Working on survivors | `just mutate <component> --short --cached` | Minutes after the first run, because unchanged files are reused |
+| Closing a component | `just mutate <component> --short`, then the full suite on every survivor | Tens of minutes, plus a survivor recheck |
+| Before a release | `just mutate <component>` with no flags, for every component | Hours; run it unattended |
+
+A closing run lists new survivors only. A survivor on unchanged text keeps its earlier verdict through its key, so only new keys need review. Throttling stays on: a run uses `nice`, two Go jobs, and one mutant at a time.
+
 The `contract-hardening` skill, at [`.claude/skills/contract-hardening`](../../.claude/skills/contract-hardening/SKILL.md), is the procedure for finding the ambiguity in a contract: broken variants, the mutation tool, a second independent build, and a differential run. It carries out the contract checks in [0025](../decisions/0025-contracts-and-tests.md) and is worth its cost for a component with a large input format.
 
 Mutation tools tried:
