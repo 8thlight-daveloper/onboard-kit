@@ -25,8 +25,9 @@ grant blanket acceptance authority for future survivors.
 | `docs/reference/` | Exact definitions of formats, such as the section template schema, with worked examples | Changes with the format |
 | `docs/architecture/` | Views of the current system: components, data flow, sequences | Changes as components change |
 | `docs/stack/` | Language and tooling, one file per topic, including the code layout | Fastest |
+| `docs/ideas/` | Ideas and research that are not yet decisions, one file per topic, never binding | Any |
 
-Docs in `architecture/`, `reference/`, and `stack/` are named for their topic, with no numbers. Only ADRs are numbered.
+Docs in `architecture/`, `reference/`, `stack/`, and `ideas/` are named for their topic, with no numbers. Only ADRs are numbered.
 
 ## Where decisions go
 
