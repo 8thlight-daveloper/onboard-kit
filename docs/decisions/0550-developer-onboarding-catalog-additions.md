@@ -41,7 +41,7 @@ organization-specific fact. No entry names a vendor, except `codebase-tutor`.
 | `standup-attendance` | Attend a standup and give an update | none |
 | `ai-tool-policy` | Know which tools are approved, what code and data may go into them, how secrets are handled, and whether a change discloses AI use. Where AI use is not allowed, the section states that. | none |
 | `ai-workflow-walkthrough` | Watch another developer's tools and flow, including the context they give, how they check the result, and one time it was wrong | `ai-tool-policy` |
-| `ai-work-walkthrough-before-pr` | Explain generated work to a coworker, and have the ticket owner confirm it matches the ticket, before the change goes to review | `ai-tool-policy` |
+| `ai-work-walkthrough-before-pr` | Run and read generated work and show what was checked, explain it to a coworker, and have the ticket owner confirm it matches the ticket, before the change goes to review | `ai-tool-policy` |
 | `spec-pairing` | Pair on turning a ticket into acceptance criteria and limits that an agent can act on, then compare the result with the intent | `ai-tool-policy` |
 | `agent-conventions-tour` | Read the team's instructions for coding agents, and propose one correction | `ai-tool-policy` |
 | `ticket-writing-session` | Attend a refinement session as an observer, then contribute | none |
@@ -106,13 +106,20 @@ commands in a later package. This decision does not check how much of either
 works. Until they do, these sections are checklists with checks and a record
 the team can read. They do not run anything.
 
+## Decided by a person
+
+- **Contract edits.** A person authorized the contract changes this decision and
+  [0530](0530-new-plan-from-core-set.md) and
+  [0540](0540-adding-and-removing-sections.md) describe: the catalog manifest and
+  reader, the creator, and the availability scenarios, for each batch above. Any
+  other contract change needs its own authorization.
+- **`ai-tool-policy` is in the default core.**
+- **No separate `verify-generated-change` entry.** Running and reading a
+  generated change, and showing what was checked, is part of
+  `ai-work-walkthrough-before-pr`.
+
 ## Needs a person's decision
 
-1. **Contract edits.** The manifest, reader, and availability scenarios each
-   change for every batch. A person authorizes each batch.
-2. **Whether `ai-tool-policy` is in the default core.** The proposal in
-   [0530](0530-new-plan-from-core-set.md) says yes.
-3. **Whether the two session entries are in the default core.** The proposal
-   says no. They are in an opt-in group.
-4. **Whether `verify-generated-change` is a separate entry,** or part of
-   `ai-work-walkthrough-before-pr`. It is left out of the table until decided.
+1. **Whether the two session entries are in the default core.** The proposal
+   says no. `ticket-writing-session` and `prioritization-session` are in an
+   opt-in group.
