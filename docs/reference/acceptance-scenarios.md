@@ -35,7 +35,7 @@ steps:
 | `source` | Where the expectation comes from: a doc, an ADR, or an issue. A person can check the scenario against it |
 | `steps` | One or more steps, run in order in one temporary folder |
 
-A step is one of two kinds.
+A step is one of three kinds.
 
 ### A command step
 
@@ -63,6 +63,52 @@ steps:
 ```
 
 The runner writes one request per line, reads one response per line, and closes standard input when the list ends. `expect` after `talk` describes the process, which should exit 0 once standard input closes.
+
+### A terminal step
+
+A terminal step runs the binary in a pseudo-terminal behind a terminal emulator, as decided in [0570](../decisions/0570-test-the-terminal-screens-in-a-real-terminal.md). Use it for what a command step cannot see: key decoding, the drawn screen, the terminal modes, resizing, signals, and the exit code of a full-screen program.
+
+```yaml
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {COLORTERM: truecolor}
+      actions:
+        - wait-for: "Onboarding plan"
+        - expect-modes: {alternate_screen: true, cursor_visible: false}
+        - expect-colors: terminal-only
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+```
+
+| Field | Meaning |
+| -- | -- |
+| `terminal.size` | `columns` and `rows`. The default is 80 by 24 |
+| `terminal.env` | Environment variables for the program. The runner starts from `PATH`, `HOME` set to the scenario folder, and `TERM` set to `xterm-256color`. Set `TERM`, `COLORTERM`, and `NO_COLOR` here, because the color profile follows them |
+| `terminal.actions` | A list run in order. Each action has exactly one field |
+| `expect` | `exit` and `files` and `unchanged` work as in a command step. A terminal step has no `stdout` or `stderr` |
+
+An action is one of these.
+
+| Action | Meaning |
+| -- | -- |
+| `wait-for: TEXT` | Wait until the text is on the screen. It fails after 5 seconds, or when the step runs out of time, and shows the screen |
+| `wait-gone: TEXT` | Wait until the text is no longer on the screen |
+| `press: KEY` | Press a key or a list of keys, such as `q`, `Enter`, `Tab`, `Ctrl+S`, `Escape`, or `Up` |
+| `type: TEXT` | Type the text |
+| `resize: {columns, rows}` | Change the window size |
+| `signal: NAME` | Send a real signal to the program with the operating system: `INT`, `TERM`, `HUP`, or `QUIT`. Signals sent through the emulator do not match real ones, so the runner does not use them |
+| `wait-exit: true` | Wait for the program to exit |
+| `expect-modes: {...}` | Check the terminal modes now: `alternate_screen`, `cursor_visible`, and `bracketed_paste`. Name only the modes to check |
+| `expect-colors: terminal-only` | Check that every cell on the screen now is the default color or one of the terminal's sixteen indexed colors, as [0560](../decisions/0560-use-the-terminal-colors.md) requires |
+
+The exit code of a program that a signal ended is 128 plus the signal number, as a shell reports it. When the scenario gives `expect.exit`, the runner waits for the program to exit. When it does not, the runner ends the program with `SIGKILL` after the last action. The runner reads cell colors with garbage collection paused, because the emulator binding can crash a process that reads cells while the collector moves its stack.
 
 ## What a scenario can expect
 
@@ -102,7 +148,7 @@ These came from building the runner, and any of them can change.
 - A scenario's `name` must match its file name. An unknown field in a scenario is an error.
 - A path in `files`, `unchanged`, `from`, or `same-as` stays inside its root: no `..` and no absolute path.
 - `talk` and `stdin` do not mix in one step.
-- Environment variables pass through from the test process.
+- Environment variables pass through from the test process, except in a terminal step, which builds its own.
 
 ## Open
 

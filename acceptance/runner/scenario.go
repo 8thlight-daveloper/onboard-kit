@@ -20,12 +20,13 @@ type Scenario struct {
 }
 
 type Step struct {
-	Run     []string              `yaml:"run"`
-	Files   map[string]FileSource `yaml:"files"`
-	Stdin   string                `yaml:"stdin"`
-	Talk    []Exchange            `yaml:"talk"`
-	Expect  Expectation           `yaml:"expect"`
-	Capture map[string]Capture    `yaml:"capture"`
+	Run      []string              `yaml:"run"`
+	Files    map[string]FileSource `yaml:"files"`
+	Stdin    string                `yaml:"stdin"`
+	Talk     []Exchange            `yaml:"talk"`
+	Expect   Expectation           `yaml:"expect"`
+	Capture  map[string]Capture    `yaml:"capture"`
+	Terminal *Terminal             `yaml:"terminal"`
 }
 
 func (step Step) IsStdio() bool {
@@ -34,11 +35,12 @@ func (step Step) IsStdio() bool {
 
 func (step *Step) UnmarshalYAML(node *yaml.Node) error {
 	return decodeFields(node, map[string]func(*yaml.Node) error{
-		"run":    func(value *yaml.Node) error { return value.Decode(&step.Run) },
-		"files":  func(value *yaml.Node) error { return value.Decode(&step.Files) },
-		"stdin":  func(value *yaml.Node) error { return value.Decode(&step.Stdin) },
-		"talk":   func(value *yaml.Node) error { return value.Decode(&step.Talk) },
-		"expect": func(value *yaml.Node) error { return value.Decode(&step.Expect) },
+		"run":      func(value *yaml.Node) error { return value.Decode(&step.Run) },
+		"files":    func(value *yaml.Node) error { return value.Decode(&step.Files) },
+		"stdin":    func(value *yaml.Node) error { return value.Decode(&step.Stdin) },
+		"talk":     func(value *yaml.Node) error { return value.Decode(&step.Talk) },
+		"expect":   func(value *yaml.Node) error { return value.Decode(&step.Expect) },
+		"terminal": func(value *yaml.Node) error { return value.Decode(&step.Terminal) },
 		"capture": func(value *yaml.Node) error {
 			if value.Kind != yaml.MappingNode || len(value.Content) == 0 {
 				return errors.New("Capture schema is invalid.")
@@ -161,6 +163,11 @@ func validate(scenario Scenario) error {
 	for index, step := range scenario.Steps {
 		if len(step.Run) == 0 {
 			return fmt.Errorf("step %d: run is missing", index+1)
+		}
+		if step.Terminal != nil {
+			if err := validateTerminal(index, step); err != nil {
+				return err
+			}
 		}
 		if step.IsStdio() && step.Stdin != "" {
 			return fmt.Errorf("step %d: a step with talk cannot also have stdin", index+1)

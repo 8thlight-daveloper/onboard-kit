@@ -57,6 +57,13 @@ func runStep(step Step, folder string, options Options) []Failure {
 	if err != nil {
 		return []Failure{{Expectation: "setup", Message: err.Error()}}
 	}
+	if step.Terminal != nil {
+		result, failures := runTerminal(step, folder, options)
+		if len(failures) > 0 {
+			return failures
+		}
+		return check(step.Expect, result, folder, options.RepositoryRoot, before)
+	}
 	var result outcome
 	if step.IsStdio() {
 		result = runStdio(step, folder, options)
