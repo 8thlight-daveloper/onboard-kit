@@ -1,6 +1,6 @@
 # 0570. Test the terminal screens in a real terminal
 
-Status: proposed. A person has not yet approved it.
+Status: accepted by a person.
 
 Builds on [0520](0520-preparation-screen.md), which promises a scripted
 pseudo-terminal run for the Preparation tab. It extends the acceptance
