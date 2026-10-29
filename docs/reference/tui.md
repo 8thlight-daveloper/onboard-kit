@@ -153,11 +153,11 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 
 ## Colour
 
-Decided. One accent, the Branded Blue `0071CE`, marks "you are here", see Emphasis. Two other brand colours mean status and nothing else: Orange `FF8300` for a warning, Red `F32735` for a problem. Everything quiet is drawn with the terminal's faint style, so it works on a light or a dark background and the tool never asks the terminal for its background colour. The styles are built when a screen is drawn, never at package level.
+Decided, see [0560](../decisions/0560-use-the-terminal-colors.md). The screens use the terminal's own colours and none of ours: the default foreground and background, and the sixteen colours the person's theme defines. One accent, the terminal's green in bold, marks "you are here", see Emphasis. Two other colours mean status and nothing else: the terminal's yellow for a warning and its red for a problem. Everything quiet is drawn with the terminal's faint style, so it works on a light or a dark background and the tool never asks the terminal for its background colour. The styles are built when a screen is drawn, never at package level.
 
-- A terminal that reports true colour gets the hex values. One with 256 colours or 16 colours gets the nearest ANSI value. `NO_COLOR` and a terminal with no colour get plain text.
+- No screen uses a hexadecimal, 256-colour, or 24-bit value. `NO_COLOR` and a terminal with no colour get plain text.
 - Colour never carries meaning alone. The chosen row starts with `>`, and the current tab is in brackets. States are words and marks: `[x]` answered, `[~]` deferred, `[ ]` not answered, `*` required, and in the rail `x`, `~`, `.`, and a diamond for the current question. The position and state are also words under the section title. Problems start with `! problem:` and warnings with `warning:`. The focused pane of the Review shows `>` before its title.
-- Tests render every screen with no colour and check that these marks and the key hints are still there. Other tests check, with colour on, that the focused pane is bright, the other is faint, and the accent is not on a title.
+- Tests render every screen with no colour and check that these marks and the key hints are still there. Other tests check, with colour on, that the focused pane is bright, the other is faint, the accent is not on a title, and no screen uses a fixed colour value.
 
 ## The example
 

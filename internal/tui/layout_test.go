@@ -187,23 +187,34 @@ func TestWithNoColourTheMarksAndKeyHintsAreStillText(t *testing.T) {
 	}
 }
 
-func TestWithColourTheAccentIsBrandBlueAndMarksPlaceNotTitles(t *testing.T) {
+func TestNoScreenUsesAFixedColourAndTheAccentMarksPlaceNotTitles(t *testing.T) {
 	previous := lipgloss.ColorProfile()
 	lipgloss.SetColorProfile(profileTrueColor)
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
 	app, _ := startWalking(t)
-	view := resize(moveTo(t, app, "plan.team_state"), 120, 30).View()
-	if !strings.Contains(view, "38;2;0;113;206") {
-		t.Error("expected Branded Blue 0071CE in true colour")
+	contacts, _ := onContacts(t, contactsWithFlags(t))
+	screens := map[string]App{
+		"walk":     moveTo(t, app, "plan.team_state"),
+		"overview": press(app, esc),
+		"review":   press(app, esc, typed("r")),
+		"contacts": contacts,
 	}
-	for _, title := range []string{"Onboarding plan", "Plan", "Is the team established"} {
-		if sgrBefore(t, view, title) == "38;2;0;113;206" || strings.Contains(sgrBefore(t, view, title), "38;2;0;113;206") {
-			t.Errorf("the accent must not colour the text %q", title)
+	for name, shown := range screens {
+		view := resize(shown, 120, 30).View()
+		for _, fixed := range []string{"38;2;", "48;2;", "38;5;", "48;5;"} {
+			if strings.Contains(view, fixed) {
+				t.Errorf("%s: the screen uses a fixed colour sequence %q", name, fixed)
+			}
 		}
 	}
-	lipgloss.SetColorProfile(profileANSI)
-	if strings.Contains(resize(app, 120, 30).View(), "38;2;") {
-		t.Error("ANSI terminals get ANSI colours")
+	view := resize(screens["walk"], 120, 30).View()
+	if !strings.Contains(view, "32m") {
+		t.Error("expected the terminal green accent")
+	}
+	for _, title := range []string{"Onboarding plan", "Plan", "Is the team established"} {
+		if strings.Contains(sgrBefore(t, view, title), "32") {
+			t.Errorf("the accent must not colour the text %q", title)
+		}
 	}
 }
 

@@ -34,7 +34,7 @@ func TestWithColourTheCurrentTabIsBoldAccentAndTheOthersAreFaint(t *testing.T) {
 		t.Error("colour replaces the brackets")
 	}
 	expectBright(t, view, "Overview")
-	if got := sgrBefore(t, view, "Overview"); !strings.Contains(got, "1;") || !strings.Contains(got, "38;5;32") {
+	if got := sgrBefore(t, view, "Overview"); got != "1;32" {
 		t.Errorf("the current tab is bold in the accent, got SGR %q", got)
 	}
 	expectFaint(t, view, "Walk w")

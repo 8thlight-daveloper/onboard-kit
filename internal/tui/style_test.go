@@ -84,7 +84,7 @@ func TestTheAccentNeverColoursATitle(t *testing.T) {
 			if !strings.Contains(view, title) {
 				continue
 			}
-			if sgrBefore(t, view, title) == "34" || sgrBefore(t, view, title) == "1;34" {
+			if sgrBefore(t, view, title) == "32" || sgrBefore(t, view, title) == "1;32" {
 				t.Errorf("%s: %q is drawn in the accent", name, title)
 			}
 		}
@@ -100,16 +100,16 @@ func TestOnTheContactsScreenTheListIsBrightAndTheDetailIsFaint(t *testing.T) {
 	expectFaint(t, view, "Roles 4")
 	expectFaint(t, view, "About this contact")
 	expectFaint(t, view, "Id: alex-rivera")
-	if got := sgrBefore(t, view, "Contacts 6"); !strings.Contains(got, "1;") || !strings.Contains(got, "38;5;32") {
+	if got := sgrBefore(t, view, "Contacts 6"); got != "1;32" {
 		t.Errorf("the current list is bold in the accent, got SGR %q", got)
 	}
 	flagged := resize(press(app, typed("G")), 140, 40).View()
-	if got := sgrBefore(t, flagged, "warning:"); !strings.Contains(got, "38;5;208") {
-		t.Errorf("a warning is orange, got SGR %q", got)
+	if got := sgrBefore(t, flagged, "warning:"); got != "33" {
+		t.Errorf("a warning is the terminal yellow, got SGR %q", got)
 	}
 	unselected := resize(press(app, typed("g")), 140, 40).View()
-	if got := sgrBefore(t, unselected, "! no way to reach"); !strings.Contains(got, "38;5;208") {
-		t.Errorf("a flagged row is orange, got SGR %q", got)
+	if got := sgrBefore(t, unselected, "! no way to reach"); got != "33" {
+		t.Errorf("a flagged row is the terminal yellow, got SGR %q", got)
 	}
 }
 

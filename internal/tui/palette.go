@@ -17,26 +17,26 @@ type palette struct {
 	styles map[tone]lipgloss.Style
 }
 
-func brandBlue() lipgloss.TerminalColor {
-	return lipgloss.CompleteColor{TrueColor: "#0071CE", ANSI256: "32", ANSI: "4"}
+func terminalGreen() lipgloss.TerminalColor {
+	return lipgloss.ANSIColor(2)
 }
 
-func brandOrange() lipgloss.TerminalColor {
-	return lipgloss.CompleteColor{TrueColor: "#FF8300", ANSI256: "208", ANSI: "3"}
+func terminalYellow() lipgloss.TerminalColor {
+	return lipgloss.ANSIColor(3)
 }
 
-func brandRed() lipgloss.TerminalColor {
-	return lipgloss.CompleteColor{TrueColor: "#F32735", ANSI256: "196", ANSI: "1"}
+func terminalRed() lipgloss.TerminalColor {
+	return lipgloss.ANSIColor(1)
 }
 
 func newPalette() palette {
 	return palette{styles: map[tone]lipgloss.Style{
 		toneBody:    lipgloss.NewStyle(),
 		toneStrong:  lipgloss.NewStyle().Bold(true),
-		toneHere:    lipgloss.NewStyle().Bold(true).Foreground(brandBlue()),
+		toneHere:    lipgloss.NewStyle().Bold(true).Foreground(terminalGreen()),
 		toneFaint:   lipgloss.NewStyle().Faint(true),
-		toneWarning: lipgloss.NewStyle().Foreground(brandOrange()),
-		toneProblem: lipgloss.NewStyle().Foreground(brandRed()),
+		toneWarning: lipgloss.NewStyle().Foreground(terminalYellow()),
+		toneProblem: lipgloss.NewStyle().Foreground(terminalRed()),
 	}}
 }
 
