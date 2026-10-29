@@ -10,10 +10,10 @@ steps:
       env: {TERM: dumb}
       actions:
         - wait-for: "Answered 13 of 13"
-        - expect-colors: terminal-only
+        - expect-colors: plain
         - press: o
         - wait-for: "[x] * What is the organization's name?"
-        - expect-colors: terminal-only
+        - expect-colors: plain
         - press: q
         - wait-exit: true
         - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}

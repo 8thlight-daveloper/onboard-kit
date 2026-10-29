@@ -16,7 +16,10 @@ import (
 	tuitest "github.com/microsoft/tui-test/bindings/go"
 )
 
-const terminalWaitLimit = 5 * time.Second
+const (
+	terminalWaitLimit = 5 * time.Second
+	keyGap            = 40 * time.Millisecond
+)
 
 var trailingNumber = regexp.MustCompile(`(\d+)\D*$`)
 
@@ -104,9 +107,9 @@ func (run *terminalRun) perform(action TerminalAction) *Failure {
 	case action.WaitGone != nil:
 		return run.waitForText(*action.WaitGone, tuitest.Hidden)
 	case action.Press != nil:
-		return usage("press", run.client.Press(action.Press...))
+		return run.settled(usage("press", run.client.Press(action.Press...)))
 	case action.Type != nil:
-		return usage("type", run.client.Type(*action.Type))
+		return run.settled(usage("type", run.client.Type(*action.Type)))
 	case action.Resize != nil:
 		return usage("resize", run.client.Resize(uint16(action.Resize.Columns), uint16(action.Resize.Rows)))
 	case action.Signal != nil:
@@ -117,8 +120,16 @@ func (run *terminalRun) perform(action TerminalAction) *Failure {
 	case action.ExpectModes != nil:
 		return run.expectModes(action.ExpectModes)
 	default:
-		return run.expectTerminalColors()
+		return run.expectColors(*action.ExpectColors)
 	}
+}
+
+func (run *terminalRun) settled(failure *Failure) *Failure {
+	if failure != nil {
+		return failure
+	}
+	time.Sleep(keyGap)
+	return nil
 }
 
 func usage(name string, err error) *Failure {
@@ -204,7 +215,7 @@ func sortedModeNames(modes map[string]bool) []string {
 	return names
 }
 
-func (run *terminalRun) expectTerminalColors() *Failure {
+func (run *terminalRun) expectColors(kind string) *Failure {
 	state, err := run.client.State()
 	if err != nil {
 		return &Failure{Expectation: "expect-colors", Message: err.Error()}
@@ -224,10 +235,25 @@ func (run *terminalRun) expectTerminalColors() *Failure {
 			}
 		}
 	}
+	if len(offenders) > 0 {
+		return &Failure{Expectation: "expect-colors", Message: "a cell is neither the default color nor one of the terminal's sixteen: " + strings.Join(offenders, "; ")}
+	}
+	if kind != colorsPlain {
+		return nil
+	}
+	for _, cell := range cells {
+		if (cell.FG != "default" || cell.BG != "default" || styled(cell)) && len(offenders) < 5 {
+			offenders = append(offenders, fmt.Sprintf("column %d, row %d, %q", cell.X, cell.Y, cell.Char))
+		}
+	}
 	if len(offenders) == 0 {
 		return nil
 	}
-	return &Failure{Expectation: "expect-colors", Message: "a cell is neither the default color nor one of the terminal's sixteen: " + strings.Join(offenders, "; ")}
+	return &Failure{Expectation: "expect-colors", Message: "a cell is colored or styled on a screen that should be plain: " + strings.Join(offenders, "; ")}
+}
+
+func styled(cell tuitest.Cell) bool {
+	return cell.Bold || cell.Dim || cell.Italic || cell.Inverse || cell.Underline || cell.Strike || cell.Blink
 }
 
 func terminalColor(color tuitest.Color) bool {

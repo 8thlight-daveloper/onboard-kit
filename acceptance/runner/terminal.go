@@ -10,6 +10,9 @@ import (
 )
 
 const (
+	colorsTerminalOnly = "terminal-only"
+	colorsPlain        = "plain"
+
 	defaultTerminalColumns = 80
 	defaultTerminalRows    = 24
 )
@@ -140,8 +143,8 @@ func validateAction(action TerminalAction) error {
 			return fmt.Errorf("mode %q is not alternate_screen, cursor_visible, or bracketed_paste", mode)
 		}
 	}
-	if action.ExpectColors != nil && *action.ExpectColors != "terminal-only" {
-		return errors.New(`expect-colors takes only "terminal-only"`)
+	if action.ExpectColors != nil && *action.ExpectColors != colorsTerminalOnly && *action.ExpectColors != colorsPlain {
+		return errors.New(`expect-colors takes "terminal-only" or "plain"`)
 	}
 	if action.Resize != nil && (action.Resize.Columns < 1 || action.Resize.Rows < 1) {
 		return errors.New("resize needs columns and rows of at least 1")

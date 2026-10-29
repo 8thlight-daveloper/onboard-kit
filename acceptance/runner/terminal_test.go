@@ -122,6 +122,23 @@ func TestTerminalColorsRefuseAFixedColor(t *testing.T) {
 	}
 }
 
+func TestTerminalPlainAcceptsUnstyledTextAndRefusesStyleOrColor(t *testing.T) {
+	t.Parallel()
+	plain := "      actions:\n        - wait-for: word\n        - expect-colors: plain"
+	if failures := runScenario(t, shellScenario(`printf "plain word"; sleep 3`, plain, "")); len(failures) > 0 {
+		t.Fatal(failureText(failures))
+	}
+	for name, escape := range map[string]string{"bold": `\033[1m`, "faint": `\033[2m`, "reverse": `\033[7m`, "underline": `\033[4m`, "ANSI color": `\033[32m`} {
+		t.Run(name, func(t *testing.T) {
+			t.Parallel()
+			text := failureText(runScenario(t, shellScenario(`printf "`+escape+`word\033[0m"; sleep 3`, plain, "")))
+			if !strings.Contains(text, "should be plain") {
+				t.Fatalf("%s should fail the plain check, got %q", name, text)
+			}
+		})
+	}
+}
+
 func TestTerminalStepTypesResizesAndPassesTheEnvironment(t *testing.T) {
 	t.Parallel()
 	script := `printf "TERM=$TERM FOO=$FOO\n"; read line; printf "got:$line\n"; trap "stty size" WINCH; while :; do sleep 0.1; done`

@@ -99,14 +99,15 @@ An action is one of these.
 | Action | Meaning |
 | -- | -- |
 | `wait-for: TEXT` | Wait until the text is on the screen. It fails after 5 seconds, or when the step runs out of time, and shows the screen |
-| `wait-gone: TEXT` | Wait until the text is no longer on the screen |
-| `press: KEY` | Press a key or a list of keys, such as `q`, `Enter`, `Tab`, `Ctrl+S`, `Escape`, or `Up` |
-| `type: TEXT` | Type the text |
+| `wait-gone: TEXT` | Wait until the text is no longer on the screen. It passes at once when the text is not there, so it also checks that the text is absent |
+| `press: KEY` | Press a key or a list of keys, such as `q`, `Enter`, `Tab`, `Ctrl+S`, `Escape`, or `Up`. The runner pauses 40 milliseconds after each press, because Bubble Tea drops keys that arrive in one read |
+| `type: TEXT` | Type the text, with the same pause afterward |
 | `resize: {columns, rows}` | Change the window size |
 | `signal: NAME` | Send a real signal to the program with the operating system: `INT`, `TERM`, `HUP`, or `QUIT`. Signals sent through the emulator do not match real ones, so the runner does not use them |
 | `wait-exit: true` | Wait for the program to exit |
 | `expect-modes: {...}` | Check the terminal modes now: `alternate_screen`, `cursor_visible`, and `bracketed_paste`. Name only the modes to check |
 | `expect-colors: terminal-only` | Check that every cell on the screen now is the default color or one of the terminal's sixteen indexed colors, as [0560](../decisions/0560-use-the-terminal-colors.md) requires |
+| `expect-colors: plain` | Check that every cell is the default color with no bold, faint, italic, reverse, underline, strike, or blink, as 0560 requires with `NO_COLOR` or a terminal with no color |
 
 The exit code of a program that a signal ended is 128 plus the signal number, as a shell reports it. When the scenario gives `expect.exit`, the runner waits for the program to exit. When it does not, the runner ends the program with `SIGKILL` after the last action. The runner reads cell colors with garbage collection paused, because the emulator binding can crash a process that reads cells while the collector moves its stack.
 
