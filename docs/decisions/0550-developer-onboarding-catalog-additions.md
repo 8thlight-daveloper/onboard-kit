@@ -1,6 +1,6 @@
 # 0550. Catalog additions for developer onboarding
 
-Status: proposed. A person has not yet approved it.
+Status: accepted by a person.
 
 Builds on [0320](0320-embedded-catalog-availability.md) and
 [0530](0530-new-plan-from-core-set.md). It changes the fixed count of eighty
@@ -114,12 +114,8 @@ the team can read. They do not run anything.
   reader, the creator, and the availability scenarios, for each batch above. Any
   other contract change needs its own authorization.
 - **`ai-tool-policy` is in the default core.**
+- **The two session entries are opt-in.** `ticket-writing-session` and
+  `prioritization-session` are in an opt-in group, not the default core.
 - **No separate `verify-generated-change` entry.** Running and reading a
   generated change, and showing what was checked, is part of
   `ai-work-walkthrough-before-pr`.
-
-## Needs a person's decision
-
-1. **Whether the two session entries are in the default core.** The proposal
-   says no. `ticket-writing-session` and `prioritization-session` are in an
-   opt-in group.

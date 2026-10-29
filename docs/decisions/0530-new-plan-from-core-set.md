@@ -1,6 +1,6 @@
 # 0530. A new plan starts from a core set of the catalog
 
-Status: proposed. A person has not yet approved it.
+Status: accepted by a person. The core list is the first version. A later change edits the catalog manifest and its fixtures.
 
 Builds on [0150](0150-onboarding-library-and-preparation-flow.md),
 [0320](0320-embedded-catalog-availability.md),
@@ -126,8 +126,8 @@ for a person to authorize.
 1. **Sub-sections.** [0540](0540-adding-and-removing-sections.md) decides how a
    person adds and removes them. How a person writes a custom section is a
    later decision.
-2. **The final core list.** The list above is a proposal of 31 sections. A
-   person should confirm it. The new entries it names need
+2. **Changes to the core list.** The list above is accepted as the first
+   version. The new entries it names need
    [0550](0550-developer-onboarding-catalog-additions.md) first, so a first
    build can stage only the entries that exist.
 3. **The plan identity.** Decided in 0540: the first run suggests it from the

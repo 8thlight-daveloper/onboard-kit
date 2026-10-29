@@ -1,6 +1,6 @@
 # 0540. Add and remove sections in the Sections screen
 
-Status: proposed. A person has not yet approved it.
+Status: accepted by a person.
 
 Builds on [0530](0530-new-plan-from-core-set.md),
 [0430](0430-reviewed-catalog-creation.md),
@@ -114,15 +114,12 @@ until it is made `n` should not ship.
 - No flag marks a section as repeatable. The picker allows any section again, so
   there is no list to keep up to date.
 
-## Needs a person's decision
-
-1. **The final core set** of [0530](0530-new-plan-from-core-set.md).
-2. **Contract edits.** Select all, custom-section creation, a draft the screen
-   can drive, and the core flag and groups of 0530 each change a contract. A
-   person authorizes each batch when it is built, not before.
-
 ## Decided by a person
 
+- **The core set** of [0530](0530-new-plan-from-core-set.md) is accepted.
+- **Contract edits.** Select all, custom-section creation, a draft the screen can
+  drive, and the core flag and groups of 0530 are authorized as
+  [0550](0550-developer-onboarding-catalog-additions.md) records.
 - **Cascade.** Turning a parent off turns off its parts in effect, as
   [0070](0070-sub-sections.md) says. The cascade is computed, not stored.
   [0440](0440-stable-catalog-instance-editing.md) means that the stored switch
