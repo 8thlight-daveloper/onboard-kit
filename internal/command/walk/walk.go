@@ -1,6 +1,7 @@
 package walk
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -15,6 +16,9 @@ const (
 	exitSuccess = 0
 	exitProblem = 1
 	exitUsage   = 2
+
+	exitInterrupted = 130
+	exitTerminated  = 143
 )
 
 func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
@@ -51,7 +55,14 @@ func Walk(planPath string, plan model.Plan, audience model.Audience, notice stri
 		}
 		return nil
 	}
-	if err := tui.Run(tui.NewBackend(), plan, save, audience, notice, stdin, stdout); err != nil {
+	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, stdin, stdout)
+	if errors.Is(err, tui.ErrInterrupted) {
+		return exitInterrupted
+	}
+	if errors.Is(err, tui.ErrTerminated) {
+		return exitTerminated
+	}
+	if err != nil {
 		fmt.Fprintln(stderr, err)
 		return exitProblem
 	}
