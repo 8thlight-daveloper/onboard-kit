@@ -27,6 +27,7 @@ source before builder access to these tests or literals.
 | Ignore cooperative parent lock | Real native held-lock busy refusal |
 | In-place truncate or leave temporary/backup | Private native profile, exact bytes and owned directory inventory |
 | Reformat a semantic no-op | Raw comment/flow-style bytes and same-inode no-op assertion |
+| Refuse a save while entries come and go in a directory above the selected parent | Churn test: 60 saves exit 0 and write the exact reviewed bytes |
 | Roll back after successful replacement/report failure | Retained exact retired bytes plus personal artifacts |
 | Leak raw parser unknown-key path | Exact private duplicate-key projection with zero consent reads |
 
@@ -40,7 +41,7 @@ Native ACL/xattrs/file flags and inherited-private-temp refusal need actual
 platform-specific setups, including permission-inspection failures. Never
 strip ambient controls or assume absent metadata after an error. Parent lock
 semantics must be proven on each supported filesystem/platform; named skipped
-preconditions are gaps, not passing support. Add parent-chain replacement,
+preconditions are gaps, not passing support. Add selected-parent replacement,
 post-consent native control changes, temp short-write/close/cleanup faults and
 after-publication cleanup failures. Concurrent command races need bounded joins
 and retained exclusively owned sandbox on uncooperative workers; do not tear

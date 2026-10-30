@@ -1,6 +1,6 @@
 # Catalog edit guide contract
 
-Status: independent proposed four-part shell contract under0410,0440 and0450.
+Status: independent proposed four-part shell contract under0410,0440,0450 and0580.
 No product source, promotion, execution or approval evidence is supplied.
 
 ## API, dependencies and effects
@@ -35,12 +35,13 @@ reject literal .., missing/non-directory/symlink components, trailing separator,
 empty filename or symlink/nonregular destination. Dot/redundant separators may
 collapse only after safe traversal of material components. No path expansion.
 
-Selected parent: effective UID, any retained GID, no group/other WRITE permission,
-no ACL in this first supported profile, and fully inspectable bounded security
-metadata.0755/0700 are admitted; do not require0700 or effective-group parent.
-Ancestor chain must be checked under the existing native path safety conventions;
-root-owned sticky system temporary ancestors are not treated as owned plan
-parents. Preserve exact selected parent owner/GID/mode/ACL/xattr/flag state; never
+Selected parent: effective UID, any retained GID and no group/other WRITE
+permission.0755/0700 are admitted; do not require0700 or effective-group parent.
+Parent ACLs are not inspected. Directories above the selected parent are
+traversed without symlinks but are not inspected for owner, mode, ACL, flags,
+attributes or change; entries coming and going there never refuse a save. A local
+user with write access above the selected parent is outside the claimed threat
+under0580. Preserve exact selected parent owner/GID/mode/ACL/xattr/flag state; never
 chmod/chown it, remove ACLs or normalize product paths to qualify.
 
 Selected original: regular, exactly one native link, effective UID/GID, exact
@@ -58,8 +59,8 @@ make an original more private or strip unsupported metadata. Own temporary
 controls may be established before writing its data, never on unrelated files.
 
 Hold an original native snapshot: device/inode, file kind, links, UID/GID/mode,
-size, mtime/ctime, native flags, exact ACL/xattr facts, selected parent identity/
-controls and chain identity guards. Read at most1048576 source bytes, with a
+size, mtime/ctime, native flags, exact ACL/xattr facts and selected parent
+identity/controls. Read at most1048576 source bytes, with a
 one-byte excess probe, through the held nonsymlink regular descriptor. Compare
 before/after fstat controls and namespace identity; any instability refuses.
 Each native ACL/xattr representation is capped65536 bytes before allocation;
@@ -233,7 +234,7 @@ Unsupported primitive/inspection refuses edit.commit; busy refuses edit.busy.
 Every implementation of this command must use that same parent-inode lock
 convention. Existing other tools are not retroactively cooperating writers.
 
-While locked, recheck original selected chain/parent controls and namespace
+While locked, recheck original selected parent identity/controls and namespace
 identity, open current target nonsymlink, compare original device/inode/link/
 UID/GID/mode/native metadata and fresh exact complete source bytes, then fstat
 again. Absence, replacement, byte or control changes use edit.stale and preserve
