@@ -102,6 +102,17 @@ hide ambiguity, claim completion, or relax safety or authorization. Keep a
 proxy's honest name rather than presenting it as a fact it does not establish.
 [0180](0180-first-onboarding-use.md) applies this to first use versus actual start.
 
+### P9. Match protection to the threat we have
+
+At this stage the threats are mistakes: lost or partial writes, stale saves,
+edits that land in the wrong file, and personal data left readable. Keep cheap
+protection against those. Defer a defense whose only reach is a hostile local
+user or process and whose cost is native code or tests that need a race. Record
+each deferral in an ADR so it can return. Credentials, network access,
+authentication, commands run from plan content, and personal data stay in scope.
+An agent does not defer a protection without a person's approval. See
+[0580](0580-security-scope-at-this-stage.md).
+
 ## Decision
 
 Use the [behavior judge skill](../../.agents/skills/behavior-judge/SKILL.md) for
