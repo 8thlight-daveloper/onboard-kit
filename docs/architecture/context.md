@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Who and what touches onboard-kit. The tool is internal. The client receives only the generated file.
+Who and what touches onboard-kit. The consultant runs the tool. The client receives only the generated file.
 
 > [!NOTE]
 > **What is a template?**
@@ -33,7 +33,7 @@ flowchart LR
 - Templates ship inside the binary, so every consultant on the same version starts from the same content.
 - The plan file stands alone. It holds every section, the questions, and the answers, so it reopens without the templates. See [0030](../decisions/0030-self-contained-plan-file.md).
 - The plan file and the generated doc contain client specifics. Both are written under `output/`, which git ignores.
-- A human reviews every document before it leaves 8th Light. The tool reminds the consultant but cannot enforce it.
+- A human reviews every document before it goes to the client. The tool reminds the consultant but cannot enforce it.
 - The client never runs the tool. They get a file in the format the consultant chose. The plan file may travel with the document, and the client can keep it.
 
 ## Open questions

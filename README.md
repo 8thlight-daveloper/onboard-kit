@@ -93,7 +93,7 @@ This repo is generic on purpose. Keep out:
 
 - Client or organization names
 - URLs, tenant names, repo names, and internal tool details
-- Names of people at the client
+- Names of people at a client
 - Credentials, tokens, and anything from a contract
 
 Filled-in docs belong to the client. See `CONTRIBUTING.md` for the sanitizing rules.

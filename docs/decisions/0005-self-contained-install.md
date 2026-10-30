@@ -4,7 +4,7 @@ Status: accepted
 
 ## Context
 
-Consultants run this tool at the start of an engagement, often on a new machine with limited setup. Every extra install step is a reason not to use it. The tool also stays internal, so we control how it is delivered, and hosting is deferred.
+Consultants run this tool at the start of an engagement, often on a new machine with limited setup. Every extra install step is a reason not to use it. Hosting is deferred.
 
 ## Decision
 
@@ -31,13 +31,13 @@ Package-manager channels are conveniences beside the standalone file, which stay
 
 Release CI computes the hashes and writes both channel files, so a release updates every channel from one source. A release tool such as GoReleaser can do this, which is a stack choice for [release](../stack/release.md).
 
-### Private now, possibly public later
+### Private or public repository
 
-The repository is private. If the project succeeds it may move to a public 8th Light repository.
+The channels must work whether the repository is private or public.
 
-- While it is private, release assets need authentication. Homebrew needs a token and a custom download strategy. Nix `fetchurl` cannot authenticate, so Nix needs a private cache or another way to reach the release. This is part of hosting.
-- When it goes public, both channels use plain release URLs and the authentication code is deleted. Keep the release URL and the authentication in one place in each channel file, so the change is small.
-- Moving public needs the content rules in `CONTRIBUTING.md` to hold for the whole history. Check that before the move.
+- If the repository is private, release assets need authentication. Homebrew needs a token and a custom download strategy. Nix `fetchurl` cannot authenticate, so Nix needs a private cache or another way to reach the release. This is part of hosting.
+- If it is public, both channels use plain release URLs and need no authentication code. Keep the release URL and the authentication in one place in each channel file, so the change is small.
+- Making a repository public needs the content rules in `CONTRIBUTING.md` to hold for the whole history. Check that first.
 
 ### Verification
 
@@ -61,5 +61,5 @@ CI checks the constraint on every release build:
 
 ## Open questions
 
-- How do private releases reach the Homebrew and Nix channels until the repository is public?
+- How do releases reach the Homebrew and Nix channels when the repository is private?
 - Does a downloaded binary need code signing or notarization to run without a warning on each platform? Ask whoever holds 8th Light's developer signing account whether signing and notarization already exist. A file installed by Homebrew or Nix may not get the quarantine flag that a browser download gets, so signing may matter mostly for the standalone download. Confirm that, and confirm that the build carries at least the ad-hoc signature arm64 macOS requires.
