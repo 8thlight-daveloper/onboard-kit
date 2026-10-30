@@ -2,77 +2,49 @@ package editguide
 
 import (
 	"encoding/binary"
-	"os"
 	"unsafe"
 
 	"golang.org/x/sys/unix"
 )
 
-func inspect(file *os.File) (controls, error) {
-	fd := int(file.Fd())
-	var before unix.Stat_t
-	if unix.Fstat(fd, &before) != nil {
-		return controls{}, failNative()
-	}
-	if !absentACL(fd) {
-		return controls{}, failNative()
-	}
-	values, err := attributes(fd)
-	if err != nil {
-		return controls{}, err
-	}
-	var after unix.Stat_t
-	if unix.Fstat(fd, &after) != nil || before.Dev != after.Dev || before.Ino != after.Ino || before.Mode != after.Mode || before.Uid != after.Uid || before.Gid != after.Gid || before.Flags != after.Flags || (before.Mode&unix.S_IFMT != unix.S_IFDIR && (before.Nlink != after.Nlink || before.Size != after.Size || before.Mtim != after.Mtim || before.Ctim != after.Ctim)) {
-		return controls{}, failNative()
-	}
-	return controls{Device: uint64(after.Dev), Inode: uint64(after.Ino), Mode: uint32(after.Mode), Links: uint64(after.Nlink), UID: after.Uid, GID: after.Gid, Size: after.Size, Modified: after.Mtim, Changed: after.Ctim, Flags: after.Flags, Attributes: values}, nil
+const provenanceName = "com.apple.provenance"
+
+func supportedAttribute(name string) bool { return name == provenanceName }
+
+func nativeFlags(fd int, stat *unix.Stat_t) (uint32, bool) { return stat.Flags, true }
+
+func timestamps(stat *unix.Stat_t) (int64, int64, int64, int64) {
+	return int64(stat.Mtim.Sec), int64(stat.Mtim.Nsec), int64(stat.Ctim.Sec), int64(stat.Ctim.Nsec)
 }
 
-func absentACL(fd int) bool {
-	attributes := unix.Attrlist{Bitmapcount: 5, Commonattr: unix.ATTR_CMN_EXTENDED_SECURITY}
-	buffer := make([]byte, 65536+12)
-	_, _, errno := unix.Syscall6(unix.SYS_FGETATTRLIST, uintptr(fd), uintptr(unsafe.Pointer(&attributes)), uintptr(unsafe.Pointer(&buffer[0])), uintptr(len(buffer)), unix.FSOPT_REPORT_FULLSIZE, 0)
-	if errno != 0 {
-		return false
+func accessControlPresent(fd int) (bool, bool) {
+	request := unix.Attrlist{Bitmapcount: 5, Commonattr: unix.ATTR_CMN_EXTENDED_SECURITY}
+	header := make([]byte, 12)
+	if !readAttributeList(fd, &request, header) {
+		return false, false
 	}
-	order := binary.NativeEndian
-	total := uint64(order.Uint32(buffer[:4]))
-	if total < 12 || total > uint64(len(buffer)) {
-		return false
+	size := int(binary.LittleEndian.Uint32(header[:4]))
+	if size < 12 || size > maxRepresentationBytes+12 {
+		return false, false
 	}
-	offset := int64(int32(order.Uint32(buffer[4:8])))
-	length := uint64(order.Uint32(buffer[8:12]))
-	if length > 65536 {
-		return false
+	data := make([]byte, size)
+	if !readAttributeList(fd, &request, data) || int(binary.LittleEndian.Uint32(data[:4])) != size {
+		return false, false
 	}
+	offset := int(int32(binary.LittleEndian.Uint32(data[4:8]))) + 4
+	length := int(binary.LittleEndian.Uint32(data[8:12]))
 	if length == 0 {
-		return true
+		return false, true
 	}
-	start := int64(4) + offset
-	if start < 12 || start%4 != 0 || uint64(start) > total || length > total-uint64(start) || length != 44 {
-		return false
+	if offset < 12 || length > maxRepresentationBytes || offset > size || length > size-offset {
+		return false, false
 	}
-	security := buffer[int(start) : int(start)+int(length)]
-	return order.Uint32(security[:4]) == 0x012cc16d && order.Uint32(security[36:40]) == ^uint32(0) && order.Uint32(security[40:44]) == 0
+	acl := data[offset : offset+length]
+	empty := len(acl) >= 44 && binary.LittleEndian.Uint32(acl[:4]) == 0x012cc16d && binary.LittleEndian.Uint32(acl[36:40]) == 0xffffffff
+	return !empty, true
 }
 
-func supportedAttributes(values map[string]string) bool {
-	if len(values) == 0 {
-		return true
-	}
-	if len(values) != 1 {
-		return false
-	}
-	_, exists := values["com.apple.provenance"]
-	return exists
-}
-
-func establishAttributes(fd int, values map[string]string) error {
-	if !supportedAttributes(values) {
-		return failNative()
-	}
-	if value, exists := values["com.apple.provenance"]; exists {
-		return unix.Fsetxattr(fd, "com.apple.provenance", []byte(value), 0)
-	}
-	return nil
+func readAttributeList(fd int, request *unix.Attrlist, buffer []byte) bool {
+	_, _, errno := unix.Syscall6(unix.SYS_FGETATTRLIST, uintptr(fd), uintptr(unsafe.Pointer(request)), uintptr(unsafe.Pointer(&buffer[0])), uintptr(len(buffer)), unix.FSOPT_REPORT_FULLSIZE, 0)
+	return errno == 0
 }

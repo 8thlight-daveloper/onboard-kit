@@ -2,280 +2,157 @@ package editguide
 
 import (
 	"bytes"
-	"reflect"
+	"fmt"
 	"sort"
-	"strconv"
-	"strings"
-	"unicode"
-	"unicode/utf16"
 
-	editing "onboard-kit/contracts/catalog/editor"
-	creation "onboard-kit/contracts/catalog/materializer"
-	"onboard-kit/internal/model"
+	editorcontract "onboard-kit/contracts/catalog/editor"
+	materializercontract "onboard-kit/contracts/catalog/materializer"
 )
 
-type display struct {
-	bytes strings.Builder
-	full  bool
+const (
+	unavailable      = "Review unavailable.\n"
+	unavailableLimit = "Review unavailable: preserve all plan data within supported limits.\n"
+	unavailableGuide = "Review unavailable: preparation guidance sources conflict.\n"
+)
+
+type frozenSave struct {
+	save      []byte
+	unchanged bool
 }
 
-func (text *display) add(value string) {
-	if text.full {
-		return
-	}
-	if len(value) > 8388608-text.bytes.Len() {
-		text.full = true
-		return
-	}
-	text.bytes.WriteString(value)
+type guide struct {
+	markdown []byte
+	reasons  map[string]bool
 }
 
-func (text *display) line(value string) { text.add(value); text.add("\n") }
-
-func (text *display) quoted(value string) {
-	text.add("\"")
-	for _, character := range value {
-		switch character {
-		case '"':
-			text.add("\\\"")
-		case '\\':
-			text.add("\\\\")
-		case '\n':
-			text.add("\\n")
-		case '\r':
-			text.add("\\r")
-		case '\t':
-			text.add("\\t")
-		default:
-			if unicode.IsPrint(character) && !unicode.Is(unicode.Cf, character) && character != '\u2028' && character != '\u2029' {
-				text.add(string(character))
-				continue
-			}
-			if character > 0xffff {
-				first, second := utf16.EncodeRune(character)
-				text.escape(first)
-				text.escape(second)
-			} else {
-				text.escape(character)
-			}
-		}
-		if text.full {
-			return
-		}
+func (s *session) refuse(text string, problems []problem) (frozenSave, bool) {
+	if problems != nil {
+		text += problemText(problems)
 	}
-	text.add("\"")
+	s.write(text)
+	return frozenSave{}, false
 }
 
-func (text *display) escape(value rune) {
-	digits := "0123456789abcdef"
-	text.add(string([]byte{'\\', 'u', digits[(value>>12)&15], digits[(value>>8)&15], digits[(value>>4)&15], digits[value&15]}))
+func (s *session) review() (frozenSave, bool) {
+	proposal, diagnostics := s.command.editor.Edit(s.original, s.operations)
+	warnings := editorProblems(diagnostics)
+	if hasErrors(warnings) {
+		return s.refuse(unavailable, warnings)
+	}
+	authoring := s.command.authoring.Validate(proposal)
+	if hasModelErrors(authoring) {
+		return s.refuse(unavailable, modelProblems("authoring", authoring))
+	}
+	checked := s.command.checker.Validate(proposal)
+	if hasModelErrors(checked) {
+		return s.refuse(unavailable, modelProblems("plan", checked))
+	}
+	warnings = append(append(warnings, modelProblems("authoring", authoring)...), modelProblems("plan", checked)...)
+	encoded, problems := s.command.encoder.Encode(proposal)
+	if hasModelErrors(problems) {
+		return s.refuse(unavailable, modelProblems("encode", problems))
+	}
+	if len(encoded) > maxSourceBytes {
+		return s.refuse(unavailableLimit, nil)
+	}
+	decoded, problems := s.command.decoder.Decode(encoded)
+	if hasModelErrors(problems) {
+		return s.refuse(unavailable, modelProblems("decode", problems))
+	}
+	if !equivalent(proposal, decoded) {
+		return s.refuse(unavailableLimit, nil)
+	}
+	guides, guidanceWarnings, failure := s.guidance()
+	if failure != "" {
+		return s.refuse(failure, guidanceWarnings)
+	}
+	frozen := frozenSave{save: encoded}
+	if equivalent(proposal, s.original) {
+		frozen = frozenSave{save: s.selection.raw, unchanged: true}
+	}
+	var d display
+	d.add("Catalog edit review — not saved. No personal work or outcomes are changed.\nPlan: ")
+	d.scalar(s.selection.path)
+	d.add("\n")
+	d.operations(s.operations)
+	d.document("Original plan bytes", s.selection.raw)
+	d.document("Proposed plan bytes", frozen.save)
+	if frozen.unchanged {
+		d.add("Save action: unchanged; original bytes retained.\n")
+	} else {
+		d.add("Save action: replace.\n")
+	}
+	d.problems(append(warnings, guidanceWarnings...))
+	d.guides(guides)
+	d.add("Advice includes retired new additions; no arrangement or activity is completed.\n" + reviewPrompt)
+	if d.full {
+		return s.refuse(unavailableLimit, nil)
+	}
+	if !s.write(d.text.String()) {
+		return frozenSave{}, false
+	}
+	return frozen, true
 }
 
-func quote(value string) string { var text display; text.quoted(value); return text.bytes.String() }
-
-func (text *display) document(label string, value []byte) {
-	text.line(label + ":")
-	for {
-		index := bytes.IndexByte(value, '\n')
-		part := value
-		if index >= 0 {
-			part = value[:index]
-		}
-		text.add("  | ")
-		text.quoted(string(part))
-		text.add("\n")
-		if index < 0 || text.full {
-			return
-		}
-		value = value[index+1:]
-	}
-}
-
-func (text *display) problems(problems []editing.Diagnostic) {
-	text.line("Problems: " + strconv.Itoa(len(problems)))
-	for _, problem := range problems {
-		text.add("  - Stage: ")
-		text.quoted(problem.Stage)
-		text.add(" Path: ")
-		text.quoted(problem.Path)
-		text.add(" Code: ")
-		text.quoted(problem.Code)
-		text.add(" Severity: ")
-		text.quoted(string(problem.Severity))
-		text.add(" Repair: ")
-		text.quoted(problem.Message)
-		text.add("\n")
-	}
-}
-
-func problemText(problems []editing.Diagnostic) string {
-	var text display
-	text.problems(problems)
-	return text.bytes.String()
-}
-
-func (text *display) payload(value model.Value) {
-	switch value.Kind {
-	case model.ValueKindText:
-		text.add("  Text: ")
-		text.quoted(value.Text)
-		text.add("\n")
-	case model.ValueKindFlag:
-		text.line("  Flag: " + strconv.FormatBool(value.Flag))
-	case model.ValueKindList:
-		text.line("  List: " + strconv.Itoa(len(value.List)))
-		for _, item := range value.List {
-			text.add("  - ")
-			text.quoted(item)
-			text.add("\n")
-		}
-	}
-}
-
-func valueName(value model.Value) string {
-	switch value.Kind {
-	case model.ValueKindText:
-		return "text"
-	case model.ValueKindFlag:
-		return "flag"
-	case model.ValueKindList:
-		return "list"
-	case model.ValueKindDeferred:
-		return "deferred"
-	}
-	return "none"
-}
-
-func (driver command) review(original model.Plan, raw []byte, path string, operations []editing.Operation) (string, []byte, bool, []editing.Diagnostic, bool) {
-	proposed, problems := driver.editing.Edit(original, operations)
-	if diagnosticErrors(problems) {
-		return "", nil, false, problems, false
-	}
-	for _, stage := range []string{"authoring", "plan"} {
-		var findings []model.Problem
-		if stage == "authoring" {
-			findings = driver.authoring.Validate(proposed)
-		} else {
-			findings = driver.checking.Validate(proposed)
-		}
-		batch := project(findings, stage)
-		if problemErrors(findings) {
-			return "", nil, false, batch, false
-		}
-		problems = append(problems, batch...)
-	}
-	encoded, diagnostics, faithful := driver.encodeFaithfully(proposed)
-	if !faithful {
-		return "", nil, false, diagnostics, false
-	}
-	unchanged := equivalent(reflect.ValueOf(original), reflect.ValueOf(proposed), false)
-	if unchanged {
-		encoded = raw
-	}
-	guides := map[string]creation.Guidance{}
-	for _, operation := range operations {
-		if operation.Kind != editing.Add {
+func (s *session) guidance() (map[string]*guide, []problem, string) {
+	guides := map[string]*guide{}
+	var warnings []problem
+	for _, operation := range s.operations {
+		if operation.Kind != editorcontract.Add {
 			continue
 		}
-		bindings := make([]creation.Binding, len(operation.Bindings))
+		bindings := make([]materializercontract.Binding, len(operation.Bindings))
 		for i, binding := range operation.Bindings {
-			bindings[i] = creation.Binding{Name: binding.Name, Value: binding.Value}
+			bindings[i] = materializercontract.Binding{Name: binding.Name, Value: binding.Value}
 		}
-		result, diagnostics := driver.creation.Create(creation.Request{PlanID: original.ID, Directory: original.Directory, Instances: []creation.Instance{{SourceID: operation.SourceID, PermanentSectionID: operation.SectionID, Bindings: bindings}}})
-		var batch []editing.Diagnostic
-		for _, diagnostic := range diagnostics {
-			batch = append(batch, project([]model.Problem{diagnostic.Problem}, "guidance")...)
+		result, diagnostics := s.command.materializer.Create(materializercontract.Request{
+			PlanID:    s.original.ID,
+			Directory: s.original.Directory,
+			Instances: []materializercontract.Instance{{SourceID: operation.SourceID, PermanentSectionID: operation.SectionID, Bindings: bindings}},
+		})
+		projected := guidanceProblems(diagnostics)
+		if hasErrors(projected) {
+			return nil, projected, unavailable
 		}
-		if diagnosticErrors(batch) {
-			return "", nil, false, batch, false
-		}
-		problems = append(problems, batch...)
-		for _, guide := range result.Guidance {
-			previous, exists := guides[guide.ID]
-			if exists && !bytes.Equal(previous.Markdown, guide.Markdown) {
-				return "", nil, false, nil, false
+		warnings = append(warnings, projected...)
+		for _, advice := range result.Guidance {
+			held, found := guides[advice.ID]
+			if found && !bytes.Equal(held.markdown, advice.Markdown) {
+				return nil, nil, unavailableGuide
 			}
-			if !exists {
-				previous = creation.Guidance{ID: guide.ID, Markdown: guide.Markdown}
+			if !found {
+				held = &guide{markdown: advice.Markdown, reasons: map[string]bool{}}
+				guides[advice.ID] = held
 			}
-			previous.InstanceIDs = append(previous.InstanceIDs, guide.InstanceIDs...)
-			guides[guide.ID] = previous
-		}
-	}
-	var text display
-	text.line("Catalog edit review — not saved. No personal work or outcomes are changed.")
-	text.line("Plan: " + quote(path))
-	text.line("Operations: " + strconv.Itoa(len(operations)))
-	for i, operation := range operations {
-		text.add("  - " + strconv.Itoa(i+1) + " Kind: ")
-		text.quoted(string(operation.Kind))
-		text.add(" Instance: ")
-		text.quoted(operation.SectionID)
-		text.add("\n")
-		switch operation.Kind {
-		case editing.Add:
-			text.add("  Source: ")
-			text.quoted(operation.SourceID)
-			text.add("\n")
-			text.line("  Initial bindings: " + strconv.Itoa(len(operation.Bindings)))
-			for _, binding := range operation.Bindings {
-				text.add("  Binding: ")
-				text.quoted(binding.Name)
-				text.add(" Value: ")
-				text.quoted(valueName(binding.Value))
-				text.add("\n")
-				text.payload(binding.Value)
-			}
-		case editing.Submit, editing.Unset:
-			text.add("  Variable: ")
-			text.quoted(operation.Name)
-			text.add("\n")
-			if operation.Kind == editing.Submit {
-				text.add("  Value: ")
-				text.quoted(valueName(operation.Value))
-				text.add("\n")
-				text.payload(operation.Value)
+			for _, id := range advice.InstanceIDs {
+				held.reasons[id] = true
 			}
 		}
 	}
-	text.document("Original plan bytes", raw)
-	text.document("Proposed plan bytes", encoded)
-	if unchanged {
-		text.line("Save action: unchanged; original bytes retained.")
-	} else {
-		text.line("Save action: replace.")
-	}
-	text.problems(problems)
-	text.line("Preparation guidance for newly added instances only: " + strconv.Itoa(len(guides)))
+	return guides, warnings, ""
+}
+
+func (d *display) guides(guides map[string]*guide) {
 	ids := make([]string, 0, len(guides))
 	for id := range guides {
 		ids = append(ids, id)
 	}
 	sort.Strings(ids)
+	d.add(fmt.Sprintf("Preparation guidance for newly added instances only: %d\n", len(ids)))
 	for _, id := range ids {
-		guide := guides[id]
-		sort.Strings(guide.InstanceIDs)
-		var reasons []string
-		for _, reason := range guide.InstanceIDs {
-			if len(reasons) == 0 || reason != reasons[len(reasons)-1] {
-				reasons = append(reasons, reason)
-			}
+		reasons := make([]string, 0, len(guides[id].reasons))
+		for reason := range guides[id].reasons {
+			reasons = append(reasons, reason)
 		}
-		text.add("Guide: ")
-		text.quoted(id)
-		text.add("\n")
-		text.line("Instance reasons: " + strconv.Itoa(len(reasons)))
+		sort.Strings(reasons)
+		d.add("Guide: ")
+		d.scalar(id)
+		d.add(fmt.Sprintf("\nInstance reasons: %d\n", len(reasons)))
 		for _, reason := range reasons {
-			text.add("  - ")
-			text.quoted(reason)
-			text.add("\n")
+			d.add("  - ")
+			d.scalar(reason)
+			d.add("\n")
 		}
-		text.document("Advisory instructions", guide.Markdown)
+		d.document("Advisory instructions", guides[id].markdown)
 	}
-	text.line("Advice includes retired new additions; no arrangement or activity is completed.")
-	text.add(reviewPrompt)
-	if text.full {
-		return "", nil, false, nil, false
-	}
-	return text.bytes.String(), encoded, unchanged, nil, true
 }

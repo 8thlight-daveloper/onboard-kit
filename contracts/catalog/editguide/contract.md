@@ -61,7 +61,8 @@ controls may be established before writing its data, never on unrelated files.
 Hold an original native snapshot: device/inode, file kind, links, UID/GID/mode,
 size, mtime/ctime, native flags, exact ACL/xattr facts and selected parent
 identity/controls. Read at most1048576 source bytes, with a
-one-byte excess probe, through the held nonsymlink regular descriptor. Compare
+one-byte excess probe, through the held nonsymlink regular descriptor. A source over1048576 bytes
+refuses edit.path before input/startup. Compare
 before/after fstat controls and namespace identity; any instability refuses.
 Each native ACL/xattr representation is capped65536 bytes before allocation;
 combined captured metadata262144 bytes. No unsupported fact is assumed empty.
