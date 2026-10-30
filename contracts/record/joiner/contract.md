@@ -1,6 +1,6 @@
 # Record joiner contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `record/joiner`. Issue: none yet.
+Status: draft by an agent. Not reviewed by a person. Component: `record/joiner`.
 
 The record joiner puts a newcomer's onboarding record over the plan and gives back one plan. Every other component takes that one plan, so none of them needs to know about records. It is a pure function. It reads no file, keeps no state, and does not change its arguments. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

@@ -1,6 +1,6 @@
 # Record decoder contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `record/decoder`. Issue: none yet.
+Status: draft by an agent. Not reviewed by a person. Component: `record/decoder`.
 
 The record decoder turns the bytes of an onboarding record file into a Record. It is a pure function. It reads no file, writes no file, and does not change its argument. The same bytes always give the same result. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

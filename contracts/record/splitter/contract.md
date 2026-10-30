@@ -1,6 +1,6 @@
 # Record splitter contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `record/splitter`. Issue: none yet.
+Status: draft by an agent. Not reviewed by a person. Component: `record/splitter`.
 
 The record splitter takes the newcomer's answers back out of the joined plan, so a driver can save the record and leave the plan copy alone. It is a pure function. It reads no file, writes no file, reads no clock, keeps no state between calls, and changes none of its arguments. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md) on hidden answers, [0055](../../../docs/decisions/0055-variable-audience.md) on audience, the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

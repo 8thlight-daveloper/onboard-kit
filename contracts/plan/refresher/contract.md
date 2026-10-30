@@ -1,6 +1,6 @@
 # Plan refresher contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `plan/refresher`. Issue: none yet.
+Status: draft by an agent. Not reviewed by a person. Component: `plan/refresher`.
 
 The plan refresher brings a personal plan up to date with a newer org plan. It takes the cached org plan, the newly fetched org plan, the personal plan, and the origin to record. It returns the new personal plan, a report of what changed, and problems. It is a pure function. It reads no file and no network, reads no clock, keeps no state between calls, and does not change an argument. See [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0080](../../../docs/decisions/0080-directory.md), [0055](../../../docs/decisions/0055-variable-audience.md), [0060](../../../docs/decisions/0060-personal-plan.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 

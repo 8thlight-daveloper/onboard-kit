@@ -1,6 +1,6 @@
 # Record reconciler contract
 
-Status: draft by an agent. Not reviewed by a person. Component: `record/reconciler`. Issue: none yet.
+Status: draft by an agent. Not reviewed by a person. Component: `record/reconciler`.
 
 The record reconciler checks an onboarding record against a new plan. It removes the answers the plan no longer accepts, lists what changed between the previous plan and the new one, and flags current section definitions that differ from recorded outcome hashes. It is a pure function. It reads no file and no network, reads no clock, keeps no state between calls, and does not change an argument. It replaces the plan refresher. See [0090](../../../docs/decisions/0090-plan-and-onboarding-record.md), [0075](../../../docs/decisions/0075-refreshing-a-personal-plan.md), [0055](../../../docs/decisions/0055-variable-audience.md), [0080](../../../docs/decisions/0080-directory.md), [0035](../../../docs/decisions/0035-settled-and-deferred-answers.md), the [domain model](../../../docs/reference/domain-model.md), and [0015](../../../docs/decisions/0015-functional-core-and-imperative-shell.md).
 
