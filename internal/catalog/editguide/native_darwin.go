@@ -22,7 +22,7 @@ func inspect(file *os.File) (controls, error) {
 		return controls{}, err
 	}
 	var after unix.Stat_t
-	if unix.Fstat(fd, &after) != nil || before.Dev != after.Dev || before.Ino != after.Ino || before.Mode != after.Mode || before.Nlink != after.Nlink || before.Uid != after.Uid || before.Gid != after.Gid || before.Size != after.Size || before.Mtim != after.Mtim || before.Ctim != after.Ctim || before.Flags != after.Flags {
+	if unix.Fstat(fd, &after) != nil || before.Dev != after.Dev || before.Ino != after.Ino || before.Mode != after.Mode || before.Uid != after.Uid || before.Gid != after.Gid || before.Flags != after.Flags || (before.Mode&unix.S_IFMT != unix.S_IFDIR && (before.Nlink != after.Nlink || before.Size != after.Size || before.Mtim != after.Mtim || before.Ctim != after.Ctim)) {
 		return controls{}, failNative()
 	}
 	return controls{Device: uint64(after.Dev), Inode: uint64(after.Ino), Mode: uint32(after.Mode), Links: uint64(after.Nlink), UID: after.Uid, GID: after.Gid, Size: after.Size, Modified: after.Mtim, Changed: after.Ctim, Flags: after.Flags, Attributes: values}, nil
