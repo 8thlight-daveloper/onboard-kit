@@ -22,6 +22,10 @@ installed first, and a web link can only lead to a page with instructions.
   asks for permission. When declined it prints how to install by hand and the
   exact launch command. That text must carry the instructions itself, not only a
   link, because a link works only once the repository is public.
+- The script names the install route it will use before it asks, such as
+  Homebrew, and not only the download. A newcomer who uses Nix opts out of the
+  automatic install and installs through Nix by hand. The decline text covers
+  that route too.
 - Platforms: macOS and Linux. Windows is supported only through WSL, which is
   Linux. The script is POSIX `sh`. Native Windows gets a clear refusal that
   points to WSL.
@@ -34,6 +38,9 @@ installed first, and a web link can only lead to a page with instructions.
 - macOS quarantine and notarization. A file fetched by a script may not get the
   quarantine flag that a browser download gets. This is open in
   [0005](../decisions/0005-self-contained-install.md).
+- Which route the script uses when it installs: Homebrew where it exists, the
+  plain release file, or a choice the newcomer makes. How a newcomer opts out
+  without answering "no" to everything.
 - Whether the script also installs related tools, such as a codebase tutor.
 
 ## Related
