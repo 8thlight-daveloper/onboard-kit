@@ -2,6 +2,9 @@
 
 Status: accepted agent decision. Verification evidence is recorded separately.
 
+[0580](0580-security-scope-at-this-stage.md) narrows the path checks below to the
+selected parent. Directories above it are no longer inspected.
+
 Extends0410/0440 with the missing imperative shell, not a new schema, selection
 manifest, definition refresher or outcome operation. Provide `catalog edit --plan FILE` through catalog/editguide at position7; binary8 routes that exact
 pair. Construct actual catalog editor6, materializer5 (new-addition guidance
