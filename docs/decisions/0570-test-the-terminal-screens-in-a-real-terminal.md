@@ -148,6 +148,18 @@ measured in the trial run, and each gap is its own small change.
   are already atomic, and a scenario checks it after a signal.
 - Unsaved edits are lost on exit by design, as the screens say. A scenario does
   not expect them to survive.
+- A signal says nothing reliable about intent, so the rule follows consent, not
+  the signal. Before the person confirms a save, a stop request discards the
+  draft and leaves the file alone. After confirmation, the save finishes, because
+  the atomic replacement takes microseconds and the person asked for it, and then
+  the tool exits 130 or 143. If a stop request arrives after the temporary file
+  exists and before the replacement, the tool removes that temporary file and
+  keeps the original. It never rolls back a completed replacement.
+- The guarantee is atomic replacement, not a lock against signals. A signal at
+  any instant leaves the original file or the complete reviewed one, never a
+  mix, and `SIGKILL` gets the same guarantee. A scenario checks that outcome
+  and does not try to hit the replacement window by timing. The only leftover
+  allowed is an owned temporary file after `SIGKILL`.
 - `SIGQUIT` keeps its default Go behavior and is out of scope.
 
 After each exit a scenario starts the same session again and checks that it
@@ -197,5 +209,7 @@ has one.
    macOS, and CI runs on Linux.
 3. **Whether the crash setting can live in the repository,** so the test command
    does not depend on someone remembering it, or must be set by the runner.
-4. **A signal in the middle of a save.** The trial did not test that no file is
-   left half written. The first scenarios do.
+
+A signal in the middle of a save was open in the first draft. The exit rules now
+settle it. The trial did not test that no file is left half written. The first
+scenarios do.
