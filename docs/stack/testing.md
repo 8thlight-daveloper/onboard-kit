@@ -47,17 +47,16 @@ Identical mutations are numbered in source order across the full report, includi
 
 ### Mutation cadence
 
-A full run of a large component takes tens of minutes, and with slow tests it takes hours. Run it at these points and no more often:
+A full run of a large component takes tens of minutes, and with slow tests it takes hours. Per [0590](../decisions/0590-run-mutation-testing-in-ci.md), the run happens nightly on GitHub for the components that changed. Run it on a laptop only when a person asks:
 
 | When | What | Cost |
 | -- | -- | -- |
 | Editing a source file | The component's contract tests only | Seconds |
 | Before a commit | `just check` | Minutes |
-| Working on survivors | `just mutate <component> --short --cached` | Minutes after the first run, because unchanged files are reused |
-| Closing a component | `just mutate <component> --short`, then the full suite on every survivor | Tens of minutes, plus a survivor recheck |
-| Before a release | `just mutate <component>` with no flags, for every component | Hours; run it unattended |
+| Nightly, in CI | `just mutate <component> --workers 4` for each changed component, from `.github/workflows/mutate.yml` | Hours, on a hosted runner |
+| Working on survivors, by choice | `just mutate <component> --short --cached` | Minutes after the first run, because unchanged files are reused |
 
-A closing run lists new survivors only. A survivor on unchanged text keeps its earlier verdict through its key, so only new keys need review. Throttling stays on: a run uses `nice`, two Go jobs, and one mutant at a time.
+A local `--short` run lists new survivors only, and each one needs a recheck against the full suite. A nightly run uses the full suite. A survivor on unchanged text keeps its earlier verdict through its key, so only new keys need review. Throttling stays on: a run uses `nice`, two Go jobs, and one mutant at a time.
 
 The `contract-hardening` skill, at [`.claude/skills/contract-hardening`](../../.claude/skills/contract-hardening/SKILL.md), is the procedure for finding the ambiguity in a contract: broken variants, the mutation tool, a second independent build, and a differential run. It carries out the contract checks in [0025](../decisions/0025-contracts-and-tests.md) and is worth its cost for a component with a large input format.
 
