@@ -1,0 +1,89 @@
+name: mutate
+
+on:
+  push:
+    branches: [action-test]
+  workflow_dispatch:
+    inputs:
+      components:
+        description: Components to mutate, comma separated. Empty runs every component.
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mutate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    outputs:
+      components: ${{ steps.pick.outputs.components }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Pick the components to mutate
+        id: pick
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+          REQUESTED: ${{ github.event.inputs.components }}
+        run: |
+          if [ "$EVENT" = "push" ]; then
+            REQUESTED="record/splitter"
+          fi
+          if [ -n "$REQUESTED" ]; then
+            components="$(echo "$REQUESTED" | tr ',' '\n' | sed 's/^ *//; s/ *$//' | jq -R . | jq -sc .)"
+          elif [ "$EVENT" = "schedule" ]; then
+            base="$(gh api "repos/${{ github.repository }}/actions/workflows/mutate.yml/runs?status=success&event=schedule&branch=${{ github.event.repository.default_branch }}&per_page=1" --jq '.workflow_runs[0].head_sha // empty')"
+            echo "base: ${base:-none}"
+            components="$(bash tools/mutation/changed.sh "$base")"
+          else
+            components="$(bash tools/mutation/changed.sh "")"
+          fi
+          echo "components: $components"
+          echo "components=$components" >> "$GITHUB_OUTPUT"
+
+  mutate:
+    needs: plan
+    if: needs.plan.outputs.components != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        component: ${{ fromJSON(needs.plan.outputs.components) }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+      - name: Mutate the component
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: nix develop --command just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
+      - name: Write the job summary
+        if: always()
+        env:
+          COMPONENT: ${{ matrix.component }}
+        run: |
+          {
+            echo "## $COMPONENT"
+            echo
+            grep -E "^The mutation score" mutation.log || echo "No score. The run did not finish."
+            echo
+            echo '```'
+            grep -vE "^The mutation score" mutation.log | head -c 900000
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: mutation-${{ strategy.job-index }}
+          path: mutation.log
+          retention-days: 90
