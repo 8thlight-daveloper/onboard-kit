@@ -43,7 +43,7 @@ lint-go:
 
 # Go tests. A no-op until the Go module exists.
 test:
-    if [ -f go.mod ]; then go test -race $(just _go-packages); else echo "no Go module yet"; fi
+    if [ -f go.mod ]; then mkdir -p .scratch/tmp && TMPDIR="$PWD/.scratch/tmp" go test -race $(just _go-packages); else echo "no Go module yet"; fi
 
 # Build the binary. A no-op until the Go module exists.
 build:
