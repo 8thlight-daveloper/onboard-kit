@@ -70,7 +70,7 @@ jobs:
           COMPONENT: ${{ matrix.component }}
         run: |
           set -o pipefail
-          nix develop --command just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
+          nix develop --quiet --command just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
       - name: Write the job summary
         if: always()
         env:
