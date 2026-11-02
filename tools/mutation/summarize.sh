@@ -23,7 +23,14 @@ jq -n --arg component "$component" --argjson seconds "$seconds" --arg score "$sc
       killed: $killed, survivors: $survivors, accepted: $accepted, notViable: $notViable,
       timedOut: $timedOut, errors: $errors, total: $total}' > "$start/result.json"
 
-echo "## $component"
+if [ -n "$score" ]; then
+    headline="score $score, $survivors survivors, $minutes min"
+else
+    headline="no score, $minutes min"
+fi
+
+echo "<details>"
+echo "<summary><strong>$component</strong>: $headline</summary>"
 echo
 if [ -n "$score" ]; then
     grep -E '^The mutation score' "$log"
@@ -38,3 +45,5 @@ echo
 echo '```'
 sed -n '/^Processing /,$p' "$log" | grep -vE '^(The mutation score|Report written)' | head -c 900000
 echo '```'
+echo
+echo "</details>"
