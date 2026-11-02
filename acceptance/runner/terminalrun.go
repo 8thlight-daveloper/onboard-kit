@@ -185,6 +185,9 @@ func exitStatus(state tuitest.State) int {
 			number, _ := strconv.Atoi(match[1])
 			return 128 + number
 		}
+		if number, known := signalNumberNamed(*state.ExitSignal); known {
+			return 128 + number
+		}
 	}
 	return int(*state.Exited)
 }
@@ -204,6 +207,15 @@ func (run *terminalRun) expectModes(expected map[string]bool) *Failure {
 		return nil
 	}
 	return &Failure{Expectation: "expect-modes", Message: strings.Join(wrong, "; ")}
+}
+
+func signalNumberNamed(text string) (int, bool) {
+	for _, signal := range terminalSignals {
+		if strings.EqualFold(strings.TrimSpace(text), signal.String()) {
+			return int(signal), true
+		}
+	}
+	return 0, false
 }
 
 func sortedModeNames(modes map[string]bool) []string {

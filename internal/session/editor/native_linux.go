@@ -29,13 +29,33 @@ func platformAttributes(fd int) (nativeAttributes, bool) {
 	if err != nil {
 		return nativeAttributes{}, false
 	}
-	result.Flags = uint32(flags)
+	result.Flags = uint32(flags) &^ filesystemManagedFlags
 	return result, true
 }
+
+const filesystemManagedFlags = 0x80000
+
 func replaceableFlags(flags uint32) bool { return flags == 0 }
 func setNativeFlags(fd int, flags uint32) bool {
 	actual, err := unix.IoctlGetInt(fd, unix.FS_IOC_GETFLAGS)
-	return err == nil && uint32(actual) == flags
+	return err == nil && uint32(actual)&^filesystemManagedFlags == flags
 }
 
-func nativeComparisonProfile(fd int) int { return 0 }
+const casefoldFlag = 0x40000000
+
+func nativeComparisonProfile(fd int) int {
+	var system unix.Statfs_t
+	if unix.Fstatfs(fd, &system) != nil {
+		return 0
+	}
+	switch system.Type {
+	case unix.EXT4_SUPER_MAGIC, unix.XFS_SUPER_MAGIC, unix.BTRFS_SUPER_MAGIC, unix.TMPFS_MAGIC:
+	default:
+		return 0
+	}
+	flags, err := unix.IoctlGetInt(fd, unix.FS_IOC_GETFLAGS)
+	if err != nil || uint32(flags)&casefoldFlag != 0 {
+		return 0
+	}
+	return 1
+}

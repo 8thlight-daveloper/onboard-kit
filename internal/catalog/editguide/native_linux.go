@@ -4,9 +4,11 @@ import "golang.org/x/sys/unix"
 
 func supportedAttribute(name string) bool { return false }
 
+const filesystemManagedFlags = 0x80000
+
 func nativeFlags(fd int, stat *unix.Stat_t) (uint32, bool) {
 	flags, err := unix.IoctlGetInt(fd, unix.FS_IOC_GETFLAGS)
-	return uint32(flags), err == nil
+	return uint32(flags) &^ filesystemManagedFlags, err == nil
 }
 
 func timestamps(stat *unix.Stat_t) (int64, int64, int64, int64) {
