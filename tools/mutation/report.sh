@@ -5,6 +5,7 @@ results="$(realpath "$1")"
 cd "$(dirname "$0")"
 
 threshold="${THRESHOLD_MINUTES:-120}"
+floors="${FLOOR_DIR:-$PWD/floor}"
 
 rows="$(find "$results" -name result.json -exec cat {} + | jq -s 'sort_by(-.seconds)')"
 count="$(echo "$rows" | jq 'length')"
@@ -17,11 +18,21 @@ echo "## Mutation run"
 echo
 echo "$count components. Time threshold: $threshold min."
 echo
-echo "| Component | Mutation time | Score |"
-echo "| -- | -- | -- |"
+echo "| Component | Mutation time | Score | Floor | Against floor |"
+echo "| -- | -- | -- | -- | -- |"
 echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none")] | @tsv' | while IFS=$'\t' read -r component seconds score; do
     minutes="$(awk -v s="$seconds" 'BEGIN { printf "%.1f", s / 60 }')"
-    echo "| $component | \`$(./bar.sh "$minutes" "$threshold")\` | $score |"
+    floor="none"
+    verdict="no floor"
+    if [ -f "$floors/$component.txt" ]; then
+        floor="$(tr -d '[:space:]' < "$floors/$component.txt")"
+        if [ "$score" = "none" ]; then
+            verdict="NO SCORE"
+        else
+            verdict="$(awk -v s="$score" -v f="$floor" 'BEGIN { d = s - f; printf "%+.4f%s", d, (d < 0 ? "  BELOW" : "") }')"
+        fi
+    fi
+    echo "| $component | \`$(./bar.sh "$minutes" "$threshold")\` | $score | $floor | $verdict |"
 done
 echo
 echo '```mermaid'
