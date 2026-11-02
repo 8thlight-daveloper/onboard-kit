@@ -56,7 +56,17 @@ Name a unit for what it acts on and what it does: noun, then role. A name that n
 
 ## Where files go
 
-Put throwaway notes, drafts, and your own working files in `.scratch/`. Put generated plans and documents in `output/`. Git ignores both, except `output/.gitkeep`. Do not commit anything from either, and do not write them anywhere else in the repo.
+Put your own working files in `.scratch/`. Put generated plans and documents in `output/`. Git ignores both, except `output/.gitkeep`. Do not commit anything from either, and do not write them anywhere else in the repo.
+
+`.scratch/` has two folders that are always safe to delete and a rest that is kept:
+
+| Path | Holds | Disposal |
+| -- | -- | -- |
+| `.scratch/tmp/` | Temporary files, test output, and anything you can regenerate | Delete freely. `just clean-scratch` empties it |
+| `.scratch/worktrees/<name>/` | Git worktrees for builds, probes, and second builds | Delete once the work is merged or abandoned. `just clean-worktrees` removes the clean, merged ones |
+| Everything else in `.scratch/` | Notes, drafts, and downloaded API responses worth keeping for reference | Kept. Tools never delete it. A person prunes it |
+
+Make every worktree with `git worktree add .scratch/worktrees/<name>`. Do not put one anywhere else. Put a file in `.scratch/tmp/` unless you would be sorry to lose it.
 
 ## Trust but verify
 

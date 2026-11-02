@@ -45,6 +45,20 @@ lint-go:
 test:
     if [ -f go.mod ]; then mkdir -p .scratch/tmp && TMPDIR="$PWD/.scratch/tmp" go test -race $(just _go-packages); else echo "no Go module yet"; fi
 
+# Empty .scratch/tmp, which holds only disposable files.
+clean-scratch:
+    rm -rf .scratch/tmp && mkdir -p .scratch/tmp
+
+# Remove worktrees under .scratch/worktrees that are clean and already merged into main.
+clean-worktrees:
+    for path in .scratch/worktrees/*/; do \
+      [ -d "$path" ] || continue; \
+      head=$(git -C "$path" rev-parse HEAD); \
+      if git merge-base --is-ancestor "$head" main && [ -z "$(git -C "$path" status --porcelain)" ]; then \
+        git worktree remove "$path"; \
+      else echo "kept $path"; fi; \
+    done; git worktree prune
+
 # Build the binary. A no-op until the Go module exists.
 build:
     if [ -f go.mod ]; then go build -o output/onboard-kit ./binary; else echo "no Go module yet"; fi

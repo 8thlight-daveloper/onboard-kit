@@ -35,7 +35,7 @@ Run `just check` before you push. It formats and lints Markdown, checks that rel
 ## Where files go
 
 - `output/` holds plans and documents the tool generates. Git ignores everything in it except `output/.gitkeep`. Never commit what is in there.
-- `.scratch/` is for throwaway notes and drafts. Git ignores it. Create it when you need it.
+- `.scratch/` is for working files. Git ignores it. Create it when you need it. `.scratch/tmp/` and `.scratch/worktrees/` are safe to delete, and `just clean-scratch` and `just clean-worktrees` do it. Everything else in `.scratch/` is yours to keep or prune.
 
 ## How the code is organized
 
