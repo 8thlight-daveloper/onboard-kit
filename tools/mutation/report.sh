@@ -18,9 +18,9 @@ echo "## Mutation run"
 echo
 echo "$count components. Time threshold: $threshold min."
 echo
-echo "| Component | Mutation time | Score | Floor | Against floor |"
-echo "| -- | -- | -- | -- | -- |"
-echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none")] | @tsv' | while IFS=$'\t' read -r component seconds score; do
+echo "| Component | Mutation time | Score | Floor | Against floor | Survivors | Accepted | Timed out |"
+echo "| -- | -- | -- | -- | -- | -- | -- | -- |"
+echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none"), (.survivors // "none"), (.accepted // "none"), (.timedOut // "none")] | @tsv' | while IFS=$'\t' read -r component seconds score survivors accepted timedout; do
     minutes="$(awk -v s="$seconds" 'BEGIN { printf "%.1f", s / 60 }')"
     floor="none"
     verdict="no floor"
@@ -32,7 +32,7 @@ echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none")] | @tsv' |
             verdict="$(awk -v s="$score" -v f="$floor" 'BEGIN { d = s - f; printf "%+.4f%s", d, (d < 0 ? "  BELOW" : "") }')"
         fi
     fi
-    echo "| $component | \`$(./bar.sh "$minutes" "$threshold")\` | $score | $floor | $verdict |"
+    echo "| $component | \`$(./bar.sh "$minutes" "$threshold")\` | $score | $floor | $verdict | $survivors | $accepted | $timedout |"
 done
 echo
 echo '```mermaid'
