@@ -75,7 +75,7 @@ func runTerminal(step Step, folder string, options Options) (outcome, []Failure)
 }
 
 func terminalEnvironment(terminal *Terminal, folder string) map[string]string {
-	environment := map[string]string{"PATH": os.Getenv("PATH"), "HOME": folder, "TERM": "xterm-256color"}
+	environment := map[string]string{"PATH": os.Getenv("PATH"), "HOME": folder, "TERM": "xterm-256color", "CI": ""}
 	for name, value := range terminal.Env {
 		environment[name] = value
 	}
