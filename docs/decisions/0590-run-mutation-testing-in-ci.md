@@ -1,6 +1,6 @@
 # 0590. Run mutation testing in CI, not on a laptop
 
-Status: draft, not yet accepted by a person.
+Status: accepted by a person.
 
 Builds on [0025](0025-contracts-and-tests.md). Changes the run points in the
 mutation cadence of the [testing stack](../stack/testing.md). Keeps the
