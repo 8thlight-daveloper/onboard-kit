@@ -1,0 +1,31 @@
+name: sections-switch-survives-termination
+description: After a section switch is saved and the walk gets SIGTERM, the plan file is the complete saved one, and the same walk opens it again.
+source: docs/decisions/0570-test-the-terminal-screens-in-a-real-terminal.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: s
+        - wait-for: "Sections the plan can include"
+        - press: space
+        - wait-for: "saved"
+        - signal: TERM
+        - wait-exit: true
+    expect:
+      exit: 143
+      files:
+        acme.obk.yaml: {same-as: acceptance/testdata/acme-access-off.obk.yaml}
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 7 of 7"
+        - press: q
+        - wait-exit: true
+    expect:
+      exit: 0
+      unchanged: [acme.obk.yaml]
