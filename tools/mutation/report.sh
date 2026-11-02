@@ -6,6 +6,8 @@ cd "$(dirname "$0")"
 
 threshold="${THRESHOLD_MINUTES:-120}"
 floors="${FLOOR_DIR:-$PWD/floor}"
+bar_color="#4c78a8"
+threshold_color="#f59e0b"
 
 rows="$(find "$results" -name result.json -exec cat {} + | jq -s 'sort_by(-.seconds)')"
 count="$(echo "$rows" | jq 'length')"
@@ -36,12 +38,15 @@ echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none"), (.survivo
 done
 echo
 echo '```mermaid'
-echo "$rows" | jq -r --argjson threshold "$threshold" '
+echo "$rows" | jq -r --argjson threshold "$threshold" --arg palette "$bar_color, $threshold_color" '
     (map((.seconds / 60 * 10 | round) / 10)) as $minutes
     | (([$threshold] + $minutes | max) * 1.1 | ceil) as $ceiling
     | ([300, length * 28 + 140] | max) as $height
     | "---",
       "config:",
+      "  themeVariables:",
+      "    xyChart:",
+      "      plotColorPalette: \"\($palette)\"",
       "  xyChart:",
       "    width: 900",
       "    height: \($height)",
