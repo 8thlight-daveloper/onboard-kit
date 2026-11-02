@@ -8,7 +8,7 @@ default:
     @just --list
 
 # Everything CI runs: format check, every linter, and the tests.
-check: fmt-check lint-md lint-links lint-prose lint-go test
+check: fmt-check lint-md lint-links lint-prose lint-go check-notices test
 
 # Format Markdown in place.
 fmt:
@@ -40,6 +40,14 @@ lint-go:
       unformatted=$(echo "$tracked_and_new_go_files" | xargs gofmt -l); \
       test -z "$unformatted" && go vet $(just _go-packages); \
     else echo "no Go module yet"; fi
+
+# Write THIRD_PARTY_NOTICES.md from the modules the binary links.
+notices:
+    go run ./tools/notices generate
+
+# Fail if THIRD_PARTY_NOTICES.md does not match the modules the binary links.
+check-notices:
+    go run ./tools/notices check
 
 # Go tests. A no-op until the Go module exists.
 test:
