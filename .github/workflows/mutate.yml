@@ -78,7 +78,7 @@ jobs:
             grep -E "^The mutation score" mutation.log || echo "No score. The run did not finish."
             echo
             echo '```'
-            grep -vE "^The mutation score" mutation.log | head -c 900000
+            sed -n '/^Processing /,$p' mutation.log | grep -vE "^(The mutation score|Report written)" | head -c 900000
             echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
