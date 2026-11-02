@@ -1,8 +1,6 @@
 name: mutate
 
 on:
-  push:
-    branches: [action-test]
   workflow_dispatch:
     inputs:
       components:
@@ -36,9 +34,6 @@ jobs:
           EVENT: ${{ github.event_name }}
           REQUESTED: ${{ github.event.inputs.components }}
         run: |
-          if [ "$EVENT" = "push" ]; then
-            REQUESTED="record/splitter"
-          fi
           if [ -n "$REQUESTED" ]; then
             components="$(echo "$REQUESTED" | tr ',' '\n' | sed 's/^ *//; s/ *$//' | jq -R . | jq -sc .)"
           elif [ "$EVENT" = "schedule" ]; then
