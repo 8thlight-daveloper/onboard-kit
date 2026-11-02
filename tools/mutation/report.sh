@@ -5,7 +5,6 @@ results="$(realpath "$1")"
 cd "$(dirname "$0")"
 
 threshold="${THRESHOLD_MINUTES:-120}"
-shown=15
 
 rows="$(find "$results" -name result.json -exec cat {} + | jq -s 'sort_by(-.seconds)')"
 count="$(echo "$rows" | jq 'length')"
@@ -26,14 +25,20 @@ echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none")] | @tsv' |
 done
 echo
 echo '```mermaid'
-echo "$rows" | jq -r --argjson threshold "$threshold" --argjson shown "$shown" '
-    .[:$shown] as $top
-    | ($top | map((.seconds / 60 * 10 | round) / 10)) as $minutes
+echo "$rows" | jq -r --argjson threshold "$threshold" '
+    (map((.seconds / 60 * 10 | round) / 10)) as $minutes
     | (([$threshold] + $minutes | max) * 1.1 | ceil) as $ceiling
-    | "xychart-beta",
-      "    title \"Mutation minutes, slowest \($top | length)\"",
-      "    x-axis [\($top | map("\"" + .component + "\"") | join(", "))]",
+    | ([300, length * 28 + 140] | max) as $height
+    | "---",
+      "config:",
+      "  xyChart:",
+      "    width: 900",
+      "    height: \($height)",
+      "---",
+      "xychart-beta horizontal",
+      "    title \"Mutation minutes, \(length) components\"",
+      "    x-axis [\(map("\"" + .component + "\"") | join(", "))]",
       "    y-axis \"minutes\" 0 --> \($ceiling)",
-      "    line [\($minutes | join(", "))]",
-      "    line [\($top | map($threshold) | join(", "))]"'
+      "    bar [\($minutes | join(", "))]",
+      "    line [\(map($threshold) | join(", "))]"'
 echo '```'
