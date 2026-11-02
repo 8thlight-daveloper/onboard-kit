@@ -25,7 +25,7 @@ echo "| -- | -- | -- | -- | -- | -- | -- | -- |"
 echo "$rows" | jq -r '.[] | [.component, .seconds, (.score // "none"), (.survivors // "none"), (.accepted // "none"), (.timedOut // "none")] | @tsv' | while IFS=$'\t' read -r component seconds score survivors accepted timedout; do
     minutes="$(awk -v s="$seconds" 'BEGIN { printf "%.1f", s / 60 }')"
     floor="none"
-    verdict="no floor"
+    verdict="n/a"
     if [ -f "$floors/$component.txt" ]; then
         floor="$(tr -d '[:space:]' < "$floors/$component.txt")"
         if [ "$score" = "none" ]; then
