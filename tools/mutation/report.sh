@@ -1,13 +1,18 @@
 #!/usr/bin/env bash
 set -eu
-cd "$(dirname "$0")"
 
 results="$(realpath "$1")"
+cd "$(dirname "$0")"
+
 threshold="${THRESHOLD_MINUTES:-120}"
 shown=15
 
 rows="$(find "$results" -name result.json -exec cat {} + | jq -s 'sort_by(-.seconds)')"
 count="$(echo "$rows" | jq 'length')"
+if [ "$count" = "0" ]; then
+    echo "No result.json under $results" >&2
+    exit 1
+fi
 
 echo "## Mutation run"
 echo
