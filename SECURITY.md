@@ -2,9 +2,9 @@
 
 ## Report a problem privately
 
-Do not open a public issue for a security problem. Send a report to <SECURITY CONTACT: a maintainer must set this before the repository goes public>. Include what you found, the steps to reproduce it, and the version or commit you tested.
+Do not open a public issue for a security problem. Use the **Report a vulnerability** button on this repository's Security tab, or [open a private report](../../security/advisories/new) directly. Only the maintainers can read it. Include what you found, the steps to reproduce it, and the version or commit you tested.
 
-We will confirm that we received your report and keep you informed as we look into it. Response times: <RESPONSE TIMES: a maintainer must set these>.
+We reply in the report, so you do not need to share an email address. We will confirm that we received it and keep you informed as we look into it.
 
 ## Supported versions
 
