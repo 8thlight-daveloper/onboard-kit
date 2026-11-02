@@ -29,7 +29,7 @@ Plain definitions of the terms used in the architecture docs and decisions. Add 
 
 | Term | Meaning |
 | -- | -- |
-| Tool | The `onboard-kit` binary, the one file consultants install. Everything below this heading is a part of it. |
+| Tool | The `onboard-kit` binary, the one file onboarders and onboardees install. Everything below this heading is a part of it. |
 | Scope | Where a variable and its answer attach: the plan, or one section. A question's id is `<scope>.<name>`, such as `access.repo_url`. |
 | Audience | Who answers a question: the `onboarder`, who builds and maintains the plan, or the `onboardee`, the person being onboarded. |
 | Question group | Questions with the same name, type, and options, which a user interface can ask once and apply to every member. |

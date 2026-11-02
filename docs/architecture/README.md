@@ -2,7 +2,7 @@
 
 Architecture and planned increments for onboard-kit. The component views and
 contracts distinguish delivered behavior from work that remains. The
-[tool overview](../../README.md#the-tool) describes current commands.
+[tool overview](../../README.md#commands) describes current commands.
 
 Diagrams use Mermaid, which GitHub renders in Markdown.
 
@@ -14,8 +14,8 @@ Diagrams use Mermaid, which GitHub renders in Markdown.
 - **The plan is the lasting artifact.** The assembled document is transitional. The end state is the plan file and the onboarding helper flow, so nothing long-term may key on assembled content.
 - **Functional core, imperative shell.** Components are pure functions over immutable values, and never alter an argument. Only drivers and the entry point do input and output. See [0015](../decisions/0015-functional-core-and-imperative-shell.md).
 - **Stands alone.** Installing means getting one file. No runtime, package manager, or second download. See [0005](../decisions/0005-self-contained-install.md).
-- **Client-facing output only.** The client receives generated files, never the tool or the repo.
-- **No client specifics in the repo.** Plan files and output live in `output/`, which git ignores.
+- **Generated files travel.** The onboarder and the onboardee run the tool. Anyone else, such as the organization's onboarding owner, receives generated files and never needs the tool or the repo.
+- **No organization specifics in the repo.** Plan files and output live in `output/`, which git ignores.
 
 ## Documents
 

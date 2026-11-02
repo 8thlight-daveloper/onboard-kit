@@ -2,7 +2,7 @@
 
 Status: accepted
 
-Who and what touches onboard-kit. The consultant runs the tool. The client receives only the generated file.
+Who and what touches onboard-kit. The onboarder runs the tool to build the plan. The onboardee runs it to walk the plan from an invitation. Everyone else receives only the generated file.
 
 > [!NOTE]
 > **What is a template?**
@@ -11,30 +11,32 @@ Who and what touches onboard-kit. The consultant runs the tool. The client recei
 
 ```mermaid
 flowchart LR
-    consultant["Consultant (8th Light)"]
+    onboarder["Onboarder"]
+    onboardee["Onboardee"]
     kit["onboard-kit TUI"]
     templates[("Templates, YAML files embedded in the binary")]
     plan["Plan file"]
     doc["Generated onboarding doc"]
     reviewer["Human reviewer"]
-    client["Client onboarding owner"]
+    owner["Onboarding owner"]
 
-    consultant -->|answers questions| kit
+    onboarder -->|answers questions| kit
+    onboardee -->|opens invitation, records outcomes| kit
     templates -->|start a new plan| kit
     kit -->|saves| plan
     plan -->|reopens and regenerates| kit
     kit -->|writes| doc
     doc -->|read before sending| reviewer
-    reviewer -->|approved file| client
+    reviewer -->|approved file| owner
 ```
 
 ## Notes
 
-- Templates ship inside the binary, so every consultant on the same version starts from the same content.
+- Templates ship inside the binary, so everyone on the same version starts from the same content.
 - The plan file stands alone. It holds every section, the questions, and the answers, so it reopens without the templates. See [0030](../decisions/0030-self-contained-plan-file.md).
-- The plan file and the generated doc contain client specifics. Both are written under `output/`, which git ignores.
-- A human reviews every document before it goes to the client. The tool reminds the consultant but cannot enforce it.
-- The client never runs the tool. They get a file in the format the consultant chose. The plan file may travel with the document, and the client can keep it.
+- The plan file and the generated doc contain organization specifics. Both are written under `output/`, which git ignores.
+- A human reviews every document before it goes to the onboarding owner. The tool reminds the onboarder but cannot enforce it.
+- The onboardee runs the tool from an invitation. The onboarding owner does not need to. They get a file in the format the onboarder chose. The plan file may travel with the document, and they can keep it.
 
 ## Open questions
 
