@@ -2,7 +2,7 @@
 
 onboard-kit helps a team onboard a new person. Someone who knows the team, the onboarder, answers questions once. The tool turns those answers into a plan: a single YAML file that holds the onboarding steps, who to ask, and where things live. The new person, the onboardee, opens an invitation and works through the plan in a terminal. They record what worked and what did not, so the onboarder learns what to fix.
 
-The tool is a single command-line binary, `onboard-kit`. It is an early release. It builds for macOS arm64 only, and there is no packaged download yet, so you build it from source.
+The tool is a single command-line binary, `onboard-kit`. It is an early release. It runs on macOS arm64 and on Linux, `amd64` and `arm64`. Windows users run the Linux build inside WSL.
 
 ## How it works
 
@@ -13,9 +13,38 @@ The tool is a single command-line binary, `onboard-kit`. It is an early release.
 
 Assembly is deterministic. The same plan and templates always produce the same document, and no model runs during assembly. The design notes are in [`docs/architecture`](docs/architecture/README.md), and each choice has a short record in [`docs/decisions`](docs/decisions/).
 
-## Build and try it
+## Install
 
-You need [Nix](https://nixos.org/download) with flakes enabled. The dev shell supplies Go and every other tool at fixed versions.
+With Homebrew on macOS or Linux:
+
+```sh
+brew install 8thlight/tap/onboard-kit
+```
+
+With Nix, run it without installing, or add it to your profile:
+
+```sh
+nix run github:8thlight/onboard-kit
+nix profile install github:8thlight/onboard-kit
+```
+
+Or download the archive for your system from the [Releases](https://github.com/8thlight/onboard-kit/releases) page. The names read `onboard-kit_<version>_<os>_<arch>.tar.gz`, for `darwin_arm64`, `linux_amd64` or `linux_arm64`. Check it, unpack it, and put the binary on your path:
+
+```sh
+gh release download v0.1.0 --repo 8thlight/onboard-kit --pattern '*darwin_arm64*' --pattern checksums.txt
+grep ' onboard-kit_v0.1.0_darwin_arm64.tar.gz$' checksums.txt | shasum -a 256 -c
+gh attestation verify onboard-kit_v0.1.0_darwin_arm64.tar.gz --repo 8thlight/onboard-kit
+tar -xzf onboard-kit_v0.1.0_darwin_arm64.tar.gz
+install -m 0755 onboard-kit_v0.1.0_darwin_arm64/onboard-kit ~/.local/bin/onboard-kit
+```
+
+The attestation shows that the archive was built from this repository by its release workflow. On Linux, use `sha256sum -c` in place of `shasum -a 256 -c` if you prefer. `onboard-kit --version` prints the installed version.
+
+On Windows, install inside WSL and use the Linux archive: `linux_amd64` on most PCs, `linux_arm64` on Windows on Arm. Keep your plan files in the Linux file system, not under `/mnt/c`.
+
+## Build from source
+
+To build it yourself or try the demo, you need [Nix](https://nixos.org/download) with flakes enabled. The dev shell supplies Go and every other tool at fixed versions.
 
 ```sh
 nix develop                                   # or `direnv allow`, to enter the shell on cd

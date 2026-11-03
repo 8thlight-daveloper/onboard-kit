@@ -28,7 +28,7 @@ Write for a newcomer who has never heard of us.
 
 ## Set up and check your work
 
-Tools come from a Nix dev shell, so everyone has the same versions. See the [README](README.md#build-and-try-it) for setup.
+Tools come from a Nix dev shell, so everyone has the same versions. See the [README](README.md#build-from-source) for setup.
 
 Run `just check` before you push. It formats and lints Markdown, checks that relative links and heading anchors resolve, applies the voice rules (no em dashes, no banned filler words, sentence case headings), and runs the tests. `just fmt` fixes formatting. `just hook` runs the check before every commit. CI runs the same recipe, so a green local run means a green CI run.
 
