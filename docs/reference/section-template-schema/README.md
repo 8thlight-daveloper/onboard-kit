@@ -4,6 +4,8 @@ Status: accepted. A worked example lives in [examples/acme](../examples/acme/REA
 
 A section template, often shortened to template, is one YAML file at `templates/<id>.yaml`. A plan holds every standard template as a section, copied unchanged with one added field, `source`. So a template and a section have the same shape, and a template file is a section before it is in a plan. The domain model has one Section type. A template is a Section with no `source`, and the file's `schemaVersion` belongs to the loader and the migrator. Which sections are active is computed from the plan's answers whenever it is needed, and variables stay in place until the document is assembled. See [0030](../../decisions/0030-self-contained-plan-file.md).
 
+The embedded templates are generic. They hold no client or organization details, and an organization puts its own specifics in its plan.
+
 ## Parts
 
 | Doc | Covers |
