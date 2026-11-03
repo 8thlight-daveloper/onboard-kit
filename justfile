@@ -1,8 +1,8 @@
 # One command surface for the repo. Run `just` to list recipes.
 set shell := ["bash", "-euo", "pipefail", "-c"]
 
-md_paths := "docs AGENTS.md README.md CONTRIBUTING.md"
-link_paths := "'docs/**/*.md' AGENTS.md README.md CONTRIBUTING.md"
+md_paths := "docs AGENTS.md README.md CONTRIBUTING.md SECURITY.md"
+link_paths := "'docs/**/*.md' AGENTS.md README.md CONTRIBUTING.md SECURITY.md"
 
 default:
     @just --list

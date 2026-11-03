@@ -2,7 +2,7 @@
 
 ## Report a problem privately
 
-Do not open a public issue for a security problem. Use the **Report a vulnerability** button on this repository's Security tab, or [open a private report](../../security/advisories/new) directly. Only the maintainers can read it. Include what you found, the steps to reproduce it, and the version or commit you tested.
+Do not open a public issue for a security problem. Use the **Report a vulnerability** button on this repository's Security tab, or [open a private report](https://github.com/8thlight/onboard-kit/security/advisories/new) directly. Only the maintainers can read it. Include what you found, the steps to reproduce it, and the version or commit you tested.
 
 We reply in the report, so you do not need to share an email address. We will confirm that we received it and keep you informed as we look into it.
 
