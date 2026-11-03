@@ -1,0 +1,93 @@
+name: release
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          summarize: false
+      - name: Require the tag to match VERSION
+        run: |
+          expected="v$(tr -d '[:space:]' < VERSION)"
+          if [ "${VERSION}" != "${expected}" ]; then
+            echo "::error::The tag ${VERSION} does not match VERSION (${expected}). Delete the tag and use just release."
+            exit 1
+          fi
+      - name: Run every check
+        run: nix develop --quiet --command just check
+
+  archives:
+    needs: guard
+    uses: ./.github/workflows/release-archives.yml
+    with:
+      version: ${{ github.ref_name }}
+
+  publish:
+    needs: archives
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    env:
+      VERSION: ${{ github.ref_name }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          summarize: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: output/release
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: output/release/*.tar.gz
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          flags=""
+          if [[ "${VERSION}" == v0.* ]]; then flags="--prerelease"; fi
+          gh release create "${VERSION}" output/release/* --generate-notes --verify-tag ${flags}
+      - name: Update the Homebrew tap
+        env:
+          TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
+          TAP_URL: git@github.com:${{ vars.HOMEBREW_TAP_REPOSITORY || '8thlight/homebrew-tap' }}.git
+        run: |
+          if [ -z "${TAP_DEPLOY_KEY}" ]; then
+            echo "::notice::HOMEBREW_TAP_DEPLOY_KEY is not set, so the tap is not updated."
+            exit 0
+          fi
+          nix develop --quiet --command just update-homebrew-tap "${VERSION}" main
+      - name: Explain what to do after a failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${VERSION}" >/dev/null 2>&1; then
+            {
+              echo "### ${VERSION} is published, so do not delete it"
+              echo "People may already have these files. If only the tap step failed, run the update-homebrew-tap workflow with ${VERSION}. For any other problem, fix it and release the next version."
+            } >> "${GITHUB_STEP_SUMMARY}"
+          else
+            {
+              echo "### Nothing was published for ${VERSION}"
+              echo "Delete the tag, fix the problem on main, then tag the new commit again:"
+              echo '```sh'
+              echo "git push origin --delete ${VERSION} && git tag -d ${VERSION}"
+              echo "git tag -a ${VERSION} -m \"onboard-kit ${VERSION}\" && git push origin ${VERSION}"
+              echo '```'
+            } >> "${GITHUB_STEP_SUMMARY}"
+          fi

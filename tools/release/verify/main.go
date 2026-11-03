@@ -30,8 +30,9 @@ func run(args []string, stdout, stderr io.Writer) error {
 	if options.NArg() != 0 {
 		return fmt.Errorf("unexpected arguments: %v", options.Args())
 	}
-	if runtime.GOOS != "darwin" || runtime.GOARCH != "arm64" {
-		return fmt.Errorf("run on macOS arm64 (darwin/arm64), not %s/%s", runtime.GOOS, runtime.GOARCH)
+	target := runtime.GOOS + "/" + runtime.GOARCH
+	if _, supported := linuxMachines[runtime.GOARCH]; target != "darwin/arm64" && !(runtime.GOOS == "linux" && supported) {
+		return fmt.Errorf("run on darwin/arm64, linux/amd64 or linux/arm64, not %s", target)
 	}
 	root, err := os.Getwd()
 	if err != nil {
@@ -49,13 +50,13 @@ func run(args []string, stdout, stderr io.Writer) error {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Minute)
 	defer cancel()
-	buildEnvironment := append(os.Environ(), "CGO_ENABLED=0", "GOOS=darwin", "GOARCH=arm64", "GOMAXPROCS=2")
+	buildEnvironment := append(os.Environ(), "CGO_ENABLED=0", "GOOS="+runtime.GOOS, "GOARCH="+runtime.GOARCH, "GOMAXPROCS=2")
 	if *binary == "" {
 		*binary = filepath.Join(root, "output", "release", "onboard-kit")
 		if err := os.MkdirAll(filepath.Dir(*binary), 0o755); err != nil {
 			return err
 		}
-		fmt.Fprintln(stdout, "Building darwin/arm64 artifact with CGO disabled.")
+		fmt.Fprintf(stdout, "Building %s artifact with CGO disabled.\n", target)
 		if err := command(ctx, root, buildEnvironment, stdout, stderr, "go", "build", "-p=2", "-trimpath", "-o", *binary, "./binary"); err != nil {
 			return err
 		}
@@ -68,14 +69,18 @@ func run(args []string, stdout, stderr io.Writer) error {
 	if err != nil {
 		return err
 	}
-	libraries, err := inspectArtifact(artifact)
-	if err != nil {
-		return err
-	}
-	for _, library := range libraries {
-		fmt.Fprintln(stdout, "System library:", library)
-	}
-	if err := command(ctx, root, os.Environ(), stdout, stderr, "/usr/bin/codesign", "--verify", "--strict", artifact); err != nil {
+	if runtime.GOOS == "darwin" {
+		libraries, err := inspectArtifact(artifact)
+		if err != nil {
+			return err
+		}
+		for _, library := range libraries {
+			fmt.Fprintln(stdout, "System library:", library)
+		}
+		if err := command(ctx, root, os.Environ(), stdout, stderr, "/usr/bin/codesign", "--verify", "--strict", artifact); err != nil {
+			return err
+		}
+	} else if err := inspectStaticArtifact(artifact, linuxMachines[runtime.GOARCH]); err != nil {
 		return err
 	}
 	scratch, err := verificationWorkspace(root)
@@ -156,7 +161,7 @@ func verificationWorkspace(root string) (string, error) {
 }
 
 func isolatedEnvironment(scratch string) ([]string, error) {
-	for _, folder := range []string{"bin", "temporary", "state"} {
+	for _, folder := range []string{"bin", "temporary", "state", "home", "cache"} {
 		if err := os.Mkdir(filepath.Join(scratch, folder), 0o700); err != nil {
 			return nil, err
 		}
@@ -165,6 +170,8 @@ func isolatedEnvironment(scratch string) ([]string, error) {
 		"PATH=" + filepath.Join(scratch, "bin"),
 		"TMPDIR=" + filepath.Join(scratch, "temporary"),
 		"OBK_HOME=" + filepath.Join(scratch, "state"),
+		"HOME=" + filepath.Join(scratch, "home"),
+		"XDG_CACHE_HOME=" + filepath.Join(scratch, "cache"),
 		"TERM=dumb",
 	}, nil
 }

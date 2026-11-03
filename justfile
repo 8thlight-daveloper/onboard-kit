@@ -94,6 +94,30 @@ render-homebrew-formula version repository=env("GITHUB_REPOSITORY", "8thlight/on
 acceptance:
     if [ -f go.mod ]; then go test -race -count=1 -v ./acceptance/; else echo "no Go module yet"; fi
 
+# Tag and push a release after the checks and workflows pass. VERSION is MAJOR.MINOR.PATCH.
+release version:
+    bash tools/release/release.sh {{ version }}
+
+# Commit the rendered formula to the Homebrew tap. Needs TAP_DEPLOY_KEY and TAP_URL.
+update-homebrew-tap version branch:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    : "${TAP_DEPLOY_KEY:?set TAP_DEPLOY_KEY to the private key}"
+    work="$(mktemp -d)"
+    trap 'rm -rf "$work"' EXIT
+    install -m 0600 /dev/null "$work/key"
+    printf '%s\n' "$TAP_DEPLOY_KEY" > "$work/key"
+    export GIT_SSH_COMMAND="ssh -i $work/key -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
+    git clone --quiet "${TAP_URL:?set TAP_URL to the tap repository}" "$work/tap"
+    cd "$work/tap"
+    git checkout --quiet -B {{ branch }}
+    mkdir -p Formula
+    cp "{{ justfile_directory() }}/output/release/onboard-kit.rb" Formula/onboard-kit.rb
+    git add Formula/onboard-kit.rb
+    if git diff --cached --quiet; then echo "The tap already has this formula."; exit 0; fi
+    git -c user.name="onboard-kit release" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit --quiet -m "onboard-kit {{ version }}"
+    git push --quiet origin {{ branch }}
+
 release-check *flags:
     go run ./tools/release/verify {{ flags }}
 

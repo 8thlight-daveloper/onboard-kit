@@ -1,6 +1,7 @@
 package main
 
 import (
+	"debug/elf"
 	"debug/macho"
 	"encoding/binary"
 	"os"
@@ -104,10 +105,12 @@ func TestAcceptanceEnvironmentHasNoInheritedToolsOrCredentials(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := map[string]string{
-		"PATH":     filepath.Join(scratch, "bin"),
-		"TMPDIR":   filepath.Join(scratch, "temporary"),
-		"OBK_HOME": filepath.Join(scratch, "state"),
-		"TERM":     "dumb",
+		"PATH":           filepath.Join(scratch, "bin"),
+		"TMPDIR":         filepath.Join(scratch, "temporary"),
+		"OBK_HOME":       filepath.Join(scratch, "state"),
+		"HOME":           filepath.Join(scratch, "home"),
+		"XDG_CACHE_HOME": filepath.Join(scratch, "cache"),
+		"TERM":           "dumb",
 	}
 	for _, entry := range environment {
 		key, value, _ := strings.Cut(entry, "=")
@@ -122,5 +125,68 @@ func TestAcceptanceEnvironmentHasNoInheritedToolsOrCredentials(t *testing.T) {
 	entries, err := os.ReadDir(filepath.Join(scratch, "bin"))
 	if err != nil || len(entries) != 0 {
 		t.Fatalf("acceptance PATH must be empty: %v, %v", entries, err)
+	}
+}
+
+func elfHeader(machine elf.Machine, kind elf.Type, programs []elf.ProgType) []byte {
+	header := make([]byte, 64+56*len(programs))
+	copy(header, elf.ELFMAG)
+	header[elf.EI_CLASS] = byte(elf.ELFCLASS64)
+	header[elf.EI_DATA] = byte(elf.ELFDATA2LSB)
+	header[elf.EI_VERSION] = byte(elf.EV_CURRENT)
+	binary.LittleEndian.PutUint16(header[16:], uint16(kind))
+	binary.LittleEndian.PutUint16(header[18:], uint16(machine))
+	binary.LittleEndian.PutUint32(header[20:], uint32(elf.EV_CURRENT))
+	binary.LittleEndian.PutUint64(header[32:], 64)
+	binary.LittleEndian.PutUint16(header[52:], 64)
+	binary.LittleEndian.PutUint16(header[54:], 56)
+	binary.LittleEndian.PutUint16(header[56:], uint16(len(programs)))
+	for index, program := range programs {
+		binary.LittleEndian.PutUint32(header[64+56*index:], uint32(program))
+	}
+	return header
+}
+
+func TestArtifactMustBeAStaticLinuxExecutableForItsArchitecture(t *testing.T) {
+	t.Parallel()
+	for _, c := range []struct {
+		name     string
+		machine  elf.Machine
+		kind     elf.Type
+		programs []elf.ProgType
+		mode     os.FileMode
+		allowed  bool
+	}{
+		{"static-amd64", elf.EM_X86_64, elf.ET_EXEC, []elf.ProgType{elf.PT_LOAD}, 0o755, true},
+		{"wrong-architecture", elf.EM_AARCH64, elf.ET_EXEC, []elf.ProgType{elf.PT_LOAD}, 0o755, false},
+		{"shared-object", elf.EM_X86_64, elf.ET_DYN, []elf.ProgType{elf.PT_LOAD}, 0o755, false},
+		{"names-an-interpreter", elf.EM_X86_64, elf.ET_EXEC, []elf.ProgType{elf.PT_INTERP, elf.PT_LOAD}, 0o755, false},
+		{"is-dynamic", elf.EM_X86_64, elf.ET_EXEC, []elf.ProgType{elf.PT_LOAD, elf.PT_DYNAMIC}, 0o755, false},
+		{"not-executable", elf.EM_X86_64, elf.ET_EXEC, []elf.ProgType{elf.PT_LOAD}, 0o644, false},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			t.Parallel()
+			path := filepath.Join(t.TempDir(), "artifact")
+			if err := os.WriteFile(path, elfHeader(c.machine, c.kind, c.programs), c.mode); err != nil {
+				t.Fatal(err)
+			}
+			err := inspectStaticArtifact(path, elf.EM_X86_64)
+			if (err == nil) != c.allowed {
+				t.Fatalf("allowed %t, got %v", c.allowed, err)
+			}
+		})
+	}
+}
+
+func TestArtifactMustBeELFNotMachO(t *testing.T) {
+	t.Parallel()
+	path := filepath.Join(t.TempDir(), "artifact")
+	header := make([]byte, 32)
+	binary.LittleEndian.PutUint32(header, macho.Magic64)
+	if err := os.WriteFile(path, header, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := inspectStaticArtifact(path, elf.EM_X86_64); err == nil {
+		t.Fatal("a Mach-O file must be refused")
 	}
 }

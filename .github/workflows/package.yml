@@ -9,6 +9,11 @@ permissions:
   contents: read
 
 jobs:
+  archives:
+    uses: ./.github/workflows/release-archives.yml
+    with:
+      version: v0.0.0-ci
+
   package:
     runs-on: ubuntu-latest
     steps:
@@ -16,9 +21,5 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
         with:
           summarize: false
-      - name: Build the release archives
-        run: nix develop --quiet --command just build-release-archives v0.0.0-ci
-      - name: Render the Homebrew formula
-        run: nix develop --quiet --command just render-homebrew-formula v0.0.0-ci
       - name: Build the Nix package
         run: nix build .#default --no-link

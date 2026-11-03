@@ -17,20 +17,22 @@ The repository is public, so release URLs need no authentication.
 
 ## Local verification
 
-Run from the repository root on macOS arm64:
+Run from the repository root on macOS arm64, Linux amd64 or Linux arm64:
 
 ```sh
 nix develop -c just release-check
 ```
 
-This builds `output/release/onboard-kit` once with CGO disabled. It checks that
-the artifact is an arm64 Mach-O executable, permits only
+This builds `output/release/onboard-kit` once with CGO disabled. On macOS it
+checks that the artifact is an arm64 Mach-O executable, permits only
 `/usr/lib/libSystem.B.dylib` and `/usr/lib/libresolv.9.dylib`, and runs
-`codesign --verify --strict`. Any other library fails verification and needs
-review, not an automatic exception. Signature verification does not establish
+`codesign --verify --strict`. On Linux it checks that the artifact is a static
+ELF executable for the host architecture, with no interpreter and no shared
+library. Any other library fails verification and needs review, not an
+automatic exception. Signature verification does not establish
 distribution signing, notarization, or browser-download quarantine behavior.
 
-The development machine needs Go and the macOS `codesign` tool. The compiled
+The development machine needs Go, and on macOS the `codesign` tool. The compiled
 acceptance runner and the artifact run with no inherited environment, an
 empty directory for PATH, and isolated temporary files and tool state. The
 runner receives the artifact's absolute path and does not rebuild it. Its
@@ -50,6 +52,9 @@ nix develop -c just release-check --binary output/release/onboard-kit
 ```
 
 Other hosts fail with an explanation rather than silently skipping checks.
+The release workflow runs the same command on each target's own runner against the
+binary taken from the shipped archive, and the package workflow does the same on
+every push.
 The scenario files and their matching rules are unchanged. The checks cover
 the current scenarios, including supplied templates and all eighty embedded
 catalog exports; they do not claim that offline network isolation, distribution channels, release

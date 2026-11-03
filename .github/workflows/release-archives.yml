@@ -1,0 +1,61 @@
+name: release-archives
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          summarize: false
+      - name: Build the archives
+        run: nix develop --quiet --command just build-release-archives "${VERSION}"
+      - name: Render the Homebrew formula
+        run: nix develop --quiet --command just render-homebrew-formula "${VERSION}"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release
+          path: output/release/*
+          if-no-files-found: error
+
+  verify:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-latest
+            system: darwin_arm64
+          - runner: ubuntu-latest
+            system: linux_amd64
+          - runner: ubuntu-24.04-arm
+            system: linux_arm64
+    runs-on: ${{ matrix.runner }}
+    env:
+      VERSION: ${{ inputs.version }}
+      SYSTEM: ${{ matrix.system }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+        with:
+          summarize: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release
+          path: output/release
+      - name: Verify the shipped binary
+        run: |
+          tar -xzf "output/release/onboard-kit_${VERSION}_${SYSTEM}.tar.gz" -C output/release
+          nix develop --quiet --command just release-check --binary "output/release/onboard-kit_${VERSION}_${SYSTEM}/onboard-kit"
