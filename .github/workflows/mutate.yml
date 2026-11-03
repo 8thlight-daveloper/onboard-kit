@@ -76,10 +76,21 @@ jobs:
         run: |
           set -o pipefail
           setting=()
+          if [ "$TEST_TMPDIR" = "tmpfs" ]; then
+            TEST_TMPDIR=/mnt/mutate-tmp
+            sudo mkdir -p "$TEST_TMPDIR"
+            sudo mount -t tmpfs -o size=2g tmpfs "$TEST_TMPDIR"
+            sudo chmod 1777 "$TEST_TMPDIR"
+          fi
           if [ -n "$TEST_TMPDIR" ]; then
             setting=(env "TMPDIR=$TEST_TMPDIR")
             echo "TMPDIR for the tests: $TEST_TMPDIR"
           fi
+          (
+            while sleep 20; do
+              echo "watch: $(free -m | awk '/Mem/ { print $3 "/" $2 " MB used" }'); $(df -m --output=used,avail "${TEST_TMPDIR:-/tmp}" | tail -n 1) MB used, avail in tmp; $(ps -eo rss,args --sort=-rss | sed -n 2p | cut -c1-140)"
+            done
+          ) &
           nix develop --quiet --command "${setting[@]}" just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
       - name: Write the job summary
         if: always()
