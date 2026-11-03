@@ -24,6 +24,5 @@ becomes a decision.
 | [AI-era pairing and team practices](ai-era-pairing-and-ceremonies.md) | idea, 2026-10-29 |
 | [Bare command and first run](bare-command-and-first-run.md) | idea, 2026-10-29 |
 | [Codebase tutor integration](codebase-tutor-integration.md) | idea, 2026-10-29 |
-| [Going public](going-public.md) | researched, 2026-11-02 |
 | [Install script in the invitation](install-script-in-invitation.md) | idea, 2026-10-29 |
 | [Send messages as the user](send-as-the-user.md) | researched, 2026-10-29 |
