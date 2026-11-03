@@ -68,7 +68,7 @@ renders the formula. This follows repo-tutor. GoReleaser was not evaluated.
 - The tap needs a deploy key with write access for this repository, and this
   repository needs the private half as the `HOMEBREW_TAP_DEPLOY_KEY` secret.
   A tap admin adds the public key after the transfer to the organization.
-  The tap's README must say that formulas here are MIT, not GPL.
+  The generated formula declares `license "MIT"`.
 - Each added platform costs a runner and a verification run.
 
 ## Alternatives considered
