@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping improve onboard-kit. This page says what to check before you open a pull request. Be kind to each other, as the [code of conduct](CODE_OF_CONDUCT.md) asks.
+Thanks for helping improve onboard-kit. This page says what to check before you open a pull request. Be kind to each other.
 
 For a larger change, open an issue first so we can talk about the approach before you write code. Small fixes to docs, templates, and tests can go straight to a pull request.
 

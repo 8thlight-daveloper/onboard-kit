@@ -22,9 +22,7 @@ Runme runs the shell commands in fenced code blocks of Markdown files. It has a 
 
 What it means for us: it covers running commands from a document. It has no plan model, owners, timing, or tracking. If our renderer emits named fenced code blocks, documents might run in Runme without our tool.
 
-Caveat: several forks and mirrors exist. Confirm which repository is current.
-
-Sources: [Runme repository](https://github.com/elotl/runme), [CLI docs, via mirror](https://proxy-dev.blitzz.co/proxy/123456/docs.runme.dev/getting-started/cli)
+Sources: [Runme repository](https://github.com/runmedev/runme), [CLI docs](https://docs.runme.dev/getting-started/cli/)
 
 ### Atuin Desktop
 
