@@ -1,5 +1,5 @@
 {
-  "globs": ["docs/**/*.md", "AGENTS.md", "README.md", "CONTRIBUTING.md"],
+  "globs": ["docs/**/*.md", "AGENTS.md", "README.md", "CONTRIBUTING.md", "SECURITY.md"],
   "ignores": ["docs/reference/examples/acme/acme.md"],
   "config": {
     "default": true,
