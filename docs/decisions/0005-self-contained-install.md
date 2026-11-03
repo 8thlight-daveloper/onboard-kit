@@ -1,6 +1,8 @@
 # 0005. Self-contained install
 
-Status: accepted
+Status: superseded in part by [0600](0600-release-platforms-and-channels.md)
+
+0600 replaces the platform list and the Nix channel clause. Everything else here still applies.
 
 ## Context
 
