@@ -47,17 +47,9 @@ func run(args []string) int {
 	}
 	defer os.Remove(filepath.Join(root, reportFile))
 	defer os.Remove(filepath.Join(root, historyFile))
-	var results []result
-	if *cached {
-		results, err = cachedResults(root, component, func(target string) error {
-			return runGomu(*gomu, target, component, *workers, *timeout, *short)
-		}, *short)
-	} else {
-		err = runGomu(*gomu, "./internal/"+component, component, *workers, *timeout, *short)
-		if err == nil {
-			results, err = freshResults(root)
-		}
-	}
+	results, err := fileResults(root, component, func(target string) error {
+		return runGomu(*gomu, target, component, *workers, *timeout, *short)
+	}, *short, *cached)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return exitProblem
@@ -77,7 +69,7 @@ func freshResults(root string) ([]result, error) {
 	return parsed.Results, nil
 }
 
-func cachedResults(root string, component string, mutate func(target string) error, short bool) ([]result, error) {
+func fileResults(root string, component string, mutate func(target string) error, short bool, useCache bool) ([]result, error) {
 	names, err := sourceFiles(root, component)
 	if err != nil {
 		return nil, err
@@ -93,10 +85,12 @@ func cachedResults(root string, component string, mutate func(target string) err
 			return nil, err
 		}
 		path := cachePath(root, component, name, cacheKey(source, suite, short))
-		if results, ok := readCached(path); ok {
-			fmt.Fprintf(os.Stderr, "%s: reused %d results\n", name, len(results))
-			all = append(all, results...)
-			continue
+		if useCache {
+			if results, ok := readCached(path); ok {
+				fmt.Fprintf(os.Stderr, "%s: reused %d results\n", name, len(results))
+				all = append(all, results...)
+				continue
+			}
 		}
 		fmt.Fprintf(os.Stderr, "%s: mutating\n", name)
 		if err := mutate("./internal/" + component + "/" + name); err != nil {
@@ -107,10 +101,12 @@ func cachedResults(root string, component string, mutate func(target string) err
 			return nil, err
 		}
 		os.Remove(filepath.Join(root, reportFile))
-		if err := writeCached(path, results); err != nil {
-			return nil, err
+		if useCache {
+			if err := writeCached(path, results); err != nil {
+				return nil, err
+			}
+			forgetStale(root, component, name, path)
 		}
-		forgetStale(root, component, name, path)
 		all = append(all, results...)
 	}
 	return all, nil

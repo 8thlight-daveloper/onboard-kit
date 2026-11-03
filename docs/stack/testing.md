@@ -56,7 +56,7 @@ A full run of a large component takes tens of minutes, and with slow tests it ta
 | Nightly, in CI | `just mutate <component> --workers 4` for each changed component, from `.github/workflows/mutate.yml` | Hours, on a hosted runner |
 | Working on survivors, by choice | `just mutate <component> --short --cached` | Minutes after the first run, because unchanged files are reused |
 
-A local `--short` run lists new survivors only, and each one needs a recheck against the full suite. A nightly run uses the full suite. A survivor on unchanged text keeps its earlier verdict through its key, so only new keys need review. Throttling stays on: a run uses `nice`, two Go jobs, and one mutant at a time.
+A run mutates only the source files that build on the machine it runs on, so a file such as `native_darwin.go` is skipped on a Linux runner and `native_linux.go` on a Mac. Scores from the two machines cover different files. A local `--short` run lists new survivors only, and each one needs a recheck against the full suite. A nightly run uses the full suite. A survivor on unchanged text keeps its earlier verdict through its key, so only new keys need review. Throttling stays on: a run uses `nice`, two Go jobs, and one mutant at a time.
 
 The `contract-hardening` skill, at [`.agents/skills/contract-hardening`](../../.agents/skills/contract-hardening/SKILL.md), is the procedure for finding the ambiguity in a contract: broken variants, the mutation tool, a second independent build, and a differential run. It carries out the contract checks in [0025](../decisions/0025-contracts-and-tests.md) and is worth its cost for a component with a large input format.
 

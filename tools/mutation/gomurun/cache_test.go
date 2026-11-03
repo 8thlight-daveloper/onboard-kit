@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"testing"
 )
 
@@ -69,6 +70,44 @@ func TestSourceFilesLeavesOutTestsAndFolders(t *testing.T) {
 	}
 }
 
+func TestSourceFilesLeaveOutFilesThatThisPlatformDoesNotBuild(t *testing.T) {
+	root := t.TempDir()
+	folder := filepath.Join(root, "internal", "noun", "role")
+	if err := os.MkdirAll(folder, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	other := "windows"
+	if runtime.GOOS == other {
+		other = "plan9"
+	}
+	files := map[string]string{
+		"a.go":                        "package role\n",
+		"b_" + runtime.GOOS + ".go":   "package role\n",
+		"c_" + other + ".go":          "package role\n",
+		"d_" + runtime.GOARCH + ".go": "package role\n",
+		"e.go":                        "//go:build " + other + "\n\npackage role\n",
+		"f.go":                        "//go:build !" + other + "\n\npackage role\n",
+	}
+	for name, text := range files {
+		if err := os.WriteFile(filepath.Join(folder, name), []byte(text), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	names, err := sourceFiles(root, "noun/role")
+	if err != nil {
+		t.Fatal(err)
+	}
+	want := []string{"a.go", "b_" + runtime.GOOS + ".go", "d_" + runtime.GOARCH + ".go", "f.go"}
+	if len(names) != len(want) {
+		t.Fatalf("got %v, want %v", names, want)
+	}
+	for index := range want {
+		if names[index] != want[index] {
+			t.Fatalf("got %v, want %v", names, want)
+		}
+	}
+}
+
 func TestCachedResultsMutateOnlyFilesWhoseKeyChanged(t *testing.T) {
 	root := t.TempDir()
 	folder := filepath.Join(root, "internal", "noun", "role")
@@ -88,18 +127,18 @@ func TestCachedResultsMutateOnlyFilesWhoseKeyChanged(t *testing.T) {
 		mutated = append(mutated, filepath.Base(target))
 		return os.WriteFile(filepath.Join(root, reportFile), []byte(`{"results":[{"mutant":{"filePath":"`+filepath.Base(target)+`"},"status":"KILLED"}]}`), 0o644)
 	}
-	first, err := cachedResults(root, "noun/role", mutate, false)
+	first, err := fileResults(root, "noun/role", mutate, false, true)
 	if err != nil || len(first) != 2 || len(mutated) != 2 {
 		t.Fatalf("first run: %v %v %v", first, mutated, err)
 	}
 	mutated = nil
-	if _, err := cachedResults(root, "noun/role", mutate, false); err != nil || len(mutated) != 0 {
+	if _, err := fileResults(root, "noun/role", mutate, false, true); err != nil || len(mutated) != 0 {
 		t.Fatalf("second run mutated %v: %v", mutated, err)
 	}
 	if err := os.WriteFile(filepath.Join(folder, "b.go"), []byte("package role // edited"), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := cachedResults(root, "noun/role", mutate, false); err != nil || len(mutated) != 1 || mutated[0] != "b.go" {
+	if _, err := fileResults(root, "noun/role", mutate, false, true); err != nil || len(mutated) != 1 || mutated[0] != "b.go" {
 		t.Fatalf("third run mutated %v: %v", mutated, err)
 	}
 	matches, _ := filepath.Glob(filepath.Join(root, cacheFolder, "noun_role", "b.go.*.json"))

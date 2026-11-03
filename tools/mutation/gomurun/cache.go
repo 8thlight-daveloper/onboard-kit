@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"go/build"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -19,14 +20,18 @@ const (
 )
 
 func sourceFiles(root string, component string) ([]string, error) {
-	entries, err := os.ReadDir(filepath.Join(root, "internal", component))
+	folder := filepath.Join(root, "internal", component)
+	entries, err := os.ReadDir(folder)
 	if err != nil {
 		return nil, err
 	}
 	var names []string
 	for _, entry := range entries {
 		name := entry.Name()
-		if !entry.IsDir() && strings.HasSuffix(name, ".go") && !strings.HasSuffix(name, "_test.go") {
+		if entry.IsDir() || !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") {
+			continue
+		}
+		if built, err := build.Default.MatchFile(folder, name); err == nil && built {
 			names = append(names, name)
 		}
 	}
