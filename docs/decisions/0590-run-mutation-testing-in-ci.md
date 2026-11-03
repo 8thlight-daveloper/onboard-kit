@@ -27,9 +27,9 @@ starting runs on a laptop by default.
 
 **The job.** A workflow, `.github/workflows/mutate.yml`, runs one job per
 component, so results come back as each component finishes and a slow component
-delays no other. It runs nightly once the repository is public. Until then a
-person starts it by hand, for chosen components or for all of them. A manual run
-never moves the starting point of the nightly run.
+delays no other. It runs nightly at 07:00 UTC. A person can also start it by hand, for chosen
+components or for all of them. A manual run never moves the starting point of
+the nightly run.
 
 **Only what changed.** A first job finds the head commit of the last successful
 nightly run and lists the components whose `internal/<component>/` or
@@ -39,6 +39,18 @@ domain model, `go.mod`, `go.sum`, the mutation tool, the Nix files, the
 or no common history with it, every component runs. With nothing changed, the
 run ends in seconds. A run that fails does not move the starting point, so the
 next night covers the same changes again.
+
+**Guards.** A mutant can make a loop run forever and fill memory faster than
+the test timeout fires, and that killed the hosted runner. Each test run now
+starts under a cap of 3 GB of address space, set by `tools/mutation/limitmem.sh`
+through `go test -exec`. A run that hits the cap fails its tests, so the mutant
+counts as killed. The cap works on Linux only. A run also skips the source files
+that do not build on the machine it runs on, such as `native_darwin.go` on a
+Linux runner, because no test can kill a mutant in a file that is not compiled.
+Scores from a Mac and from a runner therefore cover different files, and the
+runner's score is the one that counts. While a component runs, the job log
+shows memory and temp space every 20 seconds, so a runner that dies leaves a
+trace.
 
 **What a run reports.** Each component job runs the full suite, with no `--short`
 flag, so no survivor needs a second look against the suite. Its summary shows the
@@ -52,8 +64,8 @@ raises it as survivors get fixed or accepted. Lowering it is also a commit, so a
 regression shows as a diff with a reason. The nightly run turns red, and a red
 main means: fix the score or lower the floor before the next merge. Nothing
 blocks a merge by itself. The first floors come from one manual run of every
-component, set a little under the measured score so that run-to-run noise does
-not flip the result. A person approves the margin.
+component, set 0.01 under the measured score so that run-to-run noise does not flip the
+result. A person approved that margin.
 
 **Processing results.** Run history is the worklist. A person reads the summary
 when a component changes, and sorts each survivor into one of three outcomes:
@@ -114,20 +126,20 @@ nightly result is too slow for the task.
 - A component that depends on another component's internals is not rerun when
   only that dependency changes. A manual run, or a change to a shared path above,
   covers it.
-- The nightly trigger waits for the repository to go public, because a first run
-  with no earlier success mutates every component and a private repository pays
-  for those minutes.
-- The workflow, its report job and the time bar need a real run to confirm. The
-  gate, the floors and the judge are built after the first full run, because the
-  floors come from it.
+- The first nightly run has no earlier success to compare with, so it mutates
+  every component. Hosted minutes are free for a public repository.
+- The floors come from a full run of every component, set 0.01 under each
+  measured score. Run-to-run noise in a score has been about 0.001.
+- Six components take over 10 minutes. `invitation/starter` takes 75 minutes and
+  `invitation/reviewer` 52. Making them faster is deferred, and the split in "If
+  this happens" is the plan.
+- The judge is not built yet.
 - Red main is a convention, not a block. It works only while someone owns the
   morning check.
 
 ## Not decided
 
-1. **The floor margin.** How far under the first measured score to set each
-   floor. Decide it from the first full run and a week of nightly results.
-2. **The judge's survivor cap.** The number per run, and what happens to the
+1. **The judge's survivor cap.** The number per run, and what happens to the
    survivors over it.
-3. **Using a trend.** Whether to keep scores over nights to chart a trend.
+2. **Using a trend.** Whether to keep scores over nights to chart a trend.
    Artifacts keep the raw logs, so it can be rebuilt later.
