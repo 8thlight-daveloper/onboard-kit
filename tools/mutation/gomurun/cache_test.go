@@ -146,3 +146,58 @@ func TestCachedResultsMutateOnlyFilesWhoseKeyChanged(t *testing.T) {
 		t.Fatalf("stale cache files remain: %v", matches)
 	}
 }
+
+func TestAFreshRunMutatesTheWholeFolderOnceWhenEveryFileBuilds(t *testing.T) {
+	root := t.TempDir()
+	folder := filepath.Join(root, "internal", "noun", "role")
+	if err := os.MkdirAll(folder, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"a.go", "b.go"} {
+		if err := os.WriteFile(filepath.Join(folder, name), []byte("package role\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	var targets []string
+	mutate := func(target string) error {
+		targets = append(targets, target)
+		return os.WriteFile(filepath.Join(root, reportFile), []byte(`{"results":[]}`), 0o644)
+	}
+	if _, err := fileResults(root, "noun/role", mutate, false, false); err != nil {
+		t.Fatal(err)
+	}
+	if len(targets) != 1 || targets[0] != "./internal/noun/role" {
+		t.Fatalf("targets %v", targets)
+	}
+}
+
+func TestAFreshRunMutatesFileByFileWhenAFileDoesNotBuildHere(t *testing.T) {
+	root := t.TempDir()
+	folder := filepath.Join(root, "internal", "noun", "role")
+	if err := os.MkdirAll(folder, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "contracts", "noun", "role"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	other := "windows"
+	if runtime.GOOS == other {
+		other = "plan9"
+	}
+	for _, name := range []string{"a.go", "b_" + other + ".go"} {
+		if err := os.WriteFile(filepath.Join(folder, name), []byte("package role\n"), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+	var targets []string
+	mutate := func(target string) error {
+		targets = append(targets, target)
+		return os.WriteFile(filepath.Join(root, reportFile), []byte(`{"results":[]}`), 0o644)
+	}
+	if _, err := fileResults(root, "noun/role", mutate, false, false); err != nil {
+		t.Fatal(err)
+	}
+	if len(targets) != 1 || targets[0] != "./internal/noun/role/a.go" {
+		t.Fatalf("targets %v", targets)
+	}
+}

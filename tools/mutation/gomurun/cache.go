@@ -20,22 +20,29 @@ const (
 )
 
 func sourceFiles(root string, component string) ([]string, error) {
+	built, _, err := splitSourceFiles(root, component)
+	return built, err
+}
+
+func splitSourceFiles(root string, component string) ([]string, []string, error) {
 	folder := filepath.Join(root, "internal", component)
 	entries, err := os.ReadDir(folder)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	var names []string
+	var built, skipped []string
 	for _, entry := range entries {
 		name := entry.Name()
 		if entry.IsDir() || !strings.HasSuffix(name, ".go") || strings.HasSuffix(name, "_test.go") {
 			continue
 		}
-		if built, err := build.Default.MatchFile(folder, name); err == nil && built {
-			names = append(names, name)
+		if matches, err := build.Default.MatchFile(folder, name); err == nil && matches {
+			built = append(built, name)
+		} else {
+			skipped = append(skipped, name)
 		}
 	}
-	return names, nil
+	return built, skipped, nil
 }
 
 func suiteDigest(root string, component string) (string, error) {

@@ -71,9 +71,15 @@ func freshResults(root string) ([]result, error) {
 }
 
 func fileResults(root string, component string, mutate func(target string) error, short bool, useCache bool) ([]result, error) {
-	names, err := sourceFiles(root, component)
+	names, skipped, err := splitSourceFiles(root, component)
 	if err != nil {
 		return nil, err
+	}
+	if !useCache && len(skipped) == 0 {
+		if err := mutate("./internal/" + component); err != nil {
+			return nil, err
+		}
+		return freshResults(root)
 	}
 	suite, err := suiteDigest(root, component)
 	if err != nil {
