@@ -30,6 +30,7 @@ func run(args []string) int {
 	timeout := options.Int("timeout", 30, "seconds a test run may take for one mutant")
 	gomu := options.String("gomu", ".direnv/bin/gomu", "path of the gomu program")
 	short := options.Bool("short", false, "run the tests with -short, which skips the slow ones")
+	memory := options.Int("memory", 3072, "megabytes of address space one test run may use, enforced on Linux only")
 	cached := options.Bool("cached", false, "reuse the results of source files whose text and contract suite have not changed")
 	if options.Parse(args) != nil || options.NArg() != 1 {
 		fmt.Fprintln(os.Stderr, "usage: gomurun [--workers N] [--timeout S] [--short] [--cached] <noun>/<role>")
@@ -48,7 +49,7 @@ func run(args []string) int {
 	defer os.Remove(filepath.Join(root, reportFile))
 	defer os.Remove(filepath.Join(root, historyFile))
 	results, err := fileResults(root, component, func(target string) error {
-		return runGomu(*gomu, target, component, *workers, *timeout, *short)
+		return runGomu(*gomu, target, component, *workers, *timeout, *short, *memory, filepath.Join(root, "tools", "mutation", "limitmem.sh"))
 	}, *short, *cached)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -126,8 +127,11 @@ func contractPathFrom(component string) string {
 	return strings.Repeat("../", depth) + "contracts/" + component + "/"
 }
 
-func gomuArguments(gomu string, target string, component string, workers int, timeout int, short bool) []string {
+func gomuArguments(gomu string, target string, component string, workers int, timeout int, short bool, wrapper string) []string {
 	testFlags := []string{"-count=1", "-failfast", fmt.Sprintf("-timeout=%ds", timeout)}
+	if wrapper != "" {
+		testFlags = append(testFlags, "-exec", wrapper)
+	}
 	if short {
 		testFlags = append(testFlags, "-short")
 	}
@@ -141,9 +145,9 @@ func gomuArguments(gomu string, target string, component string, workers int, ti
 	return append(arguments, contractPathFrom(component))
 }
 
-func runGomu(gomu string, target string, component string, workers int, timeout int, short bool) error {
-	command := exec.Command("nice", gomuArguments(gomu, target, component, workers, timeout, short)...)
-	command.Env = append(os.Environ(), "GOFLAGS="+limitedGoFlags(os.Getenv("GOFLAGS")))
+func runGomu(gomu string, target string, component string, workers int, timeout int, short bool, memory int, wrapper string) error {
+	command := exec.Command("nice", gomuArguments(gomu, target, component, workers, timeout, short, wrapper)...)
+	command.Env = append(os.Environ(), "GOFLAGS="+limitedGoFlags(os.Getenv("GOFLAGS")), fmt.Sprintf("MUTATION_MEMORY_KB=%d", memory*1024))
 	command.Stdout = os.Stderr
 	command.Stderr = os.Stderr
 	return command.Run()
