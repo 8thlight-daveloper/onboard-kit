@@ -20,12 +20,17 @@ import (
 
 const exitUsage = 2
 
+var version = "development"
+
 func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
 	if len(args) == 0 {
 		fmt.Fprintln(stderr, "usage: onboard-kit <command> [options]\ncommands: new, assemble, walk, start, prepare, invite, catalog, stdio")
 		return exitUsage
 	}
 	switch args[0] {
+	case "--version":
+		fmt.Fprintf(stdout, "onboard-kit %s\n", version)
+		return 0
 	case "new":
 		return create.Run(args[1:], stdout, stderr)
 	case "assemble":

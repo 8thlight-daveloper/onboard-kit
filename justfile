@@ -71,6 +71,25 @@ clean-worktrees:
 build:
     if [ -f go.mod ]; then go build -o output/onboard-kit ./binary; else echo "no Go module yet"; fi
 
+# Build the release archives for every target, with LICENSE and THIRD_PARTY_NOTICES.md in each, and a checksums file.
+build-release-archives version:
+    rm -rf output/release
+    mkdir -p output/release
+    for target in darwin/arm64 linux/amd64 linux/arm64; do \
+      os=${target%/*}; arch=${target#*/}; \
+      name=onboard-kit_{{ version }}_${os}_${arch}; \
+      mkdir -p output/release/$name; \
+      CGO_ENABLED=0 GOOS=$os GOARCH=$arch go build -trimpath -ldflags "-X onboard-kit/internal/command/root.version={{ version }}" -o output/release/$name/onboard-kit ./binary; \
+      cp LICENSE THIRD_PARTY_NOTICES.md output/release/$name/; \
+      tar -C output/release -czf output/release/$name.tar.gz $name; \
+      rm -r output/release/$name; \
+    done
+    cd output/release && shasum -a 256 *.tar.gz > checksums.txt
+
+# Write the Homebrew formula for a built release. REPOSITORY is OWNER/NAME, and defaults to GITHUB_REPOSITORY.
+render-homebrew-formula version repository=env("GITHUB_REPOSITORY", "8thlight/onboard-kit"):
+    go run ./tools/release/formula output/release/checksums.txt {{ version }} {{ repository }} > output/release/onboard-kit.rb
+
 # Run the acceptance scenarios against the built binary. Skips until ./binary has Go files.
 acceptance:
     if [ -f go.mod ]; then go test -race -count=1 -v ./acceptance/; else echo "no Go module yet"; fi
