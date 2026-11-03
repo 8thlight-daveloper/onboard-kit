@@ -192,3 +192,18 @@ func TestTerminalStepSchemaErrors(t *testing.T) {
 		})
 	}
 }
+
+func TestTerminalStepBlanksHostVariablesThatChangeHowTheProgramDraws(t *testing.T) {
+	t.Setenv("COLORTERM", "truecolor")
+	t.Setenv("NO_COLOR", "1")
+	t.Setenv("EDITOR", "vi")
+	t.Setenv("LANG", "en_US.UTF-8")
+	script := `printf "COLORTERM=[$COLORTERM] NO_COLOR=[$NO_COLOR] EDITOR=[$EDITOR] LANG=[$LANG]\n"; read line`
+	terminal := `      env: {EDITOR: nano}
+      size: {columns: 100, rows: 12}
+      actions:
+        - wait-for: "COLORTERM=[] NO_COLOR=[] EDITOR=[nano] LANG=[en_US.UTF-8]"`
+	if failures := runScenario(t, shellScenario(script, terminal, "")); len(failures) > 0 {
+		t.Fatal(failureText(failures))
+	}
+}

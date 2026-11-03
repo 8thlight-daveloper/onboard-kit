@@ -75,11 +75,33 @@ func runTerminal(step Step, folder string, options Options) (outcome, []Failure)
 }
 
 func terminalEnvironment(terminal *Terminal, folder string) map[string]string {
-	environment := map[string]string{"PATH": os.Getenv("PATH"), "HOME": folder, "TERM": "xterm-256color", "CI": ""}
+	return terminalEnvironmentFrom(os.Environ(), terminal, folder)
+}
+
+func terminalEnvironmentFrom(host []string, terminal *Terminal, folder string) map[string]string {
+	environment := map[string]string{}
+	for _, entry := range host {
+		name, _, _ := strings.Cut(entry, "=")
+		if name != "" && !keptHostVariable(name) {
+			environment[name] = ""
+		}
+	}
+	environment["PATH"] = os.Getenv("PATH")
+	environment["HOME"] = folder
+	environment["TERM"] = "xterm-256color"
+	environment["CI"] = ""
 	for name, value := range terminal.Env {
 		environment[name] = value
 	}
 	return environment
+}
+
+func keptHostVariable(name string) bool {
+	switch name {
+	case "PATH", "HOME", "TMPDIR", "LANG", "LANGUAGE":
+		return true
+	}
+	return strings.HasPrefix(name, "LC_")
 }
 
 func (run *terminalRun) stop() {
