@@ -58,3 +58,14 @@ echo "$rows" | jq -r --argjson threshold "$threshold" --arg palette "$bar_color,
       "    bar [\($minutes | join(", "))]",
       "    line [\(map($threshold) | join(", "))]"'
 echo '```'
+
+below=0
+while IFS=$'\t' read -r component score; do
+    [ -f "$floors/$component.txt" ] || continue
+    floor="$(tr -d '[:space:]' < "$floors/$component.txt")"
+    if [ "$score" = "none" ] || awk -v s="$score" -v f="$floor" 'BEGIN { exit !(s < f) }'; then
+        echo "below floor: $component (score $score, floor $floor)" >&2
+        below=$((below + 1))
+    fi
+done < <(echo "$rows" | jq -r '.[] | [.component, (.score // "none")] | @tsv')
+[ "$below" = "0" ]
