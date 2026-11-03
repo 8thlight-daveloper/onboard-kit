@@ -7,6 +7,10 @@ on:
         description: Components to mutate, comma separated. Empty runs every component.
         required: false
         default: ""
+      tmpdir:
+        description: Folder to use as TMPDIR for the tests. Empty keeps the default.
+        required: false
+        default: ""
 
 permissions:
   contents: read
@@ -68,9 +72,15 @@ jobs:
       - name: Mutate the component
         env:
           COMPONENT: ${{ matrix.component }}
+          TEST_TMPDIR: ${{ github.event.inputs.tmpdir }}
         run: |
           set -o pipefail
-          nix develop --quiet --command just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
+          setting=()
+          if [ -n "$TEST_TMPDIR" ]; then
+            setting=(env "TMPDIR=$TEST_TMPDIR")
+            echo "TMPDIR for the tests: $TEST_TMPDIR"
+          fi
+          nix develop --quiet --command "${setting[@]}" just mutate "$COMPONENT" --workers 4 2>&1 | tee mutation.log
       - name: Write the job summary
         if: always()
         env:
