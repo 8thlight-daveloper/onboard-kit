@@ -113,11 +113,12 @@ page reach it. Code that opens a new place adds it to the list the screen render
 "for scripts" in `--help`. With no terminal, an interactive entry refuses and names
 the scripting command to use. It never falls back to typed lines.
 
-**Text conversations retire as a human interface.** `catalog create`,
-`catalog edit`, `session edit`, `start` with its typed commands, and `walk` become
-screens. The operations behind them stay, and the screens call them, so a flag and
-a screen cannot drift. Which scripted forms survive is decided command by command
-when each screen is built.
+**Text conversations retire, and their scripted forms are not kept.**
+`catalog create`, `catalog edit`, `session edit`, `start` with its typed commands,
+and `walk` become screens. No script or agent needs them today, so none of them
+keeps a flag form. `stdio` stays as the machine interface and gains an operation
+only when an agent needs it. The operations behind the screens stay, and the
+screens call them, so a flag and a screen cannot drift.
 
 **Structure.** Screens, flags, and `stdio` are fronts over shared operations. No
 front imports another front, and an operation imports no terminal toolkit. These
@@ -142,13 +143,3 @@ become rules in `architecture.yaml` when the operations layer exists.
 - `obk` needs a check for a clash with a common tool before the name ships.
 - On macOS the Downloads prompt appears the first time a terminal reads that
   folder. The notice before scanning is how a person learns to expect it.
-
-## Not decided
-
-1. **Scripted forms of retired commands.** `catalog edit` adds, retires, and
-   reactivates catalog sections in a plan. `session edit` changes a newcomer's own
-   record. Both take typed lines today, and screens will replace them for people.
-   `stdio` already lets an agent answer questions, toggle sections, edit the
-   directory, and save a plan. It cannot add or retire a catalog section or edit a
-   newcomer's record. The question is whether a script or an agent still needs
-   either operation, and if so whether it belongs in `stdio` or as a flag command.
