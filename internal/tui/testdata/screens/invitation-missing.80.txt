@@ -3,9 +3,10 @@
 
   Invitation for Sam Lee
   Account sam-lee
+  Writes plans/obk-invitation-sam-lee.zip
 
-  > Pre-access help   not chosen
-    General help      nobody
+  > Pre-access help   required, not chosen
+    General help      optional, nobody
     File              plans/obk-invitation-sam-lee.zip
 
   Pre-access help is who the newcomer can reach before they have company
@@ -19,6 +20,5 @@
     First steps guide, 0%
   # First steps
 
-  ## Welcome
   nothing written
   enter pick  ctrl+s next  pgup/pgdn guide  esc cancel  f1 help

@@ -3,14 +3,14 @@
 
   Invitation written
 
-  plans/obk-invitation-sam-lee.zip
-
   Give this file to Sam Lee. They run: obk plans/obk-invitation-sam-lee.zip
 
   This tool sends nothing. Give the file to the newcomer yourself, through a channel your organization approves.
   Whether the pre-access help can be reached before company access has not been tested.
 
   Enter goes back to the people.
+
+
 
 
 

@@ -108,7 +108,7 @@ func TestTheFormProposesTheDefaultFileAndShowsTheGuide(t *testing.T) {
 		t.Fatalf("a ready person opens the form, got mode %v", app.invitation.mode)
 	}
 	view := plainView(app)
-	for _, want := range []string{"Invitation for Sam Lee", "Pre-access help   not chosen", "General help      nobody", "File              plans/obk-invitation-sam-lee.zip", "First steps guide", "Organization: ACME Corp"} {
+	for _, want := range []string{"Invitation for Sam Lee", "Pre-access help   required, not chosen", "General help      optional, nobody", "File              plans/obk-invitation-sam-lee.zip", "Writes plans/obk-invitation-sam-lee.zip", "First steps guide", "Organization: ACME Corp"} {
 		if !strings.Contains(view, want) {
 			t.Errorf("the form lacks %q:\n%s", want, view)
 		}
@@ -162,7 +162,7 @@ func TestNothingIsWrittenBeforeY(t *testing.T) {
 		t.Fatalf("enter on the file goes on to the last step, got mode %v:\n%s", confirming.invitation.mode, plainView(confirming))
 	}
 	view := plainView(confirming)
-	for _, want := range []string{"Write the invitation for Sam Lee?", "File              plans/obk-invitation-sam-lee.zip", "Pre-access help   Alex Rivera", "General help      Engineering manager (role)", "Nothing is written until you press y."} {
+	for _, want := range []string{"Write the invitation for Sam Lee?", "    plans/obk-invitation-sam-lee.zip ", "Pre-access help   Alex Rivera", "General help      Engineering manager (role)", "Nothing is written until you press y."} {
 		if !strings.Contains(view, want) {
 			t.Errorf("the last step lacks %q:\n%s", want, view)
 		}

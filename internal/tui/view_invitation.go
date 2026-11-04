@@ -93,7 +93,7 @@ func (app App) invitationWrittenLines(width int) []line {
 	result := app.invitation.result
 	person := app.invitation.form.person
 	path := visibleText(result.Path)
-	content := []line{strongLine("Invitation written"), blankLine(), bodyLine(path), blankLine()}
+	content := []line{faintLine("Invitation written"), blankLine()}
 	content = append(content, lines(toneStrong, wrapText(fmt.Sprintf(handoverLine, person.name(), commandPath(path)), width))...)
 	content = append(content, blankLine())
 	content = append(content, lines(toneBody, wrapText(sendsNothingNotice+" "+untestedNotice, width))...)

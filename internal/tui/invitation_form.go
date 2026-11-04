@@ -157,14 +157,14 @@ func (form invitationForm) missing() []string {
 
 func (form invitationForm) preaccessName() string {
 	if form.preaccess == "" {
-		return notChosenText
+		return "required, " + notChosenText
 	}
 	return strings.Join(holderNames(form.person.Plan.Directory, []string{form.preaccess}), "")
 }
 
 func (form invitationForm) helpNames() string {
 	if len(form.help) == 0 {
-		return "nobody"
+		return "optional, nobody"
 	}
 	choices := form.helpChoices()
 	var names []string

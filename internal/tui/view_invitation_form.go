@@ -56,7 +56,9 @@ func (app App) invitationPaneWidths(screenFrame frame) (int, int, bool) {
 
 func (app App) invitationFormLines(width int, colors palette) ([]line, int) {
 	form := app.invitation.form
-	content := []line{strongLine("Invitation for " + form.person.name()), faintLine("Account " + visibleText(form.person.Account)), blankLine()}
+	content := []line{strongLine("Invitation for " + form.person.name()), faintLine("Account " + visibleText(form.person.Account))}
+	content = append(content, lines(toneFaint, wrapText("Writes "+visibleText(form.output.Value()), width))...)
+	content = append(content, blankLine())
 	focus := 0
 	for index := range invitationFieldCount {
 		if index == form.focus {
@@ -109,6 +111,7 @@ func (app App) invitationPickerLines(content []line, width int, colors palette) 
 	}
 	content = append(content, blankLine())
 	if form.chooser.single {
+		content = append(content, lines(toneFaint, wrapText("Only contacts with a name and an email or Slack handle are listed. Add one on the Contacts tab, press c.", width))...)
 		return append(content, lines(toneFaint, wrapText("Enter chooses. Esc goes back without changing it.", width))...), focus
 	}
 	content = append(content, lines(toneFaint, wrapText("Space picks or unpicks. Enter confirms. Esc goes back without changing it. Pick order is kept.", width))...)
@@ -121,7 +124,9 @@ func (app App) invitationPickerLines(content []line, width int, colors palette) 
 func (app App) invitationConfirmLines(width int) []line {
 	form := app.invitation.form
 	content := []line{strongLine("Write the invitation for " + form.person.name() + "?"), faintLine("Account " + visibleText(form.person.Account)), blankLine()}
-	for _, row := range [][2]string{{"File", visibleText(form.output.Value())}, {"Pre-access help", form.preaccessName()}, {"General help", form.helpNames()}} {
+	content = append(content, bodyLine("File"))
+	content = append(content, lines(toneBody, hanging("  ", visibleText(form.output.Value()), width))...)
+	for _, row := range [][2]string{{"Pre-access help", form.preaccessName()}, {"General help", form.helpNames()}} {
 		content = append(content, lines(toneBody, hanging(row[0]+spaces(preparationLabelWidth-cellWidth(row[0])), row[1], width))...)
 	}
 	content = append(content, blankLine())

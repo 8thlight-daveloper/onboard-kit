@@ -3,17 +3,17 @@
 
   Invitation for Sam Lee                                 │   First steps guide, 0%
   Account sam-lee                                        │ # First steps
-                                                         │
-  > Pre-access help   not chosen                         │ ## Welcome
-    General help      nobody                             │
-    File              plans/obk-invitation-sam-lee.zip   │ Organization: ACME Corp
-                                                         │
-  Pre-access help is who the newcomer can reach before   │ Onboarding owner: Alex Rivera, @alex
-  they have company access. Only contacts with a name    │
-  and an email or Slack handle are offered.              │ Use this guide to begin onboarding and keep your own answers, outcomes, and
-  Enter on the file, or ctrl+s, shows what will be       │ notes in your record.
-  written. Nothing is written until you press y there.   │
-                                                         │ ## What is in the invitation
+  Writes plans/obk-invitation-sam-lee.zip                │
+                                                         │ ## Welcome
+  > Pre-access help   required, not chosen               │
+    General help      optional, nobody                   │ Organization: ACME Corp
+    File              plans/obk-invitation-sam-lee.zip   │
+                                                         │ Onboarding owner: Alex Rivera, @alex
+  Pre-access help is who the newcomer can reach before   │
+  they have company access. Only contacts with a name    │ Use this guide to begin onboarding and keep your own answers, outcomes, and
+  and an email or Slack handle are offered.              │ notes in your record.
+  Enter on the file, or ctrl+s, shows what will be       │
+  written. Nothing is written until you press y there.   │ ## What is in the invitation
                                                          │
                                                          │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
                                                          │ onboarders.

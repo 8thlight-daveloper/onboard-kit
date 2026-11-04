@@ -3,9 +3,10 @@
 
   Invitation for Sam Lee
   Account sam-lee
+  Writes plans/obk-invitation-sam-lee.zip
 
     Pre-access help   Alex Rivera
-  > General help      nobody
+  > General help      optional, nobody
     File              plans/obk-invitation-sam-lee.zip
 
   General help, for Sam Lee
@@ -19,6 +20,5 @@
 
   Space picks or unpicks. Enter confirms. Esc goes back without changing it.
   Pick order is kept.
-  Order: Sam Okafor, then Engineering manager (role)
 
   space pick  enter confirm  esc back  f1 help

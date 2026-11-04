@@ -3,19 +3,19 @@
 
   Invitation for Sam Lee                         │   First steps guide, 0%
   Account sam-lee                                │ # First steps
-                                                 │
-  > Pre-access help   not chosen                 │ ## Welcome
-    General help      nobody                     │
-    File              plans/obk-invitation-sam-… │ Organization: ACME Corp
-                                                 │
-  Pre-access help is who the newcomer can reach  │ Onboarding owner: Alex Rivera, @alex
-  before they have company access. Only contacts │
-  with a name and an email or Slack handle are   │ Use this guide to begin onboarding and keep your own answers,
-  offered.                                       │ outcomes, and notes in your record.
-  Enter on the file, or ctrl+s, shows what will  │
-  be written. Nothing is written until you press │ ## What is in the invitation
-  y there.                                       │
-                                                 │ - `plan.obk.yaml`: shared instructions and organization facts,
+  Writes plans/obk-invitation-sam-lee.zip        │
+                                                 │ ## Welcome
+  > Pre-access help   required, not chosen       │
+    General help      optional, nobody           │ Organization: ACME Corp
+    File              plans/obk-invitation-sam-… │
+                                                 │ Onboarding owner: Alex Rivera, @alex
+  Pre-access help is who the newcomer can reach  │
+  before they have company access. Only contacts │ Use this guide to begin onboarding and keep your own answers,
+  with a name and an email or Slack handle are   │ outcomes, and notes in your record.
+  offered.                                       │
+  Enter on the file, or ctrl+s, shows what will  │ ## What is in the invitation
+  be written. Nothing is written until you press │
+  y there.                                       │ - `plan.obk.yaml`: shared instructions and organization facts,
                                                  │ maintained by onboarders.
                                                  │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you,
                                                  │ maintained by onboarders.

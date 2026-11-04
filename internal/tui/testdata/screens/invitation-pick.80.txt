@@ -3,22 +3,22 @@
 
   Invitation for Sam Lee
   Account sam-lee
+  Writes plans/obk-invitation-sam-lee.zip
 
-  > Pre-access help   not chosen
-    General help      nobody
+  > Pre-access help   required, not chosen
+    General help      optional, nobody
     File              plans/obk-invitation-sam-lee.zip
 
   Pre-access help, for Sam Lee
   > ( ) Alex Rivera
     ( ) IT service desk
 
+  Only contacts with a name and an email or Slack handle are listed. Add one
+  on the Contacts tab, press c.
   Enter chooses. Esc goes back without changing it.
 
     First steps guide, 0%
   # First steps
 
-  ## Welcome
-
-  Organization: ACME Corp
 
   enter choose  esc back  f1 help

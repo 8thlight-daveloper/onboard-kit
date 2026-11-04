@@ -542,12 +542,12 @@ The people are the ones the [preparation store](../../contracts/preparation/stor
 
 - **People.** Each person with a preparation, by account, with "Ready" or "! not ready, N to fix". N counts the preparation problems, the onboarder blockers in the plan, and a missing onboarding owner, the same checks the export runs. A plan or preparation that cannot be read or used reads "! not ready, cannot be checked". The list checks everyone again each time the tab opens. Notices say what an invitation holds and that the tool sends nothing.
 - **What blocks.** Enter on a person who is not ready shows what blocks the invitation, grouped as on the Preparation review, and no form. The way to fix each is on the Walk or the Preparation tab.
-- **The form.** Enter on a ready person opens three fields: the pre-access help, the general help, and the file. The first steps guide sits beside the form, or below it under 120 columns, and follows the picked help.
-  - **Pre-access help.** Required. A pick list of the plan's contacts that have a name and an email or Slack handle, as the export requires. A Slack id alone does not count.
-  - **General help.** Optional. A several-answers list of the plan's contacts and roles, in pick order.
+- **The form.** Enter on a ready person opens three fields: the pre-access help, the general help, and the file. A line under the account names the whole path the file will be written to, because the field row may cut it. The first steps guide sits beside the form, or below it under 120 columns, and follows the picked help.
+  - **Pre-access help.** Required, and the row says so: "required, not chosen". A pick list of the plan's contacts that have a name and an email or Slack handle, as the export requires, with that rule under the list. A Slack id alone does not count.
+  - **General help.** Optional, and the row says so: "optional, nobody". A several-answers list of the plan's contacts and roles, in pick order.
   - **File.** Typed, and filled with `obk-invitation-<account>.zip` in the plan's folder. The name starts `obk-invitation` because the newcomer's flow looks for that prefix in the Downloads folder. When that file exists, the next free name is filled in instead: `obk-invitation-<account>-2.zip`, then `-3`.
 - **The last step.** Enter on the file, or ctrl+s, shows what will be written beside the guide. `y` writes the file. Nothing is written before `y`, and an existing file is never replaced.
-- **The result.** The path, then "Give this file to Alex Doe. They run: obk obk-invitation-alex-doe.zip", then a line that the tool sends nothing and that the pre-access help is not tested. The wording of the line for the newcomer is one constant in `internal/tui`. A path the shell would split is quoted.
+- **The result.** "Give this file to Alex Doe. They run: obk obk-invitation-alex-doe.zip" in bold, then a line that the tool sends nothing and that the pre-access help is not tested. The wording of the line for the newcomer is one constant in `internal/tui`. A path the shell would split is quoted.
 - **A refusal.** When a file appeared at that name since the form opened, the form opens again with the next free name filled in, and nothing is written. Any other refusal shows its reason under the form.
 
 ### Invitation keys
@@ -585,6 +585,8 @@ The form already shows the guide, so `y` could write from it. But the file name 
 - Whether the line for the newcomer should name only the file, not the onboarder's path. The newcomer saves the file in their own folder, often Downloads, so the onboarder's path may not be theirs.
 
 - Whether the Invitation form should remember its values across a visit to another tab. Today opening the tab checks everyone again and starts at the list.
+
+- Whether the guide beside the Invitation form should scroll to the help it names after a pick, so the effect of the pick is on screen.
 
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
 

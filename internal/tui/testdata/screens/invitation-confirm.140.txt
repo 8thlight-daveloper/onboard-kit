@@ -4,20 +4,20 @@
   Write the invitation for Sam Lee?                      │ > First steps guide, 0%
   Account sam-lee                                        │ # First steps
                                                          │
-  File              plans/obk-invitation-sam-lee.zip     │ ## Welcome
-  Pre-access help   Alex Rivera                          │
-  General help      nobody                               │ Organization: ACME Corp
+  File                                                   │ ## Welcome
+    plans/obk-invitation-sam-lee.zip                     │
+  Pre-access help   Alex Rivera                          │ Organization: ACME Corp
+  General help      optional, nobody                     │
+                                                         │ Onboarding owner: Alex Rivera, @alex
+  The file holds the plan, this preparation, an empty    │
+  record, and the first steps guide shown here. An       │ Use this guide to begin onboarding and keep your own answers, outcomes, and
+  existing file is never replaced.                       │ notes in your record.
                                                          │
-  The file holds the plan, this preparation, an empty    │ Onboarding owner: Alex Rivera, @alex
-  record, and the first steps guide shown here. An       │
-  existing file is never replaced.                       │ Use this guide to begin onboarding and keep your own answers, outcomes, and
-                                                         │ notes in your record.
-  This tool sends nothing. Give the file to the newcomer │
-  yourself, through a channel your organization          │ ## What is in the invitation
-  approves.                                              │
-                                                         │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
-  Nothing is written until you press y.                  │ onboarders.
-                                                         │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
+  This tool sends nothing. Give the file to the newcomer │ ## What is in the invitation
+  yourself, through a channel your organization          │
+  approves.                                              │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
+                                                         │ onboarders.
+  Nothing is written until you press y.                  │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
                                                          │ onboarders.
                                                          │ - `records/sam-lee/record.obk.yaml`: your answers, outcomes, and notes,
                                                          │ maintained by you.

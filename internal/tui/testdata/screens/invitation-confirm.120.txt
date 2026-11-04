@@ -4,10 +4,10 @@
   Write the invitation for Sam Lee?              │ > First steps guide, 0%
   Account sam-lee                                │ # First steps
                                                  │
-  File              plans/obk-invitation-sam-lee │ ## Welcome
-                    .zip                         │
+  File                                           │ ## Welcome
+    plans/obk-invitation-sam-lee.zip             │
   Pre-access help   Alex Rivera                  │ Organization: ACME Corp
-  General help      nobody                       │
+  General help      optional, nobody             │
                                                  │ Onboarding owner: Alex Rivera, @alex
   The file holds the plan, this preparation, an  │
   empty record, and the first steps guide shown  │ Use this guide to begin onboarding and keep your own answers,

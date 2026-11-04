@@ -3,24 +3,24 @@
 
   Invitation for Sam Lee                                 │   First steps guide, 0%
   Account sam-lee                                        │ # First steps
-                                                         │
-    Pre-access help   Alex Rivera                        │ ## Welcome
-  > General help      nobody                             │
-    File              plans/obk-invitation-sam-lee.zip   │ Organization: ACME Corp
-                                                         │
-  General help, for Sam Lee                              │ Onboarding owner: Alex Rivera, @alex
-    [ ] Alex Rivera                                      │
-    [1] Sam Okafor                                       │ Use this guide to begin onboarding and keep your own answers, outcomes, and
-    [ ] IT service desk                                  │ notes in your record.
-    [ ] Platform team channel                            │
-  > [2] Engineering manager (role)                       │ ## What is in the invitation
-    [ ] IT contact (role)                                │
-    [ ] Platform team lead (role)                        │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
-                                                         │ onboarders.
-  Space picks or unpicks. Enter confirms. Esc goes back  │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
-  without changing it. Pick order is kept.               │ onboarders.
-  Order: Sam Okafor, then Engineering manager (role)     │ - `records/sam-lee/record.obk.yaml`: your answers, outcomes, and notes,
-                                                         │ maintained by you.
+  Writes plans/obk-invitation-sam-lee.zip                │
+                                                         │ ## Welcome
+    Pre-access help   Alex Rivera                        │
+  > General help      optional, nobody                   │ Organization: ACME Corp
+    File              plans/obk-invitation-sam-lee.zip   │
+                                                         │ Onboarding owner: Alex Rivera, @alex
+  General help, for Sam Lee                              │
+    [ ] Alex Rivera                                      │ Use this guide to begin onboarding and keep your own answers, outcomes, and
+    [1] Sam Okafor                                       │ notes in your record.
+    [ ] IT service desk                                  │
+    [ ] Platform team channel                            │ ## What is in the invitation
+  > [2] Engineering manager (role)                       │
+    [ ] IT contact (role)                                │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
+    [ ] Platform team lead (role)                        │ onboarders.
+                                                         │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
+  Space picks or unpicks. Enter confirms. Esc goes back  │ onboarders.
+  without changing it. Pick order is kept.               │ - `records/sam-lee/record.obk.yaml`: your answers, outcomes, and notes,
+  Order: Sam Okafor, then Engineering manager (role)     │ maintained by you.
                                                          │ - `first-steps.md`: this generated guide; it does not replace those three
                                                          │ source artifacts.
                                                          │

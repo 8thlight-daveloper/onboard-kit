@@ -3,19 +3,19 @@
 
   Invitation for Sam Lee                                 │   First steps guide, 0%
   Account sam-lee                                        │ # First steps
+  Writes plans/obk-invitation-sam-lee.zip                │
+                                                         │ ## Welcome
+  > Pre-access help   required, not chosen               │
+    General help      optional, nobody                   │ Organization: ACME Corp
+    File              plans/obk-invitation-sam-lee.zip   │
+                                                         │ Onboarding owner: Alex Rivera, @alex
+  Pre-access help, for Sam Lee                           │
+  > ( ) Alex Rivera                                      │ Use this guide to begin onboarding and keep your own answers, outcomes, and
+    ( ) IT service desk                                  │ notes in your record.
                                                          │
-  > Pre-access help   not chosen                         │ ## Welcome
-    General help      nobody                             │
-    File              plans/obk-invitation-sam-lee.zip   │ Organization: ACME Corp
-                                                         │
-  Pre-access help, for Sam Lee                           │ Onboarding owner: Alex Rivera, @alex
-  > ( ) Alex Rivera                                      │
-    ( ) IT service desk                                  │ Use this guide to begin onboarding and keep your own answers, outcomes, and
-                                                         │ notes in your record.
-  Enter chooses. Esc goes back without changing it.      │
-                                                         │ ## What is in the invitation
-                                                         │
-                                                         │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
+  Only contacts with a name and an email or Slack handle │ ## What is in the invitation
+  are listed. Add one on the Contacts tab, press c.      │
+  Enter chooses. Esc goes back without changing it.      │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
                                                          │ onboarders.
                                                          │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
                                                          │ onboarders.
