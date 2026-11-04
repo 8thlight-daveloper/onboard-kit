@@ -1,7 +1,7 @@
 ---
 category: ux
 status: proposed
-affects: [catalog/creator, catalog/editguide, command/catalog, command/create, command/invite, command/root, command/start, command/stdio, command/walk, invitation/starter, session/editor, tui]
+affects: [catalog/creator, catalog/editguide, command/catalog, command/create, command/invite, command/root, command/start, command/stdio, command/walk, invitation/starter, session/editor, session/reviewer, tui]
 builds-on: ['0320', '0430', '0520', '0530', '0540', '0560']
 ---
 
@@ -114,8 +114,8 @@ page reach it. Code that opens a new place adds it to the list the screen render
 the scripting command to use. It never falls back to typed lines.
 
 **Text conversations retire, and their scripted forms are not kept.**
-`catalog create`, `catalog edit`, `session edit`, `start` with its typed commands,
-and `walk` become screens. No script or agent needs them today, so none of them
+`catalog create`, `catalog edit`, `session edit`, the old `start` with its typed
+commands, and the old `walk` become screens. No script or agent needs them today, so none of them
 keeps a flag form. `stdio` stays as the machine interface and gains an operation
 only when an agent needs it. The operations behind the screens stay, and the
 screens call them, so a flag and a screen cannot drift.
@@ -131,7 +131,7 @@ become rules in `architecture.yaml` when the operations layer exists.
   newcomer's identity screen, then the front door, the registry, and the About
   screen.
 - About ten scenarios that pass `--templates` change, and so do the scenarios of
-  the typed protocols: ten for `start`, five for `invite export`, and four for
+  the typed protocols: ten for the old `start`, five for `invite export`, and four for
   `catalog`. Typed ones are replaced by terminal scenarios or kept as tests of the
   scripting surface. Scenarios live in `acceptance/`, so a person authorizes each
   change, and retiring a contract is a person's decision.
@@ -140,6 +140,11 @@ become rules in `architecture.yaml` when the operations layer exists.
   the move. The source path that about a dozen contract fixtures cite changes with
   them.
 - The README quick start and command table change to match.
+- `session/reviewer` and `session/editor` are rebuilt as `record/reviewer` and
+  `record/store` when the newcomer's screen lands. They follow the names of the
+  preparation family: a pure reviewer, and a driver that loads and saves one file
+  under native guards. The word "session" then leaves the product. Their contract
+  folders move at that time, with a person's authorization.
 - `obk` needs a check for a clash with a common tool before the name ships.
 - On macOS the Downloads prompt appears the first time a terminal reads that
   folder. The notice before scanning is how a person learns to expect it.
