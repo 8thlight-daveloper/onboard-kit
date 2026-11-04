@@ -1,0 +1,58 @@
+name: preparation-tab-saves
+description: On the Preparation tab the onboarder adds a person, types the name, picks the team, reviews the changes and the first steps guide, and saves with y. The file is written only then, and the plan is untouched.
+source: docs/decisions/0520-preparation-screen.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: t
+        - wait-for: "No one has a preparation here yet."
+        - press: a
+        - wait-for: "Add a person"
+        - type: newcomer-one
+        - press: Enter
+        - wait-for: "Saves to records/newcomer-one/preparation.obk.yaml"
+        - wait-for: "New. Nothing is written until you review and save."
+        - press: Enter
+        - wait-for: "Enter moves to the next field"
+        - type: Example newcomer
+        - press: Tab
+        - press: Tab
+        - type: "2026-11-02"
+        - press: Tab
+        - press: Enter
+        - wait-for: "Team, for newcomer-one"
+        - press: j
+        - press: Enter
+        - wait-gone: "Team, for newcomer-one"
+        - press: Ctrl+S
+        - wait-for: "staged, not saved"
+        - press: G
+        - press: Enter
+        - wait-for: "Nothing is written until you press y."
+        - press: Tab
+        - wait-for: "First steps guide"
+        - wait-for: "Organization: ACME Corp"
+        - press: y
+        - wait-for: "saved records/newcomer-one/preparation.obk.yaml"
+        - press: Ctrl+C
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      unchanged: [acme.obk.yaml]
+  - run: [onboard-kit, prepare, show, --plan, acme.obk.yaml, --account, newcomer-one]
+    expect:
+      exit: 0
+      stdout:
+        json:
+          account: newcomer-one
+          preparationPath: records/newcomer-one/preparation.obk.yaml
+          recipient: {name: Example newcomer, plannedStartDate: "2026-11-02", team: platform, manager: "", buddy: ""}
+          arrangements: []
+          preparationProblems: []
+      unchanged: [acme.obk.yaml, records/newcomer-one/preparation.obk.yaml]
