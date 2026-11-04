@@ -164,7 +164,7 @@ Two declarations for every component, stated in its contract and checked by a pr
 | `section/walker` | None. Reads the caller-composed plan and record.Outcomes; returns independent action/waiting/history views and diagnostics without changing either input |
 | `firststeps/assembler` | None. Reads the original plan, explicit account/help selection and validated preparation; returns a guide or refusal, not files or readiness |
 | `document/assembler` | None. It returns the document |
-| `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command |
+| `tui`, `stdio`, `assemble` commands | Read and write plan files, and pass the bytes to the decoder and encoder, and write the document, only after a confirmed action or an explicit command. The `tui` Preparation tab also lists, loads, and saves one person's preparation, only through the port the walk command supplies and only after a reviewed save. `tui` itself does no file work |
 | `lint` command | Reads template files and the lint rules file, passes template bytes to the section loader, prints findings, and exits non-zero on any finding. Writes no files |
 | `binary` | Reads embedded templates, wires the components, writes only through the drivers |
 | `preparation/validator` | None. Reads Preparation and the contract's Context projection, including optional record identity. Returns problems only; reads or changes no Plan fields or record answers, outcomes, or notes |
