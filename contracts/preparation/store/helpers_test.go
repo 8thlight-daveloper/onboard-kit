@@ -102,6 +102,9 @@ func snapshot(t *testing.T, root string) map[string]string {
 		if relative == "." {
 			return nil
 		}
+		if entry.IsDir() && macOSVolumeBookkeeping[entry.Name()] {
+			return filepath.SkipDir
+		}
 		switch {
 		case entry.IsDir():
 			result[relative+"/"] = "directory"
@@ -123,6 +126,8 @@ func snapshot(t *testing.T, root string) map[string]string {
 	}
 	return result
 }
+
+var macOSVolumeBookkeeping = map[string]bool{".fseventsd": true, ".Spotlight-V100": true, ".Trashes": true}
 
 func sameMap(left, right map[string]string) bool {
 	if len(left) != len(right) {
