@@ -59,7 +59,8 @@ Threnos repository can list them at any time and link to them.
 **`affects` links a decision to components.** A `behavior` or `ux` record names
 the components it changes, as ids in `architecture.yaml`. It is `[]` only while
 the component it describes is not built. An `architecture` record may name them.
-A process record names none. No record says `all`.
+A process record names none. No record says `all`. A list is as long as the
+decision needs, so a record that 18 contracts cite names 18 components.
 
 **A record holds no implementation state.** "Implemented" and "pending" are
 facts about the code, and a check of the code says them better. A record also
@@ -76,7 +77,10 @@ history.
 
 - The dependency table in 0020 moves to `architecture.yaml` once a person accepts
   that file. 0020 then gets `partly-superseded-by` 0620, and its table becomes a
-  link.
+  link. 0020's table is older than `docs/architecture/components.md`, which
+  already declares the positions and imports of the newer components. The
+  declared imports in `architecture.yaml` come from that document, never from
+  what the code does, so a difference in the code shows as a violation.
 - The 71 existing records now have front matter. Their categories and `affects`
   lists are a first pass that a person reviews. The border cases are 0010, 0360,
   0400, 0420, and 0580.
@@ -89,9 +93,6 @@ history.
 
 ## Not decided
 
-1. **How long an `affects` list is.** A foundational behavior record, such as
-   0260, is cited by 18 contracts. The list can hold every citing component or
-   only the ones the decision changes most.
-2. **When `architecture.yaml` is canonical.** It is a draft. The 17 components with
-   no declared dependencies need a person to declare them, and three imports in
-   the code break 0020's table.
+1. **When `architecture.yaml` is canonical.** It is a draft until a person accepts
+   it. Its 12 command components have no declared imports and are held to their
+   kind only.
