@@ -1,0 +1,74 @@
+name: flow-new-to-session
+description: A plan created from the catalog is answered in the walk, prepared, exported as an invitation, and opened by the newcomer.
+source: docs/decisions/0430-reviewed-catalog-creation.md; docs/reference/tui.md; docs/decisions/0360-confirmed-invitation-start.md
+steps:
+  - run: [onboard-kit, catalog, create, --id, plan-one, --out, plan.obk.yaml]
+    stdin: |
+      add
+      application-local
+      application-local
+      review
+      save
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: create.written}}
+      files:
+        plan.obk.yaml: {}
+  - run: [onboard-kit, walk, --plan, plan.obk.yaml]
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "What reviewed local startup, shutdown and safe data instructions apply?"
+        - type: Run make run, stop with Ctrl+C, and use the sample database
+        - press: Enter
+        - wait-for: "Which harmless user journey should verify local behavior"
+        - type: Sign in and open the dashboard, ask the team lead for help
+        - press: Enter
+        - wait-for: "Answered 2 of 2."
+        - press: c
+        - wait-for: "No contacts yet"
+        - press: a
+        - wait-for: "New contact"
+        - type: Sam Okafor
+        - press: Enter
+        - type: sam.okafor@example.test
+        - press: Ctrl+S
+        - wait-for: "Sam Okafor"
+        - press: Escape
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+  - run: [onboard-kit, assemble, --plan, plan.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "Run make run, stop with Ctrl+C, and use the sample database"}
+  - run: [onboard-kit, prepare, init, --plan, plan.obk.yaml, --account, newcomer]
+    expect:
+      exit: 0
+      stdout: {equals: "records/newcomer/preparation.obk.yaml\n"}
+  - run: [onboard-kit, prepare, recipient, --plan, plan.obk.yaml, --account, newcomer, --name, Example newcomer, --onboarding-owner, sam-okafor, --planned-start-date, "2026-11-09"]
+    expect:
+      exit: 0
+  - run: [onboard-kit, invite, export, --plan, plan.obk.yaml, --preparation, records/newcomer/preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, sam-okafor]
+    expect:
+      exit: 0
+      stderr: {json: {status: written, code: invite.written}}
+      files:
+        invitation.zip: {}
+  - run: [onboard-kit, start, --home=state, --root=., --invitation=invitation.zip]
+    stdin: |
+      confirm newcomer
+      begin
+      exit
+    expect:
+      exit: 0
+      stdout: {contains: "Read-only onboarding session.\n"}
+      stderr: {json: {status: opened, code: start.opened}}
+      files:
+        records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - path: [firstOpenedAt]
+              utc-timestamp: true
+      unchanged: [plan.obk.yaml, invitation.zip]
