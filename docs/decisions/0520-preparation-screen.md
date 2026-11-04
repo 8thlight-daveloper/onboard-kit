@@ -1,8 +1,13 @@
-# 0520. Preparation as a full-screen flow
+---
+category: ux
+status: accepted
+approval: person
+note: Replaces the interaction style of 0340 and 0350. Their save rules stay.
+affects: [preparation/store, tui]
+partly-supersedes: ['0340', '0350']
+---
 
-Status: accepted by a person. It supersedes the interaction style of
-[0340](0340-guided-preparation-save.md) and
-[0350](0350-guided-support-arrangements.md). Their save rules stay.
+# 0520. Preparation as a full-screen flow
 
 ## Context
 

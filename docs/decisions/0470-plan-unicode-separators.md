@@ -1,6 +1,12 @@
-# 0470. Preserve Unicode separators in encoded plans
+---
+category: behavior
+status: accepted
+approval: agent
+note: Verification evidence is recorded separately.
+affects: [plan/encoder]
+---
 
-Status: accepted agent decision. Verification evidence is recorded separately.
+# 0470. Preserve Unicode separators in encoded plans
 
 Extends0200's preparation rule and0230's record rule to plan serialization only.
 Supersedes the plan encoder's literal-character and literal-block eligibility

@@ -1,6 +1,11 @@
-# 0490. Release runtime workspace
+---
+category: operations
+status: accepted
+approval: agent
+note: A local tooling choice, not human approval.
+---
 
-Status: agent-selected local tooling decision, not human approval.
+# 0490. Release runtime workspace
 
 ## Context
 

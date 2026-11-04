@@ -1,6 +1,11 @@
-# 0020. Binary structure and regenerative components
+---
+category: architecture
+status: accepted
+approval: unrecorded
+builds-on: ['0015', '0010', '0030', '0025']
+---
 
-Status: accepted
+# 0020. Binary structure and regenerative components
 
 [0260](0260-prerequisites-and-action-order.md) extends the dependency order for
 prerequisite scheduling and outcome operations. [0270](0270-outcome-definition-hashes.md)

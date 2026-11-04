@@ -1,6 +1,12 @@
-# 0330. Read-only preparation review
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [preparation/reviewer]
+builds-on: ['0140', '0150', '0160', '0180', '0280', '0300']
+---
 
-Status: accepted by agent judgment; pure reviewer implemented, guided driver pending
+# 0330. Read-only preparation review
 
 Builds on [0140](0140-person-specific-preparation.md),
 [0150](0150-onboarding-library-and-preparation-flow.md),

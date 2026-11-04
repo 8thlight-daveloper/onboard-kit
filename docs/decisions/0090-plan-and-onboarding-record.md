@@ -1,6 +1,11 @@
-# 0090. The plan and the onboarding record
+---
+category: architecture
+status: accepted
+approval: unrecorded
+builds-on: ['0030', '0055', '0080', '0085', '0060', '0075']
+---
 
-Status: accepted
+# 0090. The plan and the onboarding record
 
 [0140](0140-person-specific-preparation.md) adds an onboarder-owned preparation
 file per newcomer. It supersedes the two-artifact boundary and the rule that

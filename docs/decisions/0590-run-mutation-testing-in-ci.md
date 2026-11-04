@@ -1,6 +1,11 @@
-# 0590. Run mutation testing in CI, not on a laptop
+---
+category: operations
+status: accepted
+approval: person
+builds-on: ['0025']
+---
 
-Status: accepted by a person.
+# 0590. Run mutation testing in CI, not on a laptop
 
 Builds on [0025](0025-contracts-and-tests.md). Changes the run points in the
 mutation cadence of the [testing stack](../stack/testing.md). Keeps the

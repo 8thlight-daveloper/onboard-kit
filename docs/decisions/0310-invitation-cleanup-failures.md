@@ -1,6 +1,11 @@
-# 0310. Invitation cleanup failures
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [command/invite]
+---
 
-Status: accepted by agent judgment
+# 0310. Invitation cleanup failures
 
 Clarifies the publication and cleanup requirements in
 [0300](0300-explicit-invitation-export.md).

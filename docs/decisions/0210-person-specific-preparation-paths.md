@@ -1,6 +1,12 @@
-# 0210. Person-specific preparation paths
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [command/prepare, preparation/locator]
+builds-on: ['0090', '0110', '0140']
+---
 
-Status: accepted by agent judgment
+# 0210. Person-specific preparation paths
 
 Builds on [0090](0090-plan-and-onboarding-record.md),
 [0110](0110-reject-ambiguous-plans.md), and

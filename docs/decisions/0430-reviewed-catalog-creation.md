@@ -1,6 +1,12 @@
-# 0430. Review catalog creation before saving a new plan
+---
+category: ux
+status: accepted
+approval: agent
+note: Verification evidence is recorded separately.
+affects: [catalog/creator]
+---
 
-Status: accepted agent decision. Verification evidence is recorded separately.
+# 0430. Review catalog creation before saving a new plan
 
 Extends0410 with one creation-only driver. The pure materializer remains the
 authority for definitions, explicit permanent identities, scoped shared bindings,

@@ -1,6 +1,11 @@
-# 0480. Bounded acceptance captures
+---
+category: operations
+status: accepted
+approval: agent
+note: An agent-selected integration candidate, not human approval.
+---
 
-Status: agent-selected integration candidate, not human approval.
+# 0480. Bounded acceptance captures
 
 ## Context
 

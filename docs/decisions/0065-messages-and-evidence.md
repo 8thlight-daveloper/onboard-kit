@@ -1,6 +1,12 @@
-# 0065. Messages, clipboard, and evidence
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: []
+builds-on: ['0010', '0050', '0055', '0060']
+---
 
-Status: accepted
+# 0065. Messages, clipboard, and evidence
 
 Builds on [0010](0010-plan-editor.md), [0050](0050-section-switch.md), [0055](0055-variable-audience.md), and [0060](0060-personal-plan.md). It prepares the action runner and the onboardee runtime.
 

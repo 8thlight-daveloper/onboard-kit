@@ -1,6 +1,13 @@
-# 0350. Guided support arrangements
+---
+category: ux
+status: accepted
+approval: agent
+affects: [catalog/creator, preparation/store]
+builds-on: ['0140', '0150', '0160', '0190', '0340']
+partly-superseded-by: ['0520']
+---
 
-Status: accepted by agent judgment; contract and implementation available
+# 0350. Guided support arrangements
 
 Retired as an interface by [0520](0520-preparation-screen.md). The text guide, its
 contract and its scenarios are removed. The save rules below still apply to the

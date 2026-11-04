@@ -1,6 +1,11 @@
-# 0030. Self-contained plan file
+---
+category: architecture
+status: accepted
+approval: unrecorded
+builds-on: ['0010', '0020']
+---
 
-Status: accepted
+# 0030. Self-contained plan file
 
 Builds on [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 

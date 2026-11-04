@@ -1,6 +1,12 @@
-# 0300. Explicit invitation export
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [command/invite, preparation/reviewer]
+builds-on: ['0055', '0140', '0150', '0160', '0240', '0280']
+---
 
-Status: accepted by agent judgment; explicit export implemented
+# 0300. Explicit invitation export
 
 Builds on [0055](0055-variable-audience.md),
 [0140](0140-person-specific-preparation.md),

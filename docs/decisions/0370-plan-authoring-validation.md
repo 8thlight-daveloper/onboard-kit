@@ -1,6 +1,12 @@
-# 0370. Validate declarations before record-backed onboarding
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [invitation/reviewer, plan/authoringvalidator, session/reviewer]
+builds-on: ['0010', '0040', '0055', '0070', '0080', '0360']
+---
 
-Status: accepted by agent judgment; independent contract and implementation available
+# 0370. Validate declarations before record-backed onboarding
 
 Builds on [0010](0010-plan-editor.md), [0040](0040-blank-text-and-variable-name-length.md),
 [0055](0055-variable-audience.md), [0070](0070-sub-sections.md),

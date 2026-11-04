@@ -1,7 +1,12 @@
-# 0500. Failed inspection is not an empty session
+---
+category: ux
+status: accepted
+approval: agent
+note: An agent-selected bounded clarification under this session's delegation, not human approval or accepted-survivor authority.
+affects: [session/editor]
+---
 
-Status: agent-selected bounded clarification under this session's delegation,
-not human approval or accepted-survivor authority.
+# 0500. Failed inspection is not an empty session
 
 ## Context
 

@@ -1,6 +1,13 @@
-# 0150. Onboarding library and preparation flow
+---
+category: behavior
+status: accepted
+approval: unrecorded
+note: Accepted as a direction.
+affects: [catalog/materializer, catalog/reader, command/catalog, firststeps/assembler, preparation/reviewer]
+builds-on: ['0005', '0085', '0100', '0140', '0160']
+---
 
-Status: accepted direction; implementation pending
+# 0150. Onboarding library and preparation flow
 
 Builds on [0005](0005-self-contained-install.md),
 [0085](0085-walking-sections-and-recording-outcomes.md),

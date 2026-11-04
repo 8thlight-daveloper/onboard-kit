@@ -1,6 +1,12 @@
-# 0390. Admit invitation content before expanding it
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [catalog/materializer, invitation/reviewer, invitation/starter]
+builds-on: ['0015', '0100', '0240', '0360', '0370', '0380']
+---
 
-Status: accepted by agent judgment; independent contract and implementation available
+# 0390. Admit invitation content before expanding it
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0100](0100-behavior-judgment.md),

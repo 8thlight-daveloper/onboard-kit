@@ -1,6 +1,12 @@
-# 0410. Select explicit catalog instances with stable identities
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [catalog/creator, catalog/editguide, catalog/editor, catalog/materializer]
+builds-on: ['0030', '0100', '0110', '0120', '0150', '0270', '0320']
+---
 
-Status: accepted by agent judgment; creation core implemented, reviewed save and editing pending
+# 0410. Select explicit catalog instances with stable identities
 
 Builds on [0030](0030-self-contained-plan-file.md),
 [0100](0100-behavior-judgment.md),

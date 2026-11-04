@@ -1,6 +1,11 @@
-# 0580. Match protection to the threat we have
+---
+category: architecture
+status: accepted
+approval: person
+builds-on: ['0100', '0160', '0450']
+---
 
-Status: accepted by a person.
+# 0580. Match protection to the threat we have
 
 Builds on [0100](0100-behavior-judgment.md) and
 [0160](0160-personal-data-and-preparation-approval.md). Narrows

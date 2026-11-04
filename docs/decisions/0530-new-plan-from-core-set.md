@@ -1,6 +1,13 @@
-# 0530. A new plan starts from a core set of the catalog
+---
+category: ux
+status: accepted
+approval: person
+note: The core list is the first version. A later change edits the catalog manifest and its fixtures.
+affects: [command/create, catalog/creator]
+builds-on: ['0150', '0320', '0410', '0430']
+---
 
-Status: accepted by a person. The core list is the first version. A later change edits the catalog manifest and its fixtures.
+# 0530. A new plan starts from a core set of the catalog
 
 Builds on [0150](0150-onboarding-library-and-preparation-flow.md),
 [0320](0320-embedded-catalog-availability.md),

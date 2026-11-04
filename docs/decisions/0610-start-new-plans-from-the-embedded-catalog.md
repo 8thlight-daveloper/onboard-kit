@@ -1,6 +1,11 @@
-# 0610. Start new plans from the embedded catalog only
+---
+category: ux
+status: proposed
+affects: [catalog/creator, command/create, command/stdio, command/walk]
+builds-on: ['0320', '0430', '0530']
+---
 
-Status: proposed.
+# 0610. Start new plans from the embedded catalog only
 
 Builds on [0320](0320-embedded-catalog-availability.md),
 [0430](0430-reviewed-catalog-creation.md), and

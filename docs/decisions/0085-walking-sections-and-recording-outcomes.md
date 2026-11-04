@@ -1,6 +1,12 @@
-# 0085. Walking sections and recording outcomes
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [outcome/recorder, record/decoder, section/walker]
+builds-on: ['0030', '0050', '0055', '0060', '0065', '0070', '0075']
+---
 
-Status: accepted
+# 0085. Walking sections and recording outcomes
 
 [0260](0260-prerequisites-and-action-order.md) reconciles legacy After retention,
 global action order, containment, and timing goals without weakening verified

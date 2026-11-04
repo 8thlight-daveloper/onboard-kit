@@ -1,6 +1,11 @@
-# 0600. Release platforms and channels
+---
+category: operations
+status: accepted
+approval: unrecorded
+partly-supersedes: ['0005']
+---
 
-Status: accepted. Supersedes in part [0005](0005-self-contained-install.md).
+# 0600. Release platforms and channels
 
 ## Context
 

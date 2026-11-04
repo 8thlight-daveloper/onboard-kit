@@ -1,6 +1,11 @@
-# 0240. Invitation archive envelope
+---
+category: architecture
+status: accepted
+approval: agent
+builds-on: ['0090', '0140', '0210', '0230']
+---
 
-Status: accepted by agent judgment; implementation pending
+# 0240. Invitation archive envelope
 
 Builds on [0090](0090-plan-and-onboarding-record.md),
 [0140](0140-person-specific-preparation.md),

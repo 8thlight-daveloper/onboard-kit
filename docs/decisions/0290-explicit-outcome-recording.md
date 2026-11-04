@@ -1,6 +1,12 @@
-# 0290. Explicit outcome recording
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [outcome/recorder, session/reviewer]
+builds-on: ['0085', '0090', '0140', '0230', '0260', '0270']
+---
 
-Status: accepted by agent judgment; core implemented, driver integration pending
+# 0290. Explicit outcome recording
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0090](0090-plan-and-onboarding-record.md),

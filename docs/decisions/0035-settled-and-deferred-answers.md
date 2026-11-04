@@ -1,6 +1,12 @@
-# 0035. Settled and deferred answers
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [condition/evaluator, document/assembler, plan/editor, plan/refresher, plan/validator, question/finder, record/joiner, record/reconciler, record/splitter, section/resolver]
+builds-on: ['0010', '0030']
+---
 
-Status: accepted
+# 0035. Settled and deferred answers
 
 Builds on [0010](0010-plan-editor.md) and [0030](0030-self-contained-plan-file.md).
 

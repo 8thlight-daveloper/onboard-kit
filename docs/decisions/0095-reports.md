@@ -1,6 +1,12 @@
-# 0095. Reports
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: []
+builds-on: ['0085', '0090']
+---
 
-Status: accepted
+# 0095. Reports
 
 [0150](0150-onboarding-library-and-preparation-flow.md) replaces deadline-style
 treatment of timing with planning targets and support needs. Passing a target

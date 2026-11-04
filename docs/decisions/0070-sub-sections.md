@@ -1,6 +1,12 @@
-# 0070. Sub-sections
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [document/assembler, plan/authoringvalidator, plan/decoder, plan/editor, plan/encoder, plan/instantiator, plan/structurevalidator, question/finder, section/hasher, section/loader, section/resolver, section/selector]
+builds-on: ['0050', '0065']
+---
 
-Status: accepted
+# 0070. Sub-sections
 
 Builds on [0050](0050-section-switch.md) and [0065](0065-messages-and-evidence.md). It relaxes the rule in [conditions](../reference/section-template-schema/conditions.md) that a section's `includeIf` names only plan variables.
 

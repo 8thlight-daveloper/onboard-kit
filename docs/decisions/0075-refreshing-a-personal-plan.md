@@ -1,6 +1,12 @@
-# 0075. Refreshing a personal plan
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [plan/decoder, plan/editor, plan/encoder, plan/refresher, plan/validator, record/joiner, record/reconciler, record/splitter]
+builds-on: ['0030', '0055', '0060']
+---
 
-Status: accepted
+# 0075. Refreshing a personal plan
 
 Partly replaced by [0090](0090-plan-and-onboarding-record.md): a record holds only what the newcomer produced, so a refresh reconciles the record against a new plan copy, and the three-way comparison here is not needed. Ownership, pruning, and the identity rules stay.
 

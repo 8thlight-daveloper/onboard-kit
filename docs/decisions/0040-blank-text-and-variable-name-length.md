@@ -1,6 +1,12 @@
-# 0040. Blank text and variable name length
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [plan/authoringvalidator, plan/editor, plan/validator, section/resolver]
+builds-on: ['0035']
+---
 
-Status: accepted
+# 0040. Blank text and variable name length
 
 Builds on [0035](0035-settled-and-deferred-answers.md). The name rule it changes is in the [domain model](../reference/domain-model.md).
 

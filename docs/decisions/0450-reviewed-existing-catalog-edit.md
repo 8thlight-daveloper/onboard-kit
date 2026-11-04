@@ -1,6 +1,12 @@
-# 0450. Review and save explicit edits to one held catalog plan
+---
+category: ux
+status: accepted
+approval: agent
+note: Verification evidence is recorded separately.
+affects: [catalog/editguide]
+---
 
-Status: accepted agent decision. Verification evidence is recorded separately.
+# 0450. Review and save explicit edits to one held catalog plan
 
 [0580](0580-security-scope-at-this-stage.md) narrows the path checks below to the
 selected parent. Directories above it are no longer inspected.

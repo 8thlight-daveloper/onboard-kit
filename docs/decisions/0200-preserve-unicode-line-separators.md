@@ -1,6 +1,12 @@
-# 0200. Preserve Unicode line separators
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [preparation/encoder, record/decoder, record/encoder]
+builds-on: ['0030', '0100']
+---
 
-Status: accepted by agent judgment
+# 0200. Preserve Unicode line separators
 
 Builds on [0030](0030-self-contained-plan-file.md) and
 [0100](0100-behavior-judgment.md).

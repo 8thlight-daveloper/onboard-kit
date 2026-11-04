@@ -1,6 +1,12 @@
-# 0280. First steps help and sources
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [firststeps/assembler, preparation/reviewer]
+builds-on: ['0090', '0140', '0180', '0240', '0260']
+---
 
-Status: accepted by agent judgment; preview and export integration implemented
+# 0280. First steps help and sources
 
 Builds on [0090](0090-plan-and-onboarding-record.md),
 [0140](0140-person-specific-preparation.md),

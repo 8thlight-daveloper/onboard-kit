@@ -1,6 +1,12 @@
-# 0190. Incremental preparation repair
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [command/prepare, preparation/editor]
+builds-on: ['0100', '0110', '0140']
+---
 
-Status: accepted by agent judgment
+# 0190. Incremental preparation repair
 
 Builds on [0100](0100-behavior-judgment.md),
 [0110](0110-reject-ambiguous-plans.md), and

@@ -1,6 +1,12 @@
-# 0230. First-use record compatibility
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [outcome/recorder, record/decoder, record/encoder, record/reconciler, record/splitter, session/reviewer]
+builds-on: ['0180', '0100']
+---
 
-Status: accepted by agent judgment
+# 0230. First-use record compatibility
 
 Implements the model direction of [0180](0180-first-onboarding-use.md) and applies
 P2, P4, P7, and P8 of [0100](0100-behavior-judgment.md).

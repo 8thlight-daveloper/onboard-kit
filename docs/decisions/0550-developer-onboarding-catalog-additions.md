@@ -1,6 +1,12 @@
-# 0550. Catalog additions for developer onboarding
+---
+category: behavior
+status: accepted
+approval: person
+affects: [catalog/reader]
+builds-on: ['0320', '0530']
+---
 
-Status: accepted by a person.
+# 0550. Catalog additions for developer onboarding
 
 Builds on [0320](0320-embedded-catalog-availability.md) and
 [0530](0530-new-plan-from-core-set.md). It changes the fixed count of eighty

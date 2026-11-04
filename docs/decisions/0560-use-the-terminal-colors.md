@@ -1,7 +1,12 @@
-# 0560. Use the terminal's colors
+---
+category: ux
+status: accepted
+approval: person
+note: Replaces the brand colors in the Colour section of the terminal walkthrough.
+affects: [tui]
+---
 
-Status: accepted by a person. It replaces the brand colors in the Colour
-section of the [terminal walkthrough](../reference/tui.md).
+# 0560. Use the terminal's colors
 
 ## Context
 

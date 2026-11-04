@@ -1,6 +1,13 @@
-# 0170. Planned and actual start dates
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [command/prepare, preparation/decoder, preparation/encoder, preparation/validator]
+builds-on: ['0120', '0140', '0150', '0160']
+partly-superseded-by: ['0180']
+---
 
-Status: superseded in part by [0180](0180-first-onboarding-use.md)
+# 0170. Planned and actual start dates
 
 0180 removes the actual-start question and records first onboarding use instead.
 The planned-date field remains. The two-date implementation below did not ship.

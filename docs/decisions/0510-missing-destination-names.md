@@ -1,7 +1,12 @@
-# 0510. Missing destinations still need a native nonaliasing proof
+---
+category: behavior
+status: accepted
+approval: agent
+note: An agent-selected bounded clarification, not human approval or a mutation-survivor exception.
+affects: [session/editor]
+---
 
-Status: agent-selected bounded clarification, not human approval or a
-mutation-survivor exception.
+# 0510. Missing destinations still need a native nonaliasing proof
 
 ## Context
 

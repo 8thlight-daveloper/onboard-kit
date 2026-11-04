@@ -1,6 +1,11 @@
-# 0010. Plan editor
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [document/assembler, plan/editor, plan/validator, question/finder, secrets]
+---
 
-Status: accepted
+# 0010. Plan editor
 
 The plan file it works on is defined in [0030](0030-self-contained-plan-file.md).
 

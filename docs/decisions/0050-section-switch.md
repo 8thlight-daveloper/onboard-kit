@@ -1,6 +1,12 @@
-# 0050. Section switch
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [condition/evaluator, document/assembler, plan/decoder, plan/editor, plan/instantiator, plan/refresher, plan/validator, question/finder, section/hasher, section/loader, section/resolver, section/selector]
+builds-on: ['0030', '0045', '0010']
+---
 
-Status: accepted
+# 0050. Section switch
 
 Builds on [0030](0030-self-contained-plan-file.md) and [0045](0045-defaults-are-suggestions.md). It replaces the `enabled` variable described in [optional sections](../reference/section-template-schema/optional-sections.md) and in [0010](0010-plan-editor.md).
 

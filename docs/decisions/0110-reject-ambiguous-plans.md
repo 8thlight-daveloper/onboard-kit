@@ -1,6 +1,12 @@
-# 0110. Reject ambiguous plans
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [catalog/creator, catalog/materializer, catalog/reader, command/catalog, outcome/recorder, plan/authoringvalidator, plan/structurevalidator, plan/validator, preparation/decoder, preparation/editor, preparation/locator, preparation/reviewer, section/walker]
+builds-on: ['0100', '0055', '0090']
+---
 
-Status: accepted
+# 0110. Reject ambiguous plans
 
 Builds on [0100](0100-behavior-judgment.md),
 [0055](0055-variable-audience.md), and

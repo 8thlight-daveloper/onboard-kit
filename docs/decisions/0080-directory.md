@@ -1,6 +1,12 @@
-# 0080. Directory
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [document/assembler, plan/authoringvalidator, plan/decoder, plan/editor, plan/encoder, plan/refresher, plan/validator, question/finder, record/reconciler, section/resolver]
+builds-on: ['0055', '0065', '0075']
+---
 
-Status: accepted
+# 0080. Directory
 
 The resolver's directory-default fallback under Integrity is superseded by
 [0120](0120-defaults-require-acceptance.md). Defaults require explicit acceptance

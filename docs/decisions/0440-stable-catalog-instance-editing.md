@@ -1,6 +1,12 @@
-# 0440. Edit held catalog instances without transferring history
+---
+category: behavior
+status: accepted
+approval: agent
+note: Verification evidence is recorded separately.
+affects: [catalog/editguide, catalog/editor, plan/editor]
+---
 
-Status: accepted agent decision. Verification evidence is recorded separately.
+# 0440. Edit held catalog instances without transferring history
 
 0410 requires existing-plan additions and retirement after the creation core.
 Provide one pure catalog editor over an ordinary held Plan and ordered explicit

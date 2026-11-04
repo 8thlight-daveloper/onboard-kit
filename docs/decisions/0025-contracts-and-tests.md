@@ -1,6 +1,11 @@
-# 0025. Contracts and tests
+---
+category: regenerative-process
+status: accepted
+approval: unrecorded
+builds-on: ['0015', '0020']
+---
 
-Status: accepted
+# 0025. Contracts and tests
 
 [0130](0130-survivor-risk-acceptance.md) makes a scoped exception to human-only
 acceptance of the remaining mutation-survivor batch. Other approval rules stay

@@ -1,6 +1,12 @@
-# 0400. Freeze the confirmed invitation opening protocol
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [invitation/starter, preparation/store]
+builds-on: ['0015', '0100', '0110', '0120', '0360', '0380', '0390']
+---
 
-Status: accepted by agent judgment; independent starter contract and implementation available
+# 0400. Freeze the confirmed invitation opening protocol
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0100](0100-behavior-judgment.md),

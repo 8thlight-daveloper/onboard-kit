@@ -1,6 +1,11 @@
-# 0130. Accept the remaining survivor review risk
+---
+category: operations
+status: accepted
+approval: agent
+note: Accepted for the remaining survivor batch only, on the user's delegation.
+---
 
-Status: accepted for this batch
+# 0130. Accept the remaining survivor review risk
 
 Makes a scoped exception to the human-only survivor acceptance rules in
 [0025](0025-contracts-and-tests.md), [0100](0100-behavior-judgment.md), and

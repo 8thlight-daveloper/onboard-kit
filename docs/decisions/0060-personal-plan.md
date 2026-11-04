@@ -1,6 +1,12 @@
-# 0060. Personal plan
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [plan/refresher]
+builds-on: ['0030', '0005', '0015', '0055']
+---
 
-Status: accepted
+# 0060. Personal plan
 
 Replaced by [0090](0090-plan-and-onboarding-record.md): the personal plan becomes the plan copy plus the onboarding record.
 

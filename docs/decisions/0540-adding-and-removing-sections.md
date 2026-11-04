@@ -1,6 +1,12 @@
-# 0540. Add and remove sections in the Sections screen
+---
+category: ux
+status: accepted
+approval: person
+affects: [catalog/editor, catalog/materializer, tui]
+builds-on: ['0530', '0430', '0440', '0050', '0070']
+---
 
-Status: accepted by a person.
+# 0540. Add and remove sections in the Sections screen
 
 Builds on [0530](0530-new-plan-from-core-set.md),
 [0430](0430-reviewed-catalog-creation.md),

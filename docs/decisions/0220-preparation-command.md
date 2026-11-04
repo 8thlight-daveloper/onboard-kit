@@ -1,6 +1,12 @@
-# 0220. Preparation command
+---
+category: ux
+status: accepted
+approval: agent
+affects: [command/prepare, preparation/store]
+builds-on: ['0140', '0190', '0210', '0100']
+---
 
-Status: accepted by agent judgment
+# 0220. Preparation command
 
 Builds on [0140](0140-person-specific-preparation.md),
 [0190](0190-incremental-preparation-repair.md), and

@@ -1,6 +1,10 @@
-# 0015. Functional core and imperative shell
+---
+category: architecture
+status: accepted
+approval: unrecorded
+---
 
-Status: accepted
+# 0015. Functional core and imperative shell
 
 Underlies [0010](0010-plan-editor.md) and [0020](0020-binary-structure-and-regenerative-components.md).
 

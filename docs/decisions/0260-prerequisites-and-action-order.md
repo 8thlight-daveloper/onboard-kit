@@ -1,7 +1,12 @@
-# 0260. Prerequisites and action order
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [document/assembler, firststeps/assembler, outcome/recorder, plan/authoringvalidator, plan/decoder, plan/editor, plan/encoder, plan/instantiator, plan/refresher, plan/structurevalidator, plan/validator, record/joiner, section/hasher, section/loader, section/resolver, section/scheduler, section/selector, section/walker]
+builds-on: ['0085', '0110', '0150', '0250', '0070']
+---
 
-Status: accepted by agent judgment; format, graph validation, scheduling, and
-bootstrap projection implemented; record-backed walkthrough pending
+# 0260. Prerequisites and action order
 
 Builds on [0085](0085-walking-sections-and-recording-outcomes.md),
 [0110](0110-reject-ambiguous-plans.md),

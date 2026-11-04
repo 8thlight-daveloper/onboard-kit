@@ -1,6 +1,12 @@
-# 0420. Route explicit invitation starts without legacy fallback
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [command/start, invitation/starter]
+builds-on: ['0100', '0110', '0360', '0400']
+---
 
-Status: accepted by agent judgment; binary integration pending
+# 0420. Route explicit invitation starts without legacy fallback
 
 Builds on [0100](0100-behavior-judgment.md),
 [0110](0110-reject-ambiguous-plans.md),

@@ -1,6 +1,11 @@
-# 0270. Outcome definition hashes
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [catalog/materializer, document/assembler, outcome/recorder, record/reconciler, section/walker, session/reviewer]
+---
 
-Status: accepted by agent judgment; comparison implemented, runtime recording pending
+# 0270. Outcome definition hashes
 
 Reconciles [0030](0030-self-contained-plan-file.md) with
 [0085](0085-walking-sections-and-recording-outcomes.md). Supersedes 0085's use

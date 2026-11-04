@@ -1,6 +1,12 @@
-# 0045. Defaults are suggestions
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [document/assembler, plan/authoringvalidator, plan/editor, plan/validator, question/finder, section/resolver]
+builds-on: ['0035', '0030', '0010']
+---
 
-Status: accepted
+# 0045. Defaults are suggestions
 
 Builds on [0035](0035-settled-and-deferred-answers.md). It changes parts of [0030](0030-self-contained-plan-file.md) and [0010](0010-plan-editor.md), which are named under Consequences.
 

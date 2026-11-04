@@ -1,6 +1,13 @@
-# 0180. First onboarding use, not actual start
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [firststeps/assembler, outcome/recorder, preparation/decoder, preparation/editor, preparation/encoder, preparation/reviewer, preparation/validator, section/walker]
+builds-on: ['0150', '0160']
+partly-supersedes: ['0170']
+---
 
-Status: accepted; implementation pending
+# 0180. First onboarding use, not actual start
 
 Supersedes [0170](0170-planned-and-actual-start-dates.md)'s actual-start-date
 question. Keeps its onboarder-owned plannedStartDate in preparation. Builds on

@@ -1,6 +1,12 @@
-# 0320. Embedded catalog availability
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [catalog/materializer, catalog/reader, command/catalog]
+builds-on: ['0150']
+---
 
-Status: accepted by agent judgment; read-only availability implemented
+# 0320. Embedded catalog availability
 
 Implements a bounded availability increment of
 [0150](0150-onboarding-library-and-preparation-flow.md), using the complete

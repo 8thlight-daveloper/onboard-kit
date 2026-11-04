@@ -1,7 +1,12 @@
-# 0460. Explicit record-backed session editing
+---
+category: behavior
+status: accepted
+approval: agent
+note: An agent-selected integration candidate, not human approval or accepted-list authority. It is separate from the authoring work in 0440 and 0450.
+affects: [record/writer, session/editor, session/reviewer]
+---
 
-Status: agent-selected integration candidate; not human approval or accepted-list
-authority. This decision is separate from0440/0450 authoring work.
+# 0460. Explicit record-backed session editing
 
 ## Context
 

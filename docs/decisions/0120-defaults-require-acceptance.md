@@ -1,6 +1,11 @@
-# 0120. Defaults require acceptance
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [catalog/creator, catalog/materializer, catalog/reader, command/catalog, outcome/recorder, plan/authoringvalidator, preparation/locator, preparation/reviewer, record/writer, section/resolver, section/scheduler, section/selector, section/walker]
+---
 
-Status: accepted
+# 0120. Defaults require acceptance
 
 Clarifies [0045](0045-defaults-are-suggestions.md) and principle P2 in
 [0100](0100-behavior-judgment.md). Supersedes the directory-default fallback

@@ -1,6 +1,12 @@
-# 0380. Review an invitation as a pure proposal
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [invitation/reviewer, invitation/starter]
+builds-on: ['0015', '0090', '0140', '0230', '0240', '0360', '0370']
+---
 
-Status: accepted by agent judgment; independent contract and implementation available
+# 0380. Review an invitation as a pure proposal
 
 Builds on [0015](0015-functional-core-and-imperative-shell.md),
 [0090](0090-plan-and-onboarding-record.md),

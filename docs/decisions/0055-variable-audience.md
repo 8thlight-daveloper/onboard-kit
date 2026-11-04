@@ -1,6 +1,12 @@
-# 0055. Variable audience
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [plan/authoringvalidator, plan/refresher, plan/validator, preparation/reviewer, question/finder, record/reconciler, record/splitter, section/resolver]
+builds-on: ['0035', '0045', '0010', '0030', '0060']
+---
 
-Status: accepted
+# 0055. Variable audience
 
 Builds on [0035](0035-settled-and-deferred-answers.md) and [0045](0045-defaults-are-suggestions.md). It replaces `phase`, described in [variables](../reference/section-template-schema/variables.md) and in [0010](0010-plan-editor.md), and a line of [0030](0030-self-contained-plan-file.md). It works with [0060](0060-personal-plan.md).
 

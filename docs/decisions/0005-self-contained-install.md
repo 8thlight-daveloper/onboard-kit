@@ -1,6 +1,11 @@
-# 0005. Self-contained install
+---
+category: architecture
+status: accepted
+approval: unrecorded
+partly-superseded-by: ['0600']
+---
 
-Status: superseded in part by [0600](0600-release-platforms-and-channels.md)
+# 0005. Self-contained install
 
 0600 replaces the platform list and the Nix channel clause. Everything else here still applies.
 

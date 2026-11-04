@@ -1,6 +1,11 @@
-# 0570. Test the terminal screens in a real terminal
+---
+category: operations
+status: accepted
+approval: person
+builds-on: ['0520']
+---
 
-Status: accepted by a person.
+# 0570. Test the terminal screens in a real terminal
 
 Builds on [0520](0520-preparation-screen.md), which promises a scripted
 pseudo-terminal run for the Preparation tab. It extends the acceptance

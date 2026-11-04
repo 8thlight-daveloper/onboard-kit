@@ -1,6 +1,11 @@
-# 0140. Person-specific preparation
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [catalog/reader, command/catalog, command/prepare, firststeps/assembler, invitation/encoder, outcome/recorder, preparation/decoder, preparation/editor, preparation/encoder, preparation/locator, preparation/reviewer, preparation/validator, section/walker, session/reviewer]
+---
 
-Status: accepted; implementation pending
+# 0140. Person-specific preparation
 
 [0160](0160-personal-data-and-preparation-approval.md) records approval of the
 bounded preparation shape and the personal-data principle. Start-date semantics

@@ -1,6 +1,12 @@
-# 0250. Bootstrap content and projection
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [document/assembler, firststeps/assembler, plan/decoder, plan/editor, plan/encoder, plan/instantiator, plan/refresher, record/joiner, section/hasher, section/loader, section/resolver, section/selector, section/walker]
+builds-on: ['0085', '0090', '0240']
+---
 
-Status: accepted by agent judgment; implementation pending
+# 0250. Bootstrap content and projection
 
 [0260](0260-prerequisites-and-action-order.md) retains the marker and full-plan
 evaluation rules, but replaces the still-planned nested action fragment with

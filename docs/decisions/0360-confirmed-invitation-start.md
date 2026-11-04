@@ -1,6 +1,11 @@
-# 0360. Confirm an invitation before starting a local session
+---
+category: behavior
+status: accepted
+approval: agent
+affects: [invitation/reviewer, invitation/starter]
+---
 
-Status: accepted by agent judgment; confirmed startup and read-only session implemented
+# 0360. Confirm an invitation before starting a local session
 
 ## Context
 

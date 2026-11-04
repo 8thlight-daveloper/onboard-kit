@@ -1,6 +1,12 @@
-# 0100. Behavior judgment
+---
+category: regenerative-process
+status: accepted
+approval: unrecorded
+note: Accepted for experimental use.
+builds-on: ['0025', '0045', '0055', '0090']
+---
 
-Status: accepted for experimental use
+# 0100. Behavior judgment
 
 [0130](0130-survivor-risk-acceptance.md) makes a scoped exception for agent-only
 acceptance of the remaining mutation-survivor batch.

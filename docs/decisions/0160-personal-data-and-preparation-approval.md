@@ -1,6 +1,12 @@
-# 0160. Personal data and preparation approval
+---
+category: behavior
+status: accepted
+approval: unrecorded
+affects: [preparation/decoder, preparation/editor, preparation/encoder, preparation/reviewer, preparation/validator]
+builds-on: ['0100', '0140', '0150']
+---
 
-Status: accepted; enforcement and preparation implementation pending
+# 0160. Personal data and preparation approval
 
 Builds on [0100](0100-behavior-judgment.md),
 [0140](0140-person-specific-preparation.md), and
