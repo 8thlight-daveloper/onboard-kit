@@ -45,6 +45,8 @@ func (app App) body(screenFrame frame, colors palette) []string {
 		return app.contactsBody(screenFrame, colors)
 	case screenPreparation:
 		return app.preparationBody(screenFrame, colors)
+	case screenInvitation:
+		return app.invitationBody(screenFrame, colors)
 	}
 	return app.walkBody(screenFrame, colors)
 }

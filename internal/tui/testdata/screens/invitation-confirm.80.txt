@@ -1,0 +1,24 @@
+  Walk Overview Review Sections Contacts Preparation [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Write the invitation for Sam Lee?
+  Account sam-lee
+
+  File              plans/obk-invitation-sam-lee.zip
+  Pre-access help   Alex Rivera
+  General help      nobody
+
+  The file holds the plan, this preparation, an empty record, and the first
+  steps guide shown here. An existing file is never replaced.
+
+  This tool sends nothing. Give the file to the newcomer yourself, through a
+  channel your organization approves.
+
+  Nothing is written until you press y.
+
+  > First steps guide, 0%
+  # First steps
+
+  ## Welcome
+
+  y write  pgup/pgdn guide  esc back  ? help

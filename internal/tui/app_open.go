@@ -49,7 +49,7 @@ func (app App) openContacts() App {
 }
 
 func (app App) leavingForSideScreen() App {
-	if app.screen != screenSections && app.screen != screenContacts && app.screen != screenPreparation {
+	if app.screen != screenSections && app.screen != screenContacts && app.screen != screenPreparation && app.screen != screenInvitation {
 		app.cameFrom = app.screen
 	}
 	return app

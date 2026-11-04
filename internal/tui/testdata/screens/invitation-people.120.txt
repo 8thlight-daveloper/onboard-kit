@@ -1,0 +1,30 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  Preparation t  [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  People with a preparation                                             │ Notices
+                                                                        │
+  > pat-kim  ! not ready, 3 to fix                                      │ An invitation is one file for one newcomer.
+    sam-lee  Ready                                                      │ It holds the plan, their preparation, an
+                                                                        │ empty record, and their first steps guide.
+                                                                        │
+                                                                        │ This tool sends nothing. Give the file to
+                                                                        │ the newcomer yourself, through a channel
+                                                                        │ your organization approves.
+                                                                        │
+                                                                        │ Add a person, or fix a preparation, on the
+                                                                        │ Preparation tab. This list checks everyone
+                                                                        │ again each time it opens.
+                                                                        │
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  esc back  ? help

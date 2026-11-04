@@ -16,6 +16,8 @@ func (app App) updateSections(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openContacts(), nil
 	case "t":
 		return app.openPreparation(), nil
+	case "i":
+		return app.openInvitation(), nil
 	case "up", "k":
 		app.sectionCursor = max(app.sectionCursor-1, 0)
 	case "down", "j":

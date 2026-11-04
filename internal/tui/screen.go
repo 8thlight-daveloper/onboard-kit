@@ -9,4 +9,5 @@ const (
 	screenSections
 	screenContacts
 	screenPreparation
+	screenInvitation
 )

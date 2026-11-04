@@ -34,6 +34,8 @@ func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openContacts(), nil
 	case "t":
 		return app.openPreparation(), nil
+	case "i":
+		return app.openInvitation(), nil
 	case "h":
 		return app.askToPrune(), nil
 	case "q":

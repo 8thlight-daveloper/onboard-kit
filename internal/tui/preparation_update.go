@@ -37,6 +37,8 @@ func (app App) jumpedFromPreparation(key string) (App, bool) {
 		return app.openSections(), true
 	case "c":
 		return app.openContacts(), true
+	case "i":
+		return app.openInvitation(), true
 	case "?":
 		app.helpOpen = true
 		return app, true

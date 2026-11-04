@@ -1,0 +1,24 @@
+  Walk Overview Review Sections Contacts Preparation [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Pat Kim is not ready for an invitation
+  Account pat-kim
+
+
+  Preparation problems (1)
+    error: The preparation belongs to another account.
+
+  Blockers in the plan (2)
+    required: What is the organization's name?
+    required: Is the team established, or are we the first consultants?
+
+  Answer or defer the plan's questions on the Walk, and fix the preparation on
+  the Preparation tab. Esc goes back to the list, which checks again.
+
+
+
+
+
+
+
+  esc people  w walk  o overview  r review  s sections  c contacts  ? help

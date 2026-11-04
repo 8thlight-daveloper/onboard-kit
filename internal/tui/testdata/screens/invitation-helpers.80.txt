@@ -1,0 +1,24 @@
+  Walk Overview Review Sections Contacts Preparation [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Invitation for Sam Lee
+  Account sam-lee
+
+    Pre-access help   Alex Rivera
+  > General help      nobody
+    File              plans/obk-invitation-sam-lee.zip
+
+  General help, for Sam Lee
+    [ ] Alex Rivera
+    [1] Sam Okafor
+    [ ] IT service desk
+    [ ] Platform team channel
+  > [2] Engineering manager (role)
+    [ ] IT contact (role)
+    [ ] Platform team lead (role)
+
+  Space picks or unpicks. Enter confirms. Esc goes back without changing it.
+  Pick order is kept.
+  Order: Sam Okafor, then Engineering manager (role)
+
+  space pick  enter confirm  esc back  f1 help

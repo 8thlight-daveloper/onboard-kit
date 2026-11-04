@@ -10,6 +10,10 @@ func (app App) helpLines(width int) []line {
 		content = append(content, blankLine())
 		return append(content, lines(toneFaint, wrapText("Nothing in a preparation is written until you review it and press y. ctrl+c quits at any time and drops staged changes.", width))...)
 	}
+	if app.screen == screenInvitation {
+		content = append(content, blankLine())
+		return append(content, lines(toneFaint, wrapText(invitationHelpNote, width))...)
+	}
 	content = append(content, blankLine(), faintLine("Marks: x answered, ~ deferred, . not answered, ◆ you are here."))
 	content = append(content, faintLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
 	return content
@@ -27,6 +31,8 @@ func (app App) helpEntries() []hint {
 		return app.contactsHelp()
 	case screenPreparation:
 		return app.preparationHelp()
+	case screenInvitation:
+		return app.invitationHelp()
 	}
 	return app.walkHelp()
 }
@@ -120,10 +126,17 @@ func (app App) withContactsHelp(entries []hint) []hint {
 }
 
 func (app App) withPreparationHelp(entries []hint) []hint {
-	if !app.canPrepare() {
+	if app.canPrepare() {
+		entries = append(entries, hint{"t", "preparation: what is arranged for each newcomer"})
+	}
+	return app.withInvitationHelp(entries)
+}
+
+func (app App) withInvitationHelp(entries []hint) []hint {
+	if !app.canInvite() {
 		return entries
 	}
-	return append(entries, hint{"t", "preparation: what is arranged for each newcomer"})
+	return append(entries, hint{"i", "invitation: write the file a newcomer opens"})
 }
 
 func (app App) contactsHelp() []hint {

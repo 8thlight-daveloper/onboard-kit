@@ -24,6 +24,7 @@ type headerLayout struct {
 	tight    bool
 	clipped  bool
 	untitled bool
+	windowed bool
 }
 
 func (app App) tabs() []screenTab {
@@ -36,6 +37,9 @@ func (app App) tabs() []screenTab {
 	}
 	if app.canPrepare() {
 		tabs = append(tabs, screenTab{screenPreparation, "Preparation", "t"})
+	}
+	if app.canInvite() {
+		tabs = append(tabs, screenTab{screenInvitation, "Invitation", "i"})
 	}
 	return tabs
 }
@@ -89,7 +93,10 @@ func (app App) headerParts(layout headerLayout, colors palette) ([]string, int) 
 }
 
 func (app App) headerLeft(layout headerLayout, width int, colors palette) string {
-	parts, _ := app.headerParts(layout, colors)
+	parts, current := app.headerParts(layout, colors)
+	if layout.windowed {
+		return windowAround(parts, current, layout.gap(), width)
+	}
 	whole := strings.Join(parts, layout.gap())
 	if !layout.clipped || cellWidth(whole) <= width {
 		return whole
@@ -104,6 +111,32 @@ func (app App) headerLeft(layout headerLayout, width int, colors palette) string
 	return shown + layout.gap() + clipMark
 }
 
+func windowAround(parts []string, current int, gap string, width int) string {
+	first, last := current, current
+	shown := func(from int, to int) string {
+		text := strings.Join(parts[from:to+1], gap)
+		if from > 0 {
+			text = clipMark + gap + text
+		}
+		if to < len(parts)-1 {
+			text += gap + clipMark
+		}
+		return text
+	}
+	for grown := true; grown; {
+		grown = false
+		if last < len(parts)-1 && cellWidth(shown(first, last+1)) <= width {
+			last++
+			grown = true
+		}
+		if first > 0 && cellWidth(shown(first-1, last)) <= width {
+			first--
+			grown = true
+		}
+	}
+	return shown(first, last)
+}
+
 func (app App) clipKeepsCurrentTab(layout headerLayout, width int, colors palette) bool {
 	parts, current := app.headerParts(layout, colors)
 	kept := cellWidth(strings.Join(parts[:current+1], layout.gap()))
@@ -114,13 +147,13 @@ func (app App) clipKeepsCurrentTab(layout headerLayout, width int, colors palett
 }
 
 func (app App) typingNow() bool {
-	return app.screen == screenWalk && app.entry.typing() || app.screen == screenContacts && app.contacts.typing() || app.screen == screenPreparation && app.preparationTyping()
+	return app.screen == screenWalk && app.entry.typing() || app.screen == screenContacts && app.contacts.typing() || app.screen == screenPreparation && app.preparationTyping() || app.screen == screenInvitation && app.invitationTyping()
 }
 
 func (app App) headerLayout(width int, colors palette) headerLayout {
-	candidates := []headerLayout{{keys: true, progress: true}, {keys: true}, {progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}}
+	candidates := []headerLayout{{keys: true, progress: true}, {keys: true}, {progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}, {tight: true, untitled: true, windowed: true}}
 	if app.typingNow() {
-		candidates = []headerLayout{{progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}}
+		candidates = []headerLayout{{progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}, {tight: true, untitled: true, windowed: true}}
 	}
 	for _, candidate := range candidates {
 		if candidate.clipped {

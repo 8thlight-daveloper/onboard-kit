@@ -1,0 +1,24 @@
+  Walk Overview Review Sections Contacts Preparation [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Invitation for Sam Lee
+  Account sam-lee
+
+  > Pre-access help   not chosen
+    General help      nobody
+    File              plans/obk-invitation-sam-lee.zip
+
+  Pre-access help, for Sam Lee
+  > ( ) Alex Rivera
+    ( ) IT service desk
+
+  Enter chooses. Esc goes back without changing it.
+
+    First steps guide, 0%
+  # First steps
+
+  ## Welcome
+
+  Organization: ACME Corp
+
+  enter choose  esc back  f1 help

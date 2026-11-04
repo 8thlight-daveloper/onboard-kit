@@ -1,0 +1,24 @@
+  Walk Overview Review Sections Contacts Preparation [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Invitation for Sam Lee
+  Account sam-lee
+
+  > Pre-access help   not chosen
+    General help      nobody
+    File              plans/obk-invitation-sam-lee.zip
+
+  Pre-access help is who the newcomer can reach before they have company
+  access. Only contacts with a name and an email or Slack handle are offered.
+  Enter on the file, or ctrl+s, shows what will be written. Nothing is written
+  until you press y there.
+
+    First steps guide, 0%
+  # First steps
+
+  ## Welcome
+
+  Organization: ACME Corp
+
+
+  enter pick  ctrl+s next  pgup/pgdn guide  esc cancel  f1 help

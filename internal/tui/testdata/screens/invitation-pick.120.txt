@@ -1,0 +1,30 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  Preparation t  [Invitation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Invitation for Sam Lee                         │   First steps guide, 0%
+  Account sam-lee                                │ # First steps
+                                                 │
+  > Pre-access help   not chosen                 │ ## Welcome
+    General help      nobody                     │
+    File              plans/obk-invitation-sam-… │ Organization: ACME Corp
+                                                 │
+  Pre-access help, for Sam Lee                   │ Onboarding owner: Alex Rivera, @alex
+  > ( ) Alex Rivera                              │
+    ( ) IT service desk                          │ Use this guide to begin onboarding and keep your own answers,
+                                                 │ outcomes, and notes in your record.
+  Enter chooses. Esc goes back without changing  │
+  it.                                            │ ## What is in the invitation
+                                                 │
+                                                 │ - `plan.obk.yaml`: shared instructions and organization facts,
+                                                 │ maintained by onboarders.
+                                                 │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you,
+                                                 │ maintained by onboarders.
+                                                 │ - `records/sam-lee/record.obk.yaml`: your answers, outcomes, and
+                                                 │ notes, maintained by you.
+                                                 │ - `first-steps.md`: this generated guide; it does not replace those
+                                                 │ three source artifacts.
+                                                 │
+                                                 │ Invitation account: `sam-lee`.
+                                                 │
+
+  enter choose  esc back  f1 help

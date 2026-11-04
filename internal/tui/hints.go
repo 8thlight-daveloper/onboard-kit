@@ -22,6 +22,8 @@ func (app App) hints(tabKeysShown bool) []hint {
 		return app.contactsHints(tabKeysShown)
 	case screenPreparation:
 		return app.preparationHints(tabKeysShown)
+	case screenInvitation:
+		return app.invitationHints(tabKeysShown)
 	}
 	return app.walkHints(tabKeysShown)
 }

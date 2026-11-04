@@ -83,6 +83,9 @@ func everyScreen(t *testing.T) map[string]App {
 	for name, steps := range preparationSteps() {
 		screens[strings.ReplaceAll(name, "-", " ")] = press(onPreparation(t, withSamLee(t)), steps...)
 	}
+	for name, steps := range invitationSteps() {
+		screens[strings.ReplaceAll(name, "-", " ")] = press(onInvitation(t, newFakeInvitations(t)), steps...)
+	}
 	return screens
 }
 

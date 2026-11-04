@@ -54,7 +54,7 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if who == model.AudienceOnboardee {
 		return Walk(*planPath, plan, who, "", stdin, stdout, stderr)
 	}
-	return walk(*planPath, plan, who, "", newPreparationFiles(preparationRootFor(*planPath, *root), *planPath), stdin, stdout, stderr)
+	return walk(*planPath, plan, who, "", newPreparationFiles(preparationRootFor(*planPath, *root), *planPath), nil, stdin, stdout, stderr)
 }
 
 func preparationRootFor(planPath string, root string) string {
@@ -65,17 +65,17 @@ func preparationRootFor(planPath string, root string) string {
 }
 
 func Walk(planPath string, plan model.Plan, audience model.Audience, notice string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
-	return walk(planPath, plan, audience, notice, nil, stdin, stdout, stderr)
+	return walk(planPath, plan, audience, notice, nil, nil, stdin, stdout, stderr)
 }
 
-func walk(planPath string, plan model.Plan, audience model.Audience, notice string, preparation tui.PreparationPort, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+func walk(planPath string, plan model.Plan, audience model.Audience, notice string, preparation tui.PreparationPort, invitation tui.InvitationPort, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
 	save := func(plan model.Plan) error {
 		if !planfile.Save(planPath, plan, io.Discard) {
 			return fmt.Errorf("the plan could not be written to %s", planPath)
 		}
 		return nil
 	}
-	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, stdin, stdout)
+	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, invitation, stdin, stdout)
 	if errors.Is(err, tui.ErrInterrupted) {
 		return exitInterrupted
 	}

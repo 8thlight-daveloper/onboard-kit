@@ -51,6 +51,8 @@ func (app App) updateBrowsing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openSections(), nil
 	case "t":
 		return app.openPreparation(), nil
+	case "i":
+		return app.openInvitation(), nil
 	case "?":
 		app.helpOpen = true
 	}

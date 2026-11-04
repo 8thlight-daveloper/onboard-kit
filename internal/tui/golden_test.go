@@ -80,6 +80,14 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"preparation-drop":             preparing(t, "preparation-drop"),
 		"preparation-review":           preparing(t, "preparation-review"),
 		"preparation-guide":            preparing(t, "preparation-guide"),
+		"invitation-people":            inviting(t, "invitation-people"),
+		"invitation-blocked":           inviting(t, "invitation-blocked"),
+		"invitation-form":              inviting(t, "invitation-form"),
+		"invitation-pick":              inviting(t, "invitation-pick"),
+		"invitation-helpers":           inviting(t, "invitation-helpers"),
+		"invitation-missing":           inviting(t, "invitation-missing"),
+		"invitation-confirm":           inviting(t, "invitation-confirm"),
+		"invitation-written":           inviting(t, "invitation-written"),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)

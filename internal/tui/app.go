@@ -31,6 +31,8 @@ type App struct {
 	contacts        contactsState
 	preparation     preparationState
 	preparationPort PreparationPort
+	invitation      invitationState
+	invitationPort  InvitationPort
 	width           int
 	height          int
 	finished        bool
@@ -85,6 +87,9 @@ func (app App) resized() App {
 	if app.preparation.mode == preparationEditing {
 		app.preparation.form = app.preparation.form.withWidth(app.formWidth())
 	}
+	if app.invitation.mode == invitationEditing {
+		app.invitation.form = app.invitation.form.withWidth(app.invitationFormWidth())
+	}
 	return app
 }
 
@@ -108,6 +113,8 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.updateContacts(key)
 	case screenPreparation:
 		return app.updatePreparation(key)
+	case screenInvitation:
+		return app.updateInvitation(key)
 	}
 	return app.updateWalk(key)
 }

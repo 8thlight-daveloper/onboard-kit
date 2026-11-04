@@ -41,6 +41,8 @@ func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.openContacts(), nil
 	case "t":
 		return app.openPreparation(), nil
+	case "i":
+		return app.openInvitation(), nil
 	case "esc":
 		return app.leaveWalk(), nil
 	case "q":
