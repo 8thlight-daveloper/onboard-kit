@@ -6,7 +6,7 @@ Part of the [stack](README.md). The rules are data in `architecture.yaml`, as de
 
 | Choice | Current | Why | Since | Replace when |
 | -- | -- | -- | -- | -- |
-| Dependency check | Rules in `architecture.yaml`. Extractor to decide, spiking ArchUnitGo | Needed for the dependency rules in 0020. The rules are data and the extractor is an adapter. |  |  |
+| Dependency check | Rules in `architecture.yaml`. The extractor is `go list`, read by `tools/architecture`, run by `just check-architecture` | Needed for the dependency rules in 0020. The rules are data and the extractor is an adapter. |  |  |
 
 ## Banned categories in core components
 

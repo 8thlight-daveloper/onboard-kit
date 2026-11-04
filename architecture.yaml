@@ -7,19 +7,25 @@ naming:
 kinds:
   model:
     imports: []
+    contract: none
   core:
     imports: [model, core]
     banned-categories: [filesystem, network, process, terminal, randomness]
+    contract: required
   driver:
     imports: [model, core, driver]
     banned-categories: [terminal]
+    contract: required
   screen:
     imports: [model, core]
     banned-categories: [network]
+    contract: none
   command:
     imports: [model, core, driver, screen, command]
+    contract: none
   entry:
     imports: [command]
+    contract: none
 
 deferred-categories:
   clock: a package that also holds types the model may need, so an import check is too coarse
@@ -34,14 +40,19 @@ components:
     imports: [command/root]
   catalog/creator:
     kind: driver
+    imports: [catalog/materializer, plan/encoder, model]
   catalog/editguide:
     kind: driver
+    imports: [catalog/editor, catalog/materializer, plan/decoder, plan/encoder, plan/authoringvalidator, plan/validator, model]
   catalog/editor:
     kind: core
+    imports: [catalog/materializer, plan/editor, plan/validator, plan/authoringvalidator, model]
   catalog/materializer:
     kind: core
+    imports: [catalog/reader, section/loader, section/hasher, plan/authoringvalidator, plan/validator, model]
   catalog/reader:
     kind: core
+    imports: [model]
   command/assemble:
     kind: command
   command/catalog:
@@ -71,22 +82,28 @@ components:
     imports: [model]
   document/assembler:
     kind: core
-    imports: [section/selector, section/resolver, model]
+    imports: [section/scheduler, section/selector, section/resolver, model]
   firststeps/assembler:
     kind: core
     imports: [document/assembler, preparation/locator, preparation/validator, model]
   invitation/decoder:
     kind: core
+    imports: [model]
   invitation/encoder:
     kind: core
+    imports: [model]
   invitation/reviewer:
     kind: core
+    imports: [invitation/decoder, plan/decoder, plan/authoringvalidator, plan/validator, preparation/decoder, preparation/validator, preparation/locator, record/decoder, record/reconciler, record/joiner, record/encoder, section/walker, model]
   invitation/starter:
     kind: driver
+    imports: [invitation/reviewer, model]
   outcome/recorder:
     kind: core
+    imports: [section/walker, section/hasher, model]
   plan/authoringvalidator:
     kind: core
+    imports: [secrets, model]
   plan/decoder:
     kind: core
     imports: [plan/migrator, model]
@@ -108,9 +125,10 @@ components:
     imports: [model]
   plan/structurevalidator:
     kind: core
+    imports: [model]
   plan/validator:
     kind: core
-    imports: [question/finder, section/validator, secrets, model]
+    imports: [plan/structurevalidator, question/finder, section/validator, secrets, model]
   preparation/decoder:
     kind: core
     imports: [model]
@@ -146,12 +164,13 @@ components:
     imports: [model]
   record/reconciler:
     kind: core
-    imports: [model]
+    imports: [section/hasher, model]
   record/splitter:
     kind: core
     imports: [model]
   record/writer:
     kind: core
+    imports: [record/joiner, plan/editor, model]
   secrets:
     kind: core
     imports: [model]
@@ -166,6 +185,7 @@ components:
     imports: [model]
   section/scheduler:
     kind: core
+    imports: [plan/structurevalidator, section/selector, model]
   section/selector:
     kind: core
     imports: [condition/evaluator, model]
@@ -175,10 +195,13 @@ components:
     imports: [model]
   section/walker:
     kind: core
+    imports: [section/scheduler, question/finder, section/resolver, section/hasher, model]
   session/editor:
     kind: driver
+    imports: [session/reviewer, plan/decoder, preparation/locator, model]
   session/reviewer:
     kind: core
+    imports: [record/writer, outcome/recorder, section/walker, plan/authoringvalidator, plan/validator, plan/decoder, preparation/decoder, record/decoder, preparation/validator, record/joiner, record/encoder, model]
   template/linter:
     kind: core
     status: planned

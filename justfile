@@ -8,7 +8,7 @@ default:
     @just --list
 
 # Everything CI runs: format check, every linter, and the tests.
-check: fmt-check lint-md lint-links lint-prose lint-go check-notices check-records test
+check: fmt-check lint-md lint-links lint-prose lint-go check-notices check-records check-architecture test
 
 # Format Markdown in place.
 fmt:
@@ -48,6 +48,10 @@ notices:
 # Fail if THIRD_PARTY_NOTICES.md does not match the modules the binary links.
 check-notices:
     go run ./tools/notices check
+
+# Fail when the code breaks the rules in architecture.yaml.
+check-architecture:
+    go run ./tools/architecture check
 
 # Check the front matter of the decision records and their links to components and contracts.
 check-records:
