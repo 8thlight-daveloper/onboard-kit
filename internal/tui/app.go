@@ -12,26 +12,28 @@ const (
 )
 
 type App struct {
-	backend        Backend
-	rail           railGlyphs
-	audience       model.Audience
-	save           func(model.Plan) error
-	plan           model.Plan
-	questions      []model.Question
-	cursor         int
-	overviewCursor int
-	sectionCursor  int
-	screen         screen
-	returnTo       screen
-	cameFrom       screen
-	helpOpen       bool
-	status         line
-	entry          entryState
-	review         reviewState
-	contacts       contactsState
-	width          int
-	height         int
-	finished       bool
+	backend         Backend
+	rail            railGlyphs
+	audience        model.Audience
+	save            func(model.Plan) error
+	plan            model.Plan
+	questions       []model.Question
+	cursor          int
+	overviewCursor  int
+	sectionCursor   int
+	screen          screen
+	returnTo        screen
+	cameFrom        screen
+	helpOpen        bool
+	status          line
+	entry           entryState
+	review          reviewState
+	contacts        contactsState
+	preparation     preparationState
+	preparationPort PreparationPort
+	width           int
+	height          int
+	finished        bool
 }
 
 func NewApp(backend Backend, plan model.Plan, save func(model.Plan) error, audience model.Audience) App {
@@ -80,6 +82,9 @@ func (app App) resized() App {
 	if app.contacts.mode == contactsEditing {
 		app.contacts.form = app.contacts.form.withWidth(app.formWidth())
 	}
+	if app.preparation.mode == preparationEditing {
+		app.preparation.form = app.preparation.form.withWidth(app.formWidth())
+	}
 	return app
 }
 
@@ -101,6 +106,8 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.updateSections(key)
 	case screenContacts:
 		return app.updateContacts(key)
+	case screenPreparation:
+		return app.updatePreparation(key)
 	}
 	return app.updateWalk(key)
 }

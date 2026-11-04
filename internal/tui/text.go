@@ -1,7 +1,9 @@
 package tui
 
 import (
+	"strconv"
 	"strings"
+	"unicode"
 
 	"github.com/charmbracelet/lipgloss"
 )
@@ -108,4 +110,17 @@ func hanging(prefix string, text string, width int) []string {
 		lines = append(lines, lead+piece)
 	}
 	return lines
+}
+
+func visibleText(text string) string {
+	var shown strings.Builder
+	for _, character := range text {
+		if unicode.IsControl(character) && character != '\t' && character != '\n' {
+			quoted := strconv.QuoteRuneToASCII(character)
+			shown.WriteString(quoted[1 : len(quoted)-1])
+			continue
+		}
+		shown.WriteRune(character)
+	}
+	return shown.String()
 }

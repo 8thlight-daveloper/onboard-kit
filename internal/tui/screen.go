@@ -8,4 +8,5 @@ const (
 	screenReview
 	screenSections
 	screenContacts
+	screenPreparation
 )

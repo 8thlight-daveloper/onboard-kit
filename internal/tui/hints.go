@@ -20,6 +20,8 @@ func (app App) hints(tabKeysShown bool) []hint {
 		return app.sectionHints(tabKeysShown)
 	case screenContacts:
 		return app.contactsHints(tabKeysShown)
+	case screenPreparation:
+		return app.preparationHints(tabKeysShown)
 	}
 	return app.walkHints(tabKeysShown)
 }

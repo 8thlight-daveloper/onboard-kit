@@ -6,6 +6,10 @@ func (app App) helpLines(width int) []line {
 	for _, entry := range app.helpEntries() {
 		content = append(content, lines(toneBody, hanging("", entry.key+"  "+entry.label, width))...)
 	}
+	if app.screen == screenPreparation {
+		content = append(content, blankLine())
+		return append(content, lines(toneFaint, wrapText("Nothing in a preparation is written until you review it and press y. ctrl+c quits at any time and drops staged changes.", width))...)
+	}
 	content = append(content, blankLine(), faintLine("Marks: x answered, ~ deferred, . not answered, ◆ you are here."))
 	content = append(content, faintLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
 	return content
@@ -18,9 +22,11 @@ func (app App) helpEntries() []hint {
 	case screenReview:
 		return app.reviewHelp()
 	case screenSections:
-		return []hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}, {"c", "contacts, roles, and teams"}}
+		return app.withPreparationHelp([]hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}, {"c", "contacts, roles, and teams"}})
 	case screenContacts:
 		return app.contactsHelp()
+	case screenPreparation:
+		return app.preparationHelp()
 	}
 	return app.walkHelp()
 }
@@ -110,7 +116,14 @@ func (app App) withContactsHelp(entries []hint) []hint {
 	if !app.canEditDirectory() {
 		return entries
 	}
-	return append(entries, hint{"c", "contacts: add, change, or remove contacts, roles, and teams"})
+	return app.withPreparationHelp(append(entries, hint{"c", "contacts: add, change, or remove contacts, roles, and teams"}))
+}
+
+func (app App) withPreparationHelp(entries []hint) []hint {
+	if !app.canPrepare() {
+		return entries
+	}
+	return append(entries, hint{"t", "preparation: what is arranged for each newcomer"})
 }
 
 func (app App) contactsHelp() []hint {
@@ -120,7 +133,7 @@ func (app App) contactsHelp() []hint {
 	case contactsRemoving:
 		return []hint{{"y", "remove it, and clear what the list above says"}, {"any other key", "keep it and go back"}}
 	}
-	return []hint{
+	return app.withPreparationHelp([]hint{
 		{"up, down, k, j", "move"},
 		{"tab, shift+tab, left, right", "contacts, roles, or teams"},
 		{"a", "add an entry to this list"},
@@ -128,7 +141,7 @@ func (app App) contactsHelp() []hint {
 		{"x", "remove the chosen entry, after showing what it clears"},
 		{"w, o, r, s", "walk, overview, review, sections"},
 		{"esc, q", "back"},
-	}
+	})
 }
 
 func (app App) formHelp() []hint {
