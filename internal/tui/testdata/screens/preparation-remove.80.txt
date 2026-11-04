@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Remove the arrangement laptop?
+
+  Section: Access. Kind: equipment. Status: requested.
+
+  The removal is staged with your other changes. Nothing is written until you
+  review and save.
+
+  Nothing is removed until you press y.
+
+
+
+
+
+
+
+
+
+  y remove  esc keep  ? help

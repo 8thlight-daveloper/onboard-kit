@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  People with a preparation
+
+  > sam-lee  records/sam-lee/preparation.obk.yaml
+    Add a person
+
+  Notices
+  A preparation holds what you arrange for one newcomer: their details, and
+  the people and work set up for them. It sits in the newcomer's own folder,
+  beside their record.
+
+  Press a to add a person. Nothing is written until you review and save.
+
+
+
+
+
+
+
+
+
+  enter open  a add person  esc back  w walk  o overview  r review  ? help

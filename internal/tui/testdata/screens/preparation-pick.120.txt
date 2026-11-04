@@ -1,0 +1,30 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  [Preparation]               13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Recipient
+
+    Name              Sam Lee
+    Company email     optional
+    Planned start     optional, YYYY-MM-DD
+    Team              Platform team
+  > Manager           Sam Okafor
+    Onboarding owner  not set
+    Buddy             not set
+    Work location     remote
+    Time zone         optional, such as Europe/Berlin
+
+  Manager, for sam-lee
+    ( ) Nobody
+    ( ) Alex Rivera
+  > (o) Sam Okafor
+    ( ) IT service desk
+    ( ) Platform team channel
+
+  Enter chooses. Esc goes back without changing it.
+
+
+
+  enter choose  esc back  f1 help

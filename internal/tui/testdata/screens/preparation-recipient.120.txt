@@ -1,0 +1,30 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]                         13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Recipient
+
+  > Name              Sam Lee Jr
+    Company email     optional
+    Planned start     optional, YYYY-MM-DD
+    Team              Platform team
+    Manager           Sam Okafor
+    Onboarding owner  not set
+    Buddy             not set
+    Work location     remote
+    Time zone         optional, such as Europe/Berlin
+
+  Enter moves to the next field and stages the form on the last. Ctrl+s
+  stages it. Nothing is written until you review and save.
+
+
+
+
+
+
+
+
+
+  enter next  ctrl+s stage  esc cancel  f1 help

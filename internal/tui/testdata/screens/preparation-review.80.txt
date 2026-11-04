@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  > Changes
+  Save the preparation for sam-lee?
+
+  Changes (1)
+    Name: "Sam Lee Jr", was "Sam Lee"
+
+  Nothing is written until you press y.
+
+
+
+
+
+
+
+
+
+
+  y save  tab changes/guide  pgup/pgdn scroll  esc back  w walk  ? help

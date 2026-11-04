@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  > First steps guide, 0%
+  # First steps
+
+  ## Welcome
+
+  Organization: ACME Corp
+
+  Onboarding owner: Not assigned. Ask the person who sent this invitation to
+  name an onboarding owner and provide a contact route.
+
+  Use this guide to begin onboarding and keep your own answers, outcomes, and
+  notes in your record.
+
+  ## What is in the invitation
+
+  - `plan.obk.yaml`: shared instructions and organization facts, maintained by
+
+  y save  tab changes/guide  pgup/pgdn scroll  esc back  w walk  ? help

@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  > Recipient
+      Name              Sam Lee
+      Company email     not set
+      Planned start     not set
+      Team              Platform team
+      Manager           Sam Okafor
+      Onboarding owner  not set
+      Buddy             not set
+      Work location     remote
+      Time zone         not set
+
+
+  Notices
+  Anyone who can read this folder can read this file. Keep passwords, secrets,
+  and private details out of it. The terminal also keeps what it shows.
+
+
+  enter open  a add arrangement  esc people  w walk  o overview  ? help

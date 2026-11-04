@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  [Preparation]                                   13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  > Recipient                                                                       │ Notices
+      Name              Sam Lee                                                     │
+      Company email     not set                                                     │ Anyone who can read this folder can read this file.
+      Planned start     not set                                                     │ Keep passwords, secrets, and private details out of
+      Team              Platform team                                               │ it. The terminal also keeps what it shows.
+      Manager           Sam Okafor                                                  │
+      Onboarding owner  not set                                                     │
+      Buddy             not set                                                     │
+      Work location     remote                                                      │
+      Time zone         not set                                                     │
+                                                                                    │
+  Arrangements (2)                                                                  │
+    laptop         Access, equipment, requested                                     │
+    first-pairing  Clone the project and run the tests, pairing, pending            │
+    Add an arrangement                                                              │
+                                                                                    │
+    Review and save                                                                 │
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  a add arrangement  esc people  ? help

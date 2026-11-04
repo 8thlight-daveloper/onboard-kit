@@ -80,6 +80,9 @@ func everyScreen(t *testing.T) map[string]App {
 	for name, app := range longScreens() {
 		screens[name] = app
 	}
+	for name, steps := range preparationSteps() {
+		screens[strings.ReplaceAll(name, "-", " ")] = press(onPreparation(t, withSamLee(t)), steps...)
+	}
 	return screens
 }
 

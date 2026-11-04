@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  [Preparation]                                   13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  > Changes                                              │   First steps guide, 0%
+  Save the preparation for sam-lee?                      │ # First steps
+                                                         │
+  Changes (1)                                            │ ## Welcome
+    Name: "Sam Lee Jr", was "Sam Lee"                    │
+                                                         │ Organization: ACME Corp
+  Nothing is written until you press y.                  │
+                                                         │ Onboarding owner: Not assigned. Ask the person who sent this invitation to name
+                                                         │ an onboarding owner and provide a contact route.
+                                                         │
+                                                         │ Use this guide to begin onboarding and keep your own answers, outcomes, and
+                                                         │ notes in your record.
+                                                         │
+                                                         │ ## What is in the invitation
+                                                         │
+                                                         │ - `plan.obk.yaml`: shared instructions and organization facts, maintained by
+                                                         │ onboarders.
+                                                         │ - `records/sam-lee/preparation.obk.yaml`: arrangements for you, maintained by
+                                                         │ onboarders.
+                                                         │ - `records/sam-lee/record.obk.yaml`: your answers, outcomes, and notes,
+                                                         │ maintained by you.
+                                                         │ - `first-steps.md`: this generated guide; it does not replace those three
+                                                         │ source artifacts.
+                                                         │
+                                                         │ Invitation account: `sam-lee`.
+                                                         │
+                                                         │ Before allowing an import, check that the account is yours. If it is wrong,
+                                                         │ cancel and ask the sender for a corrected invitation. Do not confirm another
+                                                         │ person's account.
+                                                         │
+                                                         │ ## Get the tool
+                                                         │
+
+  y save  tab changes/guide  pgup/pgdn scroll  esc back  ? help

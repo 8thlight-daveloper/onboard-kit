@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  New arrangement
+
+    Id                second-pairing
+  > Section           not chosen
+    Kind              not chosen
+    Owner             not set
+    Helpers           nobody
+    Reference         the ticket, pull request, or resource
+    Target date       optional, YYYY-MM-DD
+    Status            not chosen
+    Note              optional, no secrets or private details
+
+  Enter moves to the next field and stages the form on the last. Ctrl+s stages
+  it. Nothing is written until you review and save.
+
+
+
+  enter pick  ctrl+s stage  esc cancel  f1 help

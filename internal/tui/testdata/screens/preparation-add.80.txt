@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  Add a person
+
+  > Account           alex-doe
+
+  The account names this person's folder, and it never changes. Enter opens
+  the person. Nothing is written until you review and save.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  esc cancel  f1 help

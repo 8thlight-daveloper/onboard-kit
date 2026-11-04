@@ -68,6 +68,18 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"contacts-remove":              build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), down, typed("x"))),
 		"contacts-remove-role":         build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, typed("x"))),
 		"contacts-empty":               build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, keys(esc, typed("c"))),
+		"preparation-people":           preparing(t, "preparation-people"),
+		"preparation-add":              preparing(t, "preparation-add"),
+		"preparation-person":           preparing(t, "preparation-person"),
+		"preparation-recipient":        preparing(t, "preparation-recipient"),
+		"preparation-pick":             preparing(t, "preparation-pick"),
+		"preparation-arrangement":      preparing(t, "preparation-arrangement"),
+		"preparation-helpers":          preparing(t, "preparation-helpers"),
+		"preparation-problem":          preparing(t, "preparation-problem"),
+		"preparation-remove":           preparing(t, "preparation-remove"),
+		"preparation-drop":             preparing(t, "preparation-drop"),
+		"preparation-review":           preparing(t, "preparation-review"),
+		"preparation-guide":            preparing(t, "preparation-guide"),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)

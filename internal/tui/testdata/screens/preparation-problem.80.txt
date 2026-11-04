@@ -1,0 +1,24 @@
+  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Id: laptop, which never changes
+
+    Section           Access
+    Kind              equipment
+    Owner             not set
+    Helpers           nobody
+    Reference         the ticket, pull request, or resource
+    Target date       optional, YYYY-MM-DD
+  > Status            arranged
+    Note              optional, no secrets or private details
+
+  Enter moves to the next field and stages the form on the last. Ctrl+s stages
+  it. Nothing is written until you review and save.
+
+  ! problem: Owner: Assign an owner before marking the arrangement arranged.
+  ! problem: Reference: Supply a work or resource reference before marking
+  not staged
+  enter pick  ctrl+s stage  esc cancel  f1 help

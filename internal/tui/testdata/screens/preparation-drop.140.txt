@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  [Preparation]                                   13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Drop the changes for sam-lee?
+
+  1 change is staged and not saved. Dropping them leaves the file as it is.
+
+  Staged
+    - Name: "Sam Lee Jr", was "Sam Lee"
+
+  Nothing is dropped until you press y.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  y drop  esc keep  ? help

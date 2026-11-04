@@ -1,0 +1,40 @@
+  Onboarding plan  Walk w  Overview o  Review r  Sections s  Contacts c  [Preparation]                                   13 of 13 answered
+  ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
+
+  sam-lee
+  Saves to records/sam-lee/preparation.obk.yaml
+
+  Arrangement first-pairing
+  Id: first-pairing, which never changes
+
+    Section           Clone the project and run the tests
+    Kind              pairing
+    Owner             Alex Rivera
+  > Helpers           Sam Okafor
+    Reference         A first ticket
+    Target date       optional, YYYY-MM-DD
+    Status            pending
+    Note              optional, no secrets or private details
+
+  Helpers, for sam-lee
+    [ ] Alex Rivera
+    [1] Sam Okafor
+  > [2] IT service desk
+    [ ] Platform team channel
+
+  Space picks or unpicks. Enter confirms. Esc goes back without changing it. Pick
+  order is kept.
+  Order: Sam Okafor, then IT service desk
+
+
+
+
+
+
+
+
+
+
+
+
+  space pick  enter confirm  esc back  f1 help
