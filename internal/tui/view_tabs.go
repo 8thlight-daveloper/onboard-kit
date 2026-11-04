@@ -9,6 +9,7 @@ import (
 const (
 	tabGap      = "  "
 	tabGapTight = " "
+	clipMark    = "…"
 )
 
 type screenTab struct {
@@ -21,6 +22,7 @@ type headerLayout struct {
 	keys     bool
 	progress bool
 	tight    bool
+	clipped  bool
 	untitled bool
 }
 
@@ -45,9 +47,10 @@ func (app App) headerTitle() string {
 	return "Onboarding plan"
 }
 
-func (app App) tabStrip(withKeys bool, gap string, colors palette) string {
+func (app App) tabParts(withKeys bool, colors palette) ([]string, int) {
 	var parts []string
-	for _, entry := range app.tabs() {
+	current := 0
+	for index, entry := range app.tabs() {
 		switch {
 		case entry.screen == app.screen && colors.styled():
 			parts = append(parts, colors.render(toneHere, true, entry.name))
@@ -58,19 +61,56 @@ func (app App) tabStrip(withKeys bool, gap string, colors palette) string {
 		default:
 			parts = append(parts, colors.render(toneFaint, true, entry.name))
 		}
+		if entry.screen == app.screen {
+			current = index
+		}
 	}
+	return parts, current
+}
+
+func (app App) tabStrip(withKeys bool, gap string, colors palette) string {
+	parts, _ := app.tabParts(withKeys, colors)
 	return strings.Join(parts, gap)
 }
 
-func (app App) headerLeft(layout headerLayout, colors palette) string {
-	gap := tabGap
+func (layout headerLayout) gap() string {
 	if layout.tight {
-		gap = tabGapTight
+		return tabGapTight
 	}
+	return tabGap
+}
+
+func (app App) headerParts(layout headerLayout, colors palette) ([]string, int) {
+	parts, current := app.tabParts(layout.keys, colors)
 	if layout.untitled {
-		return app.tabStrip(layout.keys, gap, colors)
+		return parts, current
 	}
-	return colors.render(toneStrong, true, app.headerTitle()) + gap + app.tabStrip(layout.keys, gap, colors)
+	return append([]string{colors.render(toneStrong, true, app.headerTitle())}, parts...), current + 1
+}
+
+func (app App) headerLeft(layout headerLayout, width int, colors palette) string {
+	parts, _ := app.headerParts(layout, colors)
+	whole := strings.Join(parts, layout.gap())
+	if !layout.clipped || cellWidth(whole) <= width {
+		return whole
+	}
+	shown := parts[0]
+	for _, part := range parts[1:] {
+		if cellWidth(shown+layout.gap()+part+layout.gap()+clipMark) > width {
+			break
+		}
+		shown += layout.gap() + part
+	}
+	return shown + layout.gap() + clipMark
+}
+
+func (app App) clipKeepsCurrentTab(layout headerLayout, width int, colors palette) bool {
+	parts, current := app.headerParts(layout, colors)
+	kept := cellWidth(strings.Join(parts[:current+1], layout.gap()))
+	if current == len(parts)-1 {
+		return kept <= width
+	}
+	return kept+cellWidth(layout.gap()+clipMark) <= width
 }
 
 func (app App) typingNow() bool {
@@ -78,12 +118,18 @@ func (app App) typingNow() bool {
 }
 
 func (app App) headerLayout(width int, colors palette) headerLayout {
-	candidates := []headerLayout{{keys: true, progress: true}, {keys: true}, {progress: true}, {}, {tight: true}, {tight: true, untitled: true}}
+	candidates := []headerLayout{{keys: true, progress: true}, {keys: true}, {progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}}
 	if app.typingNow() {
-		candidates = []headerLayout{{progress: true}, {}, {tight: true}, {tight: true, untitled: true}}
+		candidates = []headerLayout{{progress: true}, {}, {tight: true}, {tight: true, clipped: true}, {tight: true, untitled: true}}
 	}
 	for _, candidate := range candidates {
-		used := cellWidth(app.headerLeft(candidate, colors))
+		if candidate.clipped {
+			if app.clipKeepsCurrentTab(candidate, width, colors) {
+				return candidate
+			}
+			continue
+		}
+		used := cellWidth(app.headerLeft(candidate, width, colors))
 		if candidate.progress {
 			used += 2 + cellWidth(app.progressText())
 		}
@@ -96,7 +142,7 @@ func (app App) headerLayout(width int, colors palette) headerLayout {
 
 func (app App) headerRow(width int, colors palette) string {
 	layout := app.headerLayout(width, colors)
-	left := app.headerLeft(layout, colors)
+	left := app.headerLeft(layout, width, colors)
 	if !layout.progress {
 		return left
 	}

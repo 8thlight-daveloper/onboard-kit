@@ -427,3 +427,19 @@ func TestAnUntouchedTextFieldKeepsItsHeldValue(t *testing.T) {
 		t.Errorf("an untouched multiline value is kept exactly, got %q", got)
 	}
 }
+
+func TestANarrowHeaderClipsTheTabsButKeepsTheCurrentOne(t *testing.T) {
+	t.Parallel()
+	app, _ := startPreparing(t, withSamLee(t))
+	reviewing := headerOf(resize(app, 60, 24))
+	if reviewing != "Onboarding plan Walk Overview [Review] Sections …" {
+		t.Errorf("at 60 columns the strip is cut after the tabs that fit: %q", reviewing)
+	}
+	preparing := headerOf(resize(press(app, typed("t")), 60, 24))
+	if preparing != "Walk Overview Review Sections Contacts [Preparation]" {
+		t.Errorf("the current tab stays on screen, and the title goes first: %q", preparing)
+	}
+	if hints := strings.Join(press(app, typed("t")).hintTexts(), " "); !strings.Contains(hints, "walk") {
+		t.Errorf("with no keys in the header the hint line carries them: %q", hints)
+	}
+}
