@@ -268,3 +268,17 @@ func TestTheCommandPathIsQuotedOnlyWhenTheShellNeedsIt(t *testing.T) {
 		}
 	}
 }
+
+func TestAPersonWhoCannotBeCheckedSaysWhy(t *testing.T) {
+	t.Parallel()
+	port := newFakeInvitations(t)
+	port.people = []InvitationPerson{{Account: "kim-ode", Refusal: InvitationUnreadable}}
+	app := onInvitation(t, port)
+	if !strings.Contains(plainView(app), "> kim-ode  ! not ready, cannot be checked") {
+		t.Errorf("the list marks the person:\n%s", plainView(app))
+	}
+	blocked := press(app, enter)
+	if blocked.invitation.mode != invitationBlocked || !strings.Contains(plainView(blocked), "! problem: The plan or this preparation cannot be read.") {
+		t.Errorf("the page says why:\n%s", plainView(blocked))
+	}
+}

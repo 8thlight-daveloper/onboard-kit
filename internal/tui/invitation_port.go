@@ -75,7 +75,7 @@ func (outcome InvitationOutcome) sentence() string {
 	case InvitationAccountRefused:
 		return "The account cannot name an invitation. Use letters, digits, dots, underscores, or hyphens."
 	case InvitationUnreadable:
-		return "The plan or this preparation cannot be read. Check the files, or fix them by hand."
+		return "The plan or this preparation cannot be read. Check that both files exist, and that their paths have no .. part and no link on the way."
 	case InvitationPlanWithoutID:
 		return "The plan has no id, so no invitation can belong to it."
 	case InvitationPlanInvalid:

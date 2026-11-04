@@ -87,7 +87,7 @@ func (app App) resized() App {
 	if app.preparation.mode == preparationEditing {
 		app.preparation.form = app.preparation.form.withWidth(app.formWidth())
 	}
-	if app.invitation.mode == invitationEditing {
+	if app.invitation.mode == invitationEditing || app.invitation.mode == invitationConfirming {
 		app.invitation.form = app.invitation.form.withWidth(app.invitationFormWidth())
 	}
 	return app
