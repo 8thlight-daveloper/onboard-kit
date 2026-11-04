@@ -1,8 +1,10 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [catalog/creator, catalog/editguide, command/catalog, command/create, command/invite, command/root, command/start, command/stdio, command/walk, invitation/starter, session/editor, session/reviewer, tui]
 builds-on: ['0320', '0430', '0520', '0530', '0540', '0560']
+partly-supersedes: ['0530']
 ---
 
 # 0610. People work in screens, and flags serve scripts

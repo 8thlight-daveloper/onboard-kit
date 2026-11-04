@@ -32,6 +32,31 @@ Decided: the onboardee mode hides section switches. Only the onboarder decides w
 
 Decided: the onboardee does not get a separate list of the organization's answers. The document preview already shows them in context, and a second list would repeat it.
 
+## Entry and roles
+
+Decided by [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md).
+Not built yet, so the commands in the table above still run today.
+
+- **One entry.** `obk`, an alias of `onboard-kit`, opens the terminal interface. A
+  person makes every choice inside it. Flags serve scripts and agents.
+- **The file decides.** `obk FILE` opens a plan in the plan editor, and an invitation
+  in the newcomer's flow. Any other file is refused with one sentence.
+  `obk open FILE` is the explicit spelling for scripts.
+- **The front door.** With no argument the first screen asks "What would you like to
+  do?" and offers "Build an onboarding plan" and "Begin my onboarding". With known
+  plans it shows a picker, last used first, with "New plan" and "Open a file".
+- **The header names the role.** The onboarder sees "Building: Acme plan", with the
+  tabs Answer, Overview, Review, Sections, Contacts, Preparation, and Invitation.
+  The newcomer sees "Your onboarding at Acme", with the tabs Your questions,
+  Overview, and Document. The Walk screen below becomes Answer for the onboarder
+  and Your questions for the newcomer. The rest of this page keeps the old name
+  until the screens are built.
+- **Tell before looking.** Before the tool looks beyond the file in the command, it
+  says what it will read and why, and warns when the system may show a permission
+  prompt. Looking for an invitation in the Downloads folder is the first case.
+- **About.** A screen lists every folder and file the tool uses, what each holds, and
+  whether the tool reads it, writes it, or both.
+
 ## Screens
 
 Decided. There are five screens and a help page. Every screen has a header line with the tab strip, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.

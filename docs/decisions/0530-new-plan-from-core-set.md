@@ -2,6 +2,7 @@
 category: ux
 status: accepted
 approval: person
+partly-superseded-by: ['0610']
 note: The core list is the first version. A later change edits the catalog manifest and its fixtures.
 affects: [command/create, catalog/creator]
 builds-on: ['0150', '0320', '0410', '0430']
