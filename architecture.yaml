@@ -1,0 +1,188 @@
+schemaVersion: 1
+
+naming:
+  pattern: noun/role
+  depth-one-exceptions: [model, secrets, tui, binary]
+
+kinds:
+  model:
+    imports: []
+  core:
+    imports: [model, core]
+    banned-categories: [filesystem, network, process, terminal, randomness]
+  driver:
+    imports: [model, core, driver]
+    banned-categories: [terminal]
+  screen:
+    imports: [model, core]
+    banned-categories: [network]
+  command:
+    imports: [model, core, driver, screen, command]
+  entry:
+    imports: [command]
+
+deferred-categories:
+  clock: a package that also holds types the model may need, so an import check is too coarse
+  environment: shares its package with filesystem, so a screen may read the environment and this check cannot tell
+
+components:
+  model:
+    kind: model
+    imports: []
+  binary:
+    kind: entry
+    imports: [command/root]
+  catalog/creator:
+    kind: driver
+  catalog/editguide:
+    kind: driver
+  catalog/editor:
+    kind: core
+  catalog/materializer:
+    kind: core
+  catalog/reader:
+    kind: core
+  command/assemble:
+    kind: command
+  command/catalog:
+    kind: command
+  command/create:
+    kind: command
+  command/invite:
+    kind: command
+  command/planfile:
+    kind: command
+  command/prepare:
+    kind: command
+  command/report:
+    kind: command
+  command/root:
+    kind: command
+  command/start:
+    kind: command
+  command/stdio:
+    kind: command
+  command/valuejson:
+    kind: command
+  command/walk:
+    kind: command
+  condition/evaluator:
+    kind: core
+    imports: [model]
+  document/assembler:
+    kind: core
+    imports: [section/selector, section/resolver, model]
+  firststeps/assembler:
+    kind: core
+    imports: [document/assembler, preparation/locator, preparation/validator, model]
+  invitation/decoder:
+    kind: core
+  invitation/encoder:
+    kind: core
+  invitation/reviewer:
+    kind: core
+  invitation/starter:
+    kind: driver
+  outcome/recorder:
+    kind: core
+  plan/authoringvalidator:
+    kind: core
+  plan/decoder:
+    kind: core
+    imports: [plan/migrator, model]
+  plan/editor:
+    kind: core
+    imports: [question/finder, plan/validator, model]
+  plan/encoder:
+    kind: core
+    imports: [model]
+  plan/instantiator:
+    kind: core
+    imports: [section/hasher, model]
+  plan/migrator:
+    kind: core
+    status: deferred
+    imports: []
+  plan/refresher:
+    kind: core
+    imports: [model]
+  plan/structurevalidator:
+    kind: core
+  plan/validator:
+    kind: core
+    imports: [question/finder, section/validator, secrets, model]
+  preparation/decoder:
+    kind: core
+    imports: [model]
+  preparation/editor:
+    kind: core
+    imports: [preparation/validator, model]
+  preparation/encoder:
+    kind: core
+    imports: [model]
+  preparation/locator:
+    kind: core
+    imports: [model]
+  preparation/reviewer:
+    kind: core
+    imports: [firststeps/assembler, question/finder, preparation/validator, model]
+  preparation/store:
+    kind: driver
+    imports: [plan/decoder, preparation/decoder, preparation/locator, model]
+  preparation/validator:
+    kind: core
+    imports: [model]
+  question/finder:
+    kind: core
+    imports: [section/selector, condition/evaluator, model]
+  record/decoder:
+    kind: core
+    imports: [model]
+  record/encoder:
+    kind: core
+    imports: [model]
+  record/joiner:
+    kind: core
+    imports: [model]
+  record/reconciler:
+    kind: core
+    imports: [model]
+  record/splitter:
+    kind: core
+    imports: [model]
+  record/writer:
+    kind: core
+  secrets:
+    kind: core
+    imports: [model]
+  section/hasher:
+    kind: core
+    imports: [model]
+  section/loader:
+    kind: core
+    imports: [model]
+  section/resolver:
+    kind: core
+    imports: [model]
+  section/scheduler:
+    kind: core
+  section/selector:
+    kind: core
+    imports: [condition/evaluator, model]
+  section/validator:
+    kind: core
+    status: planned
+    imports: [model]
+  section/walker:
+    kind: core
+  session/editor:
+    kind: driver
+  session/reviewer:
+    kind: core
+  template/linter:
+    kind: core
+    status: planned
+    imports: [model]
+  tui:
+    kind: screen
+    imports: [question/finder, plan/editor, plan/validator, document/assembler, plan/decoder, plan/encoder, preparation/decoder, preparation/encoder, preparation/editor, preparation/locator, preparation/reviewer, model]
