@@ -21,6 +21,7 @@ type headerLayout struct {
 	keys     bool
 	progress bool
 	tight    bool
+	untitled bool
 }
 
 func (app App) tabs() []screenTab {
@@ -63,6 +64,9 @@ func (app App) headerLeft(layout headerLayout, colors palette) string {
 	if layout.tight {
 		gap = tabGapTight
 	}
+	if layout.untitled {
+		return app.tabStrip(layout.keys, gap, colors)
+	}
 	return colors.render(toneStrong, true, app.headerTitle()) + gap + app.tabStrip(layout.keys, gap, colors)
 }
 
@@ -71,9 +75,9 @@ func (app App) typingNow() bool {
 }
 
 func (app App) headerLayout(width int, colors palette) headerLayout {
-	candidates := []headerLayout{{true, true, false}, {true, false, false}, {false, true, false}, {false, false, false}, {false, false, true}}
+	candidates := []headerLayout{{keys: true, progress: true}, {keys: true}, {progress: true}, {}, {tight: true}, {tight: true, untitled: true}}
 	if app.typingNow() {
-		candidates = []headerLayout{{false, true, false}, {false, false, false}, {false, false, true}}
+		candidates = []headerLayout{{progress: true}, {}, {tight: true}, {tight: true, untitled: true}}
 	}
 	for _, candidate := range candidates {
 		used := cellWidth(app.headerLeft(candidate, colors))
