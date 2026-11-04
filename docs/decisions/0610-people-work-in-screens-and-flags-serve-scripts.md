@@ -145,7 +145,10 @@ become rules in `architecture.yaml` when the operations layer exists.
 
 ## Not decided
 
-1. **Launch-time scanning.** Whether the tool ever looks for an invitation before
-   the person asks. It stays off until the prompt is judged acceptable.
-2. **Scripted forms of retired commands.** Whether `catalog edit` or `session edit`
-   keep a flag form, and with what output.
+1. **Scripted forms of retired commands.** `catalog edit` adds, retires, and
+   reactivates catalog sections in a plan. `session edit` changes a newcomer's own
+   record. Both take typed lines today, and screens will replace them for people.
+   `stdio` already lets an agent answer questions, toggle sections, edit the
+   directory, and save a plan. It cannot add or retire a catalog section or edit a
+   newcomer's record. The question is whether a script or an agent still needs
+   either operation, and if so whether it belongs in `stdio` or as a flag command.
