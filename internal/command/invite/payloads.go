@@ -21,40 +21,66 @@ import (
 	recordencoder "onboard-kit/internal/record/encoder"
 )
 
-func buildArchive(options arguments, planSource, preparationSource []byte) ([]byte, diagnostics) {
+type decodedSources struct {
+	plan        model.Plan
+	preparation model.Preparation
+}
+
+func decoded(planSource, preparationSource []byte) (decodedSources, diagnostics) {
 	var report diagnostics
 	plan, problems := plandecoder.New().Decode(planSource)
 	if len(problems) > 0 {
-		return nil, report.failed("plan-decode", problems)
+		return decodedSources{}, report.failed("plan-decode", problems)
 	}
 	preparation, problems := preparationdecoder.New().Decode(preparationSource)
 	if len(problems) > 0 {
-		return nil, report.failed("preparation-decode", problems)
+		return decodedSources{}, report.failed("preparation-decode", problems)
 	}
 	if plan.ID == "" {
-		return nil, report.failed("plan-identity", nil)
+		return decodedSources{}, report.failed("plan-identity", nil)
 	}
 	problems = planvalidator.New().Validate(plan)
 	if hasError(problems) {
-		return nil, report.failed("plan-invalid", problems)
+		return decodedSources{}, report.failed("plan-invalid", problems)
 	}
 	report.problems = append(report.problems, problems...)
-	problems = preparationvalidator.New().Validate(preparationContext(options.account, plan), preparation)
+	return decodedSources{plan: plan, preparation: preparation}, report
+}
+
+func (sources decodedSources) preparationProblems(account string) []model.Problem {
+	return preparationvalidator.New().Validate(preparationContext(account, sources.plan), sources.preparation)
+}
+
+func (sources decodedSources) onboarderBlockers() []model.Blocker {
+	return finder.New().Blockers(sources.plan, model.AudienceOnboarder)
+}
+
+func (sources decodedSources) ownerNamed() bool {
+	return namedContact(sources.plan.Directory, sources.preparation.Recipient.OnboardingOwner, false)
+}
+
+func buildArchive(options Request, planSource, preparationSource []byte) ([]byte, diagnostics) {
+	sources, report := decoded(planSource, preparationSource)
+	if report.code != "" {
+		return nil, report
+	}
+	plan, preparation := sources.plan, sources.preparation
+	problems := sources.preparationProblems(options.Account)
 	if hasError(problems) {
 		return nil, report.failed("preparation-invalid", problems)
 	}
 	report.problems = append(report.problems, problems...)
-	if blockers := finder.New().Blockers(plan, model.AudienceOnboarder); len(blockers) > 0 {
+	if blockers := sources.onboarderBlockers(); len(blockers) > 0 {
 		report.blockers = blockers
 		return nil, report.failed("onboarder-blocked", nil)
 	}
-	if !namedContact(plan.Directory, preparation.Recipient.OnboardingOwner, false) {
+	if !sources.ownerNamed() {
 		return nil, report.failed("owner", nil)
 	}
-	if !namedContact(plan.Directory, options.preaccess, true) {
+	if !namedContact(plan.Directory, options.Preaccess, true) {
 		return nil, report.failed("preaccess-help", nil)
 	}
-	guide, problems := assembler.New().Assemble(firststepscontract.Context{Account: options.account, GeneralHelp: options.help}, plan, preparation)
+	guide, problems := assembler.New().Assemble(firststepscontract.Context{Account: options.Account, GeneralHelp: options.Help}, plan, preparation)
 	if hasError(problems) {
 		return nil, report.failed("firststeps", problems)
 	}
@@ -69,7 +95,7 @@ func buildArchive(options arguments, planSource, preparationSource []byte) ([]by
 	}
 	digest := sha256.Sum256(planBytes)
 	seed := model.Record{
-		SchemaVersion: 1, Account: options.account,
+		SchemaVersion: 1, Account: options.Account,
 		Plan: model.PlanReference{ID: plan.ID, URL: plan.URL, Hash: hex.EncodeToString(digest[:])},
 	}
 	recordBytes, problems := recordencoder.New().Encode(seed)
@@ -77,7 +103,7 @@ func buildArchive(options arguments, planSource, preparationSource []byte) ([]by
 		return nil, report.failed("record-encode", problems)
 	}
 	archive, problems := invitationencoder.New().Encode(model.InvitationFiles{
-		Account: options.account, Plan: planBytes, Preparation: preparationBytes,
+		Account: options.Account, Plan: planBytes, Preparation: preparationBytes,
 		Record: recordBytes, FirstSteps: []byte(guide),
 	})
 	if len(problems) > 0 {

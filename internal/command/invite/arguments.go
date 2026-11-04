@@ -8,44 +8,44 @@ import (
 
 const usage = "Usage: onboard-kit invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID [--help-contact ID | --help-role ID ...]\n"
 
-type arguments struct {
-	plan        string
-	preparation string
-	account     string
-	output      string
-	preaccess   string
-	help        []firststepscontract.HelpReference
+type Request struct {
+	Plan        string
+	Preparation string
+	Account     string
+	Output      string
+	Preaccess   string
+	Help        []firststepscontract.HelpReference
 }
 
-func parse(args []string) (arguments, bool, bool) {
+func parse(args []string) (Request, bool, bool) {
 	if len(args) > 0 && (args[0] == "--help" || args[0] == "export" && len(args) > 1 && args[1] == "--help") {
-		return arguments{}, true, true
+		return Request{}, true, true
 	}
 	if len(args) == 0 || args[0] != "export" {
-		return arguments{}, false, false
+		return Request{}, false, false
 	}
-	var result arguments
+	var result Request
 	scalars := map[string]*string{
-		"--plan": &result.plan, "--preparation": &result.preparation,
-		"--account": &result.account, "--out": &result.output,
-		"--preaccess-help-contact": &result.preaccess,
+		"--plan": &result.Plan, "--preparation": &result.Preparation,
+		"--account": &result.Account, "--out": &result.Output,
+		"--preaccess-help-contact": &result.Preaccess,
 	}
 	seen := make(map[string]bool)
 	for index := 1; index < len(args); index++ {
 		name, value, equals := strings.Cut(args[index], "=")
 		field, scalar := scalars[name]
 		if !scalar && name != "--help-contact" && name != "--help-role" {
-			return arguments{}, false, false
+			return Request{}, false, false
 		}
 		if !equals {
 			index++
 			if index == len(args) || strings.HasPrefix(args[index], "--") {
-				return arguments{}, false, false
+				return Request{}, false, false
 			}
 			value = args[index]
 		}
 		if value == "" || scalar && seen[name] {
-			return arguments{}, false, false
+			return Request{}, false, false
 		}
 		if scalar {
 			*field = value
@@ -53,9 +53,9 @@ func parse(args []string) (arguments, bool, bool) {
 		}
 		switch name {
 		case "--preaccess-help-contact", "--help-contact":
-			result.help = append(result.help, firststepscontract.HelpReference{Kind: "contact", ID: value})
+			result.Help = append(result.Help, firststepscontract.HelpReference{Kind: "contact", ID: value})
 		case "--help-role":
-			result.help = append(result.help, firststepscontract.HelpReference{Kind: "role", ID: value})
+			result.Help = append(result.Help, firststepscontract.HelpReference{Kind: "role", ID: value})
 		}
 	}
 	return result, false, len(seen) == len(scalars)
