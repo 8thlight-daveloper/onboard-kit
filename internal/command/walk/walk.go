@@ -54,7 +54,8 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if who == model.AudienceOnboardee {
 		return Walk(*planPath, plan, who, "", stdin, stdout, stderr)
 	}
-	return walk(*planPath, plan, who, "", newPreparationFiles(preparationRootFor(*planPath, *root), *planPath), nil, stdin, stdout, stderr)
+	preparationRoot := preparationRootFor(*planPath, *root)
+	return walk(*planPath, plan, who, "", newPreparationFiles(preparationRoot, *planPath), newInvitationFiles(preparationRoot, *planPath), stdin, stdout, stderr)
 }
 
 func preparationRootFor(planPath string, root string) string {
