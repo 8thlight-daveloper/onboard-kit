@@ -1,0 +1,87 @@
+name: invitation-tab-writes
+description: On the Invitation tab the onboarder picks the pre-access help for a ready person and writes the invitation with y, with no flags and no second command. The result names the file and the line for the newcomer. A second invitation to the same name is refused, the next free name is offered, and the first file is never replaced.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md
+steps:
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+      records/newcomer-one/preparation.obk.yaml: "schemaVersion: 1\nkind: preparation\naccount: newcomer-one\nplanId: \"6f1c2d3e-4a5b-4c6d-8e7f-90a1b2c3d4e5\"\nrecipient:\n  name: Example newcomer\n  onboardingOwner: alex-rivera\n"
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: i
+        - wait-for: "newcomer-one  Ready"
+        - press: Enter
+        - wait-for: "Invitation for Example newcomer"
+        - wait-for: "obk-invitation-newcomer-one.zip"
+        - press: Enter
+        - wait-for: "Pre-access help, for Example newcomer"
+        - press: Enter
+        - wait-gone: "Pre-access help, for Example newcomer"
+        - press: Ctrl+S
+        - wait-for: "Nothing is written until you press y."
+        - press: y
+        - wait-for: "Give this file to Example newcomer. They run: obk obk-invitation-newcomer-one.zip"
+        - wait-for: "This tool sends nothing."
+        - press: Ctrl+C
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      unchanged: [acme.obk.yaml, records/newcomer-one/preparation.obk.yaml]
+  - run: [onboard-kit, invite, export, --plan, acme.obk.yaml, --preparation, records/newcomer-one/preparation.obk.yaml, --account, newcomer-one, --out, obk-invitation-newcomer-one.zip, --preaccess-help-contact, alex-rivera]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr:
+        json:
+          status: refused
+          code: invite.output-exists
+          message: Choose a new archive pathname; existing output is never replaced.
+          problems: []
+          blockers: []
+      unchanged: [acme.obk.yaml, records/newcomer-one/preparation.obk.yaml, obk-invitation-newcomer-one.zip]
+  - run: [onboard-kit, walk, --plan, acme.obk.yaml]
+    terminal:
+      size: {columns: 110, rows: 32}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: i
+        - wait-for: "newcomer-one  Ready"
+        - press: Enter
+        - wait-for: "obk-invitation-newcomer-one-2.zip"
+        - press: Enter
+        - wait-for: "Pre-access help, for Example newcomer"
+        - press: Enter
+        - wait-gone: "Pre-access help, for Example newcomer"
+        - press: Tab
+        - press: Tab
+        - press: Ctrl+U
+        - type: obk-invitation-newcomer-one.zip
+        - press: Enter
+        - wait-for: "Nothing is written until you press y."
+        - press: y
+        - wait-for: "already exists, and it is never replaced"
+        - wait-for: "obk-invitation-newcomer-one-2.zip"
+        - press: Enter
+        - wait-for: "Nothing is written until you press y."
+        - press: y
+        - wait-for: "Give this file to Example newcomer. They run: obk obk-invitation-newcomer-one-2.zip"
+        - press: Ctrl+C
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      unchanged: [acme.obk.yaml, records/newcomer-one/preparation.obk.yaml, obk-invitation-newcomer-one.zip]
+  - run: [onboard-kit, invite, export, --plan, acme.obk.yaml, --preparation, records/newcomer-one/preparation.obk.yaml, --account, newcomer-one, --out, obk-invitation-newcomer-one-2.zip, --preaccess-help-contact, alex-rivera]
+    expect:
+      exit: 1
+      stderr:
+        json:
+          status: refused
+          code: invite.output-exists
+          message: Choose a new archive pathname; existing output is never replaced.
+          problems: []
+          blockers: []
+      unchanged: [obk-invitation-newcomer-one.zip, obk-invitation-newcomer-one-2.zip]
