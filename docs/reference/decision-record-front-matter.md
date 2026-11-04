@@ -74,6 +74,8 @@ A check over `docs/decisions/` and `architecture.yaml` reports:
 - `affects` on a process record, or a missing `affects` on a `behavior` or
   `ux` record;
 - a contract that cites a product record missing from its `affects`.
+  A citation is `[0360]`, a path such as `decisions/0360-`, or `ADR 0360`. A bare four-digit
+  number is not one, because file modes such as 0640 look the same.
 
 A check also reports, without failing, an `affects` component whose contract
 does not cite the record. Contracts hold rules and fixtures and keep no history, so many

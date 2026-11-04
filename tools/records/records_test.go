@@ -168,7 +168,18 @@ func TestAContractMayCiteArchitectureWithoutAffectsAndProcessRecords(t *testing.
 	problems := problemsOf(t, map[string]string{
 		"docs/decisions/0010-first.md":       recordText("0010", "category: architecture\nstatus: proposed\n", "First"),
 		"docs/decisions/0020-second.md":      recordText("0020", "category: regenerative-process\nstatus: proposed\n", "Second"),
-		"contracts/plan/decoder/contract.md": "See 0010 and 0020, in 2026, with 10100 and 40960.\n",
+		"contracts/plan/decoder/contract.md": "See [0010](x) and docs/decisions/0020-y.md, in 2026, with 10100 and 40960.\n",
+	})
+	if len(problems) != 0 {
+		t.Fatalf("got %v", problems)
+	}
+}
+
+func TestAFileModeIsNotACitation(t *testing.T) {
+	t.Parallel()
+	problems := problemsOf(t, map[string]string{
+		"docs/decisions/0640-first.md":       recordText("0640", "category: behavior\nstatus: proposed\naffects: []\n", "First"),
+		"contracts/plan/decoder/contract.md": "A new file is 0600 and an existing 0644 or 0640 becomes 0600. See ADR 0010.\n",
 	})
 	if len(problems) != 0 {
 		t.Fatalf("got %v", problems)

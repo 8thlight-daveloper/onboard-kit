@@ -17,7 +17,7 @@ var (
 	approvals       = []string{"person", "agent", "unrecorded"}
 	productRequired = []string{"behavior", "ux"}
 	productAllowed  = []string{"architecture", "behavior", "ux"}
-	digitRun        = regexp.MustCompile(`\d+`)
+	citation        = regexp.MustCompile(`\[(\d{4})\]|decisions/(\d{4})-|\bADRs? (\d{4})\b`)
 )
 
 type result struct {
@@ -196,9 +196,11 @@ func loadContracts(root string) (map[string]map[string]bool, error) {
 
 func citedNumbers(text string) map[string]bool {
 	cited := map[string]bool{}
-	for _, run := range digitRun.FindAllString(text, -1) {
-		if len(run) == 4 && run[0] == '0' {
-			cited[run] = true
+	for _, match := range citation.FindAllStringSubmatch(text, -1) {
+		for _, group := range match[1:] {
+			if group != "" {
+				cited[group] = true
+			}
 		}
 	}
 	return cited
