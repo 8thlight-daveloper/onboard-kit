@@ -25,7 +25,7 @@ Rules that follow from this:
 
 | Person | Command | Sees | Changes |
 | -- | -- | -- | -- |
-| The onboarder | `walk --plan FILE [--root DIR]` | Onboarder questions, section switches, the assembled document, the people's preparations | Onboarder answers and switches, and one person's preparation after a reviewed save |
+| The onboarder | `walk --plan FILE [--root DIR]` | Onboarder questions, section switches, the assembled document, the people's preparations, and who is ready for an invitation | Onboarder answers and switches, one person's preparation after a reviewed save, and one new invitation file after `y` |
 | The onboardee | `start --org-plan FILE` | Onboardee questions and their own document | Onboardee answers only |
 
 Decided: the onboardee mode hides section switches. Only the onboarder decides what applies. Built: `start` makes the newcomer's own plan file from the org plan and opens `walk` for the onboardee audience. Refresh from a changed org plan, a URL, and the locks are not built, see 0060.
@@ -59,7 +59,7 @@ Not built yet, so the commands in the table above still run today.
 
 ## Screens
 
-Decided. There are six screens and a help page. Every screen has a header line with the tab strip, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
+Decided. There are seven screens and a help page. Every screen has a header line with the tab strip, a progress rail, a body, a status line, and a key hint line, in that order. The hint line is always the last line.
 
 | Screen | Holds | Opened by |
 | -- | -- | -- |
@@ -69,6 +69,7 @@ Decided. There are six screens and a help page. Every screen has a header line w
 | Sections | Section switches. The onboarder only | `s` |
 | Contacts | The organization's contacts, roles, and teams, to add, change, and remove. The onboarder only | `c` |
 | Preparation | The people who have a preparation, and one person's recipient details and arrangements, staged and saved after a review. The onboarder only, see Preparation | `t` |
+| Invitation | The people who have a preparation and whether each is ready, the help for one person's invitation beside their first steps guide, and the written file with the line for the newcomer. The onboarder only, see Invitation | `i` |
 | Help | Every key of the current screen | `?`, or `f1` while typing |
 
 How a person moves:
@@ -76,12 +77,12 @@ How a person moves:
 - Start: if the plan holds an answer to any question of this audience, open Review. Otherwise open Walk at the first question. A plan with no active questions opens Review.
 - Enter accepts the answer on the screen and moves to the next question in order. This was a choice between the next question and the next unanswered one. The next in order is predictable, and a person who wants an unanswered one opens Review, where the blockers are listed.
 - Past the last question, the person lands on Review.
-- `w`, `o`, `r`, `s`, `c`, and `t` open the Walk, Overview, Review, Sections, Contacts, and Preparation from any screen while the person is not typing. The tab strip names them, see Screen tabs.
+- `w`, `o`, `r`, `s`, `c`, `t`, and `i` open the Walk, Overview, Review, Sections, Contacts, Preparation, and Invitation from any screen while the person is not typing. The tab strip names them, see Screen tabs.
 - `p`, left arrow, or shift+tab goes back one question. `n` or right arrow skips forward without changing anything.
 - `d` defers the question and moves on. `x` clears the answer and stays, so the person can answer again.
 - Escape on the Walk returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Walk.
 - From Overview or Review, enter opens the chosen question in the Walk. `w` on Review returns to the Walk at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
-- `q` quits from the Overview, Review, and Walk, except while typing. The Sections, Contacts, and Preparation screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
+- `q` quits from the Overview, Review, and Walk, except while typing. The Sections, Contacts, Preparation, and Invitation screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
 
 ## Layout
 
@@ -303,7 +304,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | `d` | Defer, move on | ctrl+d |  |  |  |
 | `x` | Clear | Empty the box and enter |  |  |  |
 | tab |  | Try a suggestion |  | Items or document |  |
-| `w`, `o`, `r`, `s`, `c`, `t` | `o`, `r`, `s`, `c`, `t` | Letters are text | `w`, `r`, `s`, `c`, `t` | `w`, `o`, `s`, `c`, `t` | `w`, `o`, `r`, `c`, `t` |
+| `w`, `o`, `r`, `s`, `c`, `t`, `i` | `o`, `r`, `s`, `c`, `t`, `i` | Letters are text | `w`, `r`, `s`, `c`, `t`, `i` | `w`, `o`, `s`, `c`, `t`, `i` | `w`, `o`, `r`, `c`, `t`, `i` |
 | pgup, pgdn, `g`, `G` |  |  | `g`, `G` | Scroll the document |  |
 | esc | Back to overview or review | Same | Walk | Walk | Back |
 | `?` | Help | f1 | Help | Help | Help |
@@ -311,7 +312,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 
 On the Review, `h` shows the answers left over from questions the plan no longer asks, see Left over answers. It is free on every other screen and is not a screen key, so the tab strip does not list it. The key hint line shows `h left over` only while something is left over.
 
-`s`, `c`, `t`, the Sections screen, the Contacts screen, and the Preparation screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
+`s`, `c`, `t`, `i`, the Sections screen, the Contacts screen, the Preparation screen, and the Invitation screen do not exist in the onboardee mode. The key hint line leaves out the screen keys while the tab strip shows them, see Screen tabs.
 
 ## The status line
 
@@ -346,7 +347,7 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The walk command's tests run the store-backed port on real files. A scripted pseudo-terminal run covers start and quit, and another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The Invitation tests drive the screen through a fake port and the real preparation reviewer: the tab only for the onboarder with a port, the readiness counts, the blocked page with no form, the default file, the pick list of contacts with a route, the guide that follows the picked help, the required pre-access help, nothing written before `y`, the request with the pre-access help first, the result line, the next free name after a file appears, and letters as text in the file name. The walk command's tests run both store-backed ports on real files, and the invite command's tests run `Export` and `Check` on real files. A scripted pseudo-terminal run covers start and quit, another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary, and a third writes an invitation, then tries the same name again and takes the next free one. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Screen tabs
 
@@ -358,12 +359,12 @@ The header line holds the title, the tab strip, and the progress count at the ri
   Onboarding plan  Walk w  [Overview]  Review r  Sections s          13 of 13 answered
 ```
 
-- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections, Contacts, Preparation. A screen the audience cannot use, such as Sections, Contacts, and Preparation for the onboardee, is left out. Preparation also needs the walk to supply the preparation folder, which `walk` always does for the onboarder, see Preparation. The Contacts key is lowercase `c`. It was the capital `P` when the screen was named People. `p` is back on the Walk, so `P` was a special case that only worked with shift. `b` is page-up on the scrolling screens. `c` is free on every screen and matches the screen name.
+- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections, Contacts, Preparation, Invitation. A screen the audience cannot use, such as Sections, Contacts, Preparation, and Invitation for the onboardee, is left out. Preparation and Invitation also need the walk to supply their ports, which `walk` always does for the onboarder, see Preparation and Invitation. The Contacts key is lowercase `c`. It was the capital `P` when the screen was named People. `p` is back on the Walk, so `P` was a special case that only worked with shift. `b` is page-up on the scrolling screens. `c` is free on every screen and matches the screen name.
 - The current tab is bold in the accent colour, which is "you are here". With no colour it is in brackets. The other tabs are faint, each with its key.
 - The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Walk while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
 - While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` leaves.
 - When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The onboarder's strip with five tabs and keys is 70 columns wide, so at 80 columns the progress count goes and the keys stay. With the sixth tab, Preparation, the strip with keys is 84 columns wide, so at 80 columns the keys go too. At 60 columns the strip shows names only, and its gaps shrink to one column.
-- When even the names do not fit, the strip is cut after the last tab that fits and ends with `…`. If the cut would hide the current tab, the title "Onboarding plan" goes instead, so the current tab is always on screen. At 60 columns the onboarder's six tabs need one of these two.
+- When even the names do not fit, the strip is cut after the last tab that fits and ends with `…`. If the cut would hide the current tab, the title "Onboarding plan" goes instead, so the current tab is always on screen. At 60 columns the onboarder's six tabs need one of these two. With the seventh tab, Invitation, the strip without the title can still be too wide when a late tab is current. Then the strip shows a window of tabs around the current one, with `…` on each side that is cut, such as `… Review Sections Contacts Preparation [Invitation]`.
 
 Rejected: the screen name beside the title, as before (`Onboarding plan  Overview`), because it shows one screen and hides that there are others. Also rejected: a tab for Help, because help is a page over the current screen and the current tab stays marked while it is open.
 
@@ -514,7 +515,7 @@ Built, under [0520](../decisions/0520-preparation-screen.md). The save rules of 
 | pgup, pgdn |  |  |  | Keep | Scroll the pane with focus |
 | ctrl+s |  |  | Stage the form |  |  |
 | `y` |  |  |  | Remove, or drop the staged changes | Save |
-| `w`, `o`, `r`, `s`, `c` | Open that screen | Open that screen | Letters are text | Keep | Open that screen |
+| `w`, `o`, `r`, `s`, `c`, `i` | Open that screen | Open that screen | Letters are text | Keep | Open that screen |
 | esc | Back | Back to the people, after a confirmation when changes are staged | Cancel, or close a pick list | Keep | Back to the person |
 | `q` | Back | Same as esc | Letters are text | Keep | Same as esc |
 | `?` | Help | Help | `f1` | Help | Help |
@@ -529,11 +530,61 @@ The screen needs a key that is free on every screen. `p` is back on the Walk, `r
 - Showing the whole original and proposed preparation in the review, as the retired text guide did. The changes, read as new and old values, are shorter, and the guide is the larger thing to judge.
 - Dropping the staged changes when a save finds the files changed. The person would lose work that a reload and a second review can keep.
 
+## Invitation
+
+Built, under [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md). The export rules of [0300](../decisions/0300-explicit-invitation-export.md) and the [invite contract](../../contracts/command/invite/contract.md) still apply. The onboarder's screen for writing the file a newcomer opens. It replaces running `prepare` and `invite export` by hand. The onboardee has no tab and no key for it. `invite export` stays for scripts.
+
+### Where the invitation comes from
+
+The people are the ones the [preparation store](../../contracts/preparation/store/contract.md) lists under the same folder as the Preparation tab. The `tui` package does no file work. It defines a second port, `InvitationPort`, that lists the people with their readiness and creates one invitation. The walk command backs it with the store and two functions of the invite command: `Check`, which reads the plan and the preparation with the export's own bounded readers and runs its own checks, and `Export`, which does everything `invite export` does after reading its arguments. So the tab and the flags cannot drift.
+
+### What the Invitation screen shows
+
+- **People.** Each person with a preparation, by account, with "Ready" or "! not ready, N to fix". N counts the preparation problems, the onboarder blockers in the plan, and a missing onboarding owner, the same checks the export runs. A plan or preparation that cannot be read or used reads "! not ready, cannot be checked". The list checks everyone again each time the tab opens. Notices say what an invitation holds and that the tool sends nothing.
+- **What blocks.** Enter on a person who is not ready shows what blocks the invitation, grouped as on the Preparation review, and no form. The way to fix each is on the Walk or the Preparation tab.
+- **The form.** Enter on a ready person opens three fields: the pre-access help, the general help, and the file. The first steps guide sits beside the form, or below it under 120 columns, and follows the picked help.
+  - **Pre-access help.** Required. A pick list of the plan's contacts that have a name and an email or Slack handle, as the export requires. A Slack id alone does not count.
+  - **General help.** Optional. A several-answers list of the plan's contacts and roles, in pick order.
+  - **File.** Typed, and filled with `obk-invitation-<account>.zip` in the plan's folder. The name starts `obk-invitation` because the newcomer's flow looks for that prefix in the Downloads folder. When that file exists, the next free name is filled in instead: `obk-invitation-<account>-2.zip`, then `-3`.
+- **The last step.** Enter on the file, or ctrl+s, shows what will be written beside the guide. `y` writes the file. Nothing is written before `y`, and an existing file is never replaced.
+- **The result.** The path, then "Give this file to Alex Doe. They run: obk obk-invitation-alex-doe.zip", then a line that the tool sends nothing and that the pre-access help is not tested. The wording of the line for the newcomer is one constant in `internal/tui`. A path the shell would split is quoted.
+- **A refusal.** When a file appeared at that name since the form opened, the form opens again with the next free name filled in, and nothing is written. Any other refusal shows its reason under the form.
+
+### Invitation keys
+
+| Key | People | What blocks | Form | Last step | Result |
+| -- | -- | -- | -- | -- | -- |
+| up, down, `k`, `j` | Move |  | Move between fields, or in a pick list | Scroll the guide |  |
+| `g`, `G` | First, last |  |  |  |  |
+| enter, `e` | Open the person | Back | Open a pick list, choose, or go on from the file |  | Back to the people |
+| tab, shift+tab |  |  | Next or previous field |  |  |
+| space |  |  | Pick or unpick in the general help list |  |  |
+| pgup, pgdn |  |  | Scroll the guide | Scroll the guide |  |
+| ctrl+s |  |  | Go on to the last step |  |  |
+| `y` |  |  | Letters are text in the file | Write the file |  |
+| `w`, `o`, `r`, `s`, `c`, `t` | Open that screen | Open that screen | Letters are text in the file |  | Open that screen |
+| esc, `q` | Back | Back | Back to the people. `q` is text in the file | Back to the form |  |
+| `?` | Help | Help | `f1` | Help | Help |
+
+### Why a last step
+
+The form already shows the guide, so `y` could write from it. But the file name is typed, so `y` is a letter there. The last step lists the file, the help, and the guide once more, and keeps `y` the one key that writes, as on the Preparation review and the Contacts removal.
+
+### Rejected on the Invitation screen
+
+- Opening the form for a person who is not ready. The export would refuse, so the form would be a dead end. The page of what blocks says where to fix it.
+- Offering every contact for the pre-access help and refusing on write. The pick list shows only the contacts the export accepts.
+- Writing a numbered name without asking when the chosen file exists. The form shows the free name and waits for `y` again.
+
 ## Open
 
 - Whether a team can supply a default manager or onboarding owner for a person, as [0520](../decisions/0520-preparation-screen.md) leaves open. Today each of the four is its own pick.
 
 - Whether the Preparation review should show the guide under the changes below 120 columns, instead of behind tab.
+
+- Whether the line for the newcomer should name only the file, not the onboarder's path. The newcomer saves the file in their own folder, often Downloads, so the onboarder's path may not be theirs.
+
+- Whether the Invitation form should remember its values across a visit to another tab. Today opening the tab checks everyone again and starts at the list.
 
 - Splitting this page into one file per view under `docs/design/`, with design decision records (DDRs) for choices that cut across views, such as the width breakpoints. DDRs stay separate from ADRs: an ADR is for a decision that contracts or acceptance tests depend on, and a DDR is for a design choice that only the screens depend on.
 
