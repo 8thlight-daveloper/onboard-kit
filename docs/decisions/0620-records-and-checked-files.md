@@ -1,7 +1,9 @@
 ---
 category: regenerative-process
-status: proposed
+status: accepted
+approval: person
 builds-on: ['0020', '0025']
+partly-supersedes: ['0020']
 ---
 
 # 0620. Keep decisions as records and current state in checked files
@@ -90,9 +92,3 @@ history.
   person approves that edit.
 - A new record is harder to write by a little. It needs a category and an
   `affects` list. A check says what is missing.
-
-## Not decided
-
-1. **When `architecture.yaml` is canonical.** It is a draft until a person accepts
-   it. Its 12 command components have no declared imports and are held to their
-   kind only.

@@ -32,6 +32,7 @@ Docs in `architecture/`, `reference/`, `stack/`, and `ideas/` are named for thei
 ## Where decisions go
 
 - An ADR in `docs/decisions/` records a decision the contracts or acceptance tests depend on. Number ADRs by tens so a missed one can slot in between.
+- Every ADR starts with front matter that `just check-records` reads. The schema is in `docs/reference/decision-record-front-matter.md`, and the reasons are in [0620](docs/decisions/0620-records-and-checked-files.md). A record holds no table or list that a check could verify.
 - `docs/stack/README.md` records language, libraries, and tooling. Change a row there and move the old row to Retired. Do not write an ADR for a stack change unless it forces a test change.
 - Every choice must keep the tool a single self-contained file. See `docs/decisions/0005-self-contained-install.md`.
 
