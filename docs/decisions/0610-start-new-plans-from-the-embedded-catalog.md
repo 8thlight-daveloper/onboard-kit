@@ -39,9 +39,15 @@ New plans start from the embedded catalog and from nothing else.
   [0030](0030-self-contained-plan-file.md) already says.
 - Custom template folders are not supported. A later decision may add them. It
   must run the authoring validator before it writes a plan.
-- The example templates stay as documentation of the format and as fixtures. They
-  stop being a way to start a plan. Their two authoring errors get fixed, so the
-  example is a valid set.
+- `walk --plan FILE` and `stdio --plan FILE` open an existing plan. When `FILE`
+  does not exist they refuse, and the message points to `new`. They never create
+  a plan, and they never choose a starting set for the person. Creating a plan is
+  always an explicit `new`.
+- The five example templates move out of `docs/reference/examples` into fixture
+  data under `acceptance/testdata`. They stop being a way to start a plan and
+  stay as fixtures. Their two authoring errors get fixed in the move, so the
+  fixture is a valid set. The example plan and its page stay where they are as
+  the worked example of the format.
 
 ## Consequences
 
@@ -49,15 +55,11 @@ New plans start from the embedded catalog and from nothing else.
   existing plan file, such as `acme.obk.yaml`, or from a catalog-created plan.
   Scenarios live in `acceptance/`, so a person authorizes each change.
 - The README quick start and command table change to match.
+- The move changes the source path that about a dozen contract fixtures cite, and
+  the `from:` paths of nine scenarios. Contracts and scenarios need a person's
+  authorization, so the move waits for it and goes in the same change as the
+  scenario rework.
 - `new` needs a build before the decision is whole: the core set draft of 0530 is
   not built.
 - A plan made from a hand-written folder no longer comes out of the tool. An
   author who wants that edits a plan file or adds sections through the catalog.
-
-## Not decided
-
-1. **A missing plan file.** What `walk --plan FILE` and `stdio --plan FILE` do
-   when `FILE` does not exist. They can refuse and point to `new`, or they can
-   start from the core set.
-2. **Where the format examples live.** Whether the example templates move from
-   `docs/reference/examples` into `testdata` once they are fixtures only.
