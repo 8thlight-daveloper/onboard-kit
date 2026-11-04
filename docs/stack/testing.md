@@ -15,7 +15,7 @@ Part of the [stack](README.md). The test strategy is in [0025](../decisions/0025
 
 - Golden regeneration is a separate explicit command and never runs as a side effect of a test. The command is not defined yet.
 - Time comes in as a parameter, so no test depends on the clock.
-- `just check` runs the dependency check, the architecture tests, and the full test suite, along with the format and lint checks. CI runs the same recipe.
+- `just check` runs the dependency check, the architecture tests, the check of the decision records, and the full test suite, along with the format and lint checks. CI runs the same recipe. The records check reads the front matter in `docs/decisions/`, see [0620](../decisions/0620-records-and-checked-files.md).
 
 ### Archive file assertions
 

@@ -8,7 +8,7 @@ default:
     @just --list
 
 # Everything CI runs: format check, every linter, and the tests.
-check: fmt-check lint-md lint-links lint-prose lint-go check-notices test
+check: fmt-check lint-md lint-links lint-prose lint-go check-notices check-records test
 
 # Format Markdown in place.
 fmt:
@@ -48,6 +48,10 @@ notices:
 # Fail if THIRD_PARTY_NOTICES.md does not match the modules the binary links.
 check-notices:
     go run ./tools/notices check
+
+# Check the front matter of the decision records and their links to components and contracts.
+check-records:
+    go run ./tools/records check
 
 # Go tests. A no-op until the Go module exists.
 test:
