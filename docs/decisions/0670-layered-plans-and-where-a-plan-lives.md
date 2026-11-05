@@ -41,12 +41,28 @@ company email or security orientation, or team-targeted, such as team chat or wo
 agreements. The catalog marks each one. The Answer screen groups questions by scope,
 organization first.
 
-**There are organization plans and team plans, in one format.** The first question of
-an organization plan is the organization's name. The first question of a team plan is
-the team's name. Asking for a name first is the same in both, and both come before the
-targeted questions. Both are required onboarder questions, so an invitation cannot be
-exported until they are answered. Plans that already exist are not changed by this. A team plan says which plan it extends. An organization with one
-team can use one plan that extends nothing.
+**There are organization plans and team plans, in one format, and every organization
+has both.** The first question of an organization plan is the organization's name. The
+first question of a team plan is the team's name. Asking for a name first is the same in
+both, and both come before the targeted questions. Both are required onboarder questions,
+so an invitation cannot be exported until they are answered. A team plan says which plan
+it extends, and takes the organization's name from it, so it never asks again. An
+organization with one team has an organization plan and one team plan. There is no merged
+shape, so nothing has to be split when a second team arrives. Plans that already exist are
+not changed by this.
+
+**A team plan changes nothing in the organization plan.** It adds its own sections and
+orders them. It cannot switch off, reorder, or edit an organization section. Whether
+something is mandatory is the existing `required` flag on its question, and a team that
+cannot answer a required question defers it explicitly, as 0035 allows. There is no new
+mark for required or offered sections. A team that needs different wording writes its own
+section. Nobody has needed to change the organization's sections from a team, and this
+waits for someone to.
+
+**The first plan of an organization is two plans in one flow.** A new organization has no
+organization plan yet, so the front door's "Build an onboarding plan" sets up the
+organization first, then offers "Add your first team", and writes both files. Adding
+another team later starts from the team question and asks where the organization plan is.
 
 **`extends` is a relative path and a plan id.** Example: a path `../org/plan.obk.yaml`
 and the id `acme`. The tool resolves the path from the team plan's folder. If it is
@@ -168,3 +184,9 @@ runner and the settings on, fetches run on their own and the time stays fresh.
 - URL handling is new input from a file that came from outside, so the safety rules
   above need a test that tries `--upload-pack` and similar forms.
 - Contract changes need a person's authorization.
+
+## Not decided
+
+1. **Whether a team may switch off an organization section.** The answer today is no. It
+   stays no until a team has a real need, and then a mark on the organization section
+   would be the place to say which sections may be dropped.
