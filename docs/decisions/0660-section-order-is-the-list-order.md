@@ -1,6 +1,7 @@
 ---
 category: behavior
-status: proposed
+status: accepted
+approval: person
 affects: [catalog/editor, catalog/materializer, catalog/reader, document/assembler, plan/decoder, plan/editor, plan/encoder, plan/instantiator, plan/refresher, plan/structurevalidator, section/hasher, section/loader, section/scheduler, section/selector, tui]
 builds-on: ['0260', '0530', '0540', '0610']
 ---
