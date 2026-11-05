@@ -53,8 +53,8 @@ onboarder can move sections within a window.
 | 26 | `onboarding-refresh` | `week-one` | invitation-and-first-steps | timing `anytime` to `week-one` |
 | 27 | `repository-clone` | `week-one` | software-work-and-delivery |  |
 | 28 | `project-dependencies` | `week-one` | software-work-and-delivery |  |
-| 29 | `application-local` | `week-one` | software-work-and-delivery |  |
-| 30 | `project-tests` | `week-one` | software-work-and-delivery |  |
+| 29 | `project-tests` | `week-one` | software-work-and-delivery |  |
+| 30 | `application-local` | `week-one` | software-work-and-delivery |  |
 | 31 | `codebase-orientation` | `week-one` | software-work-and-delivery |  |
 | 32 | `contribution-practices` | `week-one` | software-work-and-delivery | timing `anytime` to `week-one` |
 | 33 | `ticket-pairing` | `week-one` | software-work-and-delivery |  |
@@ -115,8 +115,8 @@ decides which to keep.
 | `onboarding-repository` | `repository-access` |
 | `repository-clone` | `repository-access` |
 | `project-dependencies` | `repository-clone` |
-| `application-local` | `project-dependencies` |
-| `project-tests` | `application-local` |
+| `application-local` | `project-tests` |
+| `project-tests` | `project-dependencies` |
 | `ticket-pairing` | `ticket-system-access` |
 | `ticket-ownership` | `ticket-system-access` |
 | `deploy-shadow` | `ci-access` |
