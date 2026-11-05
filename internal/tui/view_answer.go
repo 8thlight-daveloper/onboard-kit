@@ -2,6 +2,7 @@ package tui
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	"onboard-kit/internal/model"
@@ -43,7 +44,7 @@ func (app App) answerBody(screenFrame frame, colors palette) []string {
 func (app App) rowNoteLines(question model.Question, width int) []line {
 	notes := app.noteLines(question, width)
 	if first, last := app.pageBounds(app.cursor); last-first > 1 {
-		notes[0] = faintLine(fmt.Sprintf("About row %d", app.cursor-first+1))
+		notes[0] = faintLine(fmt.Sprintf("About question %d", app.cursor+1))
 	}
 	return notes
 }
@@ -66,7 +67,7 @@ func (app App) pageLines(width int, height int, narrow bool, colors palette) ([]
 		shown++
 	}
 	end := min(start+shown, len(rows))
-	above, below := hiddenRows(spans, start, end)
+	above, below := hiddenRows(slices.Delete(slices.Clone(spans), focused, focused+1), start, end)
 	page := header
 	if start > 0 {
 		page = append(page, faintLine(moreText(above, "above")))
@@ -79,9 +80,9 @@ func hiddenRows(spans []rowSpan, start int, end int) (int, int) {
 	above, below := 0, 0
 	for _, span := range spans {
 		switch {
-		case span.end <= start:
+		case span.start < start:
 			above++
-		case span.start >= end:
+		case span.end > end:
 			below++
 		}
 	}
@@ -105,11 +106,10 @@ func (app App) pageHeader(width int) []line {
 		content = append(lines(toneFaint, wrapText(welcomeText, width)), blankLine())
 	}
 	content = append(content, strongLine(app.sectionTitle(question.Scope)))
-	position := fmt.Sprintf("%s, %s, %s", app.position(), requiredWords(question), stateWords(question))
 	if first, last := app.pageBounds(app.cursor); last-first > 1 {
-		content = append(content, lines(toneFaint, wrapText(fmt.Sprintf("%d questions on this page, %d answered", last-first, app.answeredOnPage(first, last)), width))...)
-		position = fmt.Sprintf("Row %d: question %s", app.cursor-first+1, position)
+		content = append(content, lines(toneFaint, wrapText(fmt.Sprintf("%d of %d answered on this page", app.answeredOnPage(first, last), last-first), width))...)
 	}
+	position := fmt.Sprintf("Question %s, %s, %s", app.position(), requiredWords(question), stateWords(question))
 	content = append(content, lines(toneFaint, wrapText(position, width))...)
 	return append(content, blankLine())
 }
@@ -128,9 +128,9 @@ func (app App) pageRows(width int, height int, showExample bool, colors palette)
 		if index > first {
 			content = append(content, blankLine())
 		}
-		row, focus := app.restingRowLines(app.questions[index], width), 0
+		row, focus := app.restingRowLines(app.questions[index], index+1, width), 0
 		if index == app.cursor {
-			row, focus = app.focusedRowLines(app.questions[index], width, height, showExample, colors)
+			row, focus = app.focusedRowLines(app.questions[index], index+1, width, height, showExample, colors)
 		}
 		spans = append(spans, rowSpan{start: len(content), end: len(content) + len(row), focus: len(content) + focus})
 		content = append(content, row...)
@@ -157,14 +157,22 @@ func scrollStart(content []line, spans []rowSpan, focused int, height int) int {
 	return start
 }
 
-func descriptionLines(question model.Question, weight tone, width int) []line {
-	return lines(weight, hanging(requiredMark(question)+" ", question.Description, width))
+func rowPrefix(question model.Question, number int) string {
+	return fmt.Sprintf("%s %d. ", requiredMark(question), number)
 }
 
-func (app App) focusedRowLines(question model.Question, width int, height int, showExample bool, colors palette) ([]line, int) {
-	content := descriptionLines(question, toneStrong, width)
+func descriptionLines(question model.Question, number int, weight tone, width int) []line {
+	return lines(weight, hanging(rowPrefix(question, number), question.Description, width))
+}
+
+func rowDetail(question model.Question, number int, text string, width int) line {
+	return faintLine(truncateCells(spaces(cellWidth(rowPrefix(question, number)))+text, width))
+}
+
+func (app App) focusedRowLines(question model.Question, number int, width int, height int, showExample bool, colors palette) ([]line, int) {
+	content := descriptionLines(question, number, toneStrong, width)
 	if example := exampleText(question); showExample && example != "" {
-		content = append(content, faintLine(truncateCells("  "+example, width)))
+		content = append(content, rowDetail(question, number, example, width))
 	}
 	content = append(content, blankLine())
 	problems := app.problemLines(width)
@@ -173,12 +181,12 @@ func (app App) focusedRowLines(question model.Question, width int, height int, s
 	return append(append(content, entry...), problems...), focus
 }
 
-func (app App) restingRowLines(question model.Question, width int) []line {
-	content := descriptionLines(question, toneBody, width)
+func (app App) restingRowLines(question model.Question, number int, width int) []line {
+	content := descriptionLines(question, number, toneBody, width)
 	if example := exampleText(question); example != "" {
-		content = append(content, faintLine(truncateCells("  "+example, width)))
+		content = append(content, rowDetail(question, number, example, width))
 	}
-	return append(content, faintLine(truncateCells("  "+app.restingAnswer(question), width)))
+	return append(content, rowDetail(question, number, app.restingAnswer(question), width))
 }
 
 func (app App) restingAnswer(question model.Question) string {
@@ -253,11 +261,11 @@ func (app App) fieldLine(width int, colors palette) line {
 	text := singleLine(app.entry.input.Value())
 	switch {
 	case strings.TrimSpace(text) == "":
-		return faintLine(emptyFieldText)
+		return faintLine(blurredPrompt + emptyFieldText)
 	case app.entry.hasDraft():
-		return faintLine(truncateCells(draftLabel+text, width))
+		return faintLine(truncateCells(blurredPrompt+draftLabel+text, width))
 	}
-	return faintLine(truncateCells(savedLabel+text, width))
+	return faintLine(truncateCells(blurredPrompt+savedLabel+text, width))
 }
 
 func optionLine(label string, focused bool, chosen bool, width int, colors palette) line {

@@ -36,12 +36,12 @@ func TestThePlanPageShowsItsFourRowsTogether(t *testing.T) {
 	view := plainView(app)
 	for _, want := range []string{
 		"Plan",
-		"4 questions on this page, 0 answered",
-		"Row 1: question 1 of 7, required, not answered yet",
-		"* What is the organization's name?",
-		"* What is the team's name?",
-		"  Where is the plan's repository?",
-		"  Which file in it is the plan?",
+		"0 of 4 answered on this page",
+		"Question 1 of 7, required, not answered yet",
+		"* 1. What is the organization's name?",
+		"* 2. What is the team's name?",
+		"  3. Where is the plan's repository?",
+		"  4. Which file in it is the plan?",
 		"e.g. https://example.test/acme/onboarding.git",
 		"Required, not answered yet",
 		"Not answered yet",
@@ -62,7 +62,7 @@ func TestEnterAnswersThePlanPageInOrderAndThenOpensTheNextPage(t *testing.T) {
 	if focusedID(app) != "plan.plan_repository" || !app.typingNow() {
 		t.Fatalf("enter moves to the next row and types there, got %s", focusedID(app))
 	}
-	if view := plainView(app); !strings.Contains(view, "Saved: Globex") || !strings.Contains(view, "Saved: Platform") || !strings.Contains(view, "4 questions on this page, 2 answered") {
+	if view := plainView(app); !strings.Contains(view, "Saved: Globex") || !strings.Contains(view, "Saved: Platform") || !strings.Contains(view, "2 of 4 answered on this page") {
 		t.Errorf("the answered rows show their answers:\n%s", view)
 	}
 	app = press(app, typed("https://example.test/globex/onboarding.git"), enter, typed("plans/core.obk.yaml"), enter)
@@ -134,7 +134,7 @@ func TestAChoiceRowIsPartOfTheLinearOrder(t *testing.T) {
 		t.Errorf("up from the first choice of a later row reaches the row above, got %s", focusedID(up))
 	}
 	view := plainView(teamState)
-	if !strings.Contains(view, "> established") || !strings.Contains(view, "* What is the organization's name?") {
+	if !strings.Contains(view, "> established") || !strings.Contains(view, "* 1. What is the organization's name?") {
 		t.Errorf("the focused choice row shows its list under the row, beside the other rows:\n%s", view)
 	}
 }
@@ -245,7 +245,7 @@ func TestLeavingAPageDropsItsDraftsAndATabVisitKeepsThem(t *testing.T) {
 	if focusedID(left) != "access.owner" {
 		t.Fatalf("enter on the last row opens the next page, got %s", focusedID(left))
 	}
-	if got := statusLine(left); got != "saved. Your unsaved text on questions 1 and 2 was dropped." {
+	if got := statusLine(left); got != "saved. warning: your unsaved text on questions 1 and 2 was dropped." {
 		t.Errorf("leaving the page names the dropped drafts, got %q", got)
 	}
 	if back := press(left, ctrlN, esc, typed("p"), typed("p")); focusedID(back) != "plan.plan_file" || strings.Contains(plainView(back), "Not saved yet") {
@@ -263,7 +263,7 @@ func TestLeavingAPageDropsItsDraftsAndATabVisitKeepsThem(t *testing.T) {
 		t.Errorf("both drafts are back after the visit:\n%s", plainView(returned))
 	}
 	jumped := press(visited, typed("G"), enter)
-	if focusedID(jumped) != "tools.editor" || statusLine(jumped) != "Your unsaved text on questions 1 and 2 was dropped." {
+	if focusedID(jumped) != "tools.editor" || statusLine(jumped) != "warning: your unsaved text on questions 1 and 2 was dropped." {
 		t.Errorf("opening a question of another page drops the drafts, got %s %q", focusedID(jumped), statusLine(jumped))
 	}
 }
@@ -275,7 +275,7 @@ func TestDeferOnADraftedRowDropsOnlyThatRowsDraft(t *testing.T) {
 	if backend.answers["plan.team_name"].Kind != model.ValueKindDeferred {
 		t.Fatal("ctrl+d defers the second row")
 	}
-	if got := statusLine(deferred); got != "saved. Your unsaved text on question 2 was dropped." {
+	if got := statusLine(deferred); got != "saved. warning: your unsaved text on question 2 was dropped." {
 		t.Errorf("status %q", got)
 	}
 	if !strings.Contains(plainView(deferred), "Not saved yet: Glob") {
@@ -303,7 +303,7 @@ func conditionalBackend() *fakeBackend {
 func TestARowThatBecomesActiveAppearsInItsPlace(t *testing.T) {
 	t.Parallel()
 	app := resize(startFake(conditionalBackend()), 120, 40)
-	if strings.Contains(plainView(app), "Where is the plan's repository?") || !strings.Contains(plainView(app), "2 questions on this page") {
+	if strings.Contains(plainView(app), "Where is the plan's repository?") || !strings.Contains(plainView(app), "of 2 answered on this page") {
 		t.Fatalf("the follow-up is hidden until it applies:\n%s", plainView(app))
 	}
 	drafted := press(app, down, down, down, down, typed("plans/a.yaml"), up, up, up, up)
@@ -315,7 +315,7 @@ func TestARowThatBecomesActiveAppearsInItsPlace(t *testing.T) {
 		t.Fatalf("the new row appears after the answered one and takes focus as the next row, got %s", focusedID(answered))
 	}
 	view := plainView(answered)
-	if !strings.Contains(view, "3 questions on this page, 1 answered") || !strings.Contains(view, "Not saved yet: plans/a.yaml") {
+	if !strings.Contains(view, "1 of 3 answered on this page") || !strings.Contains(view, "Not saved yet: plans/a.yaml") {
 		t.Errorf("the page shows the new row and keeps the draft below it:\n%s", view)
 	}
 	hidden := press(answered, ctrlP, down, enter)
@@ -353,7 +353,7 @@ func TestTheNewcomerSeesThePlanRowsOnOnePage(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, blankPlan(t), model.AudienceOnboardee)
 	view := plainView(app)
-	for _, want := range []string{"2 questions on this page, 0 answered", "Which team are you joining?", "What kind of work will you do?"} {
+	for _, want := range []string{"0 of 2 answered on this page", "Which team are you joining?", "What kind of work will you do?"} {
 		if !strings.Contains(view, want) {
 			t.Errorf("the newcomer's plan page lacks %q:\n%s", want, view)
 		}

@@ -120,7 +120,7 @@ Decided. A designer judged the layout against the people in Intent, and it repla
 
 - The Answer screen shows one page and nothing else that competes with it. The answer column holds the page header, the rows, and, under the focused row, the way to answer and any problem. See Pages on the Answer screen.
 - A progress rail sits under the header: one mark per question, grouped by section, with a diamond at the current question. The rail replaces the question list. It answers "where am I and how much is left" in one quiet line, and it never asks for a read. It is hidden when it does not fit.
-- The notes sit beside the answer at 120 columns and wider, and below it when narrower and the page fits. They describe the focused row: the example, the type and options, who answers, the name, and the suggestions. On a page of several rows their heading names the row, "About row 2". They are faint, because they are for a glance and never for action.
+- The notes sit beside the answer at 120 columns and wider, and below it when narrower and the page fits. They describe the focused row: the example, the type and options, who answers, the name, and the suggestions. On a page of several rows their heading names the question, "About question 2". They are faint, because they are for a glance and never for action.
 - The Overview is one list, grouped by section, with each row showing its mark, its question, and its answer. At 120 columns and wider a faint preview of the chosen question sits beside it.
 - The Review keeps two panes, because it is a master and detail task: the items on the left, the document preview on the right. Left and right arrows move the focus between them, and below 120 columns they switch which one shows.
 
@@ -260,14 +260,14 @@ Decided, and built. A page is one scope: the plan's own questions together, or o
 
 ```text
   Plan
-  4 questions on this page, 1 answered
-  Row 2: question 2 of 61, required, not answered yet
+  1 of 4 answered on this page
+  Question 2 of 61, required, not answered yet
 
-  * What is the organization's name?
-    e.g. ACME Corp
-    Saved: Globex
+  * 1. What is the organization's name?
+       e.g. ACME Corp
+       Saved: Globex
 
-  * What is the team's name?
+  * 2. What is the team's name?
 
   > Plat
 
@@ -275,14 +275,14 @@ Decided, and built. A page is one scope: the plan's own questions together, or o
     skip, change nothing
     clear the answer
 
-    Where is the plan's repository?
-    e.g. https://example.test/acme/onboarding.git
-    Not answered yet
+    3. Where is the plan's repository?
+       e.g. https://example.test/acme/onboarding.git
+       Not answered yet
 ```
 
-- **The page header** names the scope, "Plan" for the plan's own questions and the section's title for a section. On a page of several rows a line says how many questions the page has and how many are answered, and the position line names the focused row: "Row 2: question 2 of 61, required, not answered yet". The progress in the screen header still counts questions, "3 of 8 answered".
-- **A page of one row** looks as the Answer screen did before pages: the title, the position "7 of 61, required, not answered yet", the question, and the way to answer.
-- **Each question is a row**: `*` and its question when it is required, its example after "e.g." when it has one, and its answer. A row not in focus shows its answer in one faint line: "Saved: Globex", "Not saved yet: Glob" for a draft, "Deferred, answer later", "Required, not answered yet", or "Not answered yet".
+- **The page header** names the scope, "Plan" for the plan's own questions and the section's title for a section. On a page of several rows a line counts its answers, "1 of 4 answered on this page". The position line names the focused question by its number in the whole plan: "Question 2 of 61, required, not answered yet". The progress in the screen header still counts questions, "3 of 8 answered".
+- **A page of one row** looks as the Answer screen did before pages: the title, the position, the question, and the way to answer.
+- **Each question is a row**: `*` when it is required, its number in the whole plan, its question, its example after "e.g." when it has one, and its answer. The number is the one the position line and the status lines use, and it keeps an optional question below the focused row from reading as one more option. A row not in focus shows its answer in one faint line: "Saved: Globex", "Not saved yet: Glob" for a draft, "Deferred, answer later", "Required, not answered yet", or "Not answered yet".
 - **The focused row** shows its question in bold and the way to answer under it: the answer field and its list of options for a typed answer, or the choice, several-answers, or directory list for the rest. Its problems are under it. Below 120 columns the focused row also shows its example, because the notes may not fit.
 - **Rows that come and go.** A question whose `askIf` starts to hold appears in its row position, and one that stops holding leaves. The focus stays on the question the person is on, so an answer that adds the next row makes it the next stop for enter.
 - **A long page scrolls** so the focused row is on screen. The scroll starts at a row, never in the middle of one above the focus, and faint lines above and below say how many questions are out of sight, "2 more questions above".
@@ -314,8 +314,8 @@ Decided, and built. The Answer screen of a typed question has three places the k
 What happens to text that is typed and not saved, called a draft here:
 
 - **It stays in its row while the person is on the page.** Moving to another row with the arrows, `n`, `p`, or enter on another row keeps it, and the row shows it dimmed as "Not saved yet: Glob". Stopping typing, opening the tab strip, and moving to another tab with tab, a letter, or escape keep it too, and it is back on return. Leaving the Answer screen with drafts says "Your text on questions 1 and 2 is kept, not saved yet."
-- **It is dropped when the person leaves the page**, by enter, `n`, or `p` across the page's edge, or by opening a question of another page from the Overview or the Review. The status says "Your unsaved text on questions 1 and 2 was dropped.", after "saved" when the move also saved an answer. Opening a question of the same page keeps the drafts. Going past the last question to the Review keeps them, as a visit to another tab does.
-- **Defer drops only its row's draft.** Defer saves the deferral and not the draft, because a question holds one answer and the person chose to answer it later. The status says "saved. Your unsaved text on question 2 was dropped." Skip saves nothing, as its label says, and keeps the draft while the next row is on the same page.
+- **It is dropped when the person leaves the page**, by enter, `n`, or `p` across the page's edge, or by opening a question of another page from the Overview or the Review. The status says "warning: your unsaved text on questions 1 and 2 was dropped.", after "saved" when the move also saved an answer. Opening a question of the same page keeps the drafts. Going past the last question to the Review keeps them, as a visit to another tab does.
+- **Defer drops only its row's draft.** Defer saves the deferral and not the draft, because a question holds one answer and the person chose to answer it later. The status says "saved. warning: your unsaved text on question 2 was dropped." Skip saves nothing, as its label says, and keeps the draft while the next row is on the same page.
 - **Picks in a several-answers row** that are not yet confirmed stay with the row on the page in the same way, and show as "Not saved yet" with the names. They are not named in the status lines.
 - **Clear empties the box as well as the answer**, saves the cleared answer when there was one, and returns to typing on the same question.
 - **Quitting drops it**, as it always did. Only enter saves typed text.
@@ -408,7 +408,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | `n`, right | Skip to the next row | ctrl+n. Right moves the caret |  |  |  |
 | `d` | Defer the row, move on | ctrl+d |  |  |  |
 | `x` | Clear | Empty the box and enter |  |  |  |
-| tab, shift+tab | Next or previous page | Same | Same | Same | Same |
+| tab, shift+tab | Next or previous screen | Same | Same | Same | Same |
 | left, right |  |  |  | Items or document |  |
 | `w`, `o`, `r`, `s`, `c`, `t`, `i` | `o`, `r`, `s`, `c`, `t`, `i` | Letters are text | `w`, `r`, `s`, `c`, `t`, `i` | `w`, `o`, `s`, `c`, `t`, `i` | `w`, `o`, `r`, `c`, `t`, `i` |
 | pgup, pgdn, `g`, `G` |  |  | `g`, `G` | Scroll the document |  |
@@ -565,7 +565,7 @@ One list with three headers would show everything at once, but the add key would
 | -- | -- | -- | -- |
 | up, down, `k`, `j` | Move | Move between fields, or in a pick list |  |
 | left, right | Next or previous list |  |  |
-| tab, shift+tab | Next or previous page | Next or previous field |  |
+| tab, shift+tab | Next or previous screen | Next or previous field |  |
 | up on the first field |  | The tab strip |  |
 | `a` | Add to this list |  |  |
 | enter, `e` | Change the chosen entry | Next field, save on the last, open the team contact or a role row, and choose a row in the team contact list | Keep |
@@ -627,7 +627,7 @@ Built, under [0520](../decisions/0520-preparation-screen.md). The save rules of 
 | `a` | Add a person | Add an arrangement | Letters are text | Keep |  |
 | `x`, delete |  | Remove the chosen arrangement, after a confirmation | Letters are text | Keep |  |
 | space |  |  | Pick or unpick in a helpers list | Keep | Scroll |
-| tab, shift+tab | Next or previous page | Next or previous page | Next or previous field. Up on the first field reaches the tab strip | Keep | Next or previous page |
+| tab, shift+tab | Next or previous screen | Next or previous screen | Next or previous field. Up on the first field reaches the tab strip | Keep | Next or previous screen |
 | left, right |  |  |  |  | Changes or guide |
 | pgup, pgdn |  |  |  | Keep | Scroll the pane with focus |
 | ctrl+s |  |  | Stage the form |  |  |
@@ -674,7 +674,7 @@ The people are the ones the [preparation store](../../contracts/preparation/stor
 | up, down, `k`, `j` | Move |  | Move between fields, or in a pick list | Scroll the guide |  |
 | `g`, `G` | First, last |  |  |  |  |
 | enter, `e` | Open the person | Back | Open a pick list, choose, or go on from the file |  | Back to the people |
-| tab, shift+tab | Next or previous page | Next or previous page | Next or previous field |  | Next or previous page |
+| tab, shift+tab | Next or previous screen | Next or previous screen | Next or previous field |  | Next or previous screen |
 | space |  |  | Pick or unpick in the general help list |  |  |
 | pgup, pgdn |  |  | Scroll the guide | Scroll the guide |  |
 | ctrl+s |  |  | Go on to the last step |  |  |

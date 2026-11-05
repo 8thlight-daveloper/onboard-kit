@@ -1,26 +1,26 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                     0 of 10 answered
   ·······◆··
 
-  Plan                                                                              │ About row 8
-  10 questions on this page, 0 answered                                             │
-  Row 8: question 8 of 10, required, not answered yet                               │ Type: contact
+  Plan                                                                              │ About question 8
+  0 of 10 answered on this page                                                     │
+  Question 8 of 10, required, not answered yet                                      │ Type: contact
                                                                                     │ Answered by: onboarder
   5 more questions above                                                            │ Name: plan.pickxxxxxxx
-  * A long question that keeps going. A long question that keeps going. A long      │
-    question that keeps going. A long question that keeps going. A long question    │
-    that keeps going. A long question that keeps going.                             │
-    e.g. an example an example an example an example an example an example an exam… │
-    Required, not answered yet                                                      │
+  * 6. A long question that keeps going. A long question that keeps going. A long   │
+       question that keeps going. A long question that keeps going. A long question │
+       that keeps going. A long question that keeps going.                          │
+       e.g. an example an example an example an example an example an example an e… │
+       Required, not answered yet                                                   │
                                                                                     │
-  * A long question that keeps going. A long question that keeps going. A long      │
-    question that keeps going. A long question that keeps going. A long question    │
-    that keeps going. A long question that keeps going.                             │
-    e.g. an example an example an example an example an example an example an exam… │
-    Required, not answered yet                                                      │
+  * 7. A long question that keeps going. A long question that keeps going. A long   │
+       question that keeps going. A long question that keeps going. A long question │
+       that keeps going. A long question that keeps going.                          │
+       e.g. an example an example an example an example an example an example an e… │
+       Required, not answered yet                                                   │
                                                                                     │
-  * A long question that keeps going. A long question that keeps going. A long      │
-    question that keeps going. A long question that keeps going. A long question    │
-    that keeps going. A long question that keeps going.                             │
+  * 8. A long question that keeps going. A long question that keeps going. A long   │
+       question that keeps going. A long question that keeps going. A long question │
+       that keeps going. A long question that keeps going.                          │
                                                                                     │
   > Alex Rivera                                                                     │
     Sam Okafor                                                                      │
@@ -28,13 +28,13 @@
     deferred, answer later                                                          │
     clear the answer                                                                │
                                                                                     │
-  * A long question that keeps going. A long question that keeps going. A long      │
-    question that keeps going. A long question that keeps going. A long question    │
-    that keeps going. A long question that keeps going.                             │
-    e.g. an example an example an example an example an example an example an exam… │
-    Required, not answered yet                                                      │
+  * 9. A long question that keeps going. A long question that keeps going. A long   │
+       question that keeps going. A long question that keeps going. A long question │
+       that keeps going. A long question that keeps going.                          │
+       e.g. an example an example an example an example an example an example an e… │
+       Required, not answered yet                                                   │
                                                                                     │
-  * A long question that keeps going. A long question that keeps going. A long      │
-                                                                                    │
+  * 10. A long question that keeps going. A long question that keeps going. A long  │
+  1 more question below                                                             │
 
   enter choose  p back  d defer  x clear  n skip  q quit  ? help

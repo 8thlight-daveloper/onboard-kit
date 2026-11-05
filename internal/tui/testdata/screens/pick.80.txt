@@ -2,11 +2,11 @@
   ··  ◆····  ·
 
   Access
-  5 questions on this page, 0 answered
-  Row 1: question 3 of 8, required, not answered yet
+  0 of 5 answered on this page
+  Question 3 of 8, required, not answered yet
 
-  * Which role owns onboarding here? It appears as the owner of the Access
-    section.
+  * 3. Which role owns onboarding here? It appears as the owner of the Access
+       section.
 
   > Engineering manager
     IT contact
@@ -14,11 +14,11 @@
     deferred, answer later
     clear the answer
 
-  * Where do people request source control access?
-    e.g. https://access.example.test/request
-    Required, not answered yet
+  * 4. Where do people request source control access?
+       e.g. https://access.example.test/request
+       Required, not answered yet
 
-  * What is the clone URL of the main repository?
-  2 more questions below
+  * 5. What is the clone URL of the main repository?
+  3 more questions below
 
   enter choose  p back  d defer  o overview  r review  s sections  ? help

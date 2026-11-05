@@ -1,15 +1,15 @@
   Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                          1 of 7 answered
   ✓◆··  ··  ·
 
-  Plan                                                                  │ About row 2
-  4 questions on this page, 1 answered                                  │
-  Row 2: question 2 of 7, required, not answered yet                    │ Example: Platform
+  Plan                                                                  │ About question 2
+  1 of 4 answered on this page                                          │
+  Question 2 of 7, required, not answered yet                           │ Example: Platform
                                                                         │ Type: string
-  * What is the organization's name?                                    │ Answered by: onboarder
-    e.g. ACME Corp                                                      │ Name: plan.team_name
-    Saved: Globex                                                       │
+  * 1. What is the organization's name?                                 │ Answered by: onboarder
+       e.g. ACME Corp                                                   │ Name: plan.team_name
+       Saved: Globex                                                    │
                                                                         │
-  * What is the team's name?                                            │
+  * 2. What is the team's name?                                         │
                                                                         │
   > Plat                                                                │
                                                                         │
@@ -17,14 +17,14 @@
     skip, change nothing                                                │
     clear the answer                                                    │
                                                                         │
-    Where is the plan's repository?                                     │
-    e.g. https://example.test/acme/onboarding.git                       │
-    Not answered yet                                                    │
+    3. Where is the plan's repository?                                  │
+       e.g. https://example.test/acme/onboarding.git                    │
+       Not answered yet                                                 │
                                                                         │
-    Which file in it is the plan?                                       │
-    e.g. plans/platform.obk.yaml                                        │
-    Not answered yet                                                    │
+    4. Which file in it is the plan?                                    │
+       e.g. plans/platform.obk.yaml                                     │
+       Not answered yet                                                 │
 
 
 
-  enter save  esc stop typing  down options  tab next page  ctrl+p back  up row above  f1 help
+  enter save  esc stop typing  down options  tab next screen  ctrl+p back  up row above  f1 help

@@ -1,11 +1,11 @@
   Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                                              0 of 2 answered
   ◆·
 
-  local                                                                             │ About row 1
-  2 questions on this page, 0 answered                                              │
-  Row 1: question 1 of 2, required, not answered yet                                │ Type: string
+  local                                                                             │ About question 1
+  0 of 2 answered on this page                                                      │
+  Question 1 of 2, required, not answered yet                                       │ Type: string
                                                                                     │ Answered by: onboarder
-  * Which reviewed local startup, shutdown, and safe data instructions apply?       │ Name: local.startup
+  * 1. Which reviewed local startup, shutdown, and safe data instructions apply?    │ Name: local.startup
                                                                                     │ Suggestion (default): Run make run, stop with
   > int it at the sample database the platform team keeps up to date every Monday   │ Ctrl+C, and use the sample database
                                                                                     │ Suggestion (given): Ask the team lead
@@ -15,8 +15,8 @@
     skip, change nothing                                                            │
     clear the answer                                                                │
                                                                                     │
-  * Which harmless user journey should verify local behavior?                       │
-    Required, not answered yet                                                      │
+  * 2. Which harmless user journey should verify local behavior?                    │
+       Required, not answered yet                                                   │
 
 
 
@@ -37,4 +37,4 @@
 
 
 
-  enter save  esc stop typing  down options  tab next page  ctrl+p back  up tabs  f1 help
+  enter save  esc stop typing  down options  tab next screen  ctrl+p back  up tabs  f1 help

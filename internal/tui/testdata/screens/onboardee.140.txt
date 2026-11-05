@@ -1,21 +1,21 @@
   Your onboarding  [Your questions]  Overview o  Review r                                                                 3 of 3 to answer
   ◆·  ·
 
-  Welcome. A few questions about you, then your own onboarding document.            │ About row 1
+  Welcome. A few questions about you, then your own onboarding document.            │ About question 1
                                                                                     │
   Plan                                                                              │ Type: team
-  2 questions on this page, 0 answered                                              │ Answered by: onboardee
-  Row 1: question 1 of 3, required, not answered yet                                │ Name: plan.team
+  0 of 2 answered on this page                                                      │ Answered by: onboardee
+  Question 1 of 3, required, not answered yet                                       │ Name: plan.team
                                                                                     │
-  * Which team are you joining?                                                     │
+  * 1. Which team are you joining?                                                  │
                                                                                     │
   > Platform team                                                                   │
     Design team                                                                     │
     deferred, answer later                                                          │
     clear the answer                                                                │
                                                                                     │
-  * What kind of work will you do?                                                  │
-    Required, not answered yet                                                      │
+  * 2. What kind of work will you do?                                               │
+       Required, not answered yet                                                   │
 
 
 

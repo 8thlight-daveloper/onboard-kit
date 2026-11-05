@@ -1,11 +1,11 @@
   Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                                              0 of 8 answered
   ◆·  ·····  ·
 
-  Plan                                                                              │ About row 1
-  2 questions on this page, 0 answered                                              │
-  Row 1: question 1 of 8, required, not answered yet                                │ Example: ACME Corp
+  Plan                                                                              │ About question 1
+  0 of 2 answered on this page                                                      │
+  Question 1 of 8, required, not answered yet                                       │ Example: ACME Corp
                                                                                     │ Type: string
-  * What is the organization's name?                                                │ Answered by: onboarder
+  * 1. What is the organization's name?                                             │ Answered by: onboarder
                                                                                     │ Name: plan.organization
   > Glob                                                                            │
                                                                                     │
@@ -13,8 +13,8 @@
     skip, change nothing                                                            │
     clear the answer                                                                │
                                                                                     │
-  * Is the team established, or are we the first consultants?                       │
-    Required, not answered yet                                                      │
+  * 2. Is the team established, or are we the first consultants?                    │
+       Required, not answered yet                                                   │
 
 
 
@@ -37,4 +37,4 @@
 
 
 
-  enter save  esc stop typing  down options  tab next page  ctrl+p back  up tabs  f1 help
+  enter save  esc stop typing  down options  tab next screen  ctrl+p back  up tabs  f1 help

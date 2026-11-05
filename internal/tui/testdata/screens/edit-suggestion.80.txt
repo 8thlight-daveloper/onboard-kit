@@ -2,12 +2,13 @@
   ◆·
 
   local
-  2 questions on this page, 0 answered
-  Row 1: question 1 of 2, required, not answered yet
+  0 of 2 answered on this page
+  Question 1 of 2, required, not answered yet
 
-  * Which reviewed local startup, shutdown, and safe data instructions apply?
+  * 1. Which reviewed local startup, shutdown, and safe data instructions
+       apply?
 
-  Nothing typed yet
+    Nothing typed yet
 
     Edit the answer
   > Use the suggestion: Run make run, stop with Ctrl+C, and use the sample da…
@@ -16,9 +17,8 @@
     skip, change nothing
     clear the answer
 
-  * Which harmless user journey should verify local behavior?
-    Required, not answered yet
+  * 2. Which harmless user journey should verify local behavior?
+       Required, not answered yet
 
-  About row 1
 
-  Not typing.  up/down move  enter choose  tab next page  esc overview  ? help
+  Not typing.  up/down move  enter choose  tab next screen  ? help

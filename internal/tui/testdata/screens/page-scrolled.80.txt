@@ -2,13 +2,13 @@
   ·······◆··
 
   Plan
-  10 questions on this page, 0 answered
-  Row 8: question 8 of 10, required, not answered yet
+  0 of 10 answered on this page
+  Question 8 of 10, required, not answered yet
 
   7 more questions above
-  * A long question that keeps going. A long question that keeps going. A long
-    question that keeps going. A long question that keeps going. A long
-    question that keeps going. A long question that keeps going.
+  * 8. A long question that keeps going. A long question that keeps going. A
+       long question that keeps going. A long question that keeps going. A
+       long question that keeps going. A long question that keeps going.
 
   > Alex Rivera
     Sam Okafor
@@ -16,9 +16,9 @@
     deferred, answer later
     clear the answer
 
-  * A long question that keeps going. A long question that keeps going. A long
-    question that keeps going. A long question that keeps going. A long
-    question that keeps going. A long question that keeps going.
-  1 more question below
+  * 9. A long question that keeps going. A long question that keeps going. A
+       long question that keeps going. A long question that keeps going. A
+       long question that keeps going. A long question that keeps going.
+  2 more questions below
 
   enter choose  p back  d defer  o overview  r review  s sections  ? help

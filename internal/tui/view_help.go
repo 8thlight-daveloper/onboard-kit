@@ -1,5 +1,7 @@
 package tui
 
+import "fmt"
+
 func (app App) helpLines(width int) []line {
 	content := app.keyHelpLines(width)
 	if app.about == nil {
@@ -26,7 +28,7 @@ func (app App) keyHelpLines(width int) []line {
 		content = append(content, blankLine())
 		content = append(content, lines(toneFaint, wrapText(pageHelpNote, width))...)
 	}
-	content = append(content, blankLine(), faintLine("Marks: x answered, ~ deferred, . not answered, ◆ you are here."))
+	content = append(content, blankLine(), faintLine(fmt.Sprintf("Marks: %s answered, %s deferred, %s not answered, %s you are here.", app.rail.answered, app.rail.deferred, app.rail.open, app.rail.here)))
 	content = append(content, faintLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
 	return content
 }
@@ -49,9 +51,9 @@ func (app App) helpEntries() []hint {
 	return app.answerHelp()
 }
 
-var pageHelp = hint{"tab, shift+tab", "next or previous page"}
+var pageHelp = hint{"tab, shift+tab", "next or previous screen"}
 
-const pageHelpNote = "A page holds the plan's own questions, or one section's. Each question is a row, and * marks a required one. Text typed in a row stays there while you are on the page."
+const pageHelpNote = "A page holds the plan's own questions, or one section's. * marks a required question. Text you type stays on its question until you leave the page, and only enter saves it."
 
 func (app App) answerHelp() []hint {
 	switch {

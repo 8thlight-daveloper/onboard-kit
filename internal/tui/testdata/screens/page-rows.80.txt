@@ -2,14 +2,14 @@
   ··  ·✓·~◆  ·
 
   Access
-  5 questions on this page, 2 answered
-  Row 5: question 7 of 8, required, not answered yet
+  2 of 5 answered on this page
+  Question 7 of 8, required, not answered yet
 
   3 more questions above
-  * Which role grants CI dashboard access?
-    Deferred, answer later
+  * 6. Which role grants CI dashboard access?
+       Deferred, answer later
 
-  * Which role grants work tracker access?
+  * 7. Which role grants work tracker access?
 
   > Engineering manager
     IT contact

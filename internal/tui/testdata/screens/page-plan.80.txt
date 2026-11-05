@@ -2,15 +2,15 @@
   ✓◆··  ··  ·
 
   Plan
-  4 questions on this page, 1 answered
-  Row 2: question 2 of 7, required, not answered yet
+  1 of 4 answered on this page
+  Question 2 of 7, required, not answered yet
 
-  * What is the organization's name?
-    e.g. ACME Corp
-    Saved: Globex
+  * 1. What is the organization's name?
+       e.g. ACME Corp
+       Saved: Globex
 
-  * What is the team's name?
-    e.g. Platform
+  * 2. What is the team's name?
+       e.g. Platform
 
   > Plat
 
@@ -18,7 +18,7 @@
     skip, change nothing
     clear the answer
 
-    Where is the plan's repository?
-  1 more question below
+    3. Where is the plan's repository?
+  2 more questions below
 
-  enter save  esc stop typing  down options  tab next page  f1 help
+  enter save  esc stop typing  down options  tab next screen  f1 help

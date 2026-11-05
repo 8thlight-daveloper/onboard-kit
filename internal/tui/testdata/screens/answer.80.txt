@@ -2,21 +2,21 @@
   ·◆  ·····  ·
 
   Plan
-  2 questions on this page, 0 answered
-  Row 2: question 2 of 8, required, not answered yet
+  0 of 2 answered on this page
+  Question 2 of 8, required, not answered yet
 
-  * What is the organization's name?
-    e.g. ACME Corp
-    Required, not answered yet
+  * 1. What is the organization's name?
+       e.g. ACME Corp
+       Required, not answered yet
 
-  * Is the team established, or are we the first consultants?
+  * 2. Is the team established, or are we the first consultants?
 
   > established
     first-consultants
     deferred, answer later
     clear the answer
 
-  About row 2
+  About question 2
 
   Type: choice: established, first-consultants
   Answered by: onboarder

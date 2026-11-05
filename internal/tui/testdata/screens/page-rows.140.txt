@@ -1,32 +1,32 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                      2 of 8 answered
   ··  ·✓·~◆  ·
 
-  Access                                                                            │ About row 5
-  5 questions on this page, 2 answered                                              │
-  Row 5: question 7 of 8, required, not answered yet                                │ Type: role
+  Access                                                                            │ About question 7
+  2 of 5 answered on this page                                                      │
+  Question 7 of 8, required, not answered yet                                       │ Type: role
                                                                                     │ Answered by: onboarder
-  * Which role owns onboarding here? It appears as the owner of the Access section. │ Name: access.tracker_grantor
-    Required, not answered yet                                                      │
+  * 3. Which role owns onboarding here? It appears as the owner of the Access       │ Name: access.tracker_grantor
+       section.                                                                     │
+       Required, not answered yet                                                   │
                                                                                     │
-  * Where do people request source control access?                                  │
-    e.g. https://access.example.test/request                                        │
-    Saved: https://access.example.test/request                                      │
+  * 4. Where do people request source control access?                               │
+       e.g. https://access.example.test/request                                     │
+       Saved: https://access.example.test/request                                   │
                                                                                     │
-  * What is the clone URL of the main repository?                                   │
-    e.g. git@git.example.test:team/service.git                                      │
-    Required, not answered yet                                                      │
+  * 5. What is the clone URL of the main repository?                                │
+       e.g. git@git.example.test:team/service.git                                   │
+       Required, not answered yet                                                   │
                                                                                     │
-  * Which role grants CI dashboard access?                                          │
-    Deferred, answer later                                                          │
+  * 6. Which role grants CI dashboard access?                                       │
+       Deferred, answer later                                                       │
                                                                                     │
-  * Which role grants work tracker access?                                          │
+  * 7. Which role grants work tracker access?                                       │
                                                                                     │
   > Engineering manager                                                             │
     IT contact                                                                      │
     Platform team lead                                                              │
     deferred, answer later                                                          │
     clear the answer                                                                │
-
 
 
 

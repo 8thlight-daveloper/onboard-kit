@@ -1,11 +1,11 @@
   Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                          0 of 2 answered
   ◆·
 
-  Plan                                                                  │ About row 1
-  2 questions on this page, 0 answered                                  │
-  Row 1: question 1 of 2, required, not answered yet                    │ Example: Acme Industrial
+  Plan                                                                  │ About question 1
+  0 of 2 answered on this page                                          │
+  Question 1 of 2, required, not answered yet                           │ Example: Acme Industrial
                                                                         │ Type: string
-  * Name of the organization                                            │ Answered by: onboarder
+  * 1. Name of the organization                                         │ Answered by: onboarder
                                                                         │ Name: plan.organization
   > e.g. Acme Industrial                                                │
                                                                         │
@@ -13,10 +13,10 @@
     skip, change nothing                                                │
     clear the answer                                                    │
                                                                         │
-  * Who leads the onboarding, and what do they need to tell a newcomer  │
-    on the first day?                                                   │
-    e.g. Sam Rivera, sam@acme.test                                      │
-    Required, not answered yet                                          │
+  * 2. Who leads the onboarding, and what do they need to tell a        │
+       newcomer on the first day?                                       │
+       e.g. Sam Rivera, sam@acme.test                                   │
+       Required, not answered yet                                       │
 
 
 
@@ -27,4 +27,4 @@
 
 
 
-  enter save  esc stop typing  down options  tab next page  ctrl+p back  up tabs  f1 help
+  enter save  esc stop typing  down options  tab next screen  ctrl+p back  up tabs  f1 help

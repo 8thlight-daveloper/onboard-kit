@@ -136,7 +136,7 @@ func draftKeptLine(numbers []int) line {
 }
 
 func draftDroppedLine(numbers []int) line {
-	return line{text: fmt.Sprintf("Your unsaved text on %s was dropped.", questionNumbers(numbers)), tone: toneWarning}
+	return line{text: fmt.Sprintf("warning: your unsaved text on %s was dropped.", questionNumbers(numbers)), tone: toneWarning}
 }
 
 func (app App) answeredOnPage(first int, last int) int {

@@ -1,14 +1,14 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                  0 of 2 answered
   ◆·
 
-  local                                                                 │ About row 1
-  2 questions on this page, 0 answered                                  │
-  Row 1: question 1 of 2, required, not answered yet                    │ Type: string
+  local                                                                 │ About question 1
+  0 of 2 answered on this page                                          │
+  Question 1 of 2, required, not answered yet                           │ Type: string
                                                                         │ Answered by: onboarder
-  * Which reviewed local startup, shutdown, and safe data instructions  │ Name: local.startup
-    apply?                                                              │ Suggestion (default): Run make run, stop
+  * 1. Which reviewed local startup, shutdown, and safe data            │ Name: local.startup
+       instructions apply?                                              │ Suggestion (default): Run make run, stop
                                                                         │ with Ctrl+C, and use the sample database
-  Nothing typed yet                                                     │ Suggestion (given): Ask the team lead
+    Nothing typed yet                                                   │ Suggestion (given): Ask the team lead
                                                                         │
     Edit the answer                                                     │
   > Use the suggestion: Run make run, stop with Ctrl+C, and use the sa… │
@@ -17,8 +17,8 @@
     skip, change nothing                                                │
     clear the answer                                                    │
                                                                         │
-  * Which harmless user journey should verify local behavior?           │
-    Required, not answered yet                                          │
+  * 2. Which harmless user journey should verify local behavior?        │
+       Required, not answered yet                                       │
 
 
 
@@ -27,4 +27,4 @@
 
 
 
-  Not typing.  up/down move  enter choose  tab next page  esc overview  p back  n skip  d defer  ? help
+  Not typing.  up/down move  enter choose  tab next screen  esc overview  p back  n skip  d defer  ? help

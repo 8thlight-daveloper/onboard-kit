@@ -305,10 +305,10 @@ func TestLeavingTheQuestionDropsTheDraftAndSaysSo(t *testing.T) {
 		app  App
 		want string
 	}{
-		"defer":               {press(typedGlob(t), ctrlD), "saved. Your unsaved text on question 1 was dropped."},
-		"letter":              {press(typedGlob(t), esc, typed("d")), "saved. Your unsaved text on question 1 was dropped."},
-		"skip off the page":   {press(typedGlob(t), esc, typed("n"), typed("n")), "Your unsaved text on question 1 was dropped."},
-		"back off the page":   {press(requestURL, typed("draft"), ctrlP, typed("p")), "Your unsaved text on question 4 was dropped."},
+		"defer":               {press(typedGlob(t), ctrlD), "saved. warning: your unsaved text on question 1 was dropped."},
+		"letter":              {press(typedGlob(t), esc, typed("d")), "saved. warning: your unsaved text on question 1 was dropped."},
+		"skip off the page":   {press(typedGlob(t), esc, typed("n"), typed("n")), "warning: your unsaved text on question 1 was dropped."},
+		"back off the page":   {press(requestURL, typed("draft"), ctrlP, typed("p")), "warning: your unsaved text on question 4 was dropped."},
 		"skip past last page": {press(startFake(suggestedBackend()), typed("draft"), ctrlN, ctrlN), "Your text on question 1 is kept, not saved yet."},
 	} {
 		if got := statusLine(each.app); got != each.want {
@@ -400,7 +400,7 @@ func TestHelpNamesTheNewKeys(t *testing.T) {
 		"typing":   {press(app, functionF), "stop typing, and choose from the list under the box"},
 		"blurred":  {press(app, esc, typed("?")), "do what the chosen option says"},
 		"strip":    {press(app, up, typed("?")), "choose a tab"},
-		"overview": {press(app, esc, esc, typed("?")), "next or previous page"},
+		"overview": {press(app, esc, esc, typed("?")), "next or previous screen"},
 	} {
 		if got := strings.Join(strings.Fields(plainView(each.app)), " "); !strings.Contains(got, each.want) {
 			t.Errorf("%s help lacks %q:\n%s", name, each.want, plainView(each.app))

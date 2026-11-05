@@ -2,9 +2,9 @@
   ····  ··  ◆
 
   tools
-  7 of 7, required, not answered yet
+  Question 7 of 7, required, not answered yet
 
-  * Which editor is standard?
+  * 7. Which editor is standard?
 
   >
 
@@ -21,4 +21,4 @@
 
 
 
-  enter save  esc stop typing  down options  tab next page  f1 help
+  enter save  esc stop typing  down options  tab next screen  f1 help

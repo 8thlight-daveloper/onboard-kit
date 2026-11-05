@@ -1,15 +1,15 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                      0 of 8 answered
   ·◆  ·····  ·
 
-  Plan                                                                              │ About row 2
-  2 questions on this page, 0 answered                                              │
-  Row 2: question 2 of 8, required, not answered yet                                │ Type: choice: established, first-consultants
+  Plan                                                                              │ About question 2
+  0 of 2 answered on this page                                                      │
+  Question 2 of 8, required, not answered yet                                       │ Type: choice: established, first-consultants
                                                                                     │ Answered by: onboarder
-  * What is the organization's name?                                                │ Name: plan.team_state
-    e.g. ACME Corp                                                                  │
-    Required, not answered yet                                                      │
+  * 1. What is the organization's name?                                             │ Name: plan.team_state
+       e.g. ACME Corp                                                               │
+       Required, not answered yet                                                   │
                                                                                     │
-  * Is the team established, or are we the first consultants?                       │
+  * 2. Is the team established, or are we the first consultants?                    │
                                                                                     │
   > established                                                                     │
     first-consultants                                                               │

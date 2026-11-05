@@ -2,11 +2,11 @@
   ◆·  ·····  ·
 
   Plan
-  2 questions on this page, 0 answered
-  Row 1: question 1 of 8, required, not answered yet
+  0 of 2 answered on this page
+  Question 1 of 8, required, not answered yet
 
-  * What is the organization's name?
-    e.g. ACME Corp
+  * 1. What is the organization's name?
+       e.g. ACME Corp
 
   > Glob
 
@@ -14,11 +14,11 @@
     skip, change nothing
     clear the answer
 
-  * Is the team established, or are we the first consultants?
-    Required, not answered yet
+  * 2. Is the team established, or are we the first consultants?
+       Required, not answered yet
 
-  About row 1
+  About question 1
 
   Example: ACME Corp
 
-  enter save  esc stop typing  down options  tab next page  f1 help
+  enter save  esc stop typing  down options  tab next screen  f1 help

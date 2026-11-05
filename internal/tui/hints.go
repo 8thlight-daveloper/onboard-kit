@@ -42,9 +42,9 @@ func (app App) hints(tabKeysShown bool) []hint {
 func (app App) answerHints(tabKeysShown bool) []hint {
 	switch {
 	case app.entry.typing():
-		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, app.upHint(), {"f1", "help"}}
+		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next screen"}, {"ctrl+p", "back"}, app.upHint(), {"f1", "help"}}
 	case app.entry.onOptions():
-		hints := []hint{{notTyping, ""}, {"up/down", "move"}, {"enter", "choose"}, {"tab", "next page"}, {"esc", app.leaveName()}, {"p", "back"}, {"n", "skip"}, {"d", "defer"}}
+		hints := []hint{{notTyping, ""}, {"up/down", "move"}, {"enter", "choose"}, {"tab", "next screen"}, {"esc", app.leaveName()}, {"p", "back"}, {"n", "skip"}, {"d", "defer"}}
 		hints = append(hints, app.jumpHints(tabKeysShown)...)
 		return append(hints, hint{"?", "help"})
 	}
