@@ -53,7 +53,7 @@ func TestOnTheAnswerScreenTheAnswerIsBrightAndTheNotesAreFaint(t *testing.T) {
 func TestOnTheOverviewTheListIsBrightAndThePreviewIsFaint(t *testing.T) {
 	withColour(t)
 	app, _ := startAnswering(t)
-	view := resize(press(app, esc), 140, 40).View()
+	view := resize(press(app, esc, esc), 140, 40).View()
 	expectBright(t, view, "Where do people request source control access?")
 	expectBright(t, view, "What is the organization's name?")
 	expectFaint(t, view, "About this question")
@@ -67,7 +67,7 @@ func TestOnTheReviewTheFocusedPaneIsBrightAndTheOtherIsFaint(t *testing.T) {
 	expectBright(t, items, "Answered ")
 	expectBright(t, items, "Items")
 	expectFaint(t, items, "Document, ")
-	document := resize(press(app, tab), 140, 40).View()
+	document := resize(press(app, right), 140, 40).View()
 	expectFaint(t, document, "Answered ")
 	expectFaint(t, document, "Items")
 	expectBright(t, document, "Document, ")
@@ -122,7 +122,7 @@ func TestWithNoColourTheContactsScreenKeepsItsMarks(t *testing.T) {
 			t.Errorf("lacks %q:\n%s", want, view)
 		}
 	}
-	if !strings.Contains(resize(press(app, tab), 120, 30).View(), "! vacant") {
+	if !strings.Contains(resize(press(app, right), 120, 30).View(), "! vacant") {
 		t.Error("a vacant role keeps its text mark")
 	}
 	problem := resize(press(app, typed("a"), ctrlS), 120, 30).View()

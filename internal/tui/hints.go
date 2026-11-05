@@ -17,6 +17,9 @@ func (app App) hints(tabKeysShown bool) []hint {
 	if app.helpOpen {
 		return []hint{{"any key", "closes help"}}
 	}
+	if app.stripFocused {
+		return []hint{{"left/right", "choose a tab"}, {"enter", "open"}, {"down", "return"}, {"?", "help"}}
+	}
 	switch app.screen {
 	case screenOverview:
 		return app.overviewHints(tabKeysShown)
@@ -35,12 +38,13 @@ func (app App) hints(tabKeysShown bool) []hint {
 }
 
 func (app App) answerHints(tabKeysShown bool) []hint {
-	if app.entry.typing() {
-		hints := []hint{{"enter", "save"}, {"shift+tab", "back"}}
-		if len(app.entry.question.Suggestions) > 0 {
-			hints = append(hints, hint{"tab", "suggest"})
-		}
-		return append(hints, hint{"ctrl+d", "defer"}, hint{"esc", app.leaveName()}, hint{"f1", "help"})
+	switch {
+	case app.entry.typing():
+		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, {"f1", "help"}}
+	case app.entry.onOptions():
+		hints := []hint{{"Not typing.", ""}, {"up/down", "move"}, {"enter", "do it"}, {"tab", "next page"}, {"esc", app.leaveName()}}
+		hints = append(hints, app.jumpHints(tabKeysShown)...)
+		return append(hints, hint{"?", "help"})
 	}
 	hints := app.choosingHints()
 	hints = append(hints, hint{"p", "back"}, hint{"d", "defer"})
@@ -78,7 +82,7 @@ func (app App) contactsHints(tabKeysShown bool) []hint {
 	case contactsRemoving:
 		return []hint{{"y", "remove"}, {"esc", "keep"}, {"?", "help"}}
 	}
-	hints := []hint{{"a", "add"}, {"enter", "edit"}, {"x", "remove"}, {"tab", "next list"}}
+	hints := []hint{{"a", "add"}, {"enter", "edit"}, {"x", "remove"}, {"left/right", "list"}}
 	hints = append(hints, app.jumpHints(tabKeysShown)...)
 	return append(hints, hint{"esc", "back"}, hint{"?", "help"})
 }
@@ -108,7 +112,7 @@ func (app App) reviewHints(tabKeysShown bool) []hint {
 	if app.review.pruning.asking {
 		return []hint{{"y", "remove"}, {"esc", "keep"}, {"?", "help"}}
 	}
-	hints := []hint{{"enter", "open"}, {"tab", "items/document"}, {"pgup/pgdn", "scroll"}}
+	hints := []hint{{"enter", "open"}, {"left/right", "items/document"}, {"pgup/pgdn", "scroll"}}
 	if app.review.leftOver > 0 {
 		hints = append(hints, hint{"h", "left over"})
 	}
@@ -119,7 +123,7 @@ func (app App) reviewHints(tabKeysShown bool) []hint {
 func hintText(hints []hint) string {
 	parts := make([]string, 0, len(hints))
 	for _, entry := range hints {
-		parts = append(parts, entry.key+" "+entry.label)
+		parts = append(parts, strings.TrimSpace(entry.key+" "+entry.label))
 	}
 	return strings.Join(parts, "  ")
 }
@@ -148,6 +152,10 @@ func renderHints(hints []hint, width int, colors palette) string {
 	}
 	parts := make([]string, 0, len(fitted))
 	for _, entry := range fitted {
+		if entry.label == "" {
+			parts = append(parts, colors.render(toneStrong, true, entry.key))
+			continue
+		}
 		parts = append(parts, colors.render(toneStrong, true, entry.key)+colors.render(toneFaint, true, " "+entry.label))
 	}
 	return strings.Join(parts, "  ")

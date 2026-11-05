@@ -307,7 +307,7 @@ func TestPickingFromARealDirectoryStoresTheIdInThePlan(t *testing.T) {
 	if len(recorded.saved) != 1 {
 		t.Fatalf("expected one save, got %d", len(recorded.saved))
 	}
-	if !strings.Contains(plainView(press(app, esc)), "IT contact") {
+	if !strings.Contains(plainView(press(app, esc, esc)), "IT contact") {
 		t.Error("the overview shows the role's name")
 	}
 }

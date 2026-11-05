@@ -20,8 +20,10 @@ func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.reviewEdge(false, scrolling), nil
 	case "G", "end":
 		return app.reviewEdge(true, scrolling), nil
-	case "tab":
-		app.review.focusDocument = !app.review.focusDocument
+	case "left":
+		app.review.focusDocument = false
+	case "right":
+		app.review.focusDocument = true
 	case "enter":
 		return app.openReviewItem(), nil
 	case "esc", "w":

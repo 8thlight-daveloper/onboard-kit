@@ -13,7 +13,7 @@ func (app App) preparationHints(tabKeysShown bool) []hint {
 	case preparationDropping:
 		return []hint{{"y", "drop"}, {"esc", "keep"}, {"?", "help"}}
 	case preparationReviewing:
-		hints = []hint{{"y", "save"}, {"tab", "changes/guide"}, {"pgup/pgdn", "scroll"}, {"esc", "back"}}
+		hints = []hint{{"y", "save"}, {"left/right", "changes/guide"}, {"pgup/pgdn", "scroll"}, {"esc", "back"}}
 	case preparationPerson:
 		hints = []hint{{"enter", "open"}, {"a", "add arrangement"}}
 		if _, ok := state.person.arrangementRow(state.row); ok {
@@ -56,7 +56,7 @@ func (app App) preparationHelp() []hint {
 	case preparationReviewing:
 		return app.withJumpHelp([]hint{
 			{"y", "save the changes listed here to the file"},
-			{"tab", "switch focus between the changes and the guide"},
+			{"left, right", "focus the changes or the guide"},
 			{"up, down, pgup, pgdn", "scroll the pane with focus"},
 			{"esc, q", "back to the person, with the changes still staged"},
 		})
@@ -78,7 +78,7 @@ func (app App) preparationHelp() []hint {
 }
 
 func (app App) withJumpHelp(entries []hint) []hint {
-	return app.withInvitationHelp(append(entries, hint{"w, o, r, s, c", "answer, overview, review, sections, contacts"}))
+	return app.withInvitationHelp(append(entries, pageHelp, hint{"w, o, r, s, c", "answer, overview, review, sections, contacts"}))
 }
 
 func (app App) preparationFormHelp() []hint {

@@ -79,6 +79,8 @@ func (app App) tabParts(withKeys bool, colors palette) ([]string, int) {
 	current := 0
 	for index, entry := range app.tabs() {
 		switch {
+		case app.stripFocused && index == app.stripChoice:
+			parts = append(parts, app.chosenTab(entry, withKeys, colors))
 		case entry.screen == app.screen && colors.styled():
 			parts = append(parts, colors.render(toneHere, true, entry.name))
 		case entry.screen == app.screen:
@@ -93,6 +95,17 @@ func (app App) tabParts(withKeys bool, colors palette) ([]string, int) {
 		}
 	}
 	return parts, current
+}
+
+func (app App) chosenTab(entry screenTab, withKeys bool, colors palette) string {
+	name := entry.name
+	switch {
+	case entry.screen == app.screen && !colors.styled():
+		name = "[" + name + "]"
+	case entry.screen != app.screen && withKeys:
+		name += " " + entry.key
+	}
+	return colors.render(toneHere, true, "> ") + colors.render(toneBar, true, name)
 }
 
 func (app App) tabStrip(withKeys bool, gap string, colors palette) string {
@@ -170,6 +183,9 @@ func (app App) clipKeepsCurrentTab(layout headerLayout, width int, colors palett
 }
 
 func (app App) typingNow() bool {
+	if app.stripFocused {
+		return false
+	}
 	return app.screen == screenAnswer && app.entry.typing() || app.screen == screenContacts && app.contacts.typing() || app.screen == screenPreparation && app.preparationTyping() || app.screen == screenInvitation && app.invitationTyping()
 }
 

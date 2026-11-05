@@ -27,4 +27,4 @@
                                                  │ notes, maintained by you.
                                                  │ - `first-steps.md`: this generated guide; it does not replace those
 
-  y save  tab changes/guide  pgup/pgdn scroll  esc back  ? help
+  y save  left/right changes/guide  pgup/pgdn scroll  esc back  ? help

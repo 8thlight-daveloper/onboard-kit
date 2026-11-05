@@ -23,7 +23,10 @@ func parseEntry(question model.Question, text string) model.Value {
 }
 
 func entryText(question model.Question) string {
-	value := question.Answer
+	return textOf(question, question.Answer)
+}
+
+func textOf(question model.Question, value model.Value) string {
 	if value.Kind == model.ValueKindText {
 		return value.Text
 	}

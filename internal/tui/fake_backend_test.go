@@ -124,14 +124,14 @@ func longScreens() map[string]App {
 	picking := startFake(newFakeBackend(directoryQuestion("plan.crowd", "plan", long, model.VariableTypeContact, true, crowd...)))
 	return map[string]App{
 		"long contacts": press(crowdedContacts(), typed("c")),
-		"long roles":    press(crowdedContacts(), typed("c"), tab),
-		"long teams":    press(crowdedContacts(), typed("c"), tab, tab),
-		"long holders":  press(crowdedContacts(), typed("c"), tab, enter, enter, down, space, down, space),
-		"long override": press(crowdedContacts(), typed("c"), tab, tab, enter, enter, enter, down, down, space),
+		"long roles":    press(crowdedContacts(), typed("c"), right),
+		"long teams":    press(crowdedContacts(), typed("c"), right, right),
+		"long holders":  press(crowdedContacts(), typed("c"), right, enter, enter, down, space, down, space),
+		"long override": press(crowdedContacts(), typed("c"), right, right, enter, enter, enter, down, down, space),
 		"long contact":  press(crowdedContacts(), typed("c"), enter, typed("more text that goes on and on and on and on and on and on and on and on and on")),
 		"long removal":  press(crowdedContacts(), typed("c"), typed("x")),
 		"long answer":   answering,
-		"long overview": press(answering, esc),
+		"long overview": press(answering, esc, esc),
 		"long review":   press(answering, esc, typed("r")),
 		"long picks":    press(picking, typed("j"), space, typed("j"), space),
 	}

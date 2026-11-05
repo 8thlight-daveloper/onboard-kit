@@ -25,6 +25,8 @@ type App struct {
 	returnTo        screen
 	cameFrom        screen
 	helpOpen        bool
+	stripFocused    bool
+	stripChoice     int
 	about           *About
 	aboutOpen       bool
 	aboutScroll     int
@@ -133,6 +135,12 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 			app.aboutOpen, app.aboutScroll = true, 0
 		}
 		return app, nil
+	}
+	if app.stripFocused {
+		return app.updateStrip(key)
+	}
+	if step := pageStep(key.String()); step != 0 && app.tabMovesPages() {
+		return app.pageMoved(step), nil
 	}
 	switch app.screen {
 	case screenOverview:

@@ -1,0 +1,30 @@
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                          0 of 2 answered
+  ◆·
+
+  local                                                                 │ About this question
+  1 of 2, required, not answered yet                                    │
+                                                                        │ Type: string
+  Which reviewed local startup, shutdown, and safe data instructions    │ Answered by: onboarder
+  apply?                                                                │ Name: local.startup
+                                                                        │ Suggestion (default): Run make run, stop
+  > e sample database the platform team keeps up to date every Monday   │ with Ctrl+C, and use the sample database
+                                                                        │ Suggestion (given): Ask the team lead
+    Use the suggestion: Run make run, stop with Ctrl+C, and use the sa… │
+    Use the suggestion: Ask the team lead                               │
+    deferred, answer later                                              │
+    skip, change nothing                                                │
+    clear the answer                                                    │
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter save  esc stop typing  down options  tab next page  ctrl+p back  f1 help

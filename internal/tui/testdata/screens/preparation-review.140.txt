@@ -37,4 +37,4 @@
                                                          │ ## Get the tool
                                                          │
 
-  y save  tab changes/guide  pgup/pgdn scroll  esc back  ? help
+  y save  left/right changes/guide  pgup/pgdn scroll  esc back  ? help

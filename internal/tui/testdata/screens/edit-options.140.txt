@@ -1,0 +1,40 @@
+  Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                      0 of 8 answered
+  ◆·  ·····  ·
+
+  Plan                                                                              │ About this question
+  1 of 8, required, not answered yet                                                │
+                                                                                    │ Example: ACME Corp
+  What is the organization's name?                                                  │ Type: string
+                                                                                    │ Answered by: onboarder
+    Glob                                                                            │ Name: plan.organization
+                                                                                    │
+    Edit the answer                                                                 │
+    deferred, answer later                                                          │
+  > skip, change nothing                                                            │
+    clear the answer                                                                │
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Not typing.  up/down move  enter do it  tab next page  esc overview  ? help

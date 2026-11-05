@@ -27,4 +27,4 @@
                                                  │ 0.
                                                  │ - [ ] **CI dashboard.** Owner: Alex Rivera, @alex. Sign in as
 
-  enter open  tab items/document  pgup/pgdn scroll  q quit  ? help
+  enter open  left/right items/document  pgup/pgdn scroll  q quit  ? help

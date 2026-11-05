@@ -21,4 +21,4 @@
 
 
 
-  a add  enter edit  x remove  tab next list  w answer  o overview  ? help
+  a add  enter edit  x remove  left/right list  w answer  o overview  ? help

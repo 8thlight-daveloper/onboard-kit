@@ -79,6 +79,10 @@ var (
 	esc      = tea.KeyMsg{Type: tea.KeyEsc}
 	shiftTab = tea.KeyMsg{Type: tea.KeyShiftTab}
 	tab      = tea.KeyMsg{Type: tea.KeyTab}
+	ctrlP    = tea.KeyMsg{Type: tea.KeyCtrlP}
+	ctrlD    = tea.KeyMsg{Type: tea.KeyCtrlD}
+	left     = tea.KeyMsg{Type: tea.KeyLeft}
+	right    = tea.KeyMsg{Type: tea.KeyRight}
 )
 
 func moveTo(t *testing.T, app App, id string) App {

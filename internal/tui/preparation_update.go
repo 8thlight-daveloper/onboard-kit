@@ -341,12 +341,13 @@ func (app App) updateDropping(key tea.KeyMsg) App {
 }
 
 func (app App) updatePreparationReview(key tea.KeyMsg) App {
-	review := app.preparation.review
 	switch key.String() {
 	case "y":
 		return app.savedPreparation()
-	case "tab":
-		app.preparation.review.focusGuide = !review.focusGuide
+	case "left":
+		app.preparation.review.focusGuide = false
+	case "right":
+		app.preparation.review.focusGuide = true
 	case "up", "k":
 		app.preparation.review = app.scrolledPreparationReview(-1)
 	case "down", "j":

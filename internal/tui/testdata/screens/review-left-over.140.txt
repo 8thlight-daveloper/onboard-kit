@@ -37,4 +37,4 @@
                                                          │ - [ ] **CI dashboard.** Owner: _unanswered_. Sign in as `<account_name>`.
                                                          │ Check: Can you open the CI dashboard?
 
-  enter open  tab items/document  pgup/pgdn scroll  h left over  q quit  ? help
+  enter open  left/right items/document  pgup/pgdn scroll  h left over  q quit  ? help

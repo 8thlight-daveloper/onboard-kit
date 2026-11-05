@@ -9,20 +9,29 @@ import (
 )
 
 const (
-	inputPrompt   = "> "
-	inputPadding  = 4
-	inputMinimum  = 10
-	examplePrefix = "e.g. "
+	inputPrompt    = "> "
+	blurredPrompt  = "  "
+	inputPadding   = 4
+	inputMinimum   = 10
+	examplePrefix  = "e.g. "
+	emptyFieldText = "nothing typed yet"
+)
+
+type entryFocus int
+
+const (
+	focusField entryFocus = iota
+	focusOptions
 )
 
 type entryState struct {
-	question   model.Question
-	choices    []choice
-	choice     int
-	picked     []string
-	input      textinput.Model
-	suggestion int
-	problems   []model.Problem
+	question model.Question
+	choices  []choice
+	choice   int
+	picked   []string
+	input    textinput.Model
+	focus    entryFocus
+	problems []model.Problem
 }
 
 func newEntryState(question model.Question, width int) entryState {
@@ -40,13 +49,12 @@ func newEntryState(question model.Question, width int) entryState {
 		}
 		return entry
 	}
+	entry.choices = typedChoicesFor(question)
 	input := textinput.New()
 	input.Prompt = inputPrompt
-	input.SetValue(entryText(question))
-	input.CursorEnd()
 	input.Focus()
 	entry.input = input
-	return entry.withWidth(width)
+	return entry.withText(entryText(question)).withWidth(width)
 }
 
 func exampleText(question model.Question) string {
@@ -56,10 +64,14 @@ func exampleText(question model.Question) string {
 	return examplePrefix + singleLine(question.Example)
 }
 
-func (entry entryState) typing() bool { return !picksFromList(entry.question) }
+func (entry entryState) typed() bool { return !picksFromList(entry.question) }
+
+func (entry entryState) typing() bool { return entry.typed() && entry.focus == focusField }
+
+func (entry entryState) onOptions() bool { return entry.typed() && entry.focus == focusOptions }
 
 func (entry entryState) withWidth(width int) entryState {
-	if !entry.typing() {
+	if !entry.typed() {
 		return entry
 	}
 	entry.input.Width = max(width-inputPadding, inputMinimum)
@@ -67,23 +79,47 @@ func (entry entryState) withWidth(width int) entryState {
 	return entry
 }
 
-func (entry entryState) styledInputView(colors palette) string {
-	input := entry.input
-	input.PromptStyle = colors.styles[toneHere]
-	input.PlaceholderStyle = colors.styles[toneFaint]
-	return input.View()
-}
-
-func (entry entryState) nextSuggestion() entryState {
-	suggestions := entry.question.Suggestions
-	if len(suggestions) == 0 {
-		return entry
-	}
-	chosen := suggestions[entry.suggestion%len(suggestions)]
-	entry.suggestion++
-	entry.input.SetValue(describeValue(chosen.Value))
+func (entry entryState) withText(text string) entryState {
+	entry.input.SetValue(text)
 	entry.input.CursorEnd()
 	return entry
+}
+
+func (entry entryState) resumed() entryState {
+	entry.focus = focusField
+	entry.choice = 0
+	return entry
+}
+
+func (entry entryState) blurred() entryState {
+	entry.focus = focusOptions
+	entry.choice = 0
+	return entry
+}
+
+func (entry entryState) hasDraft() bool {
+	value := parseEntry(entry.question, entry.input.Value())
+	return entry.typed() && value.Kind != model.ValueKindNone && !sameAnswer(value, entry.question.Answer)
+}
+
+func (entry entryState) keepsDraftFor(question model.Question) bool {
+	return entry.hasDraft() && entry.question.ID == question.ID && sameAnswer(entry.question.Answer, question.Answer)
+}
+
+func (entry entryState) inputView(colors palette, active bool) string {
+	input := entry.input
+	input.PlaceholderStyle = colors.styles[toneFaint]
+	if active {
+		input.PromptStyle = colors.styles[toneHere]
+		return input.View()
+	}
+	input.Blur()
+	input.Prompt = blurredPrompt
+	if input.Placeholder == "" {
+		input.Placeholder = emptyFieldText
+	}
+	input.TextStyle = colors.styles[toneFaint]
+	return input.View()
 }
 
 func sameValue(left model.Value, right model.Value) bool {

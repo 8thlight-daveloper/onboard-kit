@@ -21,4 +21,4 @@
   Problems (3)
     warning: plan.old_token: No variable declares this question.
 
-  enter open  tab items/document  pgup/pgdn scroll  h left over  ? help
+  enter open  left/right items/document  pgup/pgdn scroll  h left over  ? help

@@ -29,9 +29,9 @@ func (app App) updateBrowsing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		app.contacts = app.contacts.moved(-count, count)
 	case "G", "end":
 		app.contacts = app.contacts.moved(count, count)
-	case "tab", "right":
+	case "right":
 		app.contacts = app.contacts.cycled(1)
-	case "shift+tab", "left":
+	case "left":
 		app.contacts = app.contacts.cycled(-1)
 	case "a":
 		return app.openForm(""), nil

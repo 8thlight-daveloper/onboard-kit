@@ -1,11 +1,25 @@
 package tui
 
+import "onboard-kit/internal/model"
+
 func (app App) openQuestion(index int) App {
 	app.cursor = max(min(index, len(app.questions)-1), 0)
 	if question, ok := app.current(); ok {
-		app.entry = newEntryState(question, app.inputWidth())
+		app = app.enteredQuestion(question)
 	}
 	app.screen = screenAnswer
+	return app
+}
+
+func (app App) enteredQuestion(question model.Question) App {
+	entry := newEntryState(question, app.inputWidth())
+	switch {
+	case app.entry.keepsDraftFor(question):
+		entry = entry.withText(app.entry.input.Value())
+	case app.entry.hasDraft():
+		app.status = line{text: draftDroppedText, tone: toneWarning}
+	}
+	app.entry = entry
 	return app
 }
 

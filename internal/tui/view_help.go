@@ -34,7 +34,7 @@ func (app App) helpEntries() []hint {
 	case screenReview:
 		return app.reviewHelp()
 	case screenSections:
-		return app.withPreparationHelp([]hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "answer, overview, review"}, {"c", "contacts, roles, and teams"}})
+		return app.withPreparationHelp([]hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, pageHelp, {"esc, q", "back"}, {"w, o, r", "answer, overview, review"}, {"c", "contacts, roles, and teams"}})
 	case screenContacts:
 		return app.contactsHelp()
 	case screenPreparation:
@@ -45,35 +45,62 @@ func (app App) helpEntries() []hint {
 	return app.answerHelp()
 }
 
+var pageHelp = hint{"tab, shift+tab", "next or previous page"}
+
 func (app App) answerHelp() []hint {
-	entries := []hint{
-		app.enterHelp(),
-		{"p, left, shift+tab", "back one question"},
-		{"n, right", "skip forward without changing the answer"},
-		{"d", "defer the question and move on"},
-		{"x", "clear the answer"},
-		{"o", "overview of every question"},
-		{"r", "review: blockers, deferred, problems, document"},
-		{"esc", "back to the overview or review"},
-		{"q", "quit"},
-	}
-	if app.entry.typing() {
+	switch {
+	case app.stripFocused:
+		return app.withContactsHelp([]hint{
+			{"left, right", "choose a tab"},
+			{"enter", "open the chosen tab"},
+			{"down, esc", "return to where you were"},
+			pageHelp,
+			{"o, r", "overview, review"},
+		})
+	case app.entry.typing():
 		return []hint{
-			{"enter", "accept the text and move to the next question"},
-			{"tab", "try a suggestion"},
-			{"shift+tab, ctrl+p", "back one question"},
+			{"enter", "save the text and move to the next question"},
+			{"left, right", "move in the text"},
+			{"esc, down", "stop typing, and choose from the list under the box. Your text is kept"},
+			{"up", "the tab strip"},
+			pageHelp,
+			{"ctrl+p", "back one question"},
 			{"ctrl+n", "skip forward without changing the answer"},
 			{"ctrl+d", "defer the question and move on"},
 			{"empty box, enter", "clear the answer"},
-			{"esc", "back to the overview or review"},
 			{"f1", "this help"},
 		}
+	case app.entry.onOptions():
+		return app.withScreenHelp([]hint{
+			{"up, down, k, j", "choose from the list. Up from the first row goes back to typing"},
+			{"enter", "do what the chosen row says"},
+			pageHelp,
+			{"p, left", "back one question"},
+			{"n, right", "skip forward without changing the answer"},
+			{"d", "defer the question and move on"},
+			{"x", "clear the answer and the box"},
+			{"esc", "back to the overview or review"},
+			{"q", "quit"},
+		})
 	}
-	moving := []hint{{"up, down, k, j", "move the choice"}}
+	moving := []hint{{"up, down, k, j", "move the choice. Up from the first row goes to the tab strip"}}
 	if app.entry.pickingMany() {
 		moving = append(moving, hint{"space", "pick or unpick the choice, the order you pick is the order kept"})
 	}
-	entries = append(moving, entries...)
+	return app.withScreenHelp(append(moving,
+		app.enterHelp(),
+		pageHelp,
+		hint{"p, left", "back one question"},
+		hint{"n, right", "skip forward without changing the answer"},
+		hint{"d", "defer the question and move on"},
+		hint{"x", "clear the answer"},
+		hint{"esc", "back to the overview or review"},
+		hint{"q", "quit"},
+	))
+}
+
+func (app App) withScreenHelp(entries []hint) []hint {
+	entries = append(entries, hint{"o", "overview of every question"}, hint{"r", "review: blockers, deferred, problems, document"})
 	if app.canSwitchSections() {
 		entries = append(entries, hint{"s", "switch sections on or off"})
 	}
@@ -93,6 +120,7 @@ func (app App) enterHelp() hint {
 func (app App) overviewHelp() []hint {
 	entries := []hint{
 		{"up, down, k, j", "move"},
+		pageHelp,
 		{"pgup, pgdn", "move a page"},
 		{"g, G", "first and last question"},
 		{"enter", "open the question"},
@@ -112,7 +140,8 @@ func (app App) reviewHelp() []hint {
 	}
 	entries := []hint{
 		{"up, down, k, j", "move between items, or scroll when the document has focus"},
-		{"tab", "switch focus between the items and the document"},
+		{"left, right", "focus the items or the document"},
+		pageHelp,
 		{"pgup, pgdn", "scroll the document"},
 		{"enter", "open the question of the chosen item"},
 		{"esc, w", "the first unanswered question"},
@@ -156,7 +185,8 @@ func (app App) contactsHelp() []hint {
 	}
 	return app.withPreparationHelp([]hint{
 		{"up, down, k, j", "move"},
-		{"tab, shift+tab, left, right", "contacts, roles, or teams"},
+		{"left, right", "contacts, roles, or teams"},
+		pageHelp,
 		{"a", "add an entry to this list"},
 		{"enter, e", "change the chosen entry"},
 		{"x", "remove the chosen entry, after showing what it clears"},

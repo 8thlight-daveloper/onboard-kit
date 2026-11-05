@@ -21,4 +21,4 @@
 
 
 
-  enter open  tab items/document  pgup/pgdn scroll  w answer  ? help
+  enter open  left/right items/document  pgup/pgdn scroll  w answer  ? help

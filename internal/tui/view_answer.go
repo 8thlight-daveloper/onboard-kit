@@ -60,16 +60,15 @@ func requiredWords(question model.Question) string {
 }
 
 func (app App) entryLines(width int, height int, colors palette) []line {
-	if app.entry.typing() {
-		content := []line{{text: app.entry.styledInputView(colors), raw: true}}
-		return append(content, lines(toneFaint, app.entryHelp(width))...)
+	if app.entry.typed() {
+		return app.typedEntryLines(width, height, colors)
 	}
 	if len(app.entry.choices) == 0 && isDirectoryQuestion(app.entry.question) {
 		return lines(toneBody, wrapText(emptyDirectoryText(app.entry.question, app.audience), width))
 	}
 	rows := make([]line, 0, len(app.entry.choices))
 	for index := range app.entry.choices {
-		rows = append(rows, hereLine(app.choiceText(index), index == app.entry.choice, true, width, colors))
+		rows = append(rows, hereLine(app.choiceText(index), index == app.entry.choice && !app.stripFocused, true, width, colors))
 	}
 	tail := app.pickingHelp(width)
 	if height-len(tail) < minimumPickRows {
@@ -77,6 +76,33 @@ func (app App) entryLines(width int, height int, colors palette) []line {
 	}
 	shown, position := windowRows(rows, app.entry.choice, height-len(tail))
 	return append(append(shown, position...), tail...)
+}
+
+func (app App) typedEntryLines(width int, height int, colors palette) []line {
+	content := []line{{text: app.entry.inputView(colors, app.typingNow()), raw: true}}
+	content = append(content, lines(toneFaint, app.entryHelp(width))...)
+	content = append(content, blankLine())
+	first := 1
+	if app.entry.onOptions() {
+		first = 0
+	}
+	focused := app.entry.onOptions() && !app.stripFocused
+	rows := make([]line, 0, len(app.entry.choices))
+	for index := first; index < len(app.entry.choices); index++ {
+		rows = append(rows, optionLine(app.entry.choices[index].label, focused, index == app.entry.choice, width, colors))
+	}
+	shown, position := windowRows(rows, max(app.entry.choice-first, 0), height-len(content))
+	return append(append(content, shown...), position...)
+}
+
+func optionLine(label string, focused bool, chosen bool, width int, colors palette) line {
+	switch {
+	case !focused:
+		return line{text: "  " + label, tone: toneFaint}
+	case !chosen:
+		return line{text: "  " + label}
+	}
+	return barLine(label, width, colors)
 }
 
 func (app App) choiceText(index int) string {
@@ -128,9 +154,6 @@ func (app App) entryHelp(width int) []string {
 	case question.Multiple:
 		help = append(help, "Separate people with ;")
 	}
-	if len(question.Suggestions) > 0 {
-		help = append(help, "Tab tries a suggestion: "+suggestionList(question))
-	}
 	var wrapped []string
 	for _, text := range help {
 		wrapped = append(wrapped, wrapText(text, width)...)
@@ -147,12 +170,4 @@ func (app App) problemLines(width int) []line {
 		return nil
 	}
 	return append([]line{blankLine()}, content...)
-}
-
-func suggestionList(question model.Question) string {
-	texts := make([]string, 0, len(question.Suggestions))
-	for _, suggestion := range question.Suggestions {
-		texts = append(texts, describeValue(suggestion.Value))
-	}
-	return strings.Join(texts, ", ")
 }

@@ -8,6 +8,10 @@
 
   > Glob
 
+    deferred, answer later
+    skip, change nothing
+    clear the answer
+
   About this question
 
   Example: ACME Corp
@@ -17,8 +21,4 @@
 
 
 
-
-
-
-
-  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+  enter save  esc stop typing  down options  tab next page  f1 help

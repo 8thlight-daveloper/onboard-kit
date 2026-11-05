@@ -34,7 +34,7 @@ steps:
         - press: G
         - press: Enter
         - wait-for: "Nothing is written until you press y."
-        - press: Tab
+        - press: Right
         - wait-for: "First steps guide"
         - wait-for: "Organization: ACME Corp"
         - press: y

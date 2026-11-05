@@ -7,6 +7,10 @@
   Name of the organization                                              │ Type: string
                                                                         │ Answered by: onboarder
   > e.g. Acme Industrial                                                │ Name: plan.organization
+                                                                        │
+    deferred, answer later                                              │
+    skip, change nothing                                                │
+    clear the answer                                                    │
 
 
 
@@ -23,8 +27,4 @@
 
 
 
-
-
-
-
-  enter save  shift+tab back  ctrl+d defer  esc overview  f1 help
+  enter save  esc stop typing  down options  tab next page  ctrl+p back  f1 help

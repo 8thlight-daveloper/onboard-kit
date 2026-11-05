@@ -21,4 +21,4 @@
 
 
 
-  y save  tab changes/guide  pgup/pgdn scroll  esc back  w answer  ? help
+  y save  left/right changes/guide  pgup/pgdn scroll  esc back  ? help

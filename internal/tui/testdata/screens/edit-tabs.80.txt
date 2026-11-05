@@ -1,0 +1,24 @@
+  Building an onboarding plan [Answer] > Overview Review Sections Contacts
+  ◆·  ·····  ·
+
+  Plan
+  1 of 8, required, not answered yet
+
+  What is the organization's name?
+
+    Glob
+
+    deferred, answer later
+    skip, change nothing
+    clear the answer
+
+  About this question
+
+  Example: ACME Corp
+  Type: string
+  Answered by: onboarder
+  Name: plan.organization
+
+
+
+  left/right choose a tab  enter open  down return  ? help

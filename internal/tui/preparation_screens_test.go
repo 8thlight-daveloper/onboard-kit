@@ -22,7 +22,7 @@ func preparationSteps() map[string][]tea.KeyMsg {
 		"preparation-remove":      {enter, down, typed("x")},
 		"preparation-drop":        append(append([]tea.KeyMsg{}, staged...), esc),
 		"preparation-review":      append(append([]tea.KeyMsg{}, staged...), typed("G"), enter),
-		"preparation-guide":       append(append([]tea.KeyMsg{}, staged...), typed("G"), enter, tab),
+		"preparation-guide":       append(append([]tea.KeyMsg{}, staged...), typed("G"), enter, right),
 	}
 }
 

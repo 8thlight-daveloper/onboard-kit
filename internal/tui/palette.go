@@ -11,6 +11,7 @@ const (
 	toneFaint
 	toneWarning
 	toneProblem
+	toneBar
 )
 
 type palette struct {
@@ -37,6 +38,7 @@ func newPalette() palette {
 		toneFaint:   lipgloss.NewStyle().Faint(true),
 		toneWarning: lipgloss.NewStyle().Foreground(terminalYellow()),
 		toneProblem: lipgloss.NewStyle().Foreground(terminalRed()),
+		toneBar:     lipgloss.NewStyle().Bold(true).Reverse(true),
 	}}
 }
 

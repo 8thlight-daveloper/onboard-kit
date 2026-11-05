@@ -18,6 +18,16 @@ func faintLine(text string) line  { return line{text: text, tone: toneFaint} }
 func strongLine(text string) line { return line{text: text, tone: toneStrong} }
 func blankLine() line             { return line{} }
 
+func (first line) followedBy(second line) line {
+	switch {
+	case second.text == "":
+		return first
+	case first.text == "":
+		return second
+	}
+	return line{text: first.text + ". " + second.text, tone: second.tone}
+}
+
 func lines(weight tone, texts []string) []line {
 	result := make([]line, 0, len(texts))
 	for _, text := range texts {
@@ -88,4 +98,9 @@ func hereLine(text string, selected bool, focused bool, width int, colors palett
 	}
 	label := truncateCells(singleLine(text), width-2)
 	return line{text: colors.render(toneHere, true, "> ") + colors.render(toneStrong, true, label), raw: true}
+}
+
+func barLine(text string, width int, colors palette) line {
+	label := truncateCells(singleLine(text), width-2)
+	return line{text: colors.render(toneHere, true, "> ") + colors.render(toneBar, true, label+spaces(width-2-cellWidth(label))), raw: true}
 }

@@ -27,4 +27,4 @@
     anything?                                    │ Before day one |
                                                  │ | What is the clone URL of the main repository? | newcomer | Week
 
-  enter open  tab items/document  pgup/pgdn scroll  h left over  q quit  ? help
+  enter open  left/right items/document  pgup/pgdn scroll  h left over  q quit  ? help

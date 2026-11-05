@@ -110,7 +110,7 @@ func TestTheListsShowNamesDetailsAndHoldersInOrder(t *testing.T) {
 	if !strings.Contains(plainView(app), "[Contacts 4]  Roles 3  Teams 2") {
 		t.Errorf("the kinds and their counts:\n%s", plainView(app))
 	}
-	roles := press(app, tab)
+	roles := press(app, right)
 	if got := rowOf(t, roles, "Engineering manager"); !strings.Contains(got, "Sam Okafor, Alex Rivera") {
 		t.Errorf("a role names its holders in order: %q", got)
 	}
@@ -120,7 +120,7 @@ func TestTheListsShowNamesDetailsAndHoldersInOrder(t *testing.T) {
 			t.Errorf("the role detail lacks %q:\n%s", want, detail)
 		}
 	}
-	teams := press(roles, tab)
+	teams := press(roles, right)
 	if got := rowOf(t, teams, "Design team"); !strings.Contains(got, "1 override") {
 		t.Errorf("a team counts its overrides: %q", got)
 	}
@@ -130,8 +130,11 @@ func TestTheListsShowNamesDetailsAndHoldersInOrder(t *testing.T) {
 	if !strings.Contains(plainView(press(teams, down)), "Engineering manager: Alex Rivera") {
 		t.Error("the team detail names the override and its holders")
 	}
-	if press(teams, tab).contacts.kind != kindContact || press(app, shiftTab).contacts.kind != kindTeam {
-		t.Error("tab and shift+tab cycle the three lists")
+	if press(teams, right).contacts.kind != kindContact || press(app, left).contacts.kind != kindTeam {
+		t.Error("right and left cycle the three lists")
+	}
+	if press(app, tab).screen != screenAnswer || press(app, shiftTab).screen != screenSections {
+		t.Errorf("tab and shift+tab move to the next and previous page, got %v and %v", press(app, tab).screen, press(app, shiftTab).screen)
 	}
 }
 
@@ -145,7 +148,7 @@ func TestProblemsTheValidatorFindsAreFlaggedNextToTheEntry(t *testing.T) {
 	}{
 		{app, "Pat Lee", "! email looks wrong"},
 		{app, "Front desk", "! no way to reach"},
-		{press(app, tab), "Security lead", "! vacant"},
+		{press(app, right), "Security lead", "! vacant"},
 	}
 	for _, each := range cases {
 		if got := rowOf(t, each.app, each.name); !strings.Contains(got, each.want) {
@@ -159,7 +162,7 @@ func TestProblemsTheValidatorFindsAreFlaggedNextToTheEntry(t *testing.T) {
 	if !strings.Contains(flat(press(narrow, typed("G"))), "warning: No email, Slack handle, or Slack id, so nobody can reach this contact.") {
 		t.Errorf("the detail explains the flag in words:\n%s", plainView(press(narrow, typed("G"))))
 	}
-	if !strings.Contains(flat(press(narrow, tab, typed("G"))), "warning: Nobody holds this role, so it shows as a gap in the document.") {
+	if !strings.Contains(flat(press(narrow, right, typed("G"))), "warning: Nobody holds this role, so it shows as a gap in the document.") {
 		t.Error("the detail explains a vacant role")
 	}
 }
@@ -285,7 +288,7 @@ func TestEscapeCancelsAFormWithoutSaving(t *testing.T) {
 func TestARoleKeepsTheOrderOfItsHolders(t *testing.T) {
 	t.Parallel()
 	app, recorded := onContacts(t, acmePlan(t))
-	app = press(app, tab, typed("a"), typed("Security lead"), enter, down, space, typed("k"), space)
+	app = press(app, right, typed("a"), typed("Security lead"), enter, down, space, typed("k"), space)
 	view := plainView(app)
 	for _, want := range []string{"[1] Sam Okafor", "[2] Alex Rivera", "Order: Sam Okafor, then Alex Rivera"} {
 		if !strings.Contains(view, want) {
@@ -308,7 +311,7 @@ func TestARoleKeepsTheOrderOfItsHolders(t *testing.T) {
 func TestARoleWithNoHolderIsSavedAndFlaggedVacant(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, typed("a"), typed("Security lead"), ctrlS)
+	app = press(app, right, typed("a"), typed("Security lead"), ctrlS)
 	if got := rowOf(t, app, "Security lead"); !strings.Contains(got, "! vacant") {
 		t.Errorf("a role with nobody is flagged: %q", got)
 	}
@@ -317,7 +320,7 @@ func TestARoleWithNoHolderIsSavedAndFlaggedVacant(t *testing.T) {
 func TestEditingARolePrefillsItsHoldersAndAnEditCanDropThem(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, enter)
+	app = press(app, right, enter)
 	if !strings.Contains(plainView(app), "Engineering manager") || !strings.Contains(plainView(press(app, enter)), "[1] Sam Okafor") {
 		t.Fatalf("the form starts from the stored role:\n%s", plainView(app))
 	}
@@ -333,7 +336,7 @@ func TestEditingARolePrefillsItsHoldersAndAnEditCanDropThem(t *testing.T) {
 func TestATeamOverridesARoleWithHoldersOrAnExplicitVacancy(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, typed("a"), typed("Data team"), enter, down)
+	app = press(app, right, right, typed("a"), typed("Data team"), enter, down)
 	view := plainView(app)
 	for _, want := range []string{"Who holds each role for this team", "> Engineering manager  same as the role: Sam Okafor", "IT contact", "Platform team lead"} {
 		if !strings.Contains(strings.Join(strings.Fields(view), " "), strings.Join(strings.Fields(want), " ")) {
@@ -369,7 +372,7 @@ func TestATeamOverridesARoleWithHoldersOrAnExplicitVacancy(t *testing.T) {
 func TestPickingTheRolesOwnHoldersAgainRemovesTheOverride(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, down, enter)
+	app = press(app, right, right, down, enter)
 	if !strings.Contains(plainView(app), "Alex Rivera") {
 		t.Fatalf("the form shows the stored override:\n%s", plainView(app))
 	}
@@ -386,7 +389,7 @@ func TestPickingTheRolesOwnHoldersAgainRemovesTheOverride(t *testing.T) {
 func TestEscapeInTheOverridePickerKeepsTheRowAsItWas(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, typed("a"), typed("Data team"), enter, down, enter, down, space, esc)
+	app = press(app, right, right, typed("a"), typed("Data team"), enter, down, enter, down, space, esc)
 	if app.contacts.mode != contactsEditing || app.contacts.form.choosing {
 		t.Fatal("esc closes only the picker")
 	}
@@ -451,7 +454,7 @@ func TestAnyKeyButYKeepsTheEntry(t *testing.T) {
 func TestRemovingARoleCountsItsTeamOverridesAndTheAnswersItClears(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	asking := press(app, tab, typed("x"))
+	asking := press(app, right, typed("x"))
 	view := strings.Join(strings.Fields(plainView(asking)), " ")
 	for _, want := range []string{"This also clears 1 answer and removes 1 team override for this role.", "Which role owns onboarding here?", "Design team, as Engineering manager"} {
 		if !strings.Contains(view, want) {
@@ -470,7 +473,7 @@ func TestRemovingARoleCountsItsTeamOverridesAndTheAnswersItClears(t *testing.T) 
 func TestRemovingATeamClearsTheTeamAnswer(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	asking := press(app, tab, tab, typed("x"))
+	asking := press(app, right, right, typed("x"))
 	if !strings.Contains(plainView(asking), "This also clears 1 answer.") {
 		t.Errorf("a team has no holders to clear:\n%s", plainView(asking))
 	}
@@ -525,14 +528,14 @@ func TestAnEmptyListSaysHowToAddTheFirstEntry(t *testing.T) {
 func TestACreatedRoleNeedsContactsAndSaysSo(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboarder)
-	app = press(resize(app, 120, 30).openOverview(), typed("c"), tab, typed("a"), typed("Lead"), enter)
+	app = press(resize(app, 120, 30).openOverview(), typed("c"), right, typed("a"), typed("Lead"), enter)
 	if !strings.Contains(strings.Join(strings.Fields(plainView(app)), " "), "No contacts yet. Add some on the Contacts list first") {
 		t.Errorf("got:\n%s", plainView(app))
 	}
 	if saved := press(app, enter); len(saved.plan.Directory.Roles) != 1 {
 		t.Error("a role with no holders can still be saved")
 	}
-	team := press(resize(startWithoutDirectory(t), 120, 30).openOverview(), typed("c"), tab, tab, typed("a"), typed("Team"), enter)
+	team := press(resize(startWithoutDirectory(t), 120, 30).openOverview(), typed("c"), right, right, typed("a"), typed("Team"), enter)
 	if team.contacts.mode != contactsEditing || !team.contacts.form.onContactRow() {
 		t.Error("enter on the name of a team moves to the team contact")
 	}
@@ -592,7 +595,7 @@ func TestTheEmptyPickListPointsAtTheContactsScreenAndTheKeyOpensIt(t *testing.T)
 func TestAnAnswerThatNamesARemovedEntryReadsAsNotAnsweredOnTheAnswerScreen(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
-	app = press(resize(app, 120, 30), typed("c"), tab, typed("x"), typed("y"), typed("w"))
+	app = press(resize(app, 120, 30), typed("c"), right, typed("x"), typed("y"), typed("w"))
 	if app.screen != screenAnswer {
 		t.Fatalf("w returns to the Answer screen, got %v", app.screen)
 	}
@@ -646,11 +649,11 @@ func TestEveryContactsModeHasItsHelp(t *testing.T) {
 	}{
 		"browsing":            {press(app, typed("?")), "remove the chosen entry, after showing what it clears"},
 		"contact":             {press(app, typed("a"), functionF), "enter on the last field, ctrl+s"},
-		"holders":             {press(app, tab, typed("a"), enter, functionF), "the order you pick is the order kept"},
-		"rows":                {press(app, tab, tab, typed("a"), enter, down, functionF), "change who holds it for this team"},
-		"picker":              {press(app, tab, tab, typed("a"), enter, down, enter, functionF), "pick or unpick, or choose the top two rows"},
-		"team contact":        {press(app, tab, tab, typed("a"), enter, functionF), "choose the team contact"},
-		"team contact picker": {press(app, tab, tab, typed("a"), enter, enter, functionF), "choose the row"},
+		"holders":             {press(app, right, typed("a"), enter, functionF), "the order you pick is the order kept"},
+		"rows":                {press(app, right, right, typed("a"), enter, down, functionF), "change who holds it for this team"},
+		"picker":              {press(app, right, right, typed("a"), enter, down, enter, functionF), "pick or unpick, or choose the top two rows"},
+		"team contact":        {press(app, right, right, typed("a"), enter, functionF), "choose the team contact"},
+		"team contact picker": {press(app, right, right, typed("a"), enter, enter, functionF), "choose the row"},
 		"remove":              {press(app, down, typed("x"), typed("?")), "keep it and go back"},
 	}
 	for name, each := range cases {
@@ -722,16 +725,16 @@ func TestADirectoryWithAProblemIsFlaggedByItsKind(t *testing.T) {
 	plan.Directory.Teams[1].Holders["ghost-role"] = []string{"alex-rivera"}
 	plan.Directory.Contacts = append(plan.Directory.Contacts, model.Contact{ID: "sam-okafor", Name: "Sam Again", Email: "s@acme.example"})
 	app, _ := onContacts(t, plan)
-	if got := rowOf(t, press(app, tab), "IT contact"); !strings.Contains(got, "! holder is not a contact") {
+	if got := rowOf(t, press(app, right), "IT contact"); !strings.Contains(got, "! holder is not a contact") {
 		t.Errorf("role: %q", got)
 	}
-	if got := rowOf(t, press(app, tab, tab), "Design team"); !strings.Contains(got, "! role does not exist") {
+	if got := rowOf(t, press(app, right, right), "Design team"); !strings.Contains(got, "! role does not exist") {
 		t.Errorf("team: %q", got)
 	}
 	if got := rowOf(t, app, "Sam Again"); !strings.Contains(got, "! id is shared") {
 		t.Errorf("duplicate id: %q", got)
 	}
-	if !strings.Contains(flat(resize(press(app, tab, tab, down), 80, 30)), "! problem: This team overrides a role that does not exist.") {
+	if !strings.Contains(flat(resize(press(app, right, right, down), 80, 30)), "! problem: This team overrides a role that does not exist.") {
 		t.Error("an error reads as a problem in the detail")
 	}
 }
@@ -741,7 +744,7 @@ func TestEditingATeamDropsAnOverrideForARoleThatIsGone(t *testing.T) {
 	plan := acmePlan(t)
 	plan.Directory.Teams[1].Holders["ghost-role"] = []string{"alex-rivera"}
 	app, _ := onContacts(t, plan)
-	app = press(app, tab, tab, down, enter, ctrlS)
+	app = press(app, right, right, down, enter, ctrlS)
 	if _, ok := app.plan.Directory.Teams[1].Holders["ghost-role"]; ok {
 		t.Error("saving the form cleans the override of a missing role")
 	}
@@ -762,7 +765,7 @@ func teamContactOf(app App, id string) string {
 func TestATeamFormStartsWithNoTeamContactAndPicksOneFromTheContacts(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, typed("a"), typed("Data team"), enter)
+	app = press(app, right, right, typed("a"), typed("Data team"), enter)
 	if got := flat(app); !strings.Contains(got, "Who to contact for this team > No team contact") {
 		t.Fatalf("the form offers the team contact row:\n%s", plainView(app))
 	}
@@ -789,7 +792,7 @@ func TestATeamFormStartsWithNoTeamContactAndPicksOneFromTheContacts(t *testing.T
 func TestTheNoTeamContactRowClearsTheContact(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, enter, enter, enter)
+	app = press(app, right, right, enter, enter, enter)
 	if !strings.Contains(flat(app), "(o) Platform team channel") {
 		t.Fatalf("the picker opens on the stored contact:\n%s", plainView(app))
 	}
@@ -805,7 +808,7 @@ func TestTheNoTeamContactRowClearsTheContact(t *testing.T) {
 func TestEscapeInTheTeamContactPickerKeepsTheContact(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, enter, enter, enter, down, esc)
+	app = press(app, right, right, enter, enter, enter, down, esc)
 	if !app.contacts.form.onContactRow() || app.contacts.form.choosing {
 		t.Fatal("esc closes only the picker")
 	}
@@ -817,7 +820,7 @@ func TestEscapeInTheTeamContactPickerKeepsTheContact(t *testing.T) {
 func TestEditingAnOverrideOfATeamKeepsItsContact(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	app = press(app, tab, tab, enter, enter, down, enter, down, space, enter, ctrlS)
+	app = press(app, right, right, enter, enter, down, enter, down, space, enter, ctrlS)
 	got := app.plan.Directory.Teams[0]
 	if got.Contact != "platform-team" {
 		t.Errorf("the contact is carried through the save: %+v", got)
@@ -836,7 +839,7 @@ func TestATeamContactThatIsNotAContactIsDroppedByTheFormAndFlaggedInTheList(t *t
 	plan := acmePlan(t)
 	plan.Directory.Teams[0].Contact = "ghost"
 	app, _ := onContacts(t, plan)
-	teams := press(app, tab, tab)
+	teams := press(app, right, right)
 	if got := rowOf(t, teams, "Platform team"); !strings.Contains(got, "! team contact is not a contact") {
 		t.Errorf("the row flags it: %q", got)
 	}

@@ -27,4 +27,4 @@
 
 
 
-  a add  enter edit  x remove  tab next list  esc back  ? help
+  a add  enter edit  x remove  left/right list  esc back  ? help

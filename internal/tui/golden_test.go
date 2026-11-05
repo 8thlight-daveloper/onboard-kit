@@ -50,22 +50,27 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"sections":                     build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("s"))),
 		"onboardee":                    build(blankPlan(t), model.AudienceOnboardee),
 		"example":                      buildFake(),
+		"edit-blurred":                 build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"), esc)),
+		"edit-options":                 build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"), down, down, down)),
+		"edit-tabs":                    build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"), up, right)),
+		"edit-suggestion":              buildSuggested(keys(down, down)),
+		"edit-long":                    buildSuggested(keys(typed(longAnswer))),
 		"pick":                         build(blankPlan(t), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
 		"pick-many":                    build(blankPlan(t), model.AudienceOnboarder, goTo("stuck-general.general_contacts"), keys(typed("j"), space, typed("k"), space)),
 		"pick-empty":                   build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
 		"pick-empty-onboardee":         build(withoutDirectory(blankPlan(t)), model.AudienceOnboardee),
 		"subsections":                  buildSubsections(),
 		"contacts-list":                build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"))),
-		"contacts-roles":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab)),
-		"contacts-teams":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, tab)),
+		"contacts-roles":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), right)),
+		"contacts-teams":               build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), right, right)),
 		"contacts-form":                build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), typed("a"), typed("Dana Lee"), enter, typed("dana@acme.example"))),
-		"contacts-holders":             build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, typed("a"), typed("Release lead"), enter, down, space, down, space)),
-		"contacts-override":            build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, typed("a"), typed("Data team"), enter, down, enter, down, space)),
-		"contacts-team-form":           build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, enter)),
-		"contacts-team-contact":        build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, tab, enter, enter, enter)),
+		"contacts-holders":             build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), right, typed("a"), typed("Release lead"), enter, down, space, down, space)),
+		"contacts-override":            build(contactsWithFlags(t), model.AudienceOnboarder, keys(typed("c"), right, right, typed("a"), typed("Data team"), enter, down, enter, down, space)),
+		"contacts-team-form":           build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), right, right, enter)),
+		"contacts-team-contact":        build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), right, right, enter, enter, enter)),
 		"contacts-remove-team-contact": build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), down, down, down, typed("x"))),
 		"contacts-remove":              build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), down, typed("x"))),
-		"contacts-remove-role":         build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), tab, typed("x"))),
+		"contacts-remove-role":         build(acmePlan(t), model.AudienceOnboarder, keys(typed("c"), right, typed("x"))),
 		"contacts-empty":               build(withoutDirectory(blankPlan(t)), model.AudienceOnboarder, keys(esc, typed("c"))),
 		"preparation-people":           preparing(t, "preparation-people"),
 		"preparation-add":              preparing(t, "preparation-add"),
@@ -114,6 +119,27 @@ func buildFake() func(goldenSize) App {
 			textQuestion("plan.lead", "plan", "Who leads the onboarding, and what do they need to tell a newcomer on the first day?", "Sam Rivera, sam@acme.test"),
 		)
 		return resize(startFake(backend), size.width, size.height)
+	}
+}
+
+const longAnswer = "Run make bootstrap, then make run, stop it with Ctrl+C, and point it at the sample database the platform team keeps up to date every Monday"
+
+func suggestedBackend() *fakeBackend {
+	question := textQuestion("local.startup", "local", "Which reviewed local startup, shutdown, and safe data instructions apply?", "")
+	question.Suggestions = []model.Suggestion{
+		{Value: model.Value{Kind: model.ValueKindText, Text: "Run make run, stop with Ctrl+C, and use the sample database"}, Source: model.SuggestionSourceDefault},
+		{Value: model.Value{Kind: model.ValueKindText, Text: "Ask the team lead"}, Source: model.SuggestionSourceGiven},
+	}
+	return newFakeBackend(question, textQuestion("local.journey", "local", "Which harmless user journey should verify local behavior?", ""))
+}
+
+func buildSuggested(steps ...func(App) App) func(goldenSize) App {
+	return func(size goldenSize) App {
+		app := resize(startFake(suggestedBackend()), size.width, size.height)
+		for _, step := range steps {
+			app = step(app)
+		}
+		return app
 	}
 }
 

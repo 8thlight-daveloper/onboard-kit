@@ -50,7 +50,7 @@ func TestBackGoesToThePreviousQuestion(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
 	app = press(app, typed("Globex"), enter)
-	app = press(app, shiftTab)
+	app = press(app, ctrlP)
 	if app.cursor != 0 {
 		t.Fatalf("expected the first question, got %d", app.cursor)
 	}
@@ -80,7 +80,7 @@ func TestClearingStaysOnTheQuestion(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
 	app = moveTo(t, app, "plan.team_state")
-	app = press(app, typed("d"), shiftTab, typed("x"))
+	app = press(app, typed("d"), ctrlP, typed("x"))
 	if _, there := app.plan.Answers.Plan["team_state"]; there {
 		t.Fatal("the answer should be cleared")
 	}
@@ -93,7 +93,7 @@ func TestFinishingTheLastQuestionLandsOnTheReview(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
 	app = moveTo(t, app, app.questions[len(app.questions)-1].ID)
-	app = press(app, tab, enter)
+	app = press(app, enter)
 	if app.screen != screenReview {
 		t.Fatalf("expected the review, got %v", app.screen)
 	}
@@ -102,7 +102,7 @@ func TestFinishingTheLastQuestionLandsOnTheReview(t *testing.T) {
 func TestReviewListsBlockersAndJumpsToAQuestion(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
-	app = press(app, esc)
+	app = press(app, esc, esc)
 	if app.screen != screenOverview {
 		t.Fatalf("escape from the first question goes to the overview, got %v", app.screen)
 	}
@@ -118,7 +118,7 @@ func TestReviewListsBlockersAndJumpsToAQuestion(t *testing.T) {
 	if app.screen != screenAnswer || app.questions[app.cursor].ID != target {
 		t.Fatalf("expected to open %s, got screen %v", target, app.screen)
 	}
-	app = press(app, esc)
+	app = press(app, esc, esc)
 	if app.screen != screenReview {
 		t.Fatalf("escape should return to the review, got %v", app.screen)
 	}

@@ -15,6 +15,9 @@ func (app App) submit(value model.Value) (App, bool) {
 	}
 	app.plan = next
 	app = app.refreshed(question.ID)
+	if saved, found := app.current(); found && saved.ID == question.ID {
+		app.entry.question = saved
+	}
 	app.status = app.saveStatus(problems)
 	return app, true
 }

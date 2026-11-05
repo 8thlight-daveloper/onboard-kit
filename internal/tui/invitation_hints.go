@@ -68,7 +68,7 @@ func (app App) invitationHelp() []hint {
 }
 
 func (app App) withInvitationJumpHelp(entries []hint) []hint {
-	entries = append(entries, hint{"w, o, r, s, c", "answer, overview, review, sections, contacts"})
+	entries = append(entries, pageHelp, hint{"w, o, r, s, c", "answer, overview, review, sections, contacts"})
 	if app.canPrepare() {
 		entries = append(entries, hint{"t", "preparation: what is arranged for each newcomer"})
 	}
