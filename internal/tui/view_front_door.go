@@ -193,6 +193,9 @@ func (door FrontDoor) newPlanLines(width int, colors palette) []line {
 	content := []line{strongLine("New plan"), blankLine(), door.fieldLine("File", colors)}
 	if typed := strings.TrimSpace(door.field.Value()); typed != "" {
 		content = append(content, lines(toneFaint, hanging(spaces(formMarkWidth+preparationLabelWidth), "Writes "+visibleText(door.port.PlanPath(typed)), width))...)
+		if missing := door.port.MissingFolder(door.port.PlanPath(typed)); missing != "" {
+			content = append(content, lines(toneFaint, hanging(spaces(formMarkWidth+preparationLabelWidth), "Also creates the folder "+visibleText(missing), width))...)
+		}
 	}
 	content = append(content, blankLine())
 	content = append(content, lines(toneBody, wrapText(newPlanNotice, width))...)
@@ -203,6 +206,10 @@ func (door FrontDoor) newPlanLines(width int, colors palette) []line {
 func (door FrontDoor) newConfirmLines(width int) []line {
 	content := []line{strongLine("Write this new plan?"), blankLine(), bodyLine("File")}
 	content = append(content, lines(toneBody, hanging("  ", visibleText(door.newPath), width))...)
+	if missing := door.port.MissingFolder(door.newPath); missing != "" {
+		content = append(content, blankLine(), bodyLine("Also creates the folder"))
+		content = append(content, lines(toneBody, hanging("  ", visibleText(missing), width))...)
+	}
 	content = append(content, blankLine())
 	content = append(content, lines(toneBody, wrapText(newPlanConfirmation, width))...)
 	return append(content, blankLine(), faintLine("Nothing is written until you press y."))

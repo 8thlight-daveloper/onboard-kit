@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/x/term"
 
@@ -112,8 +113,11 @@ func newForScripts(options create.Options, version string, stdout io.Writer, std
 	case errors.Is(err, create.ErrExists):
 		fmt.Fprintf(stderr, "new: %s already exists, and a new plan never replaces a file.\n", options.Output)
 		return exitProblem
+	case errors.Is(err, os.ErrNotExist):
+		fmt.Fprintf(stderr, "new: the folder %s does not exist. Create it first, or give a path in a folder that exists.\n", filepath.Dir(options.Output))
+		return exitProblem
 	case err != nil:
-		fmt.Fprintln(stderr, "new:", err)
+		fmt.Fprintf(stderr, "new: %s cannot be written: %s.\n", options.Output, reason(err))
 		return exitProblem
 	}
 	return exitSuccess

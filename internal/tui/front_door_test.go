@@ -117,6 +117,16 @@ func TestANewPlanIsWrittenOnlyAfterTheLastStep(t *testing.T) {
 	}
 }
 
+func TestANewPlanInAMissingFolderSaysItCreatesTheFolderBeforeAndAtTheLastStep(t *testing.T) {
+	port := newFakeFrontDoorPort()
+	port.missingFolder = "/work/plans"
+	door := pressDoor(doorWith(port), enter)
+	door = pressDoor(door, tea.KeyMsg{Type: tea.KeyCtrlU}, typed("plans/acme.obk.yaml"))
+	mustShow(t, door, "Writes /work/plans/acme.obk.yaml", "Also creates the folder /work/plans")
+	door = pressDoor(door, enter)
+	mustShow(t, door, "Write this new plan?", "Also creates the folder", "/work/plans")
+}
+
 func TestARefusedNewPlanReturnsToTheNameWithTheReason(t *testing.T) {
 	port := newFakeFrontDoorPort()
 	port.createRefusal = "That file already exists, and a new plan never replaces a file. Choose another name."

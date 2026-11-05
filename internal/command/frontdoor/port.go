@@ -4,9 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"onboard-kit/internal/command/create"
@@ -112,17 +114,33 @@ func (door *port) PlanPath(typed string) string {
 	return filepath.Join(door.working, typed)
 }
 
+func (door *port) MissingFolder(path string) string {
+	folder := filepath.Dir(path)
+	if _, err := os.Stat(folder); errors.Is(err, os.ErrNotExist) || errors.Is(err, syscall.ENOTDIR) {
+		return folder
+	}
+	return ""
+}
+
 func (door *port) CreatePlan(path string) tui.PlanCreation {
 	data, refusal := corePlanBytes(door.identifier, door.version, door.generatedOn)
 	if refusal != "" {
 		return tui.PlanCreation{Refusal: refusal}
+	}
+	if info, err := os.Stat(filepath.Dir(path)); err == nil && !info.IsDir() {
+		return tui.PlanCreation{Refusal: filepath.Dir(path) + " is a file, and a plan needs a folder to go in."}
+	}
+	if missing := door.MissingFolder(path); missing != "" {
+		if err := os.MkdirAll(missing, 0o755); err != nil {
+			return tui.PlanCreation{Refusal: "The folder " + missing + " cannot be created: " + reason(err) + "."}
+		}
 	}
 	err := create.WriteNew(path, data)
 	switch {
 	case errors.Is(err, create.ErrExists):
 		return tui.PlanCreation{Refusal: "That file already exists, and a new plan never replaces a file. Choose another name."}
 	case err != nil:
-		return tui.PlanCreation{Refusal: "The plan cannot be written there: " + err.Error() + "."}
+		return tui.PlanCreation{Refusal: "The plan cannot be written there: " + reason(err) + "."}
 	}
 	door.remember(path)
 	return tui.PlanCreation{Path: path}
@@ -157,4 +175,15 @@ func corePlanBytes(identifier string, version string, generatedOn string) ([]byt
 		return nil, "The core plan cannot be written as a plan file."
 	}
 	return data, ""
+}
+
+func reason(err error) string {
+	var failure *fs.PathError
+	switch {
+	case errors.Is(err, fs.ErrPermission):
+		return "you do not have permission"
+	case errors.As(err, &failure):
+		return failure.Err.Error()
+	}
+	return err.Error()
 }

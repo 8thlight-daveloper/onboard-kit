@@ -132,6 +132,18 @@ func TestACommandNameWinsOverAFileOfThatName(t *testing.T) {
 	}
 }
 
+func TestNewForScriptsNamesAMissingFolderInPlainWords(t *testing.T) {
+	_, working := isolated(t)
+	missing := filepath.Join(working, "plans", "acme")
+	code, _, stderr := runIn(t, "new", "--out", filepath.Join(missing, "core.obk.yaml"))
+	if code != 1 || stderr != "new: the folder "+missing+" does not exist. Create it first, or give a path in a folder that exists.\n" {
+		t.Fatalf("exit %d, stderr %q", code, stderr)
+	}
+	if _, err := os.Stat(missing); err == nil {
+		t.Fatal("a script's new created the folder")
+	}
+}
+
 func TestNewForScriptsWritesTheCorePlanOnceAndRecordsNothing(t *testing.T) {
 	home, working := isolated(t)
 	code, stdout, stderr := runIn(t, "new", "--out", "core.obk.yaml", "--id", "plan-one", "--generated-on", "2026-11-04")

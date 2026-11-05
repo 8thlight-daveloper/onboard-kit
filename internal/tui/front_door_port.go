@@ -8,6 +8,7 @@ type FrontDoorPort interface {
 	Check(path string) FileCheck
 	ProposedPlanPath() string
 	PlanPath(typed string) string
+	MissingFolder(path string) string
 	CreatePlan(path string) PlanCreation
 	RecordsFolder() string
 	About() About

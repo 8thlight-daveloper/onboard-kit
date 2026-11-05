@@ -13,6 +13,7 @@ type fakeFrontDoorPort struct {
 	checks        map[string]FileCheck
 	created       []string
 	createRefusal string
+	missingFolder string
 }
 
 var fakeOpened = time.Date(2026, 11, 3, 16, 45, 0, 0, time.UTC)
@@ -36,6 +37,8 @@ func knownPlans() []KnownPlan {
 func (port *fakeFrontDoorPort) KnownPlans() ([]KnownPlan, string) {
 	return slices.Clone(port.plans), port.listProblem
 }
+
+func (port *fakeFrontDoorPort) MissingFolder(path string) string { return port.missingFolder }
 
 func (port *fakeFrontDoorPort) Forget(path string) string {
 	port.forgotten = append(port.forgotten, path)

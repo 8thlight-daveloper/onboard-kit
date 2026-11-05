@@ -150,3 +150,37 @@ func TestATypedPathMayStartAtTheHomeFolder(t *testing.T) {
 		t.Fatalf("got %q", got)
 	}
 }
+
+func TestCreatingInAFolderThatDoesNotExistCreatesTheFolder(t *testing.T) {
+	door, _, working := portIn(t)
+	path := filepath.Join(working, "plans", "acme", "acme.obk.yaml")
+	if got := door.MissingFolder(path); got != filepath.Join(working, "plans", "acme") {
+		t.Fatalf("missing %q", got)
+	}
+	if existing := door.MissingFolder(filepath.Join(working, "acme.obk.yaml")); existing != "" {
+		t.Fatalf("an existing folder is not missing: %q", existing)
+	}
+	created := door.CreatePlan(path)
+	if created.Refusal != "" || created.Path != path {
+		t.Fatalf("got %+v", created)
+	}
+	if _, ok := planfile.Open(path, os.Stderr); !ok {
+		t.Fatal("the plan was not written")
+	}
+	if door.MissingFolder(path) != "" {
+		t.Fatal("the folder is still missing")
+	}
+}
+
+func TestCreatingBelowAFileSaysWhyInPlainWords(t *testing.T) {
+	door, _, working := portIn(t)
+	blocker := writeFile(t, working, "plans", []byte("a file"))
+	created := door.CreatePlan(filepath.Join(blocker, "acme.obk.yaml"))
+	if created.Refusal != blocker+" is a file, and a plan needs a folder to go in." {
+		t.Fatalf("got %q", created.Refusal)
+	}
+	deeper := door.CreatePlan(filepath.Join(blocker, "inner", "acme.obk.yaml"))
+	if !strings.HasPrefix(deeper.Refusal, "The folder ") || strings.Contains(deeper.Refusal, ".obk-new-") {
+		t.Fatalf("got %q", deeper.Refusal)
+	}
+}
