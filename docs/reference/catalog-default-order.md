@@ -3,7 +3,8 @@
 Status: proposed. A person corrects it, and then the catalog owns it. See
 [0660](../decisions/0660-section-order-is-the-list-order.md).
 
-The 59 section templates in the embedded catalog have no explicit order today.
+The 59 section templates in the embedded catalog have no explicit order today. Each
+section below links to its file in the catalog's content folder.
 None declares `requires` or a parent, and 29 have the timing `anytime`, which
 sorts after every dated window. Inside a window the order is the alphabet of the
 ids. This page proposes a logical order, and a few changes to timing and to
@@ -23,67 +24,67 @@ onboarder can move sections within a window.
 
 ## The order
 
-| # | Section | Window | Category | Change |
-| -- | -- | -- | -- | -- |
-| 1 | `onboarding-welcome` | `week-one` | invitation-and-first-steps |  |
-| 2 | `onboarding-owner-meeting` | `week-one` | team-and-coordination |  |
-| 3 | `onboarding-buddy-meeting` | `week-one` | team-and-coordination |  |
-| 4 | `company-identity` | `week-one` | identity-equipment-and-communication |  |
-| 5 | `company-email` | `week-one` | identity-equipment-and-communication |  |
-| 6 | `company-calendar` | `week-one` | identity-equipment-and-communication |  |
-| 7 | `working-device` | `week-one` | identity-equipment-and-communication |  |
-| 8 | `working-hours` | `week-one` | identity-equipment-and-communication |  |
-| 9 | `video-meetings` | `week-one` | identity-equipment-and-communication |  |
-| 10 | `team-chat` | `week-one` | identity-equipment-and-communication |  |
-| 11 | `internal-network` | `week-one` | identity-equipment-and-communication | timing `anytime` to `week-one` |
-| 12 | `security-orientation` | `week-one` | identity-equipment-and-communication | timing `anytime` to `week-one` |
-| 13 | `working-agreements` | `week-one` | team-and-coordination |  |
-| 14 | `regular-meetings` | `week-one` | team-and-coordination |  |
-| 15 | `product-orientation` | `week-one` | team-and-coordination |  |
-| 16 | `teammate-introduction` | `week-one` | team-and-coordination |  |
-| 17 | `source-host-account` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 18 | `source-host-membership` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 19 | `repository-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 20 | `ticket-system-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 21 | `documentation-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 22 | `ci-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 23 | `environment-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 24 | `artifact-access` | `week-one` | tools-repositories-and-documentation | timing `anytime` to `week-one` |
-| 25 | `onboarding-repository` | `week-one` | invitation-and-first-steps | timing `anytime` to `week-one` |
-| 26 | `onboarding-refresh` | `week-one` | invitation-and-first-steps | timing `anytime` to `week-one` |
-| 27 | `repository-clone` | `week-one` | software-work-and-delivery |  |
-| 28 | `project-dependencies` | `week-one` | software-work-and-delivery |  |
-| 29 | `project-tests` | `week-one` | software-work-and-delivery |  |
-| 30 | `application-local` | `week-one` | software-work-and-delivery |  |
-| 31 | `codebase-orientation` | `week-one` | software-work-and-delivery |  |
-| 32 | `contribution-practices` | `week-one` | software-work-and-delivery | timing `anytime` to `week-one` |
-| 33 | `ticket-pairing` | `week-one` | software-work-and-delivery |  |
-| 34 | `design-workspace` | `week-one` | design-work |  |
-| 35 | `design-system-review` | `week-one` | design-work |  |
-| 36 | `design-handoff` | `week-one` | design-work | timing `anytime` to `week-one` |
-| 37 | `week-one-check-in` | `week-one` | feedback-and-progress |  |
-| 38 | `people-map` | `days-8-to-30` | team-and-coordination |  |
-| 39 | `research-review` | `days-8-to-30` | design-work |  |
-| 40 | `ticket-ownership` | `days-8-to-30` | software-work-and-delivery |  |
-| 41 | `deploy-shadow` | `days-8-to-30` | software-work-and-delivery |  |
-| 42 | `design-contribution` | `days-8-to-30` | design-work |  |
-| 43 | `day-thirty-review` | `days-8-to-30` | feedback-and-progress |  |
-| 44 | `day-ninety-review` | `days-31-to-90` | feedback-and-progress |  |
-| 45 | `office-access` | `anytime` | identity-equipment-and-communication |  |
-| 46 | `document-reading` | `anytime` | tools-repositories-and-documentation |  |
-| 47 | `pr-post` | `anytime` | software-work-and-delivery |  |
-| 48 | `pr-review` | `anytime` | software-work-and-delivery |  |
-| 49 | `pr-merge` | `anytime` | software-work-and-delivery |  |
-| 50 | `deploy-lead` | `anytime` | software-work-and-delivery |  |
-| 51 | `incident-orientation` | `anytime` | software-work-and-delivery |  |
-| 52 | `hosting-access` | `anytime` | tools-repositories-and-documentation |  |
-| 53 | `observability-access` | `anytime` | tools-repositories-and-documentation |  |
-| 54 | `secrets-access` | `anytime` | tools-repositories-and-documentation |  |
-| 55 | `retrospective-participation` | `anytime` | feedback-and-progress |  |
-| 56 | `tool-feedback` | `anytime` | feedback-and-progress |  |
-| 57 | `onboarding-correction` | `anytime` | feedback-and-progress |  |
-| 58 | `knowledge-transfer` | `anytime` | feedback-and-progress |  |
-| 59 | `onboarding-help` | `anytime` | invitation-and-first-steps |  |
+| # | Section | Title | Window | Target | Change |
+| -- | -- | -- | -- | -- | -- |
+| 1 | [`onboarding-welcome`](../../contracts/catalog/reader/content/sections/onboarding-welcome.yaml) | Welcome and expectations | `week-one` | First interaction |  |
+| 2 | [`onboarding-owner-meeting`](../../contracts/catalog/reader/content/sections/onboarding-owner-meeting.yaml) | Meet the onboarding owner or manager | `week-one` | Day one |  |
+| 3 | [`onboarding-buddy-meeting`](../../contracts/catalog/reader/content/sections/onboarding-buddy-meeting.yaml) | Meet the onboarding buddy | `week-one` | Day one |  |
+| 4 | [`company-identity`](../../contracts/catalog/reader/content/sections/company-identity.yaml) | Company identity and SSO | `week-one` | Day one |  |
+| 5 | [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) | Company email | `week-one` | Day one |  |
+| 6 | [`company-calendar`](../../contracts/catalog/reader/content/sections/company-calendar.yaml) | Company calendar | `week-one` | Day one |  |
+| 7 | [`working-device`](../../contracts/catalog/reader/content/sections/working-device.yaml) | Working device | `week-one` | Day one |  |
+| 8 | [`working-hours`](../../contracts/catalog/reader/content/sections/working-hours.yaml) | Working hours and availability | `week-one` | Day one |  |
+| 9 | [`video-meetings`](../../contracts/catalog/reader/content/sections/video-meetings.yaml) | Video meetings | `week-one` | Day one |  |
+| 10 | [`team-chat`](../../contracts/catalog/reader/content/sections/team-chat.yaml) | Team chat | `week-one` | Day one |  |
+| 11 | [`internal-network`](../../contracts/catalog/reader/content/sections/internal-network.yaml) | VPN or internal network | `week-one` | Before dependent work | timing `anytime` to `week-one` |
+| 12 | [`security-orientation`](../../contracts/catalog/reader/content/sections/security-orientation.yaml) | Security and acceptable-use orientation | `week-one` | Before affected work | timing `anytime` to `week-one` |
+| 13 | [`working-agreements`](../../contracts/catalog/reader/content/sections/working-agreements.yaml) | Review working agreements | `week-one` | First week |  |
+| 14 | [`regular-meetings`](../../contracts/catalog/reader/content/sections/regular-meetings.yaml) | Join regular team meetings | `week-one` | First week |  |
+| 15 | [`product-orientation`](../../contracts/catalog/reader/content/sections/product-orientation.yaml) | Understand the product and users | `week-one` | First week |  |
+| 16 | [`teammate-introduction`](../../contracts/catalog/reader/content/sections/teammate-introduction.yaml) | Meet a teammate | `week-one` | First week |  |
+| 17 | [`source-host-account`](../../contracts/catalog/reader/content/sections/source-host-account.yaml) | GitHub or other source-host account | `week-one` | Before repository work | timing `anytime` to `week-one` |
+| 18 | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) | Source-host organization membership | `week-one` | Before repository work | timing `anytime` to `week-one` |
+| 19 | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | Repository access | `week-one` | Before work in that repository | timing `anytime` to `week-one` |
+| 20 | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) | Ticket system access | `week-one` | Before ticket work | timing `anytime` to `week-one` |
+| 21 | [`documentation-access`](../../contracts/catalog/reader/content/sections/documentation-access.yaml) | Documentation workspace access | `week-one` | Before assigned reading | timing `anytime` to `week-one` |
+| 22 | [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) | CI access | `week-one` | Before delivery work | timing `anytime` to `week-one` |
+| 23 | [`environment-access`](../../contracts/catalog/reader/content/sections/environment-access.yaml) | Development or staging environment access | `week-one` | Before affected work | timing `anytime` to `week-one` |
+| 24 | [`artifact-access`](../../contracts/catalog/reader/content/sections/artifact-access.yaml) | Package or artifact registry access | `week-one` | Before dependent setup | timing `anytime` to `week-one` |
+| 25 | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | Connect to the onboarding repository | `week-one` | After access | timing `anytime` to `week-one` |
+| 26 | [`onboarding-refresh`](../../contracts/catalog/reader/content/sections/onboarding-refresh.yaml) | Get the latest plan | `week-one` | After access | timing `anytime` to `week-one` |
+| 27 | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) | Clone a repository | `week-one` | First week |  |
+| 28 | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) | Install project dependencies | `week-one` | First week |  |
+| 29 | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) | Run the test suite | `week-one` | First week |  |
+| 30 | [`application-local`](../../contracts/catalog/reader/content/sections/application-local.yaml) | Run the application locally | `week-one` | First week |  |
+| 31 | [`codebase-orientation`](../../contracts/catalog/reader/content/sections/codebase-orientation.yaml) | Understand the codebase | `week-one` | First week onward |  |
+| 32 | [`contribution-practices`](../../contracts/catalog/reader/content/sections/contribution-practices.yaml) | Learn contribution and review practices | `week-one` | Before the first change | timing `anytime` to `week-one` |
+| 33 | [`ticket-pairing`](../../contracts/catalog/reader/content/sections/ticket-pairing.yaml) | Pair on a ticket | `week-one` | First week |  |
+| 34 | [`design-workspace`](../../contracts/catalog/reader/content/sections/design-workspace.yaml) | Design workspace access | `week-one` | First week |  |
+| 35 | [`design-system-review`](../../contracts/catalog/reader/content/sections/design-system-review.yaml) | Review the design system | `week-one` | First week |  |
+| 36 | [`design-handoff`](../../contracts/catalog/reader/content/sections/design-handoff.yaml) | Learn design review and handoff | `week-one` | Before the first contribution | timing `anytime` to `week-one` |
+| 37 | [`week-one-check-in`](../../contracts/catalog/reader/content/sections/week-one-check-in.yaml) | End-of-week onboarding check-in | `week-one` | End of week one |  |
+| 38 | [`people-map`](../../contracts/catalog/reader/content/sections/people-map.yaml) | Build a people map | `days-8-to-30` | First month |  |
+| 39 | [`research-review`](../../contracts/catalog/reader/content/sections/research-review.yaml) | Review user research | `days-8-to-30` | First weeks |  |
+| 40 | [`ticket-ownership`](../../contracts/catalog/reader/content/sections/ticket-ownership.yaml) | Own a ticket | `days-8-to-30` | First week or month |  |
+| 41 | [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) | Shadow a deploy | `days-8-to-30` | First week or month |  |
+| 42 | [`design-contribution`](../../contracts/catalog/reader/content/sections/design-contribution.yaml) | First design contribution | `days-8-to-30` | First month |  |
+| 43 | [`day-thirty-review`](../../contracts/catalog/reader/content/sections/day-thirty-review.yaml) | Review 30-day goals | `days-8-to-30` | Around day 30 |  |
+| 44 | [`day-ninety-review`](../../contracts/catalog/reader/content/sections/day-ninety-review.yaml) | Review 90-day goals | `days-31-to-90` | Around day 90 |  |
+| 45 | [`office-access`](../../contracts/catalog/reader/content/sections/office-access.yaml) | Office access and security badge | `anytime` | First on-site visit |  |
+| 46 | [`document-reading`](../../contracts/catalog/reader/content/sections/document-reading.yaml) | Read a document | `anytime` | When its purpose requires |  |
+| 47 | [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) | Post a PR | `anytime` | First suitable contribution |  |
+| 48 | [`pr-review`](../../contracts/catalog/reader/content/sections/pr-review.yaml) | Review a PR | `anytime` | First suitable opportunity |  |
+| 49 | [`pr-merge`](../../contracts/catalog/reader/content/sections/pr-merge.yaml) | Merge a PR | `anytime` | When authorized and ready |  |
+| 50 | [`deploy-lead`](../../contracts/catalog/reader/content/sections/deploy-lead.yaml) | Lead a deploy with support | `anytime` | When authorized and ready |  |
+| 51 | [`incident-orientation`](../../contracts/catalog/reader/content/sections/incident-orientation.yaml) | Incident and on-call orientation | `anytime` | Before participation |  |
+| 52 | [`hosting-access`](../../contracts/catalog/reader/content/sections/hosting-access.yaml) | Cloud or hosting access | `anytime` | When the role needs it |  |
+| 53 | [`observability-access`](../../contracts/catalog/reader/content/sections/observability-access.yaml) | Logs, metrics, and tracing access | `anytime` | Before diagnosis or deploy work |  |
+| 54 | [`secrets-access`](../../contracts/catalog/reader/content/sections/secrets-access.yaml) | Secrets manager access | `anytime` | When needed |  |
+| 55 | [`retrospective-participation`](../../contracts/catalog/reader/content/sections/retrospective-participation.yaml) | Participate in a retrospective | `anytime` | First available retrospective |  |
+| 56 | [`tool-feedback`](../../contracts/catalog/reader/content/sections/tool-feedback.yaml) | Provide feedback on onboard-kit | `anytime` | After initial use; revisit around day 30 |  |
+| 57 | [`onboarding-correction`](../../contracts/catalog/reader/content/sections/onboarding-correction.yaml) | Report incorrect onboarding instructions | `anytime` | Throughout |  |
+| 58 | [`knowledge-transfer`](../../contracts/catalog/reader/content/sections/knowledge-transfer.yaml) | Knowledge transfer and onboarding ownership | `anytime` | Throughout; confirm before departure |  |
+| 59 | [`onboarding-help`](../../contracts/catalog/reader/content/sections/onboarding-help.yaml) | Get help when blocked | `anytime` | Throughout |  |
 
 ## Timing changes
 
@@ -107,27 +108,27 @@ decides which to keep.
 
 | Section | Requires |
 | -- | -- |
-| `company-email` | `company-identity` |
-| `company-calendar` | `company-email` |
-| `video-meetings` | `company-email` |
-| `team-chat` | `company-identity` |
-| `internal-network` | `working-device` |
-| `source-host-membership` | `source-host-account` |
-| `repository-access` | `source-host-membership` |
-| `ci-access` | `repository-access` |
-| `onboarding-repository` | `repository-access` |
-| `repository-clone` | `repository-access` |
-| `project-dependencies` | `repository-clone` |
-| `application-local` | `project-tests` |
-| `project-tests` | `project-dependencies` |
-| `ticket-pairing` | `ticket-system-access` |
-| `ticket-ownership` | `ticket-system-access` |
-| `deploy-shadow` | `ci-access` |
-| `deploy-lead` | `deploy-shadow` |
-| `pr-post` | `contribution-practices` |
-| `pr-review` | `repository-access` |
-| `pr-merge` | `pr-post` |
-| `design-contribution` | `design-handoff` |
+| [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) | [`company-identity`](../../contracts/catalog/reader/content/sections/company-identity.yaml) |
+| [`company-calendar`](../../contracts/catalog/reader/content/sections/company-calendar.yaml) | [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) |
+| [`video-meetings`](../../contracts/catalog/reader/content/sections/video-meetings.yaml) | [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) |
+| [`team-chat`](../../contracts/catalog/reader/content/sections/team-chat.yaml) | [`company-identity`](../../contracts/catalog/reader/content/sections/company-identity.yaml) |
+| [`internal-network`](../../contracts/catalog/reader/content/sections/internal-network.yaml) | [`working-device`](../../contracts/catalog/reader/content/sections/working-device.yaml) |
+| [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) | [`source-host-account`](../../contracts/catalog/reader/content/sections/source-host-account.yaml) |
+| [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) |
+| [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
+| [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
+| [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
+| [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) |
+| [`application-local`](../../contracts/catalog/reader/content/sections/application-local.yaml) | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) |
+| [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) |
+| [`ticket-pairing`](../../contracts/catalog/reader/content/sections/ticket-pairing.yaml) | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) |
+| [`ticket-ownership`](../../contracts/catalog/reader/content/sections/ticket-ownership.yaml) | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) |
+| [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) | [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) |
+| [`deploy-lead`](../../contracts/catalog/reader/content/sections/deploy-lead.yaml) | [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) |
+| [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) | [`contribution-practices`](../../contracts/catalog/reader/content/sections/contribution-practices.yaml) |
+| [`pr-review`](../../contracts/catalog/reader/content/sections/pr-review.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
+| [`pr-merge`](../../contracts/catalog/reader/content/sections/pr-merge.yaml) | [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) |
+| [`design-contribution`](../../contracts/catalog/reader/content/sections/design-contribution.yaml) | [`design-handoff`](../../contracts/catalog/reader/content/sections/design-handoff.yaml) |
 
 ## What this needs
 
