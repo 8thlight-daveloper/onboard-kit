@@ -1,4 +1,4 @@
-  Onboarding plan  Walk w  [Overview]  Review r  Sections s  Contacts c                                                  13 of 13 answered
+  Building: ACME Corp plan  Answer w  [Overview]  Review r  Sections s  Contacts c                                       13 of 13 answered
   ✓◆  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Plan                                                                              │ Plan
@@ -37,4 +37,4 @@
 
 
 
-  enter open  esc walk  q quit  ? help
+  enter open  esc answer  q quit  ? help

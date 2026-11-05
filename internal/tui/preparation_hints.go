@@ -78,7 +78,7 @@ func (app App) preparationHelp() []hint {
 }
 
 func (app App) withJumpHelp(entries []hint) []hint {
-	return app.withInvitationHelp(append(entries, hint{"w, o, r, s, c", "walk, overview, review, sections, contacts"}))
+	return app.withInvitationHelp(append(entries, hint{"w, o, r, s, c", "answer, overview, review, sections, contacts"}))
 }
 
 func (app App) preparationFormHelp() []hint {

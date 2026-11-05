@@ -34,7 +34,7 @@ func (app App) helpEntries() []hint {
 	case screenReview:
 		return app.reviewHelp()
 	case screenSections:
-		return app.withPreparationHelp([]hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "walk, overview, review"}, {"c", "contacts, roles, and teams"}})
+		return app.withPreparationHelp([]hint{{"up, down, k, j", "move"}, {"space, enter", "switch the section on or off"}, {"esc, q", "back"}, {"w, o, r", "answer, overview, review"}, {"c", "contacts, roles, and teams"}})
 	case screenContacts:
 		return app.contactsHelp()
 	case screenPreparation:
@@ -96,7 +96,7 @@ func (app App) overviewHelp() []hint {
 		{"pgup, pgdn", "move a page"},
 		{"g, G", "first and last question"},
 		{"enter", "open the question"},
-		{"esc, w", "back to the walk"},
+		{"esc, w", "back to the question you left"},
 		{"r", "review"},
 		{"q", "quit"},
 	}
@@ -115,7 +115,7 @@ func (app App) reviewHelp() []hint {
 		{"tab", "switch focus between the items and the document"},
 		{"pgup, pgdn", "scroll the document"},
 		{"enter", "open the question of the chosen item"},
-		{"esc, w", "walk, from the first unanswered question"},
+		{"esc, w", "the first unanswered question"},
 		{"o", "overview"},
 		{"h", "show the answers left over from questions the plan no longer asks, and remove them after you confirm"},
 		{"q", "quit"},
@@ -160,7 +160,7 @@ func (app App) contactsHelp() []hint {
 		{"a", "add an entry to this list"},
 		{"enter, e", "change the chosen entry"},
 		{"x", "remove the chosen entry, after showing what it clears"},
-		{"w, o, r, s", "walk, overview, review, sections"},
+		{"w, o, r, s", "answer, overview, review, sections"},
 		{"esc, q", "back"},
 	})
 }

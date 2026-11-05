@@ -10,7 +10,7 @@ steps:
       actions:
         - wait-for: "Answered 13 of 13"
         - resize: {columns: 60, rows: 12}
-        - wait-for: "Onboarding plan Walk Overview Review Sections Contacts"
+        - wait-for: "Building: ACME Corp plan Answer Overview"
         - resize: {columns: 59, rows: 12}
         - wait-for: "Please make the window larger"
         - wait-gone: "Answered 13 of 13"
@@ -20,7 +20,7 @@ steps:
         - wait-for: "Please make the window larger"
         - wait-gone: "Answered 13 of 13"
         - resize: {columns: 110, rows: 32}
-        - wait-for: "Walk w  Overview o"
+        - wait-for: "Building: ACME Corp plan  Answer  Overview"
         - wait-for: "Answered 13 of 13"
         - press: q
         - wait-exit: true

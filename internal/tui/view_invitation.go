@@ -86,7 +86,7 @@ func (app App) inviteeBlockedLines(width int) []line {
 		content = append(content, reviewGroup("Onboarding owner", []string{InvitationOwnerMissing.sentence()}, toneProblem, width)...)
 	}
 	content = append(content, blankLine())
-	return append(content, lines(toneFaint, wrapText("Answer or defer the plan's questions on the Walk, and fix the preparation on the Preparation tab. Esc goes back to the list, which checks again.", width))...)
+	return append(content, lines(toneFaint, wrapText("Answer or defer the plan's questions on the Answer tab, and fix the preparation on the Preparation tab. Esc goes back to the list, which checks again.", width))...)
 }
 
 func (app App) invitationWrittenLines(width int) []line {

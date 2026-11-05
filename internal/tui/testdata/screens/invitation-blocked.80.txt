@@ -1,4 +1,4 @@
-  Walk Overview Review Sections Contacts Preparation [Invitation]
+  Answer Overview Review Sections Contacts Preparation [Invitation]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Pat Kim is not ready for an invitation
@@ -12,13 +12,13 @@
     required: What is the organization's name?
     required: Is the team established, or are we the first consultants?
 
-  Answer or defer the plan's questions on the Walk, and fix the preparation on
-  the Preparation tab. Esc goes back to the list, which checks again.
+  Answer or defer the plan's questions on the Answer tab, and fix the
+  preparation on the Preparation tab. Esc goes back to the list, which checks
+  again.
 
 
 
 
 
 
-
-  esc people  w walk  o overview  r review  s sections  c contacts  ? help
+  esc people  w answer  o overview  r review  s sections  c contacts  ? help

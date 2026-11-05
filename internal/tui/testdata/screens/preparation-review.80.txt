@@ -1,4 +1,4 @@
-  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  Answer Overview Review Sections Contacts [Preparation]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   sam-lee
@@ -21,4 +21,4 @@
 
 
 
-  y save  tab changes/guide  pgup/pgdn scroll  esc back  w walk  ? help
+  y save  tab changes/guide  pgup/pgdn scroll  esc back  w answer  ? help

@@ -217,7 +217,7 @@ func TestNoScreenUsesAFixedColourAndTheAccentMarksPlaceNotTitles(t *testing.T) {
 	if !strings.Contains(view, "32m") {
 		t.Error("expected the terminal green accent")
 	}
-	for _, title := range []string{"Onboarding plan", "Plan", "Is the team established"} {
+	for _, title := range []string{"Building an onboarding plan", "Plan", "Is the team established"} {
 		if strings.Contains(sgrBefore(t, view, title), "32") {
 			t.Errorf("the accent must not colour the text %q", title)
 		}

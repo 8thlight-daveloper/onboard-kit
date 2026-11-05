@@ -1,4 +1,4 @@
-  Walk Overview Review Sections Contacts Preparation [Invitation]
+  Answer Overview Review Sections Contacts Preparation [Invitation]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   People with a preparation
@@ -21,4 +21,4 @@
 
 
 
-  enter open  esc back  w walk  o overview  r review  s sections  ? help
+  enter open  esc back  w answer  o overview  r review  s sections  ? help

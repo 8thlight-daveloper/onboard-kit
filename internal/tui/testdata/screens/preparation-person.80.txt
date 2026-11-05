@@ -1,4 +1,4 @@
-  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  Answer Overview Review Sections Contacts [Preparation]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   sam-lee
@@ -21,4 +21,4 @@
   and private details out of it. The terminal also keeps what it shows.
 
 
-  enter open  a add arrangement  esc people  w walk  o overview  ? help
+  enter open  a add arrangement  esc people  w answer  o overview  ? help

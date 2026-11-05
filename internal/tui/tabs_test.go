@@ -14,10 +14,10 @@ func TestWithNoColourTheCurrentTabIsInBracketsAndTheOthersCarryTheirKeys(t *test
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	app = resize(app, 120, 30)
 	cases := map[string]App{
-		"Onboarding plan  Walk w  Overview o  [Review]  Sections s": app,
-		"Onboarding plan  [Walk]  Overview o  Review r  Sections s": moveTo(t, app, "plan.team_state"),
-		"Onboarding plan  Walk w  [Overview]  Review r  Sections s": app.openOverview(),
-		"Onboarding plan  Walk w  Overview o  Review r  [Sections]": press(app, typed("s")),
+		"Building: ACME Corp plan  Answer w  Overview o  [Review]  Sections s": app,
+		"Building: ACME Corp plan  [Answer]  Overview o  Review r  Sections s": moveTo(t, app, "plan.team_state"),
+		"Building: ACME Corp plan  Answer w  [Overview]  Review r  Sections s": app.openOverview(),
+		"Building: ACME Corp plan  Answer w  Overview o  Review r  [Sections]": press(app, typed("s")),
 	}
 	for want, shown := range cases {
 		if got := headerOf(shown); !strings.HasPrefix(got, want) {
@@ -37,7 +37,7 @@ func TestWithColourTheCurrentTabIsBoldAccentAndTheOthersAreFaint(t *testing.T) {
 	if got := sgrBefore(t, view, "Overview"); got != "1;32" {
 		t.Errorf("the current tab is bold in the accent, got SGR %q", got)
 	}
-	expectFaint(t, view, "Walk w")
+	expectFaint(t, view, "Answer w")
 	expectFaint(t, view, "Review r")
 	expectFaint(t, view, "Sections s")
 }
@@ -57,7 +57,7 @@ func TestWhileTypingTheTabsShowNoKeysBecauseLettersAreText(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
 	header := headerOf(resize(app, 120, 30))
-	if !strings.HasPrefix(header, "Onboarding plan  [Walk]  Overview  Review  Sections") {
+	if !strings.HasPrefix(header, "Building an onboarding plan  [Answer]  Overview  Review  Sections") {
 		t.Fatalf("header is %q", header)
 	}
 	choosing := moveTo(t, app, "plan.team_state")
@@ -70,23 +70,30 @@ func TestTheHeaderDropsTheProgressThenTheKeysBeforeItOverflows(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	for _, width := range widths {
+		if width < 70 {
+			continue
+		}
 		header := headerOf(resize(app, width, 30))
-		for _, name := range []string{"Walk", "Overview", "Review", "Sections"} {
+		for _, name := range []string{"Answer", "Overview", "Review", "Sections"} {
 			if !strings.Contains(header, name) {
 				t.Errorf("%d columns: %q lacks %s", width, header, name)
 			}
 		}
 	}
-	if !strings.Contains(headerOf(resize(app, 100, 30)), "answered") {
-		t.Error("100 columns fits the progress")
+	if !strings.Contains(headerOf(resize(app, 120, 30)), "answered") {
+		t.Error("120 columns fits the progress")
+	}
+	hundred := headerOf(resize(app, 100, 30))
+	if strings.Contains(hundred, "answered") || !strings.Contains(hundred, "Contacts c") {
+		t.Errorf("100 columns drops the progress and keeps the keys: %q", hundred)
 	}
 	eighty := headerOf(resize(app, 80, 30))
-	if strings.Contains(eighty, "answered") || !strings.Contains(eighty, "Contacts c") {
-		t.Errorf("80 columns drops the progress and keeps the keys: %q", eighty)
+	if strings.Contains(eighty, "answered") || strings.Contains(eighty, "Contacts c") || !strings.Contains(eighty, "Contacts") {
+		t.Errorf("80 columns drops the progress and the keys and keeps the names: %q", eighty)
 	}
 	narrow := headerOf(resize(app, 60, 30))
-	if strings.Contains(narrow, "answered") || strings.Contains(narrow, "Review r") {
-		t.Errorf("60 columns keeps only the names: %q", narrow)
+	if strings.Contains(narrow, "answered") || strings.Contains(narrow, "Review r") || !strings.Contains(narrow, "[Review] …") {
+		t.Errorf("60 columns keeps only the names, cut after the current tab: %q", narrow)
 	}
 }
 

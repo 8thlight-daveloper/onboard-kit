@@ -1,4 +1,4 @@
-  Onboarding plan  Walk w  [Overview]  Review r  Sections s  Contacts c                                1 of 5 answered
+  Building an onboarding plan  Answer w  [Overview]  Review r  Sections s  Contacts c                  1 of 5 answered
   ·  ·◆·  ·
 
   Plan                                                                  │ Access request
@@ -27,4 +27,4 @@
 
 
 
-  enter open  esc walk  q quit  ? help
+  enter open  esc answer  q quit  ? help

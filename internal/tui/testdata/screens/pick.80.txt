@@ -1,4 +1,4 @@
-  Onboarding plan  [Walk]  Overview o  Review r  Sections s  Contacts c
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts
   ··  ◆····  ·
 
   Access
@@ -21,4 +21,4 @@
   Suggestion (default): Engineering manager
 
 
-  enter choose  p back  d defer  x clear  n skip  q quit  ? help
+  enter choose  p back  d defer  o overview  r review  s sections  ? help

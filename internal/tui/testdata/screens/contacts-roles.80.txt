@@ -1,4 +1,4 @@
-  Onboarding plan  Walk w  Overview o  Review r  Sections s  [Contacts]
+  Building: ACME Corp plan  Answer  Overview  Review  Sections  [Contacts]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Contacts 6  [Roles 4]  Teams 2
@@ -21,4 +21,4 @@
 
 
 
-  a add  enter edit  x remove  tab next list  esc back  ? help
+  a add  enter edit  x remove  tab next list  w answer  o overview  ? help

@@ -1,4 +1,4 @@
-  Onboarding plan  [Walk]  Overview o  Review r  Sections s  Contacts c
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts
   ··  ·····  ◆
 
   If you are stuck
@@ -21,4 +21,4 @@
   Name: stuck-general.general_contacts
 
 
-  space pick  enter confirm  p back  d defer  x clear  n skip  q quit  ? help
+  space pick  enter confirm  p back  d defer  o overview  r review  ? help

@@ -1,4 +1,4 @@
-  Onboarding plan  Walk w  Overview o  Review r  Sections s  [Contacts]
+  Building: ACME Corp plan  Answer  Overview  Review  Sections  [Contacts]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   Remove the contact Platform team channel?

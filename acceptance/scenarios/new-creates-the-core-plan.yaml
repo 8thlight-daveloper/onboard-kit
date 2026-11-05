@@ -13,8 +13,8 @@ steps:
         - wait-for: "Write this new plan?"
         - wait-for: "Nothing is written until you press y."
         - press: y
-        - wait-for: "Onboarding plan"
-        - wait-for: "0 of 57 answered"
+        - wait-for: "Building an onboarding plan"
+        - wait-for: "1 of 57, required, not answered yet"
         - press: Escape
         - press: q
         - wait-exit: true

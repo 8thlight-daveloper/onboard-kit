@@ -432,14 +432,14 @@ func TestANarrowHeaderClipsTheTabsButKeepsTheCurrentOne(t *testing.T) {
 	t.Parallel()
 	app, _ := startPreparing(t, withSamLee(t))
 	reviewing := headerOf(resize(app, 60, 24))
-	if reviewing != "Onboarding plan Walk Overview [Review] Sections …" {
+	if reviewing != "Building: ACME Corp plan Answer Overview [Review] …" {
 		t.Errorf("at 60 columns the strip is cut after the tabs that fit: %q", reviewing)
 	}
 	preparing := headerOf(resize(press(app, typed("t")), 60, 24))
-	if preparing != "Walk Overview Review Sections Contacts [Preparation]" {
+	if preparing != "Answer Overview Review Sections Contacts [Preparation]" {
 		t.Errorf("the current tab stays on screen, and the title goes first: %q", preparing)
 	}
-	if hints := strings.Join(press(app, typed("t")).hintTexts(), " "); !strings.Contains(hints, "walk") {
+	if hints := strings.Join(press(app, typed("t")).hintTexts(), " "); !strings.Contains(hints, "answer overview") {
 		t.Errorf("with no keys in the header the hint line carries them: %q", hints)
 	}
 }

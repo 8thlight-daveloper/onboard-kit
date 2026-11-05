@@ -1,4 +1,4 @@
-  Onboarding plan  Walk  Overview  Review  Sections  Contacts  [Preparation]
+  Answer Overview Review Sections Contacts [Preparation]
   ✓✓  ✓✓✓✓✓~  ✓✓✓✓  ✓
 
   People with a preparation
@@ -21,4 +21,4 @@
 
 
 
-  enter open  a add person  esc back  w walk  o overview  r review  ? help
+  enter open  a add person  esc back  w answer  o overview  r review  ? help

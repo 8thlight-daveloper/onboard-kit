@@ -1,4 +1,4 @@
-  Onboarding plan  Walk w  Overview o  Review r  [Sections]  Contacts c
+  Building an onboarding plan  Answer  Overview  Review  [Sections]  Contacts
   ··  ·····  ·
 
   Sections the plan can include. Space switches one on or off.
@@ -21,4 +21,4 @@
 
 
 
-  space switch  up/down move  esc back  ? help
+  space switch  up/down move  esc back  w answer  o overview  r review  ? help

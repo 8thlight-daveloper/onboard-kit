@@ -10,8 +10,8 @@ steps:
       actions:
         - wait-for: "Your onboarding"
         - press: o
-        - wait-for: "esc walk  q quit"
-        - wait-for: "Walk w"
+        - wait-for: "esc your questions  q quit"
+        - wait-for: "Your questions w"
         - wait-gone: "Sections"
         - wait-gone: "Contacts"
         - press: s

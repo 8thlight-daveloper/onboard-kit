@@ -623,7 +623,7 @@ func TestWhileAFormIsOpenLettersAreTextAndTheTabsShowNoKeys(t *testing.T) {
 		t.Error("letters that are screen keys are text in a form")
 	}
 	header := headerOf(form)
-	if !strings.Contains(header, "[Contacts]") || strings.Contains(header, "Walk w") {
+	if !strings.Contains(header, "[Contacts]") || strings.Contains(header, "Answer w") {
 		t.Errorf("header %q", header)
 	}
 	hints := strings.Join(viewLines(form)[len(viewLines(form))-1:], "")

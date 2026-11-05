@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	tabGap      = "  "
-	tabGapTight = " "
-	clipMark    = "…"
+	tabGap                 = "  "
+	tabGapTight            = " "
+	clipMark               = "…"
+	organizationTitleCells = 24
 )
 
 type screenTab struct {
@@ -28,7 +29,7 @@ type headerLayout struct {
 }
 
 func (app App) tabs() []screenTab {
-	tabs := []screenTab{{screenAnswer, "Walk", "w"}, {screenOverview, "Overview", "o"}, {screenReview, "Review", "r"}}
+	tabs := []screenTab{{screenAnswer, app.answerTabName(), "w"}, {screenOverview, "Overview", "o"}, {screenReview, "Review", "r"}}
 	if app.canSwitchSections() {
 		tabs = append(tabs, screenTab{screenSections, "Sections", "s"})
 	}
@@ -44,11 +45,33 @@ func (app App) tabs() []screenTab {
 	return tabs
 }
 
-func (app App) headerTitle() string {
+func (app App) answerTabName() string {
 	if app.audience == model.AudienceOnboardee {
-		return "Your onboarding"
+		return "Your questions"
 	}
-	return "Onboarding plan"
+	return "Answer"
+}
+
+func (app App) headerTitle() string {
+	organization, named := app.organizationName()
+	switch {
+	case app.audience == model.AudienceOnboardee && named:
+		return "Your onboarding at " + organization
+	case app.audience == model.AudienceOnboardee:
+		return "Your onboarding"
+	case named:
+		return "Building: " + organization + " plan"
+	}
+	return "Building an onboarding plan"
+}
+
+func (app App) organizationName() (string, bool) {
+	answer := app.plan.Answers.Plan["organization"]
+	name := strings.TrimSpace(visibleText(singleLine(answer.Text)))
+	if answer.Kind != model.ValueKindText || name == "" {
+		return "", false
+	}
+	return truncateCells(name, organizationTitleCells), true
 }
 
 func (app App) tabParts(withKeys bool, colors palette) ([]string, int) {

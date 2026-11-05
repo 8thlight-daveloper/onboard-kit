@@ -99,7 +99,7 @@ func (app App) formHints() []hint {
 }
 
 func (app App) overviewHints(tabKeysShown bool) []hint {
-	hints := []hint{{"enter", "open"}, {"esc", "walk"}}
+	hints := []hint{{"enter", "open"}, {"esc", strings.ToLower(app.answerTabName())}}
 	hints = append(hints, app.jumpHints(tabKeysShown)...)
 	return append(hints, hint{"q", "quit"}, hint{"?", "help"})
 }
