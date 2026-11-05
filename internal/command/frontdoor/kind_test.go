@@ -85,3 +85,21 @@ func TestARelativePathIsCheckedAndGivenBackInFull(t *testing.T) {
 		t.Fatalf("got %+v", checked)
 	}
 }
+
+func TestASectionTemplateIsNotAPlan(t *testing.T) {
+	folder := t.TempDir()
+	template := copyOf(t, folder, filepath.Join("..", "..", "..", "docs", "reference", "examples", "acme", "templates", "access.yaml"))
+	checked, _ := Check(template)
+	if checked.Kind != tui.FileRefused || !strings.Contains(checked.Refusal, "neither a plan nor an invitation") {
+		t.Fatalf("got %+v", checked)
+	}
+}
+
+func TestAPlanWithNoSectionsIsStillAPlan(t *testing.T) {
+	folder := t.TempDir()
+	empty := writeFile(t, folder, "empty.obk.yaml", []byte("schemaVersion: 1\nid: plan-one\n"))
+	checked, problems := Check(empty)
+	if checked.Kind != tui.FilePlan || checked.Refusal != "" || len(problems) != 0 {
+		t.Fatalf("got %+v, %v", checked, problems)
+	}
+}

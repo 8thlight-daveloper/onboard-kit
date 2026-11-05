@@ -8,6 +8,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"go.yaml.in/yaml/v3"
+
 	"onboard-kit/internal/model"
 	"onboard-kit/internal/plan/decoder"
 	"onboard-kit/internal/tui"
@@ -50,6 +52,8 @@ func Check(path string) (tui.FileCheck, []model.Problem) {
 	_, problems := decoder.New().Decode(data)
 	first, failed := firstError(problems)
 	switch {
+	case !failed && looksLikeASection(data):
+		return refused("%s is neither a plan nor an invitation.", path), nil
 	case !failed:
 		return tui.FileCheck{Kind: tui.FilePlan, Path: full}, nil
 	case first.Code == wrongKindCode && namedKinds[first.Detail["found"]] != "":
@@ -58,6 +62,16 @@ func Check(path string) (tui.FileCheck, []model.Problem) {
 		return refused("%s is neither a plan nor an invitation.", path), nil
 	}
 	return tui.FileCheck{Kind: tui.FileRefused, Path: full, Refusal: fmt.Sprintf("%s is a plan that cannot be opened: %s.", path, first.Message)}, problems
+}
+
+func looksLikeASection(data []byte) bool {
+	var top map[string]any
+	if yaml.Unmarshal(data, &top) != nil {
+		return false
+	}
+	_, titled := top["title"]
+	_, summarized := top["summary"]
+	return titled || summarized
 }
 
 func refused(format string, path string, rest ...any) tui.FileCheck {
