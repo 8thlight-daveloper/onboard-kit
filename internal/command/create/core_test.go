@@ -8,6 +8,10 @@ import (
 	"testing"
 
 	"onboard-kit/internal/catalog/reader"
+	"onboard-kit/internal/model"
+	"onboard-kit/internal/plan/authoringvalidator"
+	"onboard-kit/internal/plan/validator"
+	"onboard-kit/internal/question/finder"
 )
 
 func TestTheCorePlanHoldsEveryCoreSectionTheCatalogCarries(t *testing.T) {
@@ -91,5 +95,45 @@ func TestWritingANewFileNeverReplacesOne(t *testing.T) {
 	info, _ := os.Stat(path)
 	if info.Mode().Perm() != 0o644 {
 		t.Fatalf("mode %v", info.Mode().Perm())
+	}
+}
+
+func TestTheCorePlanAsksTheOrganizationAndTheTeamBeforeAnySectionQuestion(t *testing.T) {
+	plan, problems := CorePlan("plan-one", "development", "2026-11-04")
+	if len(problems) > 0 {
+		t.Fatalf("problems: %v", problems)
+	}
+	questions := finder.New().Questions(plan, model.AudienceOnboarder)
+	if len(questions) < 4 {
+		t.Fatalf("only %d questions", len(questions))
+	}
+	for index, want := range []string{"organization", "team_name", "plan_source"} {
+		if questions[index].Scope != "plan" || questions[index].Name != want {
+			t.Fatalf("question %d is %s.%s, want plan.%s", index+1, questions[index].Scope, questions[index].Name, want)
+		}
+	}
+	if questions[3].Scope == "plan" {
+		t.Fatalf("a section question must follow the plan questions, got %+v", questions[3])
+	}
+	required := map[string]bool{}
+	for _, variable := range plan.Variables {
+		required[variable.Name] = variable.Required
+	}
+	if !required["organization"] || !required["team_name"] || required["plan_source"] {
+		t.Fatalf("required flags %v", required)
+	}
+}
+
+func TestTheCorePlanPassesTheAuthoringAndPlanChecks(t *testing.T) {
+	plan, _ := CorePlan("plan-one", "development", "2026-11-04")
+	for _, problem := range authoringvalidator.New().Validate(plan) {
+		if problem.Severity == model.SeverityError {
+			t.Errorf("authoring: %+v", problem)
+		}
+	}
+	for _, problem := range validator.New().Validate(plan) {
+		if problem.Severity == model.SeverityError {
+			t.Errorf("plan: %+v", problem)
+		}
 	}
 }

@@ -63,7 +63,34 @@ func CorePlan(identifier string, templateSet string, generatedOn string) (model.
 	if failed {
 		return model.Plan{}, problems
 	}
-	return result.Plan, nil
+	plan := result.Plan
+	plan.Variables = append(identityVariables(), plan.Variables...)
+	return plan, nil
+}
+
+func identityVariables() []model.Variable {
+	return []model.Variable{
+		{
+			Name:        "organization",
+			Description: "What is the organization's name?",
+			Example:     "ACME Corp",
+			Required:    true,
+			Audience:    model.AudienceOnboarder,
+		},
+		{
+			Name:        "team_name",
+			Description: "What is the team's name?",
+			Example:     "Platform",
+			Required:    true,
+			Audience:    model.AudienceOnboarder,
+		},
+		{
+			Name:        "plan_source",
+			Description: "Where is this plan kept? Give the repository address and the path of the plan file inside it.",
+			Example:     "https://example.test/acme/onboarding.git plans/platform.obk.yaml",
+			Audience:    model.AudienceOnboarder,
+		},
+	}
 }
 
 func coreInstances() []materializercontract.Instance {

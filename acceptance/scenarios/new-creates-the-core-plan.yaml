@@ -14,7 +14,8 @@ steps:
         - wait-for: "Nothing is written until you press y."
         - press: y
         - wait-for: "Building an onboarding plan"
-        - wait-for: "1 of 57, required, not answered yet"
+        - wait-for: "What is the organization's name?"
+        - wait-for: "1 of 60, required, not answered yet"
         - press: Escape
         - press: q
         - wait-exit: true
