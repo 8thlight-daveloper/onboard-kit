@@ -36,7 +36,7 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	case "assemble":
 		return assemble.Run(args[1:], stdout, stderr)
 	case "walk":
-		return walk.Run(args[1:], stdin, stdout, stderr)
+		return walk.Run(args[1:], version, stdin, stdout, stderr)
 	case "start":
 		return startCommand(args[1:], stdin, stdout, stderr)
 	case "prepare":

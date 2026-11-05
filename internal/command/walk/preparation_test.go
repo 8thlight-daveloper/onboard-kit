@@ -32,12 +32,12 @@ func copiedPlan(t *testing.T) (string, string) {
 func TestARootThatIsNotAFolderIsAUsageError(t *testing.T) {
 	_, plan := copiedPlan(t)
 	var stderr bytes.Buffer
-	code := Run([]string{"--plan", plan, "--root", filepath.Join(filepath.Dir(plan), "missing")}, strings.NewReader(""), &bytes.Buffer{}, &stderr)
+	code := Run([]string{"--plan", plan, "--root", filepath.Join(filepath.Dir(plan), "missing")}, "development", strings.NewReader(""), &bytes.Buffer{}, &stderr)
 	if code != exitUsage || !strings.Contains(stderr.String(), "is not a folder") {
 		t.Errorf("exit %d, stderr %q", code, stderr.String())
 	}
 	fresh := filepath.Join(filepath.Dir(plan), "fresh.obk.yaml")
-	Run([]string{"--plan", fresh, "--templates", "../../../docs/reference/examples/acme/templates", "--root", plan}, strings.NewReader(""), &bytes.Buffer{}, &bytes.Buffer{})
+	Run([]string{"--plan", fresh, "--templates", "../../../docs/reference/examples/acme/templates", "--root", plan}, "development", strings.NewReader(""), &bytes.Buffer{}, &bytes.Buffer{})
 	if _, err := os.Stat(fresh); !os.IsNotExist(err) {
 		t.Errorf("a refused root writes no new plan: %v", err)
 	}

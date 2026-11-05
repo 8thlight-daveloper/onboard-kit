@@ -7,8 +7,11 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"time"
 
+	"onboard-kit/internal/command/places"
 	"onboard-kit/internal/command/planfile"
+	"onboard-kit/internal/command/registry"
 	"onboard-kit/internal/model"
 	"onboard-kit/internal/tui"
 )
@@ -22,7 +25,7 @@ const (
 	exitTerminated  = 143
 )
 
-func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+func Run(args []string, version string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
 	options := flag.NewFlagSet("walk", flag.ContinueOnError)
 	options.SetOutput(stderr)
 	planPath := options.String("plan", "", "plan file to open, or to create when it does not exist")
@@ -51,11 +54,53 @@ func Run(args []string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int
 	if !ok {
 		return exitProblem
 	}
-	if who == model.AudienceOnboardee {
-		return Walk(*planPath, plan, who, "", stdin, stdout, stderr)
+	return edit(editing{planPath: *planPath, plan: plan, audience: who, root: *root, version: version}, stdin, stdout, stderr)
+}
+
+func Open(planPath string, version string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+	plan, ok := planfile.Open(planPath, stderr)
+	if !ok {
+		return exitProblem
 	}
-	preparationRoot := preparationRootFor(*planPath, *root)
-	return walk(*planPath, plan, who, "", newPreparationFiles(preparationRoot, *planPath), newInvitationFiles(preparationRoot, *planPath), stdin, stdout, stderr)
+	return edit(editing{planPath: planPath, plan: plan, audience: model.AudienceOnboarder, version: version}, stdin, stdout, stderr)
+}
+
+type editing struct {
+	planPath string
+	plan     model.Plan
+	audience model.Audience
+	root     string
+	version  string
+}
+
+func edit(opened editing, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+	home, homeErr := places.StateHome()
+	if homeErr == nil {
+		remember(home.Path, opened.planPath)
+	}
+	preparationRoot := preparationRootFor(opened.planPath, opened.root)
+	context := places.Context{Home: home, PlanPath: absolute(opened.planPath), RecordsRoot: absolute(preparationRoot)}
+	if homeErr != nil {
+		context.HomeProblem = "The state home cannot be found: " + homeErr.Error()
+	}
+	about := places.About(opened.version, opened.plan.Provenance.TemplateSet+", as this plan records it", context, places.RegistryProblems(home))
+	if opened.audience == model.AudienceOnboardee {
+		return walk(opened.planPath, opened.plan, opened.audience, "", nil, nil, &about, stdin, stdout, stderr)
+	}
+	return walk(opened.planPath, opened.plan, opened.audience, "", newPreparationFiles(preparationRoot, opened.planPath), newInvitationFiles(preparationRoot, opened.planPath), &about, stdin, stdout, stderr)
+}
+
+func remember(home string, planPath string) {
+	if path, err := filepath.Abs(planPath); err == nil {
+		registry.Record(home, path, time.Now())
+	}
+}
+
+func absolute(path string) string {
+	if full, err := filepath.Abs(path); err == nil {
+		return full
+	}
+	return path
 }
 
 func preparationRootFor(planPath string, root string) string {
@@ -66,17 +111,17 @@ func preparationRootFor(planPath string, root string) string {
 }
 
 func Walk(planPath string, plan model.Plan, audience model.Audience, notice string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
-	return walk(planPath, plan, audience, notice, nil, nil, stdin, stdout, stderr)
+	return walk(planPath, plan, audience, notice, nil, nil, nil, stdin, stdout, stderr)
 }
 
-func walk(planPath string, plan model.Plan, audience model.Audience, notice string, preparation tui.PreparationPort, invitation tui.InvitationPort, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+func walk(planPath string, plan model.Plan, audience model.Audience, notice string, preparation tui.PreparationPort, invitation tui.InvitationPort, about *tui.About, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
 	save := func(plan model.Plan) error {
 		if !planfile.Save(planPath, plan, io.Discard) {
 			return fmt.Errorf("the plan could not be written to %s", planPath)
 		}
 		return nil
 	}
-	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, invitation, nil, stdin, stdout)
+	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, invitation, about, stdin, stdout)
 	if errors.Is(err, tui.ErrInterrupted) {
 		return exitInterrupted
 	}

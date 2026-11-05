@@ -61,9 +61,13 @@ components:
     kind: command
   command/invite:
     kind: command
+  command/places:
+    kind: command
   command/planfile:
     kind: command
   command/prepare:
+    kind: command
+  command/registry:
     kind: command
   command/report:
     kind: command

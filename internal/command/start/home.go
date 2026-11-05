@@ -1,12 +1,10 @@
 package start
 
 import (
-	"os"
-	"path/filepath"
-	"runtime"
 	"strings"
 	"unicode"
 
+	"onboard-kit/internal/command/places"
 	"onboard-kit/internal/model"
 )
 
@@ -14,24 +12,8 @@ func stateHome(given string) (string, error) {
 	if given != "" {
 		return given, nil
 	}
-	if fromEnvironment := os.Getenv("OBK_HOME"); fromEnvironment != "" {
-		return fromEnvironment, nil
-	}
-	if runtime.GOOS != "darwin" {
-		if state := os.Getenv("XDG_STATE_HOME"); state != "" {
-			return filepath.Join(state, "obk"), nil
-		}
-		home, err := os.UserHomeDir()
-		if err != nil {
-			return "", err
-		}
-		return filepath.Join(home, ".local", "state", "obk"), nil
-	}
-	config, err := os.UserConfigDir()
-	if err != nil {
-		return "", err
-	}
-	return filepath.Join(config, "obk"), nil
+	home, err := places.StateHome()
+	return home.Path, err
 }
 
 func organizationName(plan model.Plan) string {
