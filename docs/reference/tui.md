@@ -64,12 +64,16 @@ Decided by [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scrip
   the path and presses `y`. The reviewed creation draft of 0530, where a person
   removes and adds sections before the save, is not built. The person switches
   sections off on the Sections tab afterwards.
-- **The header names the role.** Not built. The onboarder will see "Building: Acme
-  plan", with the tabs Answer, Overview, Review, Sections, Contacts, Preparation,
-  and Invitation. The newcomer will see "Your onboarding at Acme", with the tabs
-  Your questions, Overview, and Document. The Walk screen below becomes Answer
-  for the onboarder and Your questions for the newcomer. The rest of this page
-  keeps the old name until the screens are built.
+- **The header names the role.** Built, see Screen tabs. The onboarder sees
+  "Building: Acme plan", with the tabs Answer, Overview, Review, Sections,
+  Contacts, Preparation, and Invitation. The newcomer sees "Your onboarding at
+  Acme", with the tabs Your questions, Overview, and Review. Acme is the plan's
+  `organization` answer. Until it is answered, the onboarder sees "Building an
+  onboarding plan" and the newcomer sees "Your onboarding". The Answer screen
+  below is the one screen behind both Answer and Your questions. 0610 names the
+  newcomer's third tab Document. It stays Review, because the newcomer's Review
+  holds their blockers, deferred questions, and problems beside the document
+  preview, not the document alone.
 - **Tell before looking.** Not built. Before the tool looks beyond the file in the
   command, it says what it will read and why, and warns when the system may show
   a permission prompt. Looking for an invitation in the Downloads folder is the
@@ -86,7 +90,7 @@ Decided. There are seven screens and a help page. Every screen has a header line
 
 | Screen | Holds | Opened by |
 | -- | -- | -- |
-| Walk | One question: its position, its section and group, what it asks, whether it is required, its current answer, the way to answer, suggestions, problems | The start, enter on an overview or review row, finishing a question |
+| Answer | One question: its position, its section and group, what it asks, whether it is required, its current answer, the way to answer, suggestions, problems | The start, enter on an overview or review row, finishing a question |
 | Overview | Every question in order with a mark for its state. The cursor jumps to any of them | `o` |
 | Review | Blockers, deferred questions, validator problems, the document preview, and a quiet line when answers are left over, see Left over answers | `r`, finishing the last question, or the start when the plan holds answers |
 | Sections | Section switches. The onboarder only | `s` |
@@ -97,15 +101,15 @@ Decided. There are seven screens and a help page. Every screen has a header line
 
 How a person moves:
 
-- Start: if the plan holds an answer to any question of this audience, open Review. Otherwise open Walk at the first question. A plan with no active questions opens Review.
+- Start: if the plan holds an answer to any question of this audience, open Review. Otherwise open the Answer screen at the first question. A plan with no active questions opens Review.
 - Enter accepts the answer on the screen and moves to the next question in order. This was a choice between the next question and the next unanswered one. The next in order is predictable, and a person who wants an unanswered one opens Review, where the blockers are listed.
 - Past the last question, the person lands on Review.
-- `w`, `o`, `r`, `s`, `c`, `t`, and `i` open the Walk, Overview, Review, Sections, Contacts, Preparation, and Invitation from any screen while the person is not typing. The tab strip names them, see Screen tabs.
+- `w`, `o`, `r`, `s`, `c`, `t`, and `i` open the Answer, Overview, Review, Sections, Contacts, Preparation, and Invitation screens from any screen while the person is not typing. The tab strip names them, see Screen tabs.
 - `p`, left arrow, or shift+tab goes back one question. `n` or right arrow skips forward without changing anything.
 - `d` defers the question and moves on. `x` clears the answer and stays, so the person can answer again.
-- Escape on the Walk returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Walk.
-- From Overview or Review, enter opens the chosen question in the Walk. `w` on Review returns to the Walk at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
-- `q` quits from the Overview, Review, and Walk, except while typing. The Sections, Contacts, Preparation, and Invitation screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
+- Escape on the Answer screen returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Answer screen.
+- From Overview or Review, enter opens the chosen question on the Answer screen. `w` on Review returns to the Answer screen at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
+- `q` quits from the Overview, Review, and Answer screens, except while typing. The Sections, Contacts, Preparation, and Invitation screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
 
 ## Layout
 
@@ -113,13 +117,13 @@ Decided. A designer judged the layout against the people in Intent, and it repla
 
 ### What the layout does
 
-- The Walk shows one question and nothing else that competes with it. The answer column holds the section title, the position ("4 of 11, required, not answered yet"), the question, the way to answer, and any problem.
+- The Answer screen shows one question and nothing else that competes with it. The answer column holds the section title, the position ("4 of 11, required, not answered yet"), the question, the way to answer, and any problem.
 - A progress rail sits under the header: one mark per question, grouped by section, with a diamond at the current question. The rail replaces the question list. It answers "where am I and how much is left" in one quiet line, and it never asks for a read. It is hidden when it does not fit.
 - The notes sit beside the answer at 120 columns and wider, and below it when narrower. They hold the example, the type and options, who answers, the name, and the suggestions. They are faint, because they are for a glance and never for action.
 - The Overview is one list, grouped by section, with each row showing its mark, its question, and its answer. At 120 columns and wider a faint preview of the chosen question sits beside it.
 - The Review keeps two panes, because it is a master and detail task: the items on the left, the document preview on the right. Below 120 columns, tab switches between them.
 
-| Width | Walk | Overview | Review |
+| Width | Answer | Overview | Review |
 | -- | -- | -- | -- |
 | 120 or more | Answer column about three fifths of the width, notes beside it | List about three fifths, preview beside it | Items about two fifths, document beside it |
 | 60 to 119 | One column up to 100 wide, notes below the answer if the height allows | One column | One column. Tab switches between the items and the document |
@@ -143,8 +147,8 @@ Rules that hold at any width:
 
 ### Rejected
 
-- The question list beside the Walk (A). The product owner found it distracting, and the reasons hold: it is the brightest thing on screen and the person is not acting in it. The rail keeps what the list gave, a sense of place, at a tenth of the weight.
-- The document preview beside the Walk (D). It is the right tool for the Review, where the person judges the whole, and noise on the Walk, where the person answers one thing.
+- The question list beside the Answer screen's question (A). The product owner found it distracting, and the reasons hold: it is the brightest thing on screen and the person is not acting in it. The rail keeps what the list gave, a sense of place, at a tenth of the weight.
+- The document preview beside the Answer screen's question (D). It is the right tool for the Review, where the person judges the whole, and noise on the Answer screen, where the person answers one thing.
 - No rail and no notes (C). Fewer parts, but a person answering 40 questions loses their place, and the example needs a home.
 - A layout fixed at 80 columns. Modern terminals are wider. The 120 column break is where the notes fit beside a comfortable answer column. Below it the notes move under the answer, and the tool is still usable at 80.
 - A vertical rule down the whole screen. The rule stops where the content stops.
@@ -157,7 +161,7 @@ Decided. The part of the screen where the person is acting is drawn bright, and 
 
 | Screen | Bright | Faint |
 | -- | -- | -- |
-| Walk | The question, the answer, the problems | The rail, the notes, the status |
+| Answer | The question, the answer, the problems | The rail, the notes, the status |
 | Overview | The list | The rail, the preview |
 | Review | The pane with focus, items or document | The other pane |
 | Sections, Help | The whole body |  |
@@ -175,19 +179,19 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 
 | Screen | 80 columns | 120 columns | 140 columns |
 | -- | -- | -- | -- |
-| Walk, choosing | [answer](../../internal/tui/testdata/screens/answer.80.txt) | [answer](../../internal/tui/testdata/screens/answer.120.txt) | [answer](../../internal/tui/testdata/screens/answer.140.txt) |
-| Walk, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
-| Walk, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
-| Walk, picking one | [pick](../../internal/tui/testdata/screens/pick.80.txt) | [pick](../../internal/tui/testdata/screens/pick.120.txt) | [pick](../../internal/tui/testdata/screens/pick.140.txt) |
-| Walk, picking several | [pick many](../../internal/tui/testdata/screens/pick-many.80.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.120.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.140.txt) |
-| Walk, nothing to pick | [pick empty](../../internal/tui/testdata/screens/pick-empty.80.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.120.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.140.txt) |
+| Answer, choosing | [answer](../../internal/tui/testdata/screens/answer.80.txt) | [answer](../../internal/tui/testdata/screens/answer.120.txt) | [answer](../../internal/tui/testdata/screens/answer.140.txt) |
+| Answer, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
+| Answer, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
+| Answer, picking one | [pick](../../internal/tui/testdata/screens/pick.80.txt) | [pick](../../internal/tui/testdata/screens/pick.120.txt) | [pick](../../internal/tui/testdata/screens/pick.140.txt) |
+| Answer, picking several | [pick many](../../internal/tui/testdata/screens/pick-many.80.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.120.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.140.txt) |
+| Answer, nothing to pick | [pick empty](../../internal/tui/testdata/screens/pick-empty.80.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.120.txt) | [pick empty](../../internal/tui/testdata/screens/pick-empty.140.txt) |
 | Overview | [overview](../../internal/tui/testdata/screens/overview.80.txt) | [overview](../../internal/tui/testdata/screens/overview.120.txt) | [overview](../../internal/tui/testdata/screens/overview.140.txt) |
 | Overview with sub-sections | [subsections](../../internal/tui/testdata/screens/subsections.80.txt) | [subsections](../../internal/tui/testdata/screens/subsections.120.txt) | [subsections](../../internal/tui/testdata/screens/subsections.140.txt) |
 | Review | [review](../../internal/tui/testdata/screens/review.80.txt) | [review](../../internal/tui/testdata/screens/review.120.txt) | [review](../../internal/tui/testdata/screens/review.140.txt) |
 | Review, with answers left over | [review-left-over](../../internal/tui/testdata/screens/review-left-over.80.txt) | [review-left-over](../../internal/tui/testdata/screens/review-left-over.120.txt) | [review-left-over](../../internal/tui/testdata/screens/review-left-over.140.txt) |
 | Review, removing left over answers | [review-prune](../../internal/tui/testdata/screens/review-prune.80.txt) | [review-prune](../../internal/tui/testdata/screens/review-prune.120.txt) | [review-prune](../../internal/tui/testdata/screens/review-prune.140.txt) |
 | Sections | [sections](../../internal/tui/testdata/screens/sections.80.txt) | [sections](../../internal/tui/testdata/screens/sections.120.txt) | [sections](../../internal/tui/testdata/screens/sections.140.txt) |
-| The onboardee's walk | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
+| The onboardee's questions | [onboardee](../../internal/tui/testdata/screens/onboardee.80.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.120.txt) | [onboardee](../../internal/tui/testdata/screens/onboardee.140.txt) |
 | The onboardee, nothing to pick | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.80.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.120.txt) | [onboardee empty](../../internal/tui/testdata/screens/pick-empty-onboardee.140.txt) |
 | Contacts, contacts | [list](../../internal/tui/testdata/screens/contacts-list.80.txt) | [list](../../internal/tui/testdata/screens/contacts-list.120.txt) | [list](../../internal/tui/testdata/screens/contacts-list.140.txt) |
 | Contacts, roles | [roles](../../internal/tui/testdata/screens/contacts-roles.80.txt) | [roles](../../internal/tui/testdata/screens/contacts-roles.120.txt) | [roles](../../internal/tui/testdata/screens/contacts-roles.140.txt) |
@@ -229,20 +233,20 @@ Decided. A question may carry one `Example`, an illustration of a good answer. I
 
 ## Answering
 
-Decided, and built. The answer is made on the Walk, under the question.
+Decided, and built. The answer is made on the Answer screen, under the question.
 
 - A boolean or choice is picked from a list, with "deferred, answer later" and "clear the answer" at the end. The cursor starts on the current answer. Up and down move, enter picks.
 - A contact, role, or team is picked from the organization's directory, see Pick lists. A person never types an id.
 - A string takes typed text, with the current answer filled in. Tab cycles through the question's suggestions. Enter on text equal to the current answer moves on without saving. Enter on an empty box clears the answer. Ctrl+d defers.
 - A command is words separated by spaces, with quotes keeping spaces together.
 - Several contacts or several roles in a `multiple` question are picked as a checklist, see Pick lists.
-- An answer that the validator refuses stays on the Walk with the problem message under the answer.
+- An answer that the validator refuses stays on the Answer screen with the problem message under the answer.
 - Every accepted answer is saved to the plan file at once. There is no unsaved state.
 - While a person types, letters are text, so the single-letter keys are off. Back, forward, defer, and help have control-key forms listed below.
 
 ## Pick lists
 
-Decided, and built. A `contact`, `role`, or `team` question carries the directory's entries as `Question.Choices`, each with an id and a name, in directory order, see [0080](../decisions/0080-directory.md). The Walk shows the names and stores the id. The id stays out of sight. The Contacts screen is where entries are made, see Contacts.
+Decided, and built. A `contact`, `role`, or `team` question carries the directory's entries as `Question.Choices`, each with an id and a name, in directory order, see [0080](../decisions/0080-directory.md). The Answer screen shows the names and stores the id. The id stays out of sight. The Contacts screen is where entries are made, see Contacts.
 
 ```text
   Which role owns onboarding here? It appears as the owner of the Access
@@ -274,7 +278,7 @@ Decided, and built. A `contact`, `role`, or `team` question carries the director
 - **Long lists.** The list scrolls around the cursor to fit the window. A cut list adds a faint "Showing 12 to 19 of 40" line. The help lines under a several-answers list go first when there is no room.
 - **Nothing to pick.** When the directory has no entry of the kind, a message takes the list's place and every other key still works, so a person can defer and come back. The onboarder reads "No contacts to pick from yet. Add them on the Contacts screen, press c." with "roles" or "teams" for those types, and `c` opens the Contacts screen on the list the question needs. The onboardee reads "No teams to pick from yet. Ask your onboarder to add this."
 - **Names everywhere.** The Overview, its preview, and the suggestion lines in the notes show the name, and several names are separated by `;` in the order stored. The Review lists blockers, deferred questions, and validator problems, which are about questions and not about answers, so it needs no name. The document preview shows the names the assembler resolves.
-- **Stale answers.** An answer that names an id the directory no longer holds counts as not answered, as the finder counts it. The Walk, Overview, rail, and counts show it as not answered, and no id is shown. A faint "was sam-okafor" was rejected: the validator already warns about the stale id on the Review, and the person's task is to pick again. A list with at least one known id counts as answered and shows only the known names. Confirming the picks drops the unknown ids.
+- **Stale answers.** An answer that names an id the directory no longer holds counts as not answered, as the finder counts it. The Answer screen, the Overview, the rail, and the counts show it as not answered, and no id is shown. A faint "was sam-okafor" was rejected: the validator already warns about the stale id on the Review, and the person's task is to pick again. A list with at least one known id counts as answered and shows only the known names. Confirming the picks drops the unknown ids.
 
 ## Left over answers
 
@@ -290,7 +294,7 @@ A left over answer is data, not something the person gave on purpose today. The 
 ```
 
 - **Where.** On the Review, under "Answered 2 of 12", in faint text. It is there only when something is left over, so a plan with none shows no new line. The Review is where a person checks the plan before handing it on, and the line sits next to the validator's problems about the same answers. Each of those problems, "No variable declares this question", stays as it is.
-- **Key.** `h`. It is free on the Review and is not typing, so it cannot collide with text. `x` was rejected because it clears an answer on the Walk, and `p` because it is back. `r` is the Review itself. The hint line shows `h left over` while something is left over. With nothing left over, `h` says "No answers are left over from removed questions." and changes nothing.
+- **Key.** `h`. It is free on the Review and is not typing, so it cannot collide with text. `x` was rejected because it clears an answer on the Answer screen, and `p` because it is back. `r` is the Review itself. The hint line shows `h left over` while something is left over. With nothing left over, `h` says "No answers are left over from removed questions." and changes nothing.
 - **Confirmation.** `h` runs `PruneHiddenAnswers` on the current plan as a dry run and shows the result in place of the Review panes, as the Contacts removal does. Each answer shows its id, such as `plan.old_tool`, because the plan no longer declares the question and has no text to show for it, and its value in a short form below. A list of more than five is cut with "and 5 more". `y` applies it. Every other key keeps the answers and says "nothing removed". `?` opens help over it. Enter does not confirm, for the reason given under Removing an entry.
 
 ```text
@@ -317,7 +321,7 @@ A left over answer is data, not something the person gave on purpose today. The 
 
 Decided. The key hint line shows the most useful keys for the screen and the width, and `?` shows all of them.
 
-| Key | Walk, choosing | Walk, typing | Overview | Review | Sections |
+| Key | Answer, choosing | Answer, typing | Overview | Review | Sections |
 | -- | -- | -- | -- | -- | -- |
 | enter | Pick, move on. On a several-answers list, confirm the picks | Accept, move on | Open the question | Open the question, or the Contacts entry of a directory problem | Switch on or off |
 | up, down, `k`, `j` | Move the choice |  | Move | Move | Move |
@@ -329,7 +333,7 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | tab |  | Try a suggestion |  | Items or document |  |
 | `w`, `o`, `r`, `s`, `c`, `t`, `i` | `o`, `r`, `s`, `c`, `t`, `i` | Letters are text | `w`, `r`, `s`, `c`, `t`, `i` | `w`, `o`, `s`, `c`, `t`, `i` | `w`, `o`, `r`, `c`, `t`, `i` |
 | pgup, pgdn, `g`, `G` |  |  | `g`, `G` | Scroll the document |  |
-| esc | Back to overview or review | Same | Walk | Walk | Back |
+| esc | Back to overview or review | Same | Answer | Answer | Back |
 | `?` | Help | f1 | Help | Help | Help |
 | `q` | Quit |  | Quit | Quit | Back |
 
@@ -370,24 +374,27 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Walk has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the walk's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The Invitation tests drive the screen through a fake port and the real preparation reviewer: the tab only for the onboarder with a port, the readiness counts, the blocked page with no form, the default file, the pick list of contacts with a route, the guide that follows the picked help, the required pre-access help, nothing written before `y`, the request with the pre-access help first, the result line, the next free name after a file appears, and letters as text in the file name. The walk command's tests run both store-backed ports on real files, and the invite command's tests run `Export` and `Check` on real files. A scripted pseudo-terminal run covers start and quit, another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary, and a third writes an invitation, then tries the same name again and takes the next free one. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Answer screen has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. Role header tests check the title for both people with the organization answered, not answered, deferred, blank, long, and holding control characters, the title changing as the onboarder answers, and the current tab on screen at 60, 80, 100, and 120 columns on every tab. Another checks that no wireframe and no help page says walk. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the Answer screen's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The Invitation tests drive the screen through a fake port and the real preparation reviewer: the tab only for the onboarder with a port, the readiness counts, the blocked page with no form, the default file, the pick list of contacts with a route, the guide that follows the picked help, the required pre-access help, nothing written before `y`, the request with the pre-access help first, the result line, the next free name after a file appears, and letters as text in the file name. The walk command's tests run both store-backed ports on real files, and the invite command's tests run `Export` and `Check` on real files. A scripted pseudo-terminal run covers start and quit, another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary, and a third writes an invitation, then tries the same name again and takes the next free one. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Screen tabs
 
-Decided, and built. A designer asked for it after using the redesigned Walk: a bare title does not show which screen a person is on.
+Decided, and built. A designer asked for it after using the redesigned question screen, then named Walk: a bare title does not show which screen a person is on.
 
 The header line holds the title, the tab strip, and the progress count at the right.
 
 ```text
-  Onboarding plan  Walk w  [Overview]  Review r  Sections s          13 of 13 answered
+  Building: Acme plan  Answer w  [Overview]  Review r  Sections s  Contacts c          13 of 13 answered
+  Your onboarding at Acme  Your questions w  [Overview]  Review r                        1 of 3 to answer
 ```
 
-- The strip names the screens a person can move between, in a fixed order: Walk, Overview, Review, Sections, Contacts, Preparation, Invitation. A screen the audience cannot use, such as Sections, Contacts, Preparation, and Invitation for the onboardee, is left out. Preparation and Invitation also need the walk to supply their ports, which `walk` always does for the onboarder, see Preparation and Invitation. The Contacts key is lowercase `c`. It was the capital `P` when the screen was named People. `p` is back on the Walk, so `P` was a special case that only worked with shift. `b` is page-up on the scrolling screens. `c` is free on every screen and matches the screen name.
+- The title names whose screen it is, under [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md). The onboarder reads "Building: Acme plan" and the newcomer reads "Your onboarding at Acme", where Acme is the plan's `organization` answer. With no answer, a deferred one, or only spaces, the titles are "Building an onboarding plan" and "Your onboarding". The title follows the plan, so it changes as soon as the onboarder answers the question. The name shows at most 24 columns and a longer one is cut with `…`, so a long name cannot push the tabs out. Control characters in the name show as text, such as `\x1b`.
+- The strip names the screens a person can move between, in a fixed order: Answer, Overview, Review, Sections, Contacts, Preparation, Invitation. The newcomer's first tab is named Your questions. It is the same screen. A screen the audience cannot use, such as Sections, Contacts, Preparation, and Invitation for the onboardee, is left out. Preparation and Invitation also need the `walk` command to supply their ports, which it always does for the onboarder, see Preparation and Invitation. The Contacts key is lowercase `c`. It was the capital `P` when the screen was named People. `p` is back on the Answer screen, so `P` was a special case that only worked with shift. `b` is page-up on the scrolling screens. `c` is free on every screen and matches the screen name.
+- The Answer key is `w`, the key of the screen when it was named Walk. It stays because it is a letter of "Answer", as `t` is a letter of "Preparation". `a`, the first letter, adds an entry on the Contacts screen and opens About from a help page. No free letter is in both "Answer" and "Your questions", so the newcomer's Your questions tab takes `w` too, and one key opens the same screen for both people.
 - The current tab is bold in the accent colour, which is "you are here". With no colour it is in brackets. The other tabs are faint, each with its key.
-- The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Walk while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
+- The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Answer screen while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
 - While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` leaves.
-- When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The onboarder's strip with five tabs and keys is 70 columns wide, so at 80 columns the progress count goes and the keys stay. With the sixth tab, Preparation, the strip with keys is 84 columns wide, so at 80 columns the keys go too. At 60 columns the strip shows names only, and its gaps shrink to one column.
-- When even the names do not fit, the strip is cut after the last tab that fits and ends with `…`. If the cut would hide the current tab, the title "Onboarding plan" goes instead, so the current tab is always on screen. At 60 columns the onboarder's six tabs need one of these two. With the seventh tab, Invitation, the strip without the title can still be too wide when a late tab is current. Then the strip shows a window of tabs around the current one, with `…` on each side that is cut, such as `… Review Sections Contacts Preparation [Invitation]`.
+- When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The title "Building: ACME Corp plan" is 24 columns, and "Building an onboarding plan" is 27. With the 24-column title and all seven tabs, the title and the strip with keys are 109 columns wide, so at 120 columns the progress count goes and the keys stay, and at 100 columns the keys go too. With five tabs they are 80 columns wide, so at 100 columns the keys stay and at 80 columns they go. At 60 columns the strip shows names only, and its gaps shrink to one column.
+- When even the names do not fit, the strip is cut after the last tab that fits and ends with `…`. If the cut would hide the current tab, the title goes instead, so the current tab is always on screen. At 60 and 80 columns the onboarder's seven tabs need one of these two. With the seventh tab, Invitation, the strip without the title can still be too wide when a late tab is current. Then the strip shows a window of tabs around the current one, with `…` on each side that is cut, such as `… Review Sections Contacts Preparation [Invitation]`.
 
 Rejected: the screen name beside the title, as before (`Onboarding plan  Overview`), because it shows one screen and hides that there are others. Also rejected: a tab for Help, because help is a page over the current screen and the current tab stays marked while it is open.
 
@@ -397,7 +404,7 @@ Decided, and built. Under [0070](../decisions/0070-sub-sections.md) a section ca
 
 - The Overview shows a sub-section under its parent, indented two columns for each level of depth. The indent applies to the section title and to its question rows.
 - The progress rail keeps the cells of a section and its sub-sections together, with the usual gap only between families of sections.
-- The Walk shows the sub-section's own title. The document preview nests it by heading level.
+- The Answer screen shows the sub-section's own title. The document preview nests it by heading level.
 
 ## Contacts
 
@@ -460,13 +467,13 @@ One list with three headers would show everything at once, but the add key would
 
 - The sentence counts the cleared answers, and the roles and team overrides the entry leaves. A contact that is the contact of teams adds "and removes it as the contact of 1 team", and the places list "Platform team, as the team contact". The team stays and has no contact afterwards, as the editor reports in `team-contact:<team id>`. Below it are the questions, by their text and not their ids, and the places. "Left with nobody" names a role or a team override that the removal empties, so a person sees the vacancy before they cause it. A list of more than five is cut with "and 3 more".
 - `y` applies it, with the plan the dry run returned, and saves. Every other key keeps the entry and says "nothing removed". The key is `y` and not enter because enter is the key a person presses to get on, and a removal needs a deliberate one.
-- A cleared required question is unanswered afterwards, and the walk and the Review show it so.
+- A cleared required question is unanswered afterwards, and the Answer screen and the Review show it so.
 
 ### Saving and returning
 
 - Every accepted edit and every removal is saved to the plan file at once, the way an answer is, and the status says "saved". A save that fails says "could not save", and the plan stays changed in memory as it does for an answer.
-- After a change the screen asks the finder again, so the walk's questions, their pick lists, the counts, and the rail are current. Returning to the walk with escape, `q`, or `w` opens the question the person left, with the new entries in its list.
-- Escape and `q` go back to the screen the person came from, including the Walk, the Overview, and the Review. From the Sections screen they go to where Sections was opened from.
+- After a change the screen asks the finder again, so the Answer screen's questions, their pick lists, the counts, and the rail are current. Returning to the Answer screen with escape, `q`, or `w` opens the question the person left, with the new entries in its list.
+- Escape and `q` go back to the screen the person came from, including the Answer screen, the Overview, and the Review. From the Sections screen they go to where Sections was opened from.
 
 ### Contacts keys
 
@@ -490,7 +497,7 @@ One list with three headers would show everything at once, but the add key would
 - A separate window for each kind. The three lists share one cursor model, so one screen is less to learn.
 - A key to move a holder up or down. The numbered pick order is enough for the two or three holders a role has, as for any several-answers list.
 - Enter to confirm a removal. See above.
-- Inline adding from the walk's pick list. The Contacts screen is one key away, opens on the right list, and brings the person back to the same question. A second way to add would need the whole form inside the walk.
+- Inline adding from the Answer screen's pick list. The Contacts screen is one key away, opens on the right list, and brings the person back to the same question. A second way to add would need the whole form inside the Answer screen.
 - Letting the id be typed. The name makes it, and a person who sees `sam-okafor` is not asked to invent one.
 
 ## Preparation
@@ -545,7 +552,7 @@ Built, under [0520](../decisions/0520-preparation-screen.md). The save rules of 
 
 ### Why `t`
 
-The screen needs a key that is free on every screen. `p` is back on the Walk, `r` is the Review, `a` and `e` act on the Contacts list, `x`, `d`, `n`, and `q` act on the Walk, and `i` is left for the Invitation tab that [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md) plans. `t` is free on every screen and is in the name, "preparation".
+The screen needs a key that is free on every screen. `p` is back on the Answer screen, `r` is the Review, `a` and `e` act on the Contacts list, `x`, `d`, `n`, and `q` act on the Answer screen, and `i` is left for the Invitation tab that [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md) plans. `t` is free on every screen and is in the name, "preparation".
 
 ### Rejected on the Preparation screen
 
@@ -564,7 +571,7 @@ The people are the ones the [preparation store](../../contracts/preparation/stor
 ### What the Invitation screen shows
 
 - **People.** Each person with a preparation, by account, with "Ready" or "! not ready, N to fix". N counts the preparation problems, the onboarder blockers in the plan, and a missing onboarding owner, the same checks the export runs. A plan or preparation that cannot be read or used reads "! not ready, cannot be checked". The list checks everyone again each time the tab opens. Notices say what an invitation holds and that the tool sends nothing.
-- **What blocks.** Enter on a person who is not ready shows what blocks the invitation, grouped as on the Preparation review, and no form. The way to fix each is on the Walk or the Preparation tab.
+- **What blocks.** Enter on a person who is not ready shows what blocks the invitation, grouped as on the Preparation review, and no form. The way to fix each is on the Answer or the Preparation tab.
 - **The form.** Enter on a ready person opens three fields: the pre-access help, the general help, and the file. A line under the account names the whole path the file will be written to, because the field row may cut it. The first steps guide sits beside the form, or below it under 120 columns, and follows the picked help.
   - **Pre-access help.** Required, and the row says so: "required, not chosen". A pick list of the plan's contacts that have a name and an email or Slack handle, as the export requires, with that rule under the list. A Slack id alone does not count.
   - **General help.** Optional, and the row says so: "optional, nobody". A several-answers list of the plan's contacts and roles, in pick order.
@@ -680,7 +687,11 @@ A list of every place the tool uses, rendered from data in `internal/command/pla
 
 - Whether the progress count should outrank the tab keys at 80 columns now that the strip has five tabs.
 
-- Whether the Walk goes to the next unanswered question when the person is revisiting from Review. Today it goes to the next in order.
+- Whether the newcomer's Review tab should be named Document, as 0610 says. It holds more than the document today, see Entry and roles.
+
+- Whether the newcomer's tabs should take their own keys, such as `u` for Your questions, which is free on every screen. Today both people use `w`, `o`, and `r`.
+
+- Whether the Answer screen goes to the next unanswered question when the person is revisiting from Review. Today it goes to the next in order.
 
 - How the tool reminds a person of deferred questions after they quit.
 
