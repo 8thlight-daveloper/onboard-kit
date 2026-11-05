@@ -19,6 +19,9 @@ onboarder can move sections within a window.
   working, tool access, setup and learning the code, design work, and the first
   check-in. Inside each, a section follows what it depends on: an account before
   its membership, membership before repository access, access before a clone.
+- **The onboarding repository comes first among repositories.** It is the plan's own
+  repository, so it follows source host membership and comes before access to any code
+  repository. A newcomer gets updates to their plan from it from then on.
 - **`anytime` is for open-ended work,** such as help, feedback, and a first pull
   request when a suitable change comes up. It stays last.
 
@@ -44,14 +47,14 @@ onboarder can move sections within a window.
 | 16 | [`teammate-introduction`](../../contracts/catalog/reader/content/sections/teammate-introduction.yaml) | Meet a teammate | `week-one` | `team` | First week |  |
 | 17 | [`source-host-account`](../../contracts/catalog/reader/content/sections/source-host-account.yaml) | GitHub or other source-host account | `week-one` | `organization` | Before repository work | timing `anytime` to `week-one` |
 | 18 | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) | Source-host organization membership | `week-one` | `organization` | Before repository work | timing `anytime` to `week-one` |
-| 19 | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | Repository access | `week-one` | `team` | Before work in that repository | timing `anytime` to `week-one` |
-| 20 | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) | Ticket system access | `week-one` | `team` | Before ticket work | timing `anytime` to `week-one` |
-| 21 | [`documentation-access`](../../contracts/catalog/reader/content/sections/documentation-access.yaml) | Documentation workspace access | `week-one` | `organization` | Before assigned reading | timing `anytime` to `week-one` |
-| 22 | [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) | CI access | `week-one` | `team` | Before delivery work | timing `anytime` to `week-one` |
-| 23 | [`environment-access`](../../contracts/catalog/reader/content/sections/environment-access.yaml) | Development or staging environment access | `week-one` | `team` | Before affected work | timing `anytime` to `week-one` |
-| 24 | [`artifact-access`](../../contracts/catalog/reader/content/sections/artifact-access.yaml) | Package or artifact registry access | `week-one` | `team` | Before dependent setup | timing `anytime` to `week-one` |
-| 25 | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | Connect to the onboarding repository | `week-one` | `organization` | After access | timing `anytime` to `week-one` |
-| 26 | [`onboarding-refresh`](../../contracts/catalog/reader/content/sections/onboarding-refresh.yaml) | Get the latest plan | `week-one` | `organization` | After access | timing `anytime` to `week-one` |
+| 19 | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | Connect to the onboarding repository | `week-one` | `organization` | After access | timing `anytime` to `week-one` |
+| 20 | [`onboarding-refresh`](../../contracts/catalog/reader/content/sections/onboarding-refresh.yaml) | Get the latest plan | `week-one` | `organization` | After access | timing `anytime` to `week-one` |
+| 21 | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | Repository access | `week-one` | `team` | Before work in that repository | timing `anytime` to `week-one` |
+| 22 | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) | Ticket system access | `week-one` | `team` | Before ticket work | timing `anytime` to `week-one` |
+| 23 | [`documentation-access`](../../contracts/catalog/reader/content/sections/documentation-access.yaml) | Documentation workspace access | `week-one` | `organization` | Before assigned reading | timing `anytime` to `week-one` |
+| 24 | [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) | CI access | `week-one` | `team` | Before delivery work | timing `anytime` to `week-one` |
+| 25 | [`environment-access`](../../contracts/catalog/reader/content/sections/environment-access.yaml) | Development or staging environment access | `week-one` | `team` | Before affected work | timing `anytime` to `week-one` |
+| 26 | [`artifact-access`](../../contracts/catalog/reader/content/sections/artifact-access.yaml) | Package or artifact registry access | `week-one` | `team` | Before dependent setup | timing `anytime` to `week-one` |
 | 27 | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) | Clone a repository | `week-one` | `team` | First week |  |
 | 28 | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) | Install project dependencies | `week-one` | `team` | First week |  |
 | 29 | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) | Run the test suite | `week-one` | `team` | First week |  |
@@ -112,6 +115,14 @@ come before work that happens in the first week: `internal-network`,
 `onboarding-refresh`, `contribution-practices`, and `design-handoff`. Without the
 change, every access section would sort after the setup that needs it.
 
+## Edges decided in review
+
+Three edges were dropped or changed after a review: `ci-access` no longer requires
+`repository-access`, because CI may be a hosted service tied to the repository or a
+separate system with its own accounts. `onboarding-repository` requires
+`source-host-membership`, the account and membership on the forge, and not access to a
+specific code repository. `pr-merge` no longer requires `pr-post`.
+
 ## Proposed `requires` edges
 
 An edge gates: the dependent waits for a verified outcome, and switching off a
@@ -131,8 +142,8 @@ decides which to keep.
 | [`internal-network`](../../contracts/catalog/reader/content/sections/internal-network.yaml) | [`working-device`](../../contracts/catalog/reader/content/sections/working-device.yaml) |
 | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) | [`source-host-account`](../../contracts/catalog/reader/content/sections/source-host-account.yaml) |
 | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) |
-| [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
-| [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
+| [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) |
+| [`onboarding-refresh`](../../contracts/catalog/reader/content/sections/onboarding-refresh.yaml) | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) |
 | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
 | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) |
 | [`application-local`](../../contracts/catalog/reader/content/sections/application-local.yaml) | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) |
@@ -143,8 +154,19 @@ decides which to keep.
 | [`deploy-lead`](../../contracts/catalog/reader/content/sections/deploy-lead.yaml) | [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) |
 | [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) | [`contribution-practices`](../../contracts/catalog/reader/content/sections/contribution-practices.yaml) |
 | [`pr-review`](../../contracts/catalog/reader/content/sections/pr-review.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
-| [`pr-merge`](../../contracts/catalog/reader/content/sections/pr-merge.yaml) | [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) |
 | [`design-contribution`](../../contracts/catalog/reader/content/sections/design-contribution.yaml) | [`design-handoff`](../../contracts/catalog/reader/content/sections/design-handoff.yaml) |
+
+## Proposed addition
+
+**`first-change-merged`, "Get your first change merged."** The catalog has `pr-post` for
+posting a change and `pr-merge` for completing an authorized merge, which may be another
+person's change or one's own when the policy permits. It has no section for the milestone
+of one's own change landing. This one would be `team` scope, window `days-8-to-30`, placed
+before the thirty-day review, and it requires `pr-post`. That edge is true: a change cannot
+be merged before it is posted. `pr-merge` then keeps its meaning of merging when authorized,
+and its summary would say a teammate's change. The two ids differ by one letter, which is
+easy to misread, so the new one carries the longer name. This adds a 60th section, which
+changes the catalog's pinned count and its fixtures.
 
 ## What this needs
 
