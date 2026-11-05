@@ -64,7 +64,7 @@ func TestALongExampleIsCutToTheInputWidth(t *testing.T) {
 	}
 }
 
-func TestAGuidedWalkOfManyQuestionsShowsThePositionAndSection(t *testing.T) {
+func TestGuidedAnsweringOfManyQuestionsShowsThePositionAndSection(t *testing.T) {
 	var questions []model.Question
 	for index := 0; index < 11; index++ {
 		questions = append(questions, textQuestion("plan.q"+strings.Repeat("a", index), "plan", "Question text", ""))

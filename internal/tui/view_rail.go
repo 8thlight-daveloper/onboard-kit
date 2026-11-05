@@ -38,7 +38,7 @@ func railGlyphsForTerminal() railGlyphs {
 
 func (app App) railPosition() int {
 	switch app.screen {
-	case screenWalk:
+	case screenAnswer:
 		return app.cursor
 	case screenOverview:
 		return app.overviewCursor

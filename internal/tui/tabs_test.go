@@ -55,7 +55,7 @@ func TestTheOnboardeeHasNoSectionsTab(t *testing.T) {
 
 func TestWhileTypingTheTabsShowNoKeysBecauseLettersAreText(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	header := headerOf(resize(app, 120, 30))
 	if !strings.HasPrefix(header, "Onboarding plan  [Walk]  Overview  Review  Sections") {
 		t.Fatalf("header is %q", header)
@@ -92,7 +92,7 @@ func TestTheHeaderDropsTheProgressThenTheKeysBeforeItOverflows(t *testing.T) {
 
 func TestWhenTheHeaderHasNoKeysTheHintLineCarriesThem(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	choosing := moveTo(t, app, "plan.team_state")
 	wide := viewLines(resize(choosing, 120, 30))
 	if last := wide[len(wide)-1]; strings.Contains(last, "o overview") {
@@ -106,9 +106,9 @@ func TestWhenTheHeaderHasNoKeysTheHintLineCarriesThem(t *testing.T) {
 
 func TestTheScreenKeysWorkFromTheSectionsScreen(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	sections := press(moveTo(t, app, "plan.team_state"), typed("s"))
-	for key, want := range map[string]screen{"w": screenWalk, "o": screenOverview, "r": screenReview} {
+	for key, want := range map[string]screen{"w": screenAnswer, "o": screenOverview, "r": screenReview} {
 		if got := press(sections, typed(key)).screen; got != want {
 			t.Errorf("%s from the sections screen opened %v, want %v", key, got, want)
 		}
@@ -120,7 +120,7 @@ func TestTheScreenKeysWorkFromTheSectionsScreen(t *testing.T) {
 
 func TestTheTabsNameTheScreenWhileHelpIsOpen(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	header := headerOf(resize(press(app.openOverview(), typed("?")), 120, 30))
 	if !strings.Contains(header, "[Overview]") {
 		t.Errorf("header is %q", header)

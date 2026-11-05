@@ -41,7 +41,7 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		return func(app App) App { return moveTo(t, app, id) }
 	}
 	return map[string]func(goldenSize) App{
-		"walk":                         build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
+		"answer":                       build(blankPlan(t), model.AudienceOnboarder, goTo("plan.team_state")),
 		"edit":                         build(blankPlan(t), model.AudienceOnboarder, keys(typed("Glob"))),
 		"overview":                     build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("o"))),
 		"review":                       build(acmePlan(t), model.AudienceOnboarder, goTo("plan.team_state"), keys(typed("d"), typed("r"))),

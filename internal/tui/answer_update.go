@@ -6,7 +6,7 @@ import (
 	"onboard-kit/internal/model"
 )
 
-func (app App) updateWalk(key tea.KeyMsg) (tea.Model, tea.Cmd) {
+func (app App) updateAnswer(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	if app.entry.typing() {
 		return app.updateTyping(key)
 	}
@@ -44,7 +44,7 @@ func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "i":
 		return app.openInvitation(), nil
 	case "esc":
-		return app.leaveWalk(), nil
+		return app.leaveAnswer(), nil
 	case "q":
 		return app.quit()
 	case "?":
@@ -80,7 +80,7 @@ func (app App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "ctrl+n":
 		return app.moveTo(app.cursor + 1), nil
 	case "esc":
-		return app.leaveWalk(), nil
+		return app.leaveAnswer(), nil
 	case "f1":
 		app.helpOpen = true
 		return app, nil
@@ -90,7 +90,7 @@ func (app App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	return app, command
 }
 
-func (app App) leaveWalk() App {
+func (app App) leaveAnswer() App {
 	if app.returnTo == screenReview {
 		return app.openReview()
 	}

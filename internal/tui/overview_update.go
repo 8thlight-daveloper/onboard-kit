@@ -21,7 +21,7 @@ func (app App) updateOverview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		app.returnTo = screenOverview
 		return app.jumpTo(app.overviewCursor), nil
 	case "esc", "w":
-		return app.returnToWalk(), nil
+		return app.returnToAnswer(), nil
 	case "r":
 		return app.openReview(), nil
 	case "s":

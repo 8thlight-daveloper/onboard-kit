@@ -75,12 +75,12 @@ func TestThePreparationTabNeedsAPortAndTheOnboarder(t *testing.T) {
 func TestTOpensPreparationFromEveryScreenAndEscReturns(t *testing.T) {
 	t.Parallel()
 	app, _ := startPreparing(t, withSamLee(t))
-	walking := moveTo(t, app, "plan.team_state")
+	answering := moveTo(t, app, "plan.team_state")
 	for name, from := range map[string]struct {
 		app  App
 		back screen
 	}{
-		"walk": {walking, screenWalk}, "overview": {app.openOverview(), screenOverview}, "review": {app, screenReview},
+		"answer": {answering, screenAnswer}, "overview": {app.openOverview(), screenOverview}, "review": {app, screenReview},
 		"sections": {press(app, typed("s")), screenReview}, "contacts": {press(app, typed("c")), screenReview},
 	} {
 		opened := press(from.app, typed("t"))

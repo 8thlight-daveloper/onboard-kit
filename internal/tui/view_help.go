@@ -42,10 +42,10 @@ func (app App) helpEntries() []hint {
 	case screenInvitation:
 		return app.invitationHelp()
 	}
-	return app.walkHelp()
+	return app.answerHelp()
 }
 
-func (app App) walkHelp() []hint {
+func (app App) answerHelp() []hint {
 	entries := []hint{
 		app.enterHelp(),
 		{"p, left, shift+tab", "back one question"},

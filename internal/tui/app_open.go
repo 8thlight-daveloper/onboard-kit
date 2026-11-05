@@ -5,7 +5,7 @@ func (app App) openQuestion(index int) App {
 	if question, ok := app.current(); ok {
 		app.entry = newEntryState(question, app.inputWidth())
 	}
-	app.screen = screenWalk
+	app.screen = screenAnswer
 	return app
 }
 
@@ -37,7 +37,7 @@ func (app App) openContacts() App {
 	if !app.canEditDirectory() {
 		return app
 	}
-	if question, ok := app.current(); ok && app.screen == screenWalk {
+	if question, ok := app.current(); ok && app.screen == screenAnswer {
 		if kind, found := kindOfQuestion(question); found {
 			app.contacts.kind = kind
 		}
@@ -67,7 +67,7 @@ func (app App) closeSideScreen() App {
 	return app.openQuestion(app.cursor)
 }
 
-func (app App) returnToWalk() App {
+func (app App) returnToAnswer() App {
 	if len(app.questions) == 0 {
 		return app
 	}

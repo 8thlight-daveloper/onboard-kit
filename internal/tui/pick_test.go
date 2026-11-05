@@ -224,7 +224,7 @@ func TestAnAnswerNamingAnIdOutsideTheDirectoryIsNotAnswered(t *testing.T) {
 		view := plainView(app)
 		for _, want := range []string{"not answered yet", "0 of 2 answered"} {
 			if !strings.Contains(view, want) {
-				t.Errorf("walk lacks %q:\n%s", want, view)
+				t.Errorf("the Answer screen lacks %q:\n%s", want, view)
 			}
 		}
 		if strings.Contains(view, "gone") || strings.Contains(view, "(current)") {
@@ -292,7 +292,7 @@ func TestALongPickListScrollsAroundTheCursorAtEveryHeight(t *testing.T) {
 
 func TestPickingFromARealDirectoryStoresTheIdInThePlan(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	app = moveTo(t, app, "access.onboarding_owner_role")
 	view := plainView(app)
 	for _, want := range []string{"> Engineering manager", "IT contact", "Platform team lead"} {

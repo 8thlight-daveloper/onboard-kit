@@ -42,7 +42,7 @@ func (app App) updateBrowsing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "esc", "q":
 		return app.closeSideScreen(), nil
 	case "w":
-		return app.returnToWalk(), nil
+		return app.returnToAnswer(), nil
 	case "o":
 		return app.openOverview(), nil
 	case "r":

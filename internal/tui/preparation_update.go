@@ -28,7 +28,7 @@ func (app App) updatePreparation(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (app App) jumpedFromPreparation(key string) (App, bool) {
 	switch key {
 	case "w":
-		return app.returnToWalk(), true
+		return app.returnToAnswer(), true
 	case "o":
 		return app.openOverview(), true
 	case "r":

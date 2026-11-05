@@ -116,7 +116,7 @@ func longScreens() map[string]App {
 		question.Suggestions = []model.Suggestion{{Value: model.Value{Kind: model.ValueKindText, Text: long}, Source: model.SuggestionSourceDefault}}
 		questions = append(questions, question)
 	}
-	walking := startFake(newFakeBackend(questions...))
+	answering := startFake(newFakeBackend(questions...))
 	var crowd []model.Choice
 	for index := 0; index < 40; index++ {
 		crowd = append(crowd, model.Choice{Value: "id" + strings.Repeat("x", index), Label: long[:30+index]})
@@ -130,9 +130,9 @@ func longScreens() map[string]App {
 		"long override": press(crowdedContacts(), typed("c"), tab, tab, enter, enter, enter, down, down, space),
 		"long contact":  press(crowdedContacts(), typed("c"), enter, typed("more text that goes on and on and on and on and on and on and on and on and on")),
 		"long removal":  press(crowdedContacts(), typed("c"), typed("x")),
-		"long walk":     walking,
-		"long overview": press(walking, esc),
-		"long review":   press(walking, esc, typed("r")),
+		"long answer":   answering,
+		"long overview": press(answering, esc),
+		"long review":   press(answering, esc, typed("r")),
 		"long picks":    press(picking, typed("j"), space, typed("j"), space),
 	}
 }

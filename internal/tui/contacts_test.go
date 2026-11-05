@@ -49,8 +49,8 @@ func TestTheContactsTabIsOnTheStripAndCOpensItFromEveryScreen(t *testing.T) {
 	if !strings.Contains(headerOf(app), "Sections s  Contacts c") {
 		t.Fatalf("the strip names Contacts and its key: %q", headerOf(app))
 	}
-	walking := moveTo(t, app, "plan.team_state")
-	for name, from := range map[string]App{"walk": walking, "overview": app.openOverview(), "review": app, "sections": press(app, typed("s"))} {
+	answering := moveTo(t, app, "plan.team_state")
+	for name, from := range map[string]App{"answer": answering, "overview": app.openOverview(), "review": app, "sections": press(app, typed("s"))} {
 		opened := press(from, typed("c"))
 		if opened.screen != screenContacts || !strings.Contains(headerOf(opened), "[Contacts]") {
 			t.Errorf("%s: c opened %v with the header %q", name, opened.screen, headerOf(opened))
@@ -85,11 +85,11 @@ func TestEscapeFromContactsReturnsToTheScreenThePersonCameFrom(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	app = resize(app, 120, 30)
-	walking := moveTo(t, app, "plan.team_state")
+	answering := moveTo(t, app, "plan.team_state")
 	for name, want := range map[string]struct {
 		from App
 		to   screen
-	}{"walk": {walking, screenWalk}, "overview": {app.openOverview(), screenOverview}, "review": {app, screenReview}} {
+	}{"answer": {answering, screenAnswer}, "overview": {app.openOverview(), screenOverview}, "review": {app, screenReview}} {
 		if got := press(want.from, typed("c"), esc).screen; got != want.to {
 			t.Errorf("%s: esc returned to %v, want %v", name, got, want.to)
 		}
@@ -463,7 +463,7 @@ func TestRemovingARoleCountsItsTeamOverridesAndTheAnswersItClears(t *testing.T) 
 		t.Error("the answer is cleared")
 	}
 	if len(removed.questions) != len(app.questions) || answerState(removed.questions[removed.indexOf("access.onboarding_owner_role")]) != "unanswered" {
-		t.Error("the walk's questions are refreshed, the cleared one is unanswered")
+		t.Error("the Answer screen's questions are refreshed, the cleared one is unanswered")
 	}
 }
 
@@ -547,9 +547,9 @@ func startWithoutDirectory(t *testing.T) App {
 	return app
 }
 
-func TestTheWalkSeesNewEntriesAfterReturningFromContacts(t *testing.T) {
+func TestTheAnswerScreenSeesNewEntriesAfterReturningFromContacts(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	app = resize(moveTo(t, app, "access.onboarding_owner_role"), 120, 30)
 	onContacts := press(app, typed("c"))
 	if onContacts.contacts.kind != kindRole {
@@ -557,7 +557,7 @@ func TestTheWalkSeesNewEntriesAfterReturningFromContacts(t *testing.T) {
 	}
 	onContacts = press(onContacts, typed("a"), typed("Security lead"), ctrlS)
 	back := press(onContacts, esc)
-	if back.screen != screenWalk || back.questions[back.cursor].ID != "access.onboarding_owner_role" {
+	if back.screen != screenAnswer || back.questions[back.cursor].ID != "access.onboarding_owner_role" {
 		t.Fatalf("esc returns to the question, got %v at %d", back.screen, back.cursor)
 	}
 	if !strings.Contains(plainView(back), "Security lead") {
@@ -589,16 +589,16 @@ func TestTheEmptyPickListPointsAtTheContactsScreenAndTheKeyOpensIt(t *testing.T)
 	}
 }
 
-func TestAnAnswerThatNamesARemovedEntryReadsAsNotAnsweredInTheWalk(t *testing.T) {
+func TestAnAnswerThatNamesARemovedEntryReadsAsNotAnsweredOnTheAnswerScreen(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	app = press(resize(app, 120, 30), typed("c"), tab, typed("x"), typed("y"), typed("w"))
-	if app.screen != screenWalk {
-		t.Fatalf("w returns to the walk, got %v", app.screen)
+	if app.screen != screenAnswer {
+		t.Fatalf("w returns to the Answer screen, got %v", app.screen)
 	}
 	question := app.questions[app.indexOf("access.onboarding_owner_role")]
 	if answerState(question) != "unanswered" || strings.Contains(plainView(moveTo(t, app, question.ID)), "Engineering manager (current)") {
-		t.Error("the walk shows the cleared answer as not answered")
+		t.Error("the Answer screen shows the cleared answer as not answered")
 	}
 	if !strings.Contains(headerOf(app), "12 of 13") && !strings.Contains(headerOf(resize(app, 140, 30)), "12 of 13") {
 		t.Errorf("the count follows the removal: %q", headerOf(resize(app, 140, 30)))
@@ -659,14 +659,14 @@ func TestEveryContactsModeHasItsHelp(t *testing.T) {
 		}
 	}
 	if !strings.Contains(plainView(press(moveTo(t, app, "plan.team_state"), typed("?"))), "c contacts") {
-		t.Error("the walk's help names the Contacts key")
+		t.Error("the Answer screen's help names the Contacts key")
 	}
 }
 
 func TestTheJumpKeysLeaveContactsFromTheListButNotFromAForm(t *testing.T) {
 	t.Parallel()
 	app, _ := onContacts(t, acmePlan(t))
-	for key, want := range map[string]screen{"w": screenWalk, "o": screenOverview, "r": screenReview, "s": screenSections} {
+	for key, want := range map[string]screen{"w": screenAnswer, "o": screenOverview, "r": screenReview, "s": screenSections} {
 		if got := press(app, typed(key)).screen; got != want {
 			t.Errorf("%s opened %v, want %v", key, got, want)
 		}
@@ -891,8 +891,8 @@ func TestOnlyLowercaseCOpensTheContactsScreenAndCapitalPDoesNothing(t *testing.T
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	app = resize(app, 120, 30)
-	walking := moveTo(t, app, "plan.team_state")
-	for name, from := range map[string]App{"walk": walking, "overview": app.openOverview(), "review": app, "sections": press(app, typed("s"))} {
+	answering := moveTo(t, app, "plan.team_state")
+	for name, from := range map[string]App{"answer": answering, "overview": app.openOverview(), "review": app, "sections": press(app, typed("s"))} {
 		if got := press(from, typed("P")); got.screen != from.screen {
 			t.Errorf("%s: capital P opened %v", name, got.screen)
 		}
@@ -900,8 +900,8 @@ func TestOnlyLowercaseCOpensTheContactsScreenAndCapitalPDoesNothing(t *testing.T
 			t.Errorf("%s: c opened %v", name, got.screen)
 		}
 	}
-	if got := press(walking, typed("p")); got.cursor != walking.cursor-1 {
-		t.Error("p is back on the walk")
+	if got := press(answering, typed("p")); got.cursor != answering.cursor-1 {
+		t.Error("p is back on the Answer screen")
 	}
 }
 
@@ -909,7 +909,7 @@ func TestCIsTextWhileTypingAnAnswerOrAFormField(t *testing.T) {
 	t.Parallel()
 	app, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
 	typing := press(moveTo(t, resize(app, 120, 30), "plan.organization"), typed("c"))
-	if typing.screen != screenWalk || !strings.Contains(plainView(typing), "c") {
+	if typing.screen != screenAnswer || !strings.Contains(plainView(typing), "c") {
 		t.Fatalf("c is typed into the answer, got %v", typing.screen)
 	}
 	onList, _ := onContacts(t, acmePlan(t))

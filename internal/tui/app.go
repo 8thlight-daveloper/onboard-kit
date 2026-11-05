@@ -148,7 +148,7 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case screenInvitation:
 		return app.updateInvitation(key)
 	}
-	return app.updateWalk(key)
+	return app.updateAnswer(key)
 }
 
 func (app App) quit() (tea.Model, tea.Cmd) {

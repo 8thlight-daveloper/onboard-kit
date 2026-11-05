@@ -175,7 +175,7 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 
 | Screen | 80 columns | 120 columns | 140 columns |
 | -- | -- | -- | -- |
-| Walk, choosing | [walk](../../internal/tui/testdata/screens/walk.80.txt) | [walk](../../internal/tui/testdata/screens/walk.120.txt) | [walk](../../internal/tui/testdata/screens/walk.140.txt) |
+| Walk, choosing | [answer](../../internal/tui/testdata/screens/answer.80.txt) | [answer](../../internal/tui/testdata/screens/answer.120.txt) | [answer](../../internal/tui/testdata/screens/answer.140.txt) |
 | Walk, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
 | Walk, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
 | Walk, picking one | [pick](../../internal/tui/testdata/screens/pick.80.txt) | [pick](../../internal/tui/testdata/screens/pick.120.txt) | [pick](../../internal/tui/testdata/screens/pick.140.txt) |

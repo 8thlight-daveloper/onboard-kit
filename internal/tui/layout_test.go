@@ -24,15 +24,15 @@ var (
 
 func everyScreen(t *testing.T) map[string]App {
 	t.Helper()
-	walking, _ := startWalking(t)
-	choosing := moveTo(t, walking, "plan.team_state")
-	secret := moveTo(t, walking, "access.repo_url")
+	answering, _ := startAnswering(t)
+	choosing := moveTo(t, answering, "plan.team_state")
+	secret := moveTo(t, answering, "access.repo_url")
 	secret = press(secret, typed("https://user:hunter2@git.example.test/r.git"), enter)
 	reviewing, _ := startWith(t, acmePlan(t), model.AudienceOnboarder)
-	blocked := press(walking, esc, typed("r"))
+	blocked := press(answering, esc, typed("r"))
 	onboardee, _ := startWith(t, blankPlan(t), model.AudienceOnboardee)
-	owner := moveTo(t, walking, "access.onboarding_owner_role")
-	contacts := moveTo(t, walking, "stuck-general.general_contacts")
+	owner := moveTo(t, answering, "access.onboarding_owner_role")
+	contacts := moveTo(t, answering, "stuck-general.general_contacts")
 	emptyPlan, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboarder)
 	emptyOnboardee, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboardee)
 	subsectionFake, subsectionPlan := subsectionBackend()
@@ -55,10 +55,10 @@ func everyScreen(t *testing.T) map[string]App {
 		"contacts remove":              press(flagged, down, typed("x")),
 		"contacts empty":               emptyContacts,
 		"contacts help":                press(flagged, typed("?")),
-		"walk typing":                  walking,
-		"walk choosing":                choosing,
-		"walk problem":                 secret,
-		"overview":                     press(walking, esc),
+		"answer typing":                answering,
+		"answer choosing":              choosing,
+		"answer problem":               secret,
+		"overview":                     press(answering, esc),
 		"review":                       reviewing,
 		"review blocks":                blocked,
 		"review doc":                   press(reviewing, tab),
@@ -110,7 +110,7 @@ func TestNoLineIsWiderThanTheWindow(t *testing.T) {
 
 func TestAWindowThatIsTooSmallGetsAPlainMessage(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	for _, size := range [][2]int{{50, 24}, {59, 40}, {80, 11}, {200, 10}} {
 		view := plainView(resize(app, size[0], size[1]))
 		if !strings.Contains(strings.Join(strings.Fields(view), " "), "larger") {
@@ -122,9 +122,9 @@ func TestAWindowThatIsTooSmallGetsAPlainMessage(t *testing.T) {
 	}
 }
 
-func TestTheWalkHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testing.T) {
+func TestTheAnswerScreenHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	for _, width := range []int{120, 140, 200} {
 		view := plainView(resize(app, width, 40))
 		if !strings.Contains(view, "│") || !strings.Contains(view, "About this question") {
@@ -142,13 +142,13 @@ func TestTheWalkHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testing.T) {
 	}
 }
 
-func TestTheQuestionListIsNotOnTheWalk(t *testing.T) {
+func TestTheQuestionListIsNotOnTheAnswerScreen(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	view := plainView(resize(app, 140, 40))
 	for _, title := range []string{"Where to request source control access", "Who can help with anything"} {
 		if strings.Contains(view, title) {
-			t.Errorf("the walk should show one question, found %q", title)
+			t.Errorf("the Answer screen should show one question, found %q", title)
 		}
 	}
 }
@@ -176,13 +176,13 @@ func TestWithNoColourTheMarksAndKeyHintsAreStillText(t *testing.T) {
 		}
 	}
 	screens := everyScreen(t)
-	view := resize(screens["walk choosing"], 120, 30).View()
+	view := resize(screens["answer choosing"], 120, 30).View()
 	for _, want := range []string{"> established", "◆", "enter choose", "? help", "required", "not answered yet", "2 of 8"} {
 		if !strings.Contains(view, want) {
-			t.Errorf("walk choosing lacks %q:\n%s", want, view)
+			t.Errorf("answer choosing lacks %q:\n%s", want, view)
 		}
 	}
-	if !strings.Contains(resize(screens["walk problem"], 120, 30).View(), "! problem:") {
+	if !strings.Contains(resize(screens["answer problem"], 120, 30).View(), "! problem:") {
 		t.Error("a problem needs its text mark")
 	}
 	if !strings.Contains(resize(screens["review"], 120, 30).View(), "> Items") {
@@ -197,10 +197,10 @@ func TestNoScreenUsesAFixedColourAndTheAccentMarksPlaceNotTitles(t *testing.T) {
 	previous := lipgloss.ColorProfile()
 	lipgloss.SetColorProfile(profileTrueColor)
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	contacts, _ := onContacts(t, contactsWithFlags(t))
 	screens := map[string]App{
-		"walk":     moveTo(t, app, "plan.team_state"),
+		"answer":   moveTo(t, app, "plan.team_state"),
 		"overview": press(app, esc),
 		"review":   press(app, esc, typed("r")),
 		"contacts": contacts,
@@ -213,7 +213,7 @@ func TestNoScreenUsesAFixedColourAndTheAccentMarksPlaceNotTitles(t *testing.T) {
 			}
 		}
 	}
-	view := resize(screens["walk"], 120, 30).View()
+	view := resize(screens["answer"], 120, 30).View()
 	if !strings.Contains(view, "32m") {
 		t.Error("expected the terminal green accent")
 	}

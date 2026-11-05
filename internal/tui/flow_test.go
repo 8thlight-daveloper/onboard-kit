@@ -10,8 +10,8 @@ import (
 
 func TestAPlanWithNoAnswersOpensOnTheFirstQuestion(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
-	if app.screen != screenWalk || app.cursor != 0 {
+	app, _ := startAnswering(t)
+	if app.screen != screenAnswer || app.cursor != 0 {
 		t.Fatalf("expected the first question, got screen %v cursor %d", app.screen, app.cursor)
 	}
 	if !strings.Contains(plainView(app), "1 of ") {
@@ -29,13 +29,13 @@ func TestAPlanWithAnswersOpensOnTheReview(t *testing.T) {
 
 func TestEnterAcceptsAndMovesToTheNextQuestionInOrder(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	total := len(app.questions)
 	app = press(app, typed("Globex"), enter)
 	if got := app.plan.Answers.Plan["organization"]; got.Text != "Globex" {
 		t.Fatalf("answer not stored: %+v", got)
 	}
-	if app.cursor != 1 || app.screen != screenWalk {
+	if app.cursor != 1 || app.screen != screenAnswer {
 		t.Fatalf("expected the second question, got %d on %v", app.cursor, app.screen)
 	}
 	if len(recorded.saved) != 1 {
@@ -48,7 +48,7 @@ func TestEnterAcceptsAndMovesToTheNextQuestionInOrder(t *testing.T) {
 
 func TestBackGoesToThePreviousQuestion(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = press(app, typed("Globex"), enter)
 	app = press(app, shiftTab)
 	if app.cursor != 0 {
@@ -64,7 +64,7 @@ func TestBackGoesToThePreviousQuestion(t *testing.T) {
 
 func TestDeferringMovesOn(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = moveTo(t, app, "plan.team_state")
 	index := app.cursor
 	app = press(app, typed("d"))
@@ -78,7 +78,7 @@ func TestDeferringMovesOn(t *testing.T) {
 
 func TestClearingStaysOnTheQuestion(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = moveTo(t, app, "plan.team_state")
 	app = press(app, typed("d"), shiftTab, typed("x"))
 	if _, there := app.plan.Answers.Plan["team_state"]; there {
@@ -91,7 +91,7 @@ func TestClearingStaysOnTheQuestion(t *testing.T) {
 
 func TestFinishingTheLastQuestionLandsOnTheReview(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = moveTo(t, app, app.questions[len(app.questions)-1].ID)
 	app = press(app, tab, enter)
 	if app.screen != screenReview {
@@ -101,10 +101,10 @@ func TestFinishingTheLastQuestionLandsOnTheReview(t *testing.T) {
 
 func TestReviewListsBlockersAndJumpsToAQuestion(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = press(app, esc)
 	if app.screen != screenOverview {
-		t.Fatalf("escape from a fresh walk goes to the overview, got %v", app.screen)
+		t.Fatalf("escape from the first question goes to the overview, got %v", app.screen)
 	}
 	app = press(app, typed("r"))
 	if app.review.counts(reviewBlocker) == 0 {
@@ -115,7 +115,7 @@ func TestReviewListsBlockersAndJumpsToAQuestion(t *testing.T) {
 	}
 	target := app.review.items[0].questionID
 	app = press(app, enter)
-	if app.screen != screenWalk || app.questions[app.cursor].ID != target {
+	if app.screen != screenAnswer || app.questions[app.cursor].ID != target {
 		t.Fatalf("expected to open %s, got screen %v", target, app.screen)
 	}
 	app = press(app, esc)
@@ -126,14 +126,14 @@ func TestReviewListsBlockersAndJumpsToAQuestion(t *testing.T) {
 
 func TestOverviewJumpsToAnyQuestionAndEscapeReturns(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = press(moveTo(t, app, "plan.team_state"), typed("o"))
 	if app.screen != screenOverview {
 		t.Fatalf("expected the overview, got %v", app.screen)
 	}
 	app.overviewCursor = 0
 	app = press(app, down, down, enter)
-	if app.screen != screenWalk || app.cursor != 2 {
+	if app.screen != screenAnswer || app.cursor != 2 {
 		t.Fatalf("expected the third question, got %d on %v", app.cursor, app.screen)
 	}
 	app = press(app, esc)
@@ -144,7 +144,7 @@ func TestOverviewJumpsToAnyQuestionAndEscapeReturns(t *testing.T) {
 
 func TestAChoiceIsPickedFromItsOptions(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	app = moveTo(t, app, "plan.team_state")
 	labels := make([]string, 0, len(app.entry.choices))
 	for _, option := range app.entry.choices {
@@ -164,7 +164,7 @@ func TestAChoiceIsPickedFromItsOptions(t *testing.T) {
 
 func TestASecretIsRefusedAndTheQuestionStaysWithTheProblemShown(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	app = moveTo(t, app, "access.repo_url")
 	app = press(app, typed("https://user:hunter2@git.example.test/r.git"), enter)
 	if app.questions[app.cursor].ID != "access.repo_url" || len(app.entry.problems) == 0 {
@@ -193,7 +193,7 @@ func TestEnterOnAnUnchangedAnswerMovesOnWithoutSaving(t *testing.T) {
 
 func TestSectionsAreSwitchedOffAndOn(t *testing.T) {
 	t.Parallel()
-	app, recorded := startWalking(t)
+	app, recorded := startAnswering(t)
 	app = press(moveTo(t, app, "plan.team_state"), typed("s"))
 	if app.screen != screenSections {
 		t.Fatalf("expected the sections screen, got %v", app.screen)
@@ -210,14 +210,14 @@ func TestSectionsAreSwitchedOffAndOn(t *testing.T) {
 		t.Fatalf("expected two saves, got %d", len(recorded.saved))
 	}
 	app = press(app, esc)
-	if app.screen != screenWalk {
-		t.Fatalf("escape should return to the walk, got %v", app.screen)
+	if app.screen != screenAnswer {
+		t.Fatalf("escape should return to the Answer screen, got %v", app.screen)
 	}
 }
 
 func TestQuittingIsOfferedOnListScreensAndNotWhileTyping(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	typing := press(app, typed("q"))
 	if typing.Finished() {
 		t.Fatal("q is text while typing")
@@ -270,7 +270,7 @@ func TestTheOnboardeeAnswersTheirOwnChoice(t *testing.T) {
 
 func TestHelpOpensAndAnyKeyClosesIt(t *testing.T) {
 	t.Parallel()
-	app, _ := startWalking(t)
+	app, _ := startAnswering(t)
 	app = press(app, esc, typed("?"))
 	if !strings.Contains(plainView(app), "Keys") {
 		t.Fatal("help should list the keys")

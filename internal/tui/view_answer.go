@@ -19,7 +19,7 @@ func (app App) inputWidth() int {
 	return answerWidth
 }
 
-func (app App) walkBody(screenFrame frame, colors palette) []string {
+func (app App) answerBody(screenFrame frame, colors palette) []string {
 	if len(app.questions) == 0 {
 		return stackPane(pane{lines: []line{bodyLine("No questions are active.")}, focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}

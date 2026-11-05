@@ -19,7 +19,7 @@ func (app App) updateInvitation(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (app App) jumpedFromInvitation(key string) App {
 	switch key {
 	case "w":
-		return app.returnToWalk()
+		return app.returnToAnswer()
 	case "o":
 		return app.openOverview()
 	case "r":

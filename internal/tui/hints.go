@@ -31,10 +31,10 @@ func (app App) hints(tabKeysShown bool) []hint {
 	case screenInvitation:
 		return app.invitationHints(tabKeysShown)
 	}
-	return app.walkHints(tabKeysShown)
+	return app.answerHints(tabKeysShown)
 }
 
-func (app App) walkHints(tabKeysShown bool) []hint {
+func (app App) answerHints(tabKeysShown bool) []hint {
 	if app.entry.typing() {
 		hints := []hint{{"enter", "save"}, {"shift+tab", "back"}}
 		if len(app.entry.question.Suggestions) > 0 {

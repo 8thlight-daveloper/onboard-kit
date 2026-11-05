@@ -49,7 +49,7 @@ func startWith(t *testing.T, plan model.Plan, audience model.Audience) (App, *re
 	return app, recorded
 }
 
-func startWalking(t *testing.T) (App, *recorder) {
+func startAnswering(t *testing.T) (App, *recorder) {
 	t.Helper()
 	return startWith(t, blankPlan(t), model.AudienceOnboarder)
 }

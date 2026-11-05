@@ -25,7 +25,7 @@ func (app App) updateReview(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "enter":
 		return app.openReviewItem(), nil
 	case "esc", "w":
-		return app.walkFromReview(), nil
+		return app.answerFromReview(), nil
 	case "o":
 		return app.openOverview(), nil
 	case "s":
@@ -90,7 +90,7 @@ func (app App) openReviewItem() App {
 	return app.openQuestion(index)
 }
 
-func (app App) walkFromReview() App {
+func (app App) answerFromReview() App {
 	if len(app.questions) == 0 {
 		return app
 	}

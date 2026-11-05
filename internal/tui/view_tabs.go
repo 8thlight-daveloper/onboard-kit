@@ -28,7 +28,7 @@ type headerLayout struct {
 }
 
 func (app App) tabs() []screenTab {
-	tabs := []screenTab{{screenWalk, "Walk", "w"}, {screenOverview, "Overview", "o"}, {screenReview, "Review", "r"}}
+	tabs := []screenTab{{screenAnswer, "Walk", "w"}, {screenOverview, "Overview", "o"}, {screenReview, "Review", "r"}}
 	if app.canSwitchSections() {
 		tabs = append(tabs, screenTab{screenSections, "Sections", "s"})
 	}
@@ -147,7 +147,7 @@ func (app App) clipKeepsCurrentTab(layout headerLayout, width int, colors palett
 }
 
 func (app App) typingNow() bool {
-	return app.screen == screenWalk && app.entry.typing() || app.screen == screenContacts && app.contacts.typing() || app.screen == screenPreparation && app.preparationTyping() || app.screen == screenInvitation && app.invitationTyping()
+	return app.screen == screenAnswer && app.entry.typing() || app.screen == screenContacts && app.contacts.typing() || app.screen == screenPreparation && app.preparationTyping() || app.screen == screenInvitation && app.invitationTyping()
 }
 
 func (app App) headerLayout(width int, colors palette) headerLayout {
@@ -189,7 +189,7 @@ func (app App) jumpHints(shownInHeader bool) []hint {
 	}
 	var hints []hint
 	for _, entry := range app.tabs() {
-		if entry.screen == app.screen || entry.screen == screenWalk && app.screen == screenOverview {
+		if entry.screen == app.screen || entry.screen == screenAnswer && app.screen == screenOverview {
 			continue
 		}
 		hints = append(hints, hint{entry.key, strings.ToLower(entry.name)})

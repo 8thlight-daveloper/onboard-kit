@@ -209,12 +209,12 @@ func TestTheValuesAreShownShort(t *testing.T) {
 
 func TestHIsTextWhileTypingAndDoesNothingOnTheOtherScreens(t *testing.T) {
 	app, recorded := startWith(t, planWithLeftOvers(t), model.AudienceOnboarder)
-	walking := moveTo(t, press(app, esc), "plan.team_state")
+	answering := moveTo(t, press(app, esc), "plan.team_state")
 	typing := press(moveTo(t, app, "access.repo_url"), typed("h"))
-	if typing.review.pruning.asking || typing.screen != screenWalk {
+	if typing.review.pruning.asking || typing.screen != screenAnswer {
 		t.Fatal("h is text while typing")
 	}
-	overview := press(walking.openOverview(), typed("h"))
+	overview := press(answering.openOverview(), typed("h"))
 	if overview.screen != screenOverview || overview.review.pruning.asking {
 		t.Fatal("h does nothing on the overview")
 	}

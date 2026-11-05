@@ -51,7 +51,7 @@ func (app App) body(screenFrame frame, colors palette) []string {
 	case screenInvitation:
 		return app.invitationBody(screenFrame, colors)
 	}
-	return app.walkBody(screenFrame, colors)
+	return app.answerBody(screenFrame, colors)
 }
 
 func (app App) progressText() string {

@@ -71,7 +71,7 @@ func TestEnterOnAQuestionProblemStillOpensTheQuestion(t *testing.T) {
 	question := app.questions[0].ID
 	app.review.items = []reviewItem{{kind: reviewProblem, text: "x", questionID: question}}
 	app.review.cursor = 0
-	if opened := press(app, enter); opened.screen != screenWalk {
-		t.Errorf("screen %v, want the walk", opened.screen)
+	if opened := press(app, enter); opened.screen != screenAnswer {
+		t.Errorf("screen %v, want the Answer screen", opened.screen)
 	}
 }
