@@ -115,46 +115,39 @@ come before work that happens in the first week: `internal-network`,
 `onboarding-refresh`, `contribution-practices`, and `design-handoff`. Without the
 change, every access section would sort after the setup that needs it.
 
-## Edges decided in review
+## The `requires` edges
 
-Three edges were dropped or changed after a review: `ci-access` no longer requires
-`repository-access`, because CI may be a hosted service tied to the repository or a
-separate system with its own accounts. `onboarding-repository` requires
-`source-host-membership`, the account and membership on the forge, and not access to a
-specific code repository. `pr-merge` no longer requires `pr-post`.
+An edge gates. The dependent waits for a verified outcome of its prerequisite, a failed or
+deferred prerequisite stops it, and switching off a prerequisite switches off its
+dependents. Keep an edge only when all three hold:
 
-## Proposed `requires` edges
+1. The dependent is meaningless without the prerequisite.
+2. A team that switches the prerequisite off would not still want the dependent.
+3. A failed or deferred prerequisite should stop the dependent.
 
-An edge gates: the dependent waits for a verified outcome, and switching off a
-prerequisite switches off its dependents. Keep an edge only where that is true. Order
-alone needs no edge, because list position says it. These make the order a
-prerequisite order where one exists. The action sequence
-already puts a prerequisite before its dependent, so they also fix the first-steps
-order. They are proposals: each is a statement about onboarding, and a person
-decides which to keep.
+Where position already says the order, an edge adds nothing. The first review kept 10 of
+the 21 edges first proposed. Most of the cuts are in the HR and IT group and in tool
+access, where individual teams drop sections and an edge would remove others with them.
+`ci-access` and `pr-review` need no edge on repository access, because CI may be a
+separate system and the catalog allows several repository instances. `application-local`
+needs the dependencies and not the tests, since running the tests first is an order and
+not a prerequisite. `onboarding-repository` needs `source-host-membership`, the account
+and membership on the forge, and not access to a code repository. `pr-merge` no longer
+needs `pr-post`. If a plan's repository lives on a different host from the code, the
+organization owner removes that edge in their own plan.
 
 | Section | Requires |
 | -- | -- |
-| [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) | [`company-identity`](../../contracts/catalog/reader/content/sections/company-identity.yaml) |
-| [`company-calendar`](../../contracts/catalog/reader/content/sections/company-calendar.yaml) | [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) |
-| [`video-meetings`](../../contracts/catalog/reader/content/sections/video-meetings.yaml) | [`company-email`](../../contracts/catalog/reader/content/sections/company-email.yaml) |
-| [`team-chat`](../../contracts/catalog/reader/content/sections/team-chat.yaml) | [`company-identity`](../../contracts/catalog/reader/content/sections/company-identity.yaml) |
-| [`internal-network`](../../contracts/catalog/reader/content/sections/internal-network.yaml) | [`working-device`](../../contracts/catalog/reader/content/sections/working-device.yaml) |
 | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) | [`source-host-account`](../../contracts/catalog/reader/content/sections/source-host-account.yaml) |
-| [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) |
 | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) | [`source-host-membership`](../../contracts/catalog/reader/content/sections/source-host-membership.yaml) |
 | [`onboarding-refresh`](../../contracts/catalog/reader/content/sections/onboarding-refresh.yaml) | [`onboarding-repository`](../../contracts/catalog/reader/content/sections/onboarding-repository.yaml) |
 | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
 | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) | [`repository-clone`](../../contracts/catalog/reader/content/sections/repository-clone.yaml) |
-| [`application-local`](../../contracts/catalog/reader/content/sections/application-local.yaml) | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) |
 | [`project-tests`](../../contracts/catalog/reader/content/sections/project-tests.yaml) | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) |
-| [`ticket-pairing`](../../contracts/catalog/reader/content/sections/ticket-pairing.yaml) | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) |
-| [`ticket-ownership`](../../contracts/catalog/reader/content/sections/ticket-ownership.yaml) | [`ticket-system-access`](../../contracts/catalog/reader/content/sections/ticket-system-access.yaml) |
-| [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) | [`ci-access`](../../contracts/catalog/reader/content/sections/ci-access.yaml) |
+| [`application-local`](../../contracts/catalog/reader/content/sections/application-local.yaml) | [`project-dependencies`](../../contracts/catalog/reader/content/sections/project-dependencies.yaml) |
+| `first-change-merged` | [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) |
+| `first-change-in-production` | `first-change-merged` |
 | [`deploy-lead`](../../contracts/catalog/reader/content/sections/deploy-lead.yaml) | [`deploy-shadow`](../../contracts/catalog/reader/content/sections/deploy-shadow.yaml) |
-| [`pr-post`](../../contracts/catalog/reader/content/sections/pr-post.yaml) | [`contribution-practices`](../../contracts/catalog/reader/content/sections/contribution-practices.yaml) |
-| [`pr-review`](../../contracts/catalog/reader/content/sections/pr-review.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
-| [`design-contribution`](../../contracts/catalog/reader/content/sections/design-contribution.yaml) | [`design-handoff`](../../contracts/catalog/reader/content/sections/design-handoff.yaml) |
 
 ## Proposed additions
 
