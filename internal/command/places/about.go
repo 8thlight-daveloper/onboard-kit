@@ -12,6 +12,7 @@ import (
 type Context struct {
 	Home          Home
 	HomeProblem   string
+	DataHome      Home
 	PlanPath      string
 	RecordsRoot   string
 	WorkingFolder string
@@ -31,6 +32,13 @@ var everyPlace = []place{
 		path:   func(context Context) string { return context.Home.Path },
 		chosen: homeChoice,
 		holds:  fixed("Holds the list of your plans, and the sessions and imports of your onboarding."),
+		use:    tui.PlaceReadAndWritten,
+	},
+	{
+		name:   "Data folder",
+		path:   func(context Context) string { return context.DataHome.Path },
+		chosen: dataChoice,
+		holds:  fixed("Holds your onboarding records, kept apart from any project, and later the plan repositories you clone."),
 		use:    tui.PlaceReadAndWritten,
 	},
 	{
@@ -159,12 +167,24 @@ func recordsRoot(context Context) string {
 	if context.RecordsRoot != "" {
 		return context.RecordsRoot
 	}
-	return context.WorkingFolder
+	return RecordsFolder(context.DataHome)
 }
 
 func recordsRootHolds(context Context) string {
 	if context.RecordsRoot != "" {
 		return "Holds a folder for each newcomer of this plan, with their preparation and record."
 	}
-	return "Holds your onboarding record when you begin your onboarding from this folder. For a plan, the records sit in the plan's folder unless walk --root names another."
+	return "Holds your onboarding record when you begin your onboarding, in the tool's own folder so it never ends up in a project. For a plan, the records sit in the plan's folder unless walk --root names another."
+}
+
+func dataChoice(context Context) string {
+	switch context.DataHome.Chosen {
+	case ChosenByObkDataHome:
+		return "Chosen by the OBK_DATA_HOME setting."
+	case ChosenByObkHome:
+		return "Chosen by the OBK_HOME setting, which also holds the state."
+	case ChosenByXDGDataHome:
+		return "Chosen by the XDG_DATA_HOME setting. Set OBK_DATA_HOME to choose another."
+	}
+	return "Chosen as the default for this system. Set OBK_DATA_HOME to choose another."
 }

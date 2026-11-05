@@ -113,7 +113,7 @@ func TestCreatingWritesTheCorePlanRecordsItAndNeverReplacesAFile(t *testing.T) {
 }
 
 func TestAboutListsEveryPlaceWithTheVersionAndTemplateSet(t *testing.T) {
-	door, home, working := portIn(t)
+	door, home, _ := portIn(t)
 	about := door.About()
 	if about.Version != "1.2.3" || !strings.HasPrefix(about.TemplateSet, "1.2.3, ") {
 		t.Fatalf("got %q %q", about.Version, about.TemplateSet)
@@ -124,10 +124,10 @@ func TestAboutListsEveryPlaceWithTheVersionAndTemplateSet(t *testing.T) {
 		names = append(names, place.Name)
 		byName[place.Name] = place
 	}
-	if got := strings.Join(names, ", "); got != "State home, Plan list, Sessions, Imports, Plan folder, Records root, Downloads" {
+	if got := strings.Join(names, ", "); got != "State home, Data folder, Plan list, Sessions, Imports, Plan folder, Records root, Downloads" {
 		t.Fatalf("got %s", got)
 	}
-	checks := map[string]string{"State home": home, "Plan list": registry.Path(home), "Sessions": filepath.Join(home, "sessions"), "Imports": filepath.Join(home, "import-pending"), "Records root": working}
+	checks := map[string]string{"State home": home, "Plan list": registry.Path(home), "Sessions": filepath.Join(home, "sessions"), "Imports": filepath.Join(home, "import-pending"), "Records root": filepath.Join(home, "onboarding"), "Data folder": home}
 	for name, path := range checks {
 		if byName[name].Path != path {
 			t.Errorf("%s: %q, want %q", name, byName[name].Path, path)

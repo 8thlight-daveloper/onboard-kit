@@ -57,7 +57,7 @@ func TestInTheEditorThePlanFolderAndRecordsRootAreThePlansOwn(t *testing.T) {
 }
 
 func TestEveryPlaceSaysWhatItHoldsAndWhetherTheToolReadsOrWritesIt(t *testing.T) {
-	for _, place := range List(Context{Home: Home{Path: "/state/obk", Chosen: ChosenByXDGStateHome}, WorkingFolder: "/work"}) {
+	for _, place := range List(Context{Home: Home{Path: "/state/obk", Chosen: ChosenByXDGStateHome}, DataHome: Home{Path: "/data/obk", Chosen: ChosenByXDGDataHome}, WorkingFolder: "/work"}) {
 		if place.Name == "" || !strings.HasPrefix(place.Holds, "Holds ") && place.Use != tui.PlaceNotUsedYet {
 			t.Errorf("%+v", place)
 		}
@@ -82,5 +82,31 @@ func TestADamagedListIsAProblemAndAMissingOneIsNot(t *testing.T) {
 	about := About("1.0.0", "1.0.0, set", Context{Home: home, HomeProblem: "No home."}, problems)
 	if len(about.Problems) != 2 || about.Problems[0] != "No home." {
 		t.Fatalf("got %v", about.Problems)
+	}
+}
+
+func TestTheRecordsRootIsInsideTheDataFolderAndNotTheWorkingFolder(t *testing.T) {
+	listed := List(Context{Home: Home{Path: "/state/obk"}, DataHome: Home{Path: "/data/obk", Chosen: ChosenByObkDataHome}, WorkingFolder: "/work"})
+	if root := placeNamed(t, listed, "Records root"); root.Path != "/data/obk/onboarding" || !strings.Contains(root.Holds, "never ends up in a project") {
+		t.Fatalf("got %+v", root)
+	}
+	if data := placeNamed(t, listed, "Data folder"); data.Path != "/data/obk" || data.Chosen != "Chosen by the OBK_DATA_HOME setting." {
+		t.Fatalf("got %+v", data)
+	}
+}
+
+func TestTheDataFolderFollowsTheSettingsThenTheSystemDefault(t *testing.T) {
+	t.Setenv("OBK_DATA_HOME", "/chosen/data")
+	t.Setenv("OBK_HOME", "/chosen/home")
+	if got, _ := DataHome(); got.Path != "/chosen/data" || got.Chosen != ChosenByObkDataHome {
+		t.Fatalf("got %+v", got)
+	}
+	t.Setenv("OBK_DATA_HOME", "")
+	if got, _ := DataHome(); got.Path != "/chosen/home" || got.Chosen != ChosenByObkHome {
+		t.Fatalf("got %+v", got)
+	}
+	t.Setenv("OBK_HOME", "")
+	if got, err := DataHome(); err != nil || got.Path == "" || got.Chosen == ChosenByObkHome || got.Chosen == ChosenByObkDataHome {
+		t.Fatalf("got %+v, %v", got, err)
 	}
 }

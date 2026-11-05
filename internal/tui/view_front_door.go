@@ -177,7 +177,7 @@ func (door FrontDoor) fieldScreenLines(heading string, label string, notices []l
 
 func (door FrontDoor) beginNotices(width int) []line {
 	content := lines(toneBody, wrapText(beginPathNotice, width))
-	content = append(content, lines(toneBody, wrapText("Your onboarding records are kept in "+visibleText(door.port.RecordsFolder())+", the folder you started this tool in.", width))...)
+	content = append(content, lines(toneBody, wrapText("Your onboarding records are kept in "+visibleText(door.port.RecordsFolder())+", the tool's own folder, so they never end up in a project.", width))...)
 	content = append(content, blankLine())
 	return append(content, lines(toneFaint, wrapText(beginTypedNotice, width))...)
 }

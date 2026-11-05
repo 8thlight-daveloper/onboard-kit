@@ -48,6 +48,17 @@ use it.
 or "Begin my onboarding", ends the screen and runs `start --invitation FILE --root .` with its typed lines. The screen says where the records will go before it
 hands over. The newcomer's own screens are not built.
 
+**Interim: records go in the tool's data folder.** The typed start flow needs a root
+before it opens the invitation, and the plan id is inside it. So the front door passes
+`<data folder>/onboarding` as the root, and records land in
+`onboarding/records/<account>/` there. The data folder is `OBK_DATA_HOME`, then
+`OBK_HOME`, then the platform data folder: `XDG_DATA_HOME/obk` or `~/.local/share/obk`
+on Linux, and `~/Library/Application Support/obk` on macOS. The front door creates the
+folder when it hands over. 0670 puts records at `records/<plan id>/<account>/`. That
+needs the invitation read first, so it waits for the newcomer's own screens. Two
+invitations for the same account name in different organizations share this root until
+then.
+
 **About is reached with `a`** from the first screen and from any help page. It lists
 every place in use as data in `internal/command/places`, and lists the Downloads
 folder as not used yet.

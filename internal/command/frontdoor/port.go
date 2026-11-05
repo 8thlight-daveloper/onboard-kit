@@ -28,6 +28,7 @@ const (
 type port struct {
 	home        places.Home
 	homeProblem string
+	data        places.Home
 	version     string
 	working     string
 	identifier  string
@@ -40,6 +41,9 @@ func newPort(version string, identifier string, generatedOn string) *port {
 	opened.home = home
 	if err != nil {
 		opened.homeProblem = "The state home cannot be found: " + err.Error() + "."
+	}
+	if data, err := places.DataHome(); err == nil {
+		opened.data = data
 	}
 	if working, err := os.Getwd(); err == nil {
 		opened.working = working
@@ -152,10 +156,10 @@ func (door *port) remember(path string) {
 	}
 }
 
-func (door *port) RecordsFolder() string { return door.working }
+func (door *port) RecordsFolder() string { return places.RecordsFolder(door.data) }
 
 func (door *port) About() tui.About {
-	context := places.Context{Home: door.home, HomeProblem: door.homeProblem, WorkingFolder: door.working}
+	context := places.Context{Home: door.home, HomeProblem: door.homeProblem, DataHome: door.data, WorkingFolder: door.working}
 	return places.About(door.version, door.version+templateSetMeaning, context, places.RegistryProblems(door.home))
 }
 

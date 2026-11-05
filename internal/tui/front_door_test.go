@@ -164,7 +164,7 @@ func TestOpenAFileChecksItsKindBeforeLeaving(t *testing.T) {
 
 func TestAnInvitationOpenedAsAFileShowsWhereRecordsGoBeforeItBegins(t *testing.T) {
 	door := pressDoor(doorWith(newFakeFrontDoorPort(knownPlans()...)), typed("G"), up, enter, typed("obk-invitation-sam-lee.zip"), enter)
-	mustShow(t, door, "Begin my onboarding", "Your onboarding records are kept in /work, the folder you started this tool in.")
+	mustShow(t, door, "Begin my onboarding", "Your onboarding records are kept in /work, the tool's own folder, so they never end up in a project.")
 	if door.finished {
 		t.Fatal("began before the person saw where the records go")
 	}

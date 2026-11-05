@@ -7,8 +7,8 @@
 
   Type the path of the invitation file you were given. Its name starts with
   obk-invitation and ends with .zip.
-  Your onboarding records are kept in /work, the folder you started this tool
-  in.
+  Your onboarding records are kept in /work, the tool's own folder, so they
+  never end up in a project.
 
   After enter, the tool asks you to confirm who you are, then shows your
   onboarding in this terminal. You type each reply.

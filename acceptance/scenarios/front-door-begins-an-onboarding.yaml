@@ -1,5 +1,5 @@
 name: front-door-begins-an-onboarding
-description: Begin my onboarding takes an invitation path, says the records are kept in the current folder, and hands over to the typed start flow, which is interim until the newcomer's screens exist. A plan typed there is refused.
+description: Begin my onboarding takes an invitation path, says the records are kept in the tool's own folder, and hands over to the typed start flow, which is interim until the newcomer's screens exist. A plan typed there is refused.
 source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md; docs/reference/tui.md
 steps:
   - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
@@ -40,9 +40,10 @@ steps:
     expect:
       exit: 0
       files:
-        records/newcomer/record.obk.yaml:
+        state/onboarding/records/newcomer/record.obk.yaml:
           yaml-scalars:
             - path: [firstOpenedAt]
               utc-timestamp: true
-        records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+        state/onboarding/records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+        records/newcomer/record.obk.yaml: {absent: true}
       unchanged: [source.obk.yaml, invitation.zip]

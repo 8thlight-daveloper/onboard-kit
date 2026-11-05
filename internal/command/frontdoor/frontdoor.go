@@ -27,7 +27,7 @@ const (
 	ScriptingCommands  = "For scripts, use new --out FILE, assemble, catalog, prepare, invite, or stdio."
 	editorNeedsTerm    = "onboard-kit: the plan editor needs a terminal. For scripts, use assemble --plan FILE or stdio."
 	onboardingNeedTerm = "onboard-kit: beginning an onboarding needs a terminal. For scripts, use start --invitation FILE --root DIR."
-	recordsNotice      = "Your onboarding records are kept in %s, the folder you started onboard-kit in.\n"
+	recordsNotice      = "Your onboarding records are kept in %s, the tool's own folder, so they never end up in a project.\n"
 	typedNotice        = "The screens for your onboarding are not built yet, so it goes on with typed commands.\n"
 )
 
@@ -68,7 +68,7 @@ func Open(args []string, version string, stdin io.Reader, stdout io.Writer, stde
 		fmt.Fprintln(stderr, onboardingNeedTerm)
 		return exitUsage
 	}
-	return begin(checked.Path, newPort(version, "", "").working, stdin, stdout, stderr)
+	return begin(checked.Path, newPort(version, "", "").RecordsFolder(), stdin, stdout, stderr)
 }
 
 func New(args []string, version string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
@@ -137,12 +137,20 @@ func act(choice tui.FrontDoorChoice, err error, door *port, version string, stdi
 	case tui.FrontDoorOpenPlan:
 		return walk.Open(choice.Path, version, stdin, stdout, stderr)
 	case tui.FrontDoorBeginOnboarding:
-		return begin(choice.Path, door.working, stdin, stdout, stderr)
+		return begin(choice.Path, door.RecordsFolder(), stdin, stdout, stderr)
 	}
 	return exitSuccess
 }
 
 func begin(invitation string, root string, stdin io.Reader, stdout io.Writer, stderr io.Writer) int {
+	if root == "" {
+		fmt.Fprintln(stderr, "onboard-kit: the folder for your onboarding records cannot be found.")
+		return exitProblem
+	}
+	if err := os.MkdirAll(root, 0o700); err != nil {
+		fmt.Fprintf(stderr, "onboard-kit: the folder %s cannot be created: %s.\n", root, reason(err))
+		return exitProblem
+	}
 	fmt.Fprintf(stdout, recordsNotice, root)
 	fmt.Fprint(stdout, typedNotice)
 	return starter.New(starterapi.Runtime{}).Run([]string{"--invitation", invitation, "--root", root}, stdin, stdout, stderr)
