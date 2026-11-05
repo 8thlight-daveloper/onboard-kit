@@ -97,7 +97,10 @@ change, every access section would sort after the setup that needs it.
 
 ## Proposed `requires` edges
 
-These make the order a prerequisite order where one exists. The action sequence
+An edge gates: the dependent waits for a verified outcome, and switching off a
+prerequisite switches off its dependents. Keep an edge only where that is true. Order
+alone needs no edge, because list position says it. These make the order a
+prerequisite order where one exists. The action sequence
 already puts a prerequisite before its dependent, so they also fix the first-steps
 order. They are proposals: each is a statement about onboarding, and a person
 decides which to keep.

@@ -1,7 +1,7 @@
 ---
 category: behavior
 status: proposed
-affects: [catalog/editor, catalog/materializer, catalog/reader, document/assembler, plan/editor, plan/refresher, section/scheduler, section/selector, tui]
+affects: [catalog/editor, catalog/materializer, catalog/reader, document/assembler, plan/decoder, plan/editor, plan/encoder, plan/instantiator, plan/refresher, plan/structurevalidator, section/hasher, section/loader, section/scheduler, section/selector, tui]
 builds-on: ['0260', '0530', '0540', '0610']
 ---
 
@@ -43,6 +43,24 @@ unique. Sub-sections still follow their parent, in the order of the list.
 bootstrap, then the window. The rank in the reading order, now the list position,
 replaces the `id` as the last tiebreak.
 
+**The `after` field is removed.** Nothing has been released, so there is no deprecation.
+The format, the loader, the encoder, the hasher, the validators, the selector, and the
+scheduler stop knowing it. A file that still has an `after` key carries it as an ordinary
+unknown field, which the plan keeps and never reads. List position does what `after` did.
+
+**`requires` is for real prerequisites only.** An edge gates the dependent: it waits
+until the prerequisite has a verified outcome, and switching off a prerequisite
+switches off its dependents. A section that merely reads better after another does not
+need an edge. Position says that.
+
+**A section always has a window, and a new one lands at the end of it.** A section with
+no `timing` is `anytime`, which is a window. A section added from the catalog lands where
+the default sequence puts it among the sections already in its window, or at the end
+when it has no place there. A section written by hand asks for its window when it is
+added. Sections of different windows never interleave, so an empty window has no
+position to settle. The Sections screen shows each row's window, and warns on a row
+that reads before something it requires.
+
 **A new plan starts in a logical order.** The catalog owns a default sequence, and
 the materializer writes the sections of a new plan in it. The proposal for that
 sequence, and for the timing and `requires` changes it needs, is
@@ -73,14 +91,6 @@ a section the person already has.
 - The Sections screen gains a move action. It uses a grab key and arrows, with no
   chord, in the style of the focus zones on the Answer screen.
 - The schema page that says there is no position to maintain needs a new sentence.
-
-## Not decided
-
-1. **The fate of `after`.** It is deprecated. Once list order exists it has no job
-   inside a window, and the contract still reads it. Whether to remove it, or to keep
-   reading it in old plans, is open.
-2. **Whether to keep each `requires` edge in the proposal.** Each is a statement
-   about onboarding, and a person decides which are true.
-3. **Where an added section lands when its window is empty.** After the last
-   earlier window, by the default sequence, is the natural answer, and nobody has
-   confirmed it.
+- Removing `after` changes the domain model's section, which is slow-changing and
+  needs this record. It also changes the example plan and the fixtures that carry an
+  `after` key. A person authorizes those contract and fixture edits.
