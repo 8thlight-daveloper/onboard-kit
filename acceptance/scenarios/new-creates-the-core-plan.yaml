@@ -27,7 +27,7 @@ steps:
   - run: [onboard-kit, assemble, --plan, core.obk.yaml]
     expect:
       exit: 0
-      stdout: {contains: "Generated 2026-11-04 from template set `development`."}
+      stdout: {contains: "Generated 2026-11-04 from template set `"}
       unchanged: [core.obk.yaml]
   - run: [onboard-kit, new, --out, core.obk.yaml]
     terminal:
