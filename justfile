@@ -75,9 +75,9 @@ clean-worktrees:
       else echo "kept $path"; fi; \
     done; git worktree prune
 
-# Build the binary. A no-op until the Go module exists.
+# Build the binary, and the obk alias beside it. A no-op until the Go module exists.
 build:
-    if [ -f go.mod ]; then go build -o output/onboard-kit ./binary; else echo "no Go module yet"; fi
+    if [ -f go.mod ]; then go build -o output/onboard-kit ./binary && ln -sfn onboard-kit output/obk; else echo "no Go module yet"; fi
 
 # Build the release archives for every target, with LICENSE and THIRD_PARTY_NOTICES.md in each, and a checksums file.
 build-release-archives version:
