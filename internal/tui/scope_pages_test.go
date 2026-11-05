@@ -414,3 +414,18 @@ func TestALongPageScrollsToTheFocusedRowAtEveryWidth(t *testing.T) {
 		}
 	}
 }
+
+func TestARowWithNothingToPickIsStillAStopOnTheWay(t *testing.T) {
+	t.Parallel()
+	app, _ := startWith(t, withoutDirectory(blankPlan(t)), model.AudienceOnboarder)
+	empty := moveTo(t, app, "access.onboarding_owner_role")
+	if below := press(empty, down); focusedID(below) != "access.access_request_url" || !below.typingNow() {
+		t.Errorf("down from a row with nothing to pick reaches the next row, got %s", focusedID(below))
+	}
+	if strip := press(empty, up); !strip.stripFocused {
+		t.Error("up from the page's first row reaches the tab strip even with nothing to pick")
+	}
+	if back := press(empty, down, up); focusedID(back) != "access.onboarding_owner_role" {
+		t.Errorf("up from the next row's field returns to the row with nothing to pick, got %s", focusedID(back))
+	}
+}
