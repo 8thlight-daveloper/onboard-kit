@@ -52,8 +52,33 @@ hands over. The newcomer's own screens are not built.
 every place in use as data in `internal/command/places`, and lists the Downloads
 folder as not used yet.
 
-**Interim: no role header yet.** "Building: Acme plan" and the Answer tab of 0610
-are not built. The screens keep their current tab names.
+**The header names the role.** The onboarder's title is "Building: ACME Corp plan",
+or "Building an onboarding plan" until the organization is answered. The newcomer's
+is "Your onboarding at ACME Corp", or "Your onboarding". The onboarder's tabs are
+Answer, Overview, Review, Sections, Contacts, Preparation, and Invitation. The
+newcomer's are Your questions, Overview, and Review. The title updates as soon as
+the organization is answered. A blank or deferred organization counts as not
+answered. A name longer than 24 columns is cut with an ellipsis, because without a
+cap the title disappeared at 120 columns on the later tabs. Control characters in
+the name show as escapes.
+
+**The newcomer's third tab stays Review, and the Answer key stays `w`.** 0610 says
+Document. That screen holds the newcomer's blockers, deferred questions, and
+problems beside the document preview, so Document alone would mislead. No free
+letter appears in both "Answer" and "Your questions", so both people open the
+screen with `w`, and `a` stays with Contacts and About. `u` for the newcomer is
+open.
+
+**Longer titles drop the key letters sooner.** With seven tabs the letters show at
+120 columns and no longer at 110. At 80 and 100 columns they were already dropped.
+
+**Code and files say Answer.** The answering screen's identifiers, files, and
+wireframes were renamed from walk. The `walk` command and its package stay until
+they retire. Three scenarios that waited for the old header text changed, with a
+person's authorization: the narrow-window scenario, the newcomer scenario, and the
+core plan scenario, whose wait for the progress count became a wait for the Answer
+screen's position line, because the longer title pushes the count out at 110
+columns.
 
 ## Consequences
 
@@ -64,3 +89,5 @@ are not built. The screens keep their current tab names.
   changes that a person authorizes.
 - Everything marked interim is replaced when the newcomer's screens and the
   reviewed creation draft land.
+- The name of the newcomer's third tab is open in the terminal page, together with
+  `u` as its key.
