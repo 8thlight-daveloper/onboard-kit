@@ -76,6 +76,7 @@ func (entry entryState) withWidth(width int) entryState {
 	}
 	entry.input.Width = max(width-inputPadding, inputMinimum)
 	entry.input.Placeholder = truncateCells(exampleText(entry.question), entry.input.Width)
+	entry.input.SetCursor(entry.input.Position())
 	return entry
 }
 
