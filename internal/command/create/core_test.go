@@ -104,22 +104,22 @@ func TestTheCorePlanAsksTheOrganizationAndTheTeamBeforeAnySectionQuestion(t *tes
 		t.Fatalf("problems: %v", problems)
 	}
 	questions := finder.New().Questions(plan, model.AudienceOnboarder)
-	if len(questions) < 4 {
+	if len(questions) < 5 {
 		t.Fatalf("only %d questions", len(questions))
 	}
-	for index, want := range []string{"organization", "team_name", "plan_source"} {
+	for index, want := range []string{"organization", "team_name", "plan_repository", "plan_file"} {
 		if questions[index].Scope != "plan" || questions[index].Name != want {
 			t.Fatalf("question %d is %s.%s, want plan.%s", index+1, questions[index].Scope, questions[index].Name, want)
 		}
 	}
-	if questions[3].Scope == "plan" {
-		t.Fatalf("a section question must follow the plan questions, got %+v", questions[3])
+	if questions[4].Scope == "plan" {
+		t.Fatalf("a section question must follow the plan questions, got %+v", questions[4])
 	}
 	required := map[string]bool{}
 	for _, variable := range plan.Variables {
 		required[variable.Name] = variable.Required
 	}
-	if !required["organization"] || !required["team_name"] || required["plan_source"] {
+	if !required["organization"] || !required["team_name"] || required["plan_repository"] || required["plan_file"] {
 		t.Fatalf("required flags %v", required)
 	}
 }

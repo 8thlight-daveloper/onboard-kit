@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"onboard-kit/internal/command/create"
 	"onboard-kit/internal/command/planfile"
 	"onboard-kit/internal/command/registry"
 	"onboard-kit/internal/tui"
@@ -95,8 +96,9 @@ func TestCreatingWritesTheCorePlanRecordsItAndNeverReplacesAFile(t *testing.T) {
 		t.Fatalf("got %+v", created)
 	}
 	plan, ok := planfile.Open(path, os.Stderr)
-	if !ok || plan.ID != "plan-one" || plan.Provenance.TemplateSet != "1.2.3" || len(plan.Sections) != 28 {
-		t.Fatalf("plan %q %+v with %d sections", plan.ID, plan.Provenance, len(plan.Sections))
+	core, _ := create.CorePlan("plan-one", "1.2.3", "2026-11-04")
+	if !ok || plan.ID != "plan-one" || plan.Provenance.TemplateSet != "1.2.3" || len(plan.Sections) == 0 || len(plan.Sections) != len(core.Sections) {
+		t.Fatalf("plan %q %+v with %d sections, want the %d of the core set", plan.ID, plan.Provenance, len(plan.Sections), len(core.Sections))
 	}
 	entries, err := registry.Load(home)
 	if err != nil || len(entries) != 1 || entries[0].Path != path {

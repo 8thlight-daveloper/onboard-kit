@@ -85,9 +85,15 @@ func identityVariables() []model.Variable {
 			Audience:    model.AudienceOnboarder,
 		},
 		{
-			Name:        "plan_source",
-			Description: "Where is this plan kept? Give the repository address and the path of the plan file inside it.",
-			Example:     "https://example.test/acme/onboarding.git plans/platform.obk.yaml",
+			Name:        "plan_repository",
+			Description: "Where is the plan's repository?",
+			Example:     "https://example.test/acme/onboarding.git",
+			Audience:    model.AudienceOnboarder,
+		},
+		{
+			Name:        "plan_file",
+			Description: "Which file in it is the plan?",
+			Example:     "plans/platform.obk.yaml",
 			Audience:    model.AudienceOnboarder,
 		},
 	}

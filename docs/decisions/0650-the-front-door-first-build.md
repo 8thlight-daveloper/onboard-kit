@@ -44,12 +44,12 @@ pins that exact set. The two pairing sessions are `ticket-pairing-navigator` and
 `ticket-pairing-driver`. `new --templates DIR` still works while existing scenarios
 use it.
 
-**A new plan starts with three plan questions.** Before any section question the plan
-asks `organization` and `team_name`, both required onboarder questions, and
-`plan_source`, an optional free-text question for the repository address and the path of
-the plan file. The first two block an invitation until they are answered, and the first
-gives the header its name. This is the step of 0670 that does not need a contract. The
-`extends` link, the structured source, and scope on sections are not built.
+**A new plan starts with four plan questions.** Before any section question the plan
+asks `organization` and `team_name`, both required onboarder questions, then
+`plan_repository` and `plan_file`, two optional free-text questions for the repository
+address and the path of the plan file inside it. The first two block an invitation until
+they are answered, and the first gives the header its name. This is the step of 0670
+that does not need a contract. The `extends` link, the structured source, and scope on sections are not built.
 
 **Interim: an invitation runs the typed start flow.** `onboard-kit invitation.zip`,
 or "Begin my onboarding", ends the screen and runs `start --invitation FILE --root .` with its typed lines. The screen says where the records will go before it
