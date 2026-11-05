@@ -156,7 +156,7 @@ decides which to keep.
 | [`pr-review`](../../contracts/catalog/reader/content/sections/pr-review.yaml) | [`repository-access`](../../contracts/catalog/reader/content/sections/repository-access.yaml) |
 | [`design-contribution`](../../contracts/catalog/reader/content/sections/design-contribution.yaml) | [`design-handoff`](../../contracts/catalog/reader/content/sections/design-handoff.yaml) |
 
-## Proposed addition
+## Proposed additions
 
 **`first-change-merged`, "Get your first change merged."** The catalog has `pr-post` for
 posting a change and `pr-merge` for completing an authorized merge, which may be another
@@ -165,8 +165,21 @@ of one's own change landing. This one would be `team` scope, window `days-8-to-3
 before the thirty-day review, and it requires `pr-post`. That edge is true: a change cannot
 be merged before it is posted. `pr-merge` then keeps its meaning of merging when authorized,
 and its summary would say a teammate's change. The two ids differ by one letter, which is
-easy to misread, so the new one carries the longer name. This adds a 60th section, which
-changes the catalog's pinned count and its fixtures.
+easy to misread, so the new one carries the longer name.
+
+**`first-change-in-production`, "Get your first change into production."** The next
+milestone after the merge. `deploy-shadow` is watching a deployment, and `deploy-lead` is
+leading one when authorized, and neither says that the newcomer's own change reached
+production. This one would be `team` scope, window `days-8-to-30`, placed after
+`first-change-merged` and before the thirty-day review, and it requires
+`first-change-merged`. That edge is true for nearly every team, since a change reaches
+production after it merges. A team that deploys from a branch before merging would defer
+the earlier milestone, and then this one waits on it. If that is common, drop the edge and
+let position say the order. Timing is a planning goal, so a team that ships more slowly
+simply has the item open longer.
+
+These two add a 60th and a 61st section, which changes the catalog's pinned count and its
+fixtures.
 
 ## What this needs
 
