@@ -1,11 +1,19 @@
 package tui
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	"fmt"
+
+	tea "github.com/charmbracelet/bubbletea"
+)
 
 const (
 	draftKeptText    = "Your text is kept, not saved yet."
 	draftDroppedText = "Your unsaved text on the last question was dropped."
 )
+
+func (app App) draftKeptLine() line {
+	return line{text: fmt.Sprintf("Your text on question %d is kept, not saved yet.", app.cursor+1), tone: toneWarning}
+}
 
 func (app App) tabIndex(target screen) int {
 	for index, entry := range app.tabs() {
@@ -119,7 +127,7 @@ func (app App) openScreen(target screen) App {
 	leaving := app.screen == screenAnswer && app.entry.hasDraft()
 	opened := app.openedScreen(target)
 	if leaving && opened.screen != screenAnswer {
-		opened.status = line{text: draftKeptText, tone: toneWarning}
+		opened.status = app.draftKeptLine()
 	}
 	return opened
 }

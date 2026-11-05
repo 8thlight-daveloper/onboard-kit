@@ -6,7 +6,7 @@
                                                                         │ Example: ACME Corp
   What is the organization's name?                                      │ Type: string
                                                                         │ Answered by: onboarder
-    Glob                                                                │ Name: plan.organization
+  Not saved yet: Glob                                                   │ Name: plan.organization
                                                                         │
     Edit the answer                                                     │
     deferred, answer later                                              │
@@ -27,4 +27,4 @@
 
 
 
-  Not typing.  up/down move  enter do it  tab next page  esc overview  ? help
+  Not typing.  up/down move  enter choose  tab next page  esc overview  p back  n skip  d defer  ? help

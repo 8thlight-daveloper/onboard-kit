@@ -2,6 +2,8 @@ package tui
 
 import "strings"
 
+const notTyping = "Not typing."
+
 type hint struct {
 	key   string
 	label string
@@ -18,7 +20,7 @@ func (app App) hints(tabKeysShown bool) []hint {
 		return []hint{{"any key", "closes help"}}
 	}
 	if app.stripFocused {
-		return []hint{{"left/right", "choose a tab"}, {"enter", "open"}, {"down", "return"}, {"?", "help"}}
+		return []hint{{notTyping, ""}, {"left/right", "choose a tab"}, {"enter", "open"}, {"down", "back"}, {"?", "help"}}
 	}
 	switch app.screen {
 	case screenOverview:
@@ -40,9 +42,9 @@ func (app App) hints(tabKeysShown bool) []hint {
 func (app App) answerHints(tabKeysShown bool) []hint {
 	switch {
 	case app.entry.typing():
-		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, {"f1", "help"}}
+		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, {"up", "tabs"}, {"f1", "help"}}
 	case app.entry.onOptions():
-		hints := []hint{{"Not typing.", ""}, {"up/down", "move"}, {"enter", "do it"}, {"tab", "next page"}, {"esc", app.leaveName()}}
+		hints := []hint{{notTyping, ""}, {"up/down", "move"}, {"enter", "choose"}, {"tab", "next page"}, {"esc", app.leaveName()}, {"p", "back"}, {"n", "skip"}, {"d", "defer"}}
 		hints = append(hints, app.jumpHints(tabKeysShown)...)
 		return append(hints, hint{"?", "help"})
 	}

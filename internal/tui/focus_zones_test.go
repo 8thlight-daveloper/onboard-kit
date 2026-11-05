@@ -34,7 +34,7 @@ func TestEscapeStopsTypingAndKeepsTheText(t *testing.T) {
 		t.Fatalf("esc should stop typing and stay on the question, screen %v", blurred.screen)
 	}
 	view := plainView(blurred)
-	for _, want := range []string{"    Glob", "> Edit the answer", "Stopped typing. Your text is kept, not saved yet."} {
+	for _, want := range []string{"  Not saved yet: Glob", "> Edit the answer", "Stopped typing. Your text is kept, not saved yet."} {
 		if !strings.Contains(view, want) {
 			t.Errorf("the blurred screen lacks %q:\n%s", want, view)
 		}
@@ -62,8 +62,11 @@ func TestEscapeOnAnUnchangedAnswerSaysItIsKept(t *testing.T) {
 	if got := statusLine(press(app, esc)); got != "Stopped typing. The answer is kept as it was." {
 		t.Errorf("status: %q", got)
 	}
-	if !strings.Contains(plainView(press(app, esc)), "nothing typed yet") && !strings.Contains(plainView(press(app, esc)), "e.g.") {
+	if !strings.Contains(plainView(press(app, esc)), "  Nothing typed yet") {
 		t.Error("an empty field still shows where it is")
+	}
+	if !strings.Contains(plainView(press(app, typed("Globex"), enter, ctrlP, esc)), "  Saved: Globex") {
+		t.Error("a saved answer says so when typing stops")
 	}
 }
 
@@ -195,7 +198,7 @@ func TestUpFromTheFieldReachesTheTabStrip(t *testing.T) {
 	if !strings.Contains(headerOf(strip), "> [Answer]") {
 		t.Errorf("the strip starts on the current tab: %q", headerOf(strip))
 	}
-	if !strings.Contains(hintLine(strip), "left/right choose a tab") {
+	if !strings.Contains(hintLine(strip), "Not typing.  left/right choose a tab") {
 		t.Errorf("the hint line says how to use the strip: %q", hintLine(strip))
 	}
 	chosen := press(strip, right, right)
@@ -282,7 +285,7 @@ func TestTabMovesFieldsInsideAForm(t *testing.T) {
 func TestADraftSurvivesAPageVisit(t *testing.T) {
 	t.Parallel()
 	away := press(typedGlob(t), tab)
-	if away.screen != screenOverview || statusLine(away) != draftKeptText {
+	if away.screen != screenOverview || statusLine(away) != "Your text on question 1 is kept, not saved yet." {
 		t.Fatalf("tab leaves for the overview and says the text is kept, got %v %q", away.screen, statusLine(away))
 	}
 	back := press(away, shiftTab)
@@ -338,6 +341,9 @@ func TestASuggestionIsAnOptionThatFillsTheBox(t *testing.T) {
 	}
 	if statusLine(filled) != suggestionText {
 		t.Errorf("status: %q", statusLine(filled))
+	}
+	if replaced := press(app, typed("mine"), down, down, enter); statusLine(replaced) != suggestionReplacedText || replaced.entry.input.Value() == "mine" {
+		t.Errorf("a suggestion over a draft says it replaced it: %q", statusLine(replaced))
 	}
 	if saved := press(filled, enter); saved.cursor != 1 {
 		t.Error("enter then saves it and moves on")

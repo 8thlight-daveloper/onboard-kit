@@ -6,7 +6,7 @@
                                                                                     │ Type: string
   Which reviewed local startup, shutdown, and safe data instructions apply?         │ Answered by: onboarder
                                                                                     │ Name: local.startup
-    nothing typed yet                                                               │ Suggestion (default): Run make run, stop with
+  Nothing typed yet                                                                 │ Suggestion (default): Run make run, stop with
                                                                                     │ Ctrl+C, and use the sample database
     Edit the answer                                                                 │ Suggestion (given): Ask the team lead
   > Use the suggestion: Run make run, stop with Ctrl+C, and use the sample database │
@@ -37,4 +37,4 @@
 
 
 
-  Not typing.  up/down move  enter do it  tab next page  esc overview  ? help
+  Not typing.  up/down move  enter choose  tab next page  esc overview  p back  n skip  d defer  ? help

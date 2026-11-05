@@ -6,7 +6,7 @@
 
   What is the organization's name?
 
-    Glob
+  Not saved yet: Glob
 
     deferred, answer later
     skip, change nothing
@@ -21,4 +21,4 @@
 
 
 
-  left/right choose a tab  enter open  down return  ? help
+  Not typing.  left/right choose a tab  enter open  down back  ? help

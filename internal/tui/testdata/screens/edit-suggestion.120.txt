@@ -7,7 +7,7 @@
   Which reviewed local startup, shutdown, and safe data instructions    │ Answered by: onboarder
   apply?                                                                │ Name: local.startup
                                                                         │ Suggestion (default): Run make run, stop
-    nothing typed yet                                                   │ with Ctrl+C, and use the sample database
+  Nothing typed yet                                                     │ with Ctrl+C, and use the sample database
                                                                         │ Suggestion (given): Ask the team lead
     Edit the answer                                                     │
   > Use the suggestion: Run make run, stop with Ctrl+C, and use the sa… │
@@ -27,4 +27,4 @@
 
 
 
-  Not typing.  up/down move  enter do it  tab next page  esc overview  ? help
+  Not typing.  up/down move  enter choose  tab next page  esc overview  p back  n skip  d defer  ? help

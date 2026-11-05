@@ -258,7 +258,7 @@ Decided, and built. The Answer screen of a typed question has three places the k
   Building an onboarding plan  [Answer]  > Overview o  Review r     the tab strip
   What is the organization's name?
 
-    Glob                                                          the answer field
+  Not saved yet: Glob                                             the answer field
   > Edit the answer                                               the list of options
     Use the suggestion: ACME Corp
     deferred, answer later
@@ -269,13 +269,13 @@ Decided, and built. The Answer screen of a typed question has three places the k
 - **The answer field** has the keys when the question opens. Typing works as before, and enter saves and moves on. Left and right arrows move the caret inside the text.
 - **The list of options** sits under the field. It holds one "Use the suggestion: X" row for each suggestion that is not already the answer, then "deferred, answer later", "skip, change nothing", and "clear the answer", the labels a choice question uses. While the person types, the list is faint and has no chosen row. Down arrow, or escape, stops typing and chooses its first row, "Edit the answer", which shows only then. Down walks the list, and enter does the chosen row. Up from "Edit the answer", or enter on it, returns to typing with the text as it was.
 - **The tab strip** gets the keys with up arrow from the field, or from the first row of a choice or pick list. Left and right choose a tab, which gets `>` and a bar, enter opens it, and down or escape returns to where the person was. The screen letters work there too.
-- **Stopping is unmistakable.** When typing stops, five things change at once: the caret goes, the field loses its `>` and turns faint with its text kept, the chosen row of the list gets `>` and a bar, the hint line starts "Not typing.", and the status line says "Stopped typing." and that the text is kept. An empty field reads "nothing typed yet", so its place stays visible. A second escape opens the Overview or the Review, as before.
+- **Stopping is unmistakable.** When typing stops, five things change at once: the caret goes, the field loses its `>` and turns faint with its text kept and a label in front, the chosen row of the list gets `>` and a bar, the hint line starts "Not typing.", and the status line says "Stopped typing." and that the text is kept. The label says what the text is, so it still reads without colour after the status line clears: "Not saved yet: Glob" for a draft, "Saved: Globex" for the saved answer, and "Nothing typed yet" for an empty field. The hint line also starts "Not typing." while the tab strip has the keys. A second escape opens the Overview or the Review, as before.
 - **Letters while not typing.** With the list or the strip in focus, letters are keys again: the screen letters, `p` and left arrow back, `n` and right arrow skip, `d` defer, `x` clear, `q` quit, and `?` help.
-- **A suggestion** row puts its text in the box and returns to typing, so the person can change it before enter saves it. The status says "The suggestion is in the box. Enter saves it." No key cycles through suggestions any more.
+- **A suggestion** row puts its text in the box and returns to typing, so the person can change it before enter saves it. The status says "The suggestion is in the box. Enter saves it.", or "The suggestion replaced your text. Enter saves it." when it replaced a draft. No key cycles through suggestions any more.
 
 What happens to text that is typed and not saved, called a draft here:
 
-- **It is kept while it stays on its question.** Stopping typing, opening the tab strip, and moving to another page with tab, a letter, or escape all keep it, and it is back in the box on return. Leaving the Answer screen with a draft says "Your text is kept, not saved yet."
+- **It is kept while it stays on its question.** Stopping typing, opening the tab strip, and moving to another page with tab, a letter, or escape all keep it, and it is back in the box on return. Leaving the Answer screen with a draft says "Your text on question 4 is kept, not saved yet."
 - **It is dropped when the person leaves its question**, by defer, skip, back, or opening another question from the Overview or the Review. The status says "Your unsaved text on the last question was dropped.", after "saved" when the move also saved a deferral. Defer saves the deferral and not the draft, because a question holds one answer and the person chose to answer it later. Skip saves nothing, as its label says.
 - **Clear empties the box as well as the answer**, saves the cleared answer when there was one, and returns to typing on the same question.
 - **Quitting drops it**, as it always did. Only enter saves typed text.

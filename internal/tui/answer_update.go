@@ -7,9 +7,10 @@ import (
 )
 
 const (
-	stoppedTypingText = "Stopped typing. "
-	answerKeptText    = "The answer is kept as it was."
-	suggestionText    = "The suggestion is in the box. Enter saves it."
+	stoppedTypingText      = "Stopped typing. "
+	answerKeptText         = "The answer is kept as it was."
+	suggestionText         = "The suggestion is in the box. Enter saves it."
+	suggestionReplacedText = "The suggestion replaced your text. Enter saves it."
 )
 
 func (app App) updateAnswer(key tea.KeyMsg) (tea.Model, tea.Cmd) {
@@ -98,8 +99,12 @@ func (app App) chosenOption() App {
 	case choiceEdit:
 		app.entry = app.entry.resumed()
 	case choiceSuggestion:
+		text := suggestionText
+		if app.entry.hasDraft() {
+			text = suggestionReplacedText
+		}
 		app.entry = app.entry.withText(textOf(app.entry.question, option.value)).resumed()
-		app.status = line{text: suggestionText, tone: toneStrong}
+		app.status = line{text: text, tone: toneStrong}
 	case choiceSkip:
 		return app.moveTo(app.cursor + 1)
 	case choiceClear:
@@ -145,13 +150,14 @@ func (app App) stoppedTyping() App {
 
 func (app App) leaveAnswer() App {
 	leaving := app.entry.hasDraft()
+	kept := app.draftKeptLine()
 	if app.returnTo == screenReview {
 		app = app.openReview()
 	} else {
 		app = app.openOverview()
 	}
 	if leaving {
-		app.status = line{text: draftKeptText, tone: toneWarning}
+		app.status = kept
 	}
 	return app
 }

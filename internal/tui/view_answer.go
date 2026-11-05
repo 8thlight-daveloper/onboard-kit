@@ -79,7 +79,7 @@ func (app App) entryLines(width int, height int, colors palette) []line {
 }
 
 func (app App) typedEntryLines(width int, height int, colors palette) []line {
-	content := []line{{text: app.entry.inputView(colors, app.typingNow()), raw: true}}
+	content := []line{app.fieldLine(width, colors)}
 	content = append(content, lines(toneFaint, app.entryHelp(width))...)
 	content = append(content, blankLine())
 	first := 1
@@ -93,6 +93,20 @@ func (app App) typedEntryLines(width int, height int, colors palette) []line {
 	}
 	shown, position := windowRows(rows, max(app.entry.choice-first, 0), height-len(content))
 	return append(append(content, shown...), position...)
+}
+
+func (app App) fieldLine(width int, colors palette) line {
+	if app.typingNow() {
+		return line{text: app.entry.inputView(colors), raw: true}
+	}
+	text := singleLine(app.entry.input.Value())
+	switch {
+	case strings.TrimSpace(text) == "":
+		return faintLine(emptyFieldText)
+	case app.entry.hasDraft():
+		return faintLine(truncateCells(draftLabel+text, width))
+	}
+	return faintLine(truncateCells(savedLabel+text, width))
 }
 
 func optionLine(label string, focused bool, chosen bool, width int, colors palette) line {

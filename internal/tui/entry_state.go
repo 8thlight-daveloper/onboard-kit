@@ -14,7 +14,9 @@ const (
 	inputPadding   = 4
 	inputMinimum   = 10
 	examplePrefix  = "e.g. "
-	emptyFieldText = "nothing typed yet"
+	emptyFieldText = "Nothing typed yet"
+	draftLabel     = "Not saved yet: "
+	savedLabel     = "Saved: "
 )
 
 type entryFocus int
@@ -107,19 +109,10 @@ func (entry entryState) keepsDraftFor(question model.Question) bool {
 	return entry.hasDraft() && entry.question.ID == question.ID && sameAnswer(entry.question.Answer, question.Answer)
 }
 
-func (entry entryState) inputView(colors palette, active bool) string {
+func (entry entryState) inputView(colors palette) string {
 	input := entry.input
 	input.PlaceholderStyle = colors.styles[toneFaint]
-	if active {
-		input.PromptStyle = colors.styles[toneHere]
-		return input.View()
-	}
-	input.Blur()
-	input.Prompt = blurredPrompt
-	if input.Placeholder == "" {
-		input.Placeholder = emptyFieldText
-	}
-	input.TextStyle = colors.styles[toneFaint]
+	input.PromptStyle = colors.styles[toneHere]
 	return input.View()
 }
 

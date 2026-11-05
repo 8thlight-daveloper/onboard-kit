@@ -6,7 +6,7 @@
 
   What is the organization's name?
 
-    Glob
+  Not saved yet: Glob
 
   > Edit the answer
     deferred, answer later
@@ -21,4 +21,4 @@
   Name: plan.organization
 
   Stopped typing. Your text is kept, not saved yet.
-  Not typing.  up/down move  enter do it  tab next page  esc overview  ? help
+  Not typing.  up/down move  enter choose  tab next page  esc overview  ? help
