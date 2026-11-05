@@ -42,13 +42,23 @@ The attestation shows that the archive was built from this repository by its rel
 
 On Windows, install inside WSL and use the Linux archive: `linux_amd64` on most PCs, `linux_arm64` on Windows on Arm. Keep your plan files in the Linux file system, not under `/mnt/c`.
 
+## Quick start
+
+Run `onboard-kit` in a terminal. A build from source also makes `obk`, a shorter name for the same program. The first screen asks what you would like to do:
+
+- **Build an onboarding plan** shows the file it will write, writes a new plan with the core set of sections after you press `y`, and opens it in the plan editor.
+- **Begin my onboarding** takes the invitation file someone gave you. Until the newcomer's screens are built, it goes on with typed commands in the terminal.
+
+The next time, the first screen lists the plans you opened, last used first, with New plan, Open a file, and Begin my onboarding below them. `x` removes a plan from that list and never deletes its file. `onboard-kit FILE` opens a plan or an invitation directly, and refuses any other file. Press `a` on the first screen, or on a help page, to see the version and every place the tool reads or writes. The list's format is in [the plan list](docs/reference/plan-list.md).
+
 ## Build from source
 
 To build it yourself or try the demo, you need [Nix](https://nixos.org/download) with flakes enabled. The dev shell supplies Go and every other tool at fixed versions.
 
 ```sh
 nix develop                                   # or `direnv allow`, to enter the shell on cd
-just build                                    # writes output/onboard-kit
+just build                                    # writes output/onboard-kit and the obk alias beside it
+just build run                                # builds, then opens the first screen
 just demo-init                                # creates a sample plan from the Acme example
 just demo-plan                                # opens it in the terminal walkthrough
 ```
@@ -64,12 +74,15 @@ output/onboard-kit assemble --plan plan.obk.yaml --out onboarding.md
 
 | Command | Does |
 | -- | -- |
+| `onboard-kit` | Opens the first screen in a terminal: the plans you opened, a new plan, a file, or your onboarding. With no terminal it prints the usage and the commands for scripts, and exits 2 |
+| `onboard-kit FILE`, `open FILE` | Opens a plan in the plan editor, as `walk --plan FILE` does. An invitation goes on to the typed `start --invitation` flow, with the current folder as the records root. Any other file is refused in one sentence, with exit 1. Needs a terminal. Neither spelling asks anything first |
+| `new [--out FILE] [--id ID] [--generated-on DATE]` | Writes a new plan with the core set of catalog sections, never over an existing file. In a terminal it shows the path, asks for `y`, adds the plan to your list, and opens it in the editor. With no terminal it writes `FILE`, or standard output when `--out` is left out, and asks nothing |
 | `start --org-plan FILE` | Legacy newcomer flow. Copies the organization's plan into their own plan file in a per-user folder (`OBK_HOME` or `--home` change it) and opens the onboardee walkthrough. Running it again reopens their file and refreshes from a changed organization plan |
 | `start --invitation FILE --root DIR [--home DIR]` | Reviews an invitation, confirms identity and publishes approved files only after begin, then displays a read-only record-backed session. See [invitation opening](docs/reference/invitation-start.md) |
 | `start --resume-import TOKEN --root DIR [--home DIR]` | Reviews and resumes or cleans an interrupted invitation opening in the same context. This is not a general onboarding resume command |
-| `walk --plan FILE [--templates DIR] [--audience onboarder\|onboardee] [--root DIR]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `t` opens the people's preparations under `--root` (the plan's folder by default), `i` writes a person's invitation, `obk-invitation-<account>.zip` beside the plan by default, `q` quits |
+| `walk --plan FILE [--templates DIR] [--audience onboarder\|onboardee] [--root DIR]` | Opens the terminal walkthrough. It opens `FILE`, or starts a new plan from `DIR` when `FILE` does not exist, and adds it to your plan list. Every accepted answer is saved to `FILE` at once. Keys: enter answers a question, `d` defers it, `x` clears it, `s` switches sections on and off, `r` reviews the blockers and the document, `t` opens the people's preparations under `--root` (the plan's folder by default), `i` writes a person's invitation, `obk-invitation-<account>.zip` beside the plan by default, `q` quits |
 | `assemble --plan FILE [--out FILE]` | Writes a Markdown document from a plan. Gaps go on standard error and in the document's gap table |
-| `new --templates DIR [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml` |
+| `new --templates DIR [--template-set NAME] [--out FILE]` | Writes a new plan from a folder of section templates, and an optional `plan-variables.yaml`. Kept for the scenarios that use it, and to be removed under 0610 |
 | `prepare <operation> --plan FILE --account ID [--root DIR]` | Creates or edits the onboarder's preparation for one person, or shows it beside recorded outcomes without changing the plan or record. See [preparation commands](docs/reference/preparation-command.md) |
 | `invite export --plan FILE --preparation FILE --account ID --out FILE --preaccess-help-contact ID` | Publishes a new invitation ZIP with the original plan, preparation, identity-only record seed and first-steps guide. See [invitation export](docs/reference/invitation-export.md) |
 | `catalog list`, `catalog show --id ID`, `catalog export --id ID` | Lists, displays or exports all eighty compiled catalog entries without reading or writing files. See [the catalog](docs/reference/onboarding-catalog.md#using-the-embedded-catalog) |

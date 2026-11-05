@@ -2,7 +2,7 @@
 
 Status: living. Each point says whether it is decided, a direction, or open, and any of them can change as the screens are built and used. This page is not a contract. Unit tests drive the screens through key and window-size messages, and a person tries them in a real terminal.
 
-The code is `internal/tui`, opened by `onboard-kit walk` and `onboard-kit start`. The toolkit is Bubble Tea, see [language](../stack/language.md). The people it serves, and what each may answer, are in [0055](../decisions/0055-variable-audience.md) and [0060](../decisions/0060-personal-plan.md).
+The code is `internal/tui`, opened by `onboard-kit` with no argument, `onboard-kit FILE`, `onboard-kit open FILE`, `onboard-kit new`, `onboard-kit walk`, and `onboard-kit start`. The toolkit is Bubble Tea, see [language](../stack/language.md). The people it serves, and what each may answer, are in [0055](../decisions/0055-variable-audience.md) and [0060](../decisions/0060-personal-plan.md).
 
 ## Intent
 
@@ -25,6 +25,7 @@ Rules that follow from this:
 
 | Person | Command | Sees | Changes |
 | -- | -- | -- | -- |
+| Anyone | `onboard-kit`, or `obk` | The front door: the plans they opened before, and what they can do next | The plan list, and a new plan file after `y` |
 | The onboarder | `walk --plan FILE [--root DIR]` | Onboarder questions, section switches, the assembled document, the people's preparations, and who is ready for an invitation | Onboarder answers and switches, one person's preparation after a reviewed save, and one new invitation file after `y` |
 | The onboardee | `start --org-plan FILE` | Onboardee questions and their own document | Onboardee answers only |
 
@@ -34,28 +35,50 @@ Decided: the onboardee does not get a separate list of the organization's answer
 
 ## Entry and roles
 
-Decided by [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md).
-Not built yet, so the commands in the table above still run today.
+Decided by [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md). Partly built. Each point says which.
 
-- **One entry.** `obk`, an alias of `onboard-kit`, opens the terminal interface. A
-  person makes every choice inside it. Flags serve scripts and agents.
-- **The file decides.** `obk FILE` opens a plan in the plan editor, and an invitation
-  in the newcomer's flow. Any other file is refused with one sentence.
-  `obk open FILE` is the explicit spelling for scripts.
-- **The front door.** With no argument the first screen asks "What would you like to
-  do?" and offers "Build an onboarding plan" and "Begin my onboarding". With known
-  plans it shows a picker, last used first, with "New plan" and "Open a file".
-- **The header names the role.** The onboarder sees "Building: Acme plan", with the
-  tabs Answer, Overview, Review, Sections, Contacts, Preparation, and Invitation.
-  The newcomer sees "Your onboarding at Acme", with the tabs Your questions,
-  Overview, and Document. The Walk screen below becomes Answer for the onboarder
-  and Your questions for the newcomer. The rest of this page keeps the old name
-  until the screens are built.
-- **Tell before looking.** Before the tool looks beyond the file in the command, it
-  says what it will read and why, and warns when the system may show a permission
-  prompt. Looking for an invitation in the Downloads folder is the first case.
-- **About.** A screen lists every folder and file the tool uses, what each holds, and
-  whether the tool reads it, writes it, or both.
+- **One entry.** Built. `obk`, an alias of `onboard-kit`, opens the terminal
+  interface. `just build` writes `output/obk` beside `output/onboard-kit`. The release
+  archives and the Homebrew formula do not ship the alias yet. Flags serve scripts
+  and agents.
+- **The file decides.** Built. `obk FILE` opens a plan in the plan editor, exactly as
+  `walk --plan FILE` does. Any other file is refused with one sentence that names
+  what was expected, and the exit code is 1. `obk open FILE` is the explicit
+  spelling for scripts, with the same behavior. Neither asks anything before it
+  opens. A command name always wins over a file of the same name.
+- **The invitation, interim.** `obk FILE` with an invitation, and Begin my
+  onboarding, run the typed flow of `start --invitation FILE --root DIR` after the
+  screen closes. `DIR` is the folder the tool was started in, and the screen and
+  the first printed line say so before it hands over. This stays until the
+  newcomer's screens are built.
+- **No terminal.** Built. With no argument and no terminal, the tool prints its
+  usage and one line that names the scripting commands, and exits 2. A plan or an
+  invitation named with no terminal is refused the same way, naming
+  `assemble --plan FILE` or `start --invitation FILE --root DIR`.
+- **The front door.** Built, see Front door below. With no known plans the first
+  screen asks "What would you like to do?" and offers "Build an onboarding plan"
+  and "Begin my onboarding". With known plans it shows a picker, last used first,
+  with "New plan", "Open a file", and "Begin my onboarding".
+- **A new plan, interim.** `obk new` and Build an onboarding plan write the core
+  set of [0530](../decisions/0530-new-plan-from-core-set.md) after the person sees
+  the path and presses `y`. The reviewed creation draft of 0530, where a person
+  removes and adds sections before the save, is not built. The person switches
+  sections off on the Sections tab afterwards.
+- **The header names the role.** Not built. The onboarder will see "Building: Acme
+  plan", with the tabs Answer, Overview, Review, Sections, Contacts, Preparation,
+  and Invitation. The newcomer will see "Your onboarding at Acme", with the tabs
+  Your questions, Overview, and Document. The Walk screen below becomes Answer
+  for the onboarder and Your questions for the newcomer. The rest of this page
+  keeps the old name until the screens are built.
+- **Tell before looking.** Not built. Before the tool looks beyond the file in the
+  command, it says what it will read and why, and warns when the system may show
+  a permission prompt. Looking for an invitation in the Downloads folder is the
+  first case. Today the person types the invitation's path, so the tool looks
+  nowhere else.
+- **About.** Built. A screen lists every folder and file the tool uses, what each
+  holds, and whether the tool reads it, writes it, or both, with the version and
+  the template set. The front door opens it with `a`, and every help page that
+  has it offers `a`.
 
 ## Screens
 
@@ -576,6 +599,59 @@ The form already shows the guide, so `y` could write from it. But the file name 
 - Offering every contact for the pre-access help and refusing on write. The pick list shows only the contacts the export accepts.
 - Writing a numbered name without asking when the chosen file exists. The form shows the free name and waits for `y` again.
 
+## Front door
+
+Built, under [0610](../decisions/0610-people-work-in-screens-and-flags-serve-scripts.md). The first screen of `onboard-kit` with no argument. The code is `internal/tui/front_door.go`. The `tui` package does no file work: a port, `FrontDoorPort`, lists the known plans, forgets one, checks a file's kind, proposes and writes a new plan, and gives the About entries. `internal/command/frontdoor` backs it. When the screen closes it says what the person chose, open a plan or begin an onboarding, and the command does it.
+
+### What the front door shows
+
+- **The header.** `onboard-kit` on the left and the screen's name on the right: Start, New plan, Open a file, Begin my onboarding, or About. There is no tab strip, because nothing is open yet.
+- **No known plans.** "What would you like to do?" with "Build an onboarding plan" and "Begin my onboarding". A faint line under the list says what the chosen row does.
+- **Known plans.** "Your plans, last used first". Each row shows the file name, "opened" and the local date and time, and the folder. The last used plan is chosen when the screen opens. Under the plans, after a blank line: "New plan", "Open a file", and "Begin my onboarding". The plans come from [the plan list](plan-list.md).
+- **A missing plan.** A plan whose file is gone reads "missing" in place of the time. The hint line offers no enter on it, and enter only says it is not where it was and to press `x` to remove it from the list.
+- **Remove from list.** `x` on a plan asks "Remove acme.obk.yaml from the list?" and says the file stays where it is. `y` forgets it. Esc, or any other key, keeps it, and `?` opens help over the question. The file is never touched.
+- **New plan.** A file field filled with `onboarding.obk.yaml`, or `onboarding-2.obk.yaml` when that exists, in the folder the tool was started in. A line under it names the whole path. Enter, or ctrl+s, shows the last step, "Write this new plan?", with the path. `y` writes the core set, never over an existing file, adds it to the plan list, and opens it in the editor. A refusal returns to the field with its reason.
+- **Open a file.** A file field. Enter checks the file's kind. A plan opens in the editor. An invitation goes on to Begin my onboarding with the path filled in. Any other file shows the same one sentence as `obk FILE`, under the field after `! problem:`. A path may start with `~/` for the home folder.
+- **Begin my onboarding.** A field for the invitation file's path, with `~/Downloads/obk-invitation-your-name.zip` as the example, a line that says the records are kept in the folder the tool was started in, and a faint line that says the tool will ask the person to confirm who they are and that they type each reply. Enter on an invitation closes the screen and starts the typed flow. A plan typed here is refused with a sentence that says it is a plan.
+- **A damaged plan list.** The first screen shows no plans, a line under the question that starts `! problem:` and says to press `a` to see why, and Open a file as a third choice. The line stays until the screen closes. About names the file and the reason.
+
+### Front door keys
+
+| Key | Start | New plan, Open a file, Begin my onboarding | Last step of New plan | About |
+| -- | -- | -- | -- | -- |
+| up, down, `k`, `j` | Move |  |  | Scroll |
+| `g`, `G` | First, last | Letters are text |  | Top, end |
+| pgup, pgdn |  |  |  | Scroll a page |
+| enter | Open the plan, or choose what to do | Check and go on |  | Back |
+| ctrl+s |  | Go on to the last step, on New plan |  |  |
+| `x` | Remove the plan from the list, after `y` | Letters are text |  |  |
+| `y` | Confirms a removal | Letters are text | Write the plan |  |
+| `a` | About | Letters are text |  | Back |
+| esc | Nothing, so pressing it twice to leave a field never quits | Back to Start. When `obk new` opened New plan, quit | Back to the field | Back |
+| `q` | Quit | Letters are text |  | Back |
+| `?` | Help | `f1` | Help | Help |
+| ctrl+c | Quit | Quit | Quit | Quit |
+
+Help lists the keys of the screen it was opened from. `a` on any help page opens About, and any other key closes the help.
+
+### `obk new`
+
+With a terminal, `onboard-kit new [--out FILE]` opens New plan directly, with `FILE` or the proposed name in the field. Esc quits, because there is no first screen behind it. `--id` and `--generated-on` set the plan's id and date. With no terminal, `new --out FILE` writes the plan with no question and never over a file, and `new` with no `--out` writes it to standard output. Neither adds it to the plan list. `new --templates DIR` keeps its old behavior for the scenarios that use it, and `--template-set` is refused without `--templates`, because a new plan records the version of the tool as its template set.
+
+### About
+
+A list of every place the tool uses, rendered from data in `internal/command/places`. Code that opens a new place adds one entry there. Each entry shows the path, whether the tool reads it, writes it, or both, what it holds, and for the state home how it was chosen. The places are the state home, the plan list, the sessions folder, the imports folder, the plan folder, the records root, and the Downloads folder, `XDG_DOWNLOAD_DIR` or `~/Downloads`, which reads "Not used yet." From the front door, the plan folder reads "the folder of each plan you open", and the records root is the folder the tool was started in. From the editor's help, both are the open plan's own. Above the places are the version and the template set, and above those any problem: a damaged plan list, or a state home that cannot be found. When the list is longer than the window, its last line says which lines show, such as "Lines 1 to 18 of 32", and the arrows scroll.
+
+### Why these keys
+
+`x` and `y` remove a plan as they remove a contact. `a` is free on the first screen and on every help page, because help closes on any other key. Esc means back everywhere, so on Start, with nothing behind it, it does nothing, and `q` quits. On New plan opened by `obk new` esc quits, because `q` is text there and there is no first screen behind it.
+
+### Rejected on the front door
+
+- Reading each listed plan to show its organization's name. It would decode every plan at launch, and the file name already tells plans apart.
+- Opening the editor for a missing plan, or removing it without asking. Enter explains, and `x` asks first, as everywhere else.
+- Writing the new plan from the field with enter. The name is typed, so `y` cannot be its key there. The last step keeps `y` the one key that writes, as on the Invitation tab.
+
 ## Open
 
 - Whether a team can supply a default manager or onboarding owner for a person, as [0520](../decisions/0520-preparation-screen.md) leaves open. Today each of the four is its own pick.
@@ -583,6 +659,10 @@ The form already shows the guide, so `y` could write from it. But the file name 
 - Whether the Preparation review should show the guide under the changes below 120 columns, instead of behind tab.
 
 - Whether the line for the newcomer should name only the file, not the onboarder's path. The newcomer saves the file in their own folder, often Downloads, so the onboarder's path may not be theirs.
+
+- Whether Start with no known plans should also offer Open a file. 0610 lists two choices there, so a person whose team already keeps a plan runs `obk FILE` the first time.
+
+- Whether the plan picker should show the organization name from each plan, not the file name.
 
 - Whether the Invitation form should remember its values across a visit to another tab. Today opening the tab checks everyone again and starts at the list.
 
