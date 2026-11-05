@@ -3,7 +3,6 @@ package tui
 import (
 	"flag"
 	"fmt"
-	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -88,6 +87,10 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"invitation-missing":           inviting(t, "invitation-missing"),
 		"invitation-confirm":           inviting(t, "invitation-confirm"),
 		"invitation-written":           inviting(t, "invitation-written"),
+		"about": build(acmePlan(t), model.AudienceOnboarder, func(app App) App {
+			about := fakeAbout()
+			return press(app.WithAbout(&about), typed("?"), typed("a"))
+		}),
 		"too-small": func(size goldenSize) App {
 			app, _ := startWith(t, blankPlan(t), model.AudienceOnboarder)
 			return resize(app, size.width, 10)
@@ -120,30 +123,17 @@ func TestScreensMatchTheirWireframes(t *testing.T) {
 	t.Cleanup(func() { lipgloss.SetColorProfile(previous) })
 	for name, build := range goldenScreens(t) {
 		for _, size := range goldenSizes {
-			path := filepath.Join("testdata", "screens", fmt.Sprintf("%s.%d.txt", name, size.width))
-			got := wireframe(build(size))
-			if *update {
-				if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
-					t.Fatal(err)
-				}
-				if err := os.WriteFile(path, []byte(got), 0o644); err != nil {
-					t.Fatal(err)
-				}
-				continue
-			}
-			want, err := os.ReadFile(path)
-			if err != nil {
-				t.Fatalf("%s is missing, run go test ./internal/tui -run Wireframes -update: %v", path, err)
-			}
-			if string(want) != got {
-				t.Errorf("%s differs from the screen.\nwant:\n%s\ngot:\n%s", path, want, got)
-			}
+			compareWireframe(t, filepath.Join("testdata", "screens", fmt.Sprintf("%s.%d.txt", name, size.width)), wireframe(build(size)))
 		}
 	}
 }
 
 func wireframe(app App) string {
-	rows := viewLines(app)
+	return wireframeOf(plainView(app))
+}
+
+func wireframeOf(view string) string {
+	rows := strings.Split(view, "\n")
 	for index, row := range rows {
 		rows[index] = strings.TrimRight(row, " ")
 	}

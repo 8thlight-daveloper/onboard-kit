@@ -1,0 +1,30 @@
+  onboard-kit                                                                                                    Start
+
+
+  What would you like to do?
+
+    Build an onboarding plan
+  > Begin my onboarding
+
+  Open the invitation file your onboarding owner gave you.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter choose  up/down move  a about  q quit  ? help

@@ -25,6 +25,9 @@ type App struct {
 	returnTo        screen
 	cameFrom        screen
 	helpOpen        bool
+	about           *About
+	aboutOpen       bool
+	aboutScroll     int
 	status          line
 	entry           entryState
 	review          reviewState
@@ -49,6 +52,29 @@ func (app App) WithNotice(text string) App {
 		app.status = line{text: text, tone: toneStrong}
 	}
 	return app
+}
+
+func (app App) WithAbout(about *About) App {
+	app.about = about
+	return app
+}
+
+func (app App) updateAbout(key tea.KeyMsg) App {
+	switch key.String() {
+	case "esc", "q", "a", "enter", "?":
+		app.aboutOpen = false
+		return app
+	}
+	height := app.frame().bodyHeight
+	if offset, moved := scrolledBy(key.String(), app.aboutScroll, height); moved {
+		content := aboutLines(*app.about, app.aboutWidth())
+		app.aboutScroll = max(min(offset, aboutScrollLimit(content, height)), 0)
+	}
+	return app
+}
+
+func (app App) aboutWidth() int {
+	return min(app.frame().innerWidth(), readingWidth)
 }
 
 func (app App) opening() App {
@@ -98,8 +124,14 @@ func (app App) updateKey(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return app.quit()
 	}
 	app.status = line{}
+	if app.aboutOpen {
+		return app.updateAbout(key), nil
+	}
 	if app.helpOpen {
 		app.helpOpen = false
+		if key.String() == "a" && app.about != nil {
+			app.aboutOpen, app.aboutScroll = true, 0
+		}
 		return app, nil
 	}
 	switch app.screen {

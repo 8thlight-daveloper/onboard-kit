@@ -1,0 +1,30 @@
+  onboard-kit                                                                                                    Start
+
+
+  Your plans, last used first
+
+    acme.obk.yaml           opened 2026-11-03 16:45  /work/acme
+    platform-team.obk.yaml  opened 2026-11-01 15:45  /work/globex
+  > moved.obk.yaml          missing                  /old
+
+    New plan
+    Open a file
+    Begin my onboarding
+
+  Remove moved.obk.yaml from the list?
+  The file stays where it is. Only this list forgets it.
+
+  y removes it from the list. Esc, or any other key, keeps it.
+
+
+
+
+
+
+
+
+
+
+
+
+  y remove from list  esc keep  ? help

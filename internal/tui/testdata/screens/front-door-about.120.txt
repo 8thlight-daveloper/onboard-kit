@@ -1,0 +1,30 @@
+  onboard-kit                                                                                                    About
+
+
+  About this tool
+
+  Version       1.4.0
+  Template set  1.4.0, the catalog built into this version, which new plans record
+
+  Places this tool uses
+
+  State home    /home/sam/.local/state/obk
+                The tool reads and writes it.
+                Holds the list of your plans, and the sessions and imports of your onboarding.
+                Chosen as the default for this system. Set OBK_HOME to choose another.
+
+  Plan list     /home/sam/.local/state/obk/plans.txt
+                The tool reads and writes it.
+                Holds the path of each plan you opened or created here.
+
+  Plan folder   the folder of each plan you open
+                The tool reads and writes it.
+                Holds the plan file.
+
+  Records root  /work
+                The tool reads and writes it.
+                Holds your onboarding record.
+
+  Lines 1 to 24 of 28. up/down scroll.
+
+  up/down scroll  esc back  ? help

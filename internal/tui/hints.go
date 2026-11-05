@@ -8,6 +8,12 @@ type hint struct {
 }
 
 func (app App) hints(tabKeysShown bool) []hint {
+	if app.aboutOpen {
+		return []hint{{"up/down", "scroll"}, {"esc", "back"}}
+	}
+	if app.helpOpen && app.about != nil {
+		return []hint{{"a", "about"}, {"any key", "closes help"}}
+	}
 	if app.helpOpen {
 		return []hint{{"any key", "closes help"}}
 	}
@@ -132,7 +138,11 @@ func fitHints(hints []hint, width int) []hint {
 
 func (app App) hintRow(width int, colors palette) string {
 	layout := app.headerLayout(width, colors)
-	fitted := fitHints(app.hints(layout.keys), width)
+	return renderHints(app.hints(layout.keys), width, colors)
+}
+
+func renderHints(hints []hint, width int, colors palette) string {
+	fitted := fitHints(hints, width)
 	if cellWidth(hintText(fitted)) > width {
 		return renderCell(faintLine(hintText(fitted)), width, true, colors)
 	}

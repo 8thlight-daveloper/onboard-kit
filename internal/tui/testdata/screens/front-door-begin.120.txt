@@ -1,0 +1,30 @@
+  onboard-kit                                                                                      Begin my onboarding
+
+
+  Begin my onboarding
+
+  > Invitation file   e.g. ~/Downloads/obk-invitation-your-name.zip
+
+  Type the path of the invitation file you were given. Its name starts with obk-invitation and ends
+  with .zip.
+  Your onboarding records are kept in /work, the folder you started this tool in.
+
+  After enter, the tool asks you to confirm who you are, then shows your onboarding in this terminal.
+  You type each reply.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter begin  esc back  f1 help

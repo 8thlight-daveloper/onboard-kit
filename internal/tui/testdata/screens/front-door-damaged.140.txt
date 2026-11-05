@@ -1,0 +1,40 @@
+  onboard-kit                                                                                                                        Start
+
+
+  What would you like to do?
+
+  ! problem: The list of your plans cannot be read. Press a to see why.
+
+  > Build an onboarding plan
+    Open a file
+    Begin my onboarding
+
+  Write a new plan file for your team's newcomers, with the core set of sections for a developer's
+  onboarding, then answer its questions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter choose  up/down move  a about  q quit  ? help

@@ -1,0 +1,24 @@
+  onboard-kit                                                            Start
+
+
+  Your plans, last used first
+
+    acme.obk.yaml           opened 2026-11-03 16:45  /work/acme
+    platform-team.obk.yaml  opened 2026-11-01 15:45  /work/globex
+  > moved.obk.yaml          missing                  /old
+
+    New plan
+    Open a file
+    Begin my onboarding
+
+  This plan is not at /old/moved.obk.yaml any more. It was moved or deleted.
+  Press x to remove it from the list.
+
+
+
+
+
+
+
+
+  up/down move  x remove from list  a about  q quit  ? help

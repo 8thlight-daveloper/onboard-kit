@@ -1,6 +1,14 @@
 package tui
 
 func (app App) helpLines(width int) []line {
+	content := app.keyHelpLines(width)
+	if app.about == nil {
+		return content
+	}
+	return append(content, blankLine(), faintLine("Press a now to see the version and every place this tool reads or writes."))
+}
+
+func (app App) keyHelpLines(width int) []line {
 	var content []line
 	content = append(content, strongLine("Keys"))
 	for _, entry := range app.helpEntries() {

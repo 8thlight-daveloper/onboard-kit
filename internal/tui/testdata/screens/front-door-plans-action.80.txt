@@ -1,0 +1,24 @@
+  onboard-kit                                                            Start
+
+
+  Your plans, last used first
+
+    acme.obk.yaml           opened 2026-11-03 16:45  /work/acme
+    platform-team.obk.yaml  opened 2026-11-01 15:45  /work/globex
+    moved.obk.yaml          missing                  /old
+
+    New plan
+  > Open a file
+    Begin my onboarding
+
+  Open a plan file, or an invitation file, by its path.
+
+
+
+
+
+
+
+
+
+  enter choose  up/down move  a about  q quit  ? help

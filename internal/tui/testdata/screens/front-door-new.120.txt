@@ -1,0 +1,30 @@
+  onboard-kit                                                                                                 New plan
+
+
+  New plan
+
+  > File              onboarding.obk.yaml
+                      Writes /work/onboarding.obk.yaml
+
+  The plan starts with the core set of sections for a developer's onboarding: team and culture, access
+  and setup, learning the code, practice, and feedback. Switch off what you do not need on the
+  Sections tab.
+  Enter shows what will be written. Nothing is written until you press y there.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter next  esc back  f1 help

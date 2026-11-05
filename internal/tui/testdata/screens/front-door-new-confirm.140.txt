@@ -1,0 +1,40 @@
+  onboard-kit                                                                                                                     New plan
+
+
+  Write this new plan?
+
+  File
+    /work/onboarding.obk.yaml
+
+  It holds the core set of sections from the catalog built into this tool. An existing file is never
+  replaced. The plan opens in the editor after it is written.
+
+  Nothing is written until you press y.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  y write  esc change  ? help

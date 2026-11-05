@@ -1,0 +1,40 @@
+  onboard-kit                                                                                                                  Open a file
+
+
+  Open a file
+
+  > File              notes.txt
+
+  A plan opens in the plan editor. An invitation begins your onboarding.
+
+  ! problem: notes.txt is neither a plan nor an invitation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  esc back  f1 help

@@ -76,7 +76,7 @@ func walk(planPath string, plan model.Plan, audience model.Audience, notice stri
 		}
 		return nil
 	}
-	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, invitation, stdin, stdout)
+	err := tui.Run(tui.NewBackend(), plan, save, audience, notice, preparation, invitation, nil, stdin, stdout)
 	if errors.Is(err, tui.ErrInterrupted) {
 		return exitInterrupted
 	}

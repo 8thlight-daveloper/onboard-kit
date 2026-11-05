@@ -1,0 +1,40 @@
+  onboard-kit                                                                                                                        Start
+
+
+  Keys
+  up, down, k, j move
+  enter open the plan, or choose what to do
+  a about this tool and the places it uses
+  q quit
+  ctrl+c quit at any time
+
+  Press a now to see the version and every place this tool reads or writes. Any other key closes this
+  help.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  a about  any key closes help

@@ -31,6 +31,9 @@ func (app App) smallWindowMessage() string {
 }
 
 func (app App) body(screenFrame frame, colors palette) []string {
+	if app.aboutOpen {
+		return stackPane(pane{lines: aboutWindow(aboutLines(*app.about, app.aboutWidth()), app.aboutScroll, screenFrame.bodyHeight), focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
+	}
 	if app.helpOpen {
 		return stackPane(pane{lines: app.helpLines(screenFrame.innerWidth()), focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}

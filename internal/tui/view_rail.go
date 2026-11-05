@@ -47,7 +47,7 @@ func (app App) railPosition() int {
 }
 
 func (app App) railRow(width int, colors palette) string {
-	if len(app.questions) == 0 || app.helpOpen {
+	if len(app.questions) == 0 || app.helpOpen || app.aboutOpen {
 		return ""
 	}
 	here := app.railPosition()
