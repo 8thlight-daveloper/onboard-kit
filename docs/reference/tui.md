@@ -105,9 +105,10 @@ How a person moves:
 - Enter accepts the answer on the screen and moves to the next question in order. This was a choice between the next question and the next unanswered one. The next in order is predictable, and a person who wants an unanswered one opens Review, where the blockers are listed.
 - Past the last question, the person lands on Review.
 - `w`, `o`, `r`, `s`, `c`, `t`, and `i` open the Answer, Overview, Review, Sections, Contacts, Preparation, and Invitation screens from any screen while the person is not typing. The tab strip names them, see Screen tabs.
-- `p`, left arrow, or shift+tab goes back one question. `n` or right arrow skips forward without changing anything.
+- Tab opens the next tab of the strip and shift+tab the previous one, on every screen and while typing, except inside a form with several fields, see Screen tabs.
+- `p` or left arrow goes back one question, and ctrl+p while typing. `n` or right arrow skips forward without changing anything, and ctrl+n while typing.
 - `d` defers the question and moves on. `x` clears the answer and stays, so the person can answer again.
-- Escape on the Answer screen returns to the Overview or Review, whichever sent the person there. Escape on Overview or Review returns to the Answer screen.
+- Escape on the Answer screen returns to the Overview or Review, whichever sent the person there. While the person types, the first escape only stops typing, see Answering. Escape on Overview or Review returns to the Answer screen.
 - From Overview or Review, enter opens the chosen question on the Answer screen. `w` on Review returns to the Answer screen at the first unanswered question, and `w` on Overview or Sections returns to the question the person left.
 - `q` quits from the Overview, Review, and Answer screens, except while typing. The Sections, Contacts, Preparation, and Invitation screens take `q` as back, and escape goes back too, to the screen the person came from. Ctrl+c always quits.
 
@@ -121,12 +122,12 @@ Decided. A designer judged the layout against the people in Intent, and it repla
 - A progress rail sits under the header: one mark per question, grouped by section, with a diamond at the current question. The rail replaces the question list. It answers "where am I and how much is left" in one quiet line, and it never asks for a read. It is hidden when it does not fit.
 - The notes sit beside the answer at 120 columns and wider, and below it when narrower. They hold the example, the type and options, who answers, the name, and the suggestions. They are faint, because they are for a glance and never for action.
 - The Overview is one list, grouped by section, with each row showing its mark, its question, and its answer. At 120 columns and wider a faint preview of the chosen question sits beside it.
-- The Review keeps two panes, because it is a master and detail task: the items on the left, the document preview on the right. Below 120 columns, tab switches between them.
+- The Review keeps two panes, because it is a master and detail task: the items on the left, the document preview on the right. Left and right arrows move the focus between them, and below 120 columns they switch which one shows.
 
 | Width | Answer | Overview | Review |
 | -- | -- | -- | -- |
 | 120 or more | Answer column about three fifths of the width, notes beside it | List about three fifths, preview beside it | Items about two fifths, document beside it |
-| 60 to 119 | One column up to 100 wide, notes below the answer if the height allows | One column | One column. Tab switches between the items and the document |
+| 60 to 119 | One column up to 100 wide, notes below the answer if the height allows | One column | One column. Left and right switch between the items and the document |
 | Under 60 wide or under 12 high | A plain message asking for a larger window |  |  |
 
 Rules that hold at any width:
@@ -161,7 +162,7 @@ Decided. The part of the screen where the person is acting is drawn bright, and 
 
 | Screen | Bright | Faint |
 | -- | -- | -- |
-| Answer | The question, the answer, the problems | The rail, the notes, the status |
+| Answer | The question, the answer, the problems. While typing, the field. When typing stops, the list under the field | The rail, the notes, the status. While typing, the list under the field. When typing stops, the field |
 | Overview | The list | The rail, the preview |
 | Review | The pane with focus, items or document | The other pane |
 | Sections, Help | The whole body |  |
@@ -181,6 +182,11 @@ Decided. No wireframe tool fits a terminal screen, so the screens are drawn by t
 | -- | -- | -- | -- |
 | Answer, choosing | [answer](../../internal/tui/testdata/screens/answer.80.txt) | [answer](../../internal/tui/testdata/screens/answer.120.txt) | [answer](../../internal/tui/testdata/screens/answer.140.txt) |
 | Answer, typing | [edit](../../internal/tui/testdata/screens/edit.80.txt) | [edit](../../internal/tui/testdata/screens/edit.120.txt) | [edit](../../internal/tui/testdata/screens/edit.140.txt) |
+| Answer, typing stopped | [blurred](../../internal/tui/testdata/screens/edit-blurred.80.txt) | [blurred](../../internal/tui/testdata/screens/edit-blurred.120.txt) | [blurred](../../internal/tui/testdata/screens/edit-blurred.140.txt) |
+| Answer, an option chosen | [options](../../internal/tui/testdata/screens/edit-options.80.txt) | [options](../../internal/tui/testdata/screens/edit-options.120.txt) | [options](../../internal/tui/testdata/screens/edit-options.140.txt) |
+| Answer, the tab strip in focus | [tabs](../../internal/tui/testdata/screens/edit-tabs.80.txt) | [tabs](../../internal/tui/testdata/screens/edit-tabs.120.txt) | [tabs](../../internal/tui/testdata/screens/edit-tabs.140.txt) |
+| Answer, a suggestion chosen | [suggestion](../../internal/tui/testdata/screens/edit-suggestion.80.txt) | [suggestion](../../internal/tui/testdata/screens/edit-suggestion.120.txt) | [suggestion](../../internal/tui/testdata/screens/edit-suggestion.140.txt) |
+| Answer, a long answer | [long](../../internal/tui/testdata/screens/edit-long.80.txt) | [long](../../internal/tui/testdata/screens/edit-long.120.txt) | [long](../../internal/tui/testdata/screens/edit-long.140.txt) |
 | Answer, with an example | [example](../../internal/tui/testdata/screens/example.80.txt) | [example](../../internal/tui/testdata/screens/example.120.txt) | [example](../../internal/tui/testdata/screens/example.140.txt) |
 | Answer, picking one | [pick](../../internal/tui/testdata/screens/pick.80.txt) | [pick](../../internal/tui/testdata/screens/pick.120.txt) | [pick](../../internal/tui/testdata/screens/pick.140.txt) |
 | Answer, picking several | [pick many](../../internal/tui/testdata/screens/pick-many.80.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.120.txt) | [pick many](../../internal/tui/testdata/screens/pick-many.140.txt) |
@@ -237,12 +243,42 @@ Decided, and built. The answer is made on the Answer screen, under the question.
 
 - A boolean or choice is picked from a list, with "deferred, answer later" and "clear the answer" at the end. The cursor starts on the current answer. Up and down move, enter picks.
 - A contact, role, or team is picked from the organization's directory, see Pick lists. A person never types an id.
-- A string takes typed text, with the current answer filled in. Tab cycles through the question's suggestions. Enter on text equal to the current answer moves on without saving. Enter on an empty box clears the answer. Ctrl+d defers.
+- A string, a number, a date, and every other typed answer take typed text, with the current answer filled in. Enter on text equal to the current answer moves on without saving. Enter on an empty box clears the answer. The list under the box holds the question's suggestions, defer, skip, and clear, see Focus on the Answer screen.
 - A command is words separated by spaces, with quotes keeping spaces together.
 - Several contacts or several roles in a `multiple` question are picked as a checklist, see Pick lists.
 - An answer that the validator refuses stays on the Answer screen with the problem message under the answer.
 - Every accepted answer is saved to the plan file at once. There is no unsaved state.
-- While a person types, letters are text, so the single-letter keys are off. Back, forward, defer, and help have control-key forms listed below.
+- While a person types, letters are text, so the single-letter keys are off. Back, forward, defer, and help have control-key forms listed below, and escape stops typing so the letters work again.
+
+### Focus on the Answer screen
+
+Decided, and built. The Answer screen of a typed question has three places the keys can act on. Up and down arrows move between them, and the hint line always says which one has the keys.
+
+```text
+  Building an onboarding plan  [Answer]  > Overview o  Review r     the tab strip
+  What is the organization's name?
+
+    Glob                                                          the answer field
+  > Edit the answer                                               the list of options
+    Use the suggestion: ACME Corp
+    deferred, answer later
+    skip, change nothing
+    clear the answer
+```
+
+- **The answer field** has the keys when the question opens. Typing works as before, and enter saves and moves on. Left and right arrows move the caret inside the text.
+- **The list of options** sits under the field. It holds one "Use the suggestion: X" row for each suggestion that is not already the answer, then "deferred, answer later", "skip, change nothing", and "clear the answer", the labels a choice question uses. While the person types, the list is faint and has no chosen row. Down arrow, or escape, stops typing and chooses its first row, "Edit the answer", which shows only then. Down walks the list, and enter does the chosen row. Up from "Edit the answer", or enter on it, returns to typing with the text as it was.
+- **The tab strip** gets the keys with up arrow from the field, or from the first row of a choice or pick list. Left and right choose a tab, which gets `>` and a bar, enter opens it, and down or escape returns to where the person was. The screen letters work there too.
+- **Stopping is unmistakable.** When typing stops, five things change at once: the caret goes, the field loses its `>` and turns faint with its text kept, the chosen row of the list gets `>` and a bar, the hint line starts "Not typing.", and the status line says "Stopped typing." and that the text is kept. An empty field reads "nothing typed yet", so its place stays visible. A second escape opens the Overview or the Review, as before.
+- **Letters while not typing.** With the list or the strip in focus, letters are keys again: the screen letters, `p` and left arrow back, `n` and right arrow skip, `d` defer, `x` clear, `q` quit, and `?` help.
+- **A suggestion** row puts its text in the box and returns to typing, so the person can change it before enter saves it. The status says "The suggestion is in the box. Enter saves it." No key cycles through suggestions any more.
+
+What happens to text that is typed and not saved, called a draft here:
+
+- **It is kept while it stays on its question.** Stopping typing, opening the tab strip, and moving to another page with tab, a letter, or escape all keep it, and it is back in the box on return. Leaving the Answer screen with a draft says "Your text is kept, not saved yet."
+- **It is dropped when the person leaves its question**, by defer, skip, back, or opening another question from the Overview or the Review. The status says "Your unsaved text on the last question was dropped.", after "saved" when the move also saved a deferral. Defer saves the deferral and not the draft, because a question holds one answer and the person chose to answer it later. Skip saves nothing, as its label says.
+- **Clear empties the box as well as the answer**, saves the cleared answer when there was one, and returns to typing on the same question.
+- **Quitting drops it**, as it always did. Only enter saves typed text.
 
 ## Pick lists
 
@@ -275,6 +311,8 @@ Decided, and built. A `contact`, `role`, or `team` question carries the director
 - **Enter on no picks.** With nothing picked and nothing answered, enter moves on without saving, as on an empty text box. With nothing picked and an answer saved, enter clears it.
 - **Same names.** Two entries with the same name show their ids in brackets, `Sam Okafor (sam-1)` and `Sam Okafor (sam-2)`, and only those two. A name that is unique shows no id.
 - **Defer and move on.** `d` defers, `x` clears, `n` and `p` move, as for every other question. A several-answers list has no rows for defer and clear, because enter confirms the picks.
+- **The options of a typed question** use the same list: the same rows for defer and clear, the same `>` on the chosen row, and the same scrolling. They add a bar on the chosen row, because the list is not where typing happens and the person must see at once that the keys moved there.
+- **Up from the first row** of a pick list or a choice list goes to the tab strip, see Focus on the Answer screen.
 - **Long lists.** The list scrolls around the cursor to fit the window. A cut list adds a faint "Showing 12 to 19 of 40" line. The help lines under a several-answers list go first when there is no room.
 - **Nothing to pick.** When the directory has no entry of the kind, a message takes the list's place and every other key still works, so a person can defer and come back. The onboarder reads "No contacts to pick from yet. Add them on the Contacts screen, press c." with "roles" or "teams" for those types, and `c` opens the Contacts screen on the list the question needs. The onboardee reads "No teams to pick from yet. Ask your onboarder to add this."
 - **Names everywhere.** The Overview, its preview, and the suggestion lines in the notes show the name, and several names are separated by `;` in the order stored. The Review lists blockers, deferred questions, and validator problems, which are about questions and not about answers, so it needs no name. The document preview shows the names the assembler resolves.
@@ -324,18 +362,21 @@ Decided. The key hint line shows the most useful keys for the screen and the wid
 | Key | Answer, choosing | Answer, typing | Overview | Review | Sections |
 | -- | -- | -- | -- | -- | -- |
 | enter | Pick, move on. On a several-answers list, confirm the picks | Accept, move on | Open the question | Open the question, or the Contacts entry of a directory problem | Switch on or off |
-| up, down, `k`, `j` | Move the choice |  | Move | Move | Move |
+| up, down, `k`, `j` | Move the choice. Up from the first row goes to the tab strip | Up goes to the tab strip, down stops typing | Move | Move | Move |
 | space | Pick or unpick on a several-answers list |  |  |  | Switch on or off |
-| `p`, left, shift+tab | Back | shift+tab, ctrl+p |  |  |  |
-| `n`, right | Skip forward | ctrl+n |  |  |  |
+| `p`, left | Back | ctrl+p. Left moves the caret |  |  |  |
+| `n`, right | Skip forward | ctrl+n. Right moves the caret |  |  |  |
 | `d` | Defer, move on | ctrl+d |  |  |  |
 | `x` | Clear | Empty the box and enter |  |  |  |
-| tab |  | Try a suggestion |  | Items or document |  |
+| tab, shift+tab | Next or previous page | Same | Same | Same | Same |
+| left, right |  |  |  | Items or document |  |
 | `w`, `o`, `r`, `s`, `c`, `t`, `i` | `o`, `r`, `s`, `c`, `t`, `i` | Letters are text | `w`, `r`, `s`, `c`, `t`, `i` | `w`, `o`, `s`, `c`, `t`, `i` | `w`, `o`, `r`, `c`, `t`, `i` |
 | pgup, pgdn, `g`, `G` |  |  | `g`, `G` | Scroll the document |  |
-| esc | Back to overview or review | Same | Answer | Answer | Back |
+| esc | Back to overview or review | Stop typing. A second esc goes back | Answer | Answer | Back |
 | `?` | Help | f1 | Help | Help | Help |
 | `q` | Quit |  | Quit | Quit | Back |
+
+When typing has stopped on a typed question, the keys are those of the Answer while choosing, and up and down move in the list of options. With the tab strip in focus, left and right choose a tab, enter opens it, down or esc returns, and the screen letters work.
 
 On the Review, `h` shows the answers left over from questions the plan no longer asks, see Left over answers. It is free on every other screen and is not a screen key, so the tab strip does not list it. The key hint line shows `h left over` only while something is left over.
 
@@ -364,7 +405,8 @@ A person who presses a key on an item at the top of the screen is looking at the
 Decided.
 
 - Every action is reachable from the keyboard. There is no mouse use.
-- The focus is always visible: a `>` mark and bold text, and the rest of the screen is faint.
+- The focus is always visible: a `>` mark and bold text, and the rest of the screen is faint. Exactly one `>` marks where the keys act: the field prompt while typing, a row of a list, or a tab. A list under a field and the tab strip add a bar, the terminal's own colours reversed, on the chosen row or tab.
+- Stopping typing changes the caret, the field, the list, the hint line, and the status line at once, so no single signal has to be noticed. See Focus on the Answer screen.
 - No information is carried by colour alone, see Colour.
 - A short key hint line is always the last line. `?` opens the full list.
 - Position is always stated in words: "4 of 11", and the count answered.
@@ -374,7 +416,7 @@ Decided.
 
 ## Testing
 
-Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Answer screen has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. Role header tests check the title for both people with the organization answered, not answered, deferred, blank, long, and holding control characters, the title changing as the onboarder answers, and the current tab on screen at 60, 80, 100, and 120 columns on every tab. Another checks that no wireframe and no help page says walk. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the Answer screen's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The Invitation tests drive the screen through a fake port and the real preparation reviewer: the tab only for the onboarder with a port, the readiness counts, the blocked page with no form, the default file, the pick list of contacts with a route, the guide that follows the picked help, the required pre-access help, nothing written before `y`, the request with the pre-access help first, the result line, the next free name after a file appears, and letters as text in the file name. The walk command's tests run both store-backed ports on real files, and the invite command's tests run `Export` and `Check` on real files. A scripted pseudo-terminal run covers start and quit, another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary, and a third writes an invitation, then tries the same name again and takes the next free one. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
+Decided. The app is a Bubble Tea model, so tests send key messages and window-size messages and check the plan, the saved copies, and the view. At widths from 60 to 200 and heights from 12 to 50, a test checks that no line is wider than the window, including questions with very long descriptions, examples, and suggestions. Another checks the small-window message under the limits, and that the Answer screen has two columns at 120 and one below. The flow tests cover the guided order, the position text, back, defer and move on, finishing on the Review, jumping from the Review, and the onboardee mode. A fake Backend with hand-built questions tests the example, the pick lists, and the sub-sections. The pick tests cover one answer, several answers in order, an empty directory for each audience, same-named entries, and a stale answer. Tab tests check the strip with and without colour, and the keys it drops at narrow widths. The focus tests drive the Answer screen through every key path of Focus on the Answer screen: escape and down stopping typing with the five signals, up and enter on "Edit the answer", the rows and what each does, letters while not typing, the caret keys while typing, ctrl+p, the tab strip from the field, a choice list, and the Contacts and Preparation forms, tab and shift+tab on every screen for both people and inside a form, the suggestion rows, the left and right pane keys, and the draft rules. Role header tests check the title for both people with the organization answered, not answered, deferred, blank, long, and holding control characters, the title changing as the onboarder answers, and the current tab on screen at 60, 80, 100, and 120 columns on every tab. Another checks that no wireframe and no help page says walk. The Contacts tests drive the screen through the real editor: adding, changing, and removing each kind, the id made from a name, a refusal that leaves the plan as it was, the dry run before a removal, the flags for vacant roles and unreachable contacts, the autosave of every accepted edit, and the Answer screen's pick list after returning. Style tests check the bright and faint panes in each state. The prune tests drive the Review through the real editor for both audiences: the notice only when something is left over, the dry run that changes and saves nothing, every key but `y` keeping the answers, `y` saving once and clearing the notice, the short forms of values with no long value on screen, the cut list, and `h` as text while typing. A fake Backend covers the update logic, and the width tests include the notice and the confirmation. The Preparation tests drive the screen through a fake port and the real preparation editor, reviewer, and encoder: the tab only for the onboarder with a port, the list, adding a person, typing with no extra step, the pick lists, several changes staged into one save, nothing written before `y`, the real guide and blockers in the review, replacing and removing an arrangement, a refused form, a taken id, dropping staged changes, a stale save applied again, each refusal, and control characters shown as text. The Invitation tests drive the screen through a fake port and the real preparation reviewer: the tab only for the onboarder with a port, the readiness counts, the blocked page with no form, the default file, the pick list of contacts with a route, the guide that follows the picked help, the required pre-access help, nothing written before `y`, the request with the pre-access help first, the result line, the next free name after a file appears, and letters as text in the file name. The walk command's tests run both store-backed ports on real files, and the invite command's tests run `Export` and `Check` on real files. A scripted pseudo-terminal run covers start and quit, another adds a person, types a name, picks a team, reviews, and saves with `y` through the built binary, and a third writes an invitation, then tries the same name again and takes the next free one. It must answer the terminal's background-colour query and its cursor report, or the program waits five seconds.
 
 ## Screen tabs
 
@@ -392,7 +434,9 @@ The header line holds the title, the tab strip, and the progress count at the ri
 - The Answer key is `w`, the key of the screen when it was named Walk. It stays because it is a letter of "Answer", as `t` is a letter of "Preparation". `a`, the first letter, adds an entry on the Contacts screen and opens About from a help page. No free letter is in both "Answer" and "Your questions", so the newcomer's Your questions tab takes `w` too, and one key opens the same screen for both people.
 - The current tab is bold in the accent colour, which is "you are here". With no colour it is in brackets. The other tabs are faint, each with its key.
 - The strip is the one place the screen keys are shown, so the key hint line leaves them out. The Answer screen while choosing, the Overview, the Review, and the Sections screen all take `w`, `o`, `r`, and `s`, except while the person is typing.
-- While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` leaves.
+- While a person types, letters are text, so the tabs show their names with no keys, and the hint line says `esc` stops typing.
+- Tab opens the next tab and shift+tab the previous one, wrapping at the ends, on every screen and while typing. Shift+tab no longer goes back one question, and tab no longer tries a suggestion or switches the Review's panes. Up arrow from the answer field, or from the first row of a list on the Answer screen, puts the keys on the strip itself, see Focus on the Answer screen.
+- **Inside a form with several fields**, such as the Contacts, Preparation, and Invitation forms, tab and shift+tab move between the fields. The strip is reached there by up arrow from the first field. This is built for the Contacts and Preparation forms, and the form stays open while the person visits another tab. The Invitation form does not reach the strip yet.
 - When the header is too wide, it drops the progress count first, then the keys. With the keys gone, the hint line shows them again, so a key is always on screen somewhere. The title "Building: ACME Corp plan" is 24 columns, and "Building an onboarding plan" is 27. With the 24-column title and all seven tabs, the title and the strip with keys are 109 columns wide, so at 120 columns the progress count goes and the keys stay, and at 100 columns the keys go too. With five tabs they are 80 columns wide, so at 100 columns the keys stay and at 80 columns they go. At 60 columns the strip shows names only, and its gaps shrink to one column.
 - When even the names do not fit, the strip is cut after the last tab that fits and ends with `…`. If the cut would hide the current tab, the title goes instead, so the current tab is always on screen. At 60 and 80 columns the onboarder's seven tabs need one of these two. With the seventh tab, Invitation, the strip without the title can still be too wide when a late tab is current. Then the strip shows a window of tabs around the current one, with `…` on each side that is cut, such as `… Review Sections Contacts Preparation [Invitation]`.
 
@@ -412,7 +456,7 @@ Decided, and built. The onboarder's screen for the directory in [0080](../decisi
 
 ### What it shows
 
-The three lists are three sub-tabs under the header, with a count each: `Contacts 5  Roles 4  Teams 2`. The current list is bold in the accent, or in brackets with no colour, as the screen tabs are. Tab, shift+tab, and the side arrows move between them.
+The three lists are three sub-tabs under the header, with a count each: `Contacts 5  Roles 4  Teams 2`. The current list is bold in the accent, or in brackets with no colour, as the screen tabs are. The left and right arrows move between them. Tab and shift+tab move to the next and previous screen, as everywhere.
 
 ```text
   [Contacts 5]  Roles 4  Teams 2                                        │ About this contact
@@ -480,7 +524,9 @@ One list with three headers would show everything at once, but the add key would
 | Key | List | Form | Removal |
 | -- | -- | -- | -- |
 | up, down, `k`, `j` | Move | Move between fields, or in a pick list |  |
-| tab, shift+tab, left, right | Next or previous list | Next or previous field |  |
+| left, right | Next or previous list |  |  |
+| tab, shift+tab | Next or previous page | Next or previous field |  |
+| up on the first field |  | The tab strip |  |
 | `a` | Add to this list |  |  |
 | enter, `e` | Change the chosen entry | Next field, save on the last, open the team contact or a role row, and choose a row in the team contact list | Keep |
 | `x`, delete | Remove, after the dry run |  |  |
@@ -525,7 +571,7 @@ Built, under [0520](../decisions/0520-preparation-screen.md). The save rules of 
 
 ### Review and save
 
-- "Review and save" shows the staged changes on the left and the real first steps guide from the [preparation reviewer](../../contracts/preparation/reviewer/contract.md) on the right. Below 120 columns, tab switches between them, as on the Review. The left also lists the preparation problems, the onboarder blockers in the plan, and the guide problems. When the preparation has problems, the blockers and the guide say they are not checked yet.
+- "Review and save" shows the staged changes on the left and the real first steps guide from the [preparation reviewer](../../contracts/preparation/reviewer/contract.md) on the right. Left and right arrows move the focus between them, and below 120 columns they switch which one shows, as on the Review. The left also lists the preparation problems, the onboarder blockers in the plan, and the guide problems. When the preparation has problems, the blockers and the guide say they are not checked yet.
 - Each change reads as the new value and the old one: `Name: "Alex Doe", was not set`. A new arrangement lists its fields. A removed one reads "removed".
 - `y` saves. Nothing is written before it, and only the reviewed bytes are written. A preparation the encoder cannot write, or one over 1 MiB, cannot be saved, and the review says why. With no changes, `y` writes nothing and says so.
 - When the plan or the preparation changed on disk since it was opened, the store refuses. The screen loads the person again, applies the staged changes to the new version, and shows the review again. A change that no longer applies is dropped, and the status says how many.
@@ -541,7 +587,8 @@ Built, under [0520](../decisions/0520-preparation-screen.md). The save rules of 
 | `a` | Add a person | Add an arrangement | Letters are text | Keep |  |
 | `x`, delete |  | Remove the chosen arrangement, after a confirmation | Letters are text | Keep |  |
 | space |  |  | Pick or unpick in a helpers list | Keep | Scroll |
-| tab, shift+tab |  |  | Next or previous field | Keep | Changes or guide |
+| tab, shift+tab | Next or previous page | Next or previous page | Next or previous field. Up on the first field reaches the tab strip | Keep | Next or previous page |
+| left, right |  |  |  |  | Changes or guide |
 | pgup, pgdn |  |  |  | Keep | Scroll the pane with focus |
 | ctrl+s |  |  | Stage the form |  |  |
 | `y` |  |  |  | Remove, or drop the staged changes | Save |
@@ -587,7 +634,7 @@ The people are the ones the [preparation store](../../contracts/preparation/stor
 | up, down, `k`, `j` | Move |  | Move between fields, or in a pick list | Scroll the guide |  |
 | `g`, `G` | First, last |  |  |  |  |
 | enter, `e` | Open the person | Back | Open a pick list, choose, or go on from the file |  | Back to the people |
-| tab, shift+tab |  |  | Next or previous field |  |  |
+| tab, shift+tab | Next or previous page | Next or previous page | Next or previous field |  | Next or previous page |
 | space |  |  | Pick or unpick in the general help list |  |  |
 | pgup, pgdn |  |  | Scroll the guide | Scroll the guide |  |
 | ctrl+s |  |  | Go on to the last step |  |  |
@@ -663,7 +710,7 @@ A list of every place the tool uses, rendered from data in `internal/command/pla
 
 - Whether a team can supply a default manager or onboarding owner for a person, as [0520](../decisions/0520-preparation-screen.md) leaves open. Today each of the four is its own pick.
 
-- Whether the Preparation review should show the guide under the changes below 120 columns, instead of behind tab.
+- Whether the Preparation review should show the guide under the changes below 120 columns, instead of behind the right arrow.
 
 - Whether the line for the newcomer should name only the file, not the onboarder's path. The newcomer saves the file in their own folder, often Downloads, so the onboarder's path may not be theirs.
 
@@ -698,6 +745,14 @@ A list of every place the tool uses, rendered from data in `internal/command/pla
 - Whether the rail should show the section titles when the window is wide and the plan is small.
 
 - Whether the notes should hide while a person is typing, to leave only the answer.
+
+- Whether escape in a form with several fields should stop typing first, as on the Answer screen, rather than cancel the form. Today it cancels, and the strip is reached by up arrow from the first field.
+
+- Whether the Invitation form should reach the tab strip by up arrow from its first field. It needs the form to survive a visit to another tab first, see above.
+
+- Whether quitting with a draft on the Answer screen should warn. Today only enter saves typed text, and `q` and ctrl+c drop a draft.
+
+- Whether the choice and pick lists should get the bar on the chosen row that the list under a typed answer has.
 
 - A mouse and a way to change the accent are not planned.
 
