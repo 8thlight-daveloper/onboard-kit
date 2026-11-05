@@ -395,3 +395,40 @@ func TestHelpNamesTheNewKeys(t *testing.T) {
 		}
 	}
 }
+
+func TestUpFromTheFirstFieldOfAContactsFormReachesTheTabStripAndTheFormSurvives(t *testing.T) {
+	t.Parallel()
+	app, _ := onContacts(t, acmePlan(t))
+	form := press(app, typed("a"), typed("Dana"))
+	strip := press(form, up)
+	if !strip.stripFocused || strip.typingNow() {
+		t.Fatal("up from the first field focuses the tab strip")
+	}
+	if back := press(strip, down, typed(" Lee")); back.contacts.form.name() != "Dana Lee" {
+		t.Errorf("down returns to the field, got %q", back.contacts.form.name())
+	}
+	visited := press(strip, typed("o"), typed("c"), typed(" Lee"))
+	if visited.contacts.mode != contactsEditing || visited.contacts.form.name() != "Dana Lee" {
+		t.Errorf("the form survives a visit to another tab, got mode %v name %q", visited.contacts.mode, visited.contacts.form.name())
+	}
+	if below := press(form, tab, up); below.stripFocused || below.contacts.form.focus != 0 {
+		t.Error("up from a later field moves to the field above")
+	}
+}
+
+func TestUpFromTheFirstFieldOfAPreparationFormReachesTheTabStrip(t *testing.T) {
+	t.Parallel()
+	app := onPreparation(t, withSamLee(t))
+	form := press(app, enter, enter)
+	if form.preparation.mode != preparationEditing {
+		t.Fatalf("expected the recipient form, got mode %v", form.preparation.mode)
+	}
+	strip := press(form, up)
+	if !strip.stripFocused {
+		t.Fatal("up from the first field focuses the tab strip")
+	}
+	visited := press(strip, typed("o"), typed("t"))
+	if visited.preparation.mode != preparationEditing || !visited.typingNow() {
+		t.Errorf("the form is still open and typing works after a visit, mode %v", visited.preparation.mode)
+	}
+}

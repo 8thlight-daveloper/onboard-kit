@@ -154,6 +154,15 @@ func (form formState) focused(index int) formState {
 	return form
 }
 
+func (form formState) withoutFocus() formState {
+	fields := slices.Clone(form.fields)
+	for position := range fields {
+		fields[position].Blur()
+	}
+	form.fields = fields
+	return form
+}
+
 func (form formState) lastFocus() int {
 	switch form.kind {
 	case kindRole:

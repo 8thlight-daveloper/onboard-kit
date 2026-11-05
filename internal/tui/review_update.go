@@ -106,5 +106,6 @@ func (app App) openReviewEntry(key entryKey) App {
 		return app
 	}
 	app.contacts = app.contacts.pointedAt(app.plan.Directory, key.kind, key.id)
+	app.contacts.mode = contactsBrowsing
 	return app.openContacts()
 }

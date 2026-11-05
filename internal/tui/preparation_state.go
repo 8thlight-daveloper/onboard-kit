@@ -127,6 +127,8 @@ func (app App) openPreparation() App {
 	app = app.leavingForSideScreen()
 	app.screen = screenPreparation
 	switch app.preparation.mode {
+	case preparationEditing:
+		return app.refocusedForm()
 	case preparationListing:
 		return app.listedPeople()
 	case preparationPerson:

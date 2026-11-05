@@ -51,6 +51,11 @@ func (app App) openContacts() App {
 	if !app.canEditDirectory() {
 		return app
 	}
+	if app.contacts.mode == contactsEditing {
+		app = app.leavingForSideScreen()
+		app.screen = screenContacts
+		return app.refocusedForm()
+	}
 	if question, ok := app.current(); ok && app.screen == screenAnswer {
 		if kind, found := kindOfQuestion(question); found {
 			app.contacts.kind = kind

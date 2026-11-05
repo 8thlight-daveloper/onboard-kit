@@ -19,6 +19,27 @@ func (app App) tabIndex(target screen) int {
 func (app App) focusedStrip() App {
 	app.stripFocused = true
 	app.stripChoice = app.tabIndex(app.screen)
+	switch {
+	case app.screen == screenContacts && app.contacts.mode == contactsEditing:
+		app.contacts.form = app.contacts.form.withoutFocus()
+	case app.screen == screenPreparation && app.preparation.mode == preparationEditing:
+		app.preparation.form = app.preparation.form.withoutFocus()
+	}
+	return app
+}
+
+func (app App) returnedFromStrip() App {
+	app.stripFocused = false
+	return app.refocusedForm()
+}
+
+func (app App) refocusedForm() App {
+	switch {
+	case app.screen == screenContacts && app.contacts.mode == contactsEditing:
+		app.contacts.form = app.contacts.form.focused(app.contacts.form.focus)
+	case app.screen == screenPreparation && app.preparation.mode == preparationEditing:
+		app.preparation.form = app.preparation.form.focused(app.preparation.form.focus)
+	}
 	return app
 }
 
@@ -32,7 +53,7 @@ func (app App) updateStrip(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "enter":
 		return app.openScreen(app.tabs()[app.stripChoice].screen), nil
 	case "down", "j", "esc":
-		app.stripFocused = false
+		return app.returnedFromStrip(), nil
 	case "tab", "shift+tab":
 		return app.pageMoved(pageStep(key.String())), nil
 	case "q":
@@ -91,10 +112,10 @@ func (app App) pageMoved(delta int) App {
 }
 
 func (app App) openScreen(target screen) App {
-	app.stripFocused = false
 	if target == app.screen {
-		return app
+		return app.returnedFromStrip()
 	}
+	app.stripFocused = false
 	leaving := app.screen == screenAnswer && app.entry.hasDraft()
 	opened := app.openedScreen(target)
 	if leaving && opened.screen != screenAnswer {

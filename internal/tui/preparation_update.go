@@ -246,7 +246,13 @@ func (app App) updatePreparationText(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "down", "tab":
 		app.preparation.form = form.focused(form.focus + 1)
 		return app, nil
-	case "up", "shift+tab":
+	case "up":
+		if form.focus == 0 {
+			return app.focusedStrip(), nil
+		}
+		app.preparation.form = form.focused(form.focus - 1)
+		return app, nil
+	case "shift+tab":
 		app.preparation.form = form.focused(form.focus - 1)
 		return app, nil
 	}
@@ -264,7 +270,12 @@ func (app App) updatePreparationText(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 func (app App) updatePickRow(key tea.KeyMsg) App {
 	form := app.preparation.form
 	switch key.String() {
-	case "up", "k", "shift+tab":
+	case "up", "k":
+		if form.focus == 0 {
+			return app.focusedStrip()
+		}
+		form = form.focused(form.focus - 1)
+	case "shift+tab":
 		form = form.focused(form.focus - 1)
 	case "down", "j", "tab":
 		form = form.focused(form.focus + 1)

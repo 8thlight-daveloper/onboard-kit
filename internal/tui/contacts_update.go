@@ -135,7 +135,13 @@ func (app App) updateFormText(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "down", "tab":
 		app.contacts.form = form.focused(form.focus + 1)
 		return app, nil
-	case "up", "shift+tab":
+	case "up":
+		if form.focus == 0 {
+			return app.focusedStrip(), nil
+		}
+		app.contacts.form = form.focused(form.focus - 1)
+		return app, nil
+	case "shift+tab":
 		app.contacts.form = form.focused(form.focus - 1)
 		return app, nil
 	}

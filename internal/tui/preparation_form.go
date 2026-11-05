@@ -115,6 +115,17 @@ func (form preparationForm) focused(index int) preparationForm {
 	return form
 }
 
+func (form preparationForm) withoutFocus() preparationForm {
+	fields := slices.Clone(form.fields)
+	for position := range fields {
+		if fields[position].kind.typed() {
+			fields[position].input.Blur()
+		}
+	}
+	form.fields = fields
+	return form
+}
+
 func (form preparationForm) current() preparationField { return form.fields[form.focus] }
 
 func (form preparationForm) onText() bool { return form.current().kind.typed() }
