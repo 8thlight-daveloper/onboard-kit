@@ -13,12 +13,15 @@ func (app App) openQuestion(index int) App {
 
 func (app App) enteredQuestion(question model.Question) App {
 	entry := newEntryState(question, app.inputWidth())
-	switch {
-	case app.entry.keepsDraftFor(question):
-		entry = entry.withText(app.entry.input.Value())
-	case app.entry.hasDraft():
-		app.status = line{text: draftDroppedText, tone: toneWarning}
+	if app.entry.question.ID != "" && app.entry.question.Scope == question.Scope {
+		app.drafts = app.drafts.kept(app.entry)
+		app.entry = app.drafts.restored(entry)
+		return app
 	}
+	if dropped := app.draftRows(); len(dropped) > 0 {
+		app.status = draftDroppedLine(dropped)
+	}
+	app.drafts = nil
 	app.entry = entry
 	return app
 }
@@ -95,7 +98,12 @@ func (app App) returnToAnswer() App {
 
 func (app App) moveTo(index int) App {
 	if index >= len(app.questions) {
-		return app.openReview()
+		drafted := app.draftRows()
+		reviewed := app.openReview()
+		if len(drafted) > 0 {
+			reviewed.status = draftKeptLine(drafted)
+		}
+		return reviewed
 	}
 	return app.openQuestion(max(index, 0))
 }

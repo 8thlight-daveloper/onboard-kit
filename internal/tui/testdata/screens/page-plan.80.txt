@@ -1,0 +1,24 @@
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts
+  ✓◆··  ··  ·
+
+  Plan
+  4 questions on this page, 1 answered
+  Row 2: question 2 of 7, required, not answered yet
+
+  1 more question above
+  * What is the team's name?
+    e.g. Platform
+
+  > Plat
+
+    deferred, answer later
+    skip, change nothing
+    clear the answer
+
+    Where is the plan's repository?
+    e.g. https://example.test/acme/onboarding.git
+    Not answered yet
+
+  1 more question below
+
+  enter save  esc stop typing  down options  tab next page  f1 help

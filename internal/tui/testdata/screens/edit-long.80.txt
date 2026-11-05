@@ -2,9 +2,10 @@
   ◆·
 
   local
-  1 of 2, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 1: question 1 of 2, required, not answered yet
 
-  Which reviewed local startup, shutdown, and safe data instructions apply?
+  * Which reviewed local startup, shutdown, and safe data instructions apply?
 
   > t at the sample database the platform team keeps up to date every Monday
 
@@ -14,11 +15,10 @@
     skip, change nothing
     clear the answer
 
-  About this question
+  * Which harmless user journey should verify local behavior?
+    Required, not answered yet
 
-  Type: string
-  Answered by: onboarder
-  Name: local.startup
-  Suggestion (default): Run make run, stop with Ctrl+C, and use the sample
+  About row 1
+
 
   enter save  esc stop typing  down options  tab next page  f1 help

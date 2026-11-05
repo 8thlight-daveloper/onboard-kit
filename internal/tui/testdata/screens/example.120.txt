@@ -1,22 +1,22 @@
   Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                          0 of 2 answered
   ◆·
 
-  Plan                                                                  │ About this question
-  1 of 2, required, not answered yet                                    │
-                                                                        │ Example: Acme Industrial
-  Name of the organization                                              │ Type: string
-                                                                        │ Answered by: onboarder
-  > e.g. Acme Industrial                                                │ Name: plan.organization
+  Plan                                                                  │ About row 1
+  2 questions on this page, 0 answered                                  │
+  Row 1: question 1 of 2, required, not answered yet                    │ Example: Acme Industrial
+                                                                        │ Type: string
+  * Name of the organization                                            │ Answered by: onboarder
+                                                                        │ Name: plan.organization
+  > e.g. Acme Industrial                                                │
                                                                         │
     deferred, answer later                                              │
     skip, change nothing                                                │
     clear the answer                                                    │
-
-
-
-
-
-
+                                                                        │
+  * Who leads the onboarding, and what do they need to tell a newcomer  │
+    on the first day?                                                   │
+    e.g. Sam Rivera, sam@acme.test                                      │
+    Required, not answered yet                                          │
 
 
 

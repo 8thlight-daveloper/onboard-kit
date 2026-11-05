@@ -2,23 +2,23 @@
   ··  ◆····  ·
 
   Access
-  3 of 8, required, not answered yet
+  5 questions on this page, 0 answered
+  Row 1: question 3 of 8, required, not answered yet
 
-  Which role owns onboarding here? It appears as the owner of the Access
-  section.
+
+  * Which role owns onboarding here? It appears as the owner of the Access
+    section.
 
   No roles to pick from yet. Add them on the Contacts screen, press c.
 
-  About this question
+  * Where do people request source control access?
+    e.g. https://access.example.test/request
+    Required, not answered yet
 
-  Type: role
-  Answered by: onboarder
-  Name: access.onboarding_owner_role
+  * What is the clone URL of the main repository?
+    e.g. git@git.example.test:team/service.git
+    Required, not answered yet
 
-
-
-
-
-
+  2 more questions below
 
   p back  d defer  o overview  r review  s sections  c contacts  ? help

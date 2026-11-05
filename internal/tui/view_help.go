@@ -22,6 +22,10 @@ func (app App) keyHelpLines(width int) []line {
 		content = append(content, blankLine())
 		return append(content, lines(toneFaint, wrapText(invitationHelpNote, width))...)
 	}
+	if app.screen == screenAnswer {
+		content = append(content, blankLine())
+		content = append(content, lines(toneFaint, wrapText(pageHelpNote, width))...)
+	}
 	content = append(content, blankLine(), faintLine("Marks: x answered, ~ deferred, . not answered, ◆ you are here."))
 	content = append(content, faintLine("Every accepted answer is saved at once. ctrl+c quits at any time."))
 	return content
@@ -47,6 +51,8 @@ func (app App) helpEntries() []hint {
 
 var pageHelp = hint{"tab, shift+tab", "next or previous page"}
 
+const pageHelpNote = "A page holds the plan's own questions, or one section's. Each question is a row, and * marks a required one. Text typed in a row stays there while you are on the page."
+
 func (app App) answerHelp() []hint {
 	switch {
 	case app.stripFocused:
@@ -59,40 +65,40 @@ func (app App) answerHelp() []hint {
 		})
 	case app.entry.typing():
 		return []hint{
-			{"enter", "save the text and move to the next question"},
+			{"enter", "save the text and move to the next row, or to the next page after the last row"},
 			{"left, right", "move in the text"},
 			{"esc, down", "stop typing, and choose from the list under the box. Your text is kept"},
-			{"up", "the tab strip"},
+			{"up", "the row above, or the tab strip from the first row"},
 			pageHelp,
-			{"ctrl+p", "back one question"},
-			{"ctrl+n", "skip forward without changing the answer"},
-			{"ctrl+d", "defer the question and move on"},
+			{"ctrl+p", "back one row"},
+			{"ctrl+n", "skip to the next row without changing the answer"},
+			{"ctrl+d", "defer this row and move on"},
 			{"empty box, enter", "clear the answer"},
 			{"f1", "this help"},
 		}
 	case app.entry.onOptions():
 		return app.withScreenHelp([]hint{
-			{"up, down, k, j", "choose from the list. Up from the first row goes back to typing"},
-			{"enter", "do what the chosen row says"},
+			{"up, down, k, j", "choose from the list. Up from Edit the answer goes back to typing, and down from the last option goes to the next row"},
+			{"enter", "do what the chosen option says"},
 			pageHelp,
-			{"p, left", "back one question"},
-			{"n, right", "skip forward without changing the answer"},
-			{"d", "defer the question and move on"},
+			{"p, left", "back one row"},
+			{"n, right", "skip to the next row without changing the answer"},
+			{"d", "defer this row and move on"},
 			{"x", "clear the answer and the box"},
 			{"esc", "back to the overview or review"},
 			{"q", "quit"},
 		})
 	}
-	moving := []hint{{"up, down, k, j", "move the choice. Up from the first row goes to the tab strip"}}
+	moving := []hint{{"up, down, k, j", "move the choice. Past the first or last choice, go to the row above or below. Up from the first row of the page goes to the tab strip"}}
 	if app.entry.pickingMany() {
 		moving = append(moving, hint{"space", "pick or unpick the choice, the order you pick is the order kept"})
 	}
 	return app.withScreenHelp(append(moving,
 		app.enterHelp(),
 		pageHelp,
-		hint{"p, left", "back one question"},
-		hint{"n, right", "skip forward without changing the answer"},
-		hint{"d", "defer the question and move on"},
+		hint{"p, left", "back one row"},
+		hint{"n, right", "skip to the next row without changing the answer"},
+		hint{"d", "defer this row and move on"},
 		hint{"x", "clear the answer"},
 		hint{"esc", "back to the overview or review"},
 		hint{"q", "quit"},
@@ -110,11 +116,11 @@ func (app App) withScreenHelp(entries []hint) []hint {
 func (app App) enterHelp() hint {
 	switch {
 	case len(app.entry.choices) == 0:
-		return hint{"enter", "move to the next question"}
+		return hint{"enter", "move to the next row"}
 	case app.entry.pickingMany():
-		return hint{"enter", "accept the picks and move to the next question"}
+		return hint{"enter", "accept the picks and move to the next row"}
 	}
-	return hint{"enter", "accept the answer and move to the next question"}
+	return hint{"enter", "accept the answer and move to the next row"}
 }
 
 func (app App) overviewHelp() []hint {

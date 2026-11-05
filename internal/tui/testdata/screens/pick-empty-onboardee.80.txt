@@ -4,21 +4,21 @@
   Welcome. A few questions about you, then your own onboarding document.
 
   Plan
-  1 of 3, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 1: question 1 of 3, required, not answered yet
 
-  Which team are you joining?
+  * Which team are you joining?
 
   No teams to pick from yet. Ask your onboarder to add this.
 
-  About this question
+  * What kind of work will you do?
+    Required, not answered yet
+
+  About row 1
 
   Type: team
   Answered by: onboardee
   Name: plan.team
-
-
-
-
 
 
   p back  d defer  x clear  n skip  q quit  ? help

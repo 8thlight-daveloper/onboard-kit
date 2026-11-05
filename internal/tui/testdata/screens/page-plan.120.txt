@@ -1,0 +1,30 @@
+  Building an onboarding plan  Answer w  Overview o  [Review]  Sections s  Contacts c                  1 of 7 answered
+  ✓···  ··  ·
+
+  > Items                                        │   Document, all shown
+  Answered 1 of 7.                               │ # Document
+  Nothing is waiting.                            │
+                                                 │ A line of the document.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  enter open  left/right items/document  pgup/pgdn scroll  q quit  ? help

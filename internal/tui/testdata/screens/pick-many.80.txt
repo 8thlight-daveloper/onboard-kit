@@ -4,7 +4,7 @@
   If you are stuck
   8 of 8, required, not answered yet
 
-  Who can anyone ask for help with anything?
+  * Who can anyone ask for help with anything?
 
   > [2] Alex Rivera
     [1] Sam Okafor

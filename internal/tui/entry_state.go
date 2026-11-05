@@ -105,8 +105,30 @@ func (entry entryState) hasDraft() bool {
 	return entry.typed() && value.Kind != model.ValueKindNone && !sameAnswer(value, entry.question.Answer)
 }
 
-func (entry entryState) keepsDraftFor(question model.Question) bool {
-	return entry.hasDraft() && entry.question.ID == question.ID && sameAnswer(entry.question.Answer, question.Answer)
+func (entry entryState) hasUnsavedPicks() bool {
+	return entry.pickingMany() && !slices.Equal(entry.picked, pickedFrom(entry.question))
+}
+
+func (entry entryState) mirroringTheAnswer() entryState {
+	if entry.typed() {
+		return entry.withText(entryText(entry.question))
+	}
+	entry.picked = pickedFrom(entry.question)
+	return entry
+}
+
+func (entry entryState) landedAtTop() entryState {
+	entry.choice = 0
+	entry.focus = focusField
+	return entry
+}
+
+func (entry entryState) landedAtBottom() entryState {
+	entry.choice = max(len(entry.choices)-1, 0)
+	if entry.typed() {
+		entry.focus = focusOptions
+	}
+	return entry
 }
 
 func (entry entryState) inputView(colors palette) string {

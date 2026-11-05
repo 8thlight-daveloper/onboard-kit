@@ -2,23 +2,23 @@
   ·◆  ·····  ·
 
   Plan
-  2 of 8, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 2: question 2 of 8, required, not answered yet
 
-  Is the team established, or are we the first consultants?
+  * What is the organization's name?
+    e.g. ACME Corp
+    Required, not answered yet
+
+  * Is the team established, or are we the first consultants?
 
   > established
     first-consultants
     deferred, answer later
     clear the answer
 
-  About this question
+  About row 2
 
   Type: choice: established, first-consultants
   Answered by: onboarder
-  Name: plan.team_state
-
-
-
-
 
   enter choose  p back  d defer  o overview  r review  s sections  ? help

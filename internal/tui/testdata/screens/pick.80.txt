@@ -2,10 +2,12 @@
   ··  ◆····  ·
 
   Access
-  3 of 8, required, not answered yet
+  5 questions on this page, 0 answered
+  Row 1: question 3 of 8, required, not answered yet
 
-  Which role owns onboarding here? It appears as the owner of the Access
-  section.
+
+  * Which role owns onboarding here? It appears as the owner of the Access
+    section.
 
   > Engineering manager
     IT contact
@@ -13,12 +15,10 @@
     deferred, answer later
     clear the answer
 
-  About this question
+  * Where do people request source control access?
+    e.g. https://access.example.test/request
+    Required, not answered yet
 
-  Type: role
-  Answered by: onboarder
-  Name: access.onboarding_owner_role
-  Suggestion (default): Engineering manager
-
+  3 more questions below
 
   enter choose  p back  d defer  o overview  r review  s sections  ? help

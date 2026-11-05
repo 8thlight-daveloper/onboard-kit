@@ -1,0 +1,40 @@
+  Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                     0 of 10 answered
+  ·······◆··
+
+  Plan                                                                              │ About row 8
+  10 questions on this page, 0 answered                                             │
+  Row 8: question 8 of 10, required, not answered yet                               │ Type: contact
+                                                                                    │ Answered by: onboarder
+  6 more questions above                                                            │ Name: plan.pickxxxxxxx
+  * A long question that keeps going. A long question that keeps going. A long      │
+    question that keeps going. A long question that keeps going. A long question    │
+    that keeps going. A long question that keeps going.                             │
+    e.g. an example an example an example an example an example an example an exam… │
+    Required, not answered yet                                                      │
+                                                                                    │
+  * A long question that keeps going. A long question that keeps going. A long      │
+    question that keeps going. A long question that keeps going. A long question    │
+    that keeps going. A long question that keeps going.                             │
+                                                                                    │
+  > Alex Rivera                                                                     │
+    Sam Okafor                                                                      │
+    IT service desk                                                                 │
+    deferred, answer later                                                          │
+    clear the answer                                                                │
+                                                                                    │
+  * A long question that keeps going. A long question that keeps going. A long      │
+    question that keeps going. A long question that keeps going. A long question    │
+    that keeps going. A long question that keeps going.                             │
+    e.g. an example an example an example an example an example an example an exam… │
+    Required, not answered yet                                                      │
+                                                                                    │
+  * A long question that keeps going. A long question that keeps going. A long      │
+    question that keeps going. A long question that keeps going. A long question    │
+    that keeps going. A long question that keeps going.                             │
+    e.g. an example an example an example an example an example an example an exam… │
+    Required, not answered yet                                                      │
+                                                                                    │
+
+
+
+  enter choose  p back  d defer  x clear  n skip  q quit  ? help

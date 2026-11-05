@@ -10,6 +10,7 @@ import (
 type fakeBackend struct {
 	questions []model.Question
 	answers   map[string]model.Value
+	askIf     map[string]func(map[string]model.Value) bool
 	submitted []string
 }
 
@@ -20,6 +21,9 @@ func newFakeBackend(questions ...model.Question) *fakeBackend {
 func (backend *fakeBackend) Questions(model.Plan, model.Audience) []model.Question {
 	asked := make([]model.Question, 0, len(backend.questions))
 	for _, question := range backend.questions {
+		if asked, conditional := backend.askIf[question.ID]; conditional && !asked(backend.answers) {
+			continue
+		}
 		question.Answer = backend.answers[question.ID]
 		asked = append(asked, question)
 	}
@@ -137,7 +141,23 @@ func longScreens() map[string]App {
 		"long overview": press(answering, esc, esc),
 		"long review":   press(answering, esc, typed("r")),
 		"long picks":    press(picking, typed("j"), space, typed("j"), space),
+		"long page":     longPage().openQuestion(7),
+		"long page top": longPage(),
+		"long page off": press(longPage().openQuestion(5), esc, up),
 	}
+}
+
+func longPage() App {
+	long := strings.Repeat("A long question that keeps going. ", 6)
+	var questions []model.Question
+	for index := 0; index < 10; index++ {
+		question := textQuestion("plan.row"+strings.Repeat("x", index), "plan", long, strings.Repeat("an example ", 12))
+		if index%3 == 1 {
+			question = directoryQuestion("plan.pick"+strings.Repeat("x", index), "plan", long, model.VariableTypeContact, index%2 == 0, people()...)
+		}
+		questions = append(questions, question)
+	}
+	return startFake(newFakeBackend(questions...))
 }
 
 func crowdedContacts() App {

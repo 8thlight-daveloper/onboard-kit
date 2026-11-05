@@ -11,6 +11,9 @@ const (
 	answerShareNumerator   = 3
 	answerShareDenominator = 5
 	welcomeText            = "Welcome. A few questions about you, then your own onboarding document."
+	deferredText           = "Deferred, answer later"
+	requiredUnansweredText = "Required, not answered yet"
+	unansweredText         = "Not answered yet"
 	minimumPickRows        = 4
 )
 
@@ -24,32 +27,167 @@ func (app App) answerBody(screenFrame frame, colors palette) []string {
 		return stackPane(pane{lines: []line{bodyLine("No questions are active.")}, focused: true}, screenFrame.innerWidth(), screenFrame.bodyHeight, colors)
 	}
 	question := app.questions[app.cursor]
+	height := screenFrame.bodyHeight
 	answerWidth, notesWidth := screenFrame.columns(answerShareNumerator, answerShareDenominator)
-	answer := app.answerLines(question, answerWidth, screenFrame.bodyHeight, colors)
+	page, scrolled := app.pageLines(answerWidth, height, !screenFrame.wide(), colors)
 	if screenFrame.wide() {
-		notes := pane{lines: clipLines(app.noteLines(question, notesWidth), screenFrame.bodyHeight)}
-		answerPane := pane{lines: clipLines(answer, screenFrame.bodyHeight), focused: true}
-		return joinPanes(answerPane, notes, answerWidth, notesWidth, screenFrame.bodyHeight, colors)
+		notes := pane{lines: clipLines(app.rowNoteLines(question, notesWidth), height)}
+		return joinPanes(pane{lines: page, focused: true}, notes, answerWidth, notesWidth, height, colors)
 	}
-	combined := append(append(answer, blankLine()), app.noteLines(question, answerWidth)...)
-	return stackPane(pane{lines: clipLines(combined, screenFrame.bodyHeight), focused: true}, answerWidth, screenFrame.bodyHeight, colors)
+	if !scrolled {
+		page = append(append(page, blankLine()), app.rowNoteLines(question, answerWidth)...)
+	}
+	return stackPane(pane{lines: clipLines(page, height), focused: true}, answerWidth, height, colors)
 }
 
-func (app App) answerLines(question model.Question, width int, height int, colors palette) []line {
+func (app App) rowNoteLines(question model.Question, width int) []line {
+	notes := app.noteLines(question, width)
+	if first, last := app.pageBounds(app.cursor); last-first > 1 {
+		notes[0] = faintLine(fmt.Sprintf("About row %d", app.cursor-first+1))
+	}
+	return notes
+}
+
+func (app App) pageHasOneRow() bool {
+	first, last := app.pageBounds(app.cursor)
+	return last-first == 1
+}
+
+func (app App) pageLines(width int, height int, narrow bool, colors palette) ([]line, bool) {
+	header := app.pageHeader(width)
+	area := max(height-len(header), 1)
+	rows, spans, focused := app.pageRows(width, area-2, narrow && !app.pageHasOneRow(), colors)
+	if len(rows) <= area {
+		return append(header, rows...), false
+	}
+	shown := max(area-2, 1)
+	start := scrollStart(rows, spans, focused, shown)
+	end := min(start+shown, len(rows))
+	above, below := hiddenRows(spans, start, end)
+	page := append(header, faintLine(moreText(above, "above")))
+	page = append(page, rows[start:end]...)
+	return append(page, faintLine(moreText(below, "below"))), true
+}
+
+func hiddenRows(spans []rowSpan, start int, end int) (int, int) {
+	above, below := 0, 0
+	for _, span := range spans {
+		switch {
+		case span.end <= start:
+			above++
+		case span.start >= end:
+			below++
+		}
+	}
+	return above, below
+}
+
+func moreText(count int, where string) string {
+	switch count {
+	case 0:
+		return ""
+	case 1:
+		return "1 more question " + where
+	}
+	return fmt.Sprintf("%d more questions %s", count, where)
+}
+
+func (app App) pageHeader(width int) []line {
+	question := app.questions[app.cursor]
 	var content []line
 	if app.audience == model.AudienceOnboardee && app.answeredCount() == 0 {
 		content = append(lines(toneFaint, wrapText(welcomeText, width)), blankLine())
 	}
-	content = append(content,
-		strongLine(app.sectionTitle(question.Scope)),
-		faintLine(fmt.Sprintf("%s, %s, %s", app.position(), requiredWords(question), stateWords(question))),
-		blankLine(),
-	)
-	content = append(content, lines(toneBody, wrapText(question.Description, width))...)
+	content = append(content, strongLine(app.sectionTitle(question.Scope)))
+	position := fmt.Sprintf("%s, %s, %s", app.position(), requiredWords(question), stateWords(question))
+	if first, last := app.pageBounds(app.cursor); last-first > 1 {
+		content = append(content, lines(toneFaint, wrapText(fmt.Sprintf("%d questions on this page, %d answered", last-first, app.answeredOnPage(first, last)), width))...)
+		position = fmt.Sprintf("Row %d: question %s", app.cursor-first+1, position)
+	}
+	content = append(content, lines(toneFaint, wrapText(position, width))...)
+	return append(content, blankLine())
+}
+
+type rowSpan struct {
+	start int
+	end   int
+	focus int
+}
+
+func (app App) pageRows(width int, height int, showExample bool, colors palette) ([]line, []rowSpan, int) {
+	first, last := app.pageBounds(app.cursor)
+	var content []line
+	spans := make([]rowSpan, 0, last-first)
+	for index := first; index < last; index++ {
+		if index > first {
+			content = append(content, blankLine())
+		}
+		row, focus := app.restingRowLines(app.questions[index], width), 0
+		if index == app.cursor {
+			row, focus = app.focusedRowLines(app.questions[index], width, height, showExample, colors)
+		}
+		spans = append(spans, rowSpan{start: len(content), end: len(content) + len(row), focus: len(content) + focus})
+		content = append(content, row...)
+	}
+	return content, spans, app.cursor - first
+}
+
+func scrollStart(content []line, spans []rowSpan, focused int, height int) int {
+	block := spans[focused]
+	if block.end-block.start > height {
+		return max(min(block.focus-height/2, len(content)-height), 0)
+	}
+	start := min(max((block.start+block.end)/2-height/2, block.end-height), block.start)
+	start = max(min(start, len(content)-height), 0)
+	for _, span := range spans {
+		if span.start < start && start <= span.end && span.end < block.start {
+			return span.end + 1
+		}
+	}
+	return start
+}
+
+func descriptionLines(question model.Question, weight tone, width int) []line {
+	return lines(weight, hanging(requiredMark(question)+" ", question.Description, width))
+}
+
+func (app App) focusedRowLines(question model.Question, width int, height int, showExample bool, colors palette) ([]line, int) {
+	content := descriptionLines(question, toneStrong, width)
+	if example := exampleText(question); showExample && example != "" {
+		content = append(content, faintLine(truncateCells("  "+example, width)))
+	}
 	content = append(content, blankLine())
 	problems := app.problemLines(width)
-	content = append(content, app.entryLines(width, height-len(content)-len(problems), colors)...)
-	return append(content, problems...)
+	entry, focus := app.entryLines(width, height-len(content)-len(problems), colors)
+	focus += len(content)
+	return append(append(content, entry...), problems...), focus
+}
+
+func (app App) restingRowLines(question model.Question, width int) []line {
+	content := descriptionLines(question, toneBody, width)
+	if example := exampleText(question); example != "" {
+		content = append(content, faintLine(truncateCells("  "+example, width)))
+	}
+	return append(content, faintLine(truncateCells("  "+app.restingAnswer(question), width)))
+}
+
+func (app App) restingAnswer(question model.Question) string {
+	if text, drafted := app.drafts.typedDraft(question); drafted {
+		return draftLabel + singleLine(text)
+	}
+	if picked, unsaved := app.drafts.unsavedPicks(question); unsaved {
+		return draftLabel + strings.Join(knownLabels(question, picked), itemSeparator+" ")
+	}
+	switch answerState(question) {
+	case "settled":
+		return savedLabel + singleLine(describeAnswer(question, question.Answer))
+	case "deferred":
+		return deferredText
+	}
+	if question.Required {
+		return requiredUnansweredText
+	}
+	return unansweredText
 }
 
 func requiredWords(question model.Question) string {
@@ -59,12 +197,12 @@ func requiredWords(question model.Question) string {
 	return "optional"
 }
 
-func (app App) entryLines(width int, height int, colors palette) []line {
+func (app App) entryLines(width int, height int, colors palette) ([]line, int) {
 	if app.entry.typed() {
 		return app.typedEntryLines(width, height, colors)
 	}
 	if len(app.entry.choices) == 0 && isDirectoryQuestion(app.entry.question) {
-		return lines(toneBody, wrapText(emptyDirectoryText(app.entry.question, app.audience), width))
+		return lines(toneBody, wrapText(emptyDirectoryText(app.entry.question, app.audience), width)), 0
 	}
 	rows := make([]line, 0, len(app.entry.choices))
 	for index := range app.entry.choices {
@@ -74,11 +212,11 @@ func (app App) entryLines(width int, height int, colors palette) []line {
 	if height-len(tail) < minimumPickRows {
 		tail = nil
 	}
-	shown, position := windowRows(rows, app.entry.choice, height-len(tail))
-	return append(append(shown, position...), tail...)
+	shown, position, focus := windowRowsAround(rows, app.entry.choice, height-len(tail))
+	return append(append(shown, position...), tail...), focus
 }
 
-func (app App) typedEntryLines(width int, height int, colors palette) []line {
+func (app App) typedEntryLines(width int, height int, colors palette) ([]line, int) {
 	content := []line{app.fieldLine(width, colors)}
 	content = append(content, lines(toneFaint, app.entryHelp(width))...)
 	content = append(content, blankLine())
@@ -91,8 +229,11 @@ func (app App) typedEntryLines(width int, height int, colors palette) []line {
 	for index := first; index < len(app.entry.choices); index++ {
 		rows = append(rows, optionLine(app.entry.choices[index].label, focused, index == app.entry.choice, width, colors))
 	}
-	shown, position := windowRows(rows, max(app.entry.choice-first, 0), height-len(content))
-	return append(append(content, shown...), position...)
+	shown, position, focus := windowRowsAround(rows, max(app.entry.choice-first, 0), height-len(content))
+	if !focused {
+		focus = -len(content)
+	}
+	return append(append(content, shown...), position...), len(content) + focus
 }
 
 func (app App) fieldLine(width int, colors palette) line {
@@ -148,15 +289,20 @@ func (app App) pickingHelp(width int) []line {
 }
 
 func windowRows(rows []line, focus int, height int) ([]line, []line) {
+	shown, position, _ := windowRowsAround(rows, focus, height)
+	return shown, position
+}
+
+func windowRowsAround(rows []line, focus int, height int) ([]line, []line, int) {
 	if len(rows) <= height {
-		return rows, nil
+		return rows, nil, focus
 	}
 	if height < 2 {
-		return rows[focus : focus+1], nil
+		return rows[focus : focus+1], nil, 0
 	}
 	shown := scrollWindow(rows, focus, height-1)
-	first := min(max(focus-(height-1)/2, 0), len(rows)-len(shown)) + 1
-	return shown, []line{faintLine(fmt.Sprintf("Showing %d to %d of %d", first, first+len(shown)-1, len(rows)))}
+	first := min(max(focus-(height-1)/2, 0), len(rows)-len(shown))
+	return shown, []line{faintLine(fmt.Sprintf("Showing %d to %d of %d", first+1, first+len(shown), len(rows)))}, focus - first
 }
 
 func (app App) entryHelp(width int) []string {

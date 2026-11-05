@@ -1,0 +1,24 @@
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts
+  ····  ··  ◆
+
+  tools
+  7 of 7, required, not answered yet
+
+  * Which editor is standard?
+
+  >
+
+    deferred, answer later
+    skip, change nothing
+    clear the answer
+
+  About this question
+
+  Type: string
+  Answered by: onboarder
+  Name: tools.editor
+
+
+
+
+  enter save  esc stop typing  down options  tab next page  f1 help

@@ -42,7 +42,7 @@ func (app App) hints(tabKeysShown bool) []hint {
 func (app App) answerHints(tabKeysShown bool) []hint {
 	switch {
 	case app.entry.typing():
-		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, {"up", "tabs"}, {"f1", "help"}}
+		return []hint{{"enter", "save"}, {"esc", "stop typing"}, {"down", "options"}, {"tab", "next page"}, {"ctrl+p", "back"}, app.upHint(), {"f1", "help"}}
 	case app.entry.onOptions():
 		hints := []hint{{notTyping, ""}, {"up/down", "move"}, {"enter", "choose"}, {"tab", "next page"}, {"esc", app.leaveName()}, {"p", "back"}, {"n", "skip"}, {"d", "defer"}}
 		hints = append(hints, app.jumpHints(tabKeysShown)...)
@@ -52,6 +52,13 @@ func (app App) answerHints(tabKeysShown bool) []hint {
 	hints = append(hints, hint{"p", "back"}, hint{"d", "defer"})
 	hints = append(hints, app.jumpHints(tabKeysShown)...)
 	return append(hints, hint{"x", "clear"}, hint{"n", "skip"}, hint{"q", "quit"}, hint{"?", "help"})
+}
+
+func (app App) upHint() hint {
+	if app.onFirstRow() {
+		return hint{"up", "tabs"}
+	}
+	return hint{"up", "row above"}
 }
 
 func (app App) choosingHints() []hint {

@@ -32,6 +32,7 @@ type App struct {
 	aboutScroll     int
 	status          line
 	entry           entryState
+	drafts          rowDrafts
 	review          reviewState
 	contacts        contactsState
 	preparation     preparationState

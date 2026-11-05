@@ -2,9 +2,11 @@
   ◆·
 
   Plan
-  1 of 2, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 1: question 1 of 2, required, not answered yet
 
-  Name of the organization
+  * Name of the organization
+    e.g. Acme Industrial
 
   > e.g. Acme Industrial
 
@@ -12,13 +14,11 @@
     skip, change nothing
     clear the answer
 
-  About this question
+  * Who leads the onboarding, and what do they need to tell a newcomer on the
+    first day?
+    e.g. Sam Rivera, sam@acme.test
+    Required, not answered yet
 
-  Example: Acme Industrial
-  Type: string
-  Answered by: onboarder
-  Name: plan.organization
-
-
+  About row 1
 
   enter save  esc stop typing  down options  tab next page  f1 help

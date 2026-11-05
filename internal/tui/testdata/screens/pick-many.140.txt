@@ -4,7 +4,7 @@
   If you are stuck                                                                  │ About this question
   8 of 8, required, not answered yet                                                │
                                                                                     │ Type: contact, several allowed
-  Who can anyone ask for help with anything?                                        │ Answered by: onboarder
+  * Who can anyone ask for help with anything?                                      │ Answered by: onboarder
                                                                                     │ Name: stuck-general.general_contacts
   > [2] Alex Rivera                                                                 │
     [1] Sam Okafor                                                                  │

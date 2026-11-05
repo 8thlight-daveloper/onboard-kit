@@ -81,6 +81,7 @@ var (
 	tab      = tea.KeyMsg{Type: tea.KeyTab}
 	ctrlP    = tea.KeyMsg{Type: tea.KeyCtrlP}
 	ctrlD    = tea.KeyMsg{Type: tea.KeyCtrlD}
+	ctrlN    = tea.KeyMsg{Type: tea.KeyCtrlN}
 	left     = tea.KeyMsg{Type: tea.KeyLeft}
 	right    = tea.KeyMsg{Type: tea.KeyRight}
 )

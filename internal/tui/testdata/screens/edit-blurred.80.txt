@@ -2,9 +2,11 @@
   ◆·  ·····  ·
 
   Plan
-  1 of 8, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 1: question 1 of 8, required, not answered yet
 
-  What is the organization's name?
+  * What is the organization's name?
+    e.g. ACME Corp
 
   Not saved yet: Glob
 
@@ -13,12 +15,10 @@
     skip, change nothing
     clear the answer
 
-  About this question
+  * Is the team established, or are we the first consultants?
+    Required, not answered yet
 
-  Example: ACME Corp
-  Type: string
-  Answered by: onboarder
-  Name: plan.organization
+  About row 1
 
   Stopped typing. Your text is kept, not saved yet.
   Not typing.  up/down move  enter choose  tab next page  esc overview  ? help

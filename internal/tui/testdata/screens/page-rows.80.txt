@@ -1,0 +1,24 @@
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts
+  ··  ·✓·~◆  ·
+
+  Access
+  5 questions on this page, 2 answered
+  Row 5: question 7 of 8, required, not answered yet
+
+  3 more questions above
+  * Which role grants CI dashboard access?
+    Deferred, answer later
+
+  * Which role grants work tracker access?
+
+  > Engineering manager
+    IT contact
+    Platform team lead
+    deferred, answer later
+    clear the answer
+
+
+
+
+  saved
+  enter choose  p back  d defer  o overview  r review  s sections  ? help

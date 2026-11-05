@@ -2,9 +2,10 @@
   ◆·
 
   local
-  1 of 2, required, not answered yet
+  2 questions on this page, 0 answered
+  Row 1: question 1 of 2, required, not answered yet
 
-  Which reviewed local startup, shutdown, and safe data instructions apply?
+  * Which reviewed local startup, shutdown, and safe data instructions apply?
 
   Nothing typed yet
 
@@ -15,10 +16,9 @@
     skip, change nothing
     clear the answer
 
-  About this question
+  * Which harmless user journey should verify local behavior?
+    Required, not answered yet
 
-  Type: string
-  Answered by: onboarder
-  Name: local.startup
+  About row 1
 
   Not typing.  up/down move  enter choose  tab next page  esc overview  ? help

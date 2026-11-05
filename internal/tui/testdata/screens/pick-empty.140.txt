@@ -1,27 +1,27 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                      0 of 8 answered
   ··  ◆····  ·
 
-  Access                                                                            │ About this question
-  3 of 8, required, not answered yet                                                │
-                                                                                    │ Type: role
-  Which role owns onboarding here? It appears as the owner of the Access section.   │ Answered by: onboarder
-                                                                                    │ Name: access.onboarding_owner_role
+  Access                                                                            │ About row 1
+  5 questions on this page, 0 answered                                              │
+  Row 1: question 3 of 8, required, not answered yet                                │ Type: role
+                                                                                    │ Answered by: onboarder
+  * Which role owns onboarding here? It appears as the owner of the Access section. │ Name: access.onboarding_owner_role
+                                                                                    │
   No roles to pick from yet. Add them on the Contacts screen, press c.              │
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                                                                                    │
+  * Where do people request source control access?                                  │
+    e.g. https://access.example.test/request                                        │
+    Required, not answered yet                                                      │
+                                                                                    │
+  * What is the clone URL of the main repository?                                   │
+    e.g. git@git.example.test:team/service.git                                      │
+    Required, not answered yet                                                      │
+                                                                                    │
+  * Which role grants CI dashboard access?                                          │
+    Required, not answered yet                                                      │
+                                                                                    │
+  * Which role grants work tracker access?                                          │
+    Required, not answered yet                                                      │
 
 
 

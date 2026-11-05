@@ -131,7 +131,7 @@ func TestTheAnswerScreenHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testi
 	app, _ := startAnswering(t)
 	for _, width := range []int{120, 140, 200} {
 		view := plainView(resize(app, width, 40))
-		if !strings.Contains(view, "│") || !strings.Contains(view, "About this question") {
+		if !strings.Contains(view, "│") || !strings.Contains(view, "About row 1") {
 			t.Errorf("%d columns should show the answer and the notes side by side:\n%s", width, view)
 		}
 	}
@@ -140,7 +140,7 @@ func TestTheAnswerScreenHasTwoColumnsFromOneHundredAndTwentyAndOneBelow(t *testi
 		if strings.Contains(view, "│") {
 			t.Errorf("%d columns is one column:\n%s", width, view)
 		}
-		if !strings.Contains(view, "About this question") {
+		if !strings.Contains(view, "About row 1") {
 			t.Errorf("%d columns should still show the notes below the answer", width)
 		}
 	}

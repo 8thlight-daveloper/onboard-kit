@@ -1,23 +1,23 @@
   Building an onboarding plan  [Answer]  Overview o  Review r  Sections s  Contacts c                                      0 of 2 answered
   ◆·
 
-  local                                                                             │ About this question
-  1 of 2, required, not answered yet                                                │
-                                                                                    │ Type: string
-  Which reviewed local startup, shutdown, and safe data instructions apply?         │ Answered by: onboarder
-                                                                                    │ Name: local.startup
-  Nothing typed yet                                                                 │ Suggestion (default): Run make run, stop with
-                                                                                    │ Ctrl+C, and use the sample database
-    Edit the answer                                                                 │ Suggestion (given): Ask the team lead
+  local                                                                             │ About row 1
+  2 questions on this page, 0 answered                                              │
+  Row 1: question 1 of 2, required, not answered yet                                │ Type: string
+                                                                                    │ Answered by: onboarder
+  * Which reviewed local startup, shutdown, and safe data instructions apply?       │ Name: local.startup
+                                                                                    │ Suggestion (default): Run make run, stop with
+  Nothing typed yet                                                                 │ Ctrl+C, and use the sample database
+                                                                                    │ Suggestion (given): Ask the team lead
+    Edit the answer                                                                 │
   > Use the suggestion: Run make run, stop with Ctrl+C, and use the sample database │
     Use the suggestion: Ask the team lead                                           │
     deferred, answer later                                                          │
     skip, change nothing                                                            │
     clear the answer                                                                │
-
-
-
-
+                                                                                    │
+  * Which harmless user journey should verify local behavior?                       │
+    Required, not answered yet                                                      │
 
 
 

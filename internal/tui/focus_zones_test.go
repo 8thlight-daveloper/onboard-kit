@@ -224,12 +224,12 @@ func TestUpFromTheFieldReachesTheTabStrip(t *testing.T) {
 func TestUpFromTheFirstChoiceReachesTheTabStrip(t *testing.T) {
 	t.Parallel()
 	app, _ := startAnswering(t)
-	choosing := moveTo(t, app, "plan.team_state")
+	choosing := moveTo(t, app, "access.onboarding_owner_role")
 	strip := press(choosing, up)
 	if !strip.stripFocused {
-		t.Fatal("up from the first choice focuses the tab strip")
+		t.Fatal("up from the first choice of the first row focuses the tab strip")
 	}
-	if strings.Contains(plainView(strip), "> established") {
+	if strings.Contains(plainView(strip), "> Engineering manager") {
 		t.Error("the choice loses its mark while the strip has focus")
 	}
 	if back := press(strip, down); back.stripFocused || back.entry.choice != 0 {
@@ -299,14 +299,20 @@ func TestADraftSurvivesAPageVisit(t *testing.T) {
 
 func TestLeavingTheQuestionDropsTheDraftAndSaysSo(t *testing.T) {
 	t.Parallel()
-	for name, app := range map[string]App{
-		"defer":  press(typedGlob(t), ctrlD),
-		"skip":   press(typedGlob(t), esc, typed("n")),
-		"back":   press(startFake(suggestedBackend()), enter, typed("draft"), ctrlP),
-		"letter": press(typedGlob(t), esc, typed("d")),
+	app, _ := startAnswering(t)
+	requestURL := moveTo(t, app, "access.access_request_url")
+	for name, each := range map[string]struct {
+		app  App
+		want string
+	}{
+		"defer":               {press(typedGlob(t), ctrlD), "saved. Your unsaved text on question 1 was dropped."},
+		"letter":              {press(typedGlob(t), esc, typed("d")), "saved. Your unsaved text on question 1 was dropped."},
+		"skip off the page":   {press(typedGlob(t), esc, typed("n"), typed("n")), "Your unsaved text on question 1 was dropped."},
+		"back off the page":   {press(requestURL, typed("draft"), ctrlP, typed("p")), "Your unsaved text on question 4 was dropped."},
+		"skip past last page": {press(startFake(suggestedBackend()), typed("draft"), ctrlN, ctrlN), "Your text on question 1 is kept, not saved yet."},
 	} {
-		if !strings.Contains(statusLine(app), draftDroppedText) {
-			t.Errorf("%s: the status says the draft was dropped, got %q", name, statusLine(app))
+		if got := statusLine(each.app); got != each.want {
+			t.Errorf("%s: the status says the draft was dropped, got %q, want %q", name, got, each.want)
 		}
 	}
 	deferred := press(typedGlob(t), ctrlD)
@@ -316,7 +322,7 @@ func TestLeavingTheQuestionDropsTheDraftAndSaysSo(t *testing.T) {
 	if returned := press(deferred, ctrlP); returned.entry.input.Value() != "" {
 		t.Errorf("the dropped draft does not come back, got %q", returned.entry.input.Value())
 	}
-	if saved := press(typedGlob(t), enter); strings.Contains(statusLine(saved), draftDroppedText) {
+	if saved := press(typedGlob(t), enter); strings.Contains(statusLine(saved), "dropped") {
 		t.Error("a saved answer is not a dropped draft")
 	}
 }
@@ -392,7 +398,7 @@ func TestHelpNamesTheNewKeys(t *testing.T) {
 		want string
 	}{
 		"typing":   {press(app, functionF), "stop typing, and choose from the list under the box"},
-		"blurred":  {press(app, esc, typed("?")), "do what the chosen row says"},
+		"blurred":  {press(app, esc, typed("?")), "do what the chosen option says"},
 		"strip":    {press(app, up, typed("?")), "choose a tab"},
 		"overview": {press(app, esc, esc, typed("?")), "next or previous page"},
 	} {

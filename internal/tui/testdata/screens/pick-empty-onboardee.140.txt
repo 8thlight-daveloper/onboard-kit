@@ -1,18 +1,18 @@
   Your onboarding  [Your questions]  Overview o  Review r                                                                 3 of 3 to answer
   ◆·  ·
 
-  Welcome. A few questions about you, then your own onboarding document.            │ About this question
+  Welcome. A few questions about you, then your own onboarding document.            │ About row 1
                                                                                     │
   Plan                                                                              │ Type: team
-  1 of 3, required, not answered yet                                                │ Answered by: onboardee
-                                                                                    │ Name: plan.team
-  Which team are you joining?                                                       │
+  2 questions on this page, 0 answered                                              │ Answered by: onboardee
+  Row 1: question 1 of 3, required, not answered yet                                │ Name: plan.team
+                                                                                    │
+  * Which team are you joining?                                                     │
                                                                                     │
   No teams to pick from yet. Ask your onboarder to add this.                        │
-
-
-
-
+                                                                                    │
+  * What kind of work will you do?                                                  │
+    Required, not answered yet                                                      │
 
 
 

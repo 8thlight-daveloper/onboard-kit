@@ -27,10 +27,13 @@ func (app App) updateChoosing(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	switch key.String() {
 	case "up", "k":
 		if app.entry.choice == 0 {
-			return app.focusedStrip(), nil
+			return app.rowAbove(), nil
 		}
 		app.entry = app.entry.moved(-1)
 	case "down", "j":
+		if app.entry.choice >= len(app.entry.choices)-1 {
+			return app.rowBelow(), nil
+		}
 		app.entry = app.entry.moved(1)
 	case " ":
 		app.entry = app.entry.toggled()
@@ -49,6 +52,9 @@ func (app App) updateOptions(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 		}
 		app.entry = app.entry.moved(-1)
 	case "down", "j":
+		if app.entry.choice >= len(app.entry.choices)-1 {
+			return app.rowBelow(), nil
+		}
 		app.entry = app.entry.moved(1)
 	case "enter":
 		return app.chosenOption(), nil
@@ -122,7 +128,7 @@ func (app App) updateTyping(key tea.KeyMsg) (tea.Model, tea.Cmd) {
 	case "esc", "down":
 		return app.stoppedTyping(), nil
 	case "up":
-		return app.focusedStrip(), nil
+		return app.rowAbove(), nil
 	case "ctrl+d":
 		return app.accept(model.Value{Kind: model.ValueKindDeferred}), nil
 	case "ctrl+p":
@@ -149,15 +155,14 @@ func (app App) stoppedTyping() App {
 }
 
 func (app App) leaveAnswer() App {
-	leaving := app.entry.hasDraft()
-	kept := app.draftKeptLine()
+	drafted := app.draftRows()
 	if app.returnTo == screenReview {
 		app = app.openReview()
 	} else {
 		app = app.openOverview()
 	}
-	if leaving {
-		app.status = kept
+	if len(drafted) > 0 {
+		app.status = draftKeptLine(drafted)
 	}
 	return app
 }
@@ -170,11 +175,17 @@ func (app App) accept(value model.Value) App {
 	if sameAnswer(question.Answer, value) {
 		return app.moveTo(app.cursor + 1)
 	}
+	dropping := app.entry.hasDraft() && !sameAnswer(parseEntry(question, app.entry.input.Value()), value)
 	next, saved := app.submit(value)
 	if !saved {
 		return next
 	}
 	status := next.status
+	if dropping {
+		status = status.followedBy(draftDroppedLine([]int{app.cursor + 1}))
+	}
+	next.entry = next.entry.mirroringTheAnswer()
+	next.status = line{}
 	moved := next.moveTo(next.cursor + 1)
 	moved.status = status.followedBy(moved.status)
 	return moved
