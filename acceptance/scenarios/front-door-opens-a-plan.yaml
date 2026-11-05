@@ -1,0 +1,63 @@
+name: front-door-opens-a-plan
+description: A plan opened by its file name is recorded in the list. The bare command then shows the plan picker with it chosen, and enter opens it in the editor. Remove from list forgets the plan and leaves the file. Without a terminal the bare command prints its usage and the scripting commands.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md; docs/reference/tui.md
+steps:
+  - run: [onboard-kit, acme.obk.yaml]
+    files:
+      acme.obk.yaml: {from: docs/reference/examples/acme/acme.obk.yaml}
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Answered 13 of 13"
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      files:
+        state/plans.txt: {}
+      unchanged: [acme.obk.yaml]
+  - run: [onboard-kit]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Your plans, last used first"
+        - wait-for: "> acme.obk.yaml"
+        - wait-for: "New plan"
+        - wait-for: "Open a file"
+        - wait-for: "Begin my onboarding"
+        - press: Enter
+        - wait-for: "Answered 13 of 13"
+        - press: q
+        - wait-exit: true
+    expect:
+      exit: 0
+      unchanged: [acme.obk.yaml]
+  - run: [onboard-kit]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "> acme.obk.yaml"
+        - press: a
+        - wait-for: "About this tool"
+        - wait-for: "Plan list"
+        - press: Escape
+        - press: x
+        - wait-for: "Remove acme.obk.yaml from the list?"
+        - press: y
+        - wait-for: "Removed acme.obk.yaml from the list. The file was not touched."
+        - wait-for: "What would you like to do?"
+        - press: q
+        - wait-exit: true
+    expect:
+      exit: 0
+      files:
+        acme.obk.yaml: {same-as: docs/reference/examples/acme/acme.obk.yaml}
+  - run: [onboard-kit]
+    expect:
+      exit: 2
+      stdout: {equals: ""}
+      stderr: {contains: "The interactive tool needs a terminal. For scripts, use new --out FILE, assemble, catalog, prepare, invite, or stdio.\n"}

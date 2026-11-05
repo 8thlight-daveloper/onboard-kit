@@ -1,0 +1,58 @@
+name: new-creates-the-core-plan
+description: In a terminal, new shows the path it will write, writes the core set of the catalog only after y, records the plan in the list, and opens it in the editor. A second new to the same path is refused and never replaces the file. The front door then lists the plan.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md; docs/decisions/0530-new-plan-from-core-set.md
+steps:
+  - run: [onboard-kit, new, --out, core.obk.yaml, --id, plan-one, --generated-on, "2026-11-04"]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Writes "
+        - wait-for: "core.obk.yaml"
+        - press: Enter
+        - wait-for: "Write this new plan?"
+        - wait-for: "Nothing is written until you press y."
+        - press: y
+        - wait-for: "Onboarding plan"
+        - wait-for: "0 of 57 answered"
+        - press: Escape
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      files:
+        core.obk.yaml: {}
+        state/plans.txt: {}
+  - run: [onboard-kit, assemble, --plan, core.obk.yaml]
+    expect:
+      exit: 0
+      stdout: {contains: "Generated 2026-11-04 from template set `development`."}
+      unchanged: [core.obk.yaml]
+  - run: [onboard-kit, new, --out, core.obk.yaml]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Writes "
+        - press: Enter
+        - wait-for: "Write this new plan?"
+        - press: y
+        - wait-for: "That file already exists, and a new plan never replaces a file."
+        - press: Escape
+        - wait-exit: true
+    expect:
+      exit: 0
+      unchanged: [core.obk.yaml, state/plans.txt]
+  - run: [onboard-kit]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Your plans, last used first"
+        - wait-for: "> core.obk.yaml"
+        - press: q
+        - wait-exit: true
+    expect:
+      exit: 0
+      unchanged: [core.obk.yaml, state/plans.txt]

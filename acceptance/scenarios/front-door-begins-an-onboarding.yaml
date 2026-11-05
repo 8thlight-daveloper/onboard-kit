@@ -1,0 +1,48 @@
+name: front-door-begins-an-onboarding
+description: Begin my onboarding takes an invitation path, says the records are kept in the current folder, and hands over to the typed start flow, which is interim until the newcomer's screens exist. A plan typed there is refused.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md; docs/reference/tui.md
+steps:
+  - run: [onboard-kit, invite, export, --plan, source.obk.yaml, --preparation, preparation.obk.yaml, --account, newcomer, --out, invitation.zip, --preaccess-help-contact, owner]
+    files:
+      source.obk.yaml: {from: acceptance/testdata/invite-export-source.obk.yaml}
+      preparation.obk.yaml: {from: contracts/command/invite/testdata/preparation.yaml}
+    expect:
+      exit: 0
+      files:
+        invitation.zip: {}
+  - run: [onboard-kit]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "What would you like to do?"
+        - press: Down
+        - press: Enter
+        - wait-for: "Invitation file"
+        - wait-for: "Your onboarding records are kept in"
+        - type: source.obk.yaml
+        - press: Enter
+        - wait-for: "This file is a plan, not an invitation."
+        - press: Ctrl+U
+        - type: invitation.zip
+        - press: Enter
+        - wait-for: "The screens for your onboarding are not built yet"
+        - wait-for: "Identity: choose confirm newcomer or cancel:"
+        - type: confirm newcomer
+        - press: Enter
+        - wait-for: "Review complete. Choose begin or cancel:"
+        - type: begin
+        - press: Enter
+        - wait-for: "Session: read only. Choose exit:"
+        - type: exit
+        - press: Enter
+        - wait-exit: true
+    expect:
+      exit: 0
+      files:
+        records/newcomer/record.obk.yaml:
+          yaml-scalars:
+            - path: [firstOpenedAt]
+              utc-timestamp: true
+        records/newcomer/preparation.obk.yaml: {same-as: contracts/command/invite/testdata/preparation.yaml}
+      unchanged: [source.obk.yaml, invitation.zip]

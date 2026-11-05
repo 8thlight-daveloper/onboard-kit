@@ -1,0 +1,45 @@
+name: open-refuses-a-wrong-file
+description: A file that is not a plan or an invitation is refused in one sentence that names what was expected, by the bare file name and by open, with or without a terminal, and nothing is written.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md
+steps:
+  - run: [onboard-kit, notes.txt]
+    files:
+      notes.txt: "Remember to ask about the deploy rota.\n"
+      preparation.obk.yaml: {from: acceptance/testdata/preparation/preparation.yaml}
+      record.obk.yaml: {from: acceptance/testdata/preparation/record.yaml}
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {equals: "onboard-kit: notes.txt is neither a plan nor an invitation.\n"}
+      unchanged: [notes.txt, preparation.obk.yaml, record.obk.yaml]
+  - run: [onboard-kit, open, notes.txt]
+    expect:
+      exit: 1
+      stdout: {equals: ""}
+      stderr: {equals: "onboard-kit: notes.txt is neither a plan nor an invitation.\n"}
+  - run: [onboard-kit, preparation.obk.yaml]
+    expect:
+      exit: 1
+      stderr: {equals: "onboard-kit: preparation.obk.yaml is a preparation, but a plan or an invitation is expected.\n"}
+  - run: [onboard-kit, open, record.obk.yaml]
+    expect:
+      exit: 1
+      stderr: {equals: "onboard-kit: record.obk.yaml is a record, but a plan or an invitation is expected.\n"}
+  - run: [onboard-kit, open, missing.obk.yaml]
+    expect:
+      exit: 1
+      stderr: {equals: "onboard-kit: missing.obk.yaml does not exist.\n"}
+      files:
+        missing.obk.yaml: {absent: true}
+  - run: [onboard-kit, open, notes.txt]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "onboard-kit: notes.txt is neither a plan nor an invitation."
+        - wait-exit: true
+    expect:
+      exit: 1
+      files:
+        state: {absent: true}
+      unchanged: [notes.txt, preparation.obk.yaml, record.obk.yaml]
