@@ -24,7 +24,7 @@ steps:
         - wait-for: "Which harmless user journey should verify local behavior"
         - type: Sign in and open the dashboard, ask the team lead for help
         - press: Enter
-        - wait-for: "Answered 2 of 2."
+        - wait-for: "Nothing is waiting."
         - press: c
         - wait-for: "No contacts yet"
         - press: a
