@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func newIdentifier() string {
+func NewIdentifier() string {
 	var bytes [16]byte
 	if _, err := rand.Read(bytes[:]); err != nil {
 		panic(err)

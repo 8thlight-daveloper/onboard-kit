@@ -59,6 +59,8 @@ components:
     kind: command
   command/create:
     kind: command
+  command/frontdoor:
+    kind: command
   command/invite:
     kind: command
   command/places:
