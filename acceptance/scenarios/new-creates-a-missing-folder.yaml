@@ -1,0 +1,30 @@
+name: new-creates-a-missing-folder
+description: A script that names a folder that does not exist is refused in plain words and creates nothing. At a terminal, new says it also creates the folder, and creates it only after y.
+source: docs/decisions/0610-people-work-in-screens-and-flags-serve-scripts.md
+steps:
+  - run: [onboard-kit, new, --out, plans/acme/core.obk.yaml, --id, plan-one, --generated-on, "2026-11-04"]
+    expect:
+      exit: 1
+      stderr: {contains: "new: the folder "}
+      files:
+        plans/acme/core.obk.yaml: {absent: true}
+  - run: [onboard-kit, new, --out, plans/acme/core.obk.yaml, --id, plan-one, --generated-on, "2026-11-04"]
+    terminal:
+      size: {columns: 110, rows: 32}
+      env: {OBK_HOME: state}
+      actions:
+        - wait-for: "Also creates the folder"
+        - press: Enter
+        - wait-for: "Write this new plan?"
+        - wait-for: "Also creates the folder"
+        - wait-for: "Nothing is written until you press y."
+        - press: y
+        - wait-for: "Building an onboarding plan"
+        - press: Escape
+        - press: q
+        - wait-exit: true
+        - expect-modes: {alternate_screen: false, cursor_visible: true, bracketed_paste: false}
+    expect:
+      exit: 0
+      files:
+        plans/acme/core.obk.yaml: {}

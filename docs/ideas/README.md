@@ -25,4 +25,5 @@ becomes a decision.
 | [Bare command and first run](bare-command-and-first-run.md) | idea, 2026-10-29 |
 | [Codebase tutor integration](codebase-tutor-integration.md) | idea, 2026-10-29 |
 | [Install script in the invitation](install-script-in-invitation.md) | idea, 2026-10-29 |
+| [Plan store driver](plan-store-driver.md) | idea, 2026-11-05 |
 | [Send messages as the user](send-as-the-user.md) | researched, 2026-10-29 |
