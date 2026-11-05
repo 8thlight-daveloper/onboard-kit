@@ -5,7 +5,13 @@
   10 questions on this page, 0 answered                                             │
   Row 8: question 8 of 10, required, not answered yet                               │ Type: contact
                                                                                     │ Answered by: onboarder
-  6 more questions above                                                            │ Name: plan.pickxxxxxxx
+  5 more questions above                                                            │ Name: plan.pickxxxxxxx
+  * A long question that keeps going. A long question that keeps going. A long      │
+    question that keeps going. A long question that keeps going. A long question    │
+    that keeps going. A long question that keeps going.                             │
+    e.g. an example an example an example an example an example an example an exam… │
+    Required, not answered yet                                                      │
+                                                                                    │
   * A long question that keeps going. A long question that keeps going. A long      │
     question that keeps going. A long question that keeps going. A long question    │
     that keeps going. A long question that keeps going.                             │
@@ -29,12 +35,6 @@
     Required, not answered yet                                                      │
                                                                                     │
   * A long question that keeps going. A long question that keeps going. A long      │
-    question that keeps going. A long question that keeps going. A long question    │
-    that keeps going. A long question that keeps going.                             │
-    e.g. an example an example an example an example an example an example an exam… │
-    Required, not answered yet                                                      │
                                                                                     │
-
-
 
   enter choose  p back  d defer  x clear  n skip  q quit  ? help

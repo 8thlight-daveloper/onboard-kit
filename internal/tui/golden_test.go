@@ -56,8 +56,8 @@ func goldenScreens(t *testing.T) map[string]func(size goldenSize) App {
 		"edit-suggestion":              buildSuggested(keys(down, down)),
 		"edit-long":                    buildSuggested(keys(typed(longAnswer))),
 		"pick":                         build(blankPlan(t), model.AudienceOnboarder, goTo("access.onboarding_owner_role")),
-		"page-plan":                    buildPage(planPageBackend(), keys(typed("Globex"), enter, typed("Plat"))),
-		"page-one-row":                 buildPage(planPageBackend(), func(app App) App { return app.openQuestion(6) }),
+		"page-plan":                    buildPage(planPageBackend, keys(typed("Globex"), enter, typed("Plat"))),
+		"page-one-row":                 buildPage(planPageBackend, func(app App) App { return app.openQuestion(6) }),
 		"page-rows":                    build(blankPlan(t), model.AudienceOnboarder, goTo("access.access_request_url"), keys(typed("https://access.example.test/request"), enter, ctrlN, typed("d"))),
 		"page-scrolled":                buildPage(nil, func(app App) App { return app.openQuestion(7) }),
 		"pick-many":                    build(blankPlan(t), model.AudienceOnboarder, goTo("stuck-general.general_contacts"), keys(typed("j"), space, typed("k"), space)),
@@ -137,11 +137,11 @@ func suggestedBackend() *fakeBackend {
 	return newFakeBackend(question, textQuestion("local.journey", "local", "Which harmless user journey should verify local behavior?", ""))
 }
 
-func buildPage(backend *fakeBackend, steps ...func(App) App) func(goldenSize) App {
+func buildPage(backend func() *fakeBackend, steps ...func(App) App) func(goldenSize) App {
 	return func(size goldenSize) App {
 		app := longPage()
 		if backend != nil {
-			app = startFake(backend)
+			app = startFake(backend())
 		}
 		app = resize(app, size.width, size.height)
 		for _, step := range steps {

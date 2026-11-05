@@ -5,9 +5,8 @@
   5 questions on this page, 0 answered                                  │
   Row 1: question 3 of 8, required, not answered yet                    │ Type: role
                                                                         │ Answered by: onboarder
-                                                                        │ Name: access.onboarding_owner_role
-  * Which role owns onboarding here? It appears as the owner of the     │ Suggestion (default): Engineering manager
-    Access section.                                                     │
+  * Which role owns onboarding here? It appears as the owner of the     │ Name: access.onboarding_owner_role
+    Access section.                                                     │ Suggestion (default): Engineering manager
                                                                         │
   > Engineering manager                                                 │
     IT contact                                                          │
@@ -25,6 +24,7 @@
                                                                         │
   * Which role grants CI dashboard access?                              │
     Required, not answered yet                                          │
+                                                                        │
   1 more question below                                                 │
 
   enter choose  p back  d defer  x clear  n skip  q quit  ? help

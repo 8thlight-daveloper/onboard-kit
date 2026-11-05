@@ -62,9 +62,15 @@ func (app App) pageLines(width int, height int, narrow bool, colors palette) ([]
 	}
 	shown := max(area-2, 1)
 	start := scrollStart(rows, spans, focused, shown)
+	if start == 0 {
+		shown++
+	}
 	end := min(start+shown, len(rows))
 	above, below := hiddenRows(spans, start, end)
-	page := append(header, faintLine(moreText(above, "above")))
+	page := header
+	if start > 0 {
+		page = append(page, faintLine(moreText(above, "above")))
+	}
 	page = append(page, rows[start:end]...)
 	return append(page, faintLine(moreText(below, "below"))), true
 }
@@ -140,7 +146,11 @@ func scrollStart(content []line, spans []rowSpan, focused int, height int) int {
 	start := min(max((block.start+block.end)/2-height/2, block.end-height), block.start)
 	start = max(min(start, len(content)-height), 0)
 	for _, span := range spans {
-		if span.start < start && start <= span.end && span.end < block.start {
+		switch {
+		case span.start >= start || start > span.end || span.end >= block.start:
+		case block.end-span.start <= height:
+			return span.start
+		default:
 			return span.end + 1
 		}
 	}

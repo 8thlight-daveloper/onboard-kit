@@ -5,7 +5,6 @@
   5 questions on this page, 0 answered
   Row 1: question 3 of 8, required, not answered yet
 
-
   * Which role owns onboarding here? It appears as the owner of the Access
     section.
 
@@ -19,6 +18,7 @@
     e.g. https://access.example.test/request
     Required, not answered yet
 
-  3 more questions below
+  * What is the clone URL of the main repository?
+  2 more questions below
 
   enter choose  p back  d defer  o overview  r review  s sections  ? help

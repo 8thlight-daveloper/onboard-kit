@@ -1,31 +1,29 @@
-  Building an onboarding plan  Answer w  Overview o  [Review]  Sections s  Contacts c                                      1 of 7 answered
-  ✓···  ··  ·
+  Building an onboarding plan  [Answer]  Overview  Review  Sections  Contacts                                              1 of 7 answered
+  ✓◆··  ··  ·
 
-  > Items                                                │   Document, all shown
-  Answered 1 of 7.                                       │ # Document
-  Nothing is waiting.                                    │
-                                                         │ A line of the document.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  Plan                                                                              │ About row 2
+  4 questions on this page, 1 answered                                              │
+  Row 2: question 2 of 7, required, not answered yet                                │ Example: Platform
+                                                                                    │ Type: string
+  * What is the organization's name?                                                │ Answered by: onboarder
+    e.g. ACME Corp                                                                  │ Name: plan.team_name
+    Saved: Globex                                                                   │
+                                                                                    │
+  * What is the team's name?                                                        │
+                                                                                    │
+  > Plat                                                                            │
+                                                                                    │
+    deferred, answer later                                                          │
+    skip, change nothing                                                            │
+    clear the answer                                                                │
+                                                                                    │
+    Where is the plan's repository?                                                 │
+    e.g. https://example.test/acme/onboarding.git                                   │
+    Not answered yet                                                                │
+                                                                                    │
+    Which file in it is the plan?                                                   │
+    e.g. plans/platform.obk.yaml                                                    │
+    Not answered yet                                                                │
 
 
 
@@ -37,4 +35,6 @@
 
 
 
-  enter open  left/right items/document  pgup/pgdn scroll  q quit  ? help
+
+
+  enter save  esc stop typing  down options  tab next page  ctrl+p back  up row above  f1 help

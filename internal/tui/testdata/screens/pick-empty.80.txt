@@ -5,7 +5,6 @@
   5 questions on this page, 0 answered
   Row 1: question 3 of 8, required, not answered yet
 
-
   * Which role owns onboarding here? It appears as the owner of the Access
     section.
 
@@ -19,6 +18,7 @@
     e.g. git@git.example.test:team/service.git
     Required, not answered yet
 
-  2 more questions below
+  * Which role grants CI dashboard access?
+  1 more question below
 
   p back  d defer  o overview  r review  s sections  c contacts  ? help
