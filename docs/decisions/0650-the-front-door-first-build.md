@@ -49,15 +49,21 @@ only own question is `organization`, a required onboarder question that blocks a
 until it is answered and gives the header its name. It is the lone question of the first
 page. The next page is a first section, `plan-source`, "Where this plan is kept", with two
 optional onboarder questions: the repository's address and the relative path of the plan
-file in it. They are two questions because they have different sources and change
-independently, since one repository holds many plans. The address is one question because
-a person has it as one thing to copy, and the tool derives its parts. The section has the
+file in it, split as [0690](0690-ask-for-a-value-as-the-person-has-it.md) explains. The
+address question says to copy it from the repository's Clone button. The section has the
 timing `before-day-one` so that it sorts first until 0660 puts list position in charge. A
 new plan has no team question. A team's name is the first question of a team plan, and team
 plans wait for `extends`. This is the step of 0670 that does not need a contract. The
 `extends` link, scope on sections, and the composer are not built. The catalog's
 `onboarding-repository` section asks for the same location in one text answer, and the two
 should meet when the catalog is changed.
+
+**A new plan can go in a folder that does not exist.** At the screen, the New plan form
+and the confirmation both say "Also creates the folder", with its path, and nothing is
+written until `y`. Then the tool creates the folder and the plan. A path whose folder is a
+file is refused in words that say so, and a failed write names the folder and the reason,
+not a temporary file. A script that names a missing folder is refused with "the folder X
+does not exist" and creates nothing, because a silent folder from a script would surprise.
 
 **Interim: an invitation runs the typed start flow.** `onboard-kit invitation.zip`,
 or "Begin my onboarding", ends the screen and runs `start --invitation FILE --root .` with its typed lines. The screen says where the records will go before it
