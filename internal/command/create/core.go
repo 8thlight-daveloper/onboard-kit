@@ -65,6 +65,7 @@ func CorePlan(identifier string, templateSet string, generatedOn string) (model.
 	}
 	plan := result.Plan
 	plan.Variables = append(identityVariables(), plan.Variables...)
+	plan.Sections = append([]model.Section{planSourceSection()}, plan.Sections...)
 	return plan, nil
 }
 
@@ -77,24 +78,30 @@ func identityVariables() []model.Variable {
 			Required:    true,
 			Audience:    model.AudienceOnboarder,
 		},
-		{
-			Name:        "team_name",
-			Description: "What is the team's name?",
-			Example:     "Platform",
-			Required:    true,
-			Audience:    model.AudienceOnboarder,
-		},
-		{
-			Name:        "plan_repository",
-			Description: "Where is the plan's repository?",
-			Example:     "https://example.test/acme/onboarding.git",
-			Audience:    model.AudienceOnboarder,
-		},
-		{
-			Name:        "plan_file",
-			Description: "Which file in it is the plan?",
-			Example:     "plans/platform.obk.yaml",
-			Audience:    model.AudienceOnboarder,
+	}
+}
+
+func planSourceSection() model.Section {
+	return model.Section{
+		ID:      "plan-source",
+		Title:   "Where this plan is kept",
+		Summary: "Name the repository and the file that hold this plan",
+		Timing:  model.TimingBeforeDayOne,
+		Body: "This plan is kept in $plan_repository, in the file $plan_file.\n\n" +
+			"Get updates to it from that repository.\n",
+		Variables: []model.Variable{
+			{
+				Name:        "plan_repository",
+				Description: "What is the address of the repository that holds the plan?",
+				Example:     "https://example.test/acme/onboarding.git",
+				Audience:    model.AudienceOnboarder,
+			},
+			{
+				Name:        "plan_file",
+				Description: "What is the relative path of the plan file in the repository?",
+				Example:     "plans/platform.obk.yaml",
+				Audience:    model.AudienceOnboarder,
+			},
 		},
 	}
 }

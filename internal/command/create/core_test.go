@@ -21,7 +21,9 @@ func TestTheCorePlanHoldsEveryCoreSectionTheCatalogCarries(t *testing.T) {
 	}
 	var ids []string
 	for _, section := range plan.Sections {
-		ids = append(ids, section.ID)
+		if section.Source != nil {
+			ids = append(ids, section.ID)
+		}
 	}
 	var want []string
 	for _, staged := range coreSet {
@@ -60,7 +62,7 @@ func TestPairingIsStagedTwiceWithDistinctIds(t *testing.T) {
 	plan, _ := CorePlan("plan-one", "development", "2026-11-04")
 	var pairing []string
 	for _, section := range plan.Sections {
-		if section.Source.Template == "ticket-pairing" {
+		if section.Source != nil && section.Source.Template == "ticket-pairing" {
 			pairing = append(pairing, section.ID)
 		}
 	}
@@ -98,29 +100,40 @@ func TestWritingANewFileNeverReplacesOne(t *testing.T) {
 	}
 }
 
-func TestTheCorePlanAsksTheOrganizationAndTheTeamBeforeAnySectionQuestion(t *testing.T) {
+func TestTheCorePlanAsksOnlyTheOrganizationAtPlanScopeAndThenWhereThePlanIsKept(t *testing.T) {
 	plan, problems := CorePlan("plan-one", "development", "2026-11-04")
 	if len(problems) > 0 {
 		t.Fatalf("problems: %v", problems)
 	}
 	questions := finder.New().Questions(plan, model.AudienceOnboarder)
-	if len(questions) < 5 {
+	if len(questions) < 4 {
 		t.Fatalf("only %d questions", len(questions))
 	}
-	for index, want := range []string{"organization", "team_name", "plan_repository", "plan_file"} {
-		if questions[index].Scope != "plan" || questions[index].Name != want {
-			t.Fatalf("question %d is %s.%s, want plan.%s", index+1, questions[index].Scope, questions[index].Name, want)
+	var planScope []string
+	for _, question := range questions {
+		if question.Scope == "plan" {
+			planScope = append(planScope, question.Name)
 		}
 	}
-	if questions[4].Scope == "plan" {
-		t.Fatalf("a section question must follow the plan questions, got %+v", questions[4])
+	if !slices.Equal(planScope, []string{"organization"}) || questions[0].Name != "organization" {
+		t.Fatalf("plan scope asks %v, first question %s.%s", planScope, questions[0].Scope, questions[0].Name)
 	}
-	required := map[string]bool{}
+	for index, want := range []string{"plan_repository", "plan_file"} {
+		got := questions[index+1]
+		if got.Scope != "plan-source" || got.Name != want || got.Required {
+			t.Fatalf("question %d is %s.%s required=%v, want plan-source.%s optional", index+2, got.Scope, got.Name, got.Required, want)
+		}
+	}
+	if plan.Sections[0].ID != "plan-source" || questions[3].Scope == "plan-source" || questions[3].Scope == "plan" {
+		t.Fatalf("first section %q, fourth question %+v", plan.Sections[0].ID, questions[3])
+	}
 	for _, variable := range plan.Variables {
-		required[variable.Name] = variable.Required
-	}
-	if !required["organization"] || !required["team_name"] || required["plan_repository"] || required["plan_file"] {
-		t.Fatalf("required flags %v", required)
+		if variable.Name == "team_name" {
+			t.Fatal("a team name belongs to a team plan, not to this one")
+		}
+		if variable.Name == "organization" && !variable.Required {
+			t.Fatal("the organization is required")
+		}
 	}
 }
 

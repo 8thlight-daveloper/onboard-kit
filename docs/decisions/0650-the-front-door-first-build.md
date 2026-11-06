@@ -44,12 +44,20 @@ pins that exact set. The two pairing sessions are `ticket-pairing-navigator` and
 `ticket-pairing-driver`. `new --templates DIR` still works while existing scenarios
 use it.
 
-**A new plan starts with four plan questions.** Before any section question the plan
-asks `organization` and `team_name`, both required onboarder questions, then
-`plan_repository` and `plan_file`, two optional free-text questions for the repository
-address and the path of the plan file inside it. The first two block an invitation until
-they are answered, and the first gives the header its name. This is the step of 0670
-that does not need a contract. The `extends` link, the structured source, and scope on sections are not built.
+**A new plan asks the organization first, and then where the plan is kept.** The plan's
+only own question is `organization`, a required onboarder question that blocks an invitation
+until it is answered and gives the header its name. It is the lone question of the first
+page. The next page is a first section, `plan-source`, "Where this plan is kept", with two
+optional onboarder questions: the repository's address and the relative path of the plan
+file in it. They are two questions because they have different sources and change
+independently, since one repository holds many plans. The address is one question because
+a person has it as one thing to copy, and the tool derives its parts. The section has the
+timing `before-day-one` so that it sorts first until 0660 puts list position in charge. A
+new plan has no team question. A team's name is the first question of a team plan, and team
+plans wait for `extends`. This is the step of 0670 that does not need a contract. The
+`extends` link, scope on sections, and the composer are not built. The catalog's
+`onboarding-repository` section asks for the same location in one text answer, and the two
+should meet when the catalog is changed.
 
 **Interim: an invitation runs the typed start flow.** `onboard-kit invitation.zip`,
 or "Begin my onboarding", ends the screen and runs `start --invitation FILE --root .` with its typed lines. The screen says where the records will go before it
