@@ -1,6 +1,7 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [tui]
 builds-on: ['0520', '0610', '0630', '0640']
 ---
@@ -42,8 +43,8 @@ the one-letter keys work again: `p n d x q ?` and the tab letters.
 
 **The options are a vertical list under the field.** It holds "Edit the answer", shown only
 once typing stops, one "Use the suggestion: X" row for each suggestion, "deferred, answer
-later", "skip, change nothing", and "clear the answer". These are the items a choice
-question already showed, so both kinds of question behave the same. Suggestions are rows,
+later", "discard my typing", shown only when there is something typed, and "clear the
+answer". Choice questions show the same items, so both kinds of question behave the same. Suggestions are rows,
 so no key is needed to try one.
 
 **Tab and shift+tab move between screens.** They wrap at the ends, and they work while
@@ -68,12 +69,23 @@ boundary, with "N more questions above" and "below". A row whose `askIf` changes
 leaves in its place, and focus stays on the same question. The newcomer's pages have the
 same rows.
 
-**A draft is kept while the person is on the page.** Typed text stays in its row, including
-across a visit to another screen. Defer saves the deferral and drops that row's draft. Skip
-and back save nothing and drop it. Clear empties the box and the saved answer and returns to
-typing. Leaving the page drops unsaved drafts, and the status line starts with "warning:"
-and names the questions. Quit drops an unsaved draft with no warning. A prompt that says there
-are unsaved changes can be added later without changing the rest.
+**Leaving a row saves what was typed.** Moving off a row by any key saves a valid typed
+answer, because a person who types and then presses the down arrow meant to keep it. A
+value the question refuses stays in its field, focus stays on the row, and the status line
+gives the reason. `esc` only stops typing and keeps the text, and leaving the row then
+saves it. So a draft exists only while a person is on the row. Defer saves the deferral and
+drops that row's draft. "Discard my typing" replaces "skip, change nothing". It leaves the
+row as it was and drops what was typed, and it is shown only when there is a draft. Moving
+on without answering is the down arrow, so a skip item would add nothing. Skip records
+nothing, and defer records that the question was set aside. Clear empties the box and the
+saved answer and returns to typing. Quit drops an unsaved draft with no warning. A prompt
+that says there are unsaved changes can be added later without changing the rest.
+
+**The Contacts, Preparation, and Invitation forms behave like the Answer screen.** `esc`
+first stops typing and keeps the text, and a second `esc` leaves the form. A form keeps its
+state while a person visits another tab, so the Invitation form is no longer thrown away
+when its tab is reopened. Up from the first field reaches the tab strip, and the person can
+return to the form where they left it.
 
 **One key opens the Answer screen for both audiences.** `w` opens it for the onboarder and
 for the newcomer. One audience uses the tool at a time, so the interface stays the same.
@@ -85,22 +97,3 @@ for the newcomer. One audience uses the tool at a time, so the interface stays t
   count that follows catalog content.
 - The status line read "saved. saved" after every `enter`, and that is fixed.
 - The terminal page, `docs/reference/tui.md`, describes the keys and the pages.
-
-## Not decided
-
-1. **What leaving a row means.** Today, text typed in a row is a draft, "Not saved yet",
-   until `enter` saves it. A person who types and then presses the down arrow meant to
-   keep it, and the draft rule can read as losing it. The proposal: moving off a row by any
-   key saves a valid typed answer, `esc` only stops typing, and a value the question
-   refuses stays in its field with the reason. Drafts then exist only while a person is on
-   the row. The same question covers "skip, change nothing". With rows, moving on is the
-   down arrow, so skip does nothing the arrow does not. What the list lacks is a way to
-   leave a row without keeping what was typed. The proposal replaces skip with "discard my
-   typing", shown only when there is a draft. Defer stays as it is: it records that the
-   question was set aside, and skip records nothing.
-2. **Forms.** On the Answer screen, `esc` first stops typing and a second `esc` leaves. In
-   the Contacts, Preparation, and Invitation forms, `esc` cancels the form at once. The
-   Invitation form is also thrown away when a person visits another tab and comes back,
-   so they lose what they typed and cannot move up from the form to the tab strip and
-   return to it. The question is whether the forms should behave like the Answer screen:
-   `esc` stops typing first, and a form keeps its state while a person visits another tab.
