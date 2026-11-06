@@ -72,7 +72,11 @@ same rows.
 across a visit to another screen. Defer saves the deferral and drops that row's draft. Skip
 and back save nothing and drop it. Clear empties the box and the saved answer and returns to
 typing. Leaving the page drops unsaved drafts, and the status line starts with "warning:"
-and names the questions.
+and names the questions. Quit drops an unsaved draft with no warning. A prompt that says there
+are unsaved changes can be added later without changing the rest.
+
+**One key opens the Answer screen for both audiences.** `w` opens it for the onboarder and
+for the newcomer. One audience uses the tool at a time, so the interface stays the same.
 
 ## Consequences
 
@@ -84,12 +88,19 @@ and names the questions.
 
 ## Not decided
 
-1. **Asking before dropping drafts.** `enter` on the last row of a page, and a move to
-   another page, drop unsaved text in other rows with only a warning. Asking first is
-   safer and is a change of behavior.
-2. **Quit with a draft.** Quit drops a draft without a warning.
-3. **A key for the newcomer's Your questions screen.** `w` opens it for both audiences.
-   `u` is the candidate.
-4. **Esc in the Contacts, Preparation, and Invitation forms.** It still cancels the form
-   and does not stop typing first, and the Invitation form cannot reach the tab strip,
-   because reopening that tab drops it.
+1. **What leaving a row means.** Today, text typed in a row is a draft, "Not saved yet",
+   until `enter` saves it. A person who types and then presses the down arrow meant to
+   keep it, and the draft rule can read as losing it. The proposal: moving off a row by any
+   key saves a valid typed answer, `esc` only stops typing, and a value the question
+   refuses stays in its field with the reason. Drafts then exist only while a person is on
+   the row. The same question covers "skip, change nothing". With rows, moving on is the
+   down arrow, so skip does nothing the arrow does not. What the list lacks is a way to
+   leave a row without keeping what was typed. The proposal replaces skip with "discard my
+   typing", shown only when there is a draft. Defer stays as it is: it records that the
+   question was set aside, and skip records nothing.
+2. **Forms.** On the Answer screen, `esc` first stops typing and a second `esc` leaves. In
+   the Contacts, Preparation, and Invitation forms, `esc` cancels the form at once. The
+   Invitation form is also thrown away when a person visits another tab and comes back,
+   so they lose what they typed and cannot move up from the form to the tab strip and
+   return to it. The question is whether the forms should behave like the Answer screen:
+   `esc` stops typing first, and a form keeps its state while a person visits another tab.

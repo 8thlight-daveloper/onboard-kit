@@ -1,6 +1,7 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [command/walk, preparation/store, tui]
 builds-on: ['0340', '0350', '0520', '0570']
 ---

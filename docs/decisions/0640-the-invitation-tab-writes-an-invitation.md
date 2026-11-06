@@ -1,6 +1,7 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [command/invite, command/walk, tui]
 builds-on: ['0300', '0610', '0630']
 ---
@@ -46,9 +47,9 @@ offers the next free name, `-2` and then `-3`. It never overwrites.
 
 **The result leads with the line for the newcomer.** The line reads "Give this file
 to NAME. They run: obk PATH", from one constant. A second line says the tool sends
-nothing. The path is the one the onboarder chose. The newcomer saves the file
-elsewhere, so that path may mislead them. Whether to show only the file name is
-open.
+nothing. The path is the one the tool saved to, shown as written. It tells the
+onboarder where the file is, and the newcomer's own path replaces it once they have the
+file. Showing only the file name was considered and not chosen.
 
 **A seventh tab can window the header.** At 60 to 80 columns the strip is still too
 wide when a late tab is current. The header shows the tabs around the current one,
@@ -65,5 +66,8 @@ with an ellipsis on each cut side. This goes one step past the clipping in 0630.
 
 ## Not decided
 
-1. **The path in the newcomer's line.** The onboarder's path, or only the file
-   name, since the newcomer saves it in their own folder.
+1. **Whether the form asks for the file name at all.** Today the form proposes a name,
+   `obk-invitation-<account>.zip` in the plan's folder, and lets the onboarder change it.
+   The alternative is to say where the file will be saved and ask nothing. The tool must
+   propose a free name either way, and the question is only whether a person ever needs to
+   change it.

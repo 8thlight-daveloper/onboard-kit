@@ -1,6 +1,7 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [command/create]
 builds-on: ['0120', '0650', '0670', '0680']
 ---

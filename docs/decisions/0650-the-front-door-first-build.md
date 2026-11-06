@@ -1,6 +1,7 @@
 ---
 category: ux
-status: proposed
+status: accepted
+approval: person
 affects: [command/create, command/frontdoor, command/places, command/registry, command/root, tui]
 builds-on: ['0530', '0610', '0630', '0640']
 ---
