@@ -92,7 +92,7 @@ func planSourceSection() model.Section {
 		Variables: []model.Variable{
 			{
 				Name:        "plan_repository",
-				Description: "What is the address of the repository that holds the plan?",
+				Description: "What is the address of the repository that holds the plan? Copy it from the repository's Clone button, not from a page of the file.",
 				Example:     "https://example.test/acme/onboarding.git",
 				Audience:    model.AudienceOnboarder,
 			},
